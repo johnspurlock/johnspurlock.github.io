@@ -36,6 +36,10 @@ scalar uint8
 
 type account {
   accountTag: string!
+  # Aggregated metrics about downstream (client to edge) L4 Gateway Sessions. Metrics are reported on TCP or UDP session close
+  gatewayL4DownstreamSessionsAdaptiveGroups(filter: AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy!]): [AccountGatewayL4DownstreamSessionsAdaptiveGroups!]!
+  # Aggregated metrics about upstream (edge to client) L4 Gateway Sessions. Metrics are reported on TCP, QUIC or UDP session close
+  gatewayL4UpstreamSessionsAdaptiveGroups(filter: AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy!]): [AccountGatewayL4UpstreamSessionsAdaptiveGroups!]!
   # Daily rollups of request data
   httpRequests1dGroups(filter: AccountHttpRequests1dGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHttpRequests1dGroupsOrderBy!]): [AccountHttpRequests1dGroups!]!
   # Hourly rollups of request data
@@ -50,6 +54,8 @@ type account {
   ipFlows1mAttacksGroups(filter: AccountIpFlows1mAttacksGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountIpFlows1mAttacksGroupsOrderBy!]): [AccountIpFlows1mAttacksGroups!]!
   # Beta. Minutely rollups of IP flows
   ipFlows1mGroups(filter: AccountIpFlows1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountIpFlows1mGroupsOrderBy!]): [AccountIpFlows1mGroups!]!
+  # Data to visualize traffic allowed and blocked by Magic Firewall rules
+  magicFirewallSamplesAdaptiveGroups(filter: AccountMagicFirewallSamplesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicFirewallSamplesAdaptiveGroupsOrderBy!]): [AccountMagicFirewallSamplesAdaptiveGroups!]!
   # Beta. Magic Transit Health check results for customer GRE Tunnels with adaptive sampling (ABR).
   magicTransitTunnelHealthChecksAdaptiveGroups(filter: AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy!]): [AccountMagicTransitTunnelHealthChecksAdaptiveGroups!]!
   # Beta. Aggregated RUM pageload event metrics with adaptive sampling
@@ -76,6 +82,394 @@ type account {
 
 input AccountFilter_InputObject {
   accountTag: string!
+}
+
+# Aggregated metrics about downstream (client to edge) L4 Gateway Sessions. Metrics are reported on TCP or UDP session close
+type AccountGatewayL4DownstreamSessionsAdaptiveGroups {
+  # The number of downstream sessions
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountGatewayL4DownstreamSessionsAdaptiveGroupsDimensions
+}
+
+type AccountGatewayL4DownstreamSessionsAdaptiveGroupsDimensions {
+  # Start date of the session
+  date: Date!
+  # Start datetime of the session, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Start datetime of the session, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # Start datetime of the session, truncated to the hour
+  datetimeHour: Time!
+  # Start datetime of the session, truncated to the minute
+  datetimeMinute: Time!
+  # QUIC error code, possible values are: https://www.iana.org/assignments/quic/quic.xhtml#quic-transport-error-codes
+  quicErrorCode: uint64!
+  # 160-bit nonce that identifies a session
+  sessionId: string!
+  # IPv4 or IPv6 address of the client creating the session
+  sourceIP: string!
+  # Token authentication status, possible values are: unknown | success | failureWithInvalidToken | failureWithInvalidTokenAndKeyID | failureWithReusedToken
+  tokenAuthStatus: string!
+  # Transport protocol used for the session, possible values are: tcp | quic | udp
+  transport: string!
+  # Transport status, possible values are: unknown | success | failure
+  transportStatus: string!
+}
+
+input AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  quicErrorCode: uint64
+  quicErrorCode_geq: uint64
+  quicErrorCode_gt: uint64
+  quicErrorCode_in: [uint64!]
+  quicErrorCode_leq: uint64
+  quicErrorCode_lt: uint64
+  quicErrorCode_neq: uint64
+  quicErrorCode_notin: [uint64!]
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
+  tokenAuthStatus: string
+  tokenAuthStatus_geq: string
+  tokenAuthStatus_gt: string
+  tokenAuthStatus_in: [string!]
+  tokenAuthStatus_leq: string
+  tokenAuthStatus_like: string
+  tokenAuthStatus_lt: string
+  tokenAuthStatus_neq: string
+  tokenAuthStatus_notin: [string!]
+  tokenAuthStatus_notlike: string
+  transport: string
+  transportStatus: string
+  transportStatus_geq: string
+  transportStatus_gt: string
+  transportStatus_in: [string!]
+  transportStatus_leq: string
+  transportStatus_like: string
+  transportStatus_lt: string
+  transportStatus_neq: string
+  transportStatus_notin: [string!]
+  transportStatus_notlike: string
+  transport_geq: string
+  transport_gt: string
+  transport_in: [string!]
+  transport_leq: string
+  transport_like: string
+  transport_lt: string
+  transport_neq: string
+  transport_notin: [string!]
+  transport_notlike: string
+}
+
+enum AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # quicErrorCode ascending
+  quicErrorCode_ASC
+  # quicErrorCode descending
+  quicErrorCode_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # tokenAuthStatus ascending
+  tokenAuthStatus_ASC
+  # tokenAuthStatus descending
+  tokenAuthStatus_DESC
+  # transportStatus ascending
+  transportStatus_ASC
+  # transportStatus descending
+  transportStatus_DESC
+  # transport ascending
+  transport_ASC
+  # transport descending
+  transport_DESC
+}
+
+# Aggregated metrics about upstream (edge to client) L4 Gateway Sessions. Metrics are reported on TCP, QUIC or UDP session close
+type AccountGatewayL4UpstreamSessionsAdaptiveGroups {
+  # The number of upstream sessions
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountGatewayL4UpstreamSessionsAdaptiveGroupsDimensions
+}
+
+type AccountGatewayL4UpstreamSessionsAdaptiveGroupsDimensions {
+  # Start date of the session
+  date: Date!
+  # Start datetime of the session, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Start datetime of the session, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # Start datetime of the session, truncated to the hour
+  datetimeHour: Time!
+  # Start datetime of the session, truncated to the minute
+  datetimeMinute: Time!
+  # Destination IPv4 or IPv6 address
+  destinationIP: string!
+  # SNI name for the upstream (origin) server used in this session
+  domainName: string!
+  # ID (160-bit nonce) of the downstream (client) session that spawned this upstream session
+  downstreamSessionId: string!
+  # Identifies which downstream stream ID the current upstream connection maps to
+  downstreamStreamId: uint64!
+  # QUIC error code, possible values are: https://www.iana.org/assignments/quic/quic.xhtml#quic-transport-error-codes
+  quicErrorCode: uint64!
+  # Transport status, possible values are: unknown | success | failure
+  transportStatus: string!
+}
+
+input AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationIP: string
+  destinationIP_geq: string
+  destinationIP_gt: string
+  destinationIP_in: [string!]
+  destinationIP_leq: string
+  destinationIP_like: string
+  destinationIP_lt: string
+  destinationIP_neq: string
+  destinationIP_notin: [string!]
+  destinationIP_notlike: string
+  domainName: string
+  domainName_geq: string
+  domainName_gt: string
+  domainName_in: [string!]
+  domainName_leq: string
+  domainName_like: string
+  domainName_lt: string
+  domainName_neq: string
+  domainName_notin: [string!]
+  domainName_notlike: string
+  downstreamSessionId: string
+  downstreamSessionId_geq: string
+  downstreamSessionId_gt: string
+  downstreamSessionId_in: [string!]
+  downstreamSessionId_leq: string
+  downstreamSessionId_like: string
+  downstreamSessionId_lt: string
+  downstreamSessionId_neq: string
+  downstreamSessionId_notin: [string!]
+  downstreamSessionId_notlike: string
+  downstreamStreamId: uint64
+  downstreamStreamId_geq: uint64
+  downstreamStreamId_gt: uint64
+  downstreamStreamId_in: [uint64!]
+  downstreamStreamId_leq: uint64
+  downstreamStreamId_lt: uint64
+  downstreamStreamId_neq: uint64
+  downstreamStreamId_notin: [uint64!]
+  quicErrorCode: uint64
+  quicErrorCode_geq: uint64
+  quicErrorCode_gt: uint64
+  quicErrorCode_in: [uint64!]
+  quicErrorCode_leq: uint64
+  quicErrorCode_lt: uint64
+  quicErrorCode_neq: uint64
+  quicErrorCode_notin: [uint64!]
+  transportStatus: string
+  transportStatus_geq: string
+  transportStatus_gt: string
+  transportStatus_in: [string!]
+  transportStatus_leq: string
+  transportStatus_like: string
+  transportStatus_lt: string
+  transportStatus_neq: string
+  transportStatus_notin: [string!]
+  transportStatus_notlike: string
+}
+
+enum AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # destinationIP ascending
+  destinationIP_ASC
+  # destinationIP descending
+  destinationIP_DESC
+  # domainName ascending
+  domainName_ASC
+  # domainName descending
+  domainName_DESC
+  # downstreamSessionId ascending
+  downstreamSessionId_ASC
+  # downstreamSessionId descending
+  downstreamSessionId_DESC
+  # downstreamStreamId ascending
+  downstreamStreamId_ASC
+  # downstreamStreamId descending
+  downstreamStreamId_DESC
+  # quicErrorCode ascending
+  quicErrorCode_ASC
+  # quicErrorCode descending
+  quicErrorCode_DESC
+  # transportStatus ascending
+  transportStatus_ASC
+  # transportStatus descending
+  transportStatus_DESC
 }
 
 # Daily rollups of request data
@@ -2297,6 +2691,84 @@ type AccountIpFlows1mGroupsSum {
   packets: uint64!
 }
 
+# Data to visualize traffic allowed and blocked by Magic Firewall rules
+type AccountMagicFirewallSamplesAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountMagicFirewallSamplesAdaptiveGroupsDimensions
+  # per dimension sum of values
+  sum: AccountMagicFirewallSamplesAdaptiveGroupsSum
+}
+
+type AccountMagicFirewallSamplesAdaptiveGroupsDimensions {
+  # Date and Time of the event
+  datetime: Time!
+  # timestamps rounded off to the 5 minute intervals
+  datetimeFiveMinute: Time!
+  # identifier of a rule
+  ruleId: string!
+}
+
+input AccountMagicFirewallSamplesAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMagicFirewallSamplesAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMagicFirewallSamplesAdaptiveGroupsFilter_InputObject!]
+  datetime: Time
+  datetimeFiveMinute: Time
+  datetimeFiveMinute_geq: Time
+  datetimeFiveMinute_gt: Time
+  datetimeFiveMinute_in: [Time!]
+  datetimeFiveMinute_leq: Time
+  datetimeFiveMinute_lt: Time
+  datetimeFiveMinute_neq: Time
+  datetimeFiveMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  ruleId: string
+  ruleId_geq: string
+  ruleId_gt: string
+  ruleId_in: [string!]
+  ruleId_leq: string
+  ruleId_like: string
+  ruleId_lt: string
+  ruleId_neq: string
+  ruleId_notin: [string!]
+  ruleId_notlike: string
+}
+
+enum AccountMagicFirewallSamplesAdaptiveGroupsOrderBy {
+  # datetimeFiveMinute ascending
+  datetimeFiveMinute_ASC
+  # datetimeFiveMinute descending
+  datetimeFiveMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # ruleId ascending
+  ruleId_ASC
+  # ruleId descending
+  ruleId_DESC
+  # sum(bits) ascending
+  sum_bits_ASC
+  # sum(bits) descending
+  sum_bits_DESC
+  # sum(packets) ascending
+  sum_packets_ASC
+  # sum(packets) descending
+  sum_packets_DESC
+}
+
+type AccountMagicFirewallSamplesAdaptiveGroupsSum {
+  # number of  bits that match a filter
+  bits: uint64!
+  # number of packets that match a filter
+  packets: uint64!
+}
+
 # Beta. Magic Transit Health check results for customer GRE Tunnels with adaptive sampling (ABR).
 type AccountMagicTransitTunnelHealthChecksAdaptiveGroups {
   avg: AccountMagicTransitTunnelHealthChecksAdaptiveGroupsAvg
@@ -3911,6 +4383,8 @@ type AccountRumWebVitalsEventsAdaptiveGroupsSum {
 
 # Access and limitations for an account
 type AccountSettings {
+  gatewayL4DownstreamSessionsAdaptiveGroups: Settings!
+  gatewayL4UpstreamSessionsAdaptiveGroups: Settings!
   httpRequests1dGroups: Settings!
   httpRequests1hGroups: Settings!
   httpRequests1mGroups: Settings!
@@ -3918,6 +4392,7 @@ type AccountSettings {
   ipFlows1hGroups: Settings!
   ipFlows1mAttacksGroups: Settings!
   ipFlows1mGroups: Settings!
+  magicFirewallSamplesAdaptiveGroups: Settings!
   magicTransitTunnelHealthChecksAdaptiveGroups: Settings!
   rumPageloadEventsAdaptiveGroups: Settings!
   rumPerformanceEventsAdaptiveGroups: Settings!

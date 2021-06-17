@@ -45,6 +45,10 @@
 <br />
 <span class="k">type</span> <a id="account" href="#account">account</a> {<br />
 &nbsp;&nbsp;accountTag: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Aggregated metrics about downstream (client to edge) L4 Gateway Sessions. Metrics are reported on TCP or UDP session close</span><br />
+&nbsp;&nbsp;gatewayL4DownstreamSessionsAdaptiveGroups(filter: <a href="#AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject">AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy">[AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy!]</a>): <a href="#AccountGatewayL4DownstreamSessionsAdaptiveGroups">[AccountGatewayL4DownstreamSessionsAdaptiveGroups!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Aggregated metrics about upstream (edge to client) L4 Gateway Sessions. Metrics are reported on TCP, QUIC or UDP session close</span><br />
+&nbsp;&nbsp;gatewayL4UpstreamSessionsAdaptiveGroups(filter: <a href="#AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject">AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy">[AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy!]</a>): <a href="#AccountGatewayL4UpstreamSessionsAdaptiveGroups">[AccountGatewayL4UpstreamSessionsAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Daily rollups of request data</span><br />
 &nbsp;&nbsp;httpRequests1dGroups(filter: <a href="#AccountHttpRequests1dGroupsFilter_InputObject">AccountHttpRequests1dGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountHttpRequests1dGroupsOrderBy">[AccountHttpRequests1dGroupsOrderBy!]</a>): <a href="#AccountHttpRequests1dGroups">[AccountHttpRequests1dGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Hourly rollups of request data</span><br />
@@ -59,6 +63,8 @@
 &nbsp;&nbsp;ipFlows1mAttacksGroups(filter: <a href="#AccountIpFlows1mAttacksGroupsFilter_InputObject">AccountIpFlows1mAttacksGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountIpFlows1mAttacksGroupsOrderBy">[AccountIpFlows1mAttacksGroupsOrderBy!]</a>): <a href="#AccountIpFlows1mAttacksGroups">[AccountIpFlows1mAttacksGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. Minutely rollups of IP flows</span><br />
 &nbsp;&nbsp;ipFlows1mGroups(filter: <a href="#AccountIpFlows1mGroupsFilter_InputObject">AccountIpFlows1mGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountIpFlows1mGroupsOrderBy">[AccountIpFlows1mGroupsOrderBy!]</a>): <a href="#AccountIpFlows1mGroups">[AccountIpFlows1mGroups!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Data to visualize traffic allowed and blocked by Magic Firewall rules</span><br />
+&nbsp;&nbsp;magicFirewallSamplesAdaptiveGroups(filter: <a href="#AccountMagicFirewallSamplesAdaptiveGroupsFilter_InputObject">AccountMagicFirewallSamplesAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountMagicFirewallSamplesAdaptiveGroupsOrderBy">[AccountMagicFirewallSamplesAdaptiveGroupsOrderBy!]</a>): <a href="#AccountMagicFirewallSamplesAdaptiveGroups">[AccountMagicFirewallSamplesAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. Magic Transit Health check results for customer GRE Tunnels with adaptive sampling (ABR).</span><br />
 &nbsp;&nbsp;magicTransitTunnelHealthChecksAdaptiveGroups(filter: <a href="#AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject">AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy">[AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy!]</a>): <a href="#AccountMagicTransitTunnelHealthChecksAdaptiveGroups">[AccountMagicTransitTunnelHealthChecksAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. Aggregated RUM pageload event metrics with adaptive sampling</span><br />
@@ -85,6 +91,394 @@
 <br />
 <span class="k">input</span> <a id="AccountFilter_InputObject" href="#AccountFilter_InputObject">AccountFilter_InputObject</a> {<br />
 &nbsp;&nbsp;accountTag: <a href="#string">string!</a><br />
+}<br />
+<br />
+<span class="c"># Aggregated metrics about downstream (client to edge) L4 Gateway Sessions. Metrics are reported on TCP or UDP session close</span><br />
+<span class="k">type</span> <a id="AccountGatewayL4DownstreamSessionsAdaptiveGroups" href="#AccountGatewayL4DownstreamSessionsAdaptiveGroups">AccountGatewayL4DownstreamSessionsAdaptiveGroups</a> {<br />
+&nbsp;&nbsp;<span class="c"># The number of downstream sessions</span><br />
+&nbsp;&nbsp;count: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
+&nbsp;&nbsp;dimensions: <a href="#AccountGatewayL4DownstreamSessionsAdaptiveGroupsDimensions">AccountGatewayL4DownstreamSessionsAdaptiveGroupsDimensions</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountGatewayL4DownstreamSessionsAdaptiveGroupsDimensions" href="#AccountGatewayL4DownstreamSessionsAdaptiveGroupsDimensions">AccountGatewayL4DownstreamSessionsAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># Start date of the session</span><br />
+&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
+&nbsp;&nbsp;<span class="c"># Start datetime of the session, truncated to multiple of 15 minutes</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Start datetime of the session, truncated to multiple of 5 minutes</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Start datetime of the session, truncated to the hour</span><br />
+&nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Start datetime of the session, truncated to the minute</span><br />
+&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># QUIC error code, possible values are: https://www.iana.org/assignments/quic/quic.xhtml#quic-transport-error-codes</span><br />
+&nbsp;&nbsp;quicErrorCode: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># 160-bit nonce that identifies a session</span><br />
+&nbsp;&nbsp;sessionId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># IPv4 or IPv6 address of the client creating the session</span><br />
+&nbsp;&nbsp;sourceIP: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Token authentication status, possible values are: unknown | success | failureWithInvalidToken | failureWithInvalidTokenAndKeyID | failureWithReusedToken</span><br />
+&nbsp;&nbsp;tokenAuthStatus: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Transport protocol used for the session, possible values are: tcp | quic | udp</span><br />
+&nbsp;&nbsp;transport: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Transport status, possible values are: unknown | success | failure</span><br />
+&nbsp;&nbsp;transportStatus: <a href="#string">string!</a><br />
+}<br />
+<br />
+<span class="k">input</span> <a id="AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject" href="#AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject">AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject</a> {<br />
+&nbsp;&nbsp;AND: <a href="#AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject">[AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;OR: <a href="#AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject">[AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeHour: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeHour_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeMinute_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetime_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetime_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;quicErrorCode: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;quicErrorCode_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;quicErrorCode_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;quicErrorCode_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;quicErrorCode_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;quicErrorCode_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;quicErrorCode_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;quicErrorCode_notin: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;sessionId: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sessionId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sessionId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceIP: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceIP_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceIP_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceIP_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sourceIP_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceIP_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceIP_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceIP_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceIP_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sourceIP_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;tokenAuthStatus: <a href="#string">string</a><br />
+&nbsp;&nbsp;tokenAuthStatus_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;tokenAuthStatus_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;tokenAuthStatus_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;tokenAuthStatus_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;tokenAuthStatus_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;tokenAuthStatus_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;tokenAuthStatus_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;tokenAuthStatus_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;tokenAuthStatus_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;transport: <a href="#string">string</a><br />
+&nbsp;&nbsp;transportStatus: <a href="#string">string</a><br />
+&nbsp;&nbsp;transportStatus_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;transportStatus_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;transportStatus_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;transportStatus_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;transportStatus_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;transportStatus_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;transportStatus_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;transportStatus_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;transportStatus_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;transport_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;transport_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;transport_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;transport_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;transport_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;transport_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;transport_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;transport_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;transport_notlike: <a href="#string">string</a><br />
+}<br />
+<br />
+<span class="k">enum</span> <a id="AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy" href="#AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy">AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># count() ascending</span><br />
+&nbsp;&nbsp;count_ASC<br />
+&nbsp;&nbsp;<span class="c"># count() descending</span><br />
+&nbsp;&nbsp;count_DESC<br />
+&nbsp;&nbsp;<span class="c"># date ascending</span><br />
+&nbsp;&nbsp;date_ASC<br />
+&nbsp;&nbsp;<span class="c"># date descending</span><br />
+&nbsp;&nbsp;date_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes ascending</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes descending</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFiveMinutes ascending</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFiveMinutes descending</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHour ascending</span><br />
+&nbsp;&nbsp;datetimeHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHour descending</span><br />
+&nbsp;&nbsp;datetimeHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeMinute ascending</span><br />
+&nbsp;&nbsp;datetimeMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeMinute descending</span><br />
+&nbsp;&nbsp;datetimeMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># quicErrorCode ascending</span><br />
+&nbsp;&nbsp;quicErrorCode_ASC<br />
+&nbsp;&nbsp;<span class="c"># quicErrorCode descending</span><br />
+&nbsp;&nbsp;quicErrorCode_DESC<br />
+&nbsp;&nbsp;<span class="c"># sessionId ascending</span><br />
+&nbsp;&nbsp;sessionId_ASC<br />
+&nbsp;&nbsp;<span class="c"># sessionId descending</span><br />
+&nbsp;&nbsp;sessionId_DESC<br />
+&nbsp;&nbsp;<span class="c"># sourceIP ascending</span><br />
+&nbsp;&nbsp;sourceIP_ASC<br />
+&nbsp;&nbsp;<span class="c"># sourceIP descending</span><br />
+&nbsp;&nbsp;sourceIP_DESC<br />
+&nbsp;&nbsp;<span class="c"># tokenAuthStatus ascending</span><br />
+&nbsp;&nbsp;tokenAuthStatus_ASC<br />
+&nbsp;&nbsp;<span class="c"># tokenAuthStatus descending</span><br />
+&nbsp;&nbsp;tokenAuthStatus_DESC<br />
+&nbsp;&nbsp;<span class="c"># transportStatus ascending</span><br />
+&nbsp;&nbsp;transportStatus_ASC<br />
+&nbsp;&nbsp;<span class="c"># transportStatus descending</span><br />
+&nbsp;&nbsp;transportStatus_DESC<br />
+&nbsp;&nbsp;<span class="c"># transport ascending</span><br />
+&nbsp;&nbsp;transport_ASC<br />
+&nbsp;&nbsp;<span class="c"># transport descending</span><br />
+&nbsp;&nbsp;transport_DESC<br />
+}<br />
+<br />
+<span class="c"># Aggregated metrics about upstream (edge to client) L4 Gateway Sessions. Metrics are reported on TCP, QUIC or UDP session close</span><br />
+<span class="k">type</span> <a id="AccountGatewayL4UpstreamSessionsAdaptiveGroups" href="#AccountGatewayL4UpstreamSessionsAdaptiveGroups">AccountGatewayL4UpstreamSessionsAdaptiveGroups</a> {<br />
+&nbsp;&nbsp;<span class="c"># The number of upstream sessions</span><br />
+&nbsp;&nbsp;count: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
+&nbsp;&nbsp;dimensions: <a href="#AccountGatewayL4UpstreamSessionsAdaptiveGroupsDimensions">AccountGatewayL4UpstreamSessionsAdaptiveGroupsDimensions</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountGatewayL4UpstreamSessionsAdaptiveGroupsDimensions" href="#AccountGatewayL4UpstreamSessionsAdaptiveGroupsDimensions">AccountGatewayL4UpstreamSessionsAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># Start date of the session</span><br />
+&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
+&nbsp;&nbsp;<span class="c"># Start datetime of the session, truncated to multiple of 15 minutes</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Start datetime of the session, truncated to multiple of 5 minutes</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Start datetime of the session, truncated to the hour</span><br />
+&nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Start datetime of the session, truncated to the minute</span><br />
+&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Destination IPv4 or IPv6 address</span><br />
+&nbsp;&nbsp;destinationIP: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># SNI name for the upstream (origin) server used in this session</span><br />
+&nbsp;&nbsp;domainName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># ID (160-bit nonce) of the downstream (client) session that spawned this upstream session</span><br />
+&nbsp;&nbsp;downstreamSessionId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Identifies which downstream stream ID the current upstream connection maps to</span><br />
+&nbsp;&nbsp;downstreamStreamId: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># QUIC error code, possible values are: https://www.iana.org/assignments/quic/quic.xhtml#quic-transport-error-codes</span><br />
+&nbsp;&nbsp;quicErrorCode: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Transport status, possible values are: unknown | success | failure</span><br />
+&nbsp;&nbsp;transportStatus: <a href="#string">string!</a><br />
+}<br />
+<br />
+<span class="k">input</span> <a id="AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject" href="#AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject">AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject</a> {<br />
+&nbsp;&nbsp;AND: <a href="#AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject">[AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;OR: <a href="#AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject">[AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeHour: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeHour_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeMinute_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetime_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetime_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;destinationIP: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationIP_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationIP_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationIP_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;destinationIP_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationIP_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationIP_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationIP_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationIP_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;destinationIP_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;domainName: <a href="#string">string</a><br />
+&nbsp;&nbsp;domainName_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;domainName_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;domainName_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;domainName_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;domainName_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;domainName_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;domainName_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;domainName_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;domainName_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;downstreamSessionId: <a href="#string">string</a><br />
+&nbsp;&nbsp;downstreamSessionId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;downstreamSessionId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;downstreamSessionId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;downstreamSessionId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;downstreamSessionId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;downstreamSessionId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;downstreamSessionId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;downstreamSessionId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;downstreamSessionId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;downstreamStreamId: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;downstreamStreamId_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;downstreamStreamId_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;downstreamStreamId_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;downstreamStreamId_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;downstreamStreamId_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;downstreamStreamId_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;downstreamStreamId_notin: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;quicErrorCode: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;quicErrorCode_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;quicErrorCode_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;quicErrorCode_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;quicErrorCode_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;quicErrorCode_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;quicErrorCode_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;quicErrorCode_notin: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;transportStatus: <a href="#string">string</a><br />
+&nbsp;&nbsp;transportStatus_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;transportStatus_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;transportStatus_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;transportStatus_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;transportStatus_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;transportStatus_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;transportStatus_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;transportStatus_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;transportStatus_notlike: <a href="#string">string</a><br />
+}<br />
+<br />
+<span class="k">enum</span> <a id="AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy" href="#AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy">AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># count() ascending</span><br />
+&nbsp;&nbsp;count_ASC<br />
+&nbsp;&nbsp;<span class="c"># count() descending</span><br />
+&nbsp;&nbsp;count_DESC<br />
+&nbsp;&nbsp;<span class="c"># date ascending</span><br />
+&nbsp;&nbsp;date_ASC<br />
+&nbsp;&nbsp;<span class="c"># date descending</span><br />
+&nbsp;&nbsp;date_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes ascending</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes descending</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFiveMinutes ascending</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFiveMinutes descending</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHour ascending</span><br />
+&nbsp;&nbsp;datetimeHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHour descending</span><br />
+&nbsp;&nbsp;datetimeHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeMinute ascending</span><br />
+&nbsp;&nbsp;datetimeMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeMinute descending</span><br />
+&nbsp;&nbsp;datetimeMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># destinationIP ascending</span><br />
+&nbsp;&nbsp;destinationIP_ASC<br />
+&nbsp;&nbsp;<span class="c"># destinationIP descending</span><br />
+&nbsp;&nbsp;destinationIP_DESC<br />
+&nbsp;&nbsp;<span class="c"># domainName ascending</span><br />
+&nbsp;&nbsp;domainName_ASC<br />
+&nbsp;&nbsp;<span class="c"># domainName descending</span><br />
+&nbsp;&nbsp;domainName_DESC<br />
+&nbsp;&nbsp;<span class="c"># downstreamSessionId ascending</span><br />
+&nbsp;&nbsp;downstreamSessionId_ASC<br />
+&nbsp;&nbsp;<span class="c"># downstreamSessionId descending</span><br />
+&nbsp;&nbsp;downstreamSessionId_DESC<br />
+&nbsp;&nbsp;<span class="c"># downstreamStreamId ascending</span><br />
+&nbsp;&nbsp;downstreamStreamId_ASC<br />
+&nbsp;&nbsp;<span class="c"># downstreamStreamId descending</span><br />
+&nbsp;&nbsp;downstreamStreamId_DESC<br />
+&nbsp;&nbsp;<span class="c"># quicErrorCode ascending</span><br />
+&nbsp;&nbsp;quicErrorCode_ASC<br />
+&nbsp;&nbsp;<span class="c"># quicErrorCode descending</span><br />
+&nbsp;&nbsp;quicErrorCode_DESC<br />
+&nbsp;&nbsp;<span class="c"># transportStatus ascending</span><br />
+&nbsp;&nbsp;transportStatus_ASC<br />
+&nbsp;&nbsp;<span class="c"># transportStatus descending</span><br />
+&nbsp;&nbsp;transportStatus_DESC<br />
 }<br />
 <br />
 <span class="c"># Daily rollups of request data</span><br />
@@ -2306,6 +2700,84 @@
 &nbsp;&nbsp;packets: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
+<span class="c"># Data to visualize traffic allowed and blocked by Magic Firewall rules</span><br />
+<span class="k">type</span> <a id="AccountMagicFirewallSamplesAdaptiveGroups" href="#AccountMagicFirewallSamplesAdaptiveGroups">AccountMagicFirewallSamplesAdaptiveGroups</a> {<br />
+&nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
+&nbsp;&nbsp;dimensions: <a href="#AccountMagicFirewallSamplesAdaptiveGroupsDimensions">AccountMagicFirewallSamplesAdaptiveGroupsDimensions</a><br />
+&nbsp;&nbsp;<span class="c"># per dimension sum of values</span><br />
+&nbsp;&nbsp;sum: <a href="#AccountMagicFirewallSamplesAdaptiveGroupsSum">AccountMagicFirewallSamplesAdaptiveGroupsSum</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountMagicFirewallSamplesAdaptiveGroupsDimensions" href="#AccountMagicFirewallSamplesAdaptiveGroupsDimensions">AccountMagicFirewallSamplesAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># Date and Time of the event</span><br />
+&nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># timestamps rounded off to the 5 minute intervals</span><br />
+&nbsp;&nbsp;datetimeFiveMinute: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># identifier of a rule</span><br />
+&nbsp;&nbsp;ruleId: <a href="#string">string!</a><br />
+}<br />
+<br />
+<span class="k">input</span> <a id="AccountMagicFirewallSamplesAdaptiveGroupsFilter_InputObject" href="#AccountMagicFirewallSamplesAdaptiveGroupsFilter_InputObject">AccountMagicFirewallSamplesAdaptiveGroupsFilter_InputObject</a> {<br />
+&nbsp;&nbsp;AND: <a href="#AccountMagicFirewallSamplesAdaptiveGroupsFilter_InputObject">[AccountMagicFirewallSamplesAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;OR: <a href="#AccountMagicFirewallSamplesAdaptiveGroupsFilter_InputObject">[AccountMagicFirewallSamplesAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinute: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinute_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinute_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinute_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFiveMinute_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinute_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinute_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinute_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetime_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetime_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;ruleId: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ruleId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ruleId_notlike: <a href="#string">string</a><br />
+}<br />
+<br />
+<span class="k">enum</span> <a id="AccountMagicFirewallSamplesAdaptiveGroupsOrderBy" href="#AccountMagicFirewallSamplesAdaptiveGroupsOrderBy">AccountMagicFirewallSamplesAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># datetimeFiveMinute ascending</span><br />
+&nbsp;&nbsp;datetimeFiveMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFiveMinute descending</span><br />
+&nbsp;&nbsp;datetimeFiveMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetime ascending</span><br />
+&nbsp;&nbsp;datetime_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetime descending</span><br />
+&nbsp;&nbsp;datetime_DESC<br />
+&nbsp;&nbsp;<span class="c"># ruleId ascending</span><br />
+&nbsp;&nbsp;ruleId_ASC<br />
+&nbsp;&nbsp;<span class="c"># ruleId descending</span><br />
+&nbsp;&nbsp;ruleId_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(bits) ascending</span><br />
+&nbsp;&nbsp;sum_bits_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(bits) descending</span><br />
+&nbsp;&nbsp;sum_bits_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(packets) ascending</span><br />
+&nbsp;&nbsp;sum_packets_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(packets) descending</span><br />
+&nbsp;&nbsp;sum_packets_DESC<br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountMagicFirewallSamplesAdaptiveGroupsSum" href="#AccountMagicFirewallSamplesAdaptiveGroupsSum">AccountMagicFirewallSamplesAdaptiveGroupsSum</a> {<br />
+&nbsp;&nbsp;<span class="c"># number of  bits that match a filter</span><br />
+&nbsp;&nbsp;bits: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># number of packets that match a filter</span><br />
+&nbsp;&nbsp;packets: <a href="#uint64">uint64!</a><br />
+}<br />
+<br />
 <span class="c"># Beta. Magic Transit Health check results for customer GRE Tunnels with adaptive sampling (ABR).</span><br />
 <span class="k">type</span> <a id="AccountMagicTransitTunnelHealthChecksAdaptiveGroups" href="#AccountMagicTransitTunnelHealthChecksAdaptiveGroups">AccountMagicTransitTunnelHealthChecksAdaptiveGroups</a> {<br />
 &nbsp;&nbsp;avg: <a href="#AccountMagicTransitTunnelHealthChecksAdaptiveGroupsAvg">AccountMagicTransitTunnelHealthChecksAdaptiveGroupsAvg</a><br />
@@ -3920,6 +4392,8 @@
 <br />
 <span class="c"># Access and limitations for an account</span><br />
 <span class="k">type</span> <a id="AccountSettings" href="#AccountSettings">AccountSettings</a> {<br />
+&nbsp;&nbsp;gatewayL4DownstreamSessionsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
+&nbsp;&nbsp;gatewayL4UpstreamSessionsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;httpRequests1dGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;httpRequests1hGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;httpRequests1mGroups: <a href="#Settings">Settings!</a><br />
@@ -3927,6 +4401,7 @@
 &nbsp;&nbsp;ipFlows1hGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;ipFlows1mAttacksGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;ipFlows1mGroups: <a href="#Settings">Settings!</a><br />
+&nbsp;&nbsp;magicFirewallSamplesAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;magicTransitTunnelHealthChecksAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;rumPageloadEventsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;rumPerformanceEventsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
