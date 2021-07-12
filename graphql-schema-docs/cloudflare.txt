@@ -90,30 +90,32 @@ type AccountGatewayL4DownstreamSessionsAdaptiveGroups {
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountGatewayL4DownstreamSessionsAdaptiveGroupsDimensions
+  quantiles: AccountGatewayL4DownstreamSessionsAdaptiveGroupsQuantiles
+  sum: AccountGatewayL4DownstreamSessionsAdaptiveGroupsSum
 }
 
 type AccountGatewayL4DownstreamSessionsAdaptiveGroupsDimensions {
-  # Start date of the session
+  # Start timestamp of this session, truncated to date
   date: Date!
-  # Start datetime of the session, truncated to multiple of 15 minutes
+  # Start timestamp of this session, truncated to multiple of 15 minutes
   datetimeFifteenMinutes: Time!
-  # Start datetime of the session, truncated to multiple of 5 minutes
+  # Start timestamp of this session, truncated to multiple of 5 minutes
   datetimeFiveMinutes: Time!
-  # Start datetime of the session, truncated to the hour
+  # Start timestamp of this session, truncated to the hour
   datetimeHour: Time!
-  # Start datetime of the session, truncated to the minute
+  # Start timestamp of this session, truncated to the minute
   datetimeMinute: Time!
-  # QUIC error code, possible values are: https://www.iana.org/assignments/quic/quic.xhtml#quic-transport-error-codes
+  # QUIC specific error code. Possible values are https://www.iana.org/assignments/quic/quic.xhtml#quic-transport-error-codes
   quicErrorCode: uint64!
-  # 160-bit nonce that identifies a session
+  # Identifier for this session
   sessionId: string!
-  # IPv4 or IPv6 address of the client creating the session
+  # IP address of the client making this session
   sourceIP: string!
-  # Token authentication status, possible values are: unknown | success | failureWithInvalidToken | failureWithInvalidTokenAndKeyID | failureWithReusedToken
+  # Client token authentication status. Possible values are success | failed with invalid token and upto date token key ID | failed with invalid token due to outdated/missing token key ID | failed due to reused token
   tokenAuthStatus: string!
-  # Transport protocol used for the session, possible values are: tcp | quic | udp
+  # Transport protocol used for this session. Possible values are tcp | quic | udp
   transport: string!
-  # Transport status, possible values are: unknown | success | failure
+  # Transport Status. Possible values are unknown | success | failure
   transportStatus: string!
 }
 
@@ -253,6 +255,14 @@ enum AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # quantiles(tokenAuthDurationUsP50) ascending
+  quantiles_tokenAuthDurationUsP50_ASC
+  # quantiles(tokenAuthDurationUsP50) descending
+  quantiles_tokenAuthDurationUsP50_DESC
+  # quantiles(transportHandshakeDurationUsP50) ascending
+  quantiles_transportHandshakeDurationUsP50_ASC
+  # quantiles(transportHandshakeDurationUsP50) descending
+  quantiles_transportHandshakeDurationUsP50_DESC
   # quicErrorCode ascending
   quicErrorCode_ASC
   # quicErrorCode descending
@@ -265,6 +275,22 @@ enum AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy {
   sourceIP_ASC
   # sourceIP descending
   sourceIP_DESC
+  # sum(bytesRecvd) ascending
+  sum_bytesRecvd_ASC
+  # sum(bytesRecvd) descending
+  sum_bytesRecvd_DESC
+  # sum(bytesSent) ascending
+  sum_bytesSent_ASC
+  # sum(bytesSent) descending
+  sum_bytesSent_DESC
+  # sum(packetsRecvd) ascending
+  sum_packetsRecvd_ASC
+  # sum(packetsRecvd) descending
+  sum_packetsRecvd_DESC
+  # sum(packetsSent) ascending
+  sum_packetsSent_ASC
+  # sum(packetsSent) descending
+  sum_packetsSent_DESC
   # tokenAuthStatus ascending
   tokenAuthStatus_ASC
   # tokenAuthStatus descending
@@ -279,36 +305,56 @@ enum AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy {
   transport_DESC
 }
 
+type AccountGatewayL4DownstreamSessionsAdaptiveGroupsQuantiles {
+  # Time taken for Client Token Authentication in microseconds
+  tokenAuthDurationUsP50: int64!
+  # Time taken for TCP/TLS or QUIC handshake in microseconds
+  transportHandshakeDurationUsP50: int64!
+}
+
+type AccountGatewayL4DownstreamSessionsAdaptiveGroupsSum {
+  # Total bytes received in this session
+  bytesRecvd: uint64!
+  # Total bytes sent in this session
+  bytesSent: uint64!
+  # Total number of packets received in this session
+  packetsRecvd: uint64!
+  # Total number of packets sent in this session
+  packetsSent: uint64!
+}
+
 # Aggregated metrics about upstream (edge to client) L4 Gateway Sessions. Metrics are reported on TCP, QUIC or UDP session close
 type AccountGatewayL4UpstreamSessionsAdaptiveGroups {
   # The number of upstream sessions
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountGatewayL4UpstreamSessionsAdaptiveGroupsDimensions
+  quantiles: AccountGatewayL4UpstreamSessionsAdaptiveGroupsQuantiles
+  sum: AccountGatewayL4UpstreamSessionsAdaptiveGroupsSum
 }
 
 type AccountGatewayL4UpstreamSessionsAdaptiveGroupsDimensions {
-  # Start date of the session
+  # Start timestamp of this session, truncated to date
   date: Date!
-  # Start datetime of the session, truncated to multiple of 15 minutes
+  # Start timestamp of this session, truncated to multiple of 15 minutes
   datetimeFifteenMinutes: Time!
-  # Start datetime of the session, truncated to multiple of 5 minutes
+  # Start timestamp of this session, truncated to multiple of 5 minutes
   datetimeFiveMinutes: Time!
-  # Start datetime of the session, truncated to the hour
+  # Start timestamp of this session, truncated to the hour
   datetimeHour: Time!
-  # Start datetime of the session, truncated to the minute
+  # Start timestamp of this session, truncated to the minute
   datetimeMinute: Time!
-  # Destination IPv4 or IPv6 address
+  # IP address of the origin server
   destinationIP: string!
-  # SNI name for the upstream (origin) server used in this session
+  # SNI domain name for this session
   domainName: string!
-  # ID (160-bit nonce) of the downstream (client) session that spawned this upstream session
+  # Downstream session identifier of this session
   downstreamSessionId: string!
-  # Identifies which downstream stream ID the current upstream connection maps to
-  downstreamStreamId: uint64!
-  # QUIC error code, possible values are: https://www.iana.org/assignments/quic/quic.xhtml#quic-transport-error-codes
+  # Client HTTP CONNECT request status. Possible values are unknown | success | failure
+  httpConnectReqStatus: string!
+  # QUIC error code. Possible values are https://www.iana.org/assignments/quic/quic.xhtml#quic-transport-error-codes
   quicErrorCode: uint64!
-  # Transport status, possible values are: unknown | success | failure
+  # Transport status. Possible values are unknown | success | failure
   transportStatus: string!
 }
 
@@ -393,14 +439,16 @@ input AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject {
   downstreamSessionId_neq: string
   downstreamSessionId_notin: [string!]
   downstreamSessionId_notlike: string
-  downstreamStreamId: uint64
-  downstreamStreamId_geq: uint64
-  downstreamStreamId_gt: uint64
-  downstreamStreamId_in: [uint64!]
-  downstreamStreamId_leq: uint64
-  downstreamStreamId_lt: uint64
-  downstreamStreamId_neq: uint64
-  downstreamStreamId_notin: [uint64!]
+  httpConnectReqStatus: string
+  httpConnectReqStatus_geq: string
+  httpConnectReqStatus_gt: string
+  httpConnectReqStatus_in: [string!]
+  httpConnectReqStatus_leq: string
+  httpConnectReqStatus_like: string
+  httpConnectReqStatus_lt: string
+  httpConnectReqStatus_neq: string
+  httpConnectReqStatus_notin: [string!]
+  httpConnectReqStatus_notlike: string
   quicErrorCode: uint64
   quicErrorCode_geq: uint64
   quicErrorCode_gt: uint64
@@ -458,18 +506,66 @@ enum AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy {
   downstreamSessionId_ASC
   # downstreamSessionId descending
   downstreamSessionId_DESC
-  # downstreamStreamId ascending
-  downstreamStreamId_ASC
-  # downstreamStreamId descending
-  downstreamStreamId_DESC
+  # httpConnectReqStatus ascending
+  httpConnectReqStatus_ASC
+  # httpConnectReqStatus descending
+  httpConnectReqStatus_DESC
+  # quantiles(connectReqHandlingDurationUsP50) ascending
+  quantiles_connectReqHandlingDurationUsP50_ASC
+  # quantiles(connectReqHandlingDurationUsP50) descending
+  quantiles_connectReqHandlingDurationUsP50_DESC
+  # quantiles(totalTunnelSetupDurationUsP50) ascending
+  quantiles_totalTunnelSetupDurationUsP50_ASC
+  # quantiles(totalTunnelSetupDurationUsP50) descending
+  quantiles_totalTunnelSetupDurationUsP50_DESC
+  # quantiles(tunnelSetupDurationUsP50) ascending
+  quantiles_tunnelSetupDurationUsP50_ASC
+  # quantiles(tunnelSetupDurationUsP50) descending
+  quantiles_tunnelSetupDurationUsP50_DESC
   # quicErrorCode ascending
   quicErrorCode_ASC
   # quicErrorCode descending
   quicErrorCode_DESC
+  # sum(bytesRecvd) ascending
+  sum_bytesRecvd_ASC
+  # sum(bytesRecvd) descending
+  sum_bytesRecvd_DESC
+  # sum(bytesSent) ascending
+  sum_bytesSent_ASC
+  # sum(bytesSent) descending
+  sum_bytesSent_DESC
+  # sum(packetsRecvd) ascending
+  sum_packetsRecvd_ASC
+  # sum(packetsRecvd) descending
+  sum_packetsRecvd_DESC
+  # sum(packetsSent) ascending
+  sum_packetsSent_ASC
+  # sum(packetsSent) descending
+  sum_packetsSent_DESC
   # transportStatus ascending
   transportStatus_ASC
   # transportStatus descending
   transportStatus_DESC
+}
+
+type AccountGatewayL4UpstreamSessionsAdaptiveGroupsQuantiles {
+  # Time taken for CONNECT request handling in microseconds
+  connectReqHandlingDurationUsP50: int64!
+  # Total time taken for tunnel setup in microseconds
+  totalTunnelSetupDurationUsP50: int64!
+  # Time taken to setup the tunnel in microseconds
+  tunnelSetupDurationUsP50: int64!
+}
+
+type AccountGatewayL4UpstreamSessionsAdaptiveGroupsSum {
+  # Total bytes received in this session
+  bytesRecvd: uint64!
+  # Total bytes sent in this session
+  bytesSent: uint64!
+  # Total number of packets received in this session
+  packetsRecvd: uint64!
+  # Total number of packets sent in this session
+  packetsSent: uint64!
 }
 
 # Daily rollups of request data
@@ -11507,6 +11603,8 @@ type ZoneLoadBalancingRequestsAdaptiveOriginsElem {
 type ZoneLoadBalancingRequestsAdaptivePoolsElem {
   # Dynamic Latency: RTT (milliseconds) to reach the origin pool
   avgRttMs: uint64!
+  # Distance to Pool KM
+  distance: float32!
   # Health checks status
   healthCheckEnabled: uint8!
   # Pool health status
