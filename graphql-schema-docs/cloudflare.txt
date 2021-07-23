@@ -10,6 +10,7 @@ Account-level datasets:
   ipFlows1mGroups
   magicFirewallSamplesAdaptiveGroups
   magicTransitTunnelHealthChecksAdaptiveGroups
+  nelReportsAdaptiveGroups
 * rumPageloadEventsAdaptiveGroups
 * rumPerformanceEventsAdaptiveGroups
 * rumWebVitalsEventsAdaptiveGroups
@@ -40,6 +41,7 @@ Zone-level datasets:
   loadBalancingRequestsAdaptive
   loadBalancingRequestsAdaptiveGroups
   loadBalancingRequestsGroups
+  nelReportsAdaptiveGroups
   synAvgPps1mGroups
 * webVitalsAdaptiveGroups
 
@@ -105,6 +107,8 @@ type account {
   magicFirewallSamplesAdaptiveGroups(filter: AccountMagicFirewallSamplesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicFirewallSamplesAdaptiveGroupsOrderBy!]): [AccountMagicFirewallSamplesAdaptiveGroups!]!
   # Beta. Magic Transit Health check results for customer GRE Tunnels with adaptive sampling (ABR).
   magicTransitTunnelHealthChecksAdaptiveGroups(filter: AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy!]): [AccountMagicTransitTunnelHealthChecksAdaptiveGroups!]!
+  # Data to visualize network error logs
+  nelReportsAdaptiveGroups(filter: AccountNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountNelReportsAdaptiveGroupsOrderBy!]): [AccountNelReportsAdaptiveGroups!]!
   # Beta. Aggregated RUM pageload event metrics with adaptive sampling
   rumPageloadEventsAdaptiveGroups(filter: AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountRumPageloadEventsAdaptiveGroupsOrderBy!]): [AccountRumPageloadEventsAdaptiveGroups!]!
   # Beta. Aggregated RUM performance event metrics with adaptive sampling
@@ -3163,6 +3167,261 @@ enum AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy {
   tunnelName_DESC
 }
 
+# Data to visualize network error logs
+type AccountNelReportsAdaptiveGroups {
+  avg: AccountNelReportsAdaptiveGroupsAvg
+  # The number of NEL Reports
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountNelReportsAdaptiveGroupsDimensions
+}
+
+type AccountNelReportsAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: uint64!
+}
+
+type AccountNelReportsAdaptiveGroupsDimensions {
+  # Client ASN
+  clientIPASN: uint32!
+  # Client ASN Description
+  clientIPASNDescription: string!
+  # Client Country
+  clientIPCountry: string!
+  # IP Version the client used to connect
+  clientIPVersion: uint8!
+  # Request date from browser
+  date: Date!
+  # Request datetime from browser
+  datetime: Time!
+  # Request datetime from browser, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Request datetime from browser, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # Request datetime from browser, truncated to multiple of 30 minutes
+  datetimeHalfOfHour: Time!
+  # Request datetime from browser, truncated to the hour
+  datetimeHour: Time!
+  # Request datetime from browser, truncated to the minute
+  datetimeMinute: Time!
+  # IATA airport code of colo the client connected to
+  lastKnownGoodColoCode: string!
+  # The phase of connection the error occurred in
+  phase: string!
+  # HTTP Protocol used when the error occured
+  protocol: string!
+  # The type of error in the phase
+  type: string!
+}
+
+input AccountNelReportsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountNelReportsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountNelReportsAdaptiveGroupsFilter_InputObject!]
+  clientIPASN: uint32
+  clientIPASNDescription: string
+  clientIPASNDescription_geq: string
+  clientIPASNDescription_gt: string
+  clientIPASNDescription_in: [string!]
+  clientIPASNDescription_leq: string
+  clientIPASNDescription_like: string
+  clientIPASNDescription_lt: string
+  clientIPASNDescription_neq: string
+  clientIPASNDescription_notin: [string!]
+  clientIPASNDescription_notlike: string
+  clientIPASN_geq: uint32
+  clientIPASN_gt: uint32
+  clientIPASN_in: [uint32!]
+  clientIPASN_leq: uint32
+  clientIPASN_lt: uint32
+  clientIPASN_neq: uint32
+  clientIPASN_notin: [uint32!]
+  clientIPCountry: string
+  clientIPCountry_geq: string
+  clientIPCountry_gt: string
+  clientIPCountry_in: [string!]
+  clientIPCountry_leq: string
+  clientIPCountry_like: string
+  clientIPCountry_lt: string
+  clientIPCountry_neq: string
+  clientIPCountry_notin: [string!]
+  clientIPCountry_notlike: string
+  clientIPVersion: uint8
+  clientIPVersion_geq: uint8
+  clientIPVersion_gt: uint8
+  clientIPVersion_in: bytes
+  clientIPVersion_leq: uint8
+  clientIPVersion_lt: uint8
+  clientIPVersion_neq: uint8
+  clientIPVersion_notin: bytes
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHalfOfHour: Time
+  datetimeHalfOfHour_geq: Time
+  datetimeHalfOfHour_gt: Time
+  datetimeHalfOfHour_in: [Time!]
+  datetimeHalfOfHour_leq: Time
+  datetimeHalfOfHour_lt: Time
+  datetimeHalfOfHour_neq: Time
+  datetimeHalfOfHour_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  lastKnownGoodColoCode: string
+  lastKnownGoodColoCode_geq: string
+  lastKnownGoodColoCode_gt: string
+  lastKnownGoodColoCode_in: [string!]
+  lastKnownGoodColoCode_leq: string
+  lastKnownGoodColoCode_like: string
+  lastKnownGoodColoCode_lt: string
+  lastKnownGoodColoCode_neq: string
+  lastKnownGoodColoCode_notin: [string!]
+  lastKnownGoodColoCode_notlike: string
+  phase: string
+  phase_geq: string
+  phase_gt: string
+  phase_in: [string!]
+  phase_leq: string
+  phase_like: string
+  phase_lt: string
+  phase_neq: string
+  phase_notin: [string!]
+  phase_notlike: string
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  type: string
+  type_geq: string
+  type_gt: string
+  type_in: [string!]
+  type_leq: string
+  type_like: string
+  type_lt: string
+  type_neq: string
+  type_notin: [string!]
+  type_notlike: string
+}
+
+enum AccountNelReportsAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # clientIPASNDescription ascending
+  clientIPASNDescription_ASC
+  # clientIPASNDescription descending
+  clientIPASNDescription_DESC
+  # clientIPASN ascending
+  clientIPASN_ASC
+  # clientIPASN descending
+  clientIPASN_DESC
+  # clientIPCountry ascending
+  clientIPCountry_ASC
+  # clientIPCountry descending
+  clientIPCountry_DESC
+  # clientIPVersion ascending
+  clientIPVersion_ASC
+  # clientIPVersion descending
+  clientIPVersion_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHalfOfHour ascending
+  datetimeHalfOfHour_ASC
+  # datetimeHalfOfHour descending
+  datetimeHalfOfHour_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # lastKnownGoodColoCode ascending
+  lastKnownGoodColoCode_ASC
+  # lastKnownGoodColoCode descending
+  lastKnownGoodColoCode_DESC
+  # phase ascending
+  phase_ASC
+  # phase descending
+  phase_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # type ascending
+  type_ASC
+  # type descending
+  type_DESC
+}
+
 # Beta. Aggregated RUM pageload event metrics with adaptive sampling
 type AccountRumPageloadEventsAdaptiveGroups {
   avg: AccountRumPageloadEventsAdaptiveGroupsAvg
@@ -4537,6 +4796,7 @@ type AccountSettings {
   ipFlows1mGroups: Settings!
   magicFirewallSamplesAdaptiveGroups: Settings!
   magicTransitTunnelHealthChecksAdaptiveGroups: Settings!
+  nelReportsAdaptiveGroups: Settings!
   rumPageloadEventsAdaptiveGroups: Settings!
   rumPerformanceEventsAdaptiveGroups: Settings!
   rumWebVitalsEventsAdaptiveGroups: Settings!
@@ -5858,6 +6118,8 @@ type zone {
   loadBalancingRequestsAdaptiveGroups(filter: ZoneLoadBalancingRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneLoadBalancingRequestsAdaptiveGroupsOrderBy!]): [ZoneLoadBalancingRequestsAdaptiveGroups!]!
   # Aggregated Load Balancing origin requests
   loadBalancingRequestsGroups(filter: ZoneLoadBalancingRequestsGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneLoadBalancingRequestsGroupsOrderBy!]): [ZoneLoadBalancingRequestsGroups!]!
+  # Data to visualize network error logs
+  nelReportsAdaptiveGroups(filter: ZoneNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneNelReportsAdaptiveGroupsOrderBy!]): [ZoneNelReportsAdaptiveGroups!]!
   settings: ZoneSettings
   # Minutely rollups of average packets per second sent in a SYN attack
   synAvgPps1mGroups(filter: ZoneSynAvgPps1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneSynAvgPps1mGroupsOrderBy!]): [ZoneSynAvgPps1mGroups!]!
@@ -12343,6 +12605,261 @@ type ZoneLoadBalancingRequestsPoolsElem {
   poolName: string!
 }
 
+# Data to visualize network error logs
+type ZoneNelReportsAdaptiveGroups {
+  avg: ZoneNelReportsAdaptiveGroupsAvg
+  # The number of NEL Reports
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneNelReportsAdaptiveGroupsDimensions
+}
+
+type ZoneNelReportsAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: uint64!
+}
+
+type ZoneNelReportsAdaptiveGroupsDimensions {
+  # Client ASN
+  clientIPASN: uint32!
+  # Client ASN Description
+  clientIPASNDescription: string!
+  # Client Country
+  clientIPCountry: string!
+  # IP Version the client used to connect
+  clientIPVersion: uint8!
+  # Request date from browser
+  date: Date!
+  # Request datetime from browser
+  datetime: Time!
+  # Request datetime from browser, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Request datetime from browser, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # Request datetime from browser, truncated to multiple of 30 minutes
+  datetimeHalfOfHour: Time!
+  # Request datetime from browser, truncated to the hour
+  datetimeHour: Time!
+  # Request datetime from browser, truncated to the minute
+  datetimeMinute: Time!
+  # IATA airport code of colo the client connected to
+  lastKnownGoodColoCode: string!
+  # The phase of connection the error occurred in
+  phase: string!
+  # HTTP Protocol used when the error occured
+  protocol: string!
+  # The type of error in the phase
+  type: string!
+}
+
+input ZoneNelReportsAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneNelReportsAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneNelReportsAdaptiveGroupsFilter_InputObject!]
+  clientIPASN: uint32
+  clientIPASNDescription: string
+  clientIPASNDescription_geq: string
+  clientIPASNDescription_gt: string
+  clientIPASNDescription_in: [string!]
+  clientIPASNDescription_leq: string
+  clientIPASNDescription_like: string
+  clientIPASNDescription_lt: string
+  clientIPASNDescription_neq: string
+  clientIPASNDescription_notin: [string!]
+  clientIPASNDescription_notlike: string
+  clientIPASN_geq: uint32
+  clientIPASN_gt: uint32
+  clientIPASN_in: [uint32!]
+  clientIPASN_leq: uint32
+  clientIPASN_lt: uint32
+  clientIPASN_neq: uint32
+  clientIPASN_notin: [uint32!]
+  clientIPCountry: string
+  clientIPCountry_geq: string
+  clientIPCountry_gt: string
+  clientIPCountry_in: [string!]
+  clientIPCountry_leq: string
+  clientIPCountry_like: string
+  clientIPCountry_lt: string
+  clientIPCountry_neq: string
+  clientIPCountry_notin: [string!]
+  clientIPCountry_notlike: string
+  clientIPVersion: uint8
+  clientIPVersion_geq: uint8
+  clientIPVersion_gt: uint8
+  clientIPVersion_in: bytes
+  clientIPVersion_leq: uint8
+  clientIPVersion_lt: uint8
+  clientIPVersion_neq: uint8
+  clientIPVersion_notin: bytes
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHalfOfHour: Time
+  datetimeHalfOfHour_geq: Time
+  datetimeHalfOfHour_gt: Time
+  datetimeHalfOfHour_in: [Time!]
+  datetimeHalfOfHour_leq: Time
+  datetimeHalfOfHour_lt: Time
+  datetimeHalfOfHour_neq: Time
+  datetimeHalfOfHour_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  lastKnownGoodColoCode: string
+  lastKnownGoodColoCode_geq: string
+  lastKnownGoodColoCode_gt: string
+  lastKnownGoodColoCode_in: [string!]
+  lastKnownGoodColoCode_leq: string
+  lastKnownGoodColoCode_like: string
+  lastKnownGoodColoCode_lt: string
+  lastKnownGoodColoCode_neq: string
+  lastKnownGoodColoCode_notin: [string!]
+  lastKnownGoodColoCode_notlike: string
+  phase: string
+  phase_geq: string
+  phase_gt: string
+  phase_in: [string!]
+  phase_leq: string
+  phase_like: string
+  phase_lt: string
+  phase_neq: string
+  phase_notin: [string!]
+  phase_notlike: string
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  type: string
+  type_geq: string
+  type_gt: string
+  type_in: [string!]
+  type_leq: string
+  type_like: string
+  type_lt: string
+  type_neq: string
+  type_notin: [string!]
+  type_notlike: string
+}
+
+enum ZoneNelReportsAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # clientIPASNDescription ascending
+  clientIPASNDescription_ASC
+  # clientIPASNDescription descending
+  clientIPASNDescription_DESC
+  # clientIPASN ascending
+  clientIPASN_ASC
+  # clientIPASN descending
+  clientIPASN_DESC
+  # clientIPCountry ascending
+  clientIPCountry_ASC
+  # clientIPCountry descending
+  clientIPCountry_DESC
+  # clientIPVersion ascending
+  clientIPVersion_ASC
+  # clientIPVersion descending
+  clientIPVersion_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHalfOfHour ascending
+  datetimeHalfOfHour_ASC
+  # datetimeHalfOfHour descending
+  datetimeHalfOfHour_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # lastKnownGoodColoCode ascending
+  lastKnownGoodColoCode_ASC
+  # lastKnownGoodColoCode descending
+  lastKnownGoodColoCode_DESC
+  # phase ascending
+  phase_ASC
+  # phase descending
+  phase_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # type ascending
+  type_ASC
+  # type descending
+  type_DESC
+}
+
 # Access and limitations for a zone
 type ZoneSettings {
   browserInsightsAdaptiveGroups: Settings!
@@ -12364,6 +12881,7 @@ type ZoneSettings {
   loadBalancingRequestsAdaptive: Settings!
   loadBalancingRequestsAdaptiveGroups: Settings!
   loadBalancingRequestsGroups: Settings!
+  nelReportsAdaptiveGroups: Settings!
   synAvgPps1mGroups: Settings!
   webVitalsAdaptiveGroups: Settings!
 }
