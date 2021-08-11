@@ -7,7 +7,7 @@
   <style> body { font-family: monospace, monospace; background: rgb(13, 17, 23); color: rgb(201, 209, 217); color-scheme: dark; } a { color: rgb(88, 166, 255); text-decoration: none; } a:hover { text-decoration: underline; } .k {color: rgb(255, 123, 114); } .c {color: rgb(139, 148, 158); } .t {color: rgb(121, 192, 255); }</style>
 </head>
 <body><h3>Schema docs for the <a href="https://developers.cloudflare.com/analytics/graphql-api">Cloudflare GraphQL Analytics API</a></h3>
-<a href="#account">Account-level datasets</a>:<br />&nbsp;&nbsp;gatewayL4DownstreamSessionsAdaptiveGroups<br />&nbsp;&nbsp;gatewayL4UpstreamSessionsAdaptiveGroups<br />*&nbsp;httpRequests1dGroups<br />*&nbsp;httpRequests1hGroups<br />&nbsp;&nbsp;httpRequests1mGroups<br />&nbsp;&nbsp;ipFlows1dGroups<br />&nbsp;&nbsp;ipFlows1hGroups<br />&nbsp;&nbsp;ipFlows1mAttacksGroups<br />&nbsp;&nbsp;ipFlows1mGroups<br />&nbsp;&nbsp;magicFirewallSamplesAdaptiveGroups<br />&nbsp;&nbsp;magicTransitTunnelHealthChecksAdaptiveGroups<br />&nbsp;&nbsp;nelReportsAdaptiveGroups<br />*&nbsp;rumPageloadEventsAdaptiveGroups<br />*&nbsp;rumPerformanceEventsAdaptiveGroups<br />*&nbsp;rumWebVitalsEventsAdaptiveGroups<br />*&nbsp;videoBufferEventsAdaptiveGroups<br />*&nbsp;videoPlaybackEventsAdaptiveGroups<br />*&nbsp;videoQualityEventsAdaptiveGroups<br />*&nbsp;workersInvocationsAdaptive<br />*&nbsp;workersInvocationsScheduled<br />*&nbsp;workersSubrequestsAdaptiveGroups<br /><br /><a href="#zone">Zone-level datasets</a>:<br />*&nbsp;browserInsightsAdaptiveGroups<br />*&nbsp;firewallEventsAdaptive<br />*&nbsp;firewallEventsAdaptiveByTimeGroups<br />&nbsp;&nbsp;firewallEventsAdaptiveGroups<br />&nbsp;&nbsp;healthCheckEvents<br />&nbsp;&nbsp;healthCheckEventsAdaptive<br />&nbsp;&nbsp;healthCheckEventsAdaptiveGroups<br />&nbsp;&nbsp;healthCheckEventsGroups<br />&nbsp;&nbsp;httpRequests1dByColoGroups<br />*&nbsp;httpRequests1dGroups<br />*&nbsp;httpRequests1hGroups<br />&nbsp;&nbsp;httpRequests1mByColoGroups<br />&nbsp;&nbsp;httpRequests1mGroups<br />&nbsp;&nbsp;httpRequestsAdaptiveGroups<br />*&nbsp;imageResizingRequests1mGroups<br />&nbsp;&nbsp;loadBalancingRequests<br />&nbsp;&nbsp;loadBalancingRequestsAdaptive<br />&nbsp;&nbsp;loadBalancingRequestsAdaptiveGroups<br />&nbsp;&nbsp;loadBalancingRequestsGroups<br />&nbsp;&nbsp;nelReportsAdaptiveGroups<br />&nbsp;&nbsp;synAvgPps1mGroups<br />*&nbsp;webVitalsAdaptiveGroups<br /><br />* = available in all <a href="https://www.cloudflare.com/plans/">Cloudflare plans</a><br /><br /><span class="c"># Scalar type bool</span><br />
+<a href="#account">Account-level datasets</a>:<br />&nbsp;&nbsp;cdnNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;gatewayL4DownstreamSessionsAdaptiveGroups<br />&nbsp;&nbsp;gatewayL4UpstreamSessionsAdaptiveGroups<br />*&nbsp;httpRequests1dGroups<br />*&nbsp;httpRequests1hGroups<br />&nbsp;&nbsp;httpRequests1mGroups<br />&nbsp;&nbsp;ipFlows1dGroups<br />&nbsp;&nbsp;ipFlows1hGroups<br />&nbsp;&nbsp;ipFlows1mAttacksGroups<br />&nbsp;&nbsp;ipFlows1mGroups<br />&nbsp;&nbsp;magicFirewallSamplesAdaptiveGroups<br />&nbsp;&nbsp;magicTransitTunnelHealthChecksAdaptiveGroups<br />&nbsp;&nbsp;nelReportsAdaptiveGroups<br />&nbsp;&nbsp;networkAnalyticsAttackMetadata<br />*&nbsp;rumPageloadEventsAdaptiveGroups<br />*&nbsp;rumPerformanceEventsAdaptiveGroups<br />*&nbsp;rumWebVitalsEventsAdaptiveGroups<br />*&nbsp;videoBufferEventsAdaptiveGroups<br />*&nbsp;videoPlaybackEventsAdaptiveGroups<br />*&nbsp;videoQualityEventsAdaptiveGroups<br />*&nbsp;workersInvocationsAdaptive<br />*&nbsp;workersInvocationsScheduled<br />*&nbsp;workersSubrequestsAdaptiveGroups<br /><br /><a href="#zone">Zone-level datasets</a>:<br />*&nbsp;browserInsightsAdaptiveGroups<br />*&nbsp;firewallEventsAdaptive<br />*&nbsp;firewallEventsAdaptiveByTimeGroups<br />&nbsp;&nbsp;firewallEventsAdaptiveGroups<br />&nbsp;&nbsp;healthCheckEvents<br />&nbsp;&nbsp;healthCheckEventsAdaptive<br />&nbsp;&nbsp;healthCheckEventsAdaptiveGroups<br />&nbsp;&nbsp;healthCheckEventsGroups<br />&nbsp;&nbsp;httpRequests1dByColoGroups<br />*&nbsp;httpRequests1dGroups<br />*&nbsp;httpRequests1hGroups<br />&nbsp;&nbsp;httpRequests1mByColoGroups<br />&nbsp;&nbsp;httpRequests1mGroups<br />&nbsp;&nbsp;httpRequestsAdaptiveGroups<br />*&nbsp;imageResizingRequests1mGroups<br />&nbsp;&nbsp;loadBalancingRequests<br />&nbsp;&nbsp;loadBalancingRequestsAdaptive<br />&nbsp;&nbsp;loadBalancingRequestsAdaptiveGroups<br />&nbsp;&nbsp;loadBalancingRequestsGroups<br />&nbsp;&nbsp;nelReportsAdaptiveGroups<br />&nbsp;&nbsp;synAvgPps1mGroups<br />*&nbsp;webVitalsAdaptiveGroups<br /><br />* = available in all <a href="https://www.cloudflare.com/plans/">Cloudflare plans</a><br /><br /><span class="c"># Scalar type bool</span><br />
 <span class="k">scalar</span> <a id="bool" href="#bool">bool</a><br />
 <br />
 <span class="c"># Scalar type []uint8</span><br />
@@ -45,6 +45,8 @@
 <br />
 <span class="k">type</span> <a id="account" href="#account">account</a> {<br />
 &nbsp;&nbsp;accountTag: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Beta. Network Analytics data for Cloudflare CDN traffic</span><br />
+&nbsp;&nbsp;cdnNetworkAnalyticsAdaptiveGroups(filter: <a href="#AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject">AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy">[AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]</a>): <a href="#AccountCdnNetworkAnalyticsAdaptiveGroups">[AccountCdnNetworkAnalyticsAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Aggregated metrics about downstream (client to edge) L4 Gateway Sessions. Metrics are reported on TCP or UDP session close</span><br />
 &nbsp;&nbsp;gatewayL4DownstreamSessionsAdaptiveGroups(filter: <a href="#AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject">AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy">[AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy!]</a>): <a href="#AccountGatewayL4DownstreamSessionsAdaptiveGroups">[AccountGatewayL4DownstreamSessionsAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Aggregated metrics about upstream (edge to client) L4 Gateway Sessions. Metrics are reported on TCP, QUIC or UDP session close</span><br />
@@ -69,6 +71,8 @@
 &nbsp;&nbsp;magicTransitTunnelHealthChecksAdaptiveGroups(filter: <a href="#AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject">AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy">[AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy!]</a>): <a href="#AccountMagicTransitTunnelHealthChecksAdaptiveGroups">[AccountMagicTransitTunnelHealthChecksAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Data to visualize network error logs</span><br />
 &nbsp;&nbsp;nelReportsAdaptiveGroups(filter: <a href="#AccountNelReportsAdaptiveGroupsFilter_InputObject">AccountNelReportsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountNelReportsAdaptiveGroupsOrderBy">[AccountNelReportsAdaptiveGroupsOrderBy!]</a>): <a href="#AccountNelReportsAdaptiveGroups">[AccountNelReportsAdaptiveGroups!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Beta. Network Analytics attack metadata</span><br />
+&nbsp;&nbsp;networkAnalyticsAttackMetadata(filter: <a href="#AccountNetworkAnalyticsAttackMetadataFilter_InputObject">AccountNetworkAnalyticsAttackMetadataFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountNetworkAnalyticsAttackMetadataOrderBy">[AccountNetworkAnalyticsAttackMetadataOrderBy!]</a>): <a href="#AccountNetworkAnalyticsAttackMetadata">[AccountNetworkAnalyticsAttackMetadata!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. Aggregated RUM pageload event metrics with adaptive sampling</span><br />
 &nbsp;&nbsp;rumPageloadEventsAdaptiveGroups(filter: <a href="#AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject">AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountRumPageloadEventsAdaptiveGroupsOrderBy">[AccountRumPageloadEventsAdaptiveGroupsOrderBy!]</a>): <a href="#AccountRumPageloadEventsAdaptiveGroups">[AccountRumPageloadEventsAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. Aggregated RUM performance event metrics with adaptive sampling</span><br />
@@ -89,6 +93,532 @@
 &nbsp;&nbsp;<span class="c"># Beta. Workers subrequests with adaptive sampling</span><br />
 &nbsp;&nbsp;workersSubrequestsAdaptiveGroups(filter: <a href="#AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject">AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountWorkersSubrequestsAdaptiveGroupsOrderBy">[AccountWorkersSubrequestsAdaptiveGroupsOrderBy!]</a>): <a href="#AccountWorkersSubrequestsAdaptiveGroups">[AccountWorkersSubrequestsAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;zones(filter: <a href="#ZoneFilter_InputObject">ZoneFilter_InputObject</a>, limit: <a href="#uint64">uint64</a>): <a href="#zone">[zone!]!</a><br />
+}<br />
+<br />
+<span class="c"># Beta. Network Analytics data for Cloudflare CDN traffic</span><br />
+<span class="k">type</span> <a id="AccountCdnNetworkAnalyticsAdaptiveGroups" href="#AccountCdnNetworkAnalyticsAdaptiveGroups">AccountCdnNetworkAnalyticsAdaptiveGroups</a> {<br />
+&nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
+&nbsp;&nbsp;dimensions: <a href="#AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions">AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions</a><br />
+&nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
+&nbsp;&nbsp;sum: <a href="#AccountCdnNetworkAnalyticsAdaptiveGroupsSum">AccountCdnNetworkAnalyticsAdaptiveGroupsSum</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions" href="#AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions">AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># Unique attack identifier associated with this traffic</span><br />
+&nbsp;&nbsp;attackId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># City where the Cloudflare datacenter that received this traffic is located</span><br />
+&nbsp;&nbsp;coloCity: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Cloudflare datacenter that received this traffic (nearest IATA airport code)</span><br />
+&nbsp;&nbsp;coloCode: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Country where the Cloudflare datacenter that received this traffic is located (ISO 3166-1 alpha-2)</span><br />
+&nbsp;&nbsp;coloCountry: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Latitude and longitude where the Cloudflare datacenter that received this traffic is located (Geohash encoding)</span><br />
+&nbsp;&nbsp;coloGeohash: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Cloudflare datacenter that received this traffic (unique site identifier)</span><br />
+&nbsp;&nbsp;coloName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Date and time that the traffic was received</span><br />
+&nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Date and time that the packet was received, rounded to the start of the nearest fifteen minutes</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Date and time that the traffic was received, rounded to the start of the nearest five minutes</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Date and time that the packet was received, rounded to the start of the nearest hour</span><br />
+&nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Date and time that the traffic was received, rounded to the start of the nearest minute</span><br />
+&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># ASN associated with the destination IP, or 0 if there was no mapping available</span><br />
+&nbsp;&nbsp;destinationAsn: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;<span class="c"># Name of the ASN associated with the destination IP</span><br />
+&nbsp;&nbsp;destinationAsnName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Country where the destination IP is located (ISO 3166-1 alpha-2)</span><br />
+&nbsp;&nbsp;destinationCountry: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Latitude and longitude where the destination IP is located (Geohash encoding)</span><br />
+&nbsp;&nbsp;destinationGeohash: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Destination IP</span><br />
+&nbsp;&nbsp;destinationIp: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Destination TCP or UDP port number, or 0 if there was no port number available</span><br />
+&nbsp;&nbsp;destinationPort: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># Destination IP subnet (/24 for IPv4; /64 for IPv6)</span><br />
+&nbsp;&nbsp;destinationSubnet: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># IP protocol number</span><br />
+&nbsp;&nbsp;ipProtocol: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># IP protocol name</span><br />
+&nbsp;&nbsp;ipProtocolName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># IP version</span><br />
+&nbsp;&nbsp;ipVersion: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Whether this traffic was passed or dropped as part of an attack</span><br />
+&nbsp;&nbsp;outcome: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># ASN associated with the source IP, or 0 if there was no mapping available</span><br />
+&nbsp;&nbsp;sourceAsn: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;<span class="c"># Description of the ASN associated with the source IP</span><br />
+&nbsp;&nbsp;sourceAsnDescription: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Country where the source IP is located (ISO 3166-1 alpha-2)</span><br />
+&nbsp;&nbsp;sourceCountry: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Latitude and longitude where the source IP is located (Geohash encoding)</span><br />
+&nbsp;&nbsp;sourceGeohash: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Source IP</span><br />
+&nbsp;&nbsp;sourceIp: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Source TCP or UDP port, or 0 if there was no port number available</span><br />
+&nbsp;&nbsp;sourcePort: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># Source IP subnet (/24 for IPv4; /64 for IPv6)</span><br />
+&nbsp;&nbsp;sourceSubnet: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># TCP flags that were set for this traffic</span><br />
+&nbsp;&nbsp;tcpFlags: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Names of TCP flags that were set for this traffic</span><br />
+&nbsp;&nbsp;tcpFlagsNames: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Whether Cloudflare thinks this traffic should be passed or dropped as part of an attack</span><br />
+&nbsp;&nbsp;verdict: <a href="#string">string!</a><br />
+}<br />
+<br />
+<span class="k">input</span> <a id="AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject" href="#AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject">AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject</a> {<br />
+&nbsp;&nbsp;AND: <a href="#AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject">[AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;OR: <a href="#AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject">[AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;attackId: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCity: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCity_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCity_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCity_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCity_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCity_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCity_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCity_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCity_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCity_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCode_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCode_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCountry_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCountry_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloGeohash: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloGeohash_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloGeohash_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloGeohash_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloGeohash_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloGeohash_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloGeohash_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloGeohash_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloGeohash_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloGeohash_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloName: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloName_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloName_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloName_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloName_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloName_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloName_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloName_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloName_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloName_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeHour: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeHour_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeMinute_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetime_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetime_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;destinationAsn: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;destinationAsnName: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationAsnName_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationAsnName_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationAsnName_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;destinationAsnName_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationAsnName_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationAsnName_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationAsnName_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationAsnName_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;destinationAsnName_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationAsn_geq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;destinationAsn_gt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;destinationAsn_in: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;destinationAsn_leq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;destinationAsn_lt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;destinationAsn_neq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;destinationAsn_notin: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;destinationCountry: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationCountry_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationCountry_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationCountry_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;destinationCountry_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationCountry_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationCountry_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationCountry_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationCountry_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;destinationCountry_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationGeohash: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationGeohash_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationGeohash_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationGeohash_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;destinationGeohash_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationGeohash_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationGeohash_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationGeohash_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationGeohash_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;destinationGeohash_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationIp: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationIp_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationIp_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationIp_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;destinationIp_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationIp_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationIp_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationIp_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationIp_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;destinationIp_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationPort: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;destinationPort_geq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;destinationPort_gt: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;destinationPort_in: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;destinationPort_leq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;destinationPort_lt: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;destinationPort_neq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;destinationPort_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;destinationSubnet: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationSubnet_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationSubnet_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationSubnet_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;destinationSubnet_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationSubnet_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationSubnet_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationSubnet_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;destinationSubnet_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;destinationSubnet_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;ipProtocol: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipProtocolName: <a href="#string">string</a><br />
+&nbsp;&nbsp;ipProtocolName_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ipProtocolName_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ipProtocolName_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ipProtocolName_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ipProtocolName_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;ipProtocolName_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ipProtocolName_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ipProtocolName_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ipProtocolName_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;ipProtocol_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipProtocol_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipProtocol_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;ipProtocol_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipProtocol_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipProtocol_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipProtocol_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;ipVersion: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipVersion_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipVersion_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipVersion_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;ipVersion_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipVersion_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipVersion_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipVersion_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;outcome: <a href="#string">string</a><br />
+&nbsp;&nbsp;outcome_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;outcome_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;outcome_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;outcome_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;outcome_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;outcome_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;outcome_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;outcome_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;outcome_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceAsn: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sourceAsnDescription: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceAsnDescription_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceAsnDescription_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceAsnDescription_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sourceAsnDescription_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceAsnDescription_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceAsnDescription_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceAsnDescription_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceAsnDescription_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sourceAsnDescription_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceAsn_geq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sourceAsn_gt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sourceAsn_in: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;sourceAsn_leq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sourceAsn_lt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sourceAsn_neq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sourceAsn_notin: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;sourceCountry: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceCountry_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceCountry_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceCountry_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sourceCountry_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceCountry_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceCountry_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceCountry_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceCountry_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sourceCountry_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceGeohash: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceGeohash_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceGeohash_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceGeohash_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sourceGeohash_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceGeohash_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceGeohash_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceGeohash_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceGeohash_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sourceGeohash_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceIp: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceIp_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceIp_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceIp_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sourceIp_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceIp_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceIp_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceIp_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceIp_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sourceIp_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourcePort: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;sourcePort_geq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;sourcePort_gt: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;sourcePort_in: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;sourcePort_leq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;sourcePort_lt: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;sourcePort_neq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;sourcePort_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;sourceSubnet: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceSubnet_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceSubnet_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceSubnet_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sourceSubnet_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceSubnet_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceSubnet_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceSubnet_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sourceSubnet_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sourceSubnet_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;tcpFlags: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;tcpFlagsNames: <a href="#string">string</a><br />
+&nbsp;&nbsp;tcpFlagsNames_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;tcpFlagsNames_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;tcpFlagsNames_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;tcpFlagsNames_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;tcpFlagsNames_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;tcpFlagsNames_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;tcpFlagsNames_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;tcpFlagsNames_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;tcpFlagsNames_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;tcpFlags_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;tcpFlags_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;tcpFlags_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;tcpFlags_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;tcpFlags_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;tcpFlags_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;tcpFlags_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;verdict: <a href="#string">string</a><br />
+&nbsp;&nbsp;verdict_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;verdict_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;verdict_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;verdict_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;verdict_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;verdict_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;verdict_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;verdict_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;verdict_notlike: <a href="#string">string</a><br />
+}<br />
+<br />
+<span class="k">enum</span> <a id="AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy" href="#AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy">AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># attackId ascending</span><br />
+&nbsp;&nbsp;attackId_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackId descending</span><br />
+&nbsp;&nbsp;attackId_DESC<br />
+&nbsp;&nbsp;<span class="c"># coloCity ascending</span><br />
+&nbsp;&nbsp;coloCity_ASC<br />
+&nbsp;&nbsp;<span class="c"># coloCity descending</span><br />
+&nbsp;&nbsp;coloCity_DESC<br />
+&nbsp;&nbsp;<span class="c"># coloCode ascending</span><br />
+&nbsp;&nbsp;coloCode_ASC<br />
+&nbsp;&nbsp;<span class="c"># coloCode descending</span><br />
+&nbsp;&nbsp;coloCode_DESC<br />
+&nbsp;&nbsp;<span class="c"># coloCountry ascending</span><br />
+&nbsp;&nbsp;coloCountry_ASC<br />
+&nbsp;&nbsp;<span class="c"># coloCountry descending</span><br />
+&nbsp;&nbsp;coloCountry_DESC<br />
+&nbsp;&nbsp;<span class="c"># coloGeohash ascending</span><br />
+&nbsp;&nbsp;coloGeohash_ASC<br />
+&nbsp;&nbsp;<span class="c"># coloGeohash descending</span><br />
+&nbsp;&nbsp;coloGeohash_DESC<br />
+&nbsp;&nbsp;<span class="c"># coloName ascending</span><br />
+&nbsp;&nbsp;coloName_ASC<br />
+&nbsp;&nbsp;<span class="c"># coloName descending</span><br />
+&nbsp;&nbsp;coloName_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes ascending</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes descending</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFiveMinutes ascending</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFiveMinutes descending</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHour ascending</span><br />
+&nbsp;&nbsp;datetimeHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHour descending</span><br />
+&nbsp;&nbsp;datetimeHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeMinute ascending</span><br />
+&nbsp;&nbsp;datetimeMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeMinute descending</span><br />
+&nbsp;&nbsp;datetimeMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetime ascending</span><br />
+&nbsp;&nbsp;datetime_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetime descending</span><br />
+&nbsp;&nbsp;datetime_DESC<br />
+&nbsp;&nbsp;<span class="c"># destinationAsnName ascending</span><br />
+&nbsp;&nbsp;destinationAsnName_ASC<br />
+&nbsp;&nbsp;<span class="c"># destinationAsnName descending</span><br />
+&nbsp;&nbsp;destinationAsnName_DESC<br />
+&nbsp;&nbsp;<span class="c"># destinationAsn ascending</span><br />
+&nbsp;&nbsp;destinationAsn_ASC<br />
+&nbsp;&nbsp;<span class="c"># destinationAsn descending</span><br />
+&nbsp;&nbsp;destinationAsn_DESC<br />
+&nbsp;&nbsp;<span class="c"># destinationCountry ascending</span><br />
+&nbsp;&nbsp;destinationCountry_ASC<br />
+&nbsp;&nbsp;<span class="c"># destinationCountry descending</span><br />
+&nbsp;&nbsp;destinationCountry_DESC<br />
+&nbsp;&nbsp;<span class="c"># destinationGeohash ascending</span><br />
+&nbsp;&nbsp;destinationGeohash_ASC<br />
+&nbsp;&nbsp;<span class="c"># destinationGeohash descending</span><br />
+&nbsp;&nbsp;destinationGeohash_DESC<br />
+&nbsp;&nbsp;<span class="c"># destinationIp ascending</span><br />
+&nbsp;&nbsp;destinationIp_ASC<br />
+&nbsp;&nbsp;<span class="c"># destinationIp descending</span><br />
+&nbsp;&nbsp;destinationIp_DESC<br />
+&nbsp;&nbsp;<span class="c"># destinationPort ascending</span><br />
+&nbsp;&nbsp;destinationPort_ASC<br />
+&nbsp;&nbsp;<span class="c"># destinationPort descending</span><br />
+&nbsp;&nbsp;destinationPort_DESC<br />
+&nbsp;&nbsp;<span class="c"># destinationSubnet ascending</span><br />
+&nbsp;&nbsp;destinationSubnet_ASC<br />
+&nbsp;&nbsp;<span class="c"># destinationSubnet descending</span><br />
+&nbsp;&nbsp;destinationSubnet_DESC<br />
+&nbsp;&nbsp;<span class="c"># ipProtocolName ascending</span><br />
+&nbsp;&nbsp;ipProtocolName_ASC<br />
+&nbsp;&nbsp;<span class="c"># ipProtocolName descending</span><br />
+&nbsp;&nbsp;ipProtocolName_DESC<br />
+&nbsp;&nbsp;<span class="c"># ipProtocol ascending</span><br />
+&nbsp;&nbsp;ipProtocol_ASC<br />
+&nbsp;&nbsp;<span class="c"># ipProtocol descending</span><br />
+&nbsp;&nbsp;ipProtocol_DESC<br />
+&nbsp;&nbsp;<span class="c"># ipVersion ascending</span><br />
+&nbsp;&nbsp;ipVersion_ASC<br />
+&nbsp;&nbsp;<span class="c"># ipVersion descending</span><br />
+&nbsp;&nbsp;ipVersion_DESC<br />
+&nbsp;&nbsp;<span class="c"># outcome ascending</span><br />
+&nbsp;&nbsp;outcome_ASC<br />
+&nbsp;&nbsp;<span class="c"># outcome descending</span><br />
+&nbsp;&nbsp;outcome_DESC<br />
+&nbsp;&nbsp;<span class="c"># sourceAsnDescription ascending</span><br />
+&nbsp;&nbsp;sourceAsnDescription_ASC<br />
+&nbsp;&nbsp;<span class="c"># sourceAsnDescription descending</span><br />
+&nbsp;&nbsp;sourceAsnDescription_DESC<br />
+&nbsp;&nbsp;<span class="c"># sourceAsn ascending</span><br />
+&nbsp;&nbsp;sourceAsn_ASC<br />
+&nbsp;&nbsp;<span class="c"># sourceAsn descending</span><br />
+&nbsp;&nbsp;sourceAsn_DESC<br />
+&nbsp;&nbsp;<span class="c"># sourceCountry ascending</span><br />
+&nbsp;&nbsp;sourceCountry_ASC<br />
+&nbsp;&nbsp;<span class="c"># sourceCountry descending</span><br />
+&nbsp;&nbsp;sourceCountry_DESC<br />
+&nbsp;&nbsp;<span class="c"># sourceGeohash ascending</span><br />
+&nbsp;&nbsp;sourceGeohash_ASC<br />
+&nbsp;&nbsp;<span class="c"># sourceGeohash descending</span><br />
+&nbsp;&nbsp;sourceGeohash_DESC<br />
+&nbsp;&nbsp;<span class="c"># sourceIp ascending</span><br />
+&nbsp;&nbsp;sourceIp_ASC<br />
+&nbsp;&nbsp;<span class="c"># sourceIp descending</span><br />
+&nbsp;&nbsp;sourceIp_DESC<br />
+&nbsp;&nbsp;<span class="c"># sourcePort ascending</span><br />
+&nbsp;&nbsp;sourcePort_ASC<br />
+&nbsp;&nbsp;<span class="c"># sourcePort descending</span><br />
+&nbsp;&nbsp;sourcePort_DESC<br />
+&nbsp;&nbsp;<span class="c"># sourceSubnet ascending</span><br />
+&nbsp;&nbsp;sourceSubnet_ASC<br />
+&nbsp;&nbsp;<span class="c"># sourceSubnet descending</span><br />
+&nbsp;&nbsp;sourceSubnet_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(bits) ascending</span><br />
+&nbsp;&nbsp;sum_bits_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(bits) descending</span><br />
+&nbsp;&nbsp;sum_bits_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(packets) ascending</span><br />
+&nbsp;&nbsp;sum_packets_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(packets) descending</span><br />
+&nbsp;&nbsp;sum_packets_DESC<br />
+&nbsp;&nbsp;<span class="c"># system ascending</span><br />
+&nbsp;&nbsp;system_ASC<br />
+&nbsp;&nbsp;<span class="c"># system descending</span><br />
+&nbsp;&nbsp;system_DESC<br />
+&nbsp;&nbsp;<span class="c"># tcpFlagsNames ascending</span><br />
+&nbsp;&nbsp;tcpFlagsNames_ASC<br />
+&nbsp;&nbsp;<span class="c"># tcpFlagsNames descending</span><br />
+&nbsp;&nbsp;tcpFlagsNames_DESC<br />
+&nbsp;&nbsp;<span class="c"># tcpFlags ascending</span><br />
+&nbsp;&nbsp;tcpFlags_ASC<br />
+&nbsp;&nbsp;<span class="c"># tcpFlags descending</span><br />
+&nbsp;&nbsp;tcpFlags_DESC<br />
+&nbsp;&nbsp;<span class="c"># verdict ascending</span><br />
+&nbsp;&nbsp;verdict_ASC<br />
+&nbsp;&nbsp;<span class="c"># verdict descending</span><br />
+&nbsp;&nbsp;verdict_DESC<br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountCdnNetworkAnalyticsAdaptiveGroupsSum" href="#AccountCdnNetworkAnalyticsAdaptiveGroupsSum">AccountCdnNetworkAnalyticsAdaptiveGroupsSum</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received</span><br />
+&nbsp;&nbsp;bits: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received</span><br />
+&nbsp;&nbsp;packets: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="AccountFilter_InputObject" href="#AccountFilter_InputObject">AccountFilter_InputObject</a> {<br />
@@ -3382,6 +3912,288 @@
 &nbsp;&nbsp;type_DESC<br />
 }<br />
 <br />
+<span class="c"># Beta. Network Analytics attack metadata</span><br />
+<span class="k">type</span> <a id="AccountNetworkAnalyticsAttackMetadata" href="#AccountNetworkAnalyticsAttackMetadata">AccountNetworkAnalyticsAttackMetadata</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received during the attack</span><br />
+&nbsp;&nbsp;attackBits: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Common TCP flags used by attack traffic, if any</span><br />
+&nbsp;&nbsp;attackCommonTcpFlags: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Names of common TCP flags used by attack traffic, if any</span><br />
+&nbsp;&nbsp;attackCommonTcpFlagsNames: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Fixed destination IP used by attack traffic, if any</span><br />
+&nbsp;&nbsp;attackDestinationIp: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Fixed destination port used by attack traffic, if any</span><br />
+&nbsp;&nbsp;attackDestinationPort: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># Unique attack identifier</span><br />
+&nbsp;&nbsp;attackId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Fixed protocol used by attack traffic, if any</span><br />
+&nbsp;&nbsp;attackIpProtocol: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Fixed protocol used by attack traffic, if any</span><br />
+&nbsp;&nbsp;attackIpProtocolName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Whether mitigation was applied in only some locations or globally</span><br />
+&nbsp;&nbsp;attackMitigationScope: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Type of mitigation applied to attack traffic</span><br />
+&nbsp;&nbsp;attackMitigationType: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received during the attack</span><br />
+&nbsp;&nbsp;attackPackets: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Fixed source IP used by attack traffic, if any</span><br />
+&nbsp;&nbsp;attackSourceIp: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Fixed source port used by attack traffic, if any</span><br />
+&nbsp;&nbsp;attackSourcePort: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># Fixed TCP flags used by attack traffic, if any</span><br />
+&nbsp;&nbsp;attackTcpFlags: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Names of fixed TCP flags used by attack traffic, if any</span><br />
+&nbsp;&nbsp;attackTcpFlagsNames: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Type of attack traffic</span><br />
+&nbsp;&nbsp;attackType: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Date and time that the attack ended; not available for ongoing attacks</span><br />
+&nbsp;&nbsp;endDatetime: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Date and time that the attack started</span><br />
+&nbsp;&nbsp;startDatetime: <a href="#Time">Time!</a><br />
+}<br />
+<br />
+<span class="k">input</span> <a id="AccountNetworkAnalyticsAttackMetadataFilter_InputObject" href="#AccountNetworkAnalyticsAttackMetadataFilter_InputObject">AccountNetworkAnalyticsAttackMetadataFilter_InputObject</a> {<br />
+&nbsp;&nbsp;AND: <a href="#AccountNetworkAnalyticsAttackMetadataFilter_InputObject">[AccountNetworkAnalyticsAttackMetadataFilter_InputObject!]</a><br />
+&nbsp;&nbsp;OR: <a href="#AccountNetworkAnalyticsAttackMetadataFilter_InputObject">[AccountNetworkAnalyticsAttackMetadataFilter_InputObject!]</a><br />
+&nbsp;&nbsp;attackBits: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;attackBits_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;attackBits_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;attackBits_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;attackBits_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;attackBits_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;attackBits_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;attackBits_notin: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;attackCommonTcpFlags: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackCommonTcpFlagsNames: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackCommonTcpFlagsNames_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackCommonTcpFlagsNames_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackCommonTcpFlagsNames_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackCommonTcpFlagsNames_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackCommonTcpFlagsNames_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackCommonTcpFlagsNames_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackCommonTcpFlagsNames_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackCommonTcpFlagsNames_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackCommonTcpFlagsNames_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackCommonTcpFlags_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackCommonTcpFlags_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackCommonTcpFlags_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;attackCommonTcpFlags_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackCommonTcpFlags_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackCommonTcpFlags_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackCommonTcpFlags_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;attackDestinationIp: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackDestinationIp_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackDestinationIp_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackDestinationIp_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackDestinationIp_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackDestinationIp_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackDestinationIp_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackDestinationIp_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackDestinationIp_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackDestinationIp_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackDestinationPort: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;attackDestinationPort_geq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;attackDestinationPort_gt: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;attackDestinationPort_in: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;attackDestinationPort_leq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;attackDestinationPort_lt: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;attackDestinationPort_neq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;attackDestinationPort_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;attackId: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackIpProtocol: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackIpProtocolName: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackIpProtocolName_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackIpProtocolName_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackIpProtocolName_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackIpProtocolName_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackIpProtocolName_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackIpProtocolName_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackIpProtocolName_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackIpProtocolName_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackIpProtocolName_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackIpProtocol_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackIpProtocol_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackIpProtocol_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;attackIpProtocol_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackIpProtocol_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackIpProtocol_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackIpProtocol_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;attackMitigationScope: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackMitigationScope_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackMitigationScope_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackMitigationScope_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackMitigationScope_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackMitigationScope_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackMitigationScope_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackMitigationScope_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackMitigationScope_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackMitigationScope_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackMitigationType: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackMitigationType_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackMitigationType_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackMitigationType_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackMitigationType_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackMitigationType_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackMitigationType_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackMitigationType_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackMitigationType_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackMitigationType_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackPackets: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;attackPackets_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;attackPackets_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;attackPackets_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;attackPackets_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;attackPackets_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;attackPackets_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;attackPackets_notin: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;attackSourceIp: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackSourceIp_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackSourceIp_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackSourceIp_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackSourceIp_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackSourceIp_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackSourceIp_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackSourceIp_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackSourceIp_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackSourceIp_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackSourcePort: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;attackSourcePort_geq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;attackSourcePort_gt: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;attackSourcePort_in: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;attackSourcePort_leq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;attackSourcePort_lt: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;attackSourcePort_neq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;attackSourcePort_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;attackTcpFlags: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackTcpFlagsNames: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackTcpFlagsNames_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackTcpFlagsNames_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackTcpFlagsNames_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackTcpFlagsNames_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackTcpFlagsNames_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackTcpFlagsNames_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackTcpFlagsNames_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackTcpFlagsNames_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackTcpFlagsNames_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackTcpFlags_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackTcpFlags_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackTcpFlags_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;attackTcpFlags_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackTcpFlags_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackTcpFlags_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;attackTcpFlags_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;attackType: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackType_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackType_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackType_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackType_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackType_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackType_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackType_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;attackType_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;attackType_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;endDatetime: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;endDatetime_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;endDatetime_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;endDatetime_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;endDatetime_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;endDatetime_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;endDatetime_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;endDatetime_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;startDatetime: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;startDatetime_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;startDatetime_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;startDatetime_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;startDatetime_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;startDatetime_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;startDatetime_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;startDatetime_notin: <a href="#Time">[Time!]</a><br />
+}<br />
+<br />
+<span class="k">enum</span> <a id="AccountNetworkAnalyticsAttackMetadataOrderBy" href="#AccountNetworkAnalyticsAttackMetadataOrderBy">AccountNetworkAnalyticsAttackMetadataOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># attackBits ascending</span><br />
+&nbsp;&nbsp;attackBits_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackBits descending</span><br />
+&nbsp;&nbsp;attackBits_DESC<br />
+&nbsp;&nbsp;<span class="c"># attackCommonTcpFlagsNames ascending</span><br />
+&nbsp;&nbsp;attackCommonTcpFlagsNames_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackCommonTcpFlagsNames descending</span><br />
+&nbsp;&nbsp;attackCommonTcpFlagsNames_DESC<br />
+&nbsp;&nbsp;<span class="c"># attackCommonTcpFlags ascending</span><br />
+&nbsp;&nbsp;attackCommonTcpFlags_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackCommonTcpFlags descending</span><br />
+&nbsp;&nbsp;attackCommonTcpFlags_DESC<br />
+&nbsp;&nbsp;<span class="c"># attackDestinationIp ascending</span><br />
+&nbsp;&nbsp;attackDestinationIp_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackDestinationIp descending</span><br />
+&nbsp;&nbsp;attackDestinationIp_DESC<br />
+&nbsp;&nbsp;<span class="c"># attackDestinationPort ascending</span><br />
+&nbsp;&nbsp;attackDestinationPort_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackDestinationPort descending</span><br />
+&nbsp;&nbsp;attackDestinationPort_DESC<br />
+&nbsp;&nbsp;<span class="c"># attackId ascending</span><br />
+&nbsp;&nbsp;attackId_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackId descending</span><br />
+&nbsp;&nbsp;attackId_DESC<br />
+&nbsp;&nbsp;<span class="c"># attackIpProtocolName ascending</span><br />
+&nbsp;&nbsp;attackIpProtocolName_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackIpProtocolName descending</span><br />
+&nbsp;&nbsp;attackIpProtocolName_DESC<br />
+&nbsp;&nbsp;<span class="c"># attackIpProtocol ascending</span><br />
+&nbsp;&nbsp;attackIpProtocol_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackIpProtocol descending</span><br />
+&nbsp;&nbsp;attackIpProtocol_DESC<br />
+&nbsp;&nbsp;<span class="c"># attackMitigationScope ascending</span><br />
+&nbsp;&nbsp;attackMitigationScope_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackMitigationScope descending</span><br />
+&nbsp;&nbsp;attackMitigationScope_DESC<br />
+&nbsp;&nbsp;<span class="c"># attackMitigationType ascending</span><br />
+&nbsp;&nbsp;attackMitigationType_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackMitigationType descending</span><br />
+&nbsp;&nbsp;attackMitigationType_DESC<br />
+&nbsp;&nbsp;<span class="c"># attackPackets ascending</span><br />
+&nbsp;&nbsp;attackPackets_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackPackets descending</span><br />
+&nbsp;&nbsp;attackPackets_DESC<br />
+&nbsp;&nbsp;<span class="c"># attackSourceIp ascending</span><br />
+&nbsp;&nbsp;attackSourceIp_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackSourceIp descending</span><br />
+&nbsp;&nbsp;attackSourceIp_DESC<br />
+&nbsp;&nbsp;<span class="c"># attackSourcePort ascending</span><br />
+&nbsp;&nbsp;attackSourcePort_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackSourcePort descending</span><br />
+&nbsp;&nbsp;attackSourcePort_DESC<br />
+&nbsp;&nbsp;<span class="c"># attackTcpFlagsNames ascending</span><br />
+&nbsp;&nbsp;attackTcpFlagsNames_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackTcpFlagsNames descending</span><br />
+&nbsp;&nbsp;attackTcpFlagsNames_DESC<br />
+&nbsp;&nbsp;<span class="c"># attackTcpFlags ascending</span><br />
+&nbsp;&nbsp;attackTcpFlags_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackTcpFlags descending</span><br />
+&nbsp;&nbsp;attackTcpFlags_DESC<br />
+&nbsp;&nbsp;<span class="c"># attackType ascending</span><br />
+&nbsp;&nbsp;attackType_ASC<br />
+&nbsp;&nbsp;<span class="c"># attackType descending</span><br />
+&nbsp;&nbsp;attackType_DESC<br />
+&nbsp;&nbsp;<span class="c"># endDatetime ascending</span><br />
+&nbsp;&nbsp;endDatetime_ASC<br />
+&nbsp;&nbsp;<span class="c"># endDatetime descending</span><br />
+&nbsp;&nbsp;endDatetime_DESC<br />
+&nbsp;&nbsp;<span class="c"># startDatetime ascending</span><br />
+&nbsp;&nbsp;startDatetime_ASC<br />
+&nbsp;&nbsp;<span class="c"># startDatetime descending</span><br />
+&nbsp;&nbsp;startDatetime_DESC<br />
+}<br />
+<br />
 <span class="c"># Beta. Aggregated RUM pageload event metrics with adaptive sampling</span><br />
 <span class="k">type</span> <a id="AccountRumPageloadEventsAdaptiveGroups" href="#AccountRumPageloadEventsAdaptiveGroups">AccountRumPageloadEventsAdaptiveGroups</a> {<br />
 &nbsp;&nbsp;avg: <a href="#AccountRumPageloadEventsAdaptiveGroupsAvg">AccountRumPageloadEventsAdaptiveGroupsAvg</a><br />
@@ -4745,6 +5557,7 @@
 <br />
 <span class="c"># Access and limitations for an account</span><br />
 <span class="k">type</span> <a id="AccountSettings" href="#AccountSettings">AccountSettings</a> {<br />
+&nbsp;&nbsp;cdnNetworkAnalyticsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;gatewayL4DownstreamSessionsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;gatewayL4UpstreamSessionsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;httpRequests1dGroups: <a href="#Settings">Settings!</a><br />
@@ -4757,6 +5570,7 @@
 &nbsp;&nbsp;magicFirewallSamplesAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;magicTransitTunnelHealthChecksAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;nelReportsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
+&nbsp;&nbsp;networkAnalyticsAttackMetadata: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;rumPageloadEventsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;rumPerformanceEventsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;rumWebVitalsEventsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
