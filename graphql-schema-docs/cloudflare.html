@@ -7,7 +7,7 @@
   <style> body { font-family: monospace, monospace; background: rgb(13, 17, 23); color: rgb(201, 209, 217); color-scheme: dark; } a { color: rgb(88, 166, 255); text-decoration: none; } a:hover { text-decoration: underline; } .k {color: rgb(255, 123, 114); } .c {color: rgb(139, 148, 158); } .t {color: rgb(121, 192, 255); }</style>
 </head>
 <body><h3>Schema docs for the <a href="https://developers.cloudflare.com/analytics/graphql-api">Cloudflare GraphQL Analytics API</a></h3>
-<a href="#account">Account-level datasets</a>:<br />&nbsp;&nbsp;cdnNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;gatewayL4DownstreamSessionsAdaptiveGroups<br />&nbsp;&nbsp;gatewayL4UpstreamSessionsAdaptiveGroups<br />*&nbsp;httpRequests1dGroups<br />*&nbsp;httpRequests1hGroups<br />&nbsp;&nbsp;httpRequests1mGroups<br />&nbsp;&nbsp;ipFlows1dGroups<br />&nbsp;&nbsp;ipFlows1hGroups<br />&nbsp;&nbsp;ipFlows1mAttacksGroups<br />&nbsp;&nbsp;ipFlows1mGroups<br />&nbsp;&nbsp;magicFirewallSamplesAdaptiveGroups<br />&nbsp;&nbsp;magicTransitTunnelHealthChecksAdaptiveGroups<br />&nbsp;&nbsp;nelReportsAdaptiveGroups<br />&nbsp;&nbsp;networkAnalyticsAttackMetadata<br />*&nbsp;rumPageloadEventsAdaptiveGroups<br />*&nbsp;rumPerformanceEventsAdaptiveGroups<br />*&nbsp;rumWebVitalsEventsAdaptiveGroups<br />*&nbsp;videoBufferEventsAdaptiveGroups<br />*&nbsp;videoPlaybackEventsAdaptiveGroups<br />*&nbsp;videoQualityEventsAdaptiveGroups<br />*&nbsp;workersInvocationsAdaptive<br />*&nbsp;workersInvocationsScheduled<br />*&nbsp;workersSubrequestsAdaptiveGroups<br /><br /><a href="#zone">Zone-level datasets</a>:<br />*&nbsp;browserInsightsAdaptiveGroups<br />*&nbsp;firewallEventsAdaptive<br />*&nbsp;firewallEventsAdaptiveByTimeGroups<br />&nbsp;&nbsp;firewallEventsAdaptiveGroups<br />&nbsp;&nbsp;healthCheckEvents<br />&nbsp;&nbsp;healthCheckEventsAdaptive<br />&nbsp;&nbsp;healthCheckEventsAdaptiveGroups<br />&nbsp;&nbsp;healthCheckEventsGroups<br />&nbsp;&nbsp;httpRequests1dByColoGroups<br />*&nbsp;httpRequests1dGroups<br />*&nbsp;httpRequests1hGroups<br />&nbsp;&nbsp;httpRequests1mByColoGroups<br />&nbsp;&nbsp;httpRequests1mGroups<br />&nbsp;&nbsp;httpRequestsAdaptiveGroups<br />*&nbsp;imageResizingRequests1mGroups<br />&nbsp;&nbsp;loadBalancingRequests<br />&nbsp;&nbsp;loadBalancingRequestsAdaptive<br />&nbsp;&nbsp;loadBalancingRequestsAdaptiveGroups<br />&nbsp;&nbsp;loadBalancingRequestsGroups<br />&nbsp;&nbsp;nelReportsAdaptiveGroups<br />&nbsp;&nbsp;synAvgPps1mGroups<br />*&nbsp;webVitalsAdaptiveGroups<br /><br />* = available in all <a href="https://www.cloudflare.com/plans/">Cloudflare plans</a><br /><br /><span class="c"># Scalar type bool</span><br />
+<a href="#account">Account-level datasets</a>:<br />&nbsp;&nbsp;cdnNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;gatewayL4DownstreamSessionsAdaptiveGroups<br />&nbsp;&nbsp;gatewayL4UpstreamSessionsAdaptiveGroups<br />*&nbsp;httpRequests1dGroups<br />*&nbsp;httpRequests1hGroups<br />&nbsp;&nbsp;httpRequests1mGroups<br />&nbsp;&nbsp;ipFlows1dGroups<br />&nbsp;&nbsp;ipFlows1hGroups<br />&nbsp;&nbsp;ipFlows1mAttacksGroups<br />&nbsp;&nbsp;ipFlows1mGroups<br />&nbsp;&nbsp;magicFirewallSamplesAdaptiveGroups<br />&nbsp;&nbsp;magicTransitTunnelHealthChecksAdaptiveGroups<br />&nbsp;&nbsp;nelReportsAdaptiveGroups<br />&nbsp;&nbsp;networkAnalyticsAttackMetadata<br />*&nbsp;rumPageloadEventsAdaptiveGroups<br />*&nbsp;rumPerformanceEventsAdaptiveGroups<br />*&nbsp;rumWebVitalsEventsAdaptive<br />*&nbsp;rumWebVitalsEventsAdaptiveGroups<br />*&nbsp;videoBufferEventsAdaptiveGroups<br />*&nbsp;videoPlaybackEventsAdaptiveGroups<br />*&nbsp;videoQualityEventsAdaptiveGroups<br />*&nbsp;workersInvocationsAdaptive<br />*&nbsp;workersInvocationsScheduled<br />*&nbsp;workersSubrequestsAdaptiveGroups<br /><br /><a href="#zone">Zone-level datasets</a>:<br />*&nbsp;browserInsightsAdaptiveGroups<br />*&nbsp;firewallEventsAdaptive<br />*&nbsp;firewallEventsAdaptiveByTimeGroups<br />&nbsp;&nbsp;firewallEventsAdaptiveGroups<br />&nbsp;&nbsp;healthCheckEvents<br />&nbsp;&nbsp;healthCheckEventsAdaptive<br />&nbsp;&nbsp;healthCheckEventsAdaptiveGroups<br />&nbsp;&nbsp;healthCheckEventsGroups<br />&nbsp;&nbsp;httpRequests1dByColoGroups<br />*&nbsp;httpRequests1dGroups<br />*&nbsp;httpRequests1hGroups<br />&nbsp;&nbsp;httpRequests1mByColoGroups<br />&nbsp;&nbsp;httpRequests1mGroups<br />&nbsp;&nbsp;httpRequestsAdaptiveGroups<br />*&nbsp;imageResizingRequests1mGroups<br />&nbsp;&nbsp;loadBalancingRequests<br />&nbsp;&nbsp;loadBalancingRequestsAdaptive<br />&nbsp;&nbsp;loadBalancingRequestsAdaptiveGroups<br />&nbsp;&nbsp;loadBalancingRequestsGroups<br />&nbsp;&nbsp;nelReportsAdaptiveGroups<br />&nbsp;&nbsp;synAvgPps1mGroups<br />*&nbsp;webVitalsAdaptiveGroups<br /><br />* = available in all <a href="https://www.cloudflare.com/plans/">Cloudflare plans</a><br /><br /><span class="c"># Scalar type bool</span><br />
 <span class="k">scalar</span> <a id="bool" href="#bool">bool</a><br />
 <br />
 <span class="c"># Scalar type []uint8</span><br />
@@ -77,6 +77,8 @@
 &nbsp;&nbsp;rumPageloadEventsAdaptiveGroups(filter: <a href="#AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject">AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountRumPageloadEventsAdaptiveGroupsOrderBy">[AccountRumPageloadEventsAdaptiveGroupsOrderBy!]</a>): <a href="#AccountRumPageloadEventsAdaptiveGroups">[AccountRumPageloadEventsAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. Aggregated RUM performance event metrics with adaptive sampling</span><br />
 &nbsp;&nbsp;rumPerformanceEventsAdaptiveGroups(filter: <a href="#AccountRumPerformanceEventsAdaptiveGroupsFilter_InputObject">AccountRumPerformanceEventsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountRumPerformanceEventsAdaptiveGroupsOrderBy">[AccountRumPerformanceEventsAdaptiveGroupsOrderBy!]</a>): <a href="#AccountRumPerformanceEventsAdaptiveGroups">[AccountRumPerformanceEventsAdaptiveGroups!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Beta. RUM Web Vitals event metrics with adaptive sampling</span><br />
+&nbsp;&nbsp;rumWebVitalsEventsAdaptive(filter: <a href="#AccountRumWebVitalsEventsAdaptiveFilter_InputObject">AccountRumWebVitalsEventsAdaptiveFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountRumWebVitalsEventsAdaptiveOrderBy">[AccountRumWebVitalsEventsAdaptiveOrderBy!]</a>): <a href="#AccountRumWebVitalsEventsAdaptive">[AccountRumWebVitalsEventsAdaptive!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. Aggregated RUM Web Vitals event metrics with adaptive sampling</span><br />
 &nbsp;&nbsp;rumWebVitalsEventsAdaptiveGroups(filter: <a href="#AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject">AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountRumWebVitalsEventsAdaptiveGroupsOrderBy">[AccountRumWebVitalsEventsAdaptiveGroupsOrderBy!]</a>): <a href="#AccountRumWebVitalsEventsAdaptiveGroups">[AccountRumWebVitalsEventsAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;settings: <a href="#AccountSettings">AccountSettings</a><br />
@@ -3678,6 +3680,8 @@
 &nbsp;&nbsp;clientIPASNDescription: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Client Country</span><br />
 &nbsp;&nbsp;clientIPCountry: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># 2 letter client country code using ISO 3166-1 alpha-2 syntax</span><br />
+&nbsp;&nbsp;clientIPCountryCode: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># IP Version the client used to connect</span><br />
 &nbsp;&nbsp;clientIPVersion: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Request date from browser</span><br />
@@ -3726,6 +3730,16 @@
 &nbsp;&nbsp;clientIPASN_neq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;clientIPASN_notin: <a href="#uint32">[uint32!]</a><br />
 &nbsp;&nbsp;clientIPCountry: <a href="#string">string</a><br />
+&nbsp;&nbsp;clientIPCountryCode: <a href="#string">string</a><br />
+&nbsp;&nbsp;clientIPCountryCode_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;clientIPCountryCode_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;clientIPCountryCode_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;clientIPCountryCode_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;clientIPCountryCode_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;clientIPCountryCode_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;clientIPCountryCode_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;clientIPCountryCode_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;clientIPCountryCode_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientIPCountry_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientIPCountry_gt: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientIPCountry_in: <a href="#string">[string!]</a><br />
@@ -3854,6 +3868,10 @@
 &nbsp;&nbsp;clientIPASN_ASC<br />
 &nbsp;&nbsp;<span class="c"># clientIPASN descending</span><br />
 &nbsp;&nbsp;clientIPASN_DESC<br />
+&nbsp;&nbsp;<span class="c"># clientIPCountryCode ascending</span><br />
+&nbsp;&nbsp;clientIPCountryCode_ASC<br />
+&nbsp;&nbsp;<span class="c"># clientIPCountryCode descending</span><br />
+&nbsp;&nbsp;clientIPCountryCode_DESC<br />
 &nbsp;&nbsp;<span class="c"># clientIPCountry ascending</span><br />
 &nbsp;&nbsp;clientIPCountry_ASC<br />
 &nbsp;&nbsp;<span class="c"># clientIPCountry descending</span><br />
@@ -4521,6 +4539,10 @@
 &nbsp;&nbsp;connectionTime: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Domain lookup time</span><br />
 &nbsp;&nbsp;dnsTime: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># The time when the first content piece from the DOM is painted (i.e. some text or an image)</span><br />
+&nbsp;&nbsp;firstContentfulPaint: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># The time when the first pixel is painted onto the screen (i.e. background of the page)</span><br />
+&nbsp;&nbsp;firstPaint: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># The time taken for the load event</span><br />
 &nbsp;&nbsp;loadEventTime: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># The time to download and display the entire content of a web page in the browser window</span><br />
@@ -4752,6 +4774,14 @@
 &nbsp;&nbsp;avg_dnsTime_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(dnsTime) descending</span><br />
 &nbsp;&nbsp;avg_dnsTime_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(firstContentfulPaint) ascending</span><br />
+&nbsp;&nbsp;avg_firstContentfulPaint_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(firstContentfulPaint) descending</span><br />
+&nbsp;&nbsp;avg_firstContentfulPaint_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(firstPaint) ascending</span><br />
+&nbsp;&nbsp;avg_firstPaint_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(firstPaint) descending</span><br />
+&nbsp;&nbsp;avg_firstPaint_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(loadEventTime) ascending</span><br />
 &nbsp;&nbsp;avg_loadEventTime_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(loadEventTime) descending</span><br />
@@ -4844,6 +4874,38 @@
 &nbsp;&nbsp;quantiles_dnsTimeP99_ASC<br />
 &nbsp;&nbsp;<span class="c"># quantiles(dnsTimeP99) descending</span><br />
 &nbsp;&nbsp;quantiles_dnsTimeP99_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(firstContentfulPaintP50) ascending</span><br />
+&nbsp;&nbsp;quantiles_firstContentfulPaintP50_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(firstContentfulPaintP50) descending</span><br />
+&nbsp;&nbsp;quantiles_firstContentfulPaintP50_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(firstContentfulPaintP75) ascending</span><br />
+&nbsp;&nbsp;quantiles_firstContentfulPaintP75_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(firstContentfulPaintP75) descending</span><br />
+&nbsp;&nbsp;quantiles_firstContentfulPaintP75_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(firstContentfulPaintP90) ascending</span><br />
+&nbsp;&nbsp;quantiles_firstContentfulPaintP90_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(firstContentfulPaintP90) descending</span><br />
+&nbsp;&nbsp;quantiles_firstContentfulPaintP90_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(firstContentfulPaintP99) ascending</span><br />
+&nbsp;&nbsp;quantiles_firstContentfulPaintP99_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(firstContentfulPaintP99) descending</span><br />
+&nbsp;&nbsp;quantiles_firstContentfulPaintP99_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(firstPaintP50) ascending</span><br />
+&nbsp;&nbsp;quantiles_firstPaintP50_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(firstPaintP50) descending</span><br />
+&nbsp;&nbsp;quantiles_firstPaintP50_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(firstPaintP75) ascending</span><br />
+&nbsp;&nbsp;quantiles_firstPaintP75_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(firstPaintP75) descending</span><br />
+&nbsp;&nbsp;quantiles_firstPaintP75_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(firstPaintP90) ascending</span><br />
+&nbsp;&nbsp;quantiles_firstPaintP90_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(firstPaintP90) descending</span><br />
+&nbsp;&nbsp;quantiles_firstPaintP90_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(firstPaintP99) ascending</span><br />
+&nbsp;&nbsp;quantiles_firstPaintP99_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(firstPaintP99) descending</span><br />
+&nbsp;&nbsp;quantiles_firstPaintP99_DESC<br />
 &nbsp;&nbsp;<span class="c"># quantiles(loadEventTimeP50) ascending</span><br />
 &nbsp;&nbsp;quantiles_loadEventTimeP50_ASC<br />
 &nbsp;&nbsp;<span class="c"># quantiles(loadEventTimeP50) descending</span><br />
@@ -4983,6 +5045,22 @@
 &nbsp;&nbsp;dnsTimeP90: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Domain lookup time</span><br />
 &nbsp;&nbsp;dnsTimeP99: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># The time when the first content piece from the DOM is painted (i.e. some text or an image)</span><br />
+&nbsp;&nbsp;firstContentfulPaintP50: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># The time when the first content piece from the DOM is painted (i.e. some text or an image)</span><br />
+&nbsp;&nbsp;firstContentfulPaintP75: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># The time when the first content piece from the DOM is painted (i.e. some text or an image)</span><br />
+&nbsp;&nbsp;firstContentfulPaintP90: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># The time when the first content piece from the DOM is painted (i.e. some text or an image)</span><br />
+&nbsp;&nbsp;firstContentfulPaintP99: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># The time when the first pixel is painted onto the screen (i.e. background of the page)</span><br />
+&nbsp;&nbsp;firstPaintP50: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># The time when the first pixel is painted onto the screen (i.e. background of the page)</span><br />
+&nbsp;&nbsp;firstPaintP75: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># The time when the first pixel is painted onto the screen (i.e. background of the page)</span><br />
+&nbsp;&nbsp;firstPaintP90: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># The time when the first pixel is painted onto the screen (i.e. background of the page)</span><br />
+&nbsp;&nbsp;firstPaintP99: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># The time taken for the load event</span><br />
 &nbsp;&nbsp;loadEventTimeP50: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># The time taken for the load event</span><br />
@@ -5030,35 +5108,24 @@
 &nbsp;&nbsp;visits: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
-<span class="c"># Beta. Aggregated RUM Web Vitals event metrics with adaptive sampling</span><br />
-<span class="k">type</span> <a id="AccountRumWebVitalsEventsAdaptiveGroups" href="#AccountRumWebVitalsEventsAdaptiveGroups">AccountRumWebVitalsEventsAdaptiveGroups</a> {<br />
-&nbsp;&nbsp;avg: <a href="#AccountRumWebVitalsEventsAdaptiveGroupsAvg">AccountRumWebVitalsEventsAdaptiveGroupsAvg</a><br />
-&nbsp;&nbsp;<span class="c"># The number of pages viewed by end-users</span><br />
-&nbsp;&nbsp;count: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
-&nbsp;&nbsp;dimensions: <a href="#AccountRumWebVitalsEventsAdaptiveGroupsDimensions">AccountRumWebVitalsEventsAdaptiveGroupsDimensions</a><br />
-&nbsp;&nbsp;quantiles: <a href="#AccountRumWebVitalsEventsAdaptiveGroupsQuantiles">AccountRumWebVitalsEventsAdaptiveGroupsQuantiles</a><br />
-&nbsp;&nbsp;sum: <a href="#AccountRumWebVitalsEventsAdaptiveGroupsSum">AccountRumWebVitalsEventsAdaptiveGroupsSum</a><br />
-}<br />
-<br />
-<span class="k">type</span> <a id="AccountRumWebVitalsEventsAdaptiveGroupsAvg" href="#AccountRumWebVitalsEventsAdaptiveGroupsAvg">AccountRumWebVitalsEventsAdaptiveGroupsAvg</a> {<br />
-&nbsp;&nbsp;<span class="c"># Cumulative Layout Shift (Core Web Vitals) (negative value indicates N/A)</span><br />
-&nbsp;&nbsp;cumulativeLayoutShift: <a href="#float64">float64!</a><br />
-&nbsp;&nbsp;<span class="c"># First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)</span><br />
-&nbsp;&nbsp;firstInputDelay: <a href="#int64">int64!</a><br />
-&nbsp;&nbsp;<span class="c"># Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)</span><br />
-&nbsp;&nbsp;largestContentfulPaint: <a href="#int64">int64!</a><br />
-&nbsp;&nbsp;<span class="c"># Average sample interval</span><br />
-&nbsp;&nbsp;sampleInterval: <a href="#float64">float64!</a><br />
-}<br />
-<br />
-<span class="k">type</span> <a id="AccountRumWebVitalsEventsAdaptiveGroupsDimensions" href="#AccountRumWebVitalsEventsAdaptiveGroupsDimensions">AccountRumWebVitalsEventsAdaptiveGroupsDimensions</a> {<br />
+<span class="c"># Beta. RUM Web Vitals event metrics with adaptive sampling</span><br />
+<span class="k">type</span> <a id="AccountRumWebVitalsEventsAdaptive" href="#AccountRumWebVitalsEventsAdaptive">AccountRumWebVitalsEventsAdaptive</a> {<br />
 &nbsp;&nbsp;<span class="c"># Client country ISO 3166 alpha2 code</span><br />
 &nbsp;&nbsp;countryName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Cumulative Layout Shift (Core Web Vitals) (-1 indicates N/A)</span><br />
+&nbsp;&nbsp;cumulativeLayoutShift: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;<span class="c"># Layout values of the rectangular area after the changes</span><br />
+&nbsp;&nbsp;cumulativeLayoutShiftCurrentRect: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># DOM selector name of the largest layout shift</span><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Observed path of the Cumulative Layout Shift (Core Web Vitals)</span><br />
 &nbsp;&nbsp;cumulativeLayoutShiftPath: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Layout values of the rectangular area before the changes</span><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPreviousRect: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Request date from browser</span><br />
 &nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
+&nbsp;&nbsp;<span class="c"># Request datetime from browser</span><br />
+&nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Request datetime from browser, truncated to multiple of 15 minutes</span><br />
 &nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Request datetime from browser, truncated to multiple of 5 minutes</span><br />
@@ -5071,10 +5138,6 @@
 &nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Device type used for view the page</span><br />
 &nbsp;&nbsp;deviceType: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Observed path of the First Input Delay (Core Web Vitals)</span><br />
-&nbsp;&nbsp;firstInputDelayPath: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Observed path of the Largest Contentful Paint (Core Web Vitals)</span><br />
-&nbsp;&nbsp;largestContentfulPaintPath: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Host of the HTTP request referer</span><br />
 &nbsp;&nbsp;refererHost: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Path of the HTTP request referer</span><br />
@@ -5087,6 +5150,8 @@
 &nbsp;&nbsp;requestPath: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Scheme of the web page URL (http or https)</span><br />
 &nbsp;&nbsp;requestScheme: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># ABR sample interval</span><br />
+&nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># The key value to identify a site</span><br />
 &nbsp;&nbsp;siteTag: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Browser parsed from the user agent</span><br />
@@ -5095,9 +5160,9 @@
 &nbsp;&nbsp;userAgentOS: <a href="#string">string!</a><br />
 }<br />
 <br />
-<span class="k">input</span> <a id="AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject" href="#AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject">AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject</a> {<br />
-&nbsp;&nbsp;AND: <a href="#AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject">[AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject!]</a><br />
-&nbsp;&nbsp;OR: <a href="#AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject">[AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject!]</a><br />
+<span class="k">input</span> <a id="AccountRumWebVitalsEventsAdaptiveFilter_InputObject" href="#AccountRumWebVitalsEventsAdaptiveFilter_InputObject">AccountRumWebVitalsEventsAdaptiveFilter_InputObject</a> {<br />
+&nbsp;&nbsp;AND: <a href="#AccountRumWebVitalsEventsAdaptiveFilter_InputObject">[AccountRumWebVitalsEventsAdaptiveFilter_InputObject!]</a><br />
+&nbsp;&nbsp;OR: <a href="#AccountRumWebVitalsEventsAdaptiveFilter_InputObject">[AccountRumWebVitalsEventsAdaptiveFilter_InputObject!]</a><br />
 &nbsp;&nbsp;countryName: <a href="#string">string</a><br />
 &nbsp;&nbsp;countryName_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;countryName_gt: <a href="#string">string</a><br />
@@ -5108,6 +5173,27 @@
 &nbsp;&nbsp;countryName_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;countryName_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;countryName_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShift: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftCurrentRect: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftCurrentRect_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftCurrentRect_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftCurrentRect_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftCurrentRect_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftCurrentRect_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftCurrentRect_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftCurrentRect_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftCurrentRect_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftCurrentRect_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;cumulativeLayoutShiftPath: <a href="#string">string</a><br />
 &nbsp;&nbsp;cumulativeLayoutShiftPath_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;cumulativeLayoutShiftPath_gt: <a href="#string">string</a><br />
@@ -5118,6 +5204,23 @@
 &nbsp;&nbsp;cumulativeLayoutShiftPath_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;cumulativeLayoutShiftPath_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;cumulativeLayoutShiftPath_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPreviousRect: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPreviousRect_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPreviousRect_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPreviousRect_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPreviousRect_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPreviousRect_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPreviousRect_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPreviousRect_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPreviousRect_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPreviousRect_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShift_geq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cumulativeLayoutShift_gt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cumulativeLayoutShift_in: <a href="#float64">[float64!]</a><br />
+&nbsp;&nbsp;cumulativeLayoutShift_leq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cumulativeLayoutShift_lt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cumulativeLayoutShift_neq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cumulativeLayoutShift_notin: <a href="#float64">[float64!]</a><br />
 &nbsp;&nbsp;date: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
@@ -5184,6 +5287,315 @@
 &nbsp;&nbsp;deviceType_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;deviceType_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;deviceType_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererHost: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererHost_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererHost_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererHost_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;refererHost_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererHost_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererHost_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererHost_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererHost_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;refererHost_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererPath: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererPath_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererPath_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererPath_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;refererPath_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererPath_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererPath_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererPath_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererPath_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;refererPath_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererScheme: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererScheme_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererScheme_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererScheme_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;refererScheme_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererScheme_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererScheme_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererScheme_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;refererScheme_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;refererScheme_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestHost: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestHost_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestHost_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestHost_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;requestHost_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestHost_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestHost_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestHost_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestHost_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;requestHost_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestPath: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestPath_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestPath_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestPath_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;requestPath_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestPath_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestPath_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestPath_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestPath_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;requestPath_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestScheme: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestScheme_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestScheme_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestScheme_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;requestScheme_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestScheme_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestScheme_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestScheme_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestScheme_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;requestScheme_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_geq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_gt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_in: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;sampleInterval_leq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_lt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_neq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_notin: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;siteTag: <a href="#string">string</a><br />
+&nbsp;&nbsp;siteTag_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;siteTag_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;siteTag_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;siteTag_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;siteTag_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;siteTag_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;siteTag_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;siteTag_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;siteTag_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;userAgentBrowser: <a href="#string">string</a><br />
+&nbsp;&nbsp;userAgentBrowser_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;userAgentBrowser_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;userAgentBrowser_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;userAgentBrowser_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;userAgentBrowser_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;userAgentBrowser_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;userAgentBrowser_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;userAgentBrowser_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;userAgentBrowser_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;userAgentOS: <a href="#string">string</a><br />
+&nbsp;&nbsp;userAgentOS_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;userAgentOS_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;userAgentOS_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;userAgentOS_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;userAgentOS_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;userAgentOS_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;userAgentOS_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;userAgentOS_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;userAgentOS_notlike: <a href="#string">string</a><br />
+}<br />
+<br />
+<span class="c"># Beta. Aggregated RUM Web Vitals event metrics with adaptive sampling</span><br />
+<span class="k">type</span> <a id="AccountRumWebVitalsEventsAdaptiveGroups" href="#AccountRumWebVitalsEventsAdaptiveGroups">AccountRumWebVitalsEventsAdaptiveGroups</a> {<br />
+&nbsp;&nbsp;avg: <a href="#AccountRumWebVitalsEventsAdaptiveGroupsAvg">AccountRumWebVitalsEventsAdaptiveGroupsAvg</a><br />
+&nbsp;&nbsp;<span class="c"># The number of pages viewed by end-users</span><br />
+&nbsp;&nbsp;count: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
+&nbsp;&nbsp;dimensions: <a href="#AccountRumWebVitalsEventsAdaptiveGroupsDimensions">AccountRumWebVitalsEventsAdaptiveGroupsDimensions</a><br />
+&nbsp;&nbsp;quantiles: <a href="#AccountRumWebVitalsEventsAdaptiveGroupsQuantiles">AccountRumWebVitalsEventsAdaptiveGroupsQuantiles</a><br />
+&nbsp;&nbsp;sum: <a href="#AccountRumWebVitalsEventsAdaptiveGroupsSum">AccountRumWebVitalsEventsAdaptiveGroupsSum</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountRumWebVitalsEventsAdaptiveGroupsAvg" href="#AccountRumWebVitalsEventsAdaptiveGroupsAvg">AccountRumWebVitalsEventsAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;<span class="c"># Cumulative Layout Shift (Core Web Vitals) (negative value indicates N/A)</span><br />
+&nbsp;&nbsp;cumulativeLayoutShift: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;<span class="c"># First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)</span><br />
+&nbsp;&nbsp;firstInputDelay: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)</span><br />
+&nbsp;&nbsp;largestContentfulPaint: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Size of the largest object in bytes (negative value indicates N/A)</span><br />
+&nbsp;&nbsp;largestContentfulPaintElementSize: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Average sample interval</span><br />
+&nbsp;&nbsp;sampleInterval: <a href="#float64">float64!</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountRumWebVitalsEventsAdaptiveGroupsDimensions" href="#AccountRumWebVitalsEventsAdaptiveGroupsDimensions">AccountRumWebVitalsEventsAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># Client country ISO 3166 alpha2 code</span><br />
+&nbsp;&nbsp;countryName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># DOM selector name of the largest layout shift</span><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Observed path of the Cumulative Layout Shift (Core Web Vitals)</span><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPath: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Request date from browser</span><br />
+&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
+&nbsp;&nbsp;<span class="c"># Request datetime from browser, truncated to multiple of 15 minutes</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Request datetime from browser, truncated to multiple of 5 minutes</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Request datetime from browser, truncated to multiple of 30 minutes</span><br />
+&nbsp;&nbsp;datetimeHalfOfHour: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Request datetime from browser, truncated to the hour</span><br />
+&nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Request datetime from browser, truncated to the minute</span><br />
+&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Device type used for view the page</span><br />
+&nbsp;&nbsp;deviceType: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># DOM selector name of the input delay</span><br />
+&nbsp;&nbsp;firstInputDelayElement: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Action name of the input delay</span><br />
+&nbsp;&nbsp;firstInputDelayName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Observed path of the First Input Delay (Core Web Vitals)</span><br />
+&nbsp;&nbsp;firstInputDelayPath: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># DOM selector name of the largest object</span><br />
+&nbsp;&nbsp;largestContentfulPaintElement: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Host of the largest object</span><br />
+&nbsp;&nbsp;largestContentfulPaintObjectHost: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Path of the largest object</span><br />
+&nbsp;&nbsp;largestContentfulPaintObjectPath: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Scheme of the largest object (http or https)</span><br />
+&nbsp;&nbsp;largestContentfulPaintObjectScheme: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Observed path of the Largest Contentful Paint (Core Web Vitals)</span><br />
+&nbsp;&nbsp;largestContentfulPaintPath: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Host of the HTTP request referer</span><br />
+&nbsp;&nbsp;refererHost: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Path of the HTTP request referer</span><br />
+&nbsp;&nbsp;refererPath: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Scheme of the HTTP request referer (http or https)</span><br />
+&nbsp;&nbsp;refererScheme: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># HTTP Host of the web page URL</span><br />
+&nbsp;&nbsp;requestHost: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Path of the web page URL</span><br />
+&nbsp;&nbsp;requestPath: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Scheme of the web page URL (http or https)</span><br />
+&nbsp;&nbsp;requestScheme: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The key value to identify a site</span><br />
+&nbsp;&nbsp;siteTag: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Browser parsed from the user agent</span><br />
+&nbsp;&nbsp;userAgentBrowser: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># OS parsed from the user agent</span><br />
+&nbsp;&nbsp;userAgentOS: <a href="#string">string!</a><br />
+}<br />
+<br />
+<span class="k">input</span> <a id="AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject" href="#AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject">AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject</a> {<br />
+&nbsp;&nbsp;AND: <a href="#AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject">[AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;OR: <a href="#AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject">[AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;countryName: <a href="#string">string</a><br />
+&nbsp;&nbsp;countryName_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;countryName_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;countryName_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;countryName_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;countryName_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;countryName_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;countryName_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;countryName_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;countryName_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShift: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPath: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPath_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPath_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPath_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPath_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPath_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPath_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPath_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPath_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPath_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;cumulativeLayoutShift_geq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cumulativeLayoutShift_gt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cumulativeLayoutShift_in: <a href="#float64">[float64!]</a><br />
+&nbsp;&nbsp;cumulativeLayoutShift_leq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cumulativeLayoutShift_lt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cumulativeLayoutShift_neq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cumulativeLayoutShift_notin: <a href="#float64">[float64!]</a><br />
+&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeHalfOfHour: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHalfOfHour_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHalfOfHour_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHalfOfHour_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeHalfOfHour_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHalfOfHour_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHalfOfHour_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHalfOfHour_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeHour: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeHour_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeMinute_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetime_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetime_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;deviceType: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceType_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceType_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceType_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;deviceType_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceType_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceType_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceType_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceType_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;deviceType_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelay: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;firstInputDelayElement: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelayElement_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelayElement_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelayElement_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;firstInputDelayElement_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelayElement_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelayElement_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelayElement_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelayElement_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;firstInputDelayElement_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelayName: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelayName_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelayName_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelayName_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;firstInputDelayName_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelayName_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelayName_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelayName_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelayName_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;firstInputDelayName_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;firstInputDelayPath: <a href="#string">string</a><br />
 &nbsp;&nbsp;firstInputDelayPath_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;firstInputDelayPath_gt: <a href="#string">string</a><br />
@@ -5194,6 +5606,54 @@
 &nbsp;&nbsp;firstInputDelayPath_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;firstInputDelayPath_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;firstInputDelayPath_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;firstInputDelay_geq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;firstInputDelay_gt: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;firstInputDelay_in: <a href="#int64">[int64!]</a><br />
+&nbsp;&nbsp;firstInputDelay_leq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;firstInputDelay_lt: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;firstInputDelay_neq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;firstInputDelay_notin: <a href="#int64">[int64!]</a><br />
+&nbsp;&nbsp;largestContentfulPaint: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;largestContentfulPaintElement: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintElement_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintElement_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintElement_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;largestContentfulPaintElement_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintElement_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintElement_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintElement_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintElement_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;largestContentfulPaintElement_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectHost: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectHost_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectHost_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectHost_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectHost_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectHost_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectHost_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectHost_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectHost_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectHost_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectPath: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectPath_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectPath_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectPath_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectPath_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectPath_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectPath_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectPath_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectPath_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectPath_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectScheme: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectScheme_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectScheme_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectScheme_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectScheme_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectScheme_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectScheme_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectScheme_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectScheme_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;largestContentfulPaintObjectScheme_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;largestContentfulPaintPath: <a href="#string">string</a><br />
 &nbsp;&nbsp;largestContentfulPaintPath_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;largestContentfulPaintPath_gt: <a href="#string">string</a><br />
@@ -5204,6 +5664,13 @@
 &nbsp;&nbsp;largestContentfulPaintPath_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;largestContentfulPaintPath_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;largestContentfulPaintPath_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;largestContentfulPaint_geq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;largestContentfulPaint_gt: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;largestContentfulPaint_in: <a href="#int64">[int64!]</a><br />
+&nbsp;&nbsp;largestContentfulPaint_leq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;largestContentfulPaint_lt: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;largestContentfulPaint_neq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;largestContentfulPaint_notin: <a href="#int64">[int64!]</a><br />
 &nbsp;&nbsp;refererHost: <a href="#string">string</a><br />
 &nbsp;&nbsp;refererHost_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;refererHost_gt: <a href="#string">string</a><br />
@@ -5305,6 +5772,10 @@
 &nbsp;&nbsp;avg_firstInputDelay_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(firstInputDelay) descending</span><br />
 &nbsp;&nbsp;avg_firstInputDelay_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(largestContentfulPaintElementSize) ascending</span><br />
+&nbsp;&nbsp;avg_largestContentfulPaintElementSize_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(largestContentfulPaintElementSize) descending</span><br />
+&nbsp;&nbsp;avg_largestContentfulPaintElementSize_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(largestContentfulPaint) ascending</span><br />
 &nbsp;&nbsp;avg_largestContentfulPaint_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(largestContentfulPaint) descending</span><br />
@@ -5321,6 +5792,10 @@
 &nbsp;&nbsp;countryName_ASC<br />
 &nbsp;&nbsp;<span class="c"># countryName descending</span><br />
 &nbsp;&nbsp;countryName_DESC<br />
+&nbsp;&nbsp;<span class="c"># cumulativeLayoutShiftElement ascending</span><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_ASC<br />
+&nbsp;&nbsp;<span class="c"># cumulativeLayoutShiftElement descending</span><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_DESC<br />
 &nbsp;&nbsp;<span class="c"># cumulativeLayoutShiftPath ascending</span><br />
 &nbsp;&nbsp;cumulativeLayoutShiftPath_ASC<br />
 &nbsp;&nbsp;<span class="c"># cumulativeLayoutShiftPath descending</span><br />
@@ -5353,10 +5828,34 @@
 &nbsp;&nbsp;deviceType_ASC<br />
 &nbsp;&nbsp;<span class="c"># deviceType descending</span><br />
 &nbsp;&nbsp;deviceType_DESC<br />
+&nbsp;&nbsp;<span class="c"># firstInputDelayElement ascending</span><br />
+&nbsp;&nbsp;firstInputDelayElement_ASC<br />
+&nbsp;&nbsp;<span class="c"># firstInputDelayElement descending</span><br />
+&nbsp;&nbsp;firstInputDelayElement_DESC<br />
+&nbsp;&nbsp;<span class="c"># firstInputDelayName ascending</span><br />
+&nbsp;&nbsp;firstInputDelayName_ASC<br />
+&nbsp;&nbsp;<span class="c"># firstInputDelayName descending</span><br />
+&nbsp;&nbsp;firstInputDelayName_DESC<br />
 &nbsp;&nbsp;<span class="c"># firstInputDelayPath ascending</span><br />
 &nbsp;&nbsp;firstInputDelayPath_ASC<br />
 &nbsp;&nbsp;<span class="c"># firstInputDelayPath descending</span><br />
 &nbsp;&nbsp;firstInputDelayPath_DESC<br />
+&nbsp;&nbsp;<span class="c"># largestContentfulPaintElement ascending</span><br />
+&nbsp;&nbsp;largestContentfulPaintElement_ASC<br />
+&nbsp;&nbsp;<span class="c"># largestContentfulPaintElement descending</span><br />
+&nbsp;&nbsp;largestContentfulPaintElement_DESC<br />
+&nbsp;&nbsp;<span class="c"># largestContentfulPaintObjectHost ascending</span><br />
+&nbsp;&nbsp;largestContentfulPaintObjectHost_ASC<br />
+&nbsp;&nbsp;<span class="c"># largestContentfulPaintObjectHost descending</span><br />
+&nbsp;&nbsp;largestContentfulPaintObjectHost_DESC<br />
+&nbsp;&nbsp;<span class="c"># largestContentfulPaintObjectPath ascending</span><br />
+&nbsp;&nbsp;largestContentfulPaintObjectPath_ASC<br />
+&nbsp;&nbsp;<span class="c"># largestContentfulPaintObjectPath descending</span><br />
+&nbsp;&nbsp;largestContentfulPaintObjectPath_DESC<br />
+&nbsp;&nbsp;<span class="c"># largestContentfulPaintObjectScheme ascending</span><br />
+&nbsp;&nbsp;largestContentfulPaintObjectScheme_ASC<br />
+&nbsp;&nbsp;<span class="c"># largestContentfulPaintObjectScheme descending</span><br />
+&nbsp;&nbsp;largestContentfulPaintObjectScheme_DESC<br />
 &nbsp;&nbsp;<span class="c"># largestContentfulPaintPath ascending</span><br />
 &nbsp;&nbsp;largestContentfulPaintPath_ASC<br />
 &nbsp;&nbsp;<span class="c"># largestContentfulPaintPath descending</span><br />
@@ -5393,6 +5892,22 @@
 &nbsp;&nbsp;quantiles_firstInputDelayP99_ASC<br />
 &nbsp;&nbsp;<span class="c"># quantiles(firstInputDelayP99) descending</span><br />
 &nbsp;&nbsp;quantiles_firstInputDelayP99_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(largestContentfulPaintElementSizeP50) ascending</span><br />
+&nbsp;&nbsp;quantiles_largestContentfulPaintElementSizeP50_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(largestContentfulPaintElementSizeP50) descending</span><br />
+&nbsp;&nbsp;quantiles_largestContentfulPaintElementSizeP50_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(largestContentfulPaintElementSizeP75) ascending</span><br />
+&nbsp;&nbsp;quantiles_largestContentfulPaintElementSizeP75_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(largestContentfulPaintElementSizeP75) descending</span><br />
+&nbsp;&nbsp;quantiles_largestContentfulPaintElementSizeP75_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(largestContentfulPaintElementSizeP90) ascending</span><br />
+&nbsp;&nbsp;quantiles_largestContentfulPaintElementSizeP90_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(largestContentfulPaintElementSizeP90) descending</span><br />
+&nbsp;&nbsp;quantiles_largestContentfulPaintElementSizeP90_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(largestContentfulPaintElementSizeP99) ascending</span><br />
+&nbsp;&nbsp;quantiles_largestContentfulPaintElementSizeP99_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(largestContentfulPaintElementSizeP99) descending</span><br />
+&nbsp;&nbsp;quantiles_largestContentfulPaintElementSizeP99_DESC<br />
 &nbsp;&nbsp;<span class="c"># quantiles(largestContentfulPaintP50) ascending</span><br />
 &nbsp;&nbsp;quantiles_largestContentfulPaintP50_ASC<br />
 &nbsp;&nbsp;<span class="c"># quantiles(largestContentfulPaintP50) descending</span><br />
@@ -5516,6 +6031,14 @@
 &nbsp;&nbsp;firstInputDelayP90: <a href="#int64">int64!</a><br />
 &nbsp;&nbsp;<span class="c"># First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)</span><br />
 &nbsp;&nbsp;firstInputDelayP99: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Size of the largest object in bytes (negative value indicates N/A)</span><br />
+&nbsp;&nbsp;largestContentfulPaintElementSizeP50: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Size of the largest object in bytes (negative value indicates N/A)</span><br />
+&nbsp;&nbsp;largestContentfulPaintElementSizeP75: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Size of the largest object in bytes (negative value indicates N/A)</span><br />
+&nbsp;&nbsp;largestContentfulPaintElementSizeP90: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Size of the largest object in bytes (negative value indicates N/A)</span><br />
+&nbsp;&nbsp;largestContentfulPaintElementSizeP99: <a href="#int64">int64!</a><br />
 &nbsp;&nbsp;<span class="c"># Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)</span><br />
 &nbsp;&nbsp;largestContentfulPaintP50: <a href="#int64">int64!</a><br />
 &nbsp;&nbsp;<span class="c"># Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)</span><br />
@@ -5555,6 +6078,105 @@
 &nbsp;&nbsp;visits: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
+<span class="k">enum</span> <a id="AccountRumWebVitalsEventsAdaptiveOrderBy" href="#AccountRumWebVitalsEventsAdaptiveOrderBy">AccountRumWebVitalsEventsAdaptiveOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># countryName ascending</span><br />
+&nbsp;&nbsp;countryName_ASC<br />
+&nbsp;&nbsp;<span class="c"># countryName descending</span><br />
+&nbsp;&nbsp;countryName_DESC<br />
+&nbsp;&nbsp;<span class="c"># cumulativeLayoutShiftCurrentRect ascending</span><br />
+&nbsp;&nbsp;cumulativeLayoutShiftCurrentRect_ASC<br />
+&nbsp;&nbsp;<span class="c"># cumulativeLayoutShiftCurrentRect descending</span><br />
+&nbsp;&nbsp;cumulativeLayoutShiftCurrentRect_DESC<br />
+&nbsp;&nbsp;<span class="c"># cumulativeLayoutShiftElement ascending</span><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_ASC<br />
+&nbsp;&nbsp;<span class="c"># cumulativeLayoutShiftElement descending</span><br />
+&nbsp;&nbsp;cumulativeLayoutShiftElement_DESC<br />
+&nbsp;&nbsp;<span class="c"># cumulativeLayoutShiftPath ascending</span><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPath_ASC<br />
+&nbsp;&nbsp;<span class="c"># cumulativeLayoutShiftPath descending</span><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPath_DESC<br />
+&nbsp;&nbsp;<span class="c"># cumulativeLayoutShiftPreviousRect ascending</span><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPreviousRect_ASC<br />
+&nbsp;&nbsp;<span class="c"># cumulativeLayoutShiftPreviousRect descending</span><br />
+&nbsp;&nbsp;cumulativeLayoutShiftPreviousRect_DESC<br />
+&nbsp;&nbsp;<span class="c"># cumulativeLayoutShift ascending</span><br />
+&nbsp;&nbsp;cumulativeLayoutShift_ASC<br />
+&nbsp;&nbsp;<span class="c"># cumulativeLayoutShift descending</span><br />
+&nbsp;&nbsp;cumulativeLayoutShift_DESC<br />
+&nbsp;&nbsp;<span class="c"># date ascending</span><br />
+&nbsp;&nbsp;date_ASC<br />
+&nbsp;&nbsp;<span class="c"># date descending</span><br />
+&nbsp;&nbsp;date_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes ascending</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes descending</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFiveMinutes ascending</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFiveMinutes descending</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHalfOfHour ascending</span><br />
+&nbsp;&nbsp;datetimeHalfOfHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHalfOfHour descending</span><br />
+&nbsp;&nbsp;datetimeHalfOfHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHour ascending</span><br />
+&nbsp;&nbsp;datetimeHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHour descending</span><br />
+&nbsp;&nbsp;datetimeHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeMinute ascending</span><br />
+&nbsp;&nbsp;datetimeMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeMinute descending</span><br />
+&nbsp;&nbsp;datetimeMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetime ascending</span><br />
+&nbsp;&nbsp;datetime_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetime descending</span><br />
+&nbsp;&nbsp;datetime_DESC<br />
+&nbsp;&nbsp;<span class="c"># deviceType ascending</span><br />
+&nbsp;&nbsp;deviceType_ASC<br />
+&nbsp;&nbsp;<span class="c"># deviceType descending</span><br />
+&nbsp;&nbsp;deviceType_DESC<br />
+&nbsp;&nbsp;<span class="c"># refererHost ascending</span><br />
+&nbsp;&nbsp;refererHost_ASC<br />
+&nbsp;&nbsp;<span class="c"># refererHost descending</span><br />
+&nbsp;&nbsp;refererHost_DESC<br />
+&nbsp;&nbsp;<span class="c"># refererPath ascending</span><br />
+&nbsp;&nbsp;refererPath_ASC<br />
+&nbsp;&nbsp;<span class="c"># refererPath descending</span><br />
+&nbsp;&nbsp;refererPath_DESC<br />
+&nbsp;&nbsp;<span class="c"># refererScheme ascending</span><br />
+&nbsp;&nbsp;refererScheme_ASC<br />
+&nbsp;&nbsp;<span class="c"># refererScheme descending</span><br />
+&nbsp;&nbsp;refererScheme_DESC<br />
+&nbsp;&nbsp;<span class="c"># requestHost ascending</span><br />
+&nbsp;&nbsp;requestHost_ASC<br />
+&nbsp;&nbsp;<span class="c"># requestHost descending</span><br />
+&nbsp;&nbsp;requestHost_DESC<br />
+&nbsp;&nbsp;<span class="c"># requestPath ascending</span><br />
+&nbsp;&nbsp;requestPath_ASC<br />
+&nbsp;&nbsp;<span class="c"># requestPath descending</span><br />
+&nbsp;&nbsp;requestPath_DESC<br />
+&nbsp;&nbsp;<span class="c"># requestScheme ascending</span><br />
+&nbsp;&nbsp;requestScheme_ASC<br />
+&nbsp;&nbsp;<span class="c"># requestScheme descending</span><br />
+&nbsp;&nbsp;requestScheme_DESC<br />
+&nbsp;&nbsp;<span class="c"># sampleInterval ascending</span><br />
+&nbsp;&nbsp;sampleInterval_ASC<br />
+&nbsp;&nbsp;<span class="c"># sampleInterval descending</span><br />
+&nbsp;&nbsp;sampleInterval_DESC<br />
+&nbsp;&nbsp;<span class="c"># siteTag ascending</span><br />
+&nbsp;&nbsp;siteTag_ASC<br />
+&nbsp;&nbsp;<span class="c"># siteTag descending</span><br />
+&nbsp;&nbsp;siteTag_DESC<br />
+&nbsp;&nbsp;<span class="c"># userAgentBrowser ascending</span><br />
+&nbsp;&nbsp;userAgentBrowser_ASC<br />
+&nbsp;&nbsp;<span class="c"># userAgentBrowser descending</span><br />
+&nbsp;&nbsp;userAgentBrowser_DESC<br />
+&nbsp;&nbsp;<span class="c"># userAgentOS ascending</span><br />
+&nbsp;&nbsp;userAgentOS_ASC<br />
+&nbsp;&nbsp;<span class="c"># userAgentOS descending</span><br />
+&nbsp;&nbsp;userAgentOS_DESC<br />
+}<br />
+<br />
 <span class="c"># Access and limitations for an account</span><br />
 <span class="k">type</span> <a id="AccountSettings" href="#AccountSettings">AccountSettings</a> {<br />
 &nbsp;&nbsp;cdnNetworkAnalyticsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
@@ -5573,6 +6195,7 @@
 &nbsp;&nbsp;networkAnalyticsAttackMetadata: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;rumPageloadEventsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;rumPerformanceEventsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
+&nbsp;&nbsp;rumWebVitalsEventsAdaptive: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;rumWebVitalsEventsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;videoBufferEventsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;videoPlaybackEventsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
@@ -13400,6 +14023,8 @@
 &nbsp;&nbsp;clientIPASNDescription: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Client Country</span><br />
 &nbsp;&nbsp;clientIPCountry: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># 2 letter client country code using ISO 3166-1 alpha-2 syntax</span><br />
+&nbsp;&nbsp;clientIPCountryCode: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># IP Version the client used to connect</span><br />
 &nbsp;&nbsp;clientIPVersion: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Request date from browser</span><br />
@@ -13448,6 +14073,16 @@
 &nbsp;&nbsp;clientIPASN_neq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;clientIPASN_notin: <a href="#uint32">[uint32!]</a><br />
 &nbsp;&nbsp;clientIPCountry: <a href="#string">string</a><br />
+&nbsp;&nbsp;clientIPCountryCode: <a href="#string">string</a><br />
+&nbsp;&nbsp;clientIPCountryCode_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;clientIPCountryCode_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;clientIPCountryCode_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;clientIPCountryCode_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;clientIPCountryCode_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;clientIPCountryCode_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;clientIPCountryCode_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;clientIPCountryCode_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;clientIPCountryCode_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientIPCountry_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientIPCountry_gt: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientIPCountry_in: <a href="#string">[string!]</a><br />
@@ -13576,6 +14211,10 @@
 &nbsp;&nbsp;clientIPASN_ASC<br />
 &nbsp;&nbsp;<span class="c"># clientIPASN descending</span><br />
 &nbsp;&nbsp;clientIPASN_DESC<br />
+&nbsp;&nbsp;<span class="c"># clientIPCountryCode ascending</span><br />
+&nbsp;&nbsp;clientIPCountryCode_ASC<br />
+&nbsp;&nbsp;<span class="c"># clientIPCountryCode descending</span><br />
+&nbsp;&nbsp;clientIPCountryCode_DESC<br />
 &nbsp;&nbsp;<span class="c"># clientIPCountry ascending</span><br />
 &nbsp;&nbsp;clientIPCountry_ASC<br />
 &nbsp;&nbsp;<span class="c"># clientIPCountry descending</span><br />

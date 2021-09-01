@@ -15,6 +15,7 @@ Account-level datasets:
   networkAnalyticsAttackMetadata
 * rumPageloadEventsAdaptiveGroups
 * rumPerformanceEventsAdaptiveGroups
+* rumWebVitalsEventsAdaptive
 * rumWebVitalsEventsAdaptiveGroups
 * videoBufferEventsAdaptiveGroups
 * videoPlaybackEventsAdaptiveGroups
@@ -119,6 +120,8 @@ type account {
   rumPageloadEventsAdaptiveGroups(filter: AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountRumPageloadEventsAdaptiveGroupsOrderBy!]): [AccountRumPageloadEventsAdaptiveGroups!]!
   # Beta. Aggregated RUM performance event metrics with adaptive sampling
   rumPerformanceEventsAdaptiveGroups(filter: AccountRumPerformanceEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountRumPerformanceEventsAdaptiveGroupsOrderBy!]): [AccountRumPerformanceEventsAdaptiveGroups!]!
+  # Beta. RUM Web Vitals event metrics with adaptive sampling
+  rumWebVitalsEventsAdaptive(filter: AccountRumWebVitalsEventsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountRumWebVitalsEventsAdaptiveOrderBy!]): [AccountRumWebVitalsEventsAdaptive!]!
   # Beta. Aggregated RUM Web Vitals event metrics with adaptive sampling
   rumWebVitalsEventsAdaptiveGroups(filter: AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountRumWebVitalsEventsAdaptiveGroupsOrderBy!]): [AccountRumWebVitalsEventsAdaptiveGroups!]!
   settings: AccountSettings
@@ -3720,6 +3723,8 @@ type AccountNelReportsAdaptiveGroupsDimensions {
   clientIPASNDescription: string!
   # Client Country
   clientIPCountry: string!
+  # 2 letter client country code using ISO 3166-1 alpha-2 syntax
+  clientIPCountryCode: string!
   # IP Version the client used to connect
   clientIPVersion: uint8!
   # Request date from browser
@@ -3768,6 +3773,16 @@ input AccountNelReportsAdaptiveGroupsFilter_InputObject {
   clientIPASN_neq: uint32
   clientIPASN_notin: [uint32!]
   clientIPCountry: string
+  clientIPCountryCode: string
+  clientIPCountryCode_geq: string
+  clientIPCountryCode_gt: string
+  clientIPCountryCode_in: [string!]
+  clientIPCountryCode_leq: string
+  clientIPCountryCode_like: string
+  clientIPCountryCode_lt: string
+  clientIPCountryCode_neq: string
+  clientIPCountryCode_notin: [string!]
+  clientIPCountryCode_notlike: string
   clientIPCountry_geq: string
   clientIPCountry_gt: string
   clientIPCountry_in: [string!]
@@ -3896,6 +3911,10 @@ enum AccountNelReportsAdaptiveGroupsOrderBy {
   clientIPASN_ASC
   # clientIPASN descending
   clientIPASN_DESC
+  # clientIPCountryCode ascending
+  clientIPCountryCode_ASC
+  # clientIPCountryCode descending
+  clientIPCountryCode_DESC
   # clientIPCountry ascending
   clientIPCountry_ASC
   # clientIPCountry descending
@@ -4563,6 +4582,10 @@ type AccountRumPerformanceEventsAdaptiveGroupsAvg {
   connectionTime: uint64!
   # Domain lookup time
   dnsTime: uint64!
+  # The time when the first content piece from the DOM is painted (i.e. some text or an image)
+  firstContentfulPaint: uint64!
+  # The time when the first pixel is painted onto the screen (i.e. background of the page)
+  firstPaint: uint64!
   # The time taken for the load event
   loadEventTime: uint64!
   # The time to download and display the entire content of a web page in the browser window
@@ -4794,6 +4817,14 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   avg_dnsTime_ASC
   # avg(dnsTime) descending
   avg_dnsTime_DESC
+  # avg(firstContentfulPaint) ascending
+  avg_firstContentfulPaint_ASC
+  # avg(firstContentfulPaint) descending
+  avg_firstContentfulPaint_DESC
+  # avg(firstPaint) ascending
+  avg_firstPaint_ASC
+  # avg(firstPaint) descending
+  avg_firstPaint_DESC
   # avg(loadEventTime) ascending
   avg_loadEventTime_ASC
   # avg(loadEventTime) descending
@@ -4886,6 +4917,38 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   quantiles_dnsTimeP99_ASC
   # quantiles(dnsTimeP99) descending
   quantiles_dnsTimeP99_DESC
+  # quantiles(firstContentfulPaintP50) ascending
+  quantiles_firstContentfulPaintP50_ASC
+  # quantiles(firstContentfulPaintP50) descending
+  quantiles_firstContentfulPaintP50_DESC
+  # quantiles(firstContentfulPaintP75) ascending
+  quantiles_firstContentfulPaintP75_ASC
+  # quantiles(firstContentfulPaintP75) descending
+  quantiles_firstContentfulPaintP75_DESC
+  # quantiles(firstContentfulPaintP90) ascending
+  quantiles_firstContentfulPaintP90_ASC
+  # quantiles(firstContentfulPaintP90) descending
+  quantiles_firstContentfulPaintP90_DESC
+  # quantiles(firstContentfulPaintP99) ascending
+  quantiles_firstContentfulPaintP99_ASC
+  # quantiles(firstContentfulPaintP99) descending
+  quantiles_firstContentfulPaintP99_DESC
+  # quantiles(firstPaintP50) ascending
+  quantiles_firstPaintP50_ASC
+  # quantiles(firstPaintP50) descending
+  quantiles_firstPaintP50_DESC
+  # quantiles(firstPaintP75) ascending
+  quantiles_firstPaintP75_ASC
+  # quantiles(firstPaintP75) descending
+  quantiles_firstPaintP75_DESC
+  # quantiles(firstPaintP90) ascending
+  quantiles_firstPaintP90_ASC
+  # quantiles(firstPaintP90) descending
+  quantiles_firstPaintP90_DESC
+  # quantiles(firstPaintP99) ascending
+  quantiles_firstPaintP99_ASC
+  # quantiles(firstPaintP99) descending
+  quantiles_firstPaintP99_DESC
   # quantiles(loadEventTimeP50) ascending
   quantiles_loadEventTimeP50_ASC
   # quantiles(loadEventTimeP50) descending
@@ -5025,6 +5088,22 @@ type AccountRumPerformanceEventsAdaptiveGroupsQuantiles {
   dnsTimeP90: uint64!
   # Domain lookup time
   dnsTimeP99: uint64!
+  # The time when the first content piece from the DOM is painted (i.e. some text or an image)
+  firstContentfulPaintP50: uint64!
+  # The time when the first content piece from the DOM is painted (i.e. some text or an image)
+  firstContentfulPaintP75: uint64!
+  # The time when the first content piece from the DOM is painted (i.e. some text or an image)
+  firstContentfulPaintP90: uint64!
+  # The time when the first content piece from the DOM is painted (i.e. some text or an image)
+  firstContentfulPaintP99: uint64!
+  # The time when the first pixel is painted onto the screen (i.e. background of the page)
+  firstPaintP50: uint64!
+  # The time when the first pixel is painted onto the screen (i.e. background of the page)
+  firstPaintP75: uint64!
+  # The time when the first pixel is painted onto the screen (i.e. background of the page)
+  firstPaintP90: uint64!
+  # The time when the first pixel is painted onto the screen (i.e. background of the page)
+  firstPaintP99: uint64!
   # The time taken for the load event
   loadEventTimeP50: uint64!
   # The time taken for the load event
@@ -5072,35 +5151,24 @@ type AccountRumPerformanceEventsAdaptiveGroupsSum {
   visits: uint64!
 }
 
-# Beta. Aggregated RUM Web Vitals event metrics with adaptive sampling
-type AccountRumWebVitalsEventsAdaptiveGroups {
-  avg: AccountRumWebVitalsEventsAdaptiveGroupsAvg
-  # The number of pages viewed by end-users
-  count: uint64!
-  # List of dimensions to group by
-  dimensions: AccountRumWebVitalsEventsAdaptiveGroupsDimensions
-  quantiles: AccountRumWebVitalsEventsAdaptiveGroupsQuantiles
-  sum: AccountRumWebVitalsEventsAdaptiveGroupsSum
-}
-
-type AccountRumWebVitalsEventsAdaptiveGroupsAvg {
-  # Cumulative Layout Shift (Core Web Vitals) (negative value indicates N/A)
-  cumulativeLayoutShift: float64!
-  # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
-  firstInputDelay: int64!
-  # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
-  largestContentfulPaint: int64!
-  # Average sample interval
-  sampleInterval: float64!
-}
-
-type AccountRumWebVitalsEventsAdaptiveGroupsDimensions {
+# Beta. RUM Web Vitals event metrics with adaptive sampling
+type AccountRumWebVitalsEventsAdaptive {
   # Client country ISO 3166 alpha2 code
   countryName: string!
+  # Cumulative Layout Shift (Core Web Vitals) (-1 indicates N/A)
+  cumulativeLayoutShift: float64!
+  # Layout values of the rectangular area after the changes
+  cumulativeLayoutShiftCurrentRect: string!
+  # DOM selector name of the largest layout shift
+  cumulativeLayoutShiftElement: string!
   # Observed path of the Cumulative Layout Shift (Core Web Vitals)
   cumulativeLayoutShiftPath: string!
+  # Layout values of the rectangular area before the changes
+  cumulativeLayoutShiftPreviousRect: string!
   # Request date from browser
   date: Date!
+  # Request datetime from browser
+  datetime: Time!
   # Request datetime from browser, truncated to multiple of 15 minutes
   datetimeFifteenMinutes: Time!
   # Request datetime from browser, truncated to multiple of 5 minutes
@@ -5113,10 +5181,6 @@ type AccountRumWebVitalsEventsAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # Device type used for view the page
   deviceType: string!
-  # Observed path of the First Input Delay (Core Web Vitals)
-  firstInputDelayPath: string!
-  # Observed path of the Largest Contentful Paint (Core Web Vitals)
-  largestContentfulPaintPath: string!
   # Host of the HTTP request referer
   refererHost: string!
   # Path of the HTTP request referer
@@ -5129,6 +5193,8 @@ type AccountRumWebVitalsEventsAdaptiveGroupsDimensions {
   requestPath: string!
   # Scheme of the web page URL (http or https)
   requestScheme: string!
+  # ABR sample interval
+  sampleInterval: uint32!
   # The key value to identify a site
   siteTag: string!
   # Browser parsed from the user agent
@@ -5137,9 +5203,9 @@ type AccountRumWebVitalsEventsAdaptiveGroupsDimensions {
   userAgentOS: string!
 }
 
-input AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject {
-  AND: [AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject!]
-  OR: [AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject!]
+input AccountRumWebVitalsEventsAdaptiveFilter_InputObject {
+  AND: [AccountRumWebVitalsEventsAdaptiveFilter_InputObject!]
+  OR: [AccountRumWebVitalsEventsAdaptiveFilter_InputObject!]
   countryName: string
   countryName_geq: string
   countryName_gt: string
@@ -5150,6 +5216,27 @@ input AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject {
   countryName_neq: string
   countryName_notin: [string!]
   countryName_notlike: string
+  cumulativeLayoutShift: float64
+  cumulativeLayoutShiftCurrentRect: string
+  cumulativeLayoutShiftCurrentRect_geq: string
+  cumulativeLayoutShiftCurrentRect_gt: string
+  cumulativeLayoutShiftCurrentRect_in: [string!]
+  cumulativeLayoutShiftCurrentRect_leq: string
+  cumulativeLayoutShiftCurrentRect_like: string
+  cumulativeLayoutShiftCurrentRect_lt: string
+  cumulativeLayoutShiftCurrentRect_neq: string
+  cumulativeLayoutShiftCurrentRect_notin: [string!]
+  cumulativeLayoutShiftCurrentRect_notlike: string
+  cumulativeLayoutShiftElement: string
+  cumulativeLayoutShiftElement_geq: string
+  cumulativeLayoutShiftElement_gt: string
+  cumulativeLayoutShiftElement_in: [string!]
+  cumulativeLayoutShiftElement_leq: string
+  cumulativeLayoutShiftElement_like: string
+  cumulativeLayoutShiftElement_lt: string
+  cumulativeLayoutShiftElement_neq: string
+  cumulativeLayoutShiftElement_notin: [string!]
+  cumulativeLayoutShiftElement_notlike: string
   cumulativeLayoutShiftPath: string
   cumulativeLayoutShiftPath_geq: string
   cumulativeLayoutShiftPath_gt: string
@@ -5160,6 +5247,23 @@ input AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject {
   cumulativeLayoutShiftPath_neq: string
   cumulativeLayoutShiftPath_notin: [string!]
   cumulativeLayoutShiftPath_notlike: string
+  cumulativeLayoutShiftPreviousRect: string
+  cumulativeLayoutShiftPreviousRect_geq: string
+  cumulativeLayoutShiftPreviousRect_gt: string
+  cumulativeLayoutShiftPreviousRect_in: [string!]
+  cumulativeLayoutShiftPreviousRect_leq: string
+  cumulativeLayoutShiftPreviousRect_like: string
+  cumulativeLayoutShiftPreviousRect_lt: string
+  cumulativeLayoutShiftPreviousRect_neq: string
+  cumulativeLayoutShiftPreviousRect_notin: [string!]
+  cumulativeLayoutShiftPreviousRect_notlike: string
+  cumulativeLayoutShift_geq: float64
+  cumulativeLayoutShift_gt: float64
+  cumulativeLayoutShift_in: [float64!]
+  cumulativeLayoutShift_leq: float64
+  cumulativeLayoutShift_lt: float64
+  cumulativeLayoutShift_neq: float64
+  cumulativeLayoutShift_notin: [float64!]
   date: Date
   date_geq: Date
   date_gt: Date
@@ -5226,6 +5330,315 @@ input AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject {
   deviceType_neq: string
   deviceType_notin: [string!]
   deviceType_notlike: string
+  refererHost: string
+  refererHost_geq: string
+  refererHost_gt: string
+  refererHost_in: [string!]
+  refererHost_leq: string
+  refererHost_like: string
+  refererHost_lt: string
+  refererHost_neq: string
+  refererHost_notin: [string!]
+  refererHost_notlike: string
+  refererPath: string
+  refererPath_geq: string
+  refererPath_gt: string
+  refererPath_in: [string!]
+  refererPath_leq: string
+  refererPath_like: string
+  refererPath_lt: string
+  refererPath_neq: string
+  refererPath_notin: [string!]
+  refererPath_notlike: string
+  refererScheme: string
+  refererScheme_geq: string
+  refererScheme_gt: string
+  refererScheme_in: [string!]
+  refererScheme_leq: string
+  refererScheme_like: string
+  refererScheme_lt: string
+  refererScheme_neq: string
+  refererScheme_notin: [string!]
+  refererScheme_notlike: string
+  requestHost: string
+  requestHost_geq: string
+  requestHost_gt: string
+  requestHost_in: [string!]
+  requestHost_leq: string
+  requestHost_like: string
+  requestHost_lt: string
+  requestHost_neq: string
+  requestHost_notin: [string!]
+  requestHost_notlike: string
+  requestPath: string
+  requestPath_geq: string
+  requestPath_gt: string
+  requestPath_in: [string!]
+  requestPath_leq: string
+  requestPath_like: string
+  requestPath_lt: string
+  requestPath_neq: string
+  requestPath_notin: [string!]
+  requestPath_notlike: string
+  requestScheme: string
+  requestScheme_geq: string
+  requestScheme_gt: string
+  requestScheme_in: [string!]
+  requestScheme_leq: string
+  requestScheme_like: string
+  requestScheme_lt: string
+  requestScheme_neq: string
+  requestScheme_notin: [string!]
+  requestScheme_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  siteTag: string
+  siteTag_geq: string
+  siteTag_gt: string
+  siteTag_in: [string!]
+  siteTag_leq: string
+  siteTag_like: string
+  siteTag_lt: string
+  siteTag_neq: string
+  siteTag_notin: [string!]
+  siteTag_notlike: string
+  userAgentBrowser: string
+  userAgentBrowser_geq: string
+  userAgentBrowser_gt: string
+  userAgentBrowser_in: [string!]
+  userAgentBrowser_leq: string
+  userAgentBrowser_like: string
+  userAgentBrowser_lt: string
+  userAgentBrowser_neq: string
+  userAgentBrowser_notin: [string!]
+  userAgentBrowser_notlike: string
+  userAgentOS: string
+  userAgentOS_geq: string
+  userAgentOS_gt: string
+  userAgentOS_in: [string!]
+  userAgentOS_leq: string
+  userAgentOS_like: string
+  userAgentOS_lt: string
+  userAgentOS_neq: string
+  userAgentOS_notin: [string!]
+  userAgentOS_notlike: string
+}
+
+# Beta. Aggregated RUM Web Vitals event metrics with adaptive sampling
+type AccountRumWebVitalsEventsAdaptiveGroups {
+  avg: AccountRumWebVitalsEventsAdaptiveGroupsAvg
+  # The number of pages viewed by end-users
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountRumWebVitalsEventsAdaptiveGroupsDimensions
+  quantiles: AccountRumWebVitalsEventsAdaptiveGroupsQuantiles
+  sum: AccountRumWebVitalsEventsAdaptiveGroupsSum
+}
+
+type AccountRumWebVitalsEventsAdaptiveGroupsAvg {
+  # Cumulative Layout Shift (Core Web Vitals) (negative value indicates N/A)
+  cumulativeLayoutShift: float64!
+  # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
+  firstInputDelay: int64!
+  # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
+  largestContentfulPaint: int64!
+  # Size of the largest object in bytes (negative value indicates N/A)
+  largestContentfulPaintElementSize: int64!
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountRumWebVitalsEventsAdaptiveGroupsDimensions {
+  # Client country ISO 3166 alpha2 code
+  countryName: string!
+  # DOM selector name of the largest layout shift
+  cumulativeLayoutShiftElement: string!
+  # Observed path of the Cumulative Layout Shift (Core Web Vitals)
+  cumulativeLayoutShiftPath: string!
+  # Request date from browser
+  date: Date!
+  # Request datetime from browser, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Request datetime from browser, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # Request datetime from browser, truncated to multiple of 30 minutes
+  datetimeHalfOfHour: Time!
+  # Request datetime from browser, truncated to the hour
+  datetimeHour: Time!
+  # Request datetime from browser, truncated to the minute
+  datetimeMinute: Time!
+  # Device type used for view the page
+  deviceType: string!
+  # DOM selector name of the input delay
+  firstInputDelayElement: string!
+  # Action name of the input delay
+  firstInputDelayName: string!
+  # Observed path of the First Input Delay (Core Web Vitals)
+  firstInputDelayPath: string!
+  # DOM selector name of the largest object
+  largestContentfulPaintElement: string!
+  # Host of the largest object
+  largestContentfulPaintObjectHost: string!
+  # Path of the largest object
+  largestContentfulPaintObjectPath: string!
+  # Scheme of the largest object (http or https)
+  largestContentfulPaintObjectScheme: string!
+  # Observed path of the Largest Contentful Paint (Core Web Vitals)
+  largestContentfulPaintPath: string!
+  # Host of the HTTP request referer
+  refererHost: string!
+  # Path of the HTTP request referer
+  refererPath: string!
+  # Scheme of the HTTP request referer (http or https)
+  refererScheme: string!
+  # HTTP Host of the web page URL
+  requestHost: string!
+  # Path of the web page URL
+  requestPath: string!
+  # Scheme of the web page URL (http or https)
+  requestScheme: string!
+  # The key value to identify a site
+  siteTag: string!
+  # Browser parsed from the user agent
+  userAgentBrowser: string!
+  # OS parsed from the user agent
+  userAgentOS: string!
+}
+
+input AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject!]
+  countryName: string
+  countryName_geq: string
+  countryName_gt: string
+  countryName_in: [string!]
+  countryName_leq: string
+  countryName_like: string
+  countryName_lt: string
+  countryName_neq: string
+  countryName_notin: [string!]
+  countryName_notlike: string
+  cumulativeLayoutShift: float64
+  cumulativeLayoutShiftElement: string
+  cumulativeLayoutShiftElement_geq: string
+  cumulativeLayoutShiftElement_gt: string
+  cumulativeLayoutShiftElement_in: [string!]
+  cumulativeLayoutShiftElement_leq: string
+  cumulativeLayoutShiftElement_like: string
+  cumulativeLayoutShiftElement_lt: string
+  cumulativeLayoutShiftElement_neq: string
+  cumulativeLayoutShiftElement_notin: [string!]
+  cumulativeLayoutShiftElement_notlike: string
+  cumulativeLayoutShiftPath: string
+  cumulativeLayoutShiftPath_geq: string
+  cumulativeLayoutShiftPath_gt: string
+  cumulativeLayoutShiftPath_in: [string!]
+  cumulativeLayoutShiftPath_leq: string
+  cumulativeLayoutShiftPath_like: string
+  cumulativeLayoutShiftPath_lt: string
+  cumulativeLayoutShiftPath_neq: string
+  cumulativeLayoutShiftPath_notin: [string!]
+  cumulativeLayoutShiftPath_notlike: string
+  cumulativeLayoutShift_geq: float64
+  cumulativeLayoutShift_gt: float64
+  cumulativeLayoutShift_in: [float64!]
+  cumulativeLayoutShift_leq: float64
+  cumulativeLayoutShift_lt: float64
+  cumulativeLayoutShift_neq: float64
+  cumulativeLayoutShift_notin: [float64!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHalfOfHour: Time
+  datetimeHalfOfHour_geq: Time
+  datetimeHalfOfHour_gt: Time
+  datetimeHalfOfHour_in: [Time!]
+  datetimeHalfOfHour_leq: Time
+  datetimeHalfOfHour_lt: Time
+  datetimeHalfOfHour_neq: Time
+  datetimeHalfOfHour_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  deviceType: string
+  deviceType_geq: string
+  deviceType_gt: string
+  deviceType_in: [string!]
+  deviceType_leq: string
+  deviceType_like: string
+  deviceType_lt: string
+  deviceType_neq: string
+  deviceType_notin: [string!]
+  deviceType_notlike: string
+  firstInputDelay: int64
+  firstInputDelayElement: string
+  firstInputDelayElement_geq: string
+  firstInputDelayElement_gt: string
+  firstInputDelayElement_in: [string!]
+  firstInputDelayElement_leq: string
+  firstInputDelayElement_like: string
+  firstInputDelayElement_lt: string
+  firstInputDelayElement_neq: string
+  firstInputDelayElement_notin: [string!]
+  firstInputDelayElement_notlike: string
+  firstInputDelayName: string
+  firstInputDelayName_geq: string
+  firstInputDelayName_gt: string
+  firstInputDelayName_in: [string!]
+  firstInputDelayName_leq: string
+  firstInputDelayName_like: string
+  firstInputDelayName_lt: string
+  firstInputDelayName_neq: string
+  firstInputDelayName_notin: [string!]
+  firstInputDelayName_notlike: string
   firstInputDelayPath: string
   firstInputDelayPath_geq: string
   firstInputDelayPath_gt: string
@@ -5236,6 +5649,54 @@ input AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject {
   firstInputDelayPath_neq: string
   firstInputDelayPath_notin: [string!]
   firstInputDelayPath_notlike: string
+  firstInputDelay_geq: int64
+  firstInputDelay_gt: int64
+  firstInputDelay_in: [int64!]
+  firstInputDelay_leq: int64
+  firstInputDelay_lt: int64
+  firstInputDelay_neq: int64
+  firstInputDelay_notin: [int64!]
+  largestContentfulPaint: int64
+  largestContentfulPaintElement: string
+  largestContentfulPaintElement_geq: string
+  largestContentfulPaintElement_gt: string
+  largestContentfulPaintElement_in: [string!]
+  largestContentfulPaintElement_leq: string
+  largestContentfulPaintElement_like: string
+  largestContentfulPaintElement_lt: string
+  largestContentfulPaintElement_neq: string
+  largestContentfulPaintElement_notin: [string!]
+  largestContentfulPaintElement_notlike: string
+  largestContentfulPaintObjectHost: string
+  largestContentfulPaintObjectHost_geq: string
+  largestContentfulPaintObjectHost_gt: string
+  largestContentfulPaintObjectHost_in: [string!]
+  largestContentfulPaintObjectHost_leq: string
+  largestContentfulPaintObjectHost_like: string
+  largestContentfulPaintObjectHost_lt: string
+  largestContentfulPaintObjectHost_neq: string
+  largestContentfulPaintObjectHost_notin: [string!]
+  largestContentfulPaintObjectHost_notlike: string
+  largestContentfulPaintObjectPath: string
+  largestContentfulPaintObjectPath_geq: string
+  largestContentfulPaintObjectPath_gt: string
+  largestContentfulPaintObjectPath_in: [string!]
+  largestContentfulPaintObjectPath_leq: string
+  largestContentfulPaintObjectPath_like: string
+  largestContentfulPaintObjectPath_lt: string
+  largestContentfulPaintObjectPath_neq: string
+  largestContentfulPaintObjectPath_notin: [string!]
+  largestContentfulPaintObjectPath_notlike: string
+  largestContentfulPaintObjectScheme: string
+  largestContentfulPaintObjectScheme_geq: string
+  largestContentfulPaintObjectScheme_gt: string
+  largestContentfulPaintObjectScheme_in: [string!]
+  largestContentfulPaintObjectScheme_leq: string
+  largestContentfulPaintObjectScheme_like: string
+  largestContentfulPaintObjectScheme_lt: string
+  largestContentfulPaintObjectScheme_neq: string
+  largestContentfulPaintObjectScheme_notin: [string!]
+  largestContentfulPaintObjectScheme_notlike: string
   largestContentfulPaintPath: string
   largestContentfulPaintPath_geq: string
   largestContentfulPaintPath_gt: string
@@ -5246,6 +5707,13 @@ input AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject {
   largestContentfulPaintPath_neq: string
   largestContentfulPaintPath_notin: [string!]
   largestContentfulPaintPath_notlike: string
+  largestContentfulPaint_geq: int64
+  largestContentfulPaint_gt: int64
+  largestContentfulPaint_in: [int64!]
+  largestContentfulPaint_leq: int64
+  largestContentfulPaint_lt: int64
+  largestContentfulPaint_neq: int64
+  largestContentfulPaint_notin: [int64!]
   refererHost: string
   refererHost_geq: string
   refererHost_gt: string
@@ -5347,6 +5815,10 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   avg_firstInputDelay_ASC
   # avg(firstInputDelay) descending
   avg_firstInputDelay_DESC
+  # avg(largestContentfulPaintElementSize) ascending
+  avg_largestContentfulPaintElementSize_ASC
+  # avg(largestContentfulPaintElementSize) descending
+  avg_largestContentfulPaintElementSize_DESC
   # avg(largestContentfulPaint) ascending
   avg_largestContentfulPaint_ASC
   # avg(largestContentfulPaint) descending
@@ -5363,6 +5835,10 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   countryName_ASC
   # countryName descending
   countryName_DESC
+  # cumulativeLayoutShiftElement ascending
+  cumulativeLayoutShiftElement_ASC
+  # cumulativeLayoutShiftElement descending
+  cumulativeLayoutShiftElement_DESC
   # cumulativeLayoutShiftPath ascending
   cumulativeLayoutShiftPath_ASC
   # cumulativeLayoutShiftPath descending
@@ -5395,10 +5871,34 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   deviceType_ASC
   # deviceType descending
   deviceType_DESC
+  # firstInputDelayElement ascending
+  firstInputDelayElement_ASC
+  # firstInputDelayElement descending
+  firstInputDelayElement_DESC
+  # firstInputDelayName ascending
+  firstInputDelayName_ASC
+  # firstInputDelayName descending
+  firstInputDelayName_DESC
   # firstInputDelayPath ascending
   firstInputDelayPath_ASC
   # firstInputDelayPath descending
   firstInputDelayPath_DESC
+  # largestContentfulPaintElement ascending
+  largestContentfulPaintElement_ASC
+  # largestContentfulPaintElement descending
+  largestContentfulPaintElement_DESC
+  # largestContentfulPaintObjectHost ascending
+  largestContentfulPaintObjectHost_ASC
+  # largestContentfulPaintObjectHost descending
+  largestContentfulPaintObjectHost_DESC
+  # largestContentfulPaintObjectPath ascending
+  largestContentfulPaintObjectPath_ASC
+  # largestContentfulPaintObjectPath descending
+  largestContentfulPaintObjectPath_DESC
+  # largestContentfulPaintObjectScheme ascending
+  largestContentfulPaintObjectScheme_ASC
+  # largestContentfulPaintObjectScheme descending
+  largestContentfulPaintObjectScheme_DESC
   # largestContentfulPaintPath ascending
   largestContentfulPaintPath_ASC
   # largestContentfulPaintPath descending
@@ -5435,6 +5935,22 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   quantiles_firstInputDelayP99_ASC
   # quantiles(firstInputDelayP99) descending
   quantiles_firstInputDelayP99_DESC
+  # quantiles(largestContentfulPaintElementSizeP50) ascending
+  quantiles_largestContentfulPaintElementSizeP50_ASC
+  # quantiles(largestContentfulPaintElementSizeP50) descending
+  quantiles_largestContentfulPaintElementSizeP50_DESC
+  # quantiles(largestContentfulPaintElementSizeP75) ascending
+  quantiles_largestContentfulPaintElementSizeP75_ASC
+  # quantiles(largestContentfulPaintElementSizeP75) descending
+  quantiles_largestContentfulPaintElementSizeP75_DESC
+  # quantiles(largestContentfulPaintElementSizeP90) ascending
+  quantiles_largestContentfulPaintElementSizeP90_ASC
+  # quantiles(largestContentfulPaintElementSizeP90) descending
+  quantiles_largestContentfulPaintElementSizeP90_DESC
+  # quantiles(largestContentfulPaintElementSizeP99) ascending
+  quantiles_largestContentfulPaintElementSizeP99_ASC
+  # quantiles(largestContentfulPaintElementSizeP99) descending
+  quantiles_largestContentfulPaintElementSizeP99_DESC
   # quantiles(largestContentfulPaintP50) ascending
   quantiles_largestContentfulPaintP50_ASC
   # quantiles(largestContentfulPaintP50) descending
@@ -5558,6 +6074,14 @@ type AccountRumWebVitalsEventsAdaptiveGroupsQuantiles {
   firstInputDelayP90: int64!
   # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
   firstInputDelayP99: int64!
+  # Size of the largest object in bytes (negative value indicates N/A)
+  largestContentfulPaintElementSizeP50: int64!
+  # Size of the largest object in bytes (negative value indicates N/A)
+  largestContentfulPaintElementSizeP75: int64!
+  # Size of the largest object in bytes (negative value indicates N/A)
+  largestContentfulPaintElementSizeP90: int64!
+  # Size of the largest object in bytes (negative value indicates N/A)
+  largestContentfulPaintElementSizeP99: int64!
   # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
   largestContentfulPaintP50: int64!
   # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
@@ -5597,6 +6121,105 @@ type AccountRumWebVitalsEventsAdaptiveGroupsSum {
   visits: uint64!
 }
 
+enum AccountRumWebVitalsEventsAdaptiveOrderBy {
+  # countryName ascending
+  countryName_ASC
+  # countryName descending
+  countryName_DESC
+  # cumulativeLayoutShiftCurrentRect ascending
+  cumulativeLayoutShiftCurrentRect_ASC
+  # cumulativeLayoutShiftCurrentRect descending
+  cumulativeLayoutShiftCurrentRect_DESC
+  # cumulativeLayoutShiftElement ascending
+  cumulativeLayoutShiftElement_ASC
+  # cumulativeLayoutShiftElement descending
+  cumulativeLayoutShiftElement_DESC
+  # cumulativeLayoutShiftPath ascending
+  cumulativeLayoutShiftPath_ASC
+  # cumulativeLayoutShiftPath descending
+  cumulativeLayoutShiftPath_DESC
+  # cumulativeLayoutShiftPreviousRect ascending
+  cumulativeLayoutShiftPreviousRect_ASC
+  # cumulativeLayoutShiftPreviousRect descending
+  cumulativeLayoutShiftPreviousRect_DESC
+  # cumulativeLayoutShift ascending
+  cumulativeLayoutShift_ASC
+  # cumulativeLayoutShift descending
+  cumulativeLayoutShift_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHalfOfHour ascending
+  datetimeHalfOfHour_ASC
+  # datetimeHalfOfHour descending
+  datetimeHalfOfHour_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # deviceType ascending
+  deviceType_ASC
+  # deviceType descending
+  deviceType_DESC
+  # refererHost ascending
+  refererHost_ASC
+  # refererHost descending
+  refererHost_DESC
+  # refererPath ascending
+  refererPath_ASC
+  # refererPath descending
+  refererPath_DESC
+  # refererScheme ascending
+  refererScheme_ASC
+  # refererScheme descending
+  refererScheme_DESC
+  # requestHost ascending
+  requestHost_ASC
+  # requestHost descending
+  requestHost_DESC
+  # requestPath ascending
+  requestPath_ASC
+  # requestPath descending
+  requestPath_DESC
+  # requestScheme ascending
+  requestScheme_ASC
+  # requestScheme descending
+  requestScheme_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # siteTag ascending
+  siteTag_ASC
+  # siteTag descending
+  siteTag_DESC
+  # userAgentBrowser ascending
+  userAgentBrowser_ASC
+  # userAgentBrowser descending
+  userAgentBrowser_DESC
+  # userAgentOS ascending
+  userAgentOS_ASC
+  # userAgentOS descending
+  userAgentOS_DESC
+}
+
 # Access and limitations for an account
 type AccountSettings {
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
@@ -5615,6 +6238,7 @@ type AccountSettings {
   networkAnalyticsAttackMetadata: Settings!
   rumPageloadEventsAdaptiveGroups: Settings!
   rumPerformanceEventsAdaptiveGroups: Settings!
+  rumWebVitalsEventsAdaptive: Settings!
   rumWebVitalsEventsAdaptiveGroups: Settings!
   videoBufferEventsAdaptiveGroups: Settings!
   videoPlaybackEventsAdaptiveGroups: Settings!
@@ -13442,6 +14066,8 @@ type ZoneNelReportsAdaptiveGroupsDimensions {
   clientIPASNDescription: string!
   # Client Country
   clientIPCountry: string!
+  # 2 letter client country code using ISO 3166-1 alpha-2 syntax
+  clientIPCountryCode: string!
   # IP Version the client used to connect
   clientIPVersion: uint8!
   # Request date from browser
@@ -13490,6 +14116,16 @@ input ZoneNelReportsAdaptiveGroupsFilter_InputObject {
   clientIPASN_neq: uint32
   clientIPASN_notin: [uint32!]
   clientIPCountry: string
+  clientIPCountryCode: string
+  clientIPCountryCode_geq: string
+  clientIPCountryCode_gt: string
+  clientIPCountryCode_in: [string!]
+  clientIPCountryCode_leq: string
+  clientIPCountryCode_like: string
+  clientIPCountryCode_lt: string
+  clientIPCountryCode_neq: string
+  clientIPCountryCode_notin: [string!]
+  clientIPCountryCode_notlike: string
   clientIPCountry_geq: string
   clientIPCountry_gt: string
   clientIPCountry_in: [string!]
@@ -13618,6 +14254,10 @@ enum ZoneNelReportsAdaptiveGroupsOrderBy {
   clientIPASN_ASC
   # clientIPASN descending
   clientIPASN_DESC
+  # clientIPCountryCode ascending
+  clientIPCountryCode_ASC
+  # clientIPCountryCode descending
+  clientIPCountryCode_DESC
   # clientIPCountry ascending
   clientIPCountry_ASC
   # clientIPCountry descending
