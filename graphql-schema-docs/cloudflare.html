@@ -109,10 +109,39 @@
 <br />
 <span class="c"># Network analytics data for Cloudflare CDN traffic</span><br />
 <span class="k">type</span> <a id="AccountCdnNetworkAnalyticsAdaptiveGroups" href="#AccountCdnNetworkAnalyticsAdaptiveGroups">AccountCdnNetworkAnalyticsAdaptiveGroups</a> {<br />
+&nbsp;&nbsp;<span class="c"># The average of values for a metric per dimension</span><br />
+&nbsp;&nbsp;avg: <a href="#AccountCdnNetworkAnalyticsAdaptiveGroupsAvg">AccountCdnNetworkAnalyticsAdaptiveGroupsAvg</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions">AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions</a><br />
 &nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
 &nbsp;&nbsp;sum: <a href="#AccountCdnNetworkAnalyticsAdaptiveGroupsSum">AccountCdnNetworkAnalyticsAdaptiveGroupsSum</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountCdnNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountCdnNetworkAnalyticsAdaptiveGroupsAvg">AccountCdnNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
+&nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
+&nbsp;&nbsp;bitRateFiveMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour</span><br />
+&nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute</span><br />
+&nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
+&nbsp;&nbsp;bitRateSecond: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds</span><br />
+&nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
+&nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
+&nbsp;&nbsp;packetRateFiveMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour</span><br />
+&nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute</span><br />
+&nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
+&nbsp;&nbsp;packetRateSecond: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds</span><br />
+&nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions" href="#AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions">AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions</a> {<br />
@@ -218,6 +247,8 @@
 &nbsp;&nbsp;mitigationSystem: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The action that was taken on the packet (possible values: pass, drop)</span><br />
 &nbsp;&nbsp;outcome: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># ABR sample interval</span><br />
+&nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># ASN associated with the source IP of the packet, or 0 if there was no mapping available</span><br />
 &nbsp;&nbsp;sourceAsn: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Country where the source IP of the packet is located (ISO 3166-1 alpha-2)</span><br />
@@ -705,6 +736,14 @@
 &nbsp;&nbsp;outcome_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;outcome_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;outcome_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_geq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_gt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_in: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;sampleInterval_leq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_lt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_neq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_notin: <a href="#uint32">[uint32!]</a><br />
 &nbsp;&nbsp;sourceAsn: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sourceAsn_geq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sourceAsn_gt: <a href="#uint32">uint32</a><br />
@@ -886,6 +925,54 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy" href="#AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy">AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) descending</span><br />
+&nbsp;&nbsp;avg_bitRateFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFiveMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFiveMinutes) descending</span><br />
+&nbsp;&nbsp;avg_bitRateFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateHour) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateHour) descending</span><br />
+&nbsp;&nbsp;avg_bitRateHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateMinute) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateMinute) descending</span><br />
+&nbsp;&nbsp;avg_bitRateMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateSecond_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) descending</span><br />
+&nbsp;&nbsp;avg_bitRateSecond_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateTenSeconds_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) descending</span><br />
+&nbsp;&nbsp;avg_bitRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
+&nbsp;&nbsp;avg_packetRateFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFiveMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFiveMinutes) descending</span><br />
+&nbsp;&nbsp;avg_packetRateFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateHour) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateHour) descending</span><br />
+&nbsp;&nbsp;avg_packetRateHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateMinute) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateMinute) descending</span><br />
+&nbsp;&nbsp;avg_packetRateMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateSecond_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) descending</span><br />
+&nbsp;&nbsp;avg_packetRateSecond_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateTenSeconds_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) descending</span><br />
+&nbsp;&nbsp;avg_packetRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCity ascending</span><br />
 &nbsp;&nbsp;coloCity_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCity descending</span><br />
@@ -1090,6 +1177,10 @@
 &nbsp;&nbsp;outcome_ASC<br />
 &nbsp;&nbsp;<span class="c"># outcome descending</span><br />
 &nbsp;&nbsp;outcome_DESC<br />
+&nbsp;&nbsp;<span class="c"># sampleInterval ascending</span><br />
+&nbsp;&nbsp;sampleInterval_ASC<br />
+&nbsp;&nbsp;<span class="c"># sampleInterval descending</span><br />
+&nbsp;&nbsp;sampleInterval_DESC<br />
 &nbsp;&nbsp;<span class="c"># sourceAsn ascending</span><br />
 &nbsp;&nbsp;sourceAsn_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourceAsn descending</span><br />
@@ -1106,50 +1197,10 @@
 &nbsp;&nbsp;sourcePort_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourcePort descending</span><br />
 &nbsp;&nbsp;sourcePort_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFifteenMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateFifteenMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFifteenMinutes) descending</span><br />
-&nbsp;&nbsp;sum_bitRateFifteenMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFiveMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateFiveMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFiveMinutes) descending</span><br />
-&nbsp;&nbsp;sum_bitRateFiveMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateHour) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateHour_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateHour) descending</span><br />
-&nbsp;&nbsp;sum_bitRateHour_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateMinute) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateMinute_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateMinute) descending</span><br />
-&nbsp;&nbsp;sum_bitRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateTenSeconds) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateTenSeconds_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateTenSeconds) descending</span><br />
-&nbsp;&nbsp;sum_bitRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(bits) ascending</span><br />
 &nbsp;&nbsp;sum_bits_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(bits) descending</span><br />
 &nbsp;&nbsp;sum_bits_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFifteenMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateFifteenMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFifteenMinutes) descending</span><br />
-&nbsp;&nbsp;sum_packetRateFifteenMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFiveMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateFiveMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFiveMinutes) descending</span><br />
-&nbsp;&nbsp;sum_packetRateFiveMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateHour) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateHour_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateHour) descending</span><br />
-&nbsp;&nbsp;sum_packetRateHour_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateMinute) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateMinute_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateMinute) descending</span><br />
-&nbsp;&nbsp;sum_packetRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateTenSeconds) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateTenSeconds_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateTenSeconds) descending</span><br />
-&nbsp;&nbsp;sum_packetRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(packets) ascending</span><br />
 &nbsp;&nbsp;sum_packets_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(packets) descending</span><br />
@@ -1229,38 +1280,47 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountCdnNetworkAnalyticsAdaptiveGroupsSum" href="#AccountCdnNetworkAnalyticsAdaptiveGroupsSum">AccountCdnNetworkAnalyticsAdaptiveGroupsSum</a> {<br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes</span><br />
-&nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes</span><br />
-&nbsp;&nbsp;bitRateFiveMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour</span><br />
-&nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute</span><br />
-&nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds</span><br />
-&nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, providing a per-second rate when grouped by datetime</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received</span><br />
 &nbsp;&nbsp;bits: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes</span><br />
-&nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes</span><br />
-&nbsp;&nbsp;packetRateFiveMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour</span><br />
-&nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute</span><br />
-&nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds</span><br />
-&nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, providing a per-second rate when grouped by datetime</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received</span><br />
 &nbsp;&nbsp;packets: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="c"># Attack analytics metadata for attacks detected by dosd</span><br />
 <span class="k">type</span> <a id="AccountDosdAttackAnalyticsAdaptiveGroups" href="#AccountDosdAttackAnalyticsAdaptiveGroups">AccountDosdAttackAnalyticsAdaptiveGroups</a> {<br />
+&nbsp;&nbsp;<span class="c"># The average of values for a metric per dimension</span><br />
+&nbsp;&nbsp;avg: <a href="#AccountDosdAttackAnalyticsAdaptiveGroupsAvg">AccountDosdAttackAnalyticsAdaptiveGroupsAvg</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#AccountDosdAttackAnalyticsAdaptiveGroupsDimensions">AccountDosdAttackAnalyticsAdaptiveGroupsDimensions</a><br />
 &nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
 &nbsp;&nbsp;sum: <a href="#AccountDosdAttackAnalyticsAdaptiveGroupsSum">AccountDosdAttackAnalyticsAdaptiveGroupsSum</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountDosdAttackAnalyticsAdaptiveGroupsAvg" href="#AccountDosdAttackAnalyticsAdaptiveGroupsAvg">AccountDosdAttackAnalyticsAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
+&nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
+&nbsp;&nbsp;bitRateFiveMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour</span><br />
+&nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute</span><br />
+&nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
+&nbsp;&nbsp;bitRateSecond: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds</span><br />
+&nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
+&nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
+&nbsp;&nbsp;packetRateFiveMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour</span><br />
+&nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute</span><br />
+&nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
+&nbsp;&nbsp;packetRateSecond: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds</span><br />
+&nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountDosdAttackAnalyticsAdaptiveGroupsDimensions" href="#AccountDosdAttackAnalyticsAdaptiveGroupsDimensions">AccountDosdAttackAnalyticsAdaptiveGroupsDimensions</a> {<br />
@@ -1340,6 +1400,8 @@
 &nbsp;&nbsp;rulesetId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Unique identifier of the ruleset override containing the rule that matched the packet, if any</span><br />
 &nbsp;&nbsp;rulesetOverrideId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># ABR sample interval</span><br />
+&nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># ASN associated with the source IP of the packet, or 0 if there was no mapping available</span><br />
 &nbsp;&nbsp;sourceAsn: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Country where the source IP of the packet is located (ISO 3166-1 alpha-2)</span><br />
@@ -1701,6 +1763,14 @@
 &nbsp;&nbsp;rulesetOverrideId_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;rulesetOverrideId_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;rulesetOverrideId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_geq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_gt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_in: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;sampleInterval_leq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_lt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_neq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_notin: <a href="#uint32">[uint32!]</a><br />
 &nbsp;&nbsp;sourceAsn: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sourceAsn_geq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sourceAsn_gt: <a href="#uint32">uint32</a><br />
@@ -1818,6 +1888,54 @@
 &nbsp;&nbsp;attackType_ASC<br />
 &nbsp;&nbsp;<span class="c"># attackType descending</span><br />
 &nbsp;&nbsp;attackType_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) descending</span><br />
+&nbsp;&nbsp;avg_bitRateFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFiveMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFiveMinutes) descending</span><br />
+&nbsp;&nbsp;avg_bitRateFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateHour) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateHour) descending</span><br />
+&nbsp;&nbsp;avg_bitRateHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateMinute) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateMinute) descending</span><br />
+&nbsp;&nbsp;avg_bitRateMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateSecond_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) descending</span><br />
+&nbsp;&nbsp;avg_bitRateSecond_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateTenSeconds_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) descending</span><br />
+&nbsp;&nbsp;avg_bitRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
+&nbsp;&nbsp;avg_packetRateFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFiveMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFiveMinutes) descending</span><br />
+&nbsp;&nbsp;avg_packetRateFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateHour) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateHour) descending</span><br />
+&nbsp;&nbsp;avg_packetRateHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateMinute) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateMinute) descending</span><br />
+&nbsp;&nbsp;avg_packetRateMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateSecond_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) descending</span><br />
+&nbsp;&nbsp;avg_packetRateSecond_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateTenSeconds_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) descending</span><br />
+&nbsp;&nbsp;avg_packetRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCity ascending</span><br />
 &nbsp;&nbsp;coloCity_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCity descending</span><br />
@@ -1894,6 +2012,10 @@
 &nbsp;&nbsp;rulesetOverrideId_ASC<br />
 &nbsp;&nbsp;<span class="c"># rulesetOverrideId descending</span><br />
 &nbsp;&nbsp;rulesetOverrideId_DESC<br />
+&nbsp;&nbsp;<span class="c"># sampleInterval ascending</span><br />
+&nbsp;&nbsp;sampleInterval_ASC<br />
+&nbsp;&nbsp;<span class="c"># sampleInterval descending</span><br />
+&nbsp;&nbsp;sampleInterval_DESC<br />
 &nbsp;&nbsp;<span class="c"># sourceAsn ascending</span><br />
 &nbsp;&nbsp;sourceAsn_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourceAsn descending</span><br />
@@ -1906,50 +2028,10 @@
 &nbsp;&nbsp;sourceGeohash_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourceGeohash descending</span><br />
 &nbsp;&nbsp;sourceGeohash_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFifteenMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateFifteenMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFifteenMinutes) descending</span><br />
-&nbsp;&nbsp;sum_bitRateFifteenMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFiveMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateFiveMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFiveMinutes) descending</span><br />
-&nbsp;&nbsp;sum_bitRateFiveMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateHour) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateHour_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateHour) descending</span><br />
-&nbsp;&nbsp;sum_bitRateHour_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateMinute) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateMinute_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateMinute) descending</span><br />
-&nbsp;&nbsp;sum_bitRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateTenSeconds) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateTenSeconds_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateTenSeconds) descending</span><br />
-&nbsp;&nbsp;sum_bitRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(bits) ascending</span><br />
 &nbsp;&nbsp;sum_bits_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(bits) descending</span><br />
 &nbsp;&nbsp;sum_bits_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFifteenMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateFifteenMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFifteenMinutes) descending</span><br />
-&nbsp;&nbsp;sum_packetRateFifteenMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFiveMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateFiveMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFiveMinutes) descending</span><br />
-&nbsp;&nbsp;sum_packetRateFiveMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateHour) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateHour_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateHour) descending</span><br />
-&nbsp;&nbsp;sum_packetRateHour_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateMinute) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateMinute_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateMinute) descending</span><br />
-&nbsp;&nbsp;sum_packetRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateTenSeconds) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateTenSeconds_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateTenSeconds) descending</span><br />
-&nbsp;&nbsp;sum_packetRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(packets) ascending</span><br />
 &nbsp;&nbsp;sum_packets_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(packets) descending</span><br />
@@ -1965,38 +2047,47 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountDosdAttackAnalyticsAdaptiveGroupsSum" href="#AccountDosdAttackAnalyticsAdaptiveGroupsSum">AccountDosdAttackAnalyticsAdaptiveGroupsSum</a> {<br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes</span><br />
-&nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes</span><br />
-&nbsp;&nbsp;bitRateFiveMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour</span><br />
-&nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute</span><br />
-&nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds</span><br />
-&nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, providing a per-second rate when grouped by datetime</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received</span><br />
 &nbsp;&nbsp;bits: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes</span><br />
-&nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes</span><br />
-&nbsp;&nbsp;packetRateFiveMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour</span><br />
-&nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute</span><br />
-&nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds</span><br />
-&nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, providing a per-second rate when grouped by datetime</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received</span><br />
 &nbsp;&nbsp;packets: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="c"># Network analytics data for dosd</span><br />
 <span class="k">type</span> <a id="AccountDosdNetworkAnalyticsAdaptiveGroups" href="#AccountDosdNetworkAnalyticsAdaptiveGroups">AccountDosdNetworkAnalyticsAdaptiveGroups</a> {<br />
+&nbsp;&nbsp;<span class="c"># The average of values for a metric per dimension</span><br />
+&nbsp;&nbsp;avg: <a href="#AccountDosdNetworkAnalyticsAdaptiveGroupsAvg">AccountDosdNetworkAnalyticsAdaptiveGroupsAvg</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions">AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions</a><br />
 &nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
 &nbsp;&nbsp;sum: <a href="#AccountDosdNetworkAnalyticsAdaptiveGroupsSum">AccountDosdNetworkAnalyticsAdaptiveGroupsSum</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountDosdNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountDosdNetworkAnalyticsAdaptiveGroupsAvg">AccountDosdNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
+&nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
+&nbsp;&nbsp;bitRateFiveMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour</span><br />
+&nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute</span><br />
+&nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
+&nbsp;&nbsp;bitRateSecond: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds</span><br />
+&nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
+&nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
+&nbsp;&nbsp;packetRateFiveMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour</span><br />
+&nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute</span><br />
+&nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
+&nbsp;&nbsp;packetRateSecond: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds</span><br />
+&nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions" href="#AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions">AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions</a> {<br />
@@ -2114,6 +2205,8 @@
 &nbsp;&nbsp;rulesetId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Unique identifier of the ruleset override containing the rule that matched the packet, if any</span><br />
 &nbsp;&nbsp;rulesetOverrideId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># ABR sample interval</span><br />
+&nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># ASN associated with the source IP of the packet, or 0 if there was no mapping available</span><br />
 &nbsp;&nbsp;sourceAsn: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Country where the source IP of the packet is located (ISO 3166-1 alpha-2)</span><br />
@@ -2663,6 +2756,14 @@
 &nbsp;&nbsp;rulesetOverrideId_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;rulesetOverrideId_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;rulesetOverrideId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_geq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_gt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_in: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;sampleInterval_leq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_lt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_neq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_notin: <a href="#uint32">[uint32!]</a><br />
 &nbsp;&nbsp;sourceAsn: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sourceAsn_geq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sourceAsn_gt: <a href="#uint32">uint32</a><br />
@@ -2858,6 +2959,54 @@
 &nbsp;&nbsp;attackId_ASC<br />
 &nbsp;&nbsp;<span class="c"># attackId descending</span><br />
 &nbsp;&nbsp;attackId_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) descending</span><br />
+&nbsp;&nbsp;avg_bitRateFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFiveMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFiveMinutes) descending</span><br />
+&nbsp;&nbsp;avg_bitRateFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateHour) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateHour) descending</span><br />
+&nbsp;&nbsp;avg_bitRateHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateMinute) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateMinute) descending</span><br />
+&nbsp;&nbsp;avg_bitRateMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateSecond_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) descending</span><br />
+&nbsp;&nbsp;avg_bitRateSecond_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateTenSeconds_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) descending</span><br />
+&nbsp;&nbsp;avg_bitRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
+&nbsp;&nbsp;avg_packetRateFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFiveMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFiveMinutes) descending</span><br />
+&nbsp;&nbsp;avg_packetRateFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateHour) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateHour) descending</span><br />
+&nbsp;&nbsp;avg_packetRateHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateMinute) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateMinute) descending</span><br />
+&nbsp;&nbsp;avg_packetRateMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateSecond_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) descending</span><br />
+&nbsp;&nbsp;avg_packetRateSecond_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateTenSeconds_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) descending</span><br />
+&nbsp;&nbsp;avg_packetRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCity ascending</span><br />
 &nbsp;&nbsp;coloCity_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCity descending</span><br />
@@ -3082,6 +3231,10 @@
 &nbsp;&nbsp;rulesetOverrideId_ASC<br />
 &nbsp;&nbsp;<span class="c"># rulesetOverrideId descending</span><br />
 &nbsp;&nbsp;rulesetOverrideId_DESC<br />
+&nbsp;&nbsp;<span class="c"># sampleInterval ascending</span><br />
+&nbsp;&nbsp;sampleInterval_ASC<br />
+&nbsp;&nbsp;<span class="c"># sampleInterval descending</span><br />
+&nbsp;&nbsp;sampleInterval_DESC<br />
 &nbsp;&nbsp;<span class="c"># sourceAsn ascending</span><br />
 &nbsp;&nbsp;sourceAsn_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourceAsn descending</span><br />
@@ -3098,50 +3251,10 @@
 &nbsp;&nbsp;sourcePort_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourcePort descending</span><br />
 &nbsp;&nbsp;sourcePort_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFifteenMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateFifteenMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFifteenMinutes) descending</span><br />
-&nbsp;&nbsp;sum_bitRateFifteenMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFiveMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateFiveMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFiveMinutes) descending</span><br />
-&nbsp;&nbsp;sum_bitRateFiveMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateHour) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateHour_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateHour) descending</span><br />
-&nbsp;&nbsp;sum_bitRateHour_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateMinute) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateMinute_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateMinute) descending</span><br />
-&nbsp;&nbsp;sum_bitRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateTenSeconds) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateTenSeconds_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateTenSeconds) descending</span><br />
-&nbsp;&nbsp;sum_bitRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(bits) ascending</span><br />
 &nbsp;&nbsp;sum_bits_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(bits) descending</span><br />
 &nbsp;&nbsp;sum_bits_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFifteenMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateFifteenMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFifteenMinutes) descending</span><br />
-&nbsp;&nbsp;sum_packetRateFifteenMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFiveMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateFiveMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFiveMinutes) descending</span><br />
-&nbsp;&nbsp;sum_packetRateFiveMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateHour) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateHour_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateHour) descending</span><br />
-&nbsp;&nbsp;sum_packetRateHour_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateMinute) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateMinute_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateMinute) descending</span><br />
-&nbsp;&nbsp;sum_packetRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateTenSeconds) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateTenSeconds_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateTenSeconds) descending</span><br />
-&nbsp;&nbsp;sum_packetRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(packets) ascending</span><br />
 &nbsp;&nbsp;sum_packets_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(packets) descending</span><br />
@@ -3225,29 +3338,9 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountDosdNetworkAnalyticsAdaptiveGroupsSum" href="#AccountDosdNetworkAnalyticsAdaptiveGroupsSum">AccountDosdNetworkAnalyticsAdaptiveGroupsSum</a> {<br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes</span><br />
-&nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes</span><br />
-&nbsp;&nbsp;bitRateFiveMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour</span><br />
-&nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute</span><br />
-&nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds</span><br />
-&nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, providing a per-second rate when grouped by datetime</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received</span><br />
 &nbsp;&nbsp;bits: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes</span><br />
-&nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes</span><br />
-&nbsp;&nbsp;packetRateFiveMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour</span><br />
-&nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute</span><br />
-&nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds</span><br />
-&nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, providing a per-second rate when grouped by datetime</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received</span><br />
 &nbsp;&nbsp;packets: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
@@ -3257,10 +3350,39 @@
 <br />
 <span class="c"># Network analytics data for flowtrackd</span><br />
 <span class="k">type</span> <a id="AccountFlowtrackdNetworkAnalyticsAdaptiveGroups" href="#AccountFlowtrackdNetworkAnalyticsAdaptiveGroups">AccountFlowtrackdNetworkAnalyticsAdaptiveGroups</a> {<br />
+&nbsp;&nbsp;<span class="c"># The average of values for a metric per dimension</span><br />
+&nbsp;&nbsp;avg: <a href="#AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg">AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions">AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions</a><br />
 &nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
 &nbsp;&nbsp;sum: <a href="#AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsSum">AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsSum</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg">AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
+&nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
+&nbsp;&nbsp;bitRateFiveMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour</span><br />
+&nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute</span><br />
+&nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
+&nbsp;&nbsp;bitRateSecond: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds</span><br />
+&nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
+&nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
+&nbsp;&nbsp;packetRateFiveMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour</span><br />
+&nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute</span><br />
+&nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
+&nbsp;&nbsp;packetRateSecond: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds</span><br />
+&nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions" href="#AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions">AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions</a> {<br />
@@ -3370,6 +3492,8 @@
 &nbsp;&nbsp;outcome: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># State of the packet in the context of the protocol, if available</span><br />
 &nbsp;&nbsp;protocolState: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># ABR sample interval</span><br />
+&nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># ASN associated with the source IP of the packet, or 0 if there was no mapping available</span><br />
 &nbsp;&nbsp;sourceAsn: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Country where the source IP of the packet is located (ISO 3166-1 alpha-2)</span><br />
@@ -3879,6 +4003,14 @@
 &nbsp;&nbsp;protocolState_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;protocolState_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;protocolState_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_geq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_gt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_in: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;sampleInterval_leq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_lt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_neq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_notin: <a href="#uint32">[uint32!]</a><br />
 &nbsp;&nbsp;sourceAsn: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sourceAsn_geq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sourceAsn_gt: <a href="#uint32">uint32</a><br />
@@ -4070,6 +4202,54 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy" href="#AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy">AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) descending</span><br />
+&nbsp;&nbsp;avg_bitRateFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFiveMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFiveMinutes) descending</span><br />
+&nbsp;&nbsp;avg_bitRateFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateHour) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateHour) descending</span><br />
+&nbsp;&nbsp;avg_bitRateHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateMinute) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateMinute) descending</span><br />
+&nbsp;&nbsp;avg_bitRateMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateSecond_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) descending</span><br />
+&nbsp;&nbsp;avg_bitRateSecond_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateTenSeconds_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) descending</span><br />
+&nbsp;&nbsp;avg_bitRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
+&nbsp;&nbsp;avg_packetRateFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFiveMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFiveMinutes) descending</span><br />
+&nbsp;&nbsp;avg_packetRateFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateHour) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateHour) descending</span><br />
+&nbsp;&nbsp;avg_packetRateHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateMinute) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateMinute) descending</span><br />
+&nbsp;&nbsp;avg_packetRateMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateSecond_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) descending</span><br />
+&nbsp;&nbsp;avg_packetRateSecond_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateTenSeconds_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) descending</span><br />
+&nbsp;&nbsp;avg_packetRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCity ascending</span><br />
 &nbsp;&nbsp;coloCity_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCity descending</span><br />
@@ -4282,6 +4462,10 @@
 &nbsp;&nbsp;protocolState_ASC<br />
 &nbsp;&nbsp;<span class="c"># protocolState descending</span><br />
 &nbsp;&nbsp;protocolState_DESC<br />
+&nbsp;&nbsp;<span class="c"># sampleInterval ascending</span><br />
+&nbsp;&nbsp;sampleInterval_ASC<br />
+&nbsp;&nbsp;<span class="c"># sampleInterval descending</span><br />
+&nbsp;&nbsp;sampleInterval_DESC<br />
 &nbsp;&nbsp;<span class="c"># sourceAsn ascending</span><br />
 &nbsp;&nbsp;sourceAsn_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourceAsn descending</span><br />
@@ -4298,50 +4482,10 @@
 &nbsp;&nbsp;sourcePort_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourcePort descending</span><br />
 &nbsp;&nbsp;sourcePort_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFifteenMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateFifteenMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFifteenMinutes) descending</span><br />
-&nbsp;&nbsp;sum_bitRateFifteenMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFiveMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateFiveMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFiveMinutes) descending</span><br />
-&nbsp;&nbsp;sum_bitRateFiveMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateHour) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateHour_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateHour) descending</span><br />
-&nbsp;&nbsp;sum_bitRateHour_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateMinute) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateMinute_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateMinute) descending</span><br />
-&nbsp;&nbsp;sum_bitRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateTenSeconds) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateTenSeconds_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateTenSeconds) descending</span><br />
-&nbsp;&nbsp;sum_bitRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(bits) ascending</span><br />
 &nbsp;&nbsp;sum_bits_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(bits) descending</span><br />
 &nbsp;&nbsp;sum_bits_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFifteenMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateFifteenMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFifteenMinutes) descending</span><br />
-&nbsp;&nbsp;sum_packetRateFifteenMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFiveMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateFiveMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFiveMinutes) descending</span><br />
-&nbsp;&nbsp;sum_packetRateFiveMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateHour) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateHour_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateHour) descending</span><br />
-&nbsp;&nbsp;sum_packetRateHour_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateMinute) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateMinute_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateMinute) descending</span><br />
-&nbsp;&nbsp;sum_packetRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateTenSeconds) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateTenSeconds_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateTenSeconds) descending</span><br />
-&nbsp;&nbsp;sum_packetRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(packets) ascending</span><br />
 &nbsp;&nbsp;sum_packets_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(packets) descending</span><br />
@@ -4425,29 +4569,9 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsSum" href="#AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsSum">AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsSum</a> {<br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes</span><br />
-&nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes</span><br />
-&nbsp;&nbsp;bitRateFiveMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour</span><br />
-&nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute</span><br />
-&nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds</span><br />
-&nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, providing a per-second rate when grouped by datetime</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received</span><br />
 &nbsp;&nbsp;bits: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes</span><br />
-&nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes</span><br />
-&nbsp;&nbsp;packetRateFiveMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour</span><br />
-&nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute</span><br />
-&nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds</span><br />
-&nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, providing a per-second rate when grouped by datetime</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received</span><br />
 &nbsp;&nbsp;packets: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
@@ -7156,10 +7280,39 @@
 <br />
 <span class="c"># Network analytics data for Magic Firewall</span><br />
 <span class="k">type</span> <a id="AccountMagicFirewallNetworkAnalyticsAdaptiveGroups" href="#AccountMagicFirewallNetworkAnalyticsAdaptiveGroups">AccountMagicFirewallNetworkAnalyticsAdaptiveGroups</a> {<br />
+&nbsp;&nbsp;<span class="c"># The average of values for a metric per dimension</span><br />
+&nbsp;&nbsp;avg: <a href="#AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg">AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions">AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions</a><br />
 &nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
 &nbsp;&nbsp;sum: <a href="#AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsSum">AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsSum</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg">AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
+&nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
+&nbsp;&nbsp;bitRateFiveMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour</span><br />
+&nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute</span><br />
+&nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
+&nbsp;&nbsp;bitRateSecond: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds</span><br />
+&nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
+&nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
+&nbsp;&nbsp;packetRateFiveMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour</span><br />
+&nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute</span><br />
+&nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
+&nbsp;&nbsp;packetRateSecond: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds</span><br />
+&nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions" href="#AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions">AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions</a> {<br />
@@ -7267,6 +7420,8 @@
 &nbsp;&nbsp;ruleId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Unique identifier of the ruleset containing the rule that matched the packet, if any</span><br />
 &nbsp;&nbsp;rulesetId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># ABR sample interval</span><br />
+&nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># ASN associated with the source IP of the packet, or 0 if there was no mapping available</span><br />
 &nbsp;&nbsp;sourceAsn: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Country where the source IP of the packet is located (ISO 3166-1 alpha-2)</span><br />
@@ -7766,6 +7921,14 @@
 &nbsp;&nbsp;rulesetId_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;rulesetId_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;rulesetId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_geq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_gt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_in: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;sampleInterval_leq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_lt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_neq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_notin: <a href="#uint32">[uint32!]</a><br />
 &nbsp;&nbsp;sourceAsn: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sourceAsn_geq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sourceAsn_gt: <a href="#uint32">uint32</a><br />
@@ -7957,6 +8120,54 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy" href="#AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy">AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) descending</span><br />
+&nbsp;&nbsp;avg_bitRateFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFiveMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFiveMinutes) descending</span><br />
+&nbsp;&nbsp;avg_bitRateFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateHour) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateHour) descending</span><br />
+&nbsp;&nbsp;avg_bitRateHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateMinute) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateMinute) descending</span><br />
+&nbsp;&nbsp;avg_bitRateMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateSecond_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) descending</span><br />
+&nbsp;&nbsp;avg_bitRateSecond_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateTenSeconds_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) descending</span><br />
+&nbsp;&nbsp;avg_bitRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
+&nbsp;&nbsp;avg_packetRateFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFiveMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFiveMinutes) descending</span><br />
+&nbsp;&nbsp;avg_packetRateFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateHour) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateHour) descending</span><br />
+&nbsp;&nbsp;avg_packetRateHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateMinute) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateMinute) descending</span><br />
+&nbsp;&nbsp;avg_packetRateMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateSecond_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) descending</span><br />
+&nbsp;&nbsp;avg_packetRateSecond_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateTenSeconds_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) descending</span><br />
+&nbsp;&nbsp;avg_packetRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCity ascending</span><br />
 &nbsp;&nbsp;coloCity_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCity descending</span><br />
@@ -8165,6 +8376,10 @@
 &nbsp;&nbsp;rulesetId_ASC<br />
 &nbsp;&nbsp;<span class="c"># rulesetId descending</span><br />
 &nbsp;&nbsp;rulesetId_DESC<br />
+&nbsp;&nbsp;<span class="c"># sampleInterval ascending</span><br />
+&nbsp;&nbsp;sampleInterval_ASC<br />
+&nbsp;&nbsp;<span class="c"># sampleInterval descending</span><br />
+&nbsp;&nbsp;sampleInterval_DESC<br />
 &nbsp;&nbsp;<span class="c"># sourceAsn ascending</span><br />
 &nbsp;&nbsp;sourceAsn_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourceAsn descending</span><br />
@@ -8181,50 +8396,10 @@
 &nbsp;&nbsp;sourcePort_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourcePort descending</span><br />
 &nbsp;&nbsp;sourcePort_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFifteenMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateFifteenMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFifteenMinutes) descending</span><br />
-&nbsp;&nbsp;sum_bitRateFifteenMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFiveMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateFiveMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFiveMinutes) descending</span><br />
-&nbsp;&nbsp;sum_bitRateFiveMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateHour) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateHour_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateHour) descending</span><br />
-&nbsp;&nbsp;sum_bitRateHour_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateMinute) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateMinute_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateMinute) descending</span><br />
-&nbsp;&nbsp;sum_bitRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateTenSeconds) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateTenSeconds_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateTenSeconds) descending</span><br />
-&nbsp;&nbsp;sum_bitRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(bits) ascending</span><br />
 &nbsp;&nbsp;sum_bits_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(bits) descending</span><br />
 &nbsp;&nbsp;sum_bits_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFifteenMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateFifteenMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFifteenMinutes) descending</span><br />
-&nbsp;&nbsp;sum_packetRateFifteenMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFiveMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateFiveMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFiveMinutes) descending</span><br />
-&nbsp;&nbsp;sum_packetRateFiveMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateHour) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateHour_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateHour) descending</span><br />
-&nbsp;&nbsp;sum_packetRateHour_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateMinute) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateMinute_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateMinute) descending</span><br />
-&nbsp;&nbsp;sum_packetRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateTenSeconds) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateTenSeconds_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateTenSeconds) descending</span><br />
-&nbsp;&nbsp;sum_packetRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(packets) ascending</span><br />
 &nbsp;&nbsp;sum_packets_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(packets) descending</span><br />
@@ -8308,29 +8483,9 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsSum" href="#AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsSum">AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsSum</a> {<br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes</span><br />
-&nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes</span><br />
-&nbsp;&nbsp;bitRateFiveMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour</span><br />
-&nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute</span><br />
-&nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds</span><br />
-&nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, providing a per-second rate when grouped by datetime</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received</span><br />
 &nbsp;&nbsp;bits: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes</span><br />
-&nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes</span><br />
-&nbsp;&nbsp;packetRateFiveMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour</span><br />
-&nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute</span><br />
-&nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds</span><br />
-&nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, providing a per-second rate when grouped by datetime</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received</span><br />
 &nbsp;&nbsp;packets: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
@@ -8414,10 +8569,39 @@
 <br />
 <span class="c"># Network analytics data for Magic Transit traffic</span><br />
 <span class="k">type</span> <a id="AccountMagicTransitNetworkAnalyticsAdaptiveGroups" href="#AccountMagicTransitNetworkAnalyticsAdaptiveGroups">AccountMagicTransitNetworkAnalyticsAdaptiveGroups</a> {<br />
+&nbsp;&nbsp;<span class="c"># The average of values for a metric per dimension</span><br />
+&nbsp;&nbsp;avg: <a href="#AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg">AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions">AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions</a><br />
 &nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
 &nbsp;&nbsp;sum: <a href="#AccountMagicTransitNetworkAnalyticsAdaptiveGroupsSum">AccountMagicTransitNetworkAnalyticsAdaptiveGroupsSum</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg">AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
+&nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
+&nbsp;&nbsp;bitRateFiveMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour</span><br />
+&nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute</span><br />
+&nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
+&nbsp;&nbsp;bitRateSecond: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds</span><br />
+&nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
+&nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
+&nbsp;&nbsp;packetRateFiveMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour</span><br />
+&nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute</span><br />
+&nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
+&nbsp;&nbsp;packetRateSecond: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds</span><br />
+&nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions" href="#AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions">AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions</a> {<br />
@@ -8523,6 +8707,8 @@
 &nbsp;&nbsp;mitigationSystem: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The action that was taken on the packet (possible values: pass, drop)</span><br />
 &nbsp;&nbsp;outcome: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># ABR sample interval</span><br />
+&nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># ASN associated with the source IP of the packet, or 0 if there was no mapping available</span><br />
 &nbsp;&nbsp;sourceAsn: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Country where the source IP of the packet is located (ISO 3166-1 alpha-2)</span><br />
@@ -9010,6 +9196,14 @@
 &nbsp;&nbsp;outcome_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;outcome_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;outcome_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_geq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_gt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_in: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;sampleInterval_leq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_lt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_neq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_notin: <a href="#uint32">[uint32!]</a><br />
 &nbsp;&nbsp;sourceAsn: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sourceAsn_geq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sourceAsn_gt: <a href="#uint32">uint32</a><br />
@@ -9191,6 +9385,54 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy" href="#AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy">AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) descending</span><br />
+&nbsp;&nbsp;avg_bitRateFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFiveMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFiveMinutes) descending</span><br />
+&nbsp;&nbsp;avg_bitRateFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateHour) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateHour) descending</span><br />
+&nbsp;&nbsp;avg_bitRateHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateMinute) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateMinute) descending</span><br />
+&nbsp;&nbsp;avg_bitRateMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateSecond_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) descending</span><br />
+&nbsp;&nbsp;avg_bitRateSecond_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateTenSeconds_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) descending</span><br />
+&nbsp;&nbsp;avg_bitRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
+&nbsp;&nbsp;avg_packetRateFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFiveMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFiveMinutes) descending</span><br />
+&nbsp;&nbsp;avg_packetRateFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateHour) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateHour) descending</span><br />
+&nbsp;&nbsp;avg_packetRateHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateMinute) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateMinute) descending</span><br />
+&nbsp;&nbsp;avg_packetRateMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateSecond_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) descending</span><br />
+&nbsp;&nbsp;avg_packetRateSecond_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateTenSeconds_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) descending</span><br />
+&nbsp;&nbsp;avg_packetRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCity ascending</span><br />
 &nbsp;&nbsp;coloCity_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCity descending</span><br />
@@ -9395,6 +9637,10 @@
 &nbsp;&nbsp;outcome_ASC<br />
 &nbsp;&nbsp;<span class="c"># outcome descending</span><br />
 &nbsp;&nbsp;outcome_DESC<br />
+&nbsp;&nbsp;<span class="c"># sampleInterval ascending</span><br />
+&nbsp;&nbsp;sampleInterval_ASC<br />
+&nbsp;&nbsp;<span class="c"># sampleInterval descending</span><br />
+&nbsp;&nbsp;sampleInterval_DESC<br />
 &nbsp;&nbsp;<span class="c"># sourceAsn ascending</span><br />
 &nbsp;&nbsp;sourceAsn_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourceAsn descending</span><br />
@@ -9411,50 +9657,10 @@
 &nbsp;&nbsp;sourcePort_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourcePort descending</span><br />
 &nbsp;&nbsp;sourcePort_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFifteenMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateFifteenMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFifteenMinutes) descending</span><br />
-&nbsp;&nbsp;sum_bitRateFifteenMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFiveMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateFiveMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFiveMinutes) descending</span><br />
-&nbsp;&nbsp;sum_bitRateFiveMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateHour) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateHour_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateHour) descending</span><br />
-&nbsp;&nbsp;sum_bitRateHour_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateMinute) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateMinute_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateMinute) descending</span><br />
-&nbsp;&nbsp;sum_bitRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateTenSeconds) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateTenSeconds_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateTenSeconds) descending</span><br />
-&nbsp;&nbsp;sum_bitRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(bits) ascending</span><br />
 &nbsp;&nbsp;sum_bits_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(bits) descending</span><br />
 &nbsp;&nbsp;sum_bits_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFifteenMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateFifteenMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFifteenMinutes) descending</span><br />
-&nbsp;&nbsp;sum_packetRateFifteenMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFiveMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateFiveMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFiveMinutes) descending</span><br />
-&nbsp;&nbsp;sum_packetRateFiveMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateHour) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateHour_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateHour) descending</span><br />
-&nbsp;&nbsp;sum_packetRateHour_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateMinute) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateMinute_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateMinute) descending</span><br />
-&nbsp;&nbsp;sum_packetRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateTenSeconds) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateTenSeconds_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateTenSeconds) descending</span><br />
-&nbsp;&nbsp;sum_packetRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(packets) ascending</span><br />
 &nbsp;&nbsp;sum_packets_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(packets) descending</span><br />
@@ -9534,29 +9740,9 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountMagicTransitNetworkAnalyticsAdaptiveGroupsSum" href="#AccountMagicTransitNetworkAnalyticsAdaptiveGroupsSum">AccountMagicTransitNetworkAnalyticsAdaptiveGroupsSum</a> {<br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes</span><br />
-&nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes</span><br />
-&nbsp;&nbsp;bitRateFiveMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour</span><br />
-&nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute</span><br />
-&nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds</span><br />
-&nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, providing a per-second rate when grouped by datetime</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received</span><br />
 &nbsp;&nbsp;bits: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes</span><br />
-&nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes</span><br />
-&nbsp;&nbsp;packetRateFiveMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour</span><br />
-&nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute</span><br />
-&nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds</span><br />
-&nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, providing a per-second rate when grouped by datetime</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received</span><br />
 &nbsp;&nbsp;packets: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
@@ -12082,10 +12268,39 @@
 <br />
 <span class="c"># Network analytics data for Spectrum traffic</span><br />
 <span class="k">type</span> <a id="AccountSpectrumNetworkAnalyticsAdaptiveGroups" href="#AccountSpectrumNetworkAnalyticsAdaptiveGroups">AccountSpectrumNetworkAnalyticsAdaptiveGroups</a> {<br />
+&nbsp;&nbsp;<span class="c"># The average of values for a metric per dimension</span><br />
+&nbsp;&nbsp;avg: <a href="#AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg">AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions">AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions</a><br />
 &nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
 &nbsp;&nbsp;sum: <a href="#AccountSpectrumNetworkAnalyticsAdaptiveGroupsSum">AccountSpectrumNetworkAnalyticsAdaptiveGroupsSum</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg">AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
+&nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
+&nbsp;&nbsp;bitRateFiveMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour</span><br />
+&nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute</span><br />
+&nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
+&nbsp;&nbsp;bitRateSecond: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds</span><br />
+&nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
+&nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
+&nbsp;&nbsp;packetRateFiveMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour</span><br />
+&nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute</span><br />
+&nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
+&nbsp;&nbsp;packetRateSecond: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds</span><br />
+&nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions" href="#AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions">AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions</a> {<br />
@@ -12191,6 +12406,8 @@
 &nbsp;&nbsp;mitigationSystem: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The action that was taken on the packet (possible values: pass, drop)</span><br />
 &nbsp;&nbsp;outcome: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># ABR sample interval</span><br />
+&nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># ASN associated with the source IP of the packet, or 0 if there was no mapping available</span><br />
 &nbsp;&nbsp;sourceAsn: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Country where the source IP of the packet is located (ISO 3166-1 alpha-2)</span><br />
@@ -12678,6 +12895,14 @@
 &nbsp;&nbsp;outcome_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;outcome_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;outcome_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_geq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_gt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_in: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;sampleInterval_leq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_lt: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_neq: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;sampleInterval_notin: <a href="#uint32">[uint32!]</a><br />
 &nbsp;&nbsp;sourceAsn: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sourceAsn_geq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sourceAsn_gt: <a href="#uint32">uint32</a><br />
@@ -12859,6 +13084,54 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy" href="#AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy">AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) descending</span><br />
+&nbsp;&nbsp;avg_bitRateFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFiveMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateFiveMinutes) descending</span><br />
+&nbsp;&nbsp;avg_bitRateFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateHour) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateHour) descending</span><br />
+&nbsp;&nbsp;avg_bitRateHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateMinute) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateMinute) descending</span><br />
+&nbsp;&nbsp;avg_bitRateMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateSecond_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) descending</span><br />
+&nbsp;&nbsp;avg_bitRateSecond_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateTenSeconds_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) descending</span><br />
+&nbsp;&nbsp;avg_bitRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
+&nbsp;&nbsp;avg_packetRateFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFiveMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateFiveMinutes) descending</span><br />
+&nbsp;&nbsp;avg_packetRateFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateHour) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateHour) descending</span><br />
+&nbsp;&nbsp;avg_packetRateHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateMinute) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateMinute) descending</span><br />
+&nbsp;&nbsp;avg_packetRateMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateSecond_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) descending</span><br />
+&nbsp;&nbsp;avg_packetRateSecond_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateTenSeconds_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) descending</span><br />
+&nbsp;&nbsp;avg_packetRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCity ascending</span><br />
 &nbsp;&nbsp;coloCity_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCity descending</span><br />
@@ -13063,6 +13336,10 @@
 &nbsp;&nbsp;outcome_ASC<br />
 &nbsp;&nbsp;<span class="c"># outcome descending</span><br />
 &nbsp;&nbsp;outcome_DESC<br />
+&nbsp;&nbsp;<span class="c"># sampleInterval ascending</span><br />
+&nbsp;&nbsp;sampleInterval_ASC<br />
+&nbsp;&nbsp;<span class="c"># sampleInterval descending</span><br />
+&nbsp;&nbsp;sampleInterval_DESC<br />
 &nbsp;&nbsp;<span class="c"># sourceAsn ascending</span><br />
 &nbsp;&nbsp;sourceAsn_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourceAsn descending</span><br />
@@ -13079,50 +13356,10 @@
 &nbsp;&nbsp;sourcePort_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourcePort descending</span><br />
 &nbsp;&nbsp;sourcePort_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFifteenMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateFifteenMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFifteenMinutes) descending</span><br />
-&nbsp;&nbsp;sum_bitRateFifteenMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFiveMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateFiveMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateFiveMinutes) descending</span><br />
-&nbsp;&nbsp;sum_bitRateFiveMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateHour) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateHour_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateHour) descending</span><br />
-&nbsp;&nbsp;sum_bitRateHour_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateMinute) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateMinute_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateMinute) descending</span><br />
-&nbsp;&nbsp;sum_bitRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateTenSeconds) ascending</span><br />
-&nbsp;&nbsp;sum_bitRateTenSeconds_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(bitRateTenSeconds) descending</span><br />
-&nbsp;&nbsp;sum_bitRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(bits) ascending</span><br />
 &nbsp;&nbsp;sum_bits_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(bits) descending</span><br />
 &nbsp;&nbsp;sum_bits_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFifteenMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateFifteenMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFifteenMinutes) descending</span><br />
-&nbsp;&nbsp;sum_packetRateFifteenMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFiveMinutes) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateFiveMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateFiveMinutes) descending</span><br />
-&nbsp;&nbsp;sum_packetRateFiveMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateHour) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateHour_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateHour) descending</span><br />
-&nbsp;&nbsp;sum_packetRateHour_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateMinute) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateMinute_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateMinute) descending</span><br />
-&nbsp;&nbsp;sum_packetRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateTenSeconds) ascending</span><br />
-&nbsp;&nbsp;sum_packetRateTenSeconds_ASC<br />
-&nbsp;&nbsp;<span class="c"># sum(packetRateTenSeconds) descending</span><br />
-&nbsp;&nbsp;sum_packetRateTenSeconds_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(packets) ascending</span><br />
 &nbsp;&nbsp;sum_packets_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(packets) descending</span><br />
@@ -13202,29 +13439,9 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountSpectrumNetworkAnalyticsAdaptiveGroupsSum" href="#AccountSpectrumNetworkAnalyticsAdaptiveGroupsSum">AccountSpectrumNetworkAnalyticsAdaptiveGroupsSum</a> {<br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes</span><br />
-&nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes</span><br />
-&nbsp;&nbsp;bitRateFiveMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour</span><br />
-&nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute</span><br />
-&nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds</span><br />
-&nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, providing a per-second rate when grouped by datetime</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received</span><br />
 &nbsp;&nbsp;bits: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes</span><br />
-&nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes</span><br />
-&nbsp;&nbsp;packetRateFiveMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour</span><br />
-&nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute</span><br />
-&nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds</span><br />
-&nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, providing a per-second rate when grouped by datetime</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received</span><br />
 &nbsp;&nbsp;packets: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
@@ -13920,6 +14137,8 @@
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Request datetime, truncated to start of an hour</span><br />
 &nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Request datetime, truncated to start of an minute</span><br />
+&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># The name of the script</span><br />
 &nbsp;&nbsp;scriptName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Status of the worker invocation</span><br />
@@ -13948,6 +14167,14 @@
 &nbsp;&nbsp;datetimeHour_lt: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour_neq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeMinute_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_notin: <a href="#Time">[Time!]</a><br />
 &nbsp;&nbsp;datetime_geq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_gt: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_in: <a href="#Time">[Time!]</a><br />
@@ -14022,6 +14249,10 @@
 &nbsp;&nbsp;datetimeHour_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetimeHour descending</span><br />
 &nbsp;&nbsp;datetimeHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeMinute ascending</span><br />
+&nbsp;&nbsp;datetimeMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeMinute descending</span><br />
+&nbsp;&nbsp;datetimeMinute_DESC<br />
 &nbsp;&nbsp;<span class="c"># datetime ascending</span><br />
 &nbsp;&nbsp;datetime_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetime descending</span><br />
@@ -14379,6 +14610,8 @@
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Request datetime, truncated to start of an hour</span><br />
 &nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Request datetime, truncated to start of an minute</span><br />
+&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># The name of the script</span><br />
 &nbsp;&nbsp;scriptName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Usage model of the worker invocation</span><br />
@@ -14405,6 +14638,14 @@
 &nbsp;&nbsp;datetimeHour_lt: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour_neq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeMinute_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_notin: <a href="#Time">[Time!]</a><br />
 &nbsp;&nbsp;datetime_geq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_gt: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_in: <a href="#Time">[Time!]</a><br />
@@ -14443,6 +14684,10 @@
 &nbsp;&nbsp;datetimeHour_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetimeHour descending</span><br />
 &nbsp;&nbsp;datetimeHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeMinute ascending</span><br />
+&nbsp;&nbsp;datetimeMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeMinute descending</span><br />
+&nbsp;&nbsp;datetimeMinute_DESC<br />
 &nbsp;&nbsp;<span class="c"># datetime ascending</span><br />
 &nbsp;&nbsp;datetime_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetime descending</span><br />

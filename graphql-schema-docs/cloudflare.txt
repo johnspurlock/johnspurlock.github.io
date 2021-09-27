@@ -155,10 +155,39 @@ type account {
 
 # Network analytics data for Cloudflare CDN traffic
 type AccountCdnNetworkAnalyticsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountCdnNetworkAnalyticsAdaptiveGroupsAvg
   # List of dimensions to group by
   dimensions: AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions
   # The sum of values for a metric per dimension
   sum: AccountCdnNetworkAnalyticsAdaptiveGroupsSum
+}
+
+type AccountCdnNetworkAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
+  bitRateFifteenMinutes: uint64!
+  # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
+  bitRateFiveMinutes: uint64!
+  # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
+  bitRateHour: uint64!
+  # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
+  bitRateMinute: uint64!
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRateSecond: uint64!
+  # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
+  bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
+  packetRateFifteenMinutes: uint64!
+  # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
+  packetRateFiveMinutes: uint64!
+  # Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour
+  packetRateHour: uint64!
+  # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
+  packetRateMinute: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRateSecond: uint64!
+  # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
+  packetRateTenSeconds: uint64!
 }
 
 type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
@@ -264,6 +293,8 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
   mitigationSystem: string!
   # The action that was taken on the packet (possible values: pass, drop)
   outcome: string!
+  # ABR sample interval
+  sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
   sourceAsn: uint32!
   # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
@@ -751,6 +782,14 @@ input AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   outcome_neq: string
   outcome_notin: [string!]
   outcome_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
   sourceAsn: uint32
   sourceAsn_geq: uint32
   sourceAsn_gt: uint32
@@ -932,6 +971,54 @@ input AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # avg(bitRateFifteenMinutes) ascending
+  avg_bitRateFifteenMinutes_ASC
+  # avg(bitRateFifteenMinutes) descending
+  avg_bitRateFifteenMinutes_DESC
+  # avg(bitRateFiveMinutes) ascending
+  avg_bitRateFiveMinutes_ASC
+  # avg(bitRateFiveMinutes) descending
+  avg_bitRateFiveMinutes_DESC
+  # avg(bitRateHour) ascending
+  avg_bitRateHour_ASC
+  # avg(bitRateHour) descending
+  avg_bitRateHour_DESC
+  # avg(bitRateMinute) ascending
+  avg_bitRateMinute_ASC
+  # avg(bitRateMinute) descending
+  avg_bitRateMinute_DESC
+  # avg(bitRateSecond) ascending
+  avg_bitRateSecond_ASC
+  # avg(bitRateSecond) descending
+  avg_bitRateSecond_DESC
+  # avg(bitRateTenSeconds) ascending
+  avg_bitRateTenSeconds_ASC
+  # avg(bitRateTenSeconds) descending
+  avg_bitRateTenSeconds_DESC
+  # avg(packetRateFifteenMinutes) ascending
+  avg_packetRateFifteenMinutes_ASC
+  # avg(packetRateFifteenMinutes) descending
+  avg_packetRateFifteenMinutes_DESC
+  # avg(packetRateFiveMinutes) ascending
+  avg_packetRateFiveMinutes_ASC
+  # avg(packetRateFiveMinutes) descending
+  avg_packetRateFiveMinutes_DESC
+  # avg(packetRateHour) ascending
+  avg_packetRateHour_ASC
+  # avg(packetRateHour) descending
+  avg_packetRateHour_DESC
+  # avg(packetRateMinute) ascending
+  avg_packetRateMinute_ASC
+  # avg(packetRateMinute) descending
+  avg_packetRateMinute_DESC
+  # avg(packetRateSecond) ascending
+  avg_packetRateSecond_ASC
+  # avg(packetRateSecond) descending
+  avg_packetRateSecond_DESC
+  # avg(packetRateTenSeconds) ascending
+  avg_packetRateTenSeconds_ASC
+  # avg(packetRateTenSeconds) descending
+  avg_packetRateTenSeconds_DESC
   # coloCity ascending
   coloCity_ASC
   # coloCity descending
@@ -1136,6 +1223,10 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   outcome_ASC
   # outcome descending
   outcome_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
   # sourceAsn ascending
   sourceAsn_ASC
   # sourceAsn descending
@@ -1152,50 +1243,10 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   sourcePort_ASC
   # sourcePort descending
   sourcePort_DESC
-  # sum(bitRateFifteenMinutes) ascending
-  sum_bitRateFifteenMinutes_ASC
-  # sum(bitRateFifteenMinutes) descending
-  sum_bitRateFifteenMinutes_DESC
-  # sum(bitRateFiveMinutes) ascending
-  sum_bitRateFiveMinutes_ASC
-  # sum(bitRateFiveMinutes) descending
-  sum_bitRateFiveMinutes_DESC
-  # sum(bitRateHour) ascending
-  sum_bitRateHour_ASC
-  # sum(bitRateHour) descending
-  sum_bitRateHour_DESC
-  # sum(bitRateMinute) ascending
-  sum_bitRateMinute_ASC
-  # sum(bitRateMinute) descending
-  sum_bitRateMinute_DESC
-  # sum(bitRateTenSeconds) ascending
-  sum_bitRateTenSeconds_ASC
-  # sum(bitRateTenSeconds) descending
-  sum_bitRateTenSeconds_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
   sum_bits_DESC
-  # sum(packetRateFifteenMinutes) ascending
-  sum_packetRateFifteenMinutes_ASC
-  # sum(packetRateFifteenMinutes) descending
-  sum_packetRateFifteenMinutes_DESC
-  # sum(packetRateFiveMinutes) ascending
-  sum_packetRateFiveMinutes_ASC
-  # sum(packetRateFiveMinutes) descending
-  sum_packetRateFiveMinutes_DESC
-  # sum(packetRateHour) ascending
-  sum_packetRateHour_ASC
-  # sum(packetRateHour) descending
-  sum_packetRateHour_DESC
-  # sum(packetRateMinute) ascending
-  sum_packetRateMinute_ASC
-  # sum(packetRateMinute) descending
-  sum_packetRateMinute_DESC
-  # sum(packetRateTenSeconds) ascending
-  sum_packetRateTenSeconds_ASC
-  # sum(packetRateTenSeconds) descending
-  sum_packetRateTenSeconds_DESC
   # sum(packets) ascending
   sum_packets_ASC
   # sum(packets) descending
@@ -1275,38 +1326,47 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
 }
 
 type AccountCdnNetworkAnalyticsAdaptiveGroupsSum {
-  # Sum of bits received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes
-  bitRateFifteenMinutes: uint64!
-  # Sum of bits received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes
-  bitRateFiveMinutes: uint64!
-  # Sum of bits received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour
-  bitRateHour: uint64!
-  # Sum of bits received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute
-  bitRateMinute: uint64!
-  # Sum of bits received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds
-  bitRateTenSeconds: uint64!
-  # Sum of bits received, providing a per-second rate when grouped by datetime
+  # Sum of bits received
   bits: uint64!
-  # Sum of packets received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes
-  packetRateFifteenMinutes: uint64!
-  # Sum of packets received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes
-  packetRateFiveMinutes: uint64!
-  # Sum of packets received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour
-  packetRateHour: uint64!
-  # Sum of packets received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute
-  packetRateMinute: uint64!
-  # Sum of packets received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds
-  packetRateTenSeconds: uint64!
-  # Sum of packets received, providing a per-second rate when grouped by datetime
+  # Sum of packets received
   packets: uint64!
 }
 
 # Attack analytics metadata for attacks detected by dosd
 type AccountDosdAttackAnalyticsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountDosdAttackAnalyticsAdaptiveGroupsAvg
   # List of dimensions to group by
   dimensions: AccountDosdAttackAnalyticsAdaptiveGroupsDimensions
   # The sum of values for a metric per dimension
   sum: AccountDosdAttackAnalyticsAdaptiveGroupsSum
+}
+
+type AccountDosdAttackAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
+  bitRateFifteenMinutes: uint64!
+  # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
+  bitRateFiveMinutes: uint64!
+  # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
+  bitRateHour: uint64!
+  # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
+  bitRateMinute: uint64!
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRateSecond: uint64!
+  # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
+  bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
+  packetRateFifteenMinutes: uint64!
+  # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
+  packetRateFiveMinutes: uint64!
+  # Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour
+  packetRateHour: uint64!
+  # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
+  packetRateMinute: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRateSecond: uint64!
+  # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
+  packetRateTenSeconds: uint64!
 }
 
 type AccountDosdAttackAnalyticsAdaptiveGroupsDimensions {
@@ -1386,6 +1446,8 @@ type AccountDosdAttackAnalyticsAdaptiveGroupsDimensions {
   rulesetId: string!
   # Unique identifier of the ruleset override containing the rule that matched the packet, if any
   rulesetOverrideId: string!
+  # ABR sample interval
+  sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
   sourceAsn: uint32!
   # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
@@ -1747,6 +1809,14 @@ input AccountDosdAttackAnalyticsAdaptiveGroupsFilter_InputObject {
   rulesetOverrideId_neq: string
   rulesetOverrideId_notin: [string!]
   rulesetOverrideId_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
   sourceAsn: uint32
   sourceAsn_geq: uint32
   sourceAsn_gt: uint32
@@ -1864,6 +1934,54 @@ enum AccountDosdAttackAnalyticsAdaptiveGroupsOrderBy {
   attackType_ASC
   # attackType descending
   attackType_DESC
+  # avg(bitRateFifteenMinutes) ascending
+  avg_bitRateFifteenMinutes_ASC
+  # avg(bitRateFifteenMinutes) descending
+  avg_bitRateFifteenMinutes_DESC
+  # avg(bitRateFiveMinutes) ascending
+  avg_bitRateFiveMinutes_ASC
+  # avg(bitRateFiveMinutes) descending
+  avg_bitRateFiveMinutes_DESC
+  # avg(bitRateHour) ascending
+  avg_bitRateHour_ASC
+  # avg(bitRateHour) descending
+  avg_bitRateHour_DESC
+  # avg(bitRateMinute) ascending
+  avg_bitRateMinute_ASC
+  # avg(bitRateMinute) descending
+  avg_bitRateMinute_DESC
+  # avg(bitRateSecond) ascending
+  avg_bitRateSecond_ASC
+  # avg(bitRateSecond) descending
+  avg_bitRateSecond_DESC
+  # avg(bitRateTenSeconds) ascending
+  avg_bitRateTenSeconds_ASC
+  # avg(bitRateTenSeconds) descending
+  avg_bitRateTenSeconds_DESC
+  # avg(packetRateFifteenMinutes) ascending
+  avg_packetRateFifteenMinutes_ASC
+  # avg(packetRateFifteenMinutes) descending
+  avg_packetRateFifteenMinutes_DESC
+  # avg(packetRateFiveMinutes) ascending
+  avg_packetRateFiveMinutes_ASC
+  # avg(packetRateFiveMinutes) descending
+  avg_packetRateFiveMinutes_DESC
+  # avg(packetRateHour) ascending
+  avg_packetRateHour_ASC
+  # avg(packetRateHour) descending
+  avg_packetRateHour_DESC
+  # avg(packetRateMinute) ascending
+  avg_packetRateMinute_ASC
+  # avg(packetRateMinute) descending
+  avg_packetRateMinute_DESC
+  # avg(packetRateSecond) ascending
+  avg_packetRateSecond_ASC
+  # avg(packetRateSecond) descending
+  avg_packetRateSecond_DESC
+  # avg(packetRateTenSeconds) ascending
+  avg_packetRateTenSeconds_ASC
+  # avg(packetRateTenSeconds) descending
+  avg_packetRateTenSeconds_DESC
   # coloCity ascending
   coloCity_ASC
   # coloCity descending
@@ -1940,6 +2058,10 @@ enum AccountDosdAttackAnalyticsAdaptiveGroupsOrderBy {
   rulesetOverrideId_ASC
   # rulesetOverrideId descending
   rulesetOverrideId_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
   # sourceAsn ascending
   sourceAsn_ASC
   # sourceAsn descending
@@ -1952,50 +2074,10 @@ enum AccountDosdAttackAnalyticsAdaptiveGroupsOrderBy {
   sourceGeohash_ASC
   # sourceGeohash descending
   sourceGeohash_DESC
-  # sum(bitRateFifteenMinutes) ascending
-  sum_bitRateFifteenMinutes_ASC
-  # sum(bitRateFifteenMinutes) descending
-  sum_bitRateFifteenMinutes_DESC
-  # sum(bitRateFiveMinutes) ascending
-  sum_bitRateFiveMinutes_ASC
-  # sum(bitRateFiveMinutes) descending
-  sum_bitRateFiveMinutes_DESC
-  # sum(bitRateHour) ascending
-  sum_bitRateHour_ASC
-  # sum(bitRateHour) descending
-  sum_bitRateHour_DESC
-  # sum(bitRateMinute) ascending
-  sum_bitRateMinute_ASC
-  # sum(bitRateMinute) descending
-  sum_bitRateMinute_DESC
-  # sum(bitRateTenSeconds) ascending
-  sum_bitRateTenSeconds_ASC
-  # sum(bitRateTenSeconds) descending
-  sum_bitRateTenSeconds_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
   sum_bits_DESC
-  # sum(packetRateFifteenMinutes) ascending
-  sum_packetRateFifteenMinutes_ASC
-  # sum(packetRateFifteenMinutes) descending
-  sum_packetRateFifteenMinutes_DESC
-  # sum(packetRateFiveMinutes) ascending
-  sum_packetRateFiveMinutes_ASC
-  # sum(packetRateFiveMinutes) descending
-  sum_packetRateFiveMinutes_DESC
-  # sum(packetRateHour) ascending
-  sum_packetRateHour_ASC
-  # sum(packetRateHour) descending
-  sum_packetRateHour_DESC
-  # sum(packetRateMinute) ascending
-  sum_packetRateMinute_ASC
-  # sum(packetRateMinute) descending
-  sum_packetRateMinute_DESC
-  # sum(packetRateTenSeconds) ascending
-  sum_packetRateTenSeconds_ASC
-  # sum(packetRateTenSeconds) descending
-  sum_packetRateTenSeconds_DESC
   # sum(packets) ascending
   sum_packets_ASC
   # sum(packets) descending
@@ -2011,38 +2093,47 @@ enum AccountDosdAttackAnalyticsAdaptiveGroupsOrderBy {
 }
 
 type AccountDosdAttackAnalyticsAdaptiveGroupsSum {
-  # Sum of bits received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes
-  bitRateFifteenMinutes: uint64!
-  # Sum of bits received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes
-  bitRateFiveMinutes: uint64!
-  # Sum of bits received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour
-  bitRateHour: uint64!
-  # Sum of bits received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute
-  bitRateMinute: uint64!
-  # Sum of bits received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds
-  bitRateTenSeconds: uint64!
-  # Sum of bits received, providing a per-second rate when grouped by datetime
+  # Sum of bits received
   bits: uint64!
-  # Sum of packets received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes
-  packetRateFifteenMinutes: uint64!
-  # Sum of packets received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes
-  packetRateFiveMinutes: uint64!
-  # Sum of packets received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour
-  packetRateHour: uint64!
-  # Sum of packets received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute
-  packetRateMinute: uint64!
-  # Sum of packets received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds
-  packetRateTenSeconds: uint64!
-  # Sum of packets received, providing a per-second rate when grouped by datetime
+  # Sum of packets received
   packets: uint64!
 }
 
 # Network analytics data for dosd
 type AccountDosdNetworkAnalyticsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountDosdNetworkAnalyticsAdaptiveGroupsAvg
   # List of dimensions to group by
   dimensions: AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions
   # The sum of values for a metric per dimension
   sum: AccountDosdNetworkAnalyticsAdaptiveGroupsSum
+}
+
+type AccountDosdNetworkAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
+  bitRateFifteenMinutes: uint64!
+  # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
+  bitRateFiveMinutes: uint64!
+  # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
+  bitRateHour: uint64!
+  # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
+  bitRateMinute: uint64!
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRateSecond: uint64!
+  # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
+  bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
+  packetRateFifteenMinutes: uint64!
+  # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
+  packetRateFiveMinutes: uint64!
+  # Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour
+  packetRateHour: uint64!
+  # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
+  packetRateMinute: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRateSecond: uint64!
+  # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
+  packetRateTenSeconds: uint64!
 }
 
 type AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions {
@@ -2160,6 +2251,8 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions {
   rulesetId: string!
   # Unique identifier of the ruleset override containing the rule that matched the packet, if any
   rulesetOverrideId: string!
+  # ABR sample interval
+  sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
   sourceAsn: uint32!
   # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
@@ -2709,6 +2802,14 @@ input AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   rulesetOverrideId_neq: string
   rulesetOverrideId_notin: [string!]
   rulesetOverrideId_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
   sourceAsn: uint32
   sourceAsn_geq: uint32
   sourceAsn_gt: uint32
@@ -2904,6 +3005,54 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   attackId_ASC
   # attackId descending
   attackId_DESC
+  # avg(bitRateFifteenMinutes) ascending
+  avg_bitRateFifteenMinutes_ASC
+  # avg(bitRateFifteenMinutes) descending
+  avg_bitRateFifteenMinutes_DESC
+  # avg(bitRateFiveMinutes) ascending
+  avg_bitRateFiveMinutes_ASC
+  # avg(bitRateFiveMinutes) descending
+  avg_bitRateFiveMinutes_DESC
+  # avg(bitRateHour) ascending
+  avg_bitRateHour_ASC
+  # avg(bitRateHour) descending
+  avg_bitRateHour_DESC
+  # avg(bitRateMinute) ascending
+  avg_bitRateMinute_ASC
+  # avg(bitRateMinute) descending
+  avg_bitRateMinute_DESC
+  # avg(bitRateSecond) ascending
+  avg_bitRateSecond_ASC
+  # avg(bitRateSecond) descending
+  avg_bitRateSecond_DESC
+  # avg(bitRateTenSeconds) ascending
+  avg_bitRateTenSeconds_ASC
+  # avg(bitRateTenSeconds) descending
+  avg_bitRateTenSeconds_DESC
+  # avg(packetRateFifteenMinutes) ascending
+  avg_packetRateFifteenMinutes_ASC
+  # avg(packetRateFifteenMinutes) descending
+  avg_packetRateFifteenMinutes_DESC
+  # avg(packetRateFiveMinutes) ascending
+  avg_packetRateFiveMinutes_ASC
+  # avg(packetRateFiveMinutes) descending
+  avg_packetRateFiveMinutes_DESC
+  # avg(packetRateHour) ascending
+  avg_packetRateHour_ASC
+  # avg(packetRateHour) descending
+  avg_packetRateHour_DESC
+  # avg(packetRateMinute) ascending
+  avg_packetRateMinute_ASC
+  # avg(packetRateMinute) descending
+  avg_packetRateMinute_DESC
+  # avg(packetRateSecond) ascending
+  avg_packetRateSecond_ASC
+  # avg(packetRateSecond) descending
+  avg_packetRateSecond_DESC
+  # avg(packetRateTenSeconds) ascending
+  avg_packetRateTenSeconds_ASC
+  # avg(packetRateTenSeconds) descending
+  avg_packetRateTenSeconds_DESC
   # coloCity ascending
   coloCity_ASC
   # coloCity descending
@@ -3128,6 +3277,10 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   rulesetOverrideId_ASC
   # rulesetOverrideId descending
   rulesetOverrideId_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
   # sourceAsn ascending
   sourceAsn_ASC
   # sourceAsn descending
@@ -3144,50 +3297,10 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   sourcePort_ASC
   # sourcePort descending
   sourcePort_DESC
-  # sum(bitRateFifteenMinutes) ascending
-  sum_bitRateFifteenMinutes_ASC
-  # sum(bitRateFifteenMinutes) descending
-  sum_bitRateFifteenMinutes_DESC
-  # sum(bitRateFiveMinutes) ascending
-  sum_bitRateFiveMinutes_ASC
-  # sum(bitRateFiveMinutes) descending
-  sum_bitRateFiveMinutes_DESC
-  # sum(bitRateHour) ascending
-  sum_bitRateHour_ASC
-  # sum(bitRateHour) descending
-  sum_bitRateHour_DESC
-  # sum(bitRateMinute) ascending
-  sum_bitRateMinute_ASC
-  # sum(bitRateMinute) descending
-  sum_bitRateMinute_DESC
-  # sum(bitRateTenSeconds) ascending
-  sum_bitRateTenSeconds_ASC
-  # sum(bitRateTenSeconds) descending
-  sum_bitRateTenSeconds_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
   sum_bits_DESC
-  # sum(packetRateFifteenMinutes) ascending
-  sum_packetRateFifteenMinutes_ASC
-  # sum(packetRateFifteenMinutes) descending
-  sum_packetRateFifteenMinutes_DESC
-  # sum(packetRateFiveMinutes) ascending
-  sum_packetRateFiveMinutes_ASC
-  # sum(packetRateFiveMinutes) descending
-  sum_packetRateFiveMinutes_DESC
-  # sum(packetRateHour) ascending
-  sum_packetRateHour_ASC
-  # sum(packetRateHour) descending
-  sum_packetRateHour_DESC
-  # sum(packetRateMinute) ascending
-  sum_packetRateMinute_ASC
-  # sum(packetRateMinute) descending
-  sum_packetRateMinute_DESC
-  # sum(packetRateTenSeconds) ascending
-  sum_packetRateTenSeconds_ASC
-  # sum(packetRateTenSeconds) descending
-  sum_packetRateTenSeconds_DESC
   # sum(packets) ascending
   sum_packets_ASC
   # sum(packets) descending
@@ -3271,29 +3384,9 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
 }
 
 type AccountDosdNetworkAnalyticsAdaptiveGroupsSum {
-  # Sum of bits received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes
-  bitRateFifteenMinutes: uint64!
-  # Sum of bits received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes
-  bitRateFiveMinutes: uint64!
-  # Sum of bits received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour
-  bitRateHour: uint64!
-  # Sum of bits received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute
-  bitRateMinute: uint64!
-  # Sum of bits received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds
-  bitRateTenSeconds: uint64!
-  # Sum of bits received, providing a per-second rate when grouped by datetime
+  # Sum of bits received
   bits: uint64!
-  # Sum of packets received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes
-  packetRateFifteenMinutes: uint64!
-  # Sum of packets received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes
-  packetRateFiveMinutes: uint64!
-  # Sum of packets received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour
-  packetRateHour: uint64!
-  # Sum of packets received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute
-  packetRateMinute: uint64!
-  # Sum of packets received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds
-  packetRateTenSeconds: uint64!
-  # Sum of packets received, providing a per-second rate when grouped by datetime
+  # Sum of packets received
   packets: uint64!
 }
 
@@ -3303,10 +3396,39 @@ input AccountFilter_InputObject {
 
 # Network analytics data for flowtrackd
 type AccountFlowtrackdNetworkAnalyticsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg
   # List of dimensions to group by
   dimensions: AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions
   # The sum of values for a metric per dimension
   sum: AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsSum
+}
+
+type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
+  bitRateFifteenMinutes: uint64!
+  # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
+  bitRateFiveMinutes: uint64!
+  # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
+  bitRateHour: uint64!
+  # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
+  bitRateMinute: uint64!
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRateSecond: uint64!
+  # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
+  bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
+  packetRateFifteenMinutes: uint64!
+  # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
+  packetRateFiveMinutes: uint64!
+  # Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour
+  packetRateHour: uint64!
+  # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
+  packetRateMinute: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRateSecond: uint64!
+  # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
+  packetRateTenSeconds: uint64!
 }
 
 type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions {
@@ -3416,6 +3538,8 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions {
   outcome: string!
   # State of the packet in the context of the protocol, if available
   protocolState: string!
+  # ABR sample interval
+  sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
   sourceAsn: uint32!
   # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
@@ -3925,6 +4049,14 @@ input AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   protocolState_neq: string
   protocolState_notin: [string!]
   protocolState_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
   sourceAsn: uint32
   sourceAsn_geq: uint32
   sourceAsn_gt: uint32
@@ -4116,6 +4248,54 @@ input AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # avg(bitRateFifteenMinutes) ascending
+  avg_bitRateFifteenMinutes_ASC
+  # avg(bitRateFifteenMinutes) descending
+  avg_bitRateFifteenMinutes_DESC
+  # avg(bitRateFiveMinutes) ascending
+  avg_bitRateFiveMinutes_ASC
+  # avg(bitRateFiveMinutes) descending
+  avg_bitRateFiveMinutes_DESC
+  # avg(bitRateHour) ascending
+  avg_bitRateHour_ASC
+  # avg(bitRateHour) descending
+  avg_bitRateHour_DESC
+  # avg(bitRateMinute) ascending
+  avg_bitRateMinute_ASC
+  # avg(bitRateMinute) descending
+  avg_bitRateMinute_DESC
+  # avg(bitRateSecond) ascending
+  avg_bitRateSecond_ASC
+  # avg(bitRateSecond) descending
+  avg_bitRateSecond_DESC
+  # avg(bitRateTenSeconds) ascending
+  avg_bitRateTenSeconds_ASC
+  # avg(bitRateTenSeconds) descending
+  avg_bitRateTenSeconds_DESC
+  # avg(packetRateFifteenMinutes) ascending
+  avg_packetRateFifteenMinutes_ASC
+  # avg(packetRateFifteenMinutes) descending
+  avg_packetRateFifteenMinutes_DESC
+  # avg(packetRateFiveMinutes) ascending
+  avg_packetRateFiveMinutes_ASC
+  # avg(packetRateFiveMinutes) descending
+  avg_packetRateFiveMinutes_DESC
+  # avg(packetRateHour) ascending
+  avg_packetRateHour_ASC
+  # avg(packetRateHour) descending
+  avg_packetRateHour_DESC
+  # avg(packetRateMinute) ascending
+  avg_packetRateMinute_ASC
+  # avg(packetRateMinute) descending
+  avg_packetRateMinute_DESC
+  # avg(packetRateSecond) ascending
+  avg_packetRateSecond_ASC
+  # avg(packetRateSecond) descending
+  avg_packetRateSecond_DESC
+  # avg(packetRateTenSeconds) ascending
+  avg_packetRateTenSeconds_ASC
+  # avg(packetRateTenSeconds) descending
+  avg_packetRateTenSeconds_DESC
   # coloCity ascending
   coloCity_ASC
   # coloCity descending
@@ -4328,6 +4508,10 @@ enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
   protocolState_ASC
   # protocolState descending
   protocolState_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
   # sourceAsn ascending
   sourceAsn_ASC
   # sourceAsn descending
@@ -4344,50 +4528,10 @@ enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
   sourcePort_ASC
   # sourcePort descending
   sourcePort_DESC
-  # sum(bitRateFifteenMinutes) ascending
-  sum_bitRateFifteenMinutes_ASC
-  # sum(bitRateFifteenMinutes) descending
-  sum_bitRateFifteenMinutes_DESC
-  # sum(bitRateFiveMinutes) ascending
-  sum_bitRateFiveMinutes_ASC
-  # sum(bitRateFiveMinutes) descending
-  sum_bitRateFiveMinutes_DESC
-  # sum(bitRateHour) ascending
-  sum_bitRateHour_ASC
-  # sum(bitRateHour) descending
-  sum_bitRateHour_DESC
-  # sum(bitRateMinute) ascending
-  sum_bitRateMinute_ASC
-  # sum(bitRateMinute) descending
-  sum_bitRateMinute_DESC
-  # sum(bitRateTenSeconds) ascending
-  sum_bitRateTenSeconds_ASC
-  # sum(bitRateTenSeconds) descending
-  sum_bitRateTenSeconds_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
   sum_bits_DESC
-  # sum(packetRateFifteenMinutes) ascending
-  sum_packetRateFifteenMinutes_ASC
-  # sum(packetRateFifteenMinutes) descending
-  sum_packetRateFifteenMinutes_DESC
-  # sum(packetRateFiveMinutes) ascending
-  sum_packetRateFiveMinutes_ASC
-  # sum(packetRateFiveMinutes) descending
-  sum_packetRateFiveMinutes_DESC
-  # sum(packetRateHour) ascending
-  sum_packetRateHour_ASC
-  # sum(packetRateHour) descending
-  sum_packetRateHour_DESC
-  # sum(packetRateMinute) ascending
-  sum_packetRateMinute_ASC
-  # sum(packetRateMinute) descending
-  sum_packetRateMinute_DESC
-  # sum(packetRateTenSeconds) ascending
-  sum_packetRateTenSeconds_ASC
-  # sum(packetRateTenSeconds) descending
-  sum_packetRateTenSeconds_DESC
   # sum(packets) ascending
   sum_packets_ASC
   # sum(packets) descending
@@ -4471,29 +4615,9 @@ enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
 }
 
 type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsSum {
-  # Sum of bits received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes
-  bitRateFifteenMinutes: uint64!
-  # Sum of bits received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes
-  bitRateFiveMinutes: uint64!
-  # Sum of bits received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour
-  bitRateHour: uint64!
-  # Sum of bits received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute
-  bitRateMinute: uint64!
-  # Sum of bits received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds
-  bitRateTenSeconds: uint64!
-  # Sum of bits received, providing a per-second rate when grouped by datetime
+  # Sum of bits received
   bits: uint64!
-  # Sum of packets received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes
-  packetRateFifteenMinutes: uint64!
-  # Sum of packets received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes
-  packetRateFiveMinutes: uint64!
-  # Sum of packets received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour
-  packetRateHour: uint64!
-  # Sum of packets received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute
-  packetRateMinute: uint64!
-  # Sum of packets received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds
-  packetRateTenSeconds: uint64!
-  # Sum of packets received, providing a per-second rate when grouped by datetime
+  # Sum of packets received
   packets: uint64!
 }
 
@@ -7202,10 +7326,39 @@ type AccountIpFlows1mGroupsSum {
 
 # Network analytics data for Magic Firewall
 type AccountMagicFirewallNetworkAnalyticsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg
   # List of dimensions to group by
   dimensions: AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions
   # The sum of values for a metric per dimension
   sum: AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsSum
+}
+
+type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
+  bitRateFifteenMinutes: uint64!
+  # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
+  bitRateFiveMinutes: uint64!
+  # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
+  bitRateHour: uint64!
+  # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
+  bitRateMinute: uint64!
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRateSecond: uint64!
+  # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
+  bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
+  packetRateFifteenMinutes: uint64!
+  # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
+  packetRateFiveMinutes: uint64!
+  # Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour
+  packetRateHour: uint64!
+  # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
+  packetRateMinute: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRateSecond: uint64!
+  # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
+  packetRateTenSeconds: uint64!
 }
 
 type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions {
@@ -7313,6 +7466,8 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions {
   ruleId: string!
   # Unique identifier of the ruleset containing the rule that matched the packet, if any
   rulesetId: string!
+  # ABR sample interval
+  sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
   sourceAsn: uint32!
   # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
@@ -7812,6 +7967,14 @@ input AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   rulesetId_neq: string
   rulesetId_notin: [string!]
   rulesetId_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
   sourceAsn: uint32
   sourceAsn_geq: uint32
   sourceAsn_gt: uint32
@@ -8003,6 +8166,54 @@ input AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # avg(bitRateFifteenMinutes) ascending
+  avg_bitRateFifteenMinutes_ASC
+  # avg(bitRateFifteenMinutes) descending
+  avg_bitRateFifteenMinutes_DESC
+  # avg(bitRateFiveMinutes) ascending
+  avg_bitRateFiveMinutes_ASC
+  # avg(bitRateFiveMinutes) descending
+  avg_bitRateFiveMinutes_DESC
+  # avg(bitRateHour) ascending
+  avg_bitRateHour_ASC
+  # avg(bitRateHour) descending
+  avg_bitRateHour_DESC
+  # avg(bitRateMinute) ascending
+  avg_bitRateMinute_ASC
+  # avg(bitRateMinute) descending
+  avg_bitRateMinute_DESC
+  # avg(bitRateSecond) ascending
+  avg_bitRateSecond_ASC
+  # avg(bitRateSecond) descending
+  avg_bitRateSecond_DESC
+  # avg(bitRateTenSeconds) ascending
+  avg_bitRateTenSeconds_ASC
+  # avg(bitRateTenSeconds) descending
+  avg_bitRateTenSeconds_DESC
+  # avg(packetRateFifteenMinutes) ascending
+  avg_packetRateFifteenMinutes_ASC
+  # avg(packetRateFifteenMinutes) descending
+  avg_packetRateFifteenMinutes_DESC
+  # avg(packetRateFiveMinutes) ascending
+  avg_packetRateFiveMinutes_ASC
+  # avg(packetRateFiveMinutes) descending
+  avg_packetRateFiveMinutes_DESC
+  # avg(packetRateHour) ascending
+  avg_packetRateHour_ASC
+  # avg(packetRateHour) descending
+  avg_packetRateHour_DESC
+  # avg(packetRateMinute) ascending
+  avg_packetRateMinute_ASC
+  # avg(packetRateMinute) descending
+  avg_packetRateMinute_DESC
+  # avg(packetRateSecond) ascending
+  avg_packetRateSecond_ASC
+  # avg(packetRateSecond) descending
+  avg_packetRateSecond_DESC
+  # avg(packetRateTenSeconds) ascending
+  avg_packetRateTenSeconds_ASC
+  # avg(packetRateTenSeconds) descending
+  avg_packetRateTenSeconds_DESC
   # coloCity ascending
   coloCity_ASC
   # coloCity descending
@@ -8211,6 +8422,10 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   rulesetId_ASC
   # rulesetId descending
   rulesetId_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
   # sourceAsn ascending
   sourceAsn_ASC
   # sourceAsn descending
@@ -8227,50 +8442,10 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   sourcePort_ASC
   # sourcePort descending
   sourcePort_DESC
-  # sum(bitRateFifteenMinutes) ascending
-  sum_bitRateFifteenMinutes_ASC
-  # sum(bitRateFifteenMinutes) descending
-  sum_bitRateFifteenMinutes_DESC
-  # sum(bitRateFiveMinutes) ascending
-  sum_bitRateFiveMinutes_ASC
-  # sum(bitRateFiveMinutes) descending
-  sum_bitRateFiveMinutes_DESC
-  # sum(bitRateHour) ascending
-  sum_bitRateHour_ASC
-  # sum(bitRateHour) descending
-  sum_bitRateHour_DESC
-  # sum(bitRateMinute) ascending
-  sum_bitRateMinute_ASC
-  # sum(bitRateMinute) descending
-  sum_bitRateMinute_DESC
-  # sum(bitRateTenSeconds) ascending
-  sum_bitRateTenSeconds_ASC
-  # sum(bitRateTenSeconds) descending
-  sum_bitRateTenSeconds_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
   sum_bits_DESC
-  # sum(packetRateFifteenMinutes) ascending
-  sum_packetRateFifteenMinutes_ASC
-  # sum(packetRateFifteenMinutes) descending
-  sum_packetRateFifteenMinutes_DESC
-  # sum(packetRateFiveMinutes) ascending
-  sum_packetRateFiveMinutes_ASC
-  # sum(packetRateFiveMinutes) descending
-  sum_packetRateFiveMinutes_DESC
-  # sum(packetRateHour) ascending
-  sum_packetRateHour_ASC
-  # sum(packetRateHour) descending
-  sum_packetRateHour_DESC
-  # sum(packetRateMinute) ascending
-  sum_packetRateMinute_ASC
-  # sum(packetRateMinute) descending
-  sum_packetRateMinute_DESC
-  # sum(packetRateTenSeconds) ascending
-  sum_packetRateTenSeconds_ASC
-  # sum(packetRateTenSeconds) descending
-  sum_packetRateTenSeconds_DESC
   # sum(packets) ascending
   sum_packets_ASC
   # sum(packets) descending
@@ -8354,29 +8529,9 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
 }
 
 type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsSum {
-  # Sum of bits received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes
-  bitRateFifteenMinutes: uint64!
-  # Sum of bits received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes
-  bitRateFiveMinutes: uint64!
-  # Sum of bits received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour
-  bitRateHour: uint64!
-  # Sum of bits received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute
-  bitRateMinute: uint64!
-  # Sum of bits received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds
-  bitRateTenSeconds: uint64!
-  # Sum of bits received, providing a per-second rate when grouped by datetime
+  # Sum of bits received
   bits: uint64!
-  # Sum of packets received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes
-  packetRateFifteenMinutes: uint64!
-  # Sum of packets received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes
-  packetRateFiveMinutes: uint64!
-  # Sum of packets received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour
-  packetRateHour: uint64!
-  # Sum of packets received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute
-  packetRateMinute: uint64!
-  # Sum of packets received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds
-  packetRateTenSeconds: uint64!
-  # Sum of packets received, providing a per-second rate when grouped by datetime
+  # Sum of packets received
   packets: uint64!
 }
 
@@ -8460,10 +8615,39 @@ type AccountMagicFirewallSamplesAdaptiveGroupsSum {
 
 # Network analytics data for Magic Transit traffic
 type AccountMagicTransitNetworkAnalyticsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg
   # List of dimensions to group by
   dimensions: AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions
   # The sum of values for a metric per dimension
   sum: AccountMagicTransitNetworkAnalyticsAdaptiveGroupsSum
+}
+
+type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
+  bitRateFifteenMinutes: uint64!
+  # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
+  bitRateFiveMinutes: uint64!
+  # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
+  bitRateHour: uint64!
+  # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
+  bitRateMinute: uint64!
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRateSecond: uint64!
+  # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
+  bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
+  packetRateFifteenMinutes: uint64!
+  # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
+  packetRateFiveMinutes: uint64!
+  # Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour
+  packetRateHour: uint64!
+  # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
+  packetRateMinute: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRateSecond: uint64!
+  # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
+  packetRateTenSeconds: uint64!
 }
 
 type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
@@ -8569,6 +8753,8 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
   mitigationSystem: string!
   # The action that was taken on the packet (possible values: pass, drop)
   outcome: string!
+  # ABR sample interval
+  sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
   sourceAsn: uint32!
   # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
@@ -9056,6 +9242,14 @@ input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   outcome_neq: string
   outcome_notin: [string!]
   outcome_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
   sourceAsn: uint32
   sourceAsn_geq: uint32
   sourceAsn_gt: uint32
@@ -9237,6 +9431,54 @@ input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # avg(bitRateFifteenMinutes) ascending
+  avg_bitRateFifteenMinutes_ASC
+  # avg(bitRateFifteenMinutes) descending
+  avg_bitRateFifteenMinutes_DESC
+  # avg(bitRateFiveMinutes) ascending
+  avg_bitRateFiveMinutes_ASC
+  # avg(bitRateFiveMinutes) descending
+  avg_bitRateFiveMinutes_DESC
+  # avg(bitRateHour) ascending
+  avg_bitRateHour_ASC
+  # avg(bitRateHour) descending
+  avg_bitRateHour_DESC
+  # avg(bitRateMinute) ascending
+  avg_bitRateMinute_ASC
+  # avg(bitRateMinute) descending
+  avg_bitRateMinute_DESC
+  # avg(bitRateSecond) ascending
+  avg_bitRateSecond_ASC
+  # avg(bitRateSecond) descending
+  avg_bitRateSecond_DESC
+  # avg(bitRateTenSeconds) ascending
+  avg_bitRateTenSeconds_ASC
+  # avg(bitRateTenSeconds) descending
+  avg_bitRateTenSeconds_DESC
+  # avg(packetRateFifteenMinutes) ascending
+  avg_packetRateFifteenMinutes_ASC
+  # avg(packetRateFifteenMinutes) descending
+  avg_packetRateFifteenMinutes_DESC
+  # avg(packetRateFiveMinutes) ascending
+  avg_packetRateFiveMinutes_ASC
+  # avg(packetRateFiveMinutes) descending
+  avg_packetRateFiveMinutes_DESC
+  # avg(packetRateHour) ascending
+  avg_packetRateHour_ASC
+  # avg(packetRateHour) descending
+  avg_packetRateHour_DESC
+  # avg(packetRateMinute) ascending
+  avg_packetRateMinute_ASC
+  # avg(packetRateMinute) descending
+  avg_packetRateMinute_DESC
+  # avg(packetRateSecond) ascending
+  avg_packetRateSecond_ASC
+  # avg(packetRateSecond) descending
+  avg_packetRateSecond_DESC
+  # avg(packetRateTenSeconds) ascending
+  avg_packetRateTenSeconds_ASC
+  # avg(packetRateTenSeconds) descending
+  avg_packetRateTenSeconds_DESC
   # coloCity ascending
   coloCity_ASC
   # coloCity descending
@@ -9441,6 +9683,10 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   outcome_ASC
   # outcome descending
   outcome_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
   # sourceAsn ascending
   sourceAsn_ASC
   # sourceAsn descending
@@ -9457,50 +9703,10 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   sourcePort_ASC
   # sourcePort descending
   sourcePort_DESC
-  # sum(bitRateFifteenMinutes) ascending
-  sum_bitRateFifteenMinutes_ASC
-  # sum(bitRateFifteenMinutes) descending
-  sum_bitRateFifteenMinutes_DESC
-  # sum(bitRateFiveMinutes) ascending
-  sum_bitRateFiveMinutes_ASC
-  # sum(bitRateFiveMinutes) descending
-  sum_bitRateFiveMinutes_DESC
-  # sum(bitRateHour) ascending
-  sum_bitRateHour_ASC
-  # sum(bitRateHour) descending
-  sum_bitRateHour_DESC
-  # sum(bitRateMinute) ascending
-  sum_bitRateMinute_ASC
-  # sum(bitRateMinute) descending
-  sum_bitRateMinute_DESC
-  # sum(bitRateTenSeconds) ascending
-  sum_bitRateTenSeconds_ASC
-  # sum(bitRateTenSeconds) descending
-  sum_bitRateTenSeconds_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
   sum_bits_DESC
-  # sum(packetRateFifteenMinutes) ascending
-  sum_packetRateFifteenMinutes_ASC
-  # sum(packetRateFifteenMinutes) descending
-  sum_packetRateFifteenMinutes_DESC
-  # sum(packetRateFiveMinutes) ascending
-  sum_packetRateFiveMinutes_ASC
-  # sum(packetRateFiveMinutes) descending
-  sum_packetRateFiveMinutes_DESC
-  # sum(packetRateHour) ascending
-  sum_packetRateHour_ASC
-  # sum(packetRateHour) descending
-  sum_packetRateHour_DESC
-  # sum(packetRateMinute) ascending
-  sum_packetRateMinute_ASC
-  # sum(packetRateMinute) descending
-  sum_packetRateMinute_DESC
-  # sum(packetRateTenSeconds) ascending
-  sum_packetRateTenSeconds_ASC
-  # sum(packetRateTenSeconds) descending
-  sum_packetRateTenSeconds_DESC
   # sum(packets) ascending
   sum_packets_ASC
   # sum(packets) descending
@@ -9580,29 +9786,9 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
 }
 
 type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsSum {
-  # Sum of bits received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes
-  bitRateFifteenMinutes: uint64!
-  # Sum of bits received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes
-  bitRateFiveMinutes: uint64!
-  # Sum of bits received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour
-  bitRateHour: uint64!
-  # Sum of bits received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute
-  bitRateMinute: uint64!
-  # Sum of bits received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds
-  bitRateTenSeconds: uint64!
-  # Sum of bits received, providing a per-second rate when grouped by datetime
+  # Sum of bits received
   bits: uint64!
-  # Sum of packets received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes
-  packetRateFifteenMinutes: uint64!
-  # Sum of packets received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes
-  packetRateFiveMinutes: uint64!
-  # Sum of packets received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour
-  packetRateHour: uint64!
-  # Sum of packets received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute
-  packetRateMinute: uint64!
-  # Sum of packets received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds
-  packetRateTenSeconds: uint64!
-  # Sum of packets received, providing a per-second rate when grouped by datetime
+  # Sum of packets received
   packets: uint64!
 }
 
@@ -12128,10 +12314,39 @@ type AccountSettings {
 
 # Network analytics data for Spectrum traffic
 type AccountSpectrumNetworkAnalyticsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg
   # List of dimensions to group by
   dimensions: AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions
   # The sum of values for a metric per dimension
   sum: AccountSpectrumNetworkAnalyticsAdaptiveGroupsSum
+}
+
+type AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
+  bitRateFifteenMinutes: uint64!
+  # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
+  bitRateFiveMinutes: uint64!
+  # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
+  bitRateHour: uint64!
+  # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
+  bitRateMinute: uint64!
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRateSecond: uint64!
+  # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
+  bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
+  packetRateFifteenMinutes: uint64!
+  # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
+  packetRateFiveMinutes: uint64!
+  # Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour
+  packetRateHour: uint64!
+  # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
+  packetRateMinute: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRateSecond: uint64!
+  # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
+  packetRateTenSeconds: uint64!
 }
 
 type AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions {
@@ -12237,6 +12452,8 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions {
   mitigationSystem: string!
   # The action that was taken on the packet (possible values: pass, drop)
   outcome: string!
+  # ABR sample interval
+  sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
   sourceAsn: uint32!
   # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
@@ -12724,6 +12941,14 @@ input AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   outcome_neq: string
   outcome_notin: [string!]
   outcome_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
   sourceAsn: uint32
   sourceAsn_geq: uint32
   sourceAsn_gt: uint32
@@ -12905,6 +13130,54 @@ input AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # avg(bitRateFifteenMinutes) ascending
+  avg_bitRateFifteenMinutes_ASC
+  # avg(bitRateFifteenMinutes) descending
+  avg_bitRateFifteenMinutes_DESC
+  # avg(bitRateFiveMinutes) ascending
+  avg_bitRateFiveMinutes_ASC
+  # avg(bitRateFiveMinutes) descending
+  avg_bitRateFiveMinutes_DESC
+  # avg(bitRateHour) ascending
+  avg_bitRateHour_ASC
+  # avg(bitRateHour) descending
+  avg_bitRateHour_DESC
+  # avg(bitRateMinute) ascending
+  avg_bitRateMinute_ASC
+  # avg(bitRateMinute) descending
+  avg_bitRateMinute_DESC
+  # avg(bitRateSecond) ascending
+  avg_bitRateSecond_ASC
+  # avg(bitRateSecond) descending
+  avg_bitRateSecond_DESC
+  # avg(bitRateTenSeconds) ascending
+  avg_bitRateTenSeconds_ASC
+  # avg(bitRateTenSeconds) descending
+  avg_bitRateTenSeconds_DESC
+  # avg(packetRateFifteenMinutes) ascending
+  avg_packetRateFifteenMinutes_ASC
+  # avg(packetRateFifteenMinutes) descending
+  avg_packetRateFifteenMinutes_DESC
+  # avg(packetRateFiveMinutes) ascending
+  avg_packetRateFiveMinutes_ASC
+  # avg(packetRateFiveMinutes) descending
+  avg_packetRateFiveMinutes_DESC
+  # avg(packetRateHour) ascending
+  avg_packetRateHour_ASC
+  # avg(packetRateHour) descending
+  avg_packetRateHour_DESC
+  # avg(packetRateMinute) ascending
+  avg_packetRateMinute_ASC
+  # avg(packetRateMinute) descending
+  avg_packetRateMinute_DESC
+  # avg(packetRateSecond) ascending
+  avg_packetRateSecond_ASC
+  # avg(packetRateSecond) descending
+  avg_packetRateSecond_DESC
+  # avg(packetRateTenSeconds) ascending
+  avg_packetRateTenSeconds_ASC
+  # avg(packetRateTenSeconds) descending
+  avg_packetRateTenSeconds_DESC
   # coloCity ascending
   coloCity_ASC
   # coloCity descending
@@ -13109,6 +13382,10 @@ enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
   outcome_ASC
   # outcome descending
   outcome_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
   # sourceAsn ascending
   sourceAsn_ASC
   # sourceAsn descending
@@ -13125,50 +13402,10 @@ enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
   sourcePort_ASC
   # sourcePort descending
   sourcePort_DESC
-  # sum(bitRateFifteenMinutes) ascending
-  sum_bitRateFifteenMinutes_ASC
-  # sum(bitRateFifteenMinutes) descending
-  sum_bitRateFifteenMinutes_DESC
-  # sum(bitRateFiveMinutes) ascending
-  sum_bitRateFiveMinutes_ASC
-  # sum(bitRateFiveMinutes) descending
-  sum_bitRateFiveMinutes_DESC
-  # sum(bitRateHour) ascending
-  sum_bitRateHour_ASC
-  # sum(bitRateHour) descending
-  sum_bitRateHour_DESC
-  # sum(bitRateMinute) ascending
-  sum_bitRateMinute_ASC
-  # sum(bitRateMinute) descending
-  sum_bitRateMinute_DESC
-  # sum(bitRateTenSeconds) ascending
-  sum_bitRateTenSeconds_ASC
-  # sum(bitRateTenSeconds) descending
-  sum_bitRateTenSeconds_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
   sum_bits_DESC
-  # sum(packetRateFifteenMinutes) ascending
-  sum_packetRateFifteenMinutes_ASC
-  # sum(packetRateFifteenMinutes) descending
-  sum_packetRateFifteenMinutes_DESC
-  # sum(packetRateFiveMinutes) ascending
-  sum_packetRateFiveMinutes_ASC
-  # sum(packetRateFiveMinutes) descending
-  sum_packetRateFiveMinutes_DESC
-  # sum(packetRateHour) ascending
-  sum_packetRateHour_ASC
-  # sum(packetRateHour) descending
-  sum_packetRateHour_DESC
-  # sum(packetRateMinute) ascending
-  sum_packetRateMinute_ASC
-  # sum(packetRateMinute) descending
-  sum_packetRateMinute_DESC
-  # sum(packetRateTenSeconds) ascending
-  sum_packetRateTenSeconds_ASC
-  # sum(packetRateTenSeconds) descending
-  sum_packetRateTenSeconds_DESC
   # sum(packets) ascending
   sum_packets_ASC
   # sum(packets) descending
@@ -13248,29 +13485,9 @@ enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
 }
 
 type AccountSpectrumNetworkAnalyticsAdaptiveGroupsSum {
-  # Sum of bits received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes
-  bitRateFifteenMinutes: uint64!
-  # Sum of bits received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes
-  bitRateFiveMinutes: uint64!
-  # Sum of bits received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour
-  bitRateHour: uint64!
-  # Sum of bits received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute
-  bitRateMinute: uint64!
-  # Sum of bits received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds
-  bitRateTenSeconds: uint64!
-  # Sum of bits received, providing a per-second rate when grouped by datetime
+  # Sum of bits received
   bits: uint64!
-  # Sum of packets received, averaged over 900 seconds, providing a per-second rate when grouped by datetimeFifteenMinutes
-  packetRateFifteenMinutes: uint64!
-  # Sum of packets received, averaged over 300 seconds, providing a per-second rate when grouped by datetimeFiveMinutes
-  packetRateFiveMinutes: uint64!
-  # Sum of packets received, averaged over 3600 seconds, providing a per-second rate when grouped by datetimeHour
-  packetRateHour: uint64!
-  # Sum of packets received, averaged over 60 seconds, providing a per-second rate when grouped by datetimeMinute
-  packetRateMinute: uint64!
-  # Sum of packets received, averaged over 10 seconds, providing a per-second rate when grouped by datetimeTenSeconds
-  packetRateTenSeconds: uint64!
-  # Sum of packets received, providing a per-second rate when grouped by datetime
+  # Sum of packets received
   packets: uint64!
 }
 
@@ -13966,6 +14183,8 @@ type AccountWorkersInvocationsAdaptiveDimensions {
   datetime: Time!
   # Request datetime, truncated to start of an hour
   datetimeHour: Time!
+  # Request datetime, truncated to start of an minute
+  datetimeMinute: Time!
   # The name of the script
   scriptName: string!
   # Status of the worker invocation
@@ -13994,6 +14213,14 @@ input AccountWorkersInvocationsAdaptiveFilter_InputObject {
   datetimeHour_lt: Time
   datetimeHour_neq: Time
   datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -14068,6 +14295,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   datetimeHour_ASC
   # datetimeHour descending
   datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -14425,6 +14656,8 @@ type AccountWorkersSubrequestsAdaptiveGroupsDimensions {
   datetime: Time!
   # Request datetime, truncated to start of an hour
   datetimeHour: Time!
+  # Request datetime, truncated to start of an minute
+  datetimeMinute: Time!
   # The name of the script
   scriptName: string!
   # Usage model of the worker invocation
@@ -14451,6 +14684,14 @@ input AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject {
   datetimeHour_lt: Time
   datetimeHour_neq: Time
   datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -14489,6 +14730,10 @@ enum AccountWorkersSubrequestsAdaptiveGroupsOrderBy {
   datetimeHour_ASC
   # datetimeHour descending
   datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
