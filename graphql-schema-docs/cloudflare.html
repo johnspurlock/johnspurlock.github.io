@@ -4586,6 +4586,10 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountGatewayL4DownstreamSessionsAdaptiveGroupsDimensions" href="#AccountGatewayL4DownstreamSessionsAdaptiveGroupsDimensions">AccountGatewayL4DownstreamSessionsAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># IATA Airport code that represents the city in which a Cloudflare data center (colo) is located</span><br />
+&nbsp;&nbsp;coloCode: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># ISO 3166-1 alpha-2 code that represents the country in which a Cloudflare data center (colo) is located</span><br />
+&nbsp;&nbsp;coloCountry: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Start timestamp of this session, truncated to date</span><br />
 &nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># Start timestamp of this session, truncated to multiple of 15 minutes</span><br />
@@ -4613,6 +4617,26 @@
 <span class="k">input</span> <a id="AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject" href="#AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject">AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject</a> {<br />
 &nbsp;&nbsp;AND: <a href="#AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject">[AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject!]</a><br />
 &nbsp;&nbsp;OR: <a href="#AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject">[AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;coloCode: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCode_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCode_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCountry_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCountry_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;date: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
@@ -4722,6 +4746,14 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy" href="#AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy">AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># coloCode ascending</span><br />
+&nbsp;&nbsp;coloCode_ASC<br />
+&nbsp;&nbsp;<span class="c"># coloCode descending</span><br />
+&nbsp;&nbsp;coloCode_DESC<br />
+&nbsp;&nbsp;<span class="c"># coloCountry ascending</span><br />
+&nbsp;&nbsp;coloCountry_ASC<br />
+&nbsp;&nbsp;<span class="c"># coloCountry descending</span><br />
+&nbsp;&nbsp;coloCountry_DESC<br />
 &nbsp;&nbsp;<span class="c"># count() ascending</span><br />
 &nbsp;&nbsp;count_ASC<br />
 &nbsp;&nbsp;<span class="c"># count() descending</span><br />
@@ -4825,6 +4857,10 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountGatewayL4UpstreamSessionsAdaptiveGroupsDimensions" href="#AccountGatewayL4UpstreamSessionsAdaptiveGroupsDimensions">AccountGatewayL4UpstreamSessionsAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># IATA Airport code that represents the city in which a Cloudflare data center (colo) is located</span><br />
+&nbsp;&nbsp;coloCode: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># ISO 3166-1 alpha-2 code that represents the country in which a Cloudflare data center (colo) is located</span><br />
+&nbsp;&nbsp;coloCountry: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Start timestamp of this session, truncated to date</span><br />
 &nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># Start timestamp of this session, truncated to multiple of 15 minutes</span><br />
@@ -4852,6 +4888,26 @@
 <span class="k">input</span> <a id="AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject" href="#AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject">AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject</a> {<br />
 &nbsp;&nbsp;AND: <a href="#AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject">[AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject!]</a><br />
 &nbsp;&nbsp;OR: <a href="#AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject">[AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;coloCode: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCode_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCode_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCountry_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCountry_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCountry_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;date: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
@@ -4961,6 +5017,14 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy" href="#AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy">AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># coloCode ascending</span><br />
+&nbsp;&nbsp;coloCode_ASC<br />
+&nbsp;&nbsp;<span class="c"># coloCode descending</span><br />
+&nbsp;&nbsp;coloCode_DESC<br />
+&nbsp;&nbsp;<span class="c"># coloCountry ascending</span><br />
+&nbsp;&nbsp;coloCountry_ASC<br />
+&nbsp;&nbsp;<span class="c"># coloCountry descending</span><br />
+&nbsp;&nbsp;coloCountry_DESC<br />
 &nbsp;&nbsp;<span class="c"># count() ascending</span><br />
 &nbsp;&nbsp;count_ASC<br />
 &nbsp;&nbsp;<span class="c"># count() descending</span><br />

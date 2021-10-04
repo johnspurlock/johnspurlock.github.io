@@ -4632,6 +4632,10 @@ type AccountGatewayL4DownstreamSessionsAdaptiveGroups {
 }
 
 type AccountGatewayL4DownstreamSessionsAdaptiveGroupsDimensions {
+  # IATA Airport code that represents the city in which a Cloudflare data center (colo) is located
+  coloCode: string!
+  # ISO 3166-1 alpha-2 code that represents the country in which a Cloudflare data center (colo) is located
+  coloCountry: string!
   # Start timestamp of this session, truncated to date
   date: Date!
   # Start timestamp of this session, truncated to multiple of 15 minutes
@@ -4659,6 +4663,26 @@ type AccountGatewayL4DownstreamSessionsAdaptiveGroupsDimensions {
 input AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject {
   AND: [AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject!]
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
+  coloCountry: string
+  coloCountry_geq: string
+  coloCountry_gt: string
+  coloCountry_in: [string!]
+  coloCountry_leq: string
+  coloCountry_like: string
+  coloCountry_lt: string
+  coloCountry_neq: string
+  coloCountry_notin: [string!]
+  coloCountry_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -4768,6 +4792,14 @@ input AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy {
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
+  # coloCountry ascending
+  coloCountry_ASC
+  # coloCountry descending
+  coloCountry_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -4871,6 +4903,10 @@ type AccountGatewayL4UpstreamSessionsAdaptiveGroups {
 }
 
 type AccountGatewayL4UpstreamSessionsAdaptiveGroupsDimensions {
+  # IATA Airport code that represents the city in which a Cloudflare data center (colo) is located
+  coloCode: string!
+  # ISO 3166-1 alpha-2 code that represents the country in which a Cloudflare data center (colo) is located
+  coloCountry: string!
   # Start timestamp of this session, truncated to date
   date: Date!
   # Start timestamp of this session, truncated to multiple of 15 minutes
@@ -4898,6 +4934,26 @@ type AccountGatewayL4UpstreamSessionsAdaptiveGroupsDimensions {
 input AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject {
   AND: [AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject!]
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
+  coloCountry: string
+  coloCountry_geq: string
+  coloCountry_gt: string
+  coloCountry_in: [string!]
+  coloCountry_leq: string
+  coloCountry_like: string
+  coloCountry_lt: string
+  coloCountry_neq: string
+  coloCountry_notin: [string!]
+  coloCountry_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -5007,6 +5063,14 @@ input AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy {
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
+  # coloCountry ascending
+  coloCountry_ASC
+  # coloCountry descending
+  coloCountry_DESC
   # count() ascending
   count_ASC
   # count() descending
