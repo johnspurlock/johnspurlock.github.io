@@ -2,12 +2,15 @@ Account-level datasets:
   cdnNetworkAnalyticsAdaptiveGroups
   dosdAttackAnalyticsAdaptiveGroups
   dosdNetworkAnalyticsAdaptiveGroups
+* durableObjectsInvocationsAdaptiveGroups
+* durableObjectsSubrequestsAdaptiveGroups
   flowtrackdNetworkAnalyticsAdaptiveGroups
   gatewayL4DownstreamSessionsAdaptiveGroups
   gatewayL4UpstreamSessionsAdaptiveGroups
 * httpRequests1dGroups
 * httpRequests1hGroups
   httpRequests1mGroups
+* httpRequestsOverviewAdaptiveGroups
   ipFlows1dGroups
   ipFlows1hGroups
   ipFlows1mAttacksGroups
@@ -97,6 +100,10 @@ type account {
   dosdAttackAnalyticsAdaptiveGroups(filter: AccountDosdAttackAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDosdAttackAnalyticsAdaptiveGroupsOrderBy!]): [AccountDosdAttackAnalyticsAdaptiveGroups!]!
   # Network analytics data for dosd
   dosdNetworkAnalyticsAdaptiveGroups(filter: AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountDosdNetworkAnalyticsAdaptiveGroups!]!
+  # Beta. Durable Objects invocations with adaptive sampling
+  durableObjectsInvocationsAdaptiveGroups(filter: AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy!]): [AccountDurableObjectsInvocationsAdaptiveGroups!]!
+  # Beta. Durable Objects subrequests with adaptive sampling
+  durableObjectsSubrequestsAdaptiveGroups(filter: AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy!]): [AccountDurableObjectsSubrequestsAdaptiveGroups!]!
   # Network analytics data for flowtrackd
   flowtrackdNetworkAnalyticsAdaptiveGroups(filter: AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountFlowtrackdNetworkAnalyticsAdaptiveGroups!]!
   # Aggregated metrics about downstream (client to edge) L4 Gateway Sessions. Metrics are reported on TCP or UDP session close
@@ -109,6 +116,8 @@ type account {
   httpRequests1hGroups(filter: AccountHttpRequests1hGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHttpRequests1hGroupsOrderBy!]): [AccountHttpRequests1hGroups!]!
   # Minutely rollups of request data
   httpRequests1mGroups(filter: AccountHttpRequests1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHttpRequests1mGroupsOrderBy!]): [AccountHttpRequests1mGroups!]!
+  # A high-level summary of HTTP requests made by end users.
+  httpRequestsOverviewAdaptiveGroups(filter: AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHttpRequestsOverviewAdaptiveGroupsOrderBy!]): [AccountHttpRequestsOverviewAdaptiveGroups!]!
   # Beta. Daily rollups of IP flows
   ipFlows1dGroups(filter: AccountIpFlows1dGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountIpFlows1dGroupsOrderBy!]): [AccountIpFlows1dGroups!]!
   # Beta. Hourly rollups of IP flows
@@ -3390,6 +3399,425 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsSum {
   packets: uint64!
 }
 
+# Beta. Durable Objects invocations with adaptive sampling
+type AccountDurableObjectsInvocationsAdaptiveGroups {
+  # The average value used for sample interval
+  avg: AccountDurableObjectsInvocationsAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountDurableObjectsInvocationsAdaptiveGroupsDimensions
+  # The max value for a metric
+  max: AccountDurableObjectsInvocationsAdaptiveGroupsMax
+  # The min value for a metric
+  min: AccountDurableObjectsInvocationsAdaptiveGroupsMin
+  # Quantiles of a metric per dimension
+  quantiles: AccountDurableObjectsInvocationsAdaptiveGroupsQuantiles
+  # The sum of values for a metric per dimension
+  sum: AccountDurableObjectsInvocationsAdaptiveGroupsSum
+}
+
+type AccountDurableObjectsInvocationsAdaptiveGroupsAvg {
+  sampleInterval: float64!
+}
+
+type AccountDurableObjectsInvocationsAdaptiveGroupsDimensions {
+  # Request datetime, truncated to start of a day
+  date: Date!
+  # Request datetime, truncated to start of an hour
+  datetimeHour: Time!
+  # Request datetime, truncated to start of a minute
+  datetimeMinute: Time!
+  # Request datetime, truncated to start of a second
+  datetimeSecond: Time!
+  # Durable Object namespace ID
+  namespaceId: string!
+  # Durable Object ID as a hex string
+  objectId: string!
+  # The name of the script
+  scriptName: string!
+  # Status of the worker invocation
+  status: string!
+}
+
+input AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSecond: Time
+  datetimeSecond_geq: Time
+  datetimeSecond_gt: Time
+  datetimeSecond_in: [Time!]
+  datetimeSecond_leq: Time
+  datetimeSecond_lt: Time
+  datetimeSecond_neq: Time
+  datetimeSecond_notin: [Time!]
+  namespaceId: string
+  namespaceId_geq: string
+  namespaceId_gt: string
+  namespaceId_in: [string!]
+  namespaceId_leq: string
+  namespaceId_like: string
+  namespaceId_lt: string
+  namespaceId_neq: string
+  namespaceId_notin: [string!]
+  namespaceId_notlike: string
+  objectId: string
+  objectId_geq: string
+  objectId_gt: string
+  objectId_in: [string!]
+  objectId_leq: string
+  objectId_like: string
+  objectId_lt: string
+  objectId_neq: string
+  objectId_notin: [string!]
+  objectId_notlike: string
+  scriptName: string
+  scriptName_geq: string
+  scriptName_gt: string
+  scriptName_in: [string!]
+  scriptName_leq: string
+  scriptName_like: string
+  scriptName_lt: string
+  scriptName_neq: string
+  scriptName_notin: [string!]
+  scriptName_notlike: string
+  status: string
+  status_geq: string
+  status_gt: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
+}
+
+type AccountDurableObjectsInvocationsAdaptiveGroupsMax {
+  # Maximum response body size for one request - bytes
+  responseBodySize: float64!
+  # Maximum wall time for one request - microseconds
+  wallTime: float64!
+}
+
+type AccountDurableObjectsInvocationsAdaptiveGroupsMin {
+  # Minimum response body size for one request - bytes
+  responseBodySize: float64!
+  # Minimum wall time for one request - microseconds
+  wallTime: float64!
+}
+
+enum AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSecond ascending
+  datetimeSecond_ASC
+  # datetimeSecond descending
+  datetimeSecond_DESC
+  # max(responseBodySize) ascending
+  max_responseBodySize_ASC
+  # max(responseBodySize) descending
+  max_responseBodySize_DESC
+  # max(wallTime) ascending
+  max_wallTime_ASC
+  # max(wallTime) descending
+  max_wallTime_DESC
+  # min(responseBodySize) ascending
+  min_responseBodySize_ASC
+  # min(responseBodySize) descending
+  min_responseBodySize_DESC
+  # min(wallTime) ascending
+  min_wallTime_ASC
+  # min(wallTime) descending
+  min_wallTime_DESC
+  # namespaceId ascending
+  namespaceId_ASC
+  # namespaceId descending
+  namespaceId_DESC
+  # objectId ascending
+  objectId_ASC
+  # objectId descending
+  objectId_DESC
+  # quantiles(responseBodySizeP25) ascending
+  quantiles_responseBodySizeP25_ASC
+  # quantiles(responseBodySizeP25) descending
+  quantiles_responseBodySizeP25_DESC
+  # quantiles(responseBodySizeP50) ascending
+  quantiles_responseBodySizeP50_ASC
+  # quantiles(responseBodySizeP50) descending
+  quantiles_responseBodySizeP50_DESC
+  # quantiles(responseBodySizeP75) ascending
+  quantiles_responseBodySizeP75_ASC
+  # quantiles(responseBodySizeP75) descending
+  quantiles_responseBodySizeP75_DESC
+  # quantiles(responseBodySizeP90) ascending
+  quantiles_responseBodySizeP90_ASC
+  # quantiles(responseBodySizeP90) descending
+  quantiles_responseBodySizeP90_DESC
+  # quantiles(responseBodySizeP999) ascending
+  quantiles_responseBodySizeP999_ASC
+  # quantiles(responseBodySizeP999) descending
+  quantiles_responseBodySizeP999_DESC
+  # quantiles(responseBodySizeP99) ascending
+  quantiles_responseBodySizeP99_ASC
+  # quantiles(responseBodySizeP99) descending
+  quantiles_responseBodySizeP99_DESC
+  # quantiles(wallTimeP25) ascending
+  quantiles_wallTimeP25_ASC
+  # quantiles(wallTimeP25) descending
+  quantiles_wallTimeP25_DESC
+  # quantiles(wallTimeP50) ascending
+  quantiles_wallTimeP50_ASC
+  # quantiles(wallTimeP50) descending
+  quantiles_wallTimeP50_DESC
+  # quantiles(wallTimeP75) ascending
+  quantiles_wallTimeP75_ASC
+  # quantiles(wallTimeP75) descending
+  quantiles_wallTimeP75_DESC
+  # quantiles(wallTimeP90) ascending
+  quantiles_wallTimeP90_ASC
+  # quantiles(wallTimeP90) descending
+  quantiles_wallTimeP90_DESC
+  # quantiles(wallTimeP999) ascending
+  quantiles_wallTimeP999_ASC
+  # quantiles(wallTimeP999) descending
+  quantiles_wallTimeP999_DESC
+  # quantiles(wallTimeP99) ascending
+  quantiles_wallTimeP99_ASC
+  # quantiles(wallTimeP99) descending
+  quantiles_wallTimeP99_DESC
+  # scriptName ascending
+  scriptName_ASC
+  # scriptName descending
+  scriptName_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # sum(errors) ascending
+  sum_errors_ASC
+  # sum(errors) descending
+  sum_errors_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # sum(responseBodySize) ascending
+  sum_responseBodySize_ASC
+  # sum(responseBodySize) descending
+  sum_responseBodySize_DESC
+  # sum(wallTime) ascending
+  sum_wallTime_ASC
+  # sum(wallTime) descending
+  sum_wallTime_DESC
+}
+
+type AccountDurableObjectsInvocationsAdaptiveGroupsQuantiles {
+  # Response body size 25th percentile - bytes
+  responseBodySizeP25: float32!
+  # Response body size 50th percentile - bytes
+  responseBodySizeP50: float32!
+  # Response body size 75th percentile - bytes
+  responseBodySizeP75: float32!
+  # Response body size 90th percentile - bytes
+  responseBodySizeP90: float32!
+  # Response body size 99th percentile - bytes
+  responseBodySizeP99: float32!
+  # Response body size 99.9th percentile - bytes
+  responseBodySizeP999: float32!
+  # Wall time 25th percentile - microseconds
+  wallTimeP25: float32!
+  # Wall time 50th percentile - microseconds
+  wallTimeP50: float32!
+  # Wall time 75th percentile - microseconds
+  wallTimeP75: float32!
+  # Wall time 90th percentile - microseconds
+  wallTimeP90: float32!
+  # Wall time 99th percentile - microseconds
+  wallTimeP99: float32!
+  # Wall time 99.9th percentile - microseconds
+  wallTimeP999: float32!
+}
+
+type AccountDurableObjectsInvocationsAdaptiveGroupsSum {
+  # Sum of errors
+  errors: uint64!
+  # Sum of requests
+  requests: uint64!
+  # Sum of response body sizes
+  responseBodySize: uint64!
+  # Sum of wall time
+  wallTime: uint64!
+}
+
+# Beta. Durable Objects subrequests with adaptive sampling
+type AccountDurableObjectsSubrequestsAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountDurableObjectsSubrequestsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountDurableObjectsSubrequestsAdaptiveGroupsSum
+}
+
+type AccountDurableObjectsSubrequestsAdaptiveGroupsDimensions {
+  # Request datetime, truncated to start of a day
+  date: Date!
+  # Request datetime, truncated to start of an hour
+  datetimeHour: Time!
+  # Request datetime, truncated to start of a minute
+  datetimeMinute: Time!
+  # Request datetime, truncated to start of a second
+  datetimeSecond: Time!
+  # Durable Object namespace ID
+  namespaceId: string!
+  # Durable Object ID as a hex string
+  objectId: string!
+  # The name of the script
+  scriptName: string!
+}
+
+input AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSecond: Time
+  datetimeSecond_geq: Time
+  datetimeSecond_gt: Time
+  datetimeSecond_in: [Time!]
+  datetimeSecond_leq: Time
+  datetimeSecond_lt: Time
+  datetimeSecond_neq: Time
+  datetimeSecond_notin: [Time!]
+  namespaceId: string
+  namespaceId_geq: string
+  namespaceId_gt: string
+  namespaceId_in: [string!]
+  namespaceId_leq: string
+  namespaceId_like: string
+  namespaceId_lt: string
+  namespaceId_neq: string
+  namespaceId_notin: [string!]
+  namespaceId_notlike: string
+  objectId: string
+  objectId_geq: string
+  objectId_gt: string
+  objectId_in: [string!]
+  objectId_leq: string
+  objectId_like: string
+  objectId_lt: string
+  objectId_neq: string
+  objectId_notin: [string!]
+  objectId_notlike: string
+  scriptName: string
+  scriptName_geq: string
+  scriptName_gt: string
+  scriptName_in: [string!]
+  scriptName_leq: string
+  scriptName_like: string
+  scriptName_lt: string
+  scriptName_neq: string
+  scriptName_notin: [string!]
+  scriptName_notlike: string
+}
+
+enum AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSecond ascending
+  datetimeSecond_ASC
+  # datetimeSecond descending
+  datetimeSecond_DESC
+  # namespaceId ascending
+  namespaceId_ASC
+  # namespaceId descending
+  namespaceId_DESC
+  # objectId ascending
+  objectId_ASC
+  # objectId descending
+  objectId_DESC
+  # scriptName ascending
+  scriptName_ASC
+  # scriptName descending
+  scriptName_DESC
+  # sum(requestBodySizeUncached) ascending
+  sum_requestBodySizeUncached_ASC
+  # sum(requestBodySizeUncached) descending
+  sum_requestBodySizeUncached_DESC
+}
+
+type AccountDurableObjectsSubrequestsAdaptiveGroupsSum {
+  # Outgoing Durable Objects fetch request body size in bytes where the request was not cached
+  requestBodySizeUncached: uint64!
+}
+
 input AccountFilter_InputObject {
   accountTag: string!
 }
@@ -5798,6 +6226,241 @@ type AccountHttpRequests1mGroupsThreatPathingMapElem {
 type AccountHttpRequests1mGroupsUniq {
   # A number of unique IPs
   uniques: uint64!
+}
+
+# A high-level summary of HTTP requests made by end users.
+type AccountHttpRequestsOverviewAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountHttpRequestsOverviewAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountHttpRequestsOverviewAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountHttpRequestsOverviewAdaptiveGroupsSum
+}
+
+type AccountHttpRequestsOverviewAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountHttpRequestsOverviewAdaptiveGroupsDimensions {
+  # Country from which request originated
+  clientCountryName: string!
+  # HTTP protocol version
+  clientRequestHTTPProtocol: string!
+  # SSL protocol version
+  clientSSLProtocol: string!
+  # The date and time the event occurred at the edge
+  datetime: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the event occurred at the edge truncated to hours
+  datetimeHour: Time!
+  # The date and time the event occurred at the edge truncated to the minute
+  datetimeMinute: Time!
+  # Content type returned to client
+  edgeResponseContentTypeName: string!
+  # HTTP response status code returned to client
+  edgeResponseStatus: uint16!
+  # Browser parsed from the user agent
+  userAgentBrowser: string!
+}
+
+input AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject {
+  AND: [AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject!]
+  clientCountryName: string
+  clientCountryName_geq: string
+  clientCountryName_gt: string
+  clientCountryName_in: [string!]
+  clientCountryName_leq: string
+  clientCountryName_like: string
+  clientCountryName_lt: string
+  clientCountryName_neq: string
+  clientCountryName_notin: [string!]
+  clientCountryName_notlike: string
+  clientRequestHTTPProtocol: string
+  clientRequestHTTPProtocol_geq: string
+  clientRequestHTTPProtocol_gt: string
+  clientRequestHTTPProtocol_in: [string!]
+  clientRequestHTTPProtocol_leq: string
+  clientRequestHTTPProtocol_like: string
+  clientRequestHTTPProtocol_lt: string
+  clientRequestHTTPProtocol_neq: string
+  clientRequestHTTPProtocol_notin: [string!]
+  clientRequestHTTPProtocol_notlike: string
+  clientSSLProtocol: string
+  clientSSLProtocol_geq: string
+  clientSSLProtocol_gt: string
+  clientSSLProtocol_in: [string!]
+  clientSSLProtocol_leq: string
+  clientSSLProtocol_like: string
+  clientSSLProtocol_lt: string
+  clientSSLProtocol_neq: string
+  clientSSLProtocol_notin: [string!]
+  clientSSLProtocol_notlike: string
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  edgeResponseContentTypeName: string
+  edgeResponseContentTypeName_geq: string
+  edgeResponseContentTypeName_gt: string
+  edgeResponseContentTypeName_in: [string!]
+  edgeResponseContentTypeName_leq: string
+  edgeResponseContentTypeName_like: string
+  edgeResponseContentTypeName_lt: string
+  edgeResponseContentTypeName_neq: string
+  edgeResponseContentTypeName_notin: [string!]
+  edgeResponseContentTypeName_notlike: string
+  edgeResponseStatus: uint16
+  edgeResponseStatus_geq: uint16
+  edgeResponseStatus_gt: uint16
+  edgeResponseStatus_in: [uint16!]
+  edgeResponseStatus_leq: uint16
+  edgeResponseStatus_lt: uint16
+  edgeResponseStatus_neq: uint16
+  edgeResponseStatus_notin: [uint16!]
+  userAgentBrowser: string
+  userAgentBrowser_geq: string
+  userAgentBrowser_gt: string
+  userAgentBrowser_in: [string!]
+  userAgentBrowser_leq: string
+  userAgentBrowser_like: string
+  userAgentBrowser_lt: string
+  userAgentBrowser_neq: string
+  userAgentBrowser_notin: [string!]
+  userAgentBrowser_notlike: string
+}
+
+enum AccountHttpRequestsOverviewAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # clientCountryName ascending
+  clientCountryName_ASC
+  # clientCountryName descending
+  clientCountryName_DESC
+  # clientRequestHTTPProtocol ascending
+  clientRequestHTTPProtocol_ASC
+  # clientRequestHTTPProtocol descending
+  clientRequestHTTPProtocol_DESC
+  # clientSSLProtocol ascending
+  clientSSLProtocol_ASC
+  # clientSSLProtocol descending
+  clientSSLProtocol_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # edgeResponseContentTypeName ascending
+  edgeResponseContentTypeName_ASC
+  # edgeResponseContentTypeName descending
+  edgeResponseContentTypeName_DESC
+  # edgeResponseStatus ascending
+  edgeResponseStatus_ASC
+  # edgeResponseStatus descending
+  edgeResponseStatus_DESC
+  # requestSource ascending
+  requestSource_ASC
+  # requestSource descending
+  requestSource_DESC
+  # sum(bytes) ascending
+  sum_bytes_ASC
+  # sum(bytes) descending
+  sum_bytes_DESC
+  # sum(cachedBytes) ascending
+  sum_cachedBytes_ASC
+  # sum(cachedBytes) descending
+  sum_cachedBytes_DESC
+  # sum(cachedRequests) ascending
+  sum_cachedRequests_ASC
+  # sum(cachedRequests) descending
+  sum_cachedRequests_DESC
+  # sum(pageViews) ascending
+  sum_pageViews_ASC
+  # sum(pageViews) descending
+  sum_pageViews_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # sum(visits) ascending
+  sum_visits_ASC
+  # sum(visits) descending
+  sum_visits_DESC
+  # userAgentBrowser ascending
+  userAgentBrowser_ASC
+  # userAgentBrowser descending
+  userAgentBrowser_DESC
+}
+
+type AccountHttpRequestsOverviewAdaptiveGroupsSum {
+  bytes: uint64!
+  # Bytes returned to client from cache
+  cachedBytes: uint64!
+  # Requests served from cache
+  cachedRequests: uint64!
+  # Successful requests for HTML content
+  pageViews: uint64!
+  requests: uint64!
+  # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
+  visits: uint64!
 }
 
 # Beta. Daily rollups of IP flows
@@ -12348,12 +13011,15 @@ type AccountSettings {
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
   dosdAttackAnalyticsAdaptiveGroups: Settings!
   dosdNetworkAnalyticsAdaptiveGroups: Settings!
+  durableObjectsInvocationsAdaptiveGroups: Settings!
+  durableObjectsSubrequestsAdaptiveGroups: Settings!
   flowtrackdNetworkAnalyticsAdaptiveGroups: Settings!
   gatewayL4DownstreamSessionsAdaptiveGroups: Settings!
   gatewayL4UpstreamSessionsAdaptiveGroups: Settings!
   httpRequests1dGroups: Settings!
   httpRequests1hGroups: Settings!
   httpRequests1mGroups: Settings!
+  httpRequestsOverviewAdaptiveGroups: Settings!
   ipFlows1dGroups: Settings!
   ipFlows1hGroups: Settings!
   ipFlows1mAttacksGroups: Settings!
