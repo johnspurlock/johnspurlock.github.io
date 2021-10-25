@@ -6250,6 +6250,8 @@ type AccountHttpRequestsOverviewAdaptiveGroupsDimensions {
   clientRequestHTTPProtocol: string!
   # SSL protocol version
   clientSSLProtocol: string!
+  # The date the event occurred at the edge
+  date: Date!
   # The date and time the event occurred at the edge
   datetime: Time!
   # The date and time the event occurred at the edge truncated to a multiple of 15 minutes
@@ -6301,6 +6303,14 @@ input AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject {
   clientSSLProtocol_neq: string
   clientSSLProtocol_notin: [string!]
   clientSSLProtocol_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
   datetime: Time
   datetimeFifteenMinutes: Time
   datetimeFifteenMinutes_geq: Time
@@ -6388,6 +6398,10 @@ enum AccountHttpRequestsOverviewAdaptiveGroupsOrderBy {
   clientSSLProtocol_ASC
   # clientSSLProtocol descending
   clientSSLProtocol_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
   # datetimeFifteenMinutes ascending
   datetimeFifteenMinutes_ASC
   # datetimeFifteenMinutes descending
