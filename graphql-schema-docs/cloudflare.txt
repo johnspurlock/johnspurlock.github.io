@@ -3428,6 +3428,8 @@ type AccountDurableObjectsInvocationsAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # Request datetime, truncated to start of a second
   datetimeSecond: Time!
+  # The name of the script environment
+  environmentName: string!
   # Durable Object namespace ID
   namespaceId: string!
   # Durable Object ID as a hex string
@@ -3473,6 +3475,16 @@ input AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject {
   datetimeSecond_lt: Time
   datetimeSecond_neq: Time
   datetimeSecond_notin: [Time!]
+  environmentName: string
+  environmentName_geq: string
+  environmentName_gt: string
+  environmentName_in: [string!]
+  environmentName_leq: string
+  environmentName_like: string
+  environmentName_lt: string
+  environmentName_neq: string
+  environmentName_notin: [string!]
+  environmentName_notlike: string
   namespaceId: string
   namespaceId_geq: string
   namespaceId_gt: string
@@ -3550,6 +3562,10 @@ enum AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy {
   datetimeSecond_ASC
   # datetimeSecond descending
   datetimeSecond_DESC
+  # environmentName ascending
+  environmentName_ASC
+  # environmentName descending
+  environmentName_DESC
   # max(responseBodySize) ascending
   max_responseBodySize_ASC
   # max(responseBodySize) descending
@@ -3703,6 +3719,8 @@ type AccountDurableObjectsSubrequestsAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # Request datetime, truncated to start of a second
   datetimeSecond: Time!
+  # The name of the script environment
+  environmentName: string!
   # Durable Object namespace ID
   namespaceId: string!
   # Durable Object ID as a hex string
@@ -3746,6 +3764,16 @@ input AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject {
   datetimeSecond_lt: Time
   datetimeSecond_neq: Time
   datetimeSecond_notin: [Time!]
+  environmentName: string
+  environmentName_geq: string
+  environmentName_gt: string
+  environmentName_in: [string!]
+  environmentName_leq: string
+  environmentName_like: string
+  environmentName_lt: string
+  environmentName_neq: string
+  environmentName_notin: [string!]
+  environmentName_notlike: string
   namespaceId: string
   namespaceId_geq: string
   namespaceId_gt: string
@@ -3795,6 +3823,10 @@ enum AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy {
   datetimeSecond_ASC
   # datetimeSecond descending
   datetimeSecond_DESC
+  # environmentName ascending
+  environmentName_ASC
+  # environmentName descending
+  environmentName_DESC
   # namespaceId ascending
   namespaceId_ASC
   # namespaceId descending
@@ -14929,6 +14961,8 @@ type AccountWorkersInvocationsAdaptiveDimensions {
   datetimeHour: Time!
   # Request datetime, truncated to start of an minute
   datetimeMinute: Time!
+  # The name of the script environment
+  environmentName: string!
   # The name of the script
   scriptName: string!
   # Status of the worker invocation
@@ -14972,6 +15006,16 @@ input AccountWorkersInvocationsAdaptiveFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  environmentName: string
+  environmentName_geq: string
+  environmentName_gt: string
+  environmentName_in: [string!]
+  environmentName_leq: string
+  environmentName_like: string
+  environmentName_lt: string
+  environmentName_neq: string
+  environmentName_notin: [string!]
+  environmentName_notlike: string
   scriptName: string
   scriptName_geq: string
   scriptName_gt: string
@@ -15047,6 +15091,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # environmentName ascending
+  environmentName_ASC
+  # environmentName descending
+  environmentName_DESC
   # max(cpuTime) ascending
   max_cpuTime_ASC
   # max(cpuTime) descending
@@ -15291,6 +15339,8 @@ type AccountWorkersInvocationsScheduled {
   cron: string!
   # Request datetime
   datetime: Time!
+  # The name of the script environment
+  environmentName: string!
   # Scheduled datetime
   scheduledDatetime: Time!
   # The name of the script
@@ -15328,6 +15378,16 @@ input AccountWorkersInvocationsScheduledFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  environmentName: string
+  environmentName_geq: string
+  environmentName_gt: string
+  environmentName_in: [string!]
+  environmentName_leq: string
+  environmentName_like: string
+  environmentName_lt: string
+  environmentName_neq: string
+  environmentName_notin: [string!]
+  environmentName_notlike: string
   scheduledDatetime: Time
   scheduledDatetime_geq: Time
   scheduledDatetime_gt: Time
@@ -15371,6 +15431,10 @@ enum AccountWorkersInvocationsScheduledOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # environmentName ascending
+  environmentName_ASC
+  # environmentName descending
+  environmentName_DESC
   # scheduledDatetime ascending
   scheduledDatetime_ASC
   # scheduledDatetime descending
@@ -15402,6 +15466,8 @@ type AccountWorkersSubrequestsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Request datetime, truncated to start of an minute
   datetimeMinute: Time!
+  # The name of the script environment
+  environmentName: string!
   # The name of the script
   scriptName: string!
   # Usage model of the worker invocation
@@ -15443,6 +15509,16 @@ input AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  environmentName: string
+  environmentName_geq: string
+  environmentName_gt: string
+  environmentName_in: [string!]
+  environmentName_leq: string
+  environmentName_like: string
+  environmentName_lt: string
+  environmentName_neq: string
+  environmentName_notin: [string!]
+  environmentName_notlike: string
   scriptName: string
   scriptName_geq: string
   scriptName_gt: string
@@ -15482,6 +15558,10 @@ enum AccountWorkersSubrequestsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # environmentName ascending
+  environmentName_ASC
+  # environmentName descending
+  environmentName_DESC
   # scriptName ascending
   scriptName_ASC
   # scriptName descending
