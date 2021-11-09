@@ -7,7 +7,7 @@
   <style> body { font-family: monospace, monospace; background: rgb(13, 17, 23); color: rgb(201, 209, 217); color-scheme: dark; } a { color: rgb(88, 166, 255); text-decoration: none; } a:hover { text-decoration: underline; } .k {color: rgb(255, 123, 114); } .c {color: rgb(139, 148, 158); } .t {color: rgb(121, 192, 255); }</style>
 </head>
 <body><h3>Schema docs for the <a href="https://developers.cloudflare.com/analytics/graphql-api">Cloudflare GraphQL Analytics API</a></h3>
-<a href="#account">Account-level datasets</a>:<br />&nbsp;&nbsp;cdnNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;dosdAttackAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;dosdNetworkAnalyticsAdaptiveGroups<br />*&nbsp;durableObjectsInvocationsAdaptiveGroups<br />*&nbsp;durableObjectsSubrequestsAdaptiveGroups<br />&nbsp;&nbsp;flowtrackdNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;gatewayL4DownstreamSessionsAdaptiveGroups<br />&nbsp;&nbsp;gatewayL4UpstreamSessionsAdaptiveGroups<br />*&nbsp;httpRequests1dGroups<br />*&nbsp;httpRequests1hGroups<br />&nbsp;&nbsp;httpRequests1mGroups<br />*&nbsp;httpRequestsOverviewAdaptiveGroups<br />&nbsp;&nbsp;ipFlows1dGroups<br />&nbsp;&nbsp;ipFlows1hGroups<br />&nbsp;&nbsp;ipFlows1mAttacksGroups<br />&nbsp;&nbsp;ipFlows1mGroups<br />&nbsp;&nbsp;magicFirewallNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;magicFirewallSamplesAdaptiveGroups<br />&nbsp;&nbsp;magicTransitNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;magicTransitTunnelHealthChecksAdaptiveGroups<br />&nbsp;&nbsp;nelReportsAdaptiveGroups<br />*&nbsp;rumPageloadEventsAdaptiveGroups<br />*&nbsp;rumPerformanceEventsAdaptiveGroups<br />*&nbsp;rumWebVitalsEventsAdaptive<br />*&nbsp;rumWebVitalsEventsAdaptiveGroups<br />&nbsp;&nbsp;spectrumNetworkAnalyticsAdaptiveGroups<br />*&nbsp;videoBufferEventsAdaptiveGroups<br />*&nbsp;videoPlaybackEventsAdaptiveGroups<br />*&nbsp;videoQualityEventsAdaptiveGroups<br />*&nbsp;workersInvocationsAdaptive<br />*&nbsp;workersInvocationsScheduled<br />*&nbsp;workersSubrequestsAdaptiveGroups<br /><br /><a href="#zone">Zone-level datasets</a>:<br />*&nbsp;firewallEventsAdaptive<br />*&nbsp;firewallEventsAdaptiveByTimeGroups<br />&nbsp;&nbsp;firewallEventsAdaptiveGroups<br />&nbsp;&nbsp;healthCheckEvents<br />&nbsp;&nbsp;healthCheckEventsAdaptive<br />&nbsp;&nbsp;healthCheckEventsAdaptiveGroups<br />&nbsp;&nbsp;healthCheckEventsGroups<br />&nbsp;&nbsp;httpRequests1dByColoGroups<br />*&nbsp;httpRequests1dGroups<br />*&nbsp;httpRequests1hGroups<br />&nbsp;&nbsp;httpRequests1mByColoGroups<br />&nbsp;&nbsp;httpRequests1mGroups<br />&nbsp;&nbsp;httpRequestsAdaptiveGroups<br />*&nbsp;imageResizingRequests1mGroups<br />&nbsp;&nbsp;loadBalancingRequests<br />&nbsp;&nbsp;loadBalancingRequestsAdaptive<br />&nbsp;&nbsp;loadBalancingRequestsAdaptiveGroups<br />&nbsp;&nbsp;loadBalancingRequestsGroups<br />&nbsp;&nbsp;nelReportsAdaptiveGroups<br />&nbsp;&nbsp;synAvgPps1mGroups<br /><br />* = available in all <a href="https://www.cloudflare.com/plans/">Cloudflare plans</a><br /><br /><span class="c"># Scalar type bool</span><br />
+<a href="#account">Account-level datasets</a>:<br />&nbsp;&nbsp;cdnNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;dosdAttackAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;dosdNetworkAnalyticsAdaptiveGroups<br />*&nbsp;durableObjectsInvocationsAdaptiveGroups<br />*&nbsp;durableObjectsPeriodicGroups<br />*&nbsp;durableObjectsStorageGroups<br />*&nbsp;durableObjectsSubrequestsAdaptiveGroups<br />&nbsp;&nbsp;flowtrackdNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;gatewayL4DownstreamSessionsAdaptiveGroups<br />&nbsp;&nbsp;gatewayL4UpstreamSessionsAdaptiveGroups<br />*&nbsp;httpRequests1dGroups<br />*&nbsp;httpRequests1hGroups<br />&nbsp;&nbsp;httpRequests1mGroups<br />*&nbsp;httpRequestsOverviewAdaptiveGroups<br />&nbsp;&nbsp;ipFlows1dGroups<br />&nbsp;&nbsp;ipFlows1hGroups<br />&nbsp;&nbsp;ipFlows1mAttacksGroups<br />&nbsp;&nbsp;ipFlows1mGroups<br />&nbsp;&nbsp;magicFirewallNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;magicFirewallSamplesAdaptiveGroups<br />&nbsp;&nbsp;magicTransitNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;magicTransitTunnelHealthChecksAdaptiveGroups<br />&nbsp;&nbsp;nelReportsAdaptiveGroups<br />*&nbsp;rumPageloadEventsAdaptiveGroups<br />*&nbsp;rumPerformanceEventsAdaptiveGroups<br />*&nbsp;rumWebVitalsEventsAdaptive<br />*&nbsp;rumWebVitalsEventsAdaptiveGroups<br />&nbsp;&nbsp;spectrumNetworkAnalyticsAdaptiveGroups<br />*&nbsp;videoBufferEventsAdaptiveGroups<br />*&nbsp;videoPlaybackEventsAdaptiveGroups<br />*&nbsp;videoQualityEventsAdaptiveGroups<br />*&nbsp;workersInvocationsAdaptive<br />*&nbsp;workersInvocationsScheduled<br />*&nbsp;workersSubrequestsAdaptiveGroups<br /><br /><a href="#zone">Zone-level datasets</a>:<br />*&nbsp;firewallEventsAdaptive<br />*&nbsp;firewallEventsAdaptiveByTimeGroups<br />&nbsp;&nbsp;firewallEventsAdaptiveGroups<br />&nbsp;&nbsp;healthCheckEvents<br />&nbsp;&nbsp;healthCheckEventsAdaptive<br />&nbsp;&nbsp;healthCheckEventsAdaptiveGroups<br />&nbsp;&nbsp;healthCheckEventsGroups<br />&nbsp;&nbsp;httpRequests1dByColoGroups<br />*&nbsp;httpRequests1dGroups<br />*&nbsp;httpRequests1hGroups<br />&nbsp;&nbsp;httpRequests1mByColoGroups<br />&nbsp;&nbsp;httpRequests1mGroups<br />&nbsp;&nbsp;httpRequestsAdaptiveGroups<br />*&nbsp;imageResizingRequests1mGroups<br />&nbsp;&nbsp;loadBalancingRequestsAdaptive<br />&nbsp;&nbsp;loadBalancingRequestsAdaptiveGroups<br />&nbsp;&nbsp;nelReportsAdaptiveGroups<br />&nbsp;&nbsp;synAvgPps1mGroups<br /><br />* = available in all <a href="https://www.cloudflare.com/plans/">Cloudflare plans</a><br /><br /><span class="c"># Scalar type bool</span><br />
 <span class="k">scalar</span> <a id="bool" href="#bool">bool</a><br />
 <br />
 <span class="c"># Scalar type []uint8</span><br />
@@ -53,6 +53,10 @@
 &nbsp;&nbsp;dosdNetworkAnalyticsAdaptiveGroups(filter: <a href="#AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject">AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy">[AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy!]</a>): <a href="#AccountDosdNetworkAnalyticsAdaptiveGroups">[AccountDosdNetworkAnalyticsAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. Durable Objects invocations with adaptive sampling</span><br />
 &nbsp;&nbsp;durableObjectsInvocationsAdaptiveGroups(filter: <a href="#AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject">AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy">[AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy!]</a>): <a href="#AccountDurableObjectsInvocationsAdaptiveGroups">[AccountDurableObjectsInvocationsAdaptiveGroups!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Beta. Durable Objects periodic metrics</span><br />
+&nbsp;&nbsp;durableObjectsPeriodicGroups(filter: <a href="#AccountDurableObjectsPeriodicGroupsFilter_InputObject">AccountDurableObjectsPeriodicGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountDurableObjectsPeriodicGroupsOrderBy">[AccountDurableObjectsPeriodicGroupsOrderBy!]</a>): <a href="#AccountDurableObjectsPeriodicGroups">[AccountDurableObjectsPeriodicGroups!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Beta. Durable Objects storage metrics</span><br />
+&nbsp;&nbsp;durableObjectsStorageGroups(filter: <a href="#AccountDurableObjectsStorageGroupsFilter_InputObject">AccountDurableObjectsStorageGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountDurableObjectsStorageGroupsOrderBy">[AccountDurableObjectsStorageGroupsOrderBy!]</a>): <a href="#AccountDurableObjectsStorageGroups">[AccountDurableObjectsStorageGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. Durable Objects subrequests with adaptive sampling</span><br />
 &nbsp;&nbsp;durableObjectsSubrequestsAdaptiveGroups(filter: <a href="#AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject">AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy">[AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy!]</a>): <a href="#AccountDurableObjectsSubrequestsAdaptiveGroups">[AccountDurableObjectsSubrequestsAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Network analytics data for flowtrackd</span><br />
@@ -124,6 +128,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountCdnNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountCdnNetworkAnalyticsAdaptiveGroupsAvg">AccountCdnNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
+&nbsp;&nbsp;bitRate: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
@@ -132,10 +138,10 @@
 &nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute</span><br />
 &nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
-&nbsp;&nbsp;bitRateSecond: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds</span><br />
 &nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
+&nbsp;&nbsp;packetRate: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
@@ -144,8 +150,6 @@
 &nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute</span><br />
 &nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
-&nbsp;&nbsp;packetRateSecond: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds</span><br />
 &nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
 }<br />
@@ -207,8 +211,6 @@
 &nbsp;&nbsp;ipDestinationAddress: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)</span><br />
 &nbsp;&nbsp;ipDestinationSubnet: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Value of the Don't Fragment header field in the IPv4 or IPv6 packet</span><br />
-&nbsp;&nbsp;ipDontFragment: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Fragment Offset header field in the IPv4 or IPv6 packet</span><br />
 &nbsp;&nbsp;ipFragmentOffset: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># Length of the IPv4 or IPv6 packet header, in bytes</span><br />
@@ -231,6 +233,8 @@
 &nbsp;&nbsp;ipTtlBuckets: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Checksum header field in the IPv4 packet</span><br />
 &nbsp;&nbsp;ipv4Checksum: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># Value of the Don't Fragment header field in the IPv4 packet</span><br />
+&nbsp;&nbsp;ipv4DontFragment: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Differentiated Services Code Point header field in the IPv4 packet</span><br />
 &nbsp;&nbsp;ipv4Dscp: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Explicit Congestion Notification header field in the IPv4 packet</span><br />
@@ -546,14 +550,6 @@
 &nbsp;&nbsp;ipDestinationSubnet_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ipDestinationSubnet_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ipDestinationSubnet_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;ipDontFragment: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_geq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_gt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_in: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;ipDontFragment_leq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_lt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_neq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;ipFragmentOffset: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipFragmentOffset_geq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipFragmentOffset_gt: <a href="#uint16">uint16</a><br />
@@ -646,6 +642,14 @@
 &nbsp;&nbsp;ipv4Checksum_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipv4Checksum_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipv4Checksum_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;ipv4DontFragment: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;ipv4DontFragment_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;ipv4Dscp: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;ipv4Dscp_geq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;ipv4Dscp_gt: <a href="#uint8">uint8</a><br />
@@ -947,14 +951,14 @@
 &nbsp;&nbsp;avg_bitRateMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateMinute) descending</span><br />
 &nbsp;&nbsp;avg_bitRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) ascending</span><br />
-&nbsp;&nbsp;avg_bitRateSecond_ASC<br />
-&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) descending</span><br />
-&nbsp;&nbsp;avg_bitRateSecond_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) ascending</span><br />
 &nbsp;&nbsp;avg_bitRateTenSeconds_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) descending</span><br />
 &nbsp;&nbsp;avg_bitRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRate) ascending</span><br />
+&nbsp;&nbsp;avg_bitRate_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRate) descending</span><br />
+&nbsp;&nbsp;avg_bitRate_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
@@ -971,14 +975,14 @@
 &nbsp;&nbsp;avg_packetRateMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateMinute) descending</span><br />
 &nbsp;&nbsp;avg_packetRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) ascending</span><br />
-&nbsp;&nbsp;avg_packetRateSecond_ASC<br />
-&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) descending</span><br />
-&nbsp;&nbsp;avg_packetRateSecond_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateTenSeconds_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) descending</span><br />
 &nbsp;&nbsp;avg_packetRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRate) ascending</span><br />
+&nbsp;&nbsp;avg_packetRate_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRate) descending</span><br />
+&nbsp;&nbsp;avg_packetRate_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCity ascending</span><br />
 &nbsp;&nbsp;coloCity_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCity descending</span><br />
@@ -1091,10 +1095,6 @@
 &nbsp;&nbsp;ipDestinationSubnet_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipDestinationSubnet descending</span><br />
 &nbsp;&nbsp;ipDestinationSubnet_DESC<br />
-&nbsp;&nbsp;<span class="c"># ipDontFragment ascending</span><br />
-&nbsp;&nbsp;ipDontFragment_ASC<br />
-&nbsp;&nbsp;<span class="c"># ipDontFragment descending</span><br />
-&nbsp;&nbsp;ipDontFragment_DESC<br />
 &nbsp;&nbsp;<span class="c"># ipFragmentOffset ascending</span><br />
 &nbsp;&nbsp;ipFragmentOffset_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipFragmentOffset descending</span><br />
@@ -1139,6 +1139,10 @@
 &nbsp;&nbsp;ipv4Checksum_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Checksum descending</span><br />
 &nbsp;&nbsp;ipv4Checksum_DESC<br />
+&nbsp;&nbsp;<span class="c"># ipv4DontFragment ascending</span><br />
+&nbsp;&nbsp;ipv4DontFragment_ASC<br />
+&nbsp;&nbsp;<span class="c"># ipv4DontFragment descending</span><br />
+&nbsp;&nbsp;ipv4DontFragment_DESC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Dscp ascending</span><br />
 &nbsp;&nbsp;ipv4Dscp_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Dscp descending</span><br />
@@ -1283,6 +1287,10 @@
 &nbsp;&nbsp;udpPayloadLength_ASC<br />
 &nbsp;&nbsp;<span class="c"># udpPayloadLength descending</span><br />
 &nbsp;&nbsp;udpPayloadLength_DESC<br />
+&nbsp;&nbsp;<span class="c"># verdict ascending</span><br />
+&nbsp;&nbsp;verdict_ASC<br />
+&nbsp;&nbsp;<span class="c"># verdict descending</span><br />
+&nbsp;&nbsp;verdict_DESC<br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountCdnNetworkAnalyticsAdaptiveGroupsSum" href="#AccountCdnNetworkAnalyticsAdaptiveGroupsSum">AccountCdnNetworkAnalyticsAdaptiveGroupsSum</a> {<br />
@@ -1303,6 +1311,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountDosdAttackAnalyticsAdaptiveGroupsAvg" href="#AccountDosdAttackAnalyticsAdaptiveGroupsAvg">AccountDosdAttackAnalyticsAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
+&nbsp;&nbsp;bitRate: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
@@ -1311,10 +1321,10 @@
 &nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute</span><br />
 &nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
-&nbsp;&nbsp;bitRateSecond: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds</span><br />
 &nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
+&nbsp;&nbsp;packetRate: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
@@ -1323,8 +1333,6 @@
 &nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute</span><br />
 &nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
-&nbsp;&nbsp;packetRateSecond: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds</span><br />
 &nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
 }<br />
@@ -1910,14 +1918,14 @@
 &nbsp;&nbsp;avg_bitRateMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateMinute) descending</span><br />
 &nbsp;&nbsp;avg_bitRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) ascending</span><br />
-&nbsp;&nbsp;avg_bitRateSecond_ASC<br />
-&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) descending</span><br />
-&nbsp;&nbsp;avg_bitRateSecond_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) ascending</span><br />
 &nbsp;&nbsp;avg_bitRateTenSeconds_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) descending</span><br />
 &nbsp;&nbsp;avg_bitRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRate) ascending</span><br />
+&nbsp;&nbsp;avg_bitRate_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRate) descending</span><br />
+&nbsp;&nbsp;avg_bitRate_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
@@ -1934,14 +1942,14 @@
 &nbsp;&nbsp;avg_packetRateMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateMinute) descending</span><br />
 &nbsp;&nbsp;avg_packetRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) ascending</span><br />
-&nbsp;&nbsp;avg_packetRateSecond_ASC<br />
-&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) descending</span><br />
-&nbsp;&nbsp;avg_packetRateSecond_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateTenSeconds_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) descending</span><br />
 &nbsp;&nbsp;avg_packetRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRate) ascending</span><br />
+&nbsp;&nbsp;avg_packetRate_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRate) descending</span><br />
+&nbsp;&nbsp;avg_packetRate_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCity ascending</span><br />
 &nbsp;&nbsp;coloCity_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCity descending</span><br />
@@ -2070,6 +2078,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountDosdNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountDosdNetworkAnalyticsAdaptiveGroupsAvg">AccountDosdNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
+&nbsp;&nbsp;bitRate: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
@@ -2078,10 +2088,10 @@
 &nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute</span><br />
 &nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
-&nbsp;&nbsp;bitRateSecond: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds</span><br />
 &nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
+&nbsp;&nbsp;packetRate: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
@@ -2090,8 +2100,6 @@
 &nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute</span><br />
 &nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
-&nbsp;&nbsp;packetRateSecond: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds</span><br />
 &nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
 }<br />
@@ -2155,8 +2163,6 @@
 &nbsp;&nbsp;ipDestinationAddress: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)</span><br />
 &nbsp;&nbsp;ipDestinationSubnet: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Value of the Don't Fragment header field in the IPv4 or IPv6 packet</span><br />
-&nbsp;&nbsp;ipDontFragment: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Fragment Offset header field in the IPv4 or IPv6 packet</span><br />
 &nbsp;&nbsp;ipFragmentOffset: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># Length of the IPv4 or IPv6 packet header, in bytes</span><br />
@@ -2179,6 +2185,8 @@
 &nbsp;&nbsp;ipTtlBuckets: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Checksum header field in the IPv4 packet</span><br />
 &nbsp;&nbsp;ipv4Checksum: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># Value of the Don't Fragment header field in the IPv4 packet</span><br />
+&nbsp;&nbsp;ipv4DontFragment: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Differentiated Services Code Point header field in the IPv4 packet</span><br />
 &nbsp;&nbsp;ipv4Dscp: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Explicit Congestion Notification header field in the IPv4 packet</span><br />
@@ -2516,14 +2524,6 @@
 &nbsp;&nbsp;ipDestinationSubnet_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ipDestinationSubnet_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ipDestinationSubnet_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;ipDontFragment: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_geq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_gt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_in: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;ipDontFragment_leq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_lt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_neq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;ipFragmentOffset: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipFragmentOffset_geq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipFragmentOffset_gt: <a href="#uint16">uint16</a><br />
@@ -2616,6 +2616,14 @@
 &nbsp;&nbsp;ipv4Checksum_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipv4Checksum_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipv4Checksum_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;ipv4DontFragment: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;ipv4DontFragment_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;ipv4Dscp: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;ipv4Dscp_geq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;ipv4Dscp_gt: <a href="#uint8">uint8</a><br />
@@ -2981,14 +2989,14 @@
 &nbsp;&nbsp;avg_bitRateMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateMinute) descending</span><br />
 &nbsp;&nbsp;avg_bitRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) ascending</span><br />
-&nbsp;&nbsp;avg_bitRateSecond_ASC<br />
-&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) descending</span><br />
-&nbsp;&nbsp;avg_bitRateSecond_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) ascending</span><br />
 &nbsp;&nbsp;avg_bitRateTenSeconds_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) descending</span><br />
 &nbsp;&nbsp;avg_bitRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRate) ascending</span><br />
+&nbsp;&nbsp;avg_bitRate_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRate) descending</span><br />
+&nbsp;&nbsp;avg_bitRate_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
@@ -3005,14 +3013,14 @@
 &nbsp;&nbsp;avg_packetRateMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateMinute) descending</span><br />
 &nbsp;&nbsp;avg_packetRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) ascending</span><br />
-&nbsp;&nbsp;avg_packetRateSecond_ASC<br />
-&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) descending</span><br />
-&nbsp;&nbsp;avg_packetRateSecond_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateTenSeconds_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) descending</span><br />
 &nbsp;&nbsp;avg_packetRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRate) ascending</span><br />
+&nbsp;&nbsp;avg_packetRate_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRate) descending</span><br />
+&nbsp;&nbsp;avg_packetRate_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCity ascending</span><br />
 &nbsp;&nbsp;coloCity_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCity descending</span><br />
@@ -3125,10 +3133,6 @@
 &nbsp;&nbsp;ipDestinationSubnet_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipDestinationSubnet descending</span><br />
 &nbsp;&nbsp;ipDestinationSubnet_DESC<br />
-&nbsp;&nbsp;<span class="c"># ipDontFragment ascending</span><br />
-&nbsp;&nbsp;ipDontFragment_ASC<br />
-&nbsp;&nbsp;<span class="c"># ipDontFragment descending</span><br />
-&nbsp;&nbsp;ipDontFragment_DESC<br />
 &nbsp;&nbsp;<span class="c"># ipFragmentOffset ascending</span><br />
 &nbsp;&nbsp;ipFragmentOffset_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipFragmentOffset descending</span><br />
@@ -3173,6 +3177,10 @@
 &nbsp;&nbsp;ipv4Checksum_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Checksum descending</span><br />
 &nbsp;&nbsp;ipv4Checksum_DESC<br />
+&nbsp;&nbsp;<span class="c"># ipv4DontFragment ascending</span><br />
+&nbsp;&nbsp;ipv4DontFragment_ASC<br />
+&nbsp;&nbsp;<span class="c"># ipv4DontFragment descending</span><br />
+&nbsp;&nbsp;ipv4DontFragment_DESC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Dscp ascending</span><br />
 &nbsp;&nbsp;ipv4Dscp_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Dscp descending</span><br />
@@ -3653,6 +3661,235 @@
 &nbsp;&nbsp;wallTime: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
+<span class="c"># Beta. Durable Objects periodic metrics</span><br />
+<span class="k">type</span> <a id="AccountDurableObjectsPeriodicGroups" href="#AccountDurableObjectsPeriodicGroups">AccountDurableObjectsPeriodicGroups</a> {<br />
+&nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
+&nbsp;&nbsp;dimensions: <a href="#AccountDurableObjectsPeriodicGroupsDimensions">AccountDurableObjectsPeriodicGroupsDimensions</a><br />
+&nbsp;&nbsp;<span class="c"># The max value for a metric</span><br />
+&nbsp;&nbsp;max: <a href="#AccountDurableObjectsPeriodicGroupsMax">AccountDurableObjectsPeriodicGroupsMax</a><br />
+&nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
+&nbsp;&nbsp;sum: <a href="#AccountDurableObjectsPeriodicGroupsSum">AccountDurableObjectsPeriodicGroupsSum</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountDurableObjectsPeriodicGroupsDimensions" href="#AccountDurableObjectsPeriodicGroupsDimensions">AccountDurableObjectsPeriodicGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># Datetime the metrics period started, truncated to start of a day</span><br />
+&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
+&nbsp;&nbsp;<span class="c"># Datetime the metrics period started, truncated to start of an hour</span><br />
+&nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Datetime the metrics period started, truncated to start of a minute</span><br />
+&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Durable Object namespace ID</span><br />
+&nbsp;&nbsp;namespaceId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Durable Object ID as a hex string</span><br />
+&nbsp;&nbsp;objectId: <a href="#string">string!</a><br />
+}<br />
+<br />
+<span class="k">input</span> <a id="AccountDurableObjectsPeriodicGroupsFilter_InputObject" href="#AccountDurableObjectsPeriodicGroupsFilter_InputObject">AccountDurableObjectsPeriodicGroupsFilter_InputObject</a> {<br />
+&nbsp;&nbsp;AND: <a href="#AccountDurableObjectsPeriodicGroupsFilter_InputObject">[AccountDurableObjectsPeriodicGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;OR: <a href="#AccountDurableObjectsPeriodicGroupsFilter_InputObject">[AccountDurableObjectsPeriodicGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;datetimeHour: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeHour_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeMinute_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;namespaceId: <a href="#string">string</a><br />
+&nbsp;&nbsp;namespaceId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;namespaceId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;namespaceId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;namespaceId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;namespaceId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;namespaceId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;namespaceId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;namespaceId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;namespaceId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;objectId: <a href="#string">string</a><br />
+&nbsp;&nbsp;objectId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;objectId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;objectId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;objectId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;objectId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;objectId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;objectId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;objectId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;objectId_notlike: <a href="#string">string</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountDurableObjectsPeriodicGroupsMax" href="#AccountDurableObjectsPeriodicGroupsMax">AccountDurableObjectsPeriodicGroupsMax</a> {<br />
+&nbsp;&nbsp;<span class="c"># Maximum active websocket connections in the time window</span><br />
+&nbsp;&nbsp;activeWebsocketConnections: <a href="#uint16">uint16!</a><br />
+}<br />
+<br />
+<span class="k">enum</span> <a id="AccountDurableObjectsPeriodicGroupsOrderBy" href="#AccountDurableObjectsPeriodicGroupsOrderBy">AccountDurableObjectsPeriodicGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># date ascending</span><br />
+&nbsp;&nbsp;date_ASC<br />
+&nbsp;&nbsp;<span class="c"># date descending</span><br />
+&nbsp;&nbsp;date_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHour ascending</span><br />
+&nbsp;&nbsp;datetimeHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHour descending</span><br />
+&nbsp;&nbsp;datetimeHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeMinute ascending</span><br />
+&nbsp;&nbsp;datetimeMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeMinute descending</span><br />
+&nbsp;&nbsp;datetimeMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># max(activeWebsocketConnections) ascending</span><br />
+&nbsp;&nbsp;max_activeWebsocketConnections_ASC<br />
+&nbsp;&nbsp;<span class="c"># max(activeWebsocketConnections) descending</span><br />
+&nbsp;&nbsp;max_activeWebsocketConnections_DESC<br />
+&nbsp;&nbsp;<span class="c"># namespaceId ascending</span><br />
+&nbsp;&nbsp;namespaceId_ASC<br />
+&nbsp;&nbsp;<span class="c"># namespaceId descending</span><br />
+&nbsp;&nbsp;namespaceId_DESC<br />
+&nbsp;&nbsp;<span class="c"># objectId ascending</span><br />
+&nbsp;&nbsp;objectId_ASC<br />
+&nbsp;&nbsp;<span class="c"># objectId descending</span><br />
+&nbsp;&nbsp;objectId_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(activeTime) ascending</span><br />
+&nbsp;&nbsp;sum_activeTime_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(activeTime) descending</span><br />
+&nbsp;&nbsp;sum_activeTime_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(cpuTime) ascending</span><br />
+&nbsp;&nbsp;sum_cpuTime_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(cpuTime) descending</span><br />
+&nbsp;&nbsp;sum_cpuTime_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(exceededCpuErrors) ascending</span><br />
+&nbsp;&nbsp;sum_exceededCpuErrors_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(exceededCpuErrors) descending</span><br />
+&nbsp;&nbsp;sum_exceededCpuErrors_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(exceededMemoryErrors) ascending</span><br />
+&nbsp;&nbsp;sum_exceededMemoryErrors_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(exceededMemoryErrors) descending</span><br />
+&nbsp;&nbsp;sum_exceededMemoryErrors_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(fatalInternalErrors) ascending</span><br />
+&nbsp;&nbsp;sum_fatalInternalErrors_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(fatalInternalErrors) descending</span><br />
+&nbsp;&nbsp;sum_fatalInternalErrors_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(inboundWebsocketMsgCount) ascending</span><br />
+&nbsp;&nbsp;sum_inboundWebsocketMsgCount_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(inboundWebsocketMsgCount) descending</span><br />
+&nbsp;&nbsp;sum_inboundWebsocketMsgCount_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(outboundWebsocketMsgCount) ascending</span><br />
+&nbsp;&nbsp;sum_outboundWebsocketMsgCount_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(outboundWebsocketMsgCount) descending</span><br />
+&nbsp;&nbsp;sum_outboundWebsocketMsgCount_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(storageDeletes) ascending</span><br />
+&nbsp;&nbsp;sum_storageDeletes_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(storageDeletes) descending</span><br />
+&nbsp;&nbsp;sum_storageDeletes_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(storageReadUnits) ascending</span><br />
+&nbsp;&nbsp;sum_storageReadUnits_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(storageReadUnits) descending</span><br />
+&nbsp;&nbsp;sum_storageReadUnits_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(storageWriteUnits) ascending</span><br />
+&nbsp;&nbsp;sum_storageWriteUnits_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(storageWriteUnits) descending</span><br />
+&nbsp;&nbsp;sum_storageWriteUnits_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(subrequests) ascending</span><br />
+&nbsp;&nbsp;sum_subrequests_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(subrequests) descending</span><br />
+&nbsp;&nbsp;sum_subrequests_DESC<br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountDurableObjectsPeriodicGroupsSum" href="#AccountDurableObjectsPeriodicGroupsSum">AccountDurableObjectsPeriodicGroupsSum</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of active time - microseconds</span><br />
+&nbsp;&nbsp;activeTime: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of CPU time - microseconds</span><br />
+&nbsp;&nbsp;cpuTime: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of CPU exceeded errors</span><br />
+&nbsp;&nbsp;exceededCpuErrors: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of memory exceeded errors</span><br />
+&nbsp;&nbsp;exceededMemoryErrors: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of fatal internal server errors</span><br />
+&nbsp;&nbsp;fatalInternalErrors: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of incoming websocket messages</span><br />
+&nbsp;&nbsp;inboundWebsocketMsgCount: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of outbound websocket messages</span><br />
+&nbsp;&nbsp;outboundWebsocketMsgCount: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of storage deletes</span><br />
+&nbsp;&nbsp;storageDeletes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of storage reads - in 4KB units</span><br />
+&nbsp;&nbsp;storageReadUnits: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of storage writes - in 4KB units</span><br />
+&nbsp;&nbsp;storageWriteUnits: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of subrequests</span><br />
+&nbsp;&nbsp;subrequests: <a href="#uint64">uint64!</a><br />
+}<br />
+<br />
+<span class="c"># Beta. Durable Objects storage metrics</span><br />
+<span class="k">type</span> <a id="AccountDurableObjectsStorageGroups" href="#AccountDurableObjectsStorageGroups">AccountDurableObjectsStorageGroups</a> {<br />
+&nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
+&nbsp;&nbsp;dimensions: <a href="#AccountDurableObjectsStorageGroupsDimensions">AccountDurableObjectsStorageGroupsDimensions</a><br />
+&nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
+&nbsp;&nbsp;max: <a href="#AccountDurableObjectsStorageGroupsMax">AccountDurableObjectsStorageGroupsMax</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountDurableObjectsStorageGroupsDimensions" href="#AccountDurableObjectsStorageGroupsDimensions">AccountDurableObjectsStorageGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># Datetime that the storage usage was recorded, truncated to start of a day</span><br />
+&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
+&nbsp;&nbsp;<span class="c"># Datetime that the storage usage was recorded, truncated to start of an hour</span><br />
+&nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
+}<br />
+<br />
+<span class="k">input</span> <a id="AccountDurableObjectsStorageGroupsFilter_InputObject" href="#AccountDurableObjectsStorageGroupsFilter_InputObject">AccountDurableObjectsStorageGroupsFilter_InputObject</a> {<br />
+&nbsp;&nbsp;AND: <a href="#AccountDurableObjectsStorageGroupsFilter_InputObject">[AccountDurableObjectsStorageGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;OR: <a href="#AccountDurableObjectsStorageGroupsFilter_InputObject">[AccountDurableObjectsStorageGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;datetimeHour: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeHour_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_notin: <a href="#Time">[Time!]</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountDurableObjectsStorageGroupsMax" href="#AccountDurableObjectsStorageGroupsMax">AccountDurableObjectsStorageGroupsMax</a> {<br />
+&nbsp;&nbsp;<span class="c"># Max of stored bytes</span><br />
+&nbsp;&nbsp;storedBytes: <a href="#uint64">uint64!</a><br />
+}<br />
+<br />
+<span class="k">enum</span> <a id="AccountDurableObjectsStorageGroupsOrderBy" href="#AccountDurableObjectsStorageGroupsOrderBy">AccountDurableObjectsStorageGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># date ascending</span><br />
+&nbsp;&nbsp;date_ASC<br />
+&nbsp;&nbsp;<span class="c"># date descending</span><br />
+&nbsp;&nbsp;date_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHour ascending</span><br />
+&nbsp;&nbsp;datetimeHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHour descending</span><br />
+&nbsp;&nbsp;datetimeHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># max(storedBytes) ascending</span><br />
+&nbsp;&nbsp;max_storedBytes_ASC<br />
+&nbsp;&nbsp;<span class="c"># max(storedBytes) descending</span><br />
+&nbsp;&nbsp;max_storedBytes_DESC<br />
+}<br />
+<br />
 <span class="c"># Beta. Durable Objects subrequests with adaptive sampling</span><br />
 <span class="k">type</span> <a id="AccountDurableObjectsSubrequestsAdaptiveGroups" href="#AccountDurableObjectsSubrequestsAdaptiveGroups">AccountDurableObjectsSubrequestsAdaptiveGroups</a> {<br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
@@ -3816,6 +4053,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg">AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
+&nbsp;&nbsp;bitRate: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
@@ -3824,10 +4063,10 @@
 &nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute</span><br />
 &nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
-&nbsp;&nbsp;bitRateSecond: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds</span><br />
 &nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
+&nbsp;&nbsp;packetRate: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
@@ -3836,8 +4075,6 @@
 &nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute</span><br />
 &nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
-&nbsp;&nbsp;packetRateSecond: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds</span><br />
 &nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
 }<br />
@@ -3899,8 +4136,6 @@
 &nbsp;&nbsp;ipDestinationAddress: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)</span><br />
 &nbsp;&nbsp;ipDestinationSubnet: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Value of the Don't Fragment header field in the IPv4 or IPv6 packet</span><br />
-&nbsp;&nbsp;ipDontFragment: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Fragment Offset header field in the IPv4 or IPv6 packet</span><br />
 &nbsp;&nbsp;ipFragmentOffset: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># Length of the IPv4 or IPv6 packet header, in bytes</span><br />
@@ -3923,6 +4158,8 @@
 &nbsp;&nbsp;ipTtlBuckets: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Checksum header field in the IPv4 packet</span><br />
 &nbsp;&nbsp;ipv4Checksum: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># Value of the Don't Fragment header field in the IPv4 packet</span><br />
+&nbsp;&nbsp;ipv4DontFragment: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Differentiated Services Code Point header field in the IPv4 packet</span><br />
 &nbsp;&nbsp;ipv4Dscp: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Explicit Congestion Notification header field in the IPv4 packet</span><br />
@@ -4244,14 +4481,6 @@
 &nbsp;&nbsp;ipDestinationSubnet_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ipDestinationSubnet_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ipDestinationSubnet_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;ipDontFragment: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_geq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_gt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_in: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;ipDontFragment_leq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_lt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_neq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;ipFragmentOffset: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipFragmentOffset_geq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipFragmentOffset_gt: <a href="#uint16">uint16</a><br />
@@ -4344,6 +4573,14 @@
 &nbsp;&nbsp;ipv4Checksum_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipv4Checksum_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipv4Checksum_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;ipv4DontFragment: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;ipv4DontFragment_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;ipv4Dscp: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;ipv4Dscp_geq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;ipv4Dscp_gt: <a href="#uint8">uint8</a><br />
@@ -4675,14 +4912,14 @@
 &nbsp;&nbsp;avg_bitRateMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateMinute) descending</span><br />
 &nbsp;&nbsp;avg_bitRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) ascending</span><br />
-&nbsp;&nbsp;avg_bitRateSecond_ASC<br />
-&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) descending</span><br />
-&nbsp;&nbsp;avg_bitRateSecond_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) ascending</span><br />
 &nbsp;&nbsp;avg_bitRateTenSeconds_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) descending</span><br />
 &nbsp;&nbsp;avg_bitRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRate) ascending</span><br />
+&nbsp;&nbsp;avg_bitRate_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRate) descending</span><br />
+&nbsp;&nbsp;avg_bitRate_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
@@ -4699,14 +4936,14 @@
 &nbsp;&nbsp;avg_packetRateMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateMinute) descending</span><br />
 &nbsp;&nbsp;avg_packetRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) ascending</span><br />
-&nbsp;&nbsp;avg_packetRateSecond_ASC<br />
-&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) descending</span><br />
-&nbsp;&nbsp;avg_packetRateSecond_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateTenSeconds_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) descending</span><br />
 &nbsp;&nbsp;avg_packetRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRate) ascending</span><br />
+&nbsp;&nbsp;avg_packetRate_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRate) descending</span><br />
+&nbsp;&nbsp;avg_packetRate_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCity ascending</span><br />
 &nbsp;&nbsp;coloCity_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCity descending</span><br />
@@ -4819,10 +5056,6 @@
 &nbsp;&nbsp;ipDestinationSubnet_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipDestinationSubnet descending</span><br />
 &nbsp;&nbsp;ipDestinationSubnet_DESC<br />
-&nbsp;&nbsp;<span class="c"># ipDontFragment ascending</span><br />
-&nbsp;&nbsp;ipDontFragment_ASC<br />
-&nbsp;&nbsp;<span class="c"># ipDontFragment descending</span><br />
-&nbsp;&nbsp;ipDontFragment_DESC<br />
 &nbsp;&nbsp;<span class="c"># ipFragmentOffset ascending</span><br />
 &nbsp;&nbsp;ipFragmentOffset_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipFragmentOffset descending</span><br />
@@ -4867,6 +5100,10 @@
 &nbsp;&nbsp;ipv4Checksum_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Checksum descending</span><br />
 &nbsp;&nbsp;ipv4Checksum_DESC<br />
+&nbsp;&nbsp;<span class="c"># ipv4DontFragment ascending</span><br />
+&nbsp;&nbsp;ipv4DontFragment_ASC<br />
+&nbsp;&nbsp;<span class="c"># ipv4DontFragment descending</span><br />
+&nbsp;&nbsp;ipv4DontFragment_DESC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Dscp ascending</span><br />
 &nbsp;&nbsp;ipv4Dscp_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Dscp descending</span><br />
@@ -8059,6 +8296,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg">AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
+&nbsp;&nbsp;bitRate: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
@@ -8067,10 +8306,10 @@
 &nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute</span><br />
 &nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
-&nbsp;&nbsp;bitRateSecond: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds</span><br />
 &nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
+&nbsp;&nbsp;packetRate: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
@@ -8079,8 +8318,6 @@
 &nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute</span><br />
 &nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
-&nbsp;&nbsp;packetRateSecond: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds</span><br />
 &nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
 }<br />
@@ -8142,8 +8379,6 @@
 &nbsp;&nbsp;ipDestinationAddress: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)</span><br />
 &nbsp;&nbsp;ipDestinationSubnet: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Value of the Don't Fragment header field in the IPv4 or IPv6 packet</span><br />
-&nbsp;&nbsp;ipDontFragment: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Fragment Offset header field in the IPv4 or IPv6 packet</span><br />
 &nbsp;&nbsp;ipFragmentOffset: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># Length of the IPv4 or IPv6 packet header, in bytes</span><br />
@@ -8166,6 +8401,8 @@
 &nbsp;&nbsp;ipTtlBuckets: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Checksum header field in the IPv4 packet</span><br />
 &nbsp;&nbsp;ipv4Checksum: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># Value of the Don't Fragment header field in the IPv4 packet</span><br />
+&nbsp;&nbsp;ipv4DontFragment: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Differentiated Services Code Point header field in the IPv4 packet</span><br />
 &nbsp;&nbsp;ipv4Dscp: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Explicit Congestion Notification header field in the IPv4 packet</span><br />
@@ -8485,14 +8722,6 @@
 &nbsp;&nbsp;ipDestinationSubnet_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ipDestinationSubnet_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ipDestinationSubnet_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;ipDontFragment: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_geq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_gt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_in: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;ipDontFragment_leq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_lt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_neq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;ipFragmentOffset: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipFragmentOffset_geq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipFragmentOffset_gt: <a href="#uint16">uint16</a><br />
@@ -8585,6 +8814,14 @@
 &nbsp;&nbsp;ipv4Checksum_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipv4Checksum_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipv4Checksum_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;ipv4DontFragment: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;ipv4DontFragment_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;ipv4Dscp: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;ipv4Dscp_geq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;ipv4Dscp_gt: <a href="#uint8">uint8</a><br />
@@ -8906,14 +9143,14 @@
 &nbsp;&nbsp;avg_bitRateMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateMinute) descending</span><br />
 &nbsp;&nbsp;avg_bitRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) ascending</span><br />
-&nbsp;&nbsp;avg_bitRateSecond_ASC<br />
-&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) descending</span><br />
-&nbsp;&nbsp;avg_bitRateSecond_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) ascending</span><br />
 &nbsp;&nbsp;avg_bitRateTenSeconds_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) descending</span><br />
 &nbsp;&nbsp;avg_bitRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRate) ascending</span><br />
+&nbsp;&nbsp;avg_bitRate_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRate) descending</span><br />
+&nbsp;&nbsp;avg_bitRate_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
@@ -8930,14 +9167,14 @@
 &nbsp;&nbsp;avg_packetRateMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateMinute) descending</span><br />
 &nbsp;&nbsp;avg_packetRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) ascending</span><br />
-&nbsp;&nbsp;avg_packetRateSecond_ASC<br />
-&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) descending</span><br />
-&nbsp;&nbsp;avg_packetRateSecond_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateTenSeconds_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) descending</span><br />
 &nbsp;&nbsp;avg_packetRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRate) ascending</span><br />
+&nbsp;&nbsp;avg_packetRate_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRate) descending</span><br />
+&nbsp;&nbsp;avg_packetRate_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCity ascending</span><br />
 &nbsp;&nbsp;coloCity_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCity descending</span><br />
@@ -9050,10 +9287,6 @@
 &nbsp;&nbsp;ipDestinationSubnet_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipDestinationSubnet descending</span><br />
 &nbsp;&nbsp;ipDestinationSubnet_DESC<br />
-&nbsp;&nbsp;<span class="c"># ipDontFragment ascending</span><br />
-&nbsp;&nbsp;ipDontFragment_ASC<br />
-&nbsp;&nbsp;<span class="c"># ipDontFragment descending</span><br />
-&nbsp;&nbsp;ipDontFragment_DESC<br />
 &nbsp;&nbsp;<span class="c"># ipFragmentOffset ascending</span><br />
 &nbsp;&nbsp;ipFragmentOffset_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipFragmentOffset descending</span><br />
@@ -9098,6 +9331,10 @@
 &nbsp;&nbsp;ipv4Checksum_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Checksum descending</span><br />
 &nbsp;&nbsp;ipv4Checksum_DESC<br />
+&nbsp;&nbsp;<span class="c"># ipv4DontFragment ascending</span><br />
+&nbsp;&nbsp;ipv4DontFragment_ASC<br />
+&nbsp;&nbsp;<span class="c"># ipv4DontFragment descending</span><br />
+&nbsp;&nbsp;ipv4DontFragment_DESC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Dscp ascending</span><br />
 &nbsp;&nbsp;ipv4Dscp_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Dscp descending</span><br />
@@ -9348,6 +9585,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg">AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
+&nbsp;&nbsp;bitRate: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
@@ -9356,10 +9595,10 @@
 &nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute</span><br />
 &nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
-&nbsp;&nbsp;bitRateSecond: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds</span><br />
 &nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
+&nbsp;&nbsp;packetRate: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
@@ -9368,8 +9607,6 @@
 &nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute</span><br />
 &nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
-&nbsp;&nbsp;packetRateSecond: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds</span><br />
 &nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
 }<br />
@@ -9431,8 +9668,6 @@
 &nbsp;&nbsp;ipDestinationAddress: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)</span><br />
 &nbsp;&nbsp;ipDestinationSubnet: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Value of the Don't Fragment header field in the IPv4 or IPv6 packet</span><br />
-&nbsp;&nbsp;ipDontFragment: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Fragment Offset header field in the IPv4 or IPv6 packet</span><br />
 &nbsp;&nbsp;ipFragmentOffset: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># Length of the IPv4 or IPv6 packet header, in bytes</span><br />
@@ -9455,6 +9690,8 @@
 &nbsp;&nbsp;ipTtlBuckets: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Checksum header field in the IPv4 packet</span><br />
 &nbsp;&nbsp;ipv4Checksum: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># Value of the Don't Fragment header field in the IPv4 packet</span><br />
+&nbsp;&nbsp;ipv4DontFragment: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Differentiated Services Code Point header field in the IPv4 packet</span><br />
 &nbsp;&nbsp;ipv4Dscp: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Explicit Congestion Notification header field in the IPv4 packet</span><br />
@@ -9770,14 +10007,6 @@
 &nbsp;&nbsp;ipDestinationSubnet_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ipDestinationSubnet_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ipDestinationSubnet_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;ipDontFragment: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_geq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_gt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_in: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;ipDontFragment_leq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_lt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_neq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;ipFragmentOffset: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipFragmentOffset_geq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipFragmentOffset_gt: <a href="#uint16">uint16</a><br />
@@ -9870,6 +10099,14 @@
 &nbsp;&nbsp;ipv4Checksum_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipv4Checksum_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipv4Checksum_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;ipv4DontFragment: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;ipv4DontFragment_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;ipv4Dscp: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;ipv4Dscp_geq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;ipv4Dscp_gt: <a href="#uint8">uint8</a><br />
@@ -10171,14 +10408,14 @@
 &nbsp;&nbsp;avg_bitRateMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateMinute) descending</span><br />
 &nbsp;&nbsp;avg_bitRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) ascending</span><br />
-&nbsp;&nbsp;avg_bitRateSecond_ASC<br />
-&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) descending</span><br />
-&nbsp;&nbsp;avg_bitRateSecond_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) ascending</span><br />
 &nbsp;&nbsp;avg_bitRateTenSeconds_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) descending</span><br />
 &nbsp;&nbsp;avg_bitRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRate) ascending</span><br />
+&nbsp;&nbsp;avg_bitRate_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRate) descending</span><br />
+&nbsp;&nbsp;avg_bitRate_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
@@ -10195,14 +10432,14 @@
 &nbsp;&nbsp;avg_packetRateMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateMinute) descending</span><br />
 &nbsp;&nbsp;avg_packetRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) ascending</span><br />
-&nbsp;&nbsp;avg_packetRateSecond_ASC<br />
-&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) descending</span><br />
-&nbsp;&nbsp;avg_packetRateSecond_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateTenSeconds_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) descending</span><br />
 &nbsp;&nbsp;avg_packetRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRate) ascending</span><br />
+&nbsp;&nbsp;avg_packetRate_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRate) descending</span><br />
+&nbsp;&nbsp;avg_packetRate_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCity ascending</span><br />
 &nbsp;&nbsp;coloCity_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCity descending</span><br />
@@ -10315,10 +10552,6 @@
 &nbsp;&nbsp;ipDestinationSubnet_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipDestinationSubnet descending</span><br />
 &nbsp;&nbsp;ipDestinationSubnet_DESC<br />
-&nbsp;&nbsp;<span class="c"># ipDontFragment ascending</span><br />
-&nbsp;&nbsp;ipDontFragment_ASC<br />
-&nbsp;&nbsp;<span class="c"># ipDontFragment descending</span><br />
-&nbsp;&nbsp;ipDontFragment_DESC<br />
 &nbsp;&nbsp;<span class="c"># ipFragmentOffset ascending</span><br />
 &nbsp;&nbsp;ipFragmentOffset_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipFragmentOffset descending</span><br />
@@ -10363,6 +10596,10 @@
 &nbsp;&nbsp;ipv4Checksum_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Checksum descending</span><br />
 &nbsp;&nbsp;ipv4Checksum_DESC<br />
+&nbsp;&nbsp;<span class="c"># ipv4DontFragment ascending</span><br />
+&nbsp;&nbsp;ipv4DontFragment_ASC<br />
+&nbsp;&nbsp;<span class="c"># ipv4DontFragment descending</span><br />
+&nbsp;&nbsp;ipv4DontFragment_DESC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Dscp ascending</span><br />
 &nbsp;&nbsp;ipv4Dscp_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Dscp descending</span><br />
@@ -10507,6 +10744,10 @@
 &nbsp;&nbsp;udpPayloadLength_ASC<br />
 &nbsp;&nbsp;<span class="c"># udpPayloadLength descending</span><br />
 &nbsp;&nbsp;udpPayloadLength_DESC<br />
+&nbsp;&nbsp;<span class="c"># verdict ascending</span><br />
+&nbsp;&nbsp;verdict_ASC<br />
+&nbsp;&nbsp;<span class="c"># verdict descending</span><br />
+&nbsp;&nbsp;verdict_DESC<br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountMagicTransitNetworkAnalyticsAdaptiveGroupsSum" href="#AccountMagicTransitNetworkAnalyticsAdaptiveGroupsSum">AccountMagicTransitNetworkAnalyticsAdaptiveGroupsSum</a> {<br />
@@ -13009,6 +13250,8 @@
 &nbsp;&nbsp;dosdAttackAnalyticsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;dosdNetworkAnalyticsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;durableObjectsInvocationsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
+&nbsp;&nbsp;durableObjectsPeriodicGroups: <a href="#Settings">Settings!</a><br />
+&nbsp;&nbsp;durableObjectsStorageGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;durableObjectsSubrequestsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;flowtrackdNetworkAnalyticsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;gatewayL4DownstreamSessionsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
@@ -13050,6 +13293,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg">AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
+&nbsp;&nbsp;bitRate: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
@@ -13058,10 +13303,10 @@
 &nbsp;&nbsp;bitRateHour: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute</span><br />
 &nbsp;&nbsp;bitRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
-&nbsp;&nbsp;bitRateSecond: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds</span><br />
 &nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
+&nbsp;&nbsp;packetRate: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
@@ -13070,8 +13315,6 @@
 &nbsp;&nbsp;packetRateHour: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute</span><br />
 &nbsp;&nbsp;packetRateMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
-&nbsp;&nbsp;packetRateSecond: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds</span><br />
 &nbsp;&nbsp;packetRateTenSeconds: <a href="#uint64">uint64!</a><br />
 }<br />
@@ -13133,8 +13376,6 @@
 &nbsp;&nbsp;ipDestinationAddress: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)</span><br />
 &nbsp;&nbsp;ipDestinationSubnet: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Value of the Don't Fragment header field in the IPv4 or IPv6 packet</span><br />
-&nbsp;&nbsp;ipDontFragment: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Fragment Offset header field in the IPv4 or IPv6 packet</span><br />
 &nbsp;&nbsp;ipFragmentOffset: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># Length of the IPv4 or IPv6 packet header, in bytes</span><br />
@@ -13157,6 +13398,8 @@
 &nbsp;&nbsp;ipTtlBuckets: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Checksum header field in the IPv4 packet</span><br />
 &nbsp;&nbsp;ipv4Checksum: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># Value of the Don't Fragment header field in the IPv4 packet</span><br />
+&nbsp;&nbsp;ipv4DontFragment: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Differentiated Services Code Point header field in the IPv4 packet</span><br />
 &nbsp;&nbsp;ipv4Dscp: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Explicit Congestion Notification header field in the IPv4 packet</span><br />
@@ -13472,14 +13715,6 @@
 &nbsp;&nbsp;ipDestinationSubnet_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ipDestinationSubnet_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ipDestinationSubnet_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;ipDontFragment: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_geq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_gt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_in: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;ipDontFragment_leq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_lt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_neq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;ipDontFragment_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;ipFragmentOffset: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipFragmentOffset_geq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipFragmentOffset_gt: <a href="#uint16">uint16</a><br />
@@ -13572,6 +13807,14 @@
 &nbsp;&nbsp;ipv4Checksum_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipv4Checksum_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ipv4Checksum_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;ipv4DontFragment: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;ipv4DontFragment_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;ipv4DontFragment_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;ipv4Dscp: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;ipv4Dscp_geq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;ipv4Dscp_gt: <a href="#uint8">uint8</a><br />
@@ -13873,14 +14116,14 @@
 &nbsp;&nbsp;avg_bitRateMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateMinute) descending</span><br />
 &nbsp;&nbsp;avg_bitRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) ascending</span><br />
-&nbsp;&nbsp;avg_bitRateSecond_ASC<br />
-&nbsp;&nbsp;<span class="c"># avg(bitRateSecond) descending</span><br />
-&nbsp;&nbsp;avg_bitRateSecond_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) ascending</span><br />
 &nbsp;&nbsp;avg_bitRateTenSeconds_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateTenSeconds) descending</span><br />
 &nbsp;&nbsp;avg_bitRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRate) ascending</span><br />
+&nbsp;&nbsp;avg_bitRate_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRate) descending</span><br />
+&nbsp;&nbsp;avg_bitRate_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
@@ -13897,14 +14140,14 @@
 &nbsp;&nbsp;avg_packetRateMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateMinute) descending</span><br />
 &nbsp;&nbsp;avg_packetRateMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) ascending</span><br />
-&nbsp;&nbsp;avg_packetRateSecond_ASC<br />
-&nbsp;&nbsp;<span class="c"># avg(packetRateSecond) descending</span><br />
-&nbsp;&nbsp;avg_packetRateSecond_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateTenSeconds_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateTenSeconds) descending</span><br />
 &nbsp;&nbsp;avg_packetRateTenSeconds_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRate) ascending</span><br />
+&nbsp;&nbsp;avg_packetRate_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRate) descending</span><br />
+&nbsp;&nbsp;avg_packetRate_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCity ascending</span><br />
 &nbsp;&nbsp;coloCity_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCity descending</span><br />
@@ -14017,10 +14260,6 @@
 &nbsp;&nbsp;ipDestinationSubnet_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipDestinationSubnet descending</span><br />
 &nbsp;&nbsp;ipDestinationSubnet_DESC<br />
-&nbsp;&nbsp;<span class="c"># ipDontFragment ascending</span><br />
-&nbsp;&nbsp;ipDontFragment_ASC<br />
-&nbsp;&nbsp;<span class="c"># ipDontFragment descending</span><br />
-&nbsp;&nbsp;ipDontFragment_DESC<br />
 &nbsp;&nbsp;<span class="c"># ipFragmentOffset ascending</span><br />
 &nbsp;&nbsp;ipFragmentOffset_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipFragmentOffset descending</span><br />
@@ -14065,6 +14304,10 @@
 &nbsp;&nbsp;ipv4Checksum_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Checksum descending</span><br />
 &nbsp;&nbsp;ipv4Checksum_DESC<br />
+&nbsp;&nbsp;<span class="c"># ipv4DontFragment ascending</span><br />
+&nbsp;&nbsp;ipv4DontFragment_ASC<br />
+&nbsp;&nbsp;<span class="c"># ipv4DontFragment descending</span><br />
+&nbsp;&nbsp;ipv4DontFragment_DESC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Dscp ascending</span><br />
 &nbsp;&nbsp;ipv4Dscp_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv4Dscp descending</span><br />
@@ -14209,6 +14452,10 @@
 &nbsp;&nbsp;udpPayloadLength_ASC<br />
 &nbsp;&nbsp;<span class="c"># udpPayloadLength descending</span><br />
 &nbsp;&nbsp;udpPayloadLength_DESC<br />
+&nbsp;&nbsp;<span class="c"># verdict ascending</span><br />
+&nbsp;&nbsp;verdict_ASC<br />
+&nbsp;&nbsp;<span class="c"># verdict descending</span><br />
+&nbsp;&nbsp;verdict_DESC<br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountSpectrumNetworkAnalyticsAdaptiveGroupsSum" href="#AccountSpectrumNetworkAnalyticsAdaptiveGroupsSum">AccountSpectrumNetworkAnalyticsAdaptiveGroupsSum</a> {<br />
@@ -15594,14 +15841,10 @@
 &nbsp;&nbsp;httpRequestsAdaptiveGroups(filter: <a href="#ZoneHttpRequestsAdaptiveGroupsFilter_InputObject">ZoneHttpRequestsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#ZoneHttpRequestsAdaptiveGroupsOrderBy">[ZoneHttpRequestsAdaptiveGroupsOrderBy!]</a>): <a href="#ZoneHttpRequestsAdaptiveGroups">[ZoneHttpRequestsAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Minutely rollups of Image Resizing requests</span><br />
 &nbsp;&nbsp;imageResizingRequests1mGroups(filter: <a href="#ZoneImageResizingRequests1mGroupsFilter_InputObject">ZoneImageResizingRequests1mGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#ZoneImageResizingRequests1mGroupsOrderBy">[ZoneImageResizingRequests1mGroupsOrderBy!]</a>): <a href="#ZoneImageResizingRequests1mGroups">[ZoneImageResizingRequests1mGroups!]!</a><br />
-&nbsp;&nbsp;<span class="c"># Raw Load Balancing origin requests</span><br />
-&nbsp;&nbsp;loadBalancingRequests(filter: <a href="#ZoneLoadBalancingRequestsFilter_InputObject">ZoneLoadBalancingRequestsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#ZoneLoadBalancingRequestsOrderBy">[ZoneLoadBalancingRequestsOrderBy!]</a>): <a href="#ZoneLoadBalancingRequests">[ZoneLoadBalancingRequests!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Raw Load Balancing origin requests with adaptive sampling</span><br />
 &nbsp;&nbsp;loadBalancingRequestsAdaptive(filter: <a href="#ZoneLoadBalancingRequestsAdaptiveFilter_InputObject">ZoneLoadBalancingRequestsAdaptiveFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#ZoneLoadBalancingRequestsAdaptiveOrderBy">[ZoneLoadBalancingRequestsAdaptiveOrderBy!]</a>): <a href="#ZoneLoadBalancingRequestsAdaptive">[ZoneLoadBalancingRequestsAdaptive!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Aggregated Load Balancing origin requests with adaptive sampling</span><br />
 &nbsp;&nbsp;loadBalancingRequestsAdaptiveGroups(filter: <a href="#ZoneLoadBalancingRequestsAdaptiveGroupsFilter_InputObject">ZoneLoadBalancingRequestsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#ZoneLoadBalancingRequestsAdaptiveGroupsOrderBy">[ZoneLoadBalancingRequestsAdaptiveGroupsOrderBy!]</a>): <a href="#ZoneLoadBalancingRequestsAdaptiveGroups">[ZoneLoadBalancingRequestsAdaptiveGroups!]!</a><br />
-&nbsp;&nbsp;<span class="c"># Aggregated Load Balancing origin requests</span><br />
-&nbsp;&nbsp;loadBalancingRequestsGroups(filter: <a href="#ZoneLoadBalancingRequestsGroupsFilter_InputObject">ZoneLoadBalancingRequestsGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#ZoneLoadBalancingRequestsGroupsOrderBy">[ZoneLoadBalancingRequestsGroupsOrderBy!]</a>): <a href="#ZoneLoadBalancingRequestsGroups">[ZoneLoadBalancingRequestsGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Data to visualize network error logs</span><br />
 &nbsp;&nbsp;nelReportsAdaptiveGroups(filter: <a href="#ZoneNelReportsAdaptiveGroupsFilter_InputObject">ZoneNelReportsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#ZoneNelReportsAdaptiveGroupsOrderBy">[ZoneNelReportsAdaptiveGroupsOrderBy!]</a>): <a href="#ZoneNelReportsAdaptiveGroups">[ZoneNelReportsAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;settings: <a href="#ZoneSettings">ZoneSettings</a><br />
@@ -20212,50 +20455,6 @@
 &nbsp;&nbsp;resizedPixels: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
-<span class="c"># Raw Load Balancing origin requests</span><br />
-<span class="k">type</span> <a id="ZoneLoadBalancingRequests" href="#ZoneLoadBalancingRequests">ZoneLoadBalancingRequests</a> {<br />
-&nbsp;&nbsp;<span class="c"># IATA airport code of data center that received the request</span><br />
-&nbsp;&nbsp;coloCode: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Request date</span><br />
-&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
-&nbsp;&nbsp;<span class="c"># Request datetime</span><br />
-&nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
-&nbsp;&nbsp;<span class="c"># Error generated when selecting an origin</span><br />
-&nbsp;&nbsp;errorType: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Load balancer name</span><br />
-&nbsp;&nbsp;lbName: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Number of origins that were selected and returned to the client</span><br />
-&nbsp;&nbsp;numberOriginsSelected: <a href="#uint16">uint16!</a><br />
-&nbsp;&nbsp;<span class="c"># All origins in the pool that was selected based on steering policy</span><br />
-&nbsp;&nbsp;origins: <a href="#ZoneLoadBalancingRequestsOriginsElem">[ZoneLoadBalancingRequestsOriginsElem!]!</a><br />
-&nbsp;&nbsp;<span class="c"># List of pools from which a pool will be selected based on steering policy</span><br />
-&nbsp;&nbsp;pools: <a href="#ZoneLoadBalancingRequestsPoolsElem">[ZoneLoadBalancingRequestsPoolsElem!]!</a><br />
-&nbsp;&nbsp;<span class="c"># Whether traffic is proxied through the Cloudflare network (orange-clouded)</span><br />
-&nbsp;&nbsp;proxied: <a href="#uint8">uint8!</a><br />
-&nbsp;&nbsp;<span class="c"># Load balancing region where request originated</span><br />
-&nbsp;&nbsp;region: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Index of the selected origin from the list of all origins. If multiple origins were selected, this is the index of the first origin in that list</span><br />
-&nbsp;&nbsp;selectedOriginIndex: <a href="#uint16">uint16!</a><br />
-&nbsp;&nbsp;<span class="c"># Average RTT (milliseconds) to reach the origins within the selected pool</span><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Health checks active status for the selected pool</span><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled: <a href="#uint8">uint8!</a><br />
-&nbsp;&nbsp;<span class="c"># Health status for the selected pool</span><br />
-&nbsp;&nbsp;selectedPoolHealthy: <a href="#uint8">uint8!</a><br />
-&nbsp;&nbsp;<span class="c"># A unique identifier for the selected pool</span><br />
-&nbsp;&nbsp;selectedPoolId: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Index of the selected pool from the list of all pools</span><br />
-&nbsp;&nbsp;selectedPoolIndex: <a href="#uint32">uint32!</a><br />
-&nbsp;&nbsp;<span class="c"># Name for the selected pool</span><br />
-&nbsp;&nbsp;selectedPoolName: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Type of session affinity enabled</span><br />
-&nbsp;&nbsp;sessionAffinity: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Current status of session affinity</span><br />
-&nbsp;&nbsp;sessionAffinityStatus: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Policy by which the load balancer will route traffic</span><br />
-&nbsp;&nbsp;steeringPolicy: <a href="#string">string!</a><br />
-}<br />
-<br />
 <span class="c"># Raw Load Balancing origin requests with adaptive sampling</span><br />
 <span class="k">type</span> <a id="ZoneLoadBalancingRequestsAdaptive" href="#ZoneLoadBalancingRequestsAdaptive">ZoneLoadBalancingRequestsAdaptive</a> {<br />
 &nbsp;&nbsp;<span class="c"># IATA airport code of data center that received the request</span><br />
@@ -20993,687 +21192,6 @@
 &nbsp;&nbsp;poolName: <a href="#string">string!</a><br />
 }<br />
 <br />
-<span class="k">input</span> <a id="ZoneLoadBalancingRequestsFilter_InputObject" href="#ZoneLoadBalancingRequestsFilter_InputObject">ZoneLoadBalancingRequestsFilter_InputObject</a> {<br />
-&nbsp;&nbsp;AND: <a href="#ZoneLoadBalancingRequestsFilter_InputObject">[ZoneLoadBalancingRequestsFilter_InputObject!]</a><br />
-&nbsp;&nbsp;OR: <a href="#ZoneLoadBalancingRequestsFilter_InputObject">[ZoneLoadBalancingRequestsFilter_InputObject!]</a><br />
-&nbsp;&nbsp;coloCode: <a href="#string">string</a><br />
-&nbsp;&nbsp;coloCode_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;coloCode_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;coloCode_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;coloCode_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;coloCode_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;coloCode_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;coloCode_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;coloCode_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;coloCode_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
-&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
-&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
-&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
-&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
-&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
-&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
-&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
-&nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetime_geq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetime_gt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetime_in: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;datetime_leq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetime_lt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetime_neq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetime_notin: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;errorType: <a href="#string">string</a><br />
-&nbsp;&nbsp;errorType_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;errorType_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;errorType_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;errorType_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;errorType_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;errorType_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;errorType_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;errorType_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;errorType_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;lbName: <a href="#string">string</a><br />
-&nbsp;&nbsp;lbName_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;lbName_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;lbName_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;lbName_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;lbName_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;lbName_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;lbName_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;lbName_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;lbName_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;numberOriginsSelected: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;numberOriginsSelected_geq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;numberOriginsSelected_gt: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;numberOriginsSelected_in: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;numberOriginsSelected_leq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;numberOriginsSelected_lt: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;numberOriginsSelected_neq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;numberOriginsSelected_notin: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;proxied: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;proxied_geq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;proxied_gt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;proxied_in: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;proxied_leq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;proxied_lt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;proxied_neq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;proxied_notin: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;region: <a href="#string">string</a><br />
-&nbsp;&nbsp;region_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;region_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;region_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;region_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;region_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;region_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;region_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;region_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;region_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginIndex: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;selectedOriginIndex_geq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;selectedOriginIndex_gt: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;selectedOriginIndex_in: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;selectedOriginIndex_leq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;selectedOriginIndex_lt: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;selectedOriginIndex_neq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;selectedOriginIndex_notin: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_geq: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_gt: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_in: <a href="#uint64">[uint64!]</a><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_leq: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_lt: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_neq: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_notin: <a href="#uint64">[uint64!]</a><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_geq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_gt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_in: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_leq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_lt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_neq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_notin: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;selectedPoolHealthy: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthy_geq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthy_gt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthy_in: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;selectedPoolHealthy_leq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthy_lt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthy_neq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthy_notin: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;selectedPoolId: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolId_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolId_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolId_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;selectedPoolId_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolId_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolId_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolId_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolId_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;selectedPoolId_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolIndex: <a href="#uint32">uint32</a><br />
-&nbsp;&nbsp;selectedPoolIndex_geq: <a href="#uint32">uint32</a><br />
-&nbsp;&nbsp;selectedPoolIndex_gt: <a href="#uint32">uint32</a><br />
-&nbsp;&nbsp;selectedPoolIndex_in: <a href="#uint32">[uint32!]</a><br />
-&nbsp;&nbsp;selectedPoolIndex_leq: <a href="#uint32">uint32</a><br />
-&nbsp;&nbsp;selectedPoolIndex_lt: <a href="#uint32">uint32</a><br />
-&nbsp;&nbsp;selectedPoolIndex_neq: <a href="#uint32">uint32</a><br />
-&nbsp;&nbsp;selectedPoolIndex_notin: <a href="#uint32">[uint32!]</a><br />
-&nbsp;&nbsp;selectedPoolName: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolName_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolName_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolName_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;selectedPoolName_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolName_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolName_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolName_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolName_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;selectedPoolName_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinity: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityStatus: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinity_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinity_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinity_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;sessionAffinity_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinity_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinity_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinity_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinity_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;sessionAffinity_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;steeringPolicy: <a href="#string">string</a><br />
-&nbsp;&nbsp;steeringPolicy_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;steeringPolicy_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;steeringPolicy_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;steeringPolicy_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;steeringPolicy_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;steeringPolicy_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;steeringPolicy_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;steeringPolicy_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;steeringPolicy_notlike: <a href="#string">string</a><br />
-}<br />
-<br />
-<span class="c"># Aggregated Load Balancing origin requests</span><br />
-<span class="k">type</span> <a id="ZoneLoadBalancingRequestsGroups" href="#ZoneLoadBalancingRequestsGroups">ZoneLoadBalancingRequestsGroups</a> {<br />
-&nbsp;&nbsp;<span class="c"># Counts a number of rows per specific dimensions</span><br />
-&nbsp;&nbsp;count: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
-&nbsp;&nbsp;dimensions: <a href="#ZoneLoadBalancingRequestsGroupsDimensions">ZoneLoadBalancingRequestsGroupsDimensions</a><br />
-}<br />
-<br />
-<span class="k">type</span> <a id="ZoneLoadBalancingRequestsGroupsDimensions" href="#ZoneLoadBalancingRequestsGroupsDimensions">ZoneLoadBalancingRequestsGroupsDimensions</a> {<br />
-&nbsp;&nbsp;<span class="c"># IATA airport code of data center that received the request</span><br />
-&nbsp;&nbsp;coloCode: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Request date</span><br />
-&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
-&nbsp;&nbsp;<span class="c"># Request datetime</span><br />
-&nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
-&nbsp;&nbsp;<span class="c"># Request datetime truncated to multiple of 15 minutes</span><br />
-&nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time!</a><br />
-&nbsp;&nbsp;<span class="c"># Request datetime truncated to multiple of 5 minutes</span><br />
-&nbsp;&nbsp;datetimeFiveMinutes: <a href="#Time">Time!</a><br />
-&nbsp;&nbsp;<span class="c"># Request datetime truncated to multiple of 30 minutes</span><br />
-&nbsp;&nbsp;datetimeHalfOfHour: <a href="#Time">Time!</a><br />
-&nbsp;&nbsp;<span class="c"># Request datetime truncated to the hour</span><br />
-&nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
-&nbsp;&nbsp;<span class="c"># Request datetime truncated to multiple of 1 minute</span><br />
-&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
-&nbsp;&nbsp;<span class="c"># Error generated when selecting an origin</span><br />
-&nbsp;&nbsp;errorType: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Load balancer name</span><br />
-&nbsp;&nbsp;lbName: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Indicates whether multiple origins were returned to the client</span><br />
-&nbsp;&nbsp;multipleOriginsSelected: <a href="#uint8">uint8!</a><br />
-&nbsp;&nbsp;<span class="c"># Number of origins that were selected and returned to the client</span><br />
-&nbsp;&nbsp;numberOriginsSelected: <a href="#uint16">uint16!</a><br />
-&nbsp;&nbsp;<span class="c"># Whether traffic is proxied through the Cloudflare network (orange-clouded)</span><br />
-&nbsp;&nbsp;proxied: <a href="#uint8">uint8!</a><br />
-&nbsp;&nbsp;<span class="c"># Load balancing region where request originated</span><br />
-&nbsp;&nbsp;region: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Index of the selected origin from the list of all origins. If multiple origins were selected, this is the index of the first origin in that list</span><br />
-&nbsp;&nbsp;selectedOriginIndex: <a href="#uint16">uint16!</a><br />
-&nbsp;&nbsp;<span class="c"># Name of the selected origin</span><br />
-&nbsp;&nbsp;selectedOriginName: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Names of each selected origin</span><br />
-&nbsp;&nbsp;selectedOriginNames: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Dynamic Latency: RTT (milliseconds) to reach the origin pool</span><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Health checks status for the selected pool</span><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled: <a href="#uint8">uint8!</a><br />
-&nbsp;&nbsp;<span class="c"># Health status for the selected pool</span><br />
-&nbsp;&nbsp;selectedPoolHealthy: <a href="#uint8">uint8!</a><br />
-&nbsp;&nbsp;<span class="c"># A unique identifier for the selected pool</span><br />
-&nbsp;&nbsp;selectedPoolId: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Index of the selected pool from the list of all pools</span><br />
-&nbsp;&nbsp;selectedPoolIndex: <a href="#uint32">uint32!</a><br />
-&nbsp;&nbsp;<span class="c"># Name for the selected pool</span><br />
-&nbsp;&nbsp;selectedPoolName: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Type of session affinity enabled</span><br />
-&nbsp;&nbsp;sessionAffinityEnabled: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Current status of session affinity</span><br />
-&nbsp;&nbsp;sessionAffinityStatus: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Policy by which the load balancer will route traffic</span><br />
-&nbsp;&nbsp;steeringPolicy: <a href="#string">string!</a><br />
-}<br />
-<br />
-<span class="k">input</span> <a id="ZoneLoadBalancingRequestsGroupsFilter_InputObject" href="#ZoneLoadBalancingRequestsGroupsFilter_InputObject">ZoneLoadBalancingRequestsGroupsFilter_InputObject</a> {<br />
-&nbsp;&nbsp;AND: <a href="#ZoneLoadBalancingRequestsGroupsFilter_InputObject">[ZoneLoadBalancingRequestsGroupsFilter_InputObject!]</a><br />
-&nbsp;&nbsp;OR: <a href="#ZoneLoadBalancingRequestsGroupsFilter_InputObject">[ZoneLoadBalancingRequestsGroupsFilter_InputObject!]</a><br />
-&nbsp;&nbsp;coloCode: <a href="#string">string</a><br />
-&nbsp;&nbsp;coloCode_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;coloCode_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;coloCode_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;coloCode_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;coloCode_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;coloCode_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;coloCode_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;coloCode_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;coloCode_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
-&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
-&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
-&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
-&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
-&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
-&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
-&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
-&nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeFifteenMinutes_geq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeFifteenMinutes_gt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeFifteenMinutes_in: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;datetimeFifteenMinutes_leq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeFifteenMinutes_lt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeFifteenMinutes_neq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeFifteenMinutes_notin: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;datetimeFiveMinutes: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeFiveMinutes_geq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeFiveMinutes_gt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeFiveMinutes_in: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;datetimeFiveMinutes_leq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeFiveMinutes_lt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeFiveMinutes_neq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeFiveMinutes_notin: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;datetimeHalfOfHour: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeHalfOfHour_geq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeHalfOfHour_gt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeHalfOfHour_in: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;datetimeHalfOfHour_leq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeHalfOfHour_lt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeHalfOfHour_neq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeHalfOfHour_notin: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;datetimeHour: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeHour_geq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeHour_gt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeHour_in: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;datetimeHour_leq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeHour_lt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeHour_neq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeHour_notin: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeMinute_geq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeMinute_gt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeMinute_in: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;datetimeMinute_leq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeMinute_lt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeMinute_neq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeMinute_notin: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;datetime_geq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetime_gt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetime_in: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;datetime_leq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetime_lt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetime_neq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetime_notin: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;errorType: <a href="#string">string</a><br />
-&nbsp;&nbsp;errorType_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;errorType_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;errorType_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;errorType_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;errorType_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;errorType_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;errorType_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;errorType_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;errorType_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;lbName: <a href="#string">string</a><br />
-&nbsp;&nbsp;lbName_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;lbName_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;lbName_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;lbName_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;lbName_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;lbName_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;lbName_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;lbName_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;lbName_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;multipleOriginsSelected: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;multipleOriginsSelected_geq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;multipleOriginsSelected_gt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;multipleOriginsSelected_in: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;multipleOriginsSelected_leq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;multipleOriginsSelected_lt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;multipleOriginsSelected_neq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;multipleOriginsSelected_notin: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;numberOriginsSelected: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;numberOriginsSelected_geq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;numberOriginsSelected_gt: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;numberOriginsSelected_in: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;numberOriginsSelected_leq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;numberOriginsSelected_lt: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;numberOriginsSelected_neq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;numberOriginsSelected_notin: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;proxied: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;proxied_geq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;proxied_gt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;proxied_in: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;proxied_leq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;proxied_lt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;proxied_neq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;proxied_notin: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;region: <a href="#string">string</a><br />
-&nbsp;&nbsp;region_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;region_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;region_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;region_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;region_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;region_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;region_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;region_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;region_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginIndex: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;selectedOriginIndex_geq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;selectedOriginIndex_gt: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;selectedOriginIndex_in: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;selectedOriginIndex_leq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;selectedOriginIndex_lt: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;selectedOriginIndex_neq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;selectedOriginIndex_notin: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;selectedOriginName: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginName_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginName_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginName_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;selectedOriginName_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginName_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginName_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginName_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginName_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;selectedOriginName_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginNames: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginNames_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginNames_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginNames_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;selectedOriginNames_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginNames_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginNames_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginNames_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedOriginNames_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;selectedOriginNames_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_geq: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_gt: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_in: <a href="#uint64">[uint64!]</a><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_leq: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_lt: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_neq: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_notin: <a href="#uint64">[uint64!]</a><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_geq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_gt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_in: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_leq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_lt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_neq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_notin: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;selectedPoolHealthy: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthy_geq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthy_gt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthy_in: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;selectedPoolHealthy_leq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthy_lt: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthy_neq: <a href="#uint8">uint8</a><br />
-&nbsp;&nbsp;selectedPoolHealthy_notin: <a href="#bytes">bytes</a><br />
-&nbsp;&nbsp;selectedPoolId: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolId_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolId_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolId_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;selectedPoolId_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolId_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolId_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolId_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolId_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;selectedPoolId_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolIndex: <a href="#uint32">uint32</a><br />
-&nbsp;&nbsp;selectedPoolIndex_geq: <a href="#uint32">uint32</a><br />
-&nbsp;&nbsp;selectedPoolIndex_gt: <a href="#uint32">uint32</a><br />
-&nbsp;&nbsp;selectedPoolIndex_in: <a href="#uint32">[uint32!]</a><br />
-&nbsp;&nbsp;selectedPoolIndex_leq: <a href="#uint32">uint32</a><br />
-&nbsp;&nbsp;selectedPoolIndex_lt: <a href="#uint32">uint32</a><br />
-&nbsp;&nbsp;selectedPoolIndex_neq: <a href="#uint32">uint32</a><br />
-&nbsp;&nbsp;selectedPoolIndex_notin: <a href="#uint32">[uint32!]</a><br />
-&nbsp;&nbsp;selectedPoolName: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolName_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolName_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolName_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;selectedPoolName_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolName_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolName_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolName_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;selectedPoolName_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;selectedPoolName_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityEnabled: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityEnabled_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityEnabled_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityEnabled_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;sessionAffinityEnabled_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityEnabled_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityEnabled_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityEnabled_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityEnabled_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;sessionAffinityEnabled_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityStatus: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;sessionAffinityStatus_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;steeringPolicy: <a href="#string">string</a><br />
-&nbsp;&nbsp;steeringPolicy_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;steeringPolicy_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;steeringPolicy_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;steeringPolicy_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;steeringPolicy_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;steeringPolicy_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;steeringPolicy_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;steeringPolicy_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;steeringPolicy_notlike: <a href="#string">string</a><br />
-}<br />
-<br />
-<span class="k">enum</span> <a id="ZoneLoadBalancingRequestsGroupsOrderBy" href="#ZoneLoadBalancingRequestsGroupsOrderBy">ZoneLoadBalancingRequestsGroupsOrderBy</a> {<br />
-&nbsp;&nbsp;<span class="c"># coloCode ascending</span><br />
-&nbsp;&nbsp;coloCode_ASC<br />
-&nbsp;&nbsp;<span class="c"># coloCode descending</span><br />
-&nbsp;&nbsp;coloCode_DESC<br />
-&nbsp;&nbsp;<span class="c"># count() ascending</span><br />
-&nbsp;&nbsp;count_ASC<br />
-&nbsp;&nbsp;<span class="c"># count() descending</span><br />
-&nbsp;&nbsp;count_DESC<br />
-&nbsp;&nbsp;<span class="c"># date ascending</span><br />
-&nbsp;&nbsp;date_ASC<br />
-&nbsp;&nbsp;<span class="c"># date descending</span><br />
-&nbsp;&nbsp;date_DESC<br />
-&nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes ascending</span><br />
-&nbsp;&nbsp;datetimeFifteenMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes descending</span><br />
-&nbsp;&nbsp;datetimeFifteenMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># datetimeFiveMinutes ascending</span><br />
-&nbsp;&nbsp;datetimeFiveMinutes_ASC<br />
-&nbsp;&nbsp;<span class="c"># datetimeFiveMinutes descending</span><br />
-&nbsp;&nbsp;datetimeFiveMinutes_DESC<br />
-&nbsp;&nbsp;<span class="c"># datetimeHalfOfHour ascending</span><br />
-&nbsp;&nbsp;datetimeHalfOfHour_ASC<br />
-&nbsp;&nbsp;<span class="c"># datetimeHalfOfHour descending</span><br />
-&nbsp;&nbsp;datetimeHalfOfHour_DESC<br />
-&nbsp;&nbsp;<span class="c"># datetimeHour ascending</span><br />
-&nbsp;&nbsp;datetimeHour_ASC<br />
-&nbsp;&nbsp;<span class="c"># datetimeHour descending</span><br />
-&nbsp;&nbsp;datetimeHour_DESC<br />
-&nbsp;&nbsp;<span class="c"># datetimeMinute ascending</span><br />
-&nbsp;&nbsp;datetimeMinute_ASC<br />
-&nbsp;&nbsp;<span class="c"># datetimeMinute descending</span><br />
-&nbsp;&nbsp;datetimeMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># datetime ascending</span><br />
-&nbsp;&nbsp;datetime_ASC<br />
-&nbsp;&nbsp;<span class="c"># datetime descending</span><br />
-&nbsp;&nbsp;datetime_DESC<br />
-&nbsp;&nbsp;<span class="c"># errorType ascending</span><br />
-&nbsp;&nbsp;errorType_ASC<br />
-&nbsp;&nbsp;<span class="c"># errorType descending</span><br />
-&nbsp;&nbsp;errorType_DESC<br />
-&nbsp;&nbsp;<span class="c"># lbName ascending</span><br />
-&nbsp;&nbsp;lbName_ASC<br />
-&nbsp;&nbsp;<span class="c"># lbName descending</span><br />
-&nbsp;&nbsp;lbName_DESC<br />
-&nbsp;&nbsp;<span class="c"># multipleOriginsSelected ascending</span><br />
-&nbsp;&nbsp;multipleOriginsSelected_ASC<br />
-&nbsp;&nbsp;<span class="c"># multipleOriginsSelected descending</span><br />
-&nbsp;&nbsp;multipleOriginsSelected_DESC<br />
-&nbsp;&nbsp;<span class="c"># numberOriginsSelected ascending</span><br />
-&nbsp;&nbsp;numberOriginsSelected_ASC<br />
-&nbsp;&nbsp;<span class="c"># numberOriginsSelected descending</span><br />
-&nbsp;&nbsp;numberOriginsSelected_DESC<br />
-&nbsp;&nbsp;<span class="c"># proxied ascending</span><br />
-&nbsp;&nbsp;proxied_ASC<br />
-&nbsp;&nbsp;<span class="c"># proxied descending</span><br />
-&nbsp;&nbsp;proxied_DESC<br />
-&nbsp;&nbsp;<span class="c"># region ascending</span><br />
-&nbsp;&nbsp;region_ASC<br />
-&nbsp;&nbsp;<span class="c"># region descending</span><br />
-&nbsp;&nbsp;region_DESC<br />
-&nbsp;&nbsp;<span class="c"># selectedOriginIndex ascending</span><br />
-&nbsp;&nbsp;selectedOriginIndex_ASC<br />
-&nbsp;&nbsp;<span class="c"># selectedOriginIndex descending</span><br />
-&nbsp;&nbsp;selectedOriginIndex_DESC<br />
-&nbsp;&nbsp;<span class="c"># selectedOriginName ascending</span><br />
-&nbsp;&nbsp;selectedOriginName_ASC<br />
-&nbsp;&nbsp;<span class="c"># selectedOriginName descending</span><br />
-&nbsp;&nbsp;selectedOriginName_DESC<br />
-&nbsp;&nbsp;<span class="c"># selectedOriginNames ascending</span><br />
-&nbsp;&nbsp;selectedOriginNames_ASC<br />
-&nbsp;&nbsp;<span class="c"># selectedOriginNames descending</span><br />
-&nbsp;&nbsp;selectedOriginNames_DESC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolAvgRttMs ascending</span><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_ASC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolAvgRttMs descending</span><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_DESC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolHealthChecksEnabled ascending</span><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_ASC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolHealthChecksEnabled descending</span><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_DESC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolHealthy ascending</span><br />
-&nbsp;&nbsp;selectedPoolHealthy_ASC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolHealthy descending</span><br />
-&nbsp;&nbsp;selectedPoolHealthy_DESC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolId ascending</span><br />
-&nbsp;&nbsp;selectedPoolId_ASC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolId descending</span><br />
-&nbsp;&nbsp;selectedPoolId_DESC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolIndex ascending</span><br />
-&nbsp;&nbsp;selectedPoolIndex_ASC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolIndex descending</span><br />
-&nbsp;&nbsp;selectedPoolIndex_DESC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolName ascending</span><br />
-&nbsp;&nbsp;selectedPoolName_ASC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolName descending</span><br />
-&nbsp;&nbsp;selectedPoolName_DESC<br />
-&nbsp;&nbsp;<span class="c"># sessionAffinityEnabled ascending</span><br />
-&nbsp;&nbsp;sessionAffinityEnabled_ASC<br />
-&nbsp;&nbsp;<span class="c"># sessionAffinityEnabled descending</span><br />
-&nbsp;&nbsp;sessionAffinityEnabled_DESC<br />
-&nbsp;&nbsp;<span class="c"># sessionAffinityStatus ascending</span><br />
-&nbsp;&nbsp;sessionAffinityStatus_ASC<br />
-&nbsp;&nbsp;<span class="c"># sessionAffinityStatus descending</span><br />
-&nbsp;&nbsp;sessionAffinityStatus_DESC<br />
-&nbsp;&nbsp;<span class="c"># steeringPolicy ascending</span><br />
-&nbsp;&nbsp;steeringPolicy_ASC<br />
-&nbsp;&nbsp;<span class="c"># steeringPolicy descending</span><br />
-&nbsp;&nbsp;steeringPolicy_DESC<br />
-}<br />
-<br />
-<span class="k">enum</span> <a id="ZoneLoadBalancingRequestsOrderBy" href="#ZoneLoadBalancingRequestsOrderBy">ZoneLoadBalancingRequestsOrderBy</a> {<br />
-&nbsp;&nbsp;<span class="c"># coloCode ascending</span><br />
-&nbsp;&nbsp;coloCode_ASC<br />
-&nbsp;&nbsp;<span class="c"># coloCode descending</span><br />
-&nbsp;&nbsp;coloCode_DESC<br />
-&nbsp;&nbsp;<span class="c"># date ascending</span><br />
-&nbsp;&nbsp;date_ASC<br />
-&nbsp;&nbsp;<span class="c"># date descending</span><br />
-&nbsp;&nbsp;date_DESC<br />
-&nbsp;&nbsp;<span class="c"># datetime ascending</span><br />
-&nbsp;&nbsp;datetime_ASC<br />
-&nbsp;&nbsp;<span class="c"># datetime descending</span><br />
-&nbsp;&nbsp;datetime_DESC<br />
-&nbsp;&nbsp;<span class="c"># errorType ascending</span><br />
-&nbsp;&nbsp;errorType_ASC<br />
-&nbsp;&nbsp;<span class="c"># errorType descending</span><br />
-&nbsp;&nbsp;errorType_DESC<br />
-&nbsp;&nbsp;<span class="c"># lbName ascending</span><br />
-&nbsp;&nbsp;lbName_ASC<br />
-&nbsp;&nbsp;<span class="c"># lbName descending</span><br />
-&nbsp;&nbsp;lbName_DESC<br />
-&nbsp;&nbsp;<span class="c"># numberOriginsSelected ascending</span><br />
-&nbsp;&nbsp;numberOriginsSelected_ASC<br />
-&nbsp;&nbsp;<span class="c"># numberOriginsSelected descending</span><br />
-&nbsp;&nbsp;numberOriginsSelected_DESC<br />
-&nbsp;&nbsp;<span class="c"># proxied ascending</span><br />
-&nbsp;&nbsp;proxied_ASC<br />
-&nbsp;&nbsp;<span class="c"># proxied descending</span><br />
-&nbsp;&nbsp;proxied_DESC<br />
-&nbsp;&nbsp;<span class="c"># region ascending</span><br />
-&nbsp;&nbsp;region_ASC<br />
-&nbsp;&nbsp;<span class="c"># region descending</span><br />
-&nbsp;&nbsp;region_DESC<br />
-&nbsp;&nbsp;<span class="c"># selectedOriginIndex ascending</span><br />
-&nbsp;&nbsp;selectedOriginIndex_ASC<br />
-&nbsp;&nbsp;<span class="c"># selectedOriginIndex descending</span><br />
-&nbsp;&nbsp;selectedOriginIndex_DESC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolAvgRttMs ascending</span><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_ASC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolAvgRttMs descending</span><br />
-&nbsp;&nbsp;selectedPoolAvgRttMs_DESC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolHealthChecksEnabled ascending</span><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_ASC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolHealthChecksEnabled descending</span><br />
-&nbsp;&nbsp;selectedPoolHealthChecksEnabled_DESC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolHealthy ascending</span><br />
-&nbsp;&nbsp;selectedPoolHealthy_ASC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolHealthy descending</span><br />
-&nbsp;&nbsp;selectedPoolHealthy_DESC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolId ascending</span><br />
-&nbsp;&nbsp;selectedPoolId_ASC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolId descending</span><br />
-&nbsp;&nbsp;selectedPoolId_DESC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolIndex ascending</span><br />
-&nbsp;&nbsp;selectedPoolIndex_ASC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolIndex descending</span><br />
-&nbsp;&nbsp;selectedPoolIndex_DESC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolName ascending</span><br />
-&nbsp;&nbsp;selectedPoolName_ASC<br />
-&nbsp;&nbsp;<span class="c"># selectedPoolName descending</span><br />
-&nbsp;&nbsp;selectedPoolName_DESC<br />
-&nbsp;&nbsp;<span class="c"># sessionAffinityStatus ascending</span><br />
-&nbsp;&nbsp;sessionAffinityStatus_ASC<br />
-&nbsp;&nbsp;<span class="c"># sessionAffinityStatus descending</span><br />
-&nbsp;&nbsp;sessionAffinityStatus_DESC<br />
-&nbsp;&nbsp;<span class="c"># sessionAffinity ascending</span><br />
-&nbsp;&nbsp;sessionAffinity_ASC<br />
-&nbsp;&nbsp;<span class="c"># sessionAffinity descending</span><br />
-&nbsp;&nbsp;sessionAffinity_DESC<br />
-&nbsp;&nbsp;<span class="c"># steeringPolicy ascending</span><br />
-&nbsp;&nbsp;steeringPolicy_ASC<br />
-&nbsp;&nbsp;<span class="c"># steeringPolicy descending</span><br />
-&nbsp;&nbsp;steeringPolicy_DESC<br />
-}<br />
-<br />
-<span class="k">type</span> <a id="ZoneLoadBalancingRequestsOriginsElem" href="#ZoneLoadBalancingRequestsOriginsElem">ZoneLoadBalancingRequestsOriginsElem</a> {<br />
-&nbsp;&nbsp;<span class="c"># Fully qualified domain name of the origin (if available)</span><br />
-&nbsp;&nbsp;fqdn: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Origin health status</span><br />
-&nbsp;&nbsp;health: <a href="#uint8">uint8!</a><br />
-&nbsp;&nbsp;<span class="c"># IPv4 Address of the origin</span><br />
-&nbsp;&nbsp;ipv4: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># IPv6 address of the origin</span><br />
-&nbsp;&nbsp;ipv6: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Origin name</span><br />
-&nbsp;&nbsp;originName: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># All the origins that were returned to the client</span><br />
-&nbsp;&nbsp;selected: <a href="#uint8">uint8!</a><br />
-&nbsp;&nbsp;<span class="c"># Ratio of traffic that will be distributed to this origin among all origins in the pool</span><br />
-&nbsp;&nbsp;weight: <a href="#float64">float64!</a><br />
-}<br />
-<br />
-<span class="k">type</span> <a id="ZoneLoadBalancingRequestsPoolsElem" href="#ZoneLoadBalancingRequestsPoolsElem">ZoneLoadBalancingRequestsPoolsElem</a> {<br />
-&nbsp;&nbsp;<span class="c"># Dynamic Latency: RTT (milliseconds) to reach the origin pool</span><br />
-&nbsp;&nbsp;avgRttMs: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Health checks status</span><br />
-&nbsp;&nbsp;healthCheckEnabled: <a href="#uint8">uint8!</a><br />
-&nbsp;&nbsp;<span class="c"># Pool health status</span><br />
-&nbsp;&nbsp;healthy: <a href="#uint8">uint8!</a><br />
-&nbsp;&nbsp;<span class="c"># A unique identifier for the pool</span><br />
-&nbsp;&nbsp;id: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Pool name</span><br />
-&nbsp;&nbsp;poolName: <a href="#string">string!</a><br />
-}<br />
-<br />
 <span class="c"># Data to visualize network error logs</span><br />
 <span class="k">type</span> <a id="ZoneNelReportsAdaptiveGroups" href="#ZoneNelReportsAdaptiveGroups">ZoneNelReportsAdaptiveGroups</a> {<br />
 &nbsp;&nbsp;avg: <a href="#ZoneNelReportsAdaptiveGroupsAvg">ZoneNelReportsAdaptiveGroupsAvg</a><br />
@@ -21961,10 +21479,8 @@
 &nbsp;&nbsp;httpRequests1mGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;httpRequestsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;imageResizingRequests1mGroups: <a href="#Settings">Settings!</a><br />
-&nbsp;&nbsp;loadBalancingRequests: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;loadBalancingRequestsAdaptive: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;loadBalancingRequestsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
-&nbsp;&nbsp;loadBalancingRequestsGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;nelReportsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;synAvgPps1mGroups: <a href="#Settings">Settings!</a><br />
 }<br />

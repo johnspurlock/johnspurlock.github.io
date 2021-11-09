@@ -3,6 +3,8 @@ Account-level datasets:
   dosdAttackAnalyticsAdaptiveGroups
   dosdNetworkAnalyticsAdaptiveGroups
 * durableObjectsInvocationsAdaptiveGroups
+* durableObjectsPeriodicGroups
+* durableObjectsStorageGroups
 * durableObjectsSubrequestsAdaptiveGroups
   flowtrackdNetworkAnalyticsAdaptiveGroups
   gatewayL4DownstreamSessionsAdaptiveGroups
@@ -47,10 +49,8 @@ Zone-level datasets:
   httpRequests1mGroups
   httpRequestsAdaptiveGroups
 * imageResizingRequests1mGroups
-  loadBalancingRequests
   loadBalancingRequestsAdaptive
   loadBalancingRequestsAdaptiveGroups
-  loadBalancingRequestsGroups
   nelReportsAdaptiveGroups
   synAvgPps1mGroups
 
@@ -102,6 +102,10 @@ type account {
   dosdNetworkAnalyticsAdaptiveGroups(filter: AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountDosdNetworkAnalyticsAdaptiveGroups!]!
   # Beta. Durable Objects invocations with adaptive sampling
   durableObjectsInvocationsAdaptiveGroups(filter: AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy!]): [AccountDurableObjectsInvocationsAdaptiveGroups!]!
+  # Beta. Durable Objects periodic metrics
+  durableObjectsPeriodicGroups(filter: AccountDurableObjectsPeriodicGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsPeriodicGroupsOrderBy!]): [AccountDurableObjectsPeriodicGroups!]!
+  # Beta. Durable Objects storage metrics
+  durableObjectsStorageGroups(filter: AccountDurableObjectsStorageGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsStorageGroupsOrderBy!]): [AccountDurableObjectsStorageGroups!]!
   # Beta. Durable Objects subrequests with adaptive sampling
   durableObjectsSubrequestsAdaptiveGroups(filter: AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy!]): [AccountDurableObjectsSubrequestsAdaptiveGroups!]!
   # Network analytics data for flowtrackd
@@ -173,6 +177,8 @@ type AccountCdnNetworkAnalyticsAdaptiveGroups {
 }
 
 type AccountCdnNetworkAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRate: uint64!
   # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
   bitRateFifteenMinutes: uint64!
   # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
@@ -181,10 +187,10 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsAvg {
   bitRateHour: uint64!
   # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
   bitRateMinute: uint64!
-  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
-  bitRateSecond: uint64!
   # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
   bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRate: uint64!
   # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
   packetRateFifteenMinutes: uint64!
   # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
@@ -193,8 +199,6 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsAvg {
   packetRateHour: uint64!
   # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
   packetRateMinute: uint64!
-  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
-  packetRateSecond: uint64!
   # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
   packetRateTenSeconds: uint64!
 }
@@ -256,8 +260,6 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
   ipDestinationAddress: string!
   # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
   ipDestinationSubnet: string!
-  # Value of the Don't Fragment header field in the IPv4 or IPv6 packet
-  ipDontFragment: uint8!
   # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
   ipFragmentOffset: uint16!
   # Length of the IPv4 or IPv6 packet header, in bytes
@@ -280,6 +282,8 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
   ipTtlBuckets: uint8!
   # Value of the Checksum header field in the IPv4 packet
   ipv4Checksum: uint16!
+  # Value of the Don't Fragment header field in the IPv4 packet
+  ipv4DontFragment: uint8!
   # Value of the Differentiated Services Code Point header field in the IPv4 packet
   ipv4Dscp: uint8!
   # Value of the Explicit Congestion Notification header field in the IPv4 packet
@@ -595,14 +599,6 @@ input AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipDestinationSubnet_neq: string
   ipDestinationSubnet_notin: [string!]
   ipDestinationSubnet_notlike: string
-  ipDontFragment: uint8
-  ipDontFragment_geq: uint8
-  ipDontFragment_gt: uint8
-  ipDontFragment_in: bytes
-  ipDontFragment_leq: uint8
-  ipDontFragment_lt: uint8
-  ipDontFragment_neq: uint8
-  ipDontFragment_notin: bytes
   ipFragmentOffset: uint16
   ipFragmentOffset_geq: uint16
   ipFragmentOffset_gt: uint16
@@ -695,6 +691,14 @@ input AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipv4Checksum_lt: uint16
   ipv4Checksum_neq: uint16
   ipv4Checksum_notin: [uint16!]
+  ipv4DontFragment: uint8
+  ipv4DontFragment_geq: uint8
+  ipv4DontFragment_gt: uint8
+  ipv4DontFragment_in: bytes
+  ipv4DontFragment_leq: uint8
+  ipv4DontFragment_lt: uint8
+  ipv4DontFragment_neq: uint8
+  ipv4DontFragment_notin: bytes
   ipv4Dscp: uint8
   ipv4Dscp_geq: uint8
   ipv4Dscp_gt: uint8
@@ -996,14 +1000,14 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_bitRateMinute_ASC
   # avg(bitRateMinute) descending
   avg_bitRateMinute_DESC
-  # avg(bitRateSecond) ascending
-  avg_bitRateSecond_ASC
-  # avg(bitRateSecond) descending
-  avg_bitRateSecond_DESC
   # avg(bitRateTenSeconds) ascending
   avg_bitRateTenSeconds_ASC
   # avg(bitRateTenSeconds) descending
   avg_bitRateTenSeconds_DESC
+  # avg(bitRate) ascending
+  avg_bitRate_ASC
+  # avg(bitRate) descending
+  avg_bitRate_DESC
   # avg(packetRateFifteenMinutes) ascending
   avg_packetRateFifteenMinutes_ASC
   # avg(packetRateFifteenMinutes) descending
@@ -1020,14 +1024,14 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_packetRateMinute_ASC
   # avg(packetRateMinute) descending
   avg_packetRateMinute_DESC
-  # avg(packetRateSecond) ascending
-  avg_packetRateSecond_ASC
-  # avg(packetRateSecond) descending
-  avg_packetRateSecond_DESC
   # avg(packetRateTenSeconds) ascending
   avg_packetRateTenSeconds_ASC
   # avg(packetRateTenSeconds) descending
   avg_packetRateTenSeconds_DESC
+  # avg(packetRate) ascending
+  avg_packetRate_ASC
+  # avg(packetRate) descending
+  avg_packetRate_DESC
   # coloCity ascending
   coloCity_ASC
   # coloCity descending
@@ -1140,10 +1144,6 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipDestinationSubnet_ASC
   # ipDestinationSubnet descending
   ipDestinationSubnet_DESC
-  # ipDontFragment ascending
-  ipDontFragment_ASC
-  # ipDontFragment descending
-  ipDontFragment_DESC
   # ipFragmentOffset ascending
   ipFragmentOffset_ASC
   # ipFragmentOffset descending
@@ -1188,6 +1188,10 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipv4Checksum_ASC
   # ipv4Checksum descending
   ipv4Checksum_DESC
+  # ipv4DontFragment ascending
+  ipv4DontFragment_ASC
+  # ipv4DontFragment descending
+  ipv4DontFragment_DESC
   # ipv4Dscp ascending
   ipv4Dscp_ASC
   # ipv4Dscp descending
@@ -1332,6 +1336,10 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   udpPayloadLength_ASC
   # udpPayloadLength descending
   udpPayloadLength_DESC
+  # verdict ascending
+  verdict_ASC
+  # verdict descending
+  verdict_DESC
 }
 
 type AccountCdnNetworkAnalyticsAdaptiveGroupsSum {
@@ -1352,6 +1360,8 @@ type AccountDosdAttackAnalyticsAdaptiveGroups {
 }
 
 type AccountDosdAttackAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRate: uint64!
   # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
   bitRateFifteenMinutes: uint64!
   # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
@@ -1360,10 +1370,10 @@ type AccountDosdAttackAnalyticsAdaptiveGroupsAvg {
   bitRateHour: uint64!
   # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
   bitRateMinute: uint64!
-  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
-  bitRateSecond: uint64!
   # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
   bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRate: uint64!
   # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
   packetRateFifteenMinutes: uint64!
   # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
@@ -1372,8 +1382,6 @@ type AccountDosdAttackAnalyticsAdaptiveGroupsAvg {
   packetRateHour: uint64!
   # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
   packetRateMinute: uint64!
-  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
-  packetRateSecond: uint64!
   # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
   packetRateTenSeconds: uint64!
 }
@@ -1959,14 +1967,14 @@ enum AccountDosdAttackAnalyticsAdaptiveGroupsOrderBy {
   avg_bitRateMinute_ASC
   # avg(bitRateMinute) descending
   avg_bitRateMinute_DESC
-  # avg(bitRateSecond) ascending
-  avg_bitRateSecond_ASC
-  # avg(bitRateSecond) descending
-  avg_bitRateSecond_DESC
   # avg(bitRateTenSeconds) ascending
   avg_bitRateTenSeconds_ASC
   # avg(bitRateTenSeconds) descending
   avg_bitRateTenSeconds_DESC
+  # avg(bitRate) ascending
+  avg_bitRate_ASC
+  # avg(bitRate) descending
+  avg_bitRate_DESC
   # avg(packetRateFifteenMinutes) ascending
   avg_packetRateFifteenMinutes_ASC
   # avg(packetRateFifteenMinutes) descending
@@ -1983,14 +1991,14 @@ enum AccountDosdAttackAnalyticsAdaptiveGroupsOrderBy {
   avg_packetRateMinute_ASC
   # avg(packetRateMinute) descending
   avg_packetRateMinute_DESC
-  # avg(packetRateSecond) ascending
-  avg_packetRateSecond_ASC
-  # avg(packetRateSecond) descending
-  avg_packetRateSecond_DESC
   # avg(packetRateTenSeconds) ascending
   avg_packetRateTenSeconds_ASC
   # avg(packetRateTenSeconds) descending
   avg_packetRateTenSeconds_DESC
+  # avg(packetRate) ascending
+  avg_packetRate_ASC
+  # avg(packetRate) descending
+  avg_packetRate_DESC
   # coloCity ascending
   coloCity_ASC
   # coloCity descending
@@ -2119,6 +2127,8 @@ type AccountDosdNetworkAnalyticsAdaptiveGroups {
 }
 
 type AccountDosdNetworkAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRate: uint64!
   # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
   bitRateFifteenMinutes: uint64!
   # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
@@ -2127,10 +2137,10 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsAvg {
   bitRateHour: uint64!
   # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
   bitRateMinute: uint64!
-  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
-  bitRateSecond: uint64!
   # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
   bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRate: uint64!
   # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
   packetRateFifteenMinutes: uint64!
   # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
@@ -2139,8 +2149,6 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsAvg {
   packetRateHour: uint64!
   # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
   packetRateMinute: uint64!
-  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
-  packetRateSecond: uint64!
   # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
   packetRateTenSeconds: uint64!
 }
@@ -2204,8 +2212,6 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions {
   ipDestinationAddress: string!
   # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
   ipDestinationSubnet: string!
-  # Value of the Don't Fragment header field in the IPv4 or IPv6 packet
-  ipDontFragment: uint8!
   # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
   ipFragmentOffset: uint16!
   # Length of the IPv4 or IPv6 packet header, in bytes
@@ -2228,6 +2234,8 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions {
   ipTtlBuckets: uint8!
   # Value of the Checksum header field in the IPv4 packet
   ipv4Checksum: uint16!
+  # Value of the Don't Fragment header field in the IPv4 packet
+  ipv4DontFragment: uint8!
   # Value of the Differentiated Services Code Point header field in the IPv4 packet
   ipv4Dscp: uint8!
   # Value of the Explicit Congestion Notification header field in the IPv4 packet
@@ -2565,14 +2573,6 @@ input AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipDestinationSubnet_neq: string
   ipDestinationSubnet_notin: [string!]
   ipDestinationSubnet_notlike: string
-  ipDontFragment: uint8
-  ipDontFragment_geq: uint8
-  ipDontFragment_gt: uint8
-  ipDontFragment_in: bytes
-  ipDontFragment_leq: uint8
-  ipDontFragment_lt: uint8
-  ipDontFragment_neq: uint8
-  ipDontFragment_notin: bytes
   ipFragmentOffset: uint16
   ipFragmentOffset_geq: uint16
   ipFragmentOffset_gt: uint16
@@ -2665,6 +2665,14 @@ input AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipv4Checksum_lt: uint16
   ipv4Checksum_neq: uint16
   ipv4Checksum_notin: [uint16!]
+  ipv4DontFragment: uint8
+  ipv4DontFragment_geq: uint8
+  ipv4DontFragment_gt: uint8
+  ipv4DontFragment_in: bytes
+  ipv4DontFragment_leq: uint8
+  ipv4DontFragment_lt: uint8
+  ipv4DontFragment_neq: uint8
+  ipv4DontFragment_notin: bytes
   ipv4Dscp: uint8
   ipv4Dscp_geq: uint8
   ipv4Dscp_gt: uint8
@@ -3030,14 +3038,14 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_bitRateMinute_ASC
   # avg(bitRateMinute) descending
   avg_bitRateMinute_DESC
-  # avg(bitRateSecond) ascending
-  avg_bitRateSecond_ASC
-  # avg(bitRateSecond) descending
-  avg_bitRateSecond_DESC
   # avg(bitRateTenSeconds) ascending
   avg_bitRateTenSeconds_ASC
   # avg(bitRateTenSeconds) descending
   avg_bitRateTenSeconds_DESC
+  # avg(bitRate) ascending
+  avg_bitRate_ASC
+  # avg(bitRate) descending
+  avg_bitRate_DESC
   # avg(packetRateFifteenMinutes) ascending
   avg_packetRateFifteenMinutes_ASC
   # avg(packetRateFifteenMinutes) descending
@@ -3054,14 +3062,14 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_packetRateMinute_ASC
   # avg(packetRateMinute) descending
   avg_packetRateMinute_DESC
-  # avg(packetRateSecond) ascending
-  avg_packetRateSecond_ASC
-  # avg(packetRateSecond) descending
-  avg_packetRateSecond_DESC
   # avg(packetRateTenSeconds) ascending
   avg_packetRateTenSeconds_ASC
   # avg(packetRateTenSeconds) descending
   avg_packetRateTenSeconds_DESC
+  # avg(packetRate) ascending
+  avg_packetRate_ASC
+  # avg(packetRate) descending
+  avg_packetRate_DESC
   # coloCity ascending
   coloCity_ASC
   # coloCity descending
@@ -3174,10 +3182,6 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipDestinationSubnet_ASC
   # ipDestinationSubnet descending
   ipDestinationSubnet_DESC
-  # ipDontFragment ascending
-  ipDontFragment_ASC
-  # ipDontFragment descending
-  ipDontFragment_DESC
   # ipFragmentOffset ascending
   ipFragmentOffset_ASC
   # ipFragmentOffset descending
@@ -3222,6 +3226,10 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipv4Checksum_ASC
   # ipv4Checksum descending
   ipv4Checksum_DESC
+  # ipv4DontFragment ascending
+  ipv4DontFragment_ASC
+  # ipv4DontFragment descending
+  ipv4DontFragment_DESC
   # ipv4Dscp ascending
   ipv4Dscp_ASC
   # ipv4Dscp descending
@@ -3702,6 +3710,235 @@ type AccountDurableObjectsInvocationsAdaptiveGroupsSum {
   wallTime: uint64!
 }
 
+# Beta. Durable Objects periodic metrics
+type AccountDurableObjectsPeriodicGroups {
+  # List of dimensions to group by
+  dimensions: AccountDurableObjectsPeriodicGroupsDimensions
+  # The max value for a metric
+  max: AccountDurableObjectsPeriodicGroupsMax
+  # The sum of values for a metric per dimension
+  sum: AccountDurableObjectsPeriodicGroupsSum
+}
+
+type AccountDurableObjectsPeriodicGroupsDimensions {
+  # Datetime the metrics period started, truncated to start of a day
+  date: Date!
+  # Datetime the metrics period started, truncated to start of an hour
+  datetimeHour: Time!
+  # Datetime the metrics period started, truncated to start of a minute
+  datetimeMinute: Time!
+  # Durable Object namespace ID
+  namespaceId: string!
+  # Durable Object ID as a hex string
+  objectId: string!
+}
+
+input AccountDurableObjectsPeriodicGroupsFilter_InputObject {
+  AND: [AccountDurableObjectsPeriodicGroupsFilter_InputObject!]
+  OR: [AccountDurableObjectsPeriodicGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  namespaceId: string
+  namespaceId_geq: string
+  namespaceId_gt: string
+  namespaceId_in: [string!]
+  namespaceId_leq: string
+  namespaceId_like: string
+  namespaceId_lt: string
+  namespaceId_neq: string
+  namespaceId_notin: [string!]
+  namespaceId_notlike: string
+  objectId: string
+  objectId_geq: string
+  objectId_gt: string
+  objectId_in: [string!]
+  objectId_leq: string
+  objectId_like: string
+  objectId_lt: string
+  objectId_neq: string
+  objectId_notin: [string!]
+  objectId_notlike: string
+}
+
+type AccountDurableObjectsPeriodicGroupsMax {
+  # Maximum active websocket connections in the time window
+  activeWebsocketConnections: uint16!
+}
+
+enum AccountDurableObjectsPeriodicGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # max(activeWebsocketConnections) ascending
+  max_activeWebsocketConnections_ASC
+  # max(activeWebsocketConnections) descending
+  max_activeWebsocketConnections_DESC
+  # namespaceId ascending
+  namespaceId_ASC
+  # namespaceId descending
+  namespaceId_DESC
+  # objectId ascending
+  objectId_ASC
+  # objectId descending
+  objectId_DESC
+  # sum(activeTime) ascending
+  sum_activeTime_ASC
+  # sum(activeTime) descending
+  sum_activeTime_DESC
+  # sum(cpuTime) ascending
+  sum_cpuTime_ASC
+  # sum(cpuTime) descending
+  sum_cpuTime_DESC
+  # sum(exceededCpuErrors) ascending
+  sum_exceededCpuErrors_ASC
+  # sum(exceededCpuErrors) descending
+  sum_exceededCpuErrors_DESC
+  # sum(exceededMemoryErrors) ascending
+  sum_exceededMemoryErrors_ASC
+  # sum(exceededMemoryErrors) descending
+  sum_exceededMemoryErrors_DESC
+  # sum(fatalInternalErrors) ascending
+  sum_fatalInternalErrors_ASC
+  # sum(fatalInternalErrors) descending
+  sum_fatalInternalErrors_DESC
+  # sum(inboundWebsocketMsgCount) ascending
+  sum_inboundWebsocketMsgCount_ASC
+  # sum(inboundWebsocketMsgCount) descending
+  sum_inboundWebsocketMsgCount_DESC
+  # sum(outboundWebsocketMsgCount) ascending
+  sum_outboundWebsocketMsgCount_ASC
+  # sum(outboundWebsocketMsgCount) descending
+  sum_outboundWebsocketMsgCount_DESC
+  # sum(storageDeletes) ascending
+  sum_storageDeletes_ASC
+  # sum(storageDeletes) descending
+  sum_storageDeletes_DESC
+  # sum(storageReadUnits) ascending
+  sum_storageReadUnits_ASC
+  # sum(storageReadUnits) descending
+  sum_storageReadUnits_DESC
+  # sum(storageWriteUnits) ascending
+  sum_storageWriteUnits_ASC
+  # sum(storageWriteUnits) descending
+  sum_storageWriteUnits_DESC
+  # sum(subrequests) ascending
+  sum_subrequests_ASC
+  # sum(subrequests) descending
+  sum_subrequests_DESC
+}
+
+type AccountDurableObjectsPeriodicGroupsSum {
+  # Sum of active time - microseconds
+  activeTime: uint64!
+  # Sum of CPU time - microseconds
+  cpuTime: uint64!
+  # Sum of CPU exceeded errors
+  exceededCpuErrors: uint64!
+  # Sum of memory exceeded errors
+  exceededMemoryErrors: uint64!
+  # Sum of fatal internal server errors
+  fatalInternalErrors: uint64!
+  # Sum of incoming websocket messages
+  inboundWebsocketMsgCount: uint64!
+  # Sum of outbound websocket messages
+  outboundWebsocketMsgCount: uint64!
+  # Sum of storage deletes
+  storageDeletes: uint64!
+  # Sum of storage reads - in 4KB units
+  storageReadUnits: uint64!
+  # Sum of storage writes - in 4KB units
+  storageWriteUnits: uint64!
+  # Sum of subrequests
+  subrequests: uint64!
+}
+
+# Beta. Durable Objects storage metrics
+type AccountDurableObjectsStorageGroups {
+  # List of dimensions to group by
+  dimensions: AccountDurableObjectsStorageGroupsDimensions
+  # The sum of values for a metric per dimension
+  max: AccountDurableObjectsStorageGroupsMax
+}
+
+type AccountDurableObjectsStorageGroupsDimensions {
+  # Datetime that the storage usage was recorded, truncated to start of a day
+  date: Date!
+  # Datetime that the storage usage was recorded, truncated to start of an hour
+  datetimeHour: Time!
+}
+
+input AccountDurableObjectsStorageGroupsFilter_InputObject {
+  AND: [AccountDurableObjectsStorageGroupsFilter_InputObject!]
+  OR: [AccountDurableObjectsStorageGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+}
+
+type AccountDurableObjectsStorageGroupsMax {
+  # Max of stored bytes
+  storedBytes: uint64!
+}
+
+enum AccountDurableObjectsStorageGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # max(storedBytes) ascending
+  max_storedBytes_ASC
+  # max(storedBytes) descending
+  max_storedBytes_DESC
+}
+
 # Beta. Durable Objects subrequests with adaptive sampling
 type AccountDurableObjectsSubrequestsAdaptiveGroups {
   # List of dimensions to group by
@@ -3865,6 +4102,8 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroups {
 }
 
 type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRate: uint64!
   # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
   bitRateFifteenMinutes: uint64!
   # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
@@ -3873,10 +4112,10 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg {
   bitRateHour: uint64!
   # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
   bitRateMinute: uint64!
-  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
-  bitRateSecond: uint64!
   # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
   bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRate: uint64!
   # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
   packetRateFifteenMinutes: uint64!
   # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
@@ -3885,8 +4124,6 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg {
   packetRateHour: uint64!
   # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
   packetRateMinute: uint64!
-  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
-  packetRateSecond: uint64!
   # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
   packetRateTenSeconds: uint64!
 }
@@ -3948,8 +4185,6 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions {
   ipDestinationAddress: string!
   # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
   ipDestinationSubnet: string!
-  # Value of the Don't Fragment header field in the IPv4 or IPv6 packet
-  ipDontFragment: uint8!
   # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
   ipFragmentOffset: uint16!
   # Length of the IPv4 or IPv6 packet header, in bytes
@@ -3972,6 +4207,8 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions {
   ipTtlBuckets: uint8!
   # Value of the Checksum header field in the IPv4 packet
   ipv4Checksum: uint16!
+  # Value of the Don't Fragment header field in the IPv4 packet
+  ipv4DontFragment: uint8!
   # Value of the Differentiated Services Code Point header field in the IPv4 packet
   ipv4Dscp: uint8!
   # Value of the Explicit Congestion Notification header field in the IPv4 packet
@@ -4293,14 +4530,6 @@ input AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipDestinationSubnet_neq: string
   ipDestinationSubnet_notin: [string!]
   ipDestinationSubnet_notlike: string
-  ipDontFragment: uint8
-  ipDontFragment_geq: uint8
-  ipDontFragment_gt: uint8
-  ipDontFragment_in: bytes
-  ipDontFragment_leq: uint8
-  ipDontFragment_lt: uint8
-  ipDontFragment_neq: uint8
-  ipDontFragment_notin: bytes
   ipFragmentOffset: uint16
   ipFragmentOffset_geq: uint16
   ipFragmentOffset_gt: uint16
@@ -4393,6 +4622,14 @@ input AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipv4Checksum_lt: uint16
   ipv4Checksum_neq: uint16
   ipv4Checksum_notin: [uint16!]
+  ipv4DontFragment: uint8
+  ipv4DontFragment_geq: uint8
+  ipv4DontFragment_gt: uint8
+  ipv4DontFragment_in: bytes
+  ipv4DontFragment_leq: uint8
+  ipv4DontFragment_lt: uint8
+  ipv4DontFragment_neq: uint8
+  ipv4DontFragment_notin: bytes
   ipv4Dscp: uint8
   ipv4Dscp_geq: uint8
   ipv4Dscp_gt: uint8
@@ -4724,14 +4961,14 @@ enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_bitRateMinute_ASC
   # avg(bitRateMinute) descending
   avg_bitRateMinute_DESC
-  # avg(bitRateSecond) ascending
-  avg_bitRateSecond_ASC
-  # avg(bitRateSecond) descending
-  avg_bitRateSecond_DESC
   # avg(bitRateTenSeconds) ascending
   avg_bitRateTenSeconds_ASC
   # avg(bitRateTenSeconds) descending
   avg_bitRateTenSeconds_DESC
+  # avg(bitRate) ascending
+  avg_bitRate_ASC
+  # avg(bitRate) descending
+  avg_bitRate_DESC
   # avg(packetRateFifteenMinutes) ascending
   avg_packetRateFifteenMinutes_ASC
   # avg(packetRateFifteenMinutes) descending
@@ -4748,14 +4985,14 @@ enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_packetRateMinute_ASC
   # avg(packetRateMinute) descending
   avg_packetRateMinute_DESC
-  # avg(packetRateSecond) ascending
-  avg_packetRateSecond_ASC
-  # avg(packetRateSecond) descending
-  avg_packetRateSecond_DESC
   # avg(packetRateTenSeconds) ascending
   avg_packetRateTenSeconds_ASC
   # avg(packetRateTenSeconds) descending
   avg_packetRateTenSeconds_DESC
+  # avg(packetRate) ascending
+  avg_packetRate_ASC
+  # avg(packetRate) descending
+  avg_packetRate_DESC
   # coloCity ascending
   coloCity_ASC
   # coloCity descending
@@ -4868,10 +5105,6 @@ enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipDestinationSubnet_ASC
   # ipDestinationSubnet descending
   ipDestinationSubnet_DESC
-  # ipDontFragment ascending
-  ipDontFragment_ASC
-  # ipDontFragment descending
-  ipDontFragment_DESC
   # ipFragmentOffset ascending
   ipFragmentOffset_ASC
   # ipFragmentOffset descending
@@ -4916,6 +5149,10 @@ enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipv4Checksum_ASC
   # ipv4Checksum descending
   ipv4Checksum_DESC
+  # ipv4DontFragment ascending
+  ipv4DontFragment_ASC
+  # ipv4DontFragment descending
+  ipv4DontFragment_DESC
   # ipv4Dscp ascending
   ipv4Dscp_ASC
   # ipv4Dscp descending
@@ -8108,6 +8345,8 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroups {
 }
 
 type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRate: uint64!
   # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
   bitRateFifteenMinutes: uint64!
   # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
@@ -8116,10 +8355,10 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg {
   bitRateHour: uint64!
   # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
   bitRateMinute: uint64!
-  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
-  bitRateSecond: uint64!
   # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
   bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRate: uint64!
   # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
   packetRateFifteenMinutes: uint64!
   # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
@@ -8128,8 +8367,6 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg {
   packetRateHour: uint64!
   # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
   packetRateMinute: uint64!
-  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
-  packetRateSecond: uint64!
   # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
   packetRateTenSeconds: uint64!
 }
@@ -8191,8 +8428,6 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions {
   ipDestinationAddress: string!
   # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
   ipDestinationSubnet: string!
-  # Value of the Don't Fragment header field in the IPv4 or IPv6 packet
-  ipDontFragment: uint8!
   # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
   ipFragmentOffset: uint16!
   # Length of the IPv4 or IPv6 packet header, in bytes
@@ -8215,6 +8450,8 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions {
   ipTtlBuckets: uint8!
   # Value of the Checksum header field in the IPv4 packet
   ipv4Checksum: uint16!
+  # Value of the Don't Fragment header field in the IPv4 packet
+  ipv4DontFragment: uint8!
   # Value of the Differentiated Services Code Point header field in the IPv4 packet
   ipv4Dscp: uint8!
   # Value of the Explicit Congestion Notification header field in the IPv4 packet
@@ -8534,14 +8771,6 @@ input AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipDestinationSubnet_neq: string
   ipDestinationSubnet_notin: [string!]
   ipDestinationSubnet_notlike: string
-  ipDontFragment: uint8
-  ipDontFragment_geq: uint8
-  ipDontFragment_gt: uint8
-  ipDontFragment_in: bytes
-  ipDontFragment_leq: uint8
-  ipDontFragment_lt: uint8
-  ipDontFragment_neq: uint8
-  ipDontFragment_notin: bytes
   ipFragmentOffset: uint16
   ipFragmentOffset_geq: uint16
   ipFragmentOffset_gt: uint16
@@ -8634,6 +8863,14 @@ input AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipv4Checksum_lt: uint16
   ipv4Checksum_neq: uint16
   ipv4Checksum_notin: [uint16!]
+  ipv4DontFragment: uint8
+  ipv4DontFragment_geq: uint8
+  ipv4DontFragment_gt: uint8
+  ipv4DontFragment_in: bytes
+  ipv4DontFragment_leq: uint8
+  ipv4DontFragment_lt: uint8
+  ipv4DontFragment_neq: uint8
+  ipv4DontFragment_notin: bytes
   ipv4Dscp: uint8
   ipv4Dscp_geq: uint8
   ipv4Dscp_gt: uint8
@@ -8955,14 +9192,14 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_bitRateMinute_ASC
   # avg(bitRateMinute) descending
   avg_bitRateMinute_DESC
-  # avg(bitRateSecond) ascending
-  avg_bitRateSecond_ASC
-  # avg(bitRateSecond) descending
-  avg_bitRateSecond_DESC
   # avg(bitRateTenSeconds) ascending
   avg_bitRateTenSeconds_ASC
   # avg(bitRateTenSeconds) descending
   avg_bitRateTenSeconds_DESC
+  # avg(bitRate) ascending
+  avg_bitRate_ASC
+  # avg(bitRate) descending
+  avg_bitRate_DESC
   # avg(packetRateFifteenMinutes) ascending
   avg_packetRateFifteenMinutes_ASC
   # avg(packetRateFifteenMinutes) descending
@@ -8979,14 +9216,14 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_packetRateMinute_ASC
   # avg(packetRateMinute) descending
   avg_packetRateMinute_DESC
-  # avg(packetRateSecond) ascending
-  avg_packetRateSecond_ASC
-  # avg(packetRateSecond) descending
-  avg_packetRateSecond_DESC
   # avg(packetRateTenSeconds) ascending
   avg_packetRateTenSeconds_ASC
   # avg(packetRateTenSeconds) descending
   avg_packetRateTenSeconds_DESC
+  # avg(packetRate) ascending
+  avg_packetRate_ASC
+  # avg(packetRate) descending
+  avg_packetRate_DESC
   # coloCity ascending
   coloCity_ASC
   # coloCity descending
@@ -9099,10 +9336,6 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipDestinationSubnet_ASC
   # ipDestinationSubnet descending
   ipDestinationSubnet_DESC
-  # ipDontFragment ascending
-  ipDontFragment_ASC
-  # ipDontFragment descending
-  ipDontFragment_DESC
   # ipFragmentOffset ascending
   ipFragmentOffset_ASC
   # ipFragmentOffset descending
@@ -9147,6 +9380,10 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipv4Checksum_ASC
   # ipv4Checksum descending
   ipv4Checksum_DESC
+  # ipv4DontFragment ascending
+  ipv4DontFragment_ASC
+  # ipv4DontFragment descending
+  ipv4DontFragment_DESC
   # ipv4Dscp ascending
   ipv4Dscp_ASC
   # ipv4Dscp descending
@@ -9397,6 +9634,8 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroups {
 }
 
 type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRate: uint64!
   # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
   bitRateFifteenMinutes: uint64!
   # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
@@ -9405,10 +9644,10 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg {
   bitRateHour: uint64!
   # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
   bitRateMinute: uint64!
-  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
-  bitRateSecond: uint64!
   # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
   bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRate: uint64!
   # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
   packetRateFifteenMinutes: uint64!
   # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
@@ -9417,8 +9656,6 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg {
   packetRateHour: uint64!
   # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
   packetRateMinute: uint64!
-  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
-  packetRateSecond: uint64!
   # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
   packetRateTenSeconds: uint64!
 }
@@ -9480,8 +9717,6 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
   ipDestinationAddress: string!
   # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
   ipDestinationSubnet: string!
-  # Value of the Don't Fragment header field in the IPv4 or IPv6 packet
-  ipDontFragment: uint8!
   # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
   ipFragmentOffset: uint16!
   # Length of the IPv4 or IPv6 packet header, in bytes
@@ -9504,6 +9739,8 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
   ipTtlBuckets: uint8!
   # Value of the Checksum header field in the IPv4 packet
   ipv4Checksum: uint16!
+  # Value of the Don't Fragment header field in the IPv4 packet
+  ipv4DontFragment: uint8!
   # Value of the Differentiated Services Code Point header field in the IPv4 packet
   ipv4Dscp: uint8!
   # Value of the Explicit Congestion Notification header field in the IPv4 packet
@@ -9819,14 +10056,6 @@ input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipDestinationSubnet_neq: string
   ipDestinationSubnet_notin: [string!]
   ipDestinationSubnet_notlike: string
-  ipDontFragment: uint8
-  ipDontFragment_geq: uint8
-  ipDontFragment_gt: uint8
-  ipDontFragment_in: bytes
-  ipDontFragment_leq: uint8
-  ipDontFragment_lt: uint8
-  ipDontFragment_neq: uint8
-  ipDontFragment_notin: bytes
   ipFragmentOffset: uint16
   ipFragmentOffset_geq: uint16
   ipFragmentOffset_gt: uint16
@@ -9919,6 +10148,14 @@ input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipv4Checksum_lt: uint16
   ipv4Checksum_neq: uint16
   ipv4Checksum_notin: [uint16!]
+  ipv4DontFragment: uint8
+  ipv4DontFragment_geq: uint8
+  ipv4DontFragment_gt: uint8
+  ipv4DontFragment_in: bytes
+  ipv4DontFragment_leq: uint8
+  ipv4DontFragment_lt: uint8
+  ipv4DontFragment_neq: uint8
+  ipv4DontFragment_notin: bytes
   ipv4Dscp: uint8
   ipv4Dscp_geq: uint8
   ipv4Dscp_gt: uint8
@@ -10220,14 +10457,14 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_bitRateMinute_ASC
   # avg(bitRateMinute) descending
   avg_bitRateMinute_DESC
-  # avg(bitRateSecond) ascending
-  avg_bitRateSecond_ASC
-  # avg(bitRateSecond) descending
-  avg_bitRateSecond_DESC
   # avg(bitRateTenSeconds) ascending
   avg_bitRateTenSeconds_ASC
   # avg(bitRateTenSeconds) descending
   avg_bitRateTenSeconds_DESC
+  # avg(bitRate) ascending
+  avg_bitRate_ASC
+  # avg(bitRate) descending
+  avg_bitRate_DESC
   # avg(packetRateFifteenMinutes) ascending
   avg_packetRateFifteenMinutes_ASC
   # avg(packetRateFifteenMinutes) descending
@@ -10244,14 +10481,14 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_packetRateMinute_ASC
   # avg(packetRateMinute) descending
   avg_packetRateMinute_DESC
-  # avg(packetRateSecond) ascending
-  avg_packetRateSecond_ASC
-  # avg(packetRateSecond) descending
-  avg_packetRateSecond_DESC
   # avg(packetRateTenSeconds) ascending
   avg_packetRateTenSeconds_ASC
   # avg(packetRateTenSeconds) descending
   avg_packetRateTenSeconds_DESC
+  # avg(packetRate) ascending
+  avg_packetRate_ASC
+  # avg(packetRate) descending
+  avg_packetRate_DESC
   # coloCity ascending
   coloCity_ASC
   # coloCity descending
@@ -10364,10 +10601,6 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipDestinationSubnet_ASC
   # ipDestinationSubnet descending
   ipDestinationSubnet_DESC
-  # ipDontFragment ascending
-  ipDontFragment_ASC
-  # ipDontFragment descending
-  ipDontFragment_DESC
   # ipFragmentOffset ascending
   ipFragmentOffset_ASC
   # ipFragmentOffset descending
@@ -10412,6 +10645,10 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipv4Checksum_ASC
   # ipv4Checksum descending
   ipv4Checksum_DESC
+  # ipv4DontFragment ascending
+  ipv4DontFragment_ASC
+  # ipv4DontFragment descending
+  ipv4DontFragment_DESC
   # ipv4Dscp ascending
   ipv4Dscp_ASC
   # ipv4Dscp descending
@@ -10556,6 +10793,10 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   udpPayloadLength_ASC
   # udpPayloadLength descending
   udpPayloadLength_DESC
+  # verdict ascending
+  verdict_ASC
+  # verdict descending
+  verdict_DESC
 }
 
 type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsSum {
@@ -13058,6 +13299,8 @@ type AccountSettings {
   dosdAttackAnalyticsAdaptiveGroups: Settings!
   dosdNetworkAnalyticsAdaptiveGroups: Settings!
   durableObjectsInvocationsAdaptiveGroups: Settings!
+  durableObjectsPeriodicGroups: Settings!
+  durableObjectsStorageGroups: Settings!
   durableObjectsSubrequestsAdaptiveGroups: Settings!
   flowtrackdNetworkAnalyticsAdaptiveGroups: Settings!
   gatewayL4DownstreamSessionsAdaptiveGroups: Settings!
@@ -13099,6 +13342,8 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroups {
 }
 
 type AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRate: uint64!
   # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
   bitRateFifteenMinutes: uint64!
   # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
@@ -13107,10 +13352,10 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg {
   bitRateHour: uint64!
   # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
   bitRateMinute: uint64!
-  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
-  bitRateSecond: uint64!
   # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
   bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRate: uint64!
   # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
   packetRateFifteenMinutes: uint64!
   # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
@@ -13119,8 +13364,6 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg {
   packetRateHour: uint64!
   # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
   packetRateMinute: uint64!
-  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
-  packetRateSecond: uint64!
   # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
   packetRateTenSeconds: uint64!
 }
@@ -13182,8 +13425,6 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions {
   ipDestinationAddress: string!
   # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
   ipDestinationSubnet: string!
-  # Value of the Don't Fragment header field in the IPv4 or IPv6 packet
-  ipDontFragment: uint8!
   # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
   ipFragmentOffset: uint16!
   # Length of the IPv4 or IPv6 packet header, in bytes
@@ -13206,6 +13447,8 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions {
   ipTtlBuckets: uint8!
   # Value of the Checksum header field in the IPv4 packet
   ipv4Checksum: uint16!
+  # Value of the Don't Fragment header field in the IPv4 packet
+  ipv4DontFragment: uint8!
   # Value of the Differentiated Services Code Point header field in the IPv4 packet
   ipv4Dscp: uint8!
   # Value of the Explicit Congestion Notification header field in the IPv4 packet
@@ -13521,14 +13764,6 @@ input AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipDestinationSubnet_neq: string
   ipDestinationSubnet_notin: [string!]
   ipDestinationSubnet_notlike: string
-  ipDontFragment: uint8
-  ipDontFragment_geq: uint8
-  ipDontFragment_gt: uint8
-  ipDontFragment_in: bytes
-  ipDontFragment_leq: uint8
-  ipDontFragment_lt: uint8
-  ipDontFragment_neq: uint8
-  ipDontFragment_notin: bytes
   ipFragmentOffset: uint16
   ipFragmentOffset_geq: uint16
   ipFragmentOffset_gt: uint16
@@ -13621,6 +13856,14 @@ input AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipv4Checksum_lt: uint16
   ipv4Checksum_neq: uint16
   ipv4Checksum_notin: [uint16!]
+  ipv4DontFragment: uint8
+  ipv4DontFragment_geq: uint8
+  ipv4DontFragment_gt: uint8
+  ipv4DontFragment_in: bytes
+  ipv4DontFragment_leq: uint8
+  ipv4DontFragment_lt: uint8
+  ipv4DontFragment_neq: uint8
+  ipv4DontFragment_notin: bytes
   ipv4Dscp: uint8
   ipv4Dscp_geq: uint8
   ipv4Dscp_gt: uint8
@@ -13922,14 +14165,14 @@ enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_bitRateMinute_ASC
   # avg(bitRateMinute) descending
   avg_bitRateMinute_DESC
-  # avg(bitRateSecond) ascending
-  avg_bitRateSecond_ASC
-  # avg(bitRateSecond) descending
-  avg_bitRateSecond_DESC
   # avg(bitRateTenSeconds) ascending
   avg_bitRateTenSeconds_ASC
   # avg(bitRateTenSeconds) descending
   avg_bitRateTenSeconds_DESC
+  # avg(bitRate) ascending
+  avg_bitRate_ASC
+  # avg(bitRate) descending
+  avg_bitRate_DESC
   # avg(packetRateFifteenMinutes) ascending
   avg_packetRateFifteenMinutes_ASC
   # avg(packetRateFifteenMinutes) descending
@@ -13946,14 +14189,14 @@ enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_packetRateMinute_ASC
   # avg(packetRateMinute) descending
   avg_packetRateMinute_DESC
-  # avg(packetRateSecond) ascending
-  avg_packetRateSecond_ASC
-  # avg(packetRateSecond) descending
-  avg_packetRateSecond_DESC
   # avg(packetRateTenSeconds) ascending
   avg_packetRateTenSeconds_ASC
   # avg(packetRateTenSeconds) descending
   avg_packetRateTenSeconds_DESC
+  # avg(packetRate) ascending
+  avg_packetRate_ASC
+  # avg(packetRate) descending
+  avg_packetRate_DESC
   # coloCity ascending
   coloCity_ASC
   # coloCity descending
@@ -14066,10 +14309,6 @@ enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipDestinationSubnet_ASC
   # ipDestinationSubnet descending
   ipDestinationSubnet_DESC
-  # ipDontFragment ascending
-  ipDontFragment_ASC
-  # ipDontFragment descending
-  ipDontFragment_DESC
   # ipFragmentOffset ascending
   ipFragmentOffset_ASC
   # ipFragmentOffset descending
@@ -14114,6 +14353,10 @@ enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipv4Checksum_ASC
   # ipv4Checksum descending
   ipv4Checksum_DESC
+  # ipv4DontFragment ascending
+  ipv4DontFragment_ASC
+  # ipv4DontFragment descending
+  ipv4DontFragment_DESC
   # ipv4Dscp ascending
   ipv4Dscp_ASC
   # ipv4Dscp descending
@@ -14258,6 +14501,10 @@ enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
   udpPayloadLength_ASC
   # udpPayloadLength descending
   udpPayloadLength_DESC
+  # verdict ascending
+  verdict_ASC
+  # verdict descending
+  verdict_DESC
 }
 
 type AccountSpectrumNetworkAnalyticsAdaptiveGroupsSum {
@@ -15643,14 +15890,10 @@ type zone {
   httpRequestsAdaptiveGroups(filter: ZoneHttpRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneHttpRequestsAdaptiveGroupsOrderBy!]): [ZoneHttpRequestsAdaptiveGroups!]!
   # Minutely rollups of Image Resizing requests
   imageResizingRequests1mGroups(filter: ZoneImageResizingRequests1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneImageResizingRequests1mGroupsOrderBy!]): [ZoneImageResizingRequests1mGroups!]!
-  # Raw Load Balancing origin requests
-  loadBalancingRequests(filter: ZoneLoadBalancingRequestsFilter_InputObject!, limit: uint64!, orderBy: [ZoneLoadBalancingRequestsOrderBy!]): [ZoneLoadBalancingRequests!]!
   # Raw Load Balancing origin requests with adaptive sampling
   loadBalancingRequestsAdaptive(filter: ZoneLoadBalancingRequestsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneLoadBalancingRequestsAdaptiveOrderBy!]): [ZoneLoadBalancingRequestsAdaptive!]!
   # Aggregated Load Balancing origin requests with adaptive sampling
   loadBalancingRequestsAdaptiveGroups(filter: ZoneLoadBalancingRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneLoadBalancingRequestsAdaptiveGroupsOrderBy!]): [ZoneLoadBalancingRequestsAdaptiveGroups!]!
-  # Aggregated Load Balancing origin requests
-  loadBalancingRequestsGroups(filter: ZoneLoadBalancingRequestsGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneLoadBalancingRequestsGroupsOrderBy!]): [ZoneLoadBalancingRequestsGroups!]!
   # Data to visualize network error logs
   nelReportsAdaptiveGroups(filter: ZoneNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneNelReportsAdaptiveGroupsOrderBy!]): [ZoneNelReportsAdaptiveGroups!]!
   settings: ZoneSettings
@@ -20261,50 +20504,6 @@ type ZoneImageResizingRequests1mGroupsSum {
   resizedPixels: uint64!
 }
 
-# Raw Load Balancing origin requests
-type ZoneLoadBalancingRequests {
-  # IATA airport code of data center that received the request
-  coloCode: string!
-  # Request date
-  date: Date!
-  # Request datetime
-  datetime: Time!
-  # Error generated when selecting an origin
-  errorType: string!
-  # Load balancer name
-  lbName: string!
-  # Number of origins that were selected and returned to the client
-  numberOriginsSelected: uint16!
-  # All origins in the pool that was selected based on steering policy
-  origins: [ZoneLoadBalancingRequestsOriginsElem!]!
-  # List of pools from which a pool will be selected based on steering policy
-  pools: [ZoneLoadBalancingRequestsPoolsElem!]!
-  # Whether traffic is proxied through the Cloudflare network (orange-clouded)
-  proxied: uint8!
-  # Load balancing region where request originated
-  region: string!
-  # Index of the selected origin from the list of all origins. If multiple origins were selected, this is the index of the first origin in that list
-  selectedOriginIndex: uint16!
-  # Average RTT (milliseconds) to reach the origins within the selected pool
-  selectedPoolAvgRttMs: uint64!
-  # Health checks active status for the selected pool
-  selectedPoolHealthChecksEnabled: uint8!
-  # Health status for the selected pool
-  selectedPoolHealthy: uint8!
-  # A unique identifier for the selected pool
-  selectedPoolId: string!
-  # Index of the selected pool from the list of all pools
-  selectedPoolIndex: uint32!
-  # Name for the selected pool
-  selectedPoolName: string!
-  # Type of session affinity enabled
-  sessionAffinity: string!
-  # Current status of session affinity
-  sessionAffinityStatus: string!
-  # Policy by which the load balancer will route traffic
-  steeringPolicy: string!
-}
-
 # Raw Load Balancing origin requests with adaptive sampling
 type ZoneLoadBalancingRequestsAdaptive {
   # IATA airport code of data center that received the request
@@ -21042,687 +21241,6 @@ type ZoneLoadBalancingRequestsAdaptivePoolsElem {
   poolName: string!
 }
 
-input ZoneLoadBalancingRequestsFilter_InputObject {
-  AND: [ZoneLoadBalancingRequestsFilter_InputObject!]
-  OR: [ZoneLoadBalancingRequestsFilter_InputObject!]
-  coloCode: string
-  coloCode_geq: string
-  coloCode_gt: string
-  coloCode_in: [string!]
-  coloCode_leq: string
-  coloCode_like: string
-  coloCode_lt: string
-  coloCode_neq: string
-  coloCode_notin: [string!]
-  coloCode_notlike: string
-  date: Date
-  date_geq: Date
-  date_gt: Date
-  date_in: [Date!]
-  date_leq: Date
-  date_lt: Date
-  date_neq: Date
-  date_notin: [Date!]
-  datetime: Time
-  datetime_geq: Time
-  datetime_gt: Time
-  datetime_in: [Time!]
-  datetime_leq: Time
-  datetime_lt: Time
-  datetime_neq: Time
-  datetime_notin: [Time!]
-  errorType: string
-  errorType_geq: string
-  errorType_gt: string
-  errorType_in: [string!]
-  errorType_leq: string
-  errorType_like: string
-  errorType_lt: string
-  errorType_neq: string
-  errorType_notin: [string!]
-  errorType_notlike: string
-  lbName: string
-  lbName_geq: string
-  lbName_gt: string
-  lbName_in: [string!]
-  lbName_leq: string
-  lbName_like: string
-  lbName_lt: string
-  lbName_neq: string
-  lbName_notin: [string!]
-  lbName_notlike: string
-  numberOriginsSelected: uint16
-  numberOriginsSelected_geq: uint16
-  numberOriginsSelected_gt: uint16
-  numberOriginsSelected_in: [uint16!]
-  numberOriginsSelected_leq: uint16
-  numberOriginsSelected_lt: uint16
-  numberOriginsSelected_neq: uint16
-  numberOriginsSelected_notin: [uint16!]
-  proxied: uint8
-  proxied_geq: uint8
-  proxied_gt: uint8
-  proxied_in: bytes
-  proxied_leq: uint8
-  proxied_lt: uint8
-  proxied_neq: uint8
-  proxied_notin: bytes
-  region: string
-  region_geq: string
-  region_gt: string
-  region_in: [string!]
-  region_leq: string
-  region_like: string
-  region_lt: string
-  region_neq: string
-  region_notin: [string!]
-  region_notlike: string
-  selectedOriginIndex: uint16
-  selectedOriginIndex_geq: uint16
-  selectedOriginIndex_gt: uint16
-  selectedOriginIndex_in: [uint16!]
-  selectedOriginIndex_leq: uint16
-  selectedOriginIndex_lt: uint16
-  selectedOriginIndex_neq: uint16
-  selectedOriginIndex_notin: [uint16!]
-  selectedPoolAvgRttMs: uint64
-  selectedPoolAvgRttMs_geq: uint64
-  selectedPoolAvgRttMs_gt: uint64
-  selectedPoolAvgRttMs_in: [uint64!]
-  selectedPoolAvgRttMs_leq: uint64
-  selectedPoolAvgRttMs_lt: uint64
-  selectedPoolAvgRttMs_neq: uint64
-  selectedPoolAvgRttMs_notin: [uint64!]
-  selectedPoolHealthChecksEnabled: uint8
-  selectedPoolHealthChecksEnabled_geq: uint8
-  selectedPoolHealthChecksEnabled_gt: uint8
-  selectedPoolHealthChecksEnabled_in: bytes
-  selectedPoolHealthChecksEnabled_leq: uint8
-  selectedPoolHealthChecksEnabled_lt: uint8
-  selectedPoolHealthChecksEnabled_neq: uint8
-  selectedPoolHealthChecksEnabled_notin: bytes
-  selectedPoolHealthy: uint8
-  selectedPoolHealthy_geq: uint8
-  selectedPoolHealthy_gt: uint8
-  selectedPoolHealthy_in: bytes
-  selectedPoolHealthy_leq: uint8
-  selectedPoolHealthy_lt: uint8
-  selectedPoolHealthy_neq: uint8
-  selectedPoolHealthy_notin: bytes
-  selectedPoolId: string
-  selectedPoolId_geq: string
-  selectedPoolId_gt: string
-  selectedPoolId_in: [string!]
-  selectedPoolId_leq: string
-  selectedPoolId_like: string
-  selectedPoolId_lt: string
-  selectedPoolId_neq: string
-  selectedPoolId_notin: [string!]
-  selectedPoolId_notlike: string
-  selectedPoolIndex: uint32
-  selectedPoolIndex_geq: uint32
-  selectedPoolIndex_gt: uint32
-  selectedPoolIndex_in: [uint32!]
-  selectedPoolIndex_leq: uint32
-  selectedPoolIndex_lt: uint32
-  selectedPoolIndex_neq: uint32
-  selectedPoolIndex_notin: [uint32!]
-  selectedPoolName: string
-  selectedPoolName_geq: string
-  selectedPoolName_gt: string
-  selectedPoolName_in: [string!]
-  selectedPoolName_leq: string
-  selectedPoolName_like: string
-  selectedPoolName_lt: string
-  selectedPoolName_neq: string
-  selectedPoolName_notin: [string!]
-  selectedPoolName_notlike: string
-  sessionAffinity: string
-  sessionAffinityStatus: string
-  sessionAffinityStatus_geq: string
-  sessionAffinityStatus_gt: string
-  sessionAffinityStatus_in: [string!]
-  sessionAffinityStatus_leq: string
-  sessionAffinityStatus_like: string
-  sessionAffinityStatus_lt: string
-  sessionAffinityStatus_neq: string
-  sessionAffinityStatus_notin: [string!]
-  sessionAffinityStatus_notlike: string
-  sessionAffinity_geq: string
-  sessionAffinity_gt: string
-  sessionAffinity_in: [string!]
-  sessionAffinity_leq: string
-  sessionAffinity_like: string
-  sessionAffinity_lt: string
-  sessionAffinity_neq: string
-  sessionAffinity_notin: [string!]
-  sessionAffinity_notlike: string
-  steeringPolicy: string
-  steeringPolicy_geq: string
-  steeringPolicy_gt: string
-  steeringPolicy_in: [string!]
-  steeringPolicy_leq: string
-  steeringPolicy_like: string
-  steeringPolicy_lt: string
-  steeringPolicy_neq: string
-  steeringPolicy_notin: [string!]
-  steeringPolicy_notlike: string
-}
-
-# Aggregated Load Balancing origin requests
-type ZoneLoadBalancingRequestsGroups {
-  # Counts a number of rows per specific dimensions
-  count: uint64!
-  # List of dimensions to group by
-  dimensions: ZoneLoadBalancingRequestsGroupsDimensions
-}
-
-type ZoneLoadBalancingRequestsGroupsDimensions {
-  # IATA airport code of data center that received the request
-  coloCode: string!
-  # Request date
-  date: Date!
-  # Request datetime
-  datetime: Time!
-  # Request datetime truncated to multiple of 15 minutes
-  datetimeFifteenMinutes: Time!
-  # Request datetime truncated to multiple of 5 minutes
-  datetimeFiveMinutes: Time!
-  # Request datetime truncated to multiple of 30 minutes
-  datetimeHalfOfHour: Time!
-  # Request datetime truncated to the hour
-  datetimeHour: Time!
-  # Request datetime truncated to multiple of 1 minute
-  datetimeMinute: Time!
-  # Error generated when selecting an origin
-  errorType: string!
-  # Load balancer name
-  lbName: string!
-  # Indicates whether multiple origins were returned to the client
-  multipleOriginsSelected: uint8!
-  # Number of origins that were selected and returned to the client
-  numberOriginsSelected: uint16!
-  # Whether traffic is proxied through the Cloudflare network (orange-clouded)
-  proxied: uint8!
-  # Load balancing region where request originated
-  region: string!
-  # Index of the selected origin from the list of all origins. If multiple origins were selected, this is the index of the first origin in that list
-  selectedOriginIndex: uint16!
-  # Name of the selected origin
-  selectedOriginName: string!
-  # Names of each selected origin
-  selectedOriginNames: string!
-  # Dynamic Latency: RTT (milliseconds) to reach the origin pool
-  selectedPoolAvgRttMs: uint64!
-  # Health checks status for the selected pool
-  selectedPoolHealthChecksEnabled: uint8!
-  # Health status for the selected pool
-  selectedPoolHealthy: uint8!
-  # A unique identifier for the selected pool
-  selectedPoolId: string!
-  # Index of the selected pool from the list of all pools
-  selectedPoolIndex: uint32!
-  # Name for the selected pool
-  selectedPoolName: string!
-  # Type of session affinity enabled
-  sessionAffinityEnabled: string!
-  # Current status of session affinity
-  sessionAffinityStatus: string!
-  # Policy by which the load balancer will route traffic
-  steeringPolicy: string!
-}
-
-input ZoneLoadBalancingRequestsGroupsFilter_InputObject {
-  AND: [ZoneLoadBalancingRequestsGroupsFilter_InputObject!]
-  OR: [ZoneLoadBalancingRequestsGroupsFilter_InputObject!]
-  coloCode: string
-  coloCode_geq: string
-  coloCode_gt: string
-  coloCode_in: [string!]
-  coloCode_leq: string
-  coloCode_like: string
-  coloCode_lt: string
-  coloCode_neq: string
-  coloCode_notin: [string!]
-  coloCode_notlike: string
-  date: Date
-  date_geq: Date
-  date_gt: Date
-  date_in: [Date!]
-  date_leq: Date
-  date_lt: Date
-  date_neq: Date
-  date_notin: [Date!]
-  datetime: Time
-  datetimeFifteenMinutes: Time
-  datetimeFifteenMinutes_geq: Time
-  datetimeFifteenMinutes_gt: Time
-  datetimeFifteenMinutes_in: [Time!]
-  datetimeFifteenMinutes_leq: Time
-  datetimeFifteenMinutes_lt: Time
-  datetimeFifteenMinutes_neq: Time
-  datetimeFifteenMinutes_notin: [Time!]
-  datetimeFiveMinutes: Time
-  datetimeFiveMinutes_geq: Time
-  datetimeFiveMinutes_gt: Time
-  datetimeFiveMinutes_in: [Time!]
-  datetimeFiveMinutes_leq: Time
-  datetimeFiveMinutes_lt: Time
-  datetimeFiveMinutes_neq: Time
-  datetimeFiveMinutes_notin: [Time!]
-  datetimeHalfOfHour: Time
-  datetimeHalfOfHour_geq: Time
-  datetimeHalfOfHour_gt: Time
-  datetimeHalfOfHour_in: [Time!]
-  datetimeHalfOfHour_leq: Time
-  datetimeHalfOfHour_lt: Time
-  datetimeHalfOfHour_neq: Time
-  datetimeHalfOfHour_notin: [Time!]
-  datetimeHour: Time
-  datetimeHour_geq: Time
-  datetimeHour_gt: Time
-  datetimeHour_in: [Time!]
-  datetimeHour_leq: Time
-  datetimeHour_lt: Time
-  datetimeHour_neq: Time
-  datetimeHour_notin: [Time!]
-  datetimeMinute: Time
-  datetimeMinute_geq: Time
-  datetimeMinute_gt: Time
-  datetimeMinute_in: [Time!]
-  datetimeMinute_leq: Time
-  datetimeMinute_lt: Time
-  datetimeMinute_neq: Time
-  datetimeMinute_notin: [Time!]
-  datetime_geq: Time
-  datetime_gt: Time
-  datetime_in: [Time!]
-  datetime_leq: Time
-  datetime_lt: Time
-  datetime_neq: Time
-  datetime_notin: [Time!]
-  errorType: string
-  errorType_geq: string
-  errorType_gt: string
-  errorType_in: [string!]
-  errorType_leq: string
-  errorType_like: string
-  errorType_lt: string
-  errorType_neq: string
-  errorType_notin: [string!]
-  errorType_notlike: string
-  lbName: string
-  lbName_geq: string
-  lbName_gt: string
-  lbName_in: [string!]
-  lbName_leq: string
-  lbName_like: string
-  lbName_lt: string
-  lbName_neq: string
-  lbName_notin: [string!]
-  lbName_notlike: string
-  multipleOriginsSelected: uint8
-  multipleOriginsSelected_geq: uint8
-  multipleOriginsSelected_gt: uint8
-  multipleOriginsSelected_in: bytes
-  multipleOriginsSelected_leq: uint8
-  multipleOriginsSelected_lt: uint8
-  multipleOriginsSelected_neq: uint8
-  multipleOriginsSelected_notin: bytes
-  numberOriginsSelected: uint16
-  numberOriginsSelected_geq: uint16
-  numberOriginsSelected_gt: uint16
-  numberOriginsSelected_in: [uint16!]
-  numberOriginsSelected_leq: uint16
-  numberOriginsSelected_lt: uint16
-  numberOriginsSelected_neq: uint16
-  numberOriginsSelected_notin: [uint16!]
-  proxied: uint8
-  proxied_geq: uint8
-  proxied_gt: uint8
-  proxied_in: bytes
-  proxied_leq: uint8
-  proxied_lt: uint8
-  proxied_neq: uint8
-  proxied_notin: bytes
-  region: string
-  region_geq: string
-  region_gt: string
-  region_in: [string!]
-  region_leq: string
-  region_like: string
-  region_lt: string
-  region_neq: string
-  region_notin: [string!]
-  region_notlike: string
-  selectedOriginIndex: uint16
-  selectedOriginIndex_geq: uint16
-  selectedOriginIndex_gt: uint16
-  selectedOriginIndex_in: [uint16!]
-  selectedOriginIndex_leq: uint16
-  selectedOriginIndex_lt: uint16
-  selectedOriginIndex_neq: uint16
-  selectedOriginIndex_notin: [uint16!]
-  selectedOriginName: string
-  selectedOriginName_geq: string
-  selectedOriginName_gt: string
-  selectedOriginName_in: [string!]
-  selectedOriginName_leq: string
-  selectedOriginName_like: string
-  selectedOriginName_lt: string
-  selectedOriginName_neq: string
-  selectedOriginName_notin: [string!]
-  selectedOriginName_notlike: string
-  selectedOriginNames: string
-  selectedOriginNames_geq: string
-  selectedOriginNames_gt: string
-  selectedOriginNames_in: [string!]
-  selectedOriginNames_leq: string
-  selectedOriginNames_like: string
-  selectedOriginNames_lt: string
-  selectedOriginNames_neq: string
-  selectedOriginNames_notin: [string!]
-  selectedOriginNames_notlike: string
-  selectedPoolAvgRttMs: uint64
-  selectedPoolAvgRttMs_geq: uint64
-  selectedPoolAvgRttMs_gt: uint64
-  selectedPoolAvgRttMs_in: [uint64!]
-  selectedPoolAvgRttMs_leq: uint64
-  selectedPoolAvgRttMs_lt: uint64
-  selectedPoolAvgRttMs_neq: uint64
-  selectedPoolAvgRttMs_notin: [uint64!]
-  selectedPoolHealthChecksEnabled: uint8
-  selectedPoolHealthChecksEnabled_geq: uint8
-  selectedPoolHealthChecksEnabled_gt: uint8
-  selectedPoolHealthChecksEnabled_in: bytes
-  selectedPoolHealthChecksEnabled_leq: uint8
-  selectedPoolHealthChecksEnabled_lt: uint8
-  selectedPoolHealthChecksEnabled_neq: uint8
-  selectedPoolHealthChecksEnabled_notin: bytes
-  selectedPoolHealthy: uint8
-  selectedPoolHealthy_geq: uint8
-  selectedPoolHealthy_gt: uint8
-  selectedPoolHealthy_in: bytes
-  selectedPoolHealthy_leq: uint8
-  selectedPoolHealthy_lt: uint8
-  selectedPoolHealthy_neq: uint8
-  selectedPoolHealthy_notin: bytes
-  selectedPoolId: string
-  selectedPoolId_geq: string
-  selectedPoolId_gt: string
-  selectedPoolId_in: [string!]
-  selectedPoolId_leq: string
-  selectedPoolId_like: string
-  selectedPoolId_lt: string
-  selectedPoolId_neq: string
-  selectedPoolId_notin: [string!]
-  selectedPoolId_notlike: string
-  selectedPoolIndex: uint32
-  selectedPoolIndex_geq: uint32
-  selectedPoolIndex_gt: uint32
-  selectedPoolIndex_in: [uint32!]
-  selectedPoolIndex_leq: uint32
-  selectedPoolIndex_lt: uint32
-  selectedPoolIndex_neq: uint32
-  selectedPoolIndex_notin: [uint32!]
-  selectedPoolName: string
-  selectedPoolName_geq: string
-  selectedPoolName_gt: string
-  selectedPoolName_in: [string!]
-  selectedPoolName_leq: string
-  selectedPoolName_like: string
-  selectedPoolName_lt: string
-  selectedPoolName_neq: string
-  selectedPoolName_notin: [string!]
-  selectedPoolName_notlike: string
-  sessionAffinityEnabled: string
-  sessionAffinityEnabled_geq: string
-  sessionAffinityEnabled_gt: string
-  sessionAffinityEnabled_in: [string!]
-  sessionAffinityEnabled_leq: string
-  sessionAffinityEnabled_like: string
-  sessionAffinityEnabled_lt: string
-  sessionAffinityEnabled_neq: string
-  sessionAffinityEnabled_notin: [string!]
-  sessionAffinityEnabled_notlike: string
-  sessionAffinityStatus: string
-  sessionAffinityStatus_geq: string
-  sessionAffinityStatus_gt: string
-  sessionAffinityStatus_in: [string!]
-  sessionAffinityStatus_leq: string
-  sessionAffinityStatus_like: string
-  sessionAffinityStatus_lt: string
-  sessionAffinityStatus_neq: string
-  sessionAffinityStatus_notin: [string!]
-  sessionAffinityStatus_notlike: string
-  steeringPolicy: string
-  steeringPolicy_geq: string
-  steeringPolicy_gt: string
-  steeringPolicy_in: [string!]
-  steeringPolicy_leq: string
-  steeringPolicy_like: string
-  steeringPolicy_lt: string
-  steeringPolicy_neq: string
-  steeringPolicy_notin: [string!]
-  steeringPolicy_notlike: string
-}
-
-enum ZoneLoadBalancingRequestsGroupsOrderBy {
-  # coloCode ascending
-  coloCode_ASC
-  # coloCode descending
-  coloCode_DESC
-  # count() ascending
-  count_ASC
-  # count() descending
-  count_DESC
-  # date ascending
-  date_ASC
-  # date descending
-  date_DESC
-  # datetimeFifteenMinutes ascending
-  datetimeFifteenMinutes_ASC
-  # datetimeFifteenMinutes descending
-  datetimeFifteenMinutes_DESC
-  # datetimeFiveMinutes ascending
-  datetimeFiveMinutes_ASC
-  # datetimeFiveMinutes descending
-  datetimeFiveMinutes_DESC
-  # datetimeHalfOfHour ascending
-  datetimeHalfOfHour_ASC
-  # datetimeHalfOfHour descending
-  datetimeHalfOfHour_DESC
-  # datetimeHour ascending
-  datetimeHour_ASC
-  # datetimeHour descending
-  datetimeHour_DESC
-  # datetimeMinute ascending
-  datetimeMinute_ASC
-  # datetimeMinute descending
-  datetimeMinute_DESC
-  # datetime ascending
-  datetime_ASC
-  # datetime descending
-  datetime_DESC
-  # errorType ascending
-  errorType_ASC
-  # errorType descending
-  errorType_DESC
-  # lbName ascending
-  lbName_ASC
-  # lbName descending
-  lbName_DESC
-  # multipleOriginsSelected ascending
-  multipleOriginsSelected_ASC
-  # multipleOriginsSelected descending
-  multipleOriginsSelected_DESC
-  # numberOriginsSelected ascending
-  numberOriginsSelected_ASC
-  # numberOriginsSelected descending
-  numberOriginsSelected_DESC
-  # proxied ascending
-  proxied_ASC
-  # proxied descending
-  proxied_DESC
-  # region ascending
-  region_ASC
-  # region descending
-  region_DESC
-  # selectedOriginIndex ascending
-  selectedOriginIndex_ASC
-  # selectedOriginIndex descending
-  selectedOriginIndex_DESC
-  # selectedOriginName ascending
-  selectedOriginName_ASC
-  # selectedOriginName descending
-  selectedOriginName_DESC
-  # selectedOriginNames ascending
-  selectedOriginNames_ASC
-  # selectedOriginNames descending
-  selectedOriginNames_DESC
-  # selectedPoolAvgRttMs ascending
-  selectedPoolAvgRttMs_ASC
-  # selectedPoolAvgRttMs descending
-  selectedPoolAvgRttMs_DESC
-  # selectedPoolHealthChecksEnabled ascending
-  selectedPoolHealthChecksEnabled_ASC
-  # selectedPoolHealthChecksEnabled descending
-  selectedPoolHealthChecksEnabled_DESC
-  # selectedPoolHealthy ascending
-  selectedPoolHealthy_ASC
-  # selectedPoolHealthy descending
-  selectedPoolHealthy_DESC
-  # selectedPoolId ascending
-  selectedPoolId_ASC
-  # selectedPoolId descending
-  selectedPoolId_DESC
-  # selectedPoolIndex ascending
-  selectedPoolIndex_ASC
-  # selectedPoolIndex descending
-  selectedPoolIndex_DESC
-  # selectedPoolName ascending
-  selectedPoolName_ASC
-  # selectedPoolName descending
-  selectedPoolName_DESC
-  # sessionAffinityEnabled ascending
-  sessionAffinityEnabled_ASC
-  # sessionAffinityEnabled descending
-  sessionAffinityEnabled_DESC
-  # sessionAffinityStatus ascending
-  sessionAffinityStatus_ASC
-  # sessionAffinityStatus descending
-  sessionAffinityStatus_DESC
-  # steeringPolicy ascending
-  steeringPolicy_ASC
-  # steeringPolicy descending
-  steeringPolicy_DESC
-}
-
-enum ZoneLoadBalancingRequestsOrderBy {
-  # coloCode ascending
-  coloCode_ASC
-  # coloCode descending
-  coloCode_DESC
-  # date ascending
-  date_ASC
-  # date descending
-  date_DESC
-  # datetime ascending
-  datetime_ASC
-  # datetime descending
-  datetime_DESC
-  # errorType ascending
-  errorType_ASC
-  # errorType descending
-  errorType_DESC
-  # lbName ascending
-  lbName_ASC
-  # lbName descending
-  lbName_DESC
-  # numberOriginsSelected ascending
-  numberOriginsSelected_ASC
-  # numberOriginsSelected descending
-  numberOriginsSelected_DESC
-  # proxied ascending
-  proxied_ASC
-  # proxied descending
-  proxied_DESC
-  # region ascending
-  region_ASC
-  # region descending
-  region_DESC
-  # selectedOriginIndex ascending
-  selectedOriginIndex_ASC
-  # selectedOriginIndex descending
-  selectedOriginIndex_DESC
-  # selectedPoolAvgRttMs ascending
-  selectedPoolAvgRttMs_ASC
-  # selectedPoolAvgRttMs descending
-  selectedPoolAvgRttMs_DESC
-  # selectedPoolHealthChecksEnabled ascending
-  selectedPoolHealthChecksEnabled_ASC
-  # selectedPoolHealthChecksEnabled descending
-  selectedPoolHealthChecksEnabled_DESC
-  # selectedPoolHealthy ascending
-  selectedPoolHealthy_ASC
-  # selectedPoolHealthy descending
-  selectedPoolHealthy_DESC
-  # selectedPoolId ascending
-  selectedPoolId_ASC
-  # selectedPoolId descending
-  selectedPoolId_DESC
-  # selectedPoolIndex ascending
-  selectedPoolIndex_ASC
-  # selectedPoolIndex descending
-  selectedPoolIndex_DESC
-  # selectedPoolName ascending
-  selectedPoolName_ASC
-  # selectedPoolName descending
-  selectedPoolName_DESC
-  # sessionAffinityStatus ascending
-  sessionAffinityStatus_ASC
-  # sessionAffinityStatus descending
-  sessionAffinityStatus_DESC
-  # sessionAffinity ascending
-  sessionAffinity_ASC
-  # sessionAffinity descending
-  sessionAffinity_DESC
-  # steeringPolicy ascending
-  steeringPolicy_ASC
-  # steeringPolicy descending
-  steeringPolicy_DESC
-}
-
-type ZoneLoadBalancingRequestsOriginsElem {
-  # Fully qualified domain name of the origin (if available)
-  fqdn: string!
-  # Origin health status
-  health: uint8!
-  # IPv4 Address of the origin
-  ipv4: string!
-  # IPv6 address of the origin
-  ipv6: string!
-  # Origin name
-  originName: string!
-  # All the origins that were returned to the client
-  selected: uint8!
-  # Ratio of traffic that will be distributed to this origin among all origins in the pool
-  weight: float64!
-}
-
-type ZoneLoadBalancingRequestsPoolsElem {
-  # Dynamic Latency: RTT (milliseconds) to reach the origin pool
-  avgRttMs: uint64!
-  # Health checks status
-  healthCheckEnabled: uint8!
-  # Pool health status
-  healthy: uint8!
-  # A unique identifier for the pool
-  id: string!
-  # Pool name
-  poolName: string!
-}
-
 # Data to visualize network error logs
 type ZoneNelReportsAdaptiveGroups {
   avg: ZoneNelReportsAdaptiveGroupsAvg
@@ -22010,10 +21528,8 @@ type ZoneSettings {
   httpRequests1mGroups: Settings!
   httpRequestsAdaptiveGroups: Settings!
   imageResizingRequests1mGroups: Settings!
-  loadBalancingRequests: Settings!
   loadBalancingRequestsAdaptive: Settings!
   loadBalancingRequestsAdaptiveGroups: Settings!
-  loadBalancingRequestsGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   synAvgPps1mGroups: Settings!
 }
