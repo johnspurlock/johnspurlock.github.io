@@ -22,6 +22,7 @@ Account-level datasets:
   magicTransitNetworkAnalyticsAdaptiveGroups
   magicTransitTunnelHealthChecksAdaptiveGroups
   nelReportsAdaptiveGroups
+* pagesFunctionsInvocationsAdaptiveGroups
 * rumPageloadEventsAdaptiveGroups
 * rumPerformanceEventsAdaptiveGroups
 * rumWebVitalsEventsAdaptive
@@ -140,6 +141,8 @@ type account {
   magicTransitTunnelHealthChecksAdaptiveGroups(filter: AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy!]): [AccountMagicTransitTunnelHealthChecksAdaptiveGroups!]!
   # Data to visualize network error logs
   nelReportsAdaptiveGroups(filter: AccountNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountNelReportsAdaptiveGroupsOrderBy!]): [AccountNelReportsAdaptiveGroups!]!
+  # Pages Functions invocations with adaptive sampling
+  pagesFunctionsInvocationsAdaptiveGroups(filter: AccountPagesFunctionsInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy!]): [AccountPagesFunctionsInvocationsAdaptiveGroups!]!
   # Beta. Aggregated RUM pageload event metrics with adaptive sampling
   rumPageloadEventsAdaptiveGroups(filter: AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountRumPageloadEventsAdaptiveGroupsOrderBy!]): [AccountRumPageloadEventsAdaptiveGroups!]!
   # Beta. Aggregated RUM performance event metrics with adaptive sampling
@@ -11328,6 +11331,166 @@ enum AccountNelReportsAdaptiveGroupsOrderBy {
   type_DESC
 }
 
+# Pages Functions invocations with adaptive sampling
+type AccountPagesFunctionsInvocationsAdaptiveGroups {
+  avg: AccountPagesFunctionsInvocationsAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountPagesFunctionsInvocationsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountPagesFunctionsInvocationsAdaptiveGroupsSum
+}
+
+type AccountPagesFunctionsInvocationsAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountPagesFunctionsInvocationsAdaptiveGroupsDimensions {
+  # Request datetime, truncated to start of a day
+  date: Date!
+  # Request datetime
+  datetime: Time!
+  # Request datetime, truncated to start of an hour
+  datetimeHour: Time!
+  # Request datetime, truncated to start of an minute
+  datetimeMinute: Time!
+  # The name of the script
+  scriptName: string!
+  # Status of the worker invocation
+  status: string!
+}
+
+input AccountPagesFunctionsInvocationsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountPagesFunctionsInvocationsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountPagesFunctionsInvocationsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  scriptName: string
+  scriptName_geq: string
+  scriptName_gt: string
+  scriptName_in: [string!]
+  scriptName_leq: string
+  scriptName_like: string
+  scriptName_lt: string
+  scriptName_neq: string
+  scriptName_notin: [string!]
+  scriptName_notlike: string
+  status: string
+  status_geq: string
+  status_gt: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
+}
+
+enum AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # scriptName ascending
+  scriptName_ASC
+  # scriptName descending
+  scriptName_DESC
+  # stableId ascending
+  stableId_ASC
+  # stableId descending
+  stableId_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # sum(duration) ascending
+  sum_duration_ASC
+  # sum(duration) descending
+  sum_duration_DESC
+  # sum(errors) ascending
+  sum_errors_ASC
+  # sum(errors) descending
+  sum_errors_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # sum(responseBodySize) ascending
+  sum_responseBodySize_ASC
+  # sum(responseBodySize) descending
+  sum_responseBodySize_DESC
+  # sum(subrequests) ascending
+  sum_subrequests_ASC
+  # sum(subrequests) descending
+  sum_subrequests_DESC
+  # sum(wallTime) ascending
+  sum_wallTime_ASC
+  # sum(wallTime) descending
+  sum_wallTime_DESC
+}
+
+type AccountPagesFunctionsInvocationsAdaptiveGroupsSum {
+  # Sum of Duration - GB*s
+  duration: float64!
+  # Sum of Errors
+  errors: uint64!
+  # Sum of Requests
+  requests: uint64!
+  # Sum of Response Body Sizes
+  responseBodySize: uint64!
+  # Sum of Subrequests
+  subrequests: uint64!
+  # Sum of Wall Time
+  wallTime: uint64!
+}
+
 # Beta. Aggregated RUM pageload event metrics with adaptive sampling
 type AccountRumPageloadEventsAdaptiveGroups {
   avg: AccountRumPageloadEventsAdaptiveGroupsAvg
@@ -13318,6 +13481,7 @@ type AccountSettings {
   magicTransitNetworkAnalyticsAdaptiveGroups: Settings!
   magicTransitTunnelHealthChecksAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
+  pagesFunctionsInvocationsAdaptiveGroups: Settings!
   rumPageloadEventsAdaptiveGroups: Settings!
   rumPerformanceEventsAdaptiveGroups: Settings!
   rumWebVitalsEventsAdaptive: Settings!
@@ -15962,6 +16126,8 @@ type ZoneFirewallEventsAdaptive {
   edgeColoName: string!
   # HTTP response status code returned to browser
   edgeResponseStatus: uint16!
+  # MD5 hash of the JA3 TLS fingerprint
+  ja3Hash: string!
   # The kind of event, currently only possible values are: firewall
   kind: string!
   # Rules match index in the chain
@@ -16019,6 +16185,8 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   datetimeHour: Time!
   # The date and time the event occurred at the edge truncated to the minute
   datetimeMinute: Time!
+  # MD5 hash of the JA3 TLS fingerprint
+  ja3Hash: string!
 }
 
 input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
@@ -16268,6 +16436,16 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   edgeResponseStatus_lt: uint16
   edgeResponseStatus_neq: uint16
   edgeResponseStatus_notin: [uint16!]
+  ja3Hash: string
+  ja3Hash_geq: string
+  ja3Hash_gt: string
+  ja3Hash_in: [string!]
+  ja3Hash_leq: string
+  ja3Hash_like: string
+  ja3Hash_lt: string
+  ja3Hash_neq: string
+  ja3Hash_notin: [string!]
+  ja3Hash_notlike: string
   kind: string
   kind_geq: string
   kind_gt: string
@@ -16415,6 +16593,10 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # ja3Hash ascending
+  ja3Hash_ASC
+  # ja3Hash descending
+  ja3Hash_DESC
   # visibility ascending
   visibility_ASC
   # visibility descending
@@ -16668,6 +16850,16 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   edgeResponseStatus_lt: uint16
   edgeResponseStatus_neq: uint16
   edgeResponseStatus_notin: [uint16!]
+  ja3Hash: string
+  ja3Hash_geq: string
+  ja3Hash_gt: string
+  ja3Hash_in: [string!]
+  ja3Hash_leq: string
+  ja3Hash_like: string
+  ja3Hash_lt: string
+  ja3Hash_neq: string
+  ja3Hash_notin: [string!]
+  ja3Hash_notlike: string
   kind: string
   kind_geq: string
   kind_gt: string
@@ -16841,6 +17033,8 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   edgeColoName: string!
   # HTTP response status code returned to browser
   edgeResponseStatus: uint16!
+  # MD5 hash of the JA3 TLS fingerprint
+  ja3Hash: string!
   # The kind of event, currently only possible values are: firewall
   kind: string!
   # Rules match index in the chain
@@ -17112,6 +17306,16 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   edgeResponseStatus_lt: uint16
   edgeResponseStatus_neq: uint16
   edgeResponseStatus_notin: [uint16!]
+  ja3Hash: string
+  ja3Hash_geq: string
+  ja3Hash_gt: string
+  ja3Hash_in: [string!]
+  ja3Hash_leq: string
+  ja3Hash_like: string
+  ja3Hash_lt: string
+  ja3Hash_neq: string
+  ja3Hash_notin: [string!]
+  ja3Hash_notlike: string
   kind: string
   kind_geq: string
   kind_gt: string
@@ -17331,6 +17535,10 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   edgeResponseStatus_ASC
   # edgeResponseStatus descending
   edgeResponseStatus_DESC
+  # ja3Hash ascending
+  ja3Hash_ASC
+  # ja3Hash descending
+  ja3Hash_DESC
   # kind ascending
   kind_ASC
   # kind descending
@@ -17493,6 +17701,10 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   edgeResponseStatus_ASC
   # edgeResponseStatus descending
   edgeResponseStatus_DESC
+  # ja3Hash ascending
+  ja3Hash_ASC
+  # ja3Hash descending
+  ja3Hash_DESC
   # kind ascending
   kind_ASC
   # kind descending
@@ -19782,6 +19994,8 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   edgeResponseContentTypeName: string!
   edgeResponseStatus: uint16!
+  # MD5 hash of the JA3 TLS fingerprint
+  ja3Hash: string!
   originASN: uint32!
   # ASN associated with origin
   originASNDescription: string!
@@ -20064,6 +20278,16 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   edgeResponseStatus_lt: uint16
   edgeResponseStatus_neq: uint16
   edgeResponseStatus_notin: [uint16!]
+  ja3Hash: string
+  ja3Hash_geq: string
+  ja3Hash_gt: string
+  ja3Hash_in: [string!]
+  ja3Hash_leq: string
+  ja3Hash_like: string
+  ja3Hash_lt: string
+  ja3Hash_neq: string
+  ja3Hash_notin: [string!]
+  ja3Hash_notlike: string
   originASN: uint32
   originASNDescription: string
   originASNDescription_geq: string
@@ -20281,6 +20505,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   edgeResponseStatus_ASC
   # edgeResponseStatus descending
   edgeResponseStatus_DESC
+  # ja3Hash ascending
+  ja3Hash_ASC
+  # ja3Hash descending
+  ja3Hash_DESC
   # originASNDescription ascending
   originASNDescription_ASC
   # originASNDescription descending
