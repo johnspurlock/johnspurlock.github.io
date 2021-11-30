@@ -9502,16 +9502,16 @@
 <span class="k">type</span> <a id="AccountMagicFirewallSamplesAdaptiveGroups" href="#AccountMagicFirewallSamplesAdaptiveGroups">AccountMagicFirewallSamplesAdaptiveGroups</a> {<br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#AccountMagicFirewallSamplesAdaptiveGroupsDimensions">AccountMagicFirewallSamplesAdaptiveGroupsDimensions</a><br />
-&nbsp;&nbsp;<span class="c"># per dimension sum of values</span><br />
+&nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
 &nbsp;&nbsp;sum: <a href="#AccountMagicFirewallSamplesAdaptiveGroupsSum">AccountMagicFirewallSamplesAdaptiveGroupsSum</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountMagicFirewallSamplesAdaptiveGroupsDimensions" href="#AccountMagicFirewallSamplesAdaptiveGroupsDimensions">AccountMagicFirewallSamplesAdaptiveGroupsDimensions</a> {<br />
-&nbsp;&nbsp;<span class="c"># Date and Time of the event</span><br />
+&nbsp;&nbsp;<span class="c"># Date and time that the packet was received</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
-&nbsp;&nbsp;<span class="c"># timestamps rounded off to the 5 minute intervals</span><br />
+&nbsp;&nbsp;<span class="c"># Date and time that the packet was received, rounded to the start of the nearest five minutes</span><br />
 &nbsp;&nbsp;datetimeFiveMinute: <a href="#Time">Time!</a><br />
-&nbsp;&nbsp;<span class="c"># identifier of a rule</span><br />
+&nbsp;&nbsp;<span class="c"># Unique identifier of the rule that matched the packet, if any</span><br />
 &nbsp;&nbsp;ruleId: <a href="#string">string!</a><br />
 }<br />
 <br />
@@ -9567,12 +9567,16 @@
 &nbsp;&nbsp;sum_packets_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(packets) descending</span><br />
 &nbsp;&nbsp;sum_packets_DESC<br />
+&nbsp;&nbsp;<span class="c"># system ascending</span><br />
+&nbsp;&nbsp;system_ASC<br />
+&nbsp;&nbsp;<span class="c"># system descending</span><br />
+&nbsp;&nbsp;system_DESC<br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountMagicFirewallSamplesAdaptiveGroupsSum" href="#AccountMagicFirewallSamplesAdaptiveGroupsSum">AccountMagicFirewallSamplesAdaptiveGroupsSum</a> {<br />
-&nbsp;&nbsp;<span class="c"># number of  bits that match a filter</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received</span><br />
 &nbsp;&nbsp;bits: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># number of packets that match a filter</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received</span><br />
 &nbsp;&nbsp;packets: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />

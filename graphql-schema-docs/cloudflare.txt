@@ -9552,16 +9552,16 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsSum {
 type AccountMagicFirewallSamplesAdaptiveGroups {
   # List of dimensions to group by
   dimensions: AccountMagicFirewallSamplesAdaptiveGroupsDimensions
-  # per dimension sum of values
+  # The sum of values for a metric per dimension
   sum: AccountMagicFirewallSamplesAdaptiveGroupsSum
 }
 
 type AccountMagicFirewallSamplesAdaptiveGroupsDimensions {
-  # Date and Time of the event
+  # Date and time that the packet was received
   datetime: Time!
-  # timestamps rounded off to the 5 minute intervals
+  # Date and time that the packet was received, rounded to the start of the nearest five minutes
   datetimeFiveMinute: Time!
-  # identifier of a rule
+  # Unique identifier of the rule that matched the packet, if any
   ruleId: string!
 }
 
@@ -9617,12 +9617,16 @@ enum AccountMagicFirewallSamplesAdaptiveGroupsOrderBy {
   sum_packets_ASC
   # sum(packets) descending
   sum_packets_DESC
+  # system ascending
+  system_ASC
+  # system descending
+  system_DESC
 }
 
 type AccountMagicFirewallSamplesAdaptiveGroupsSum {
-  # number of  bits that match a filter
+  # Sum of bits received
   bits: uint64!
-  # number of packets that match a filter
+  # Sum of packets received
   packets: uint64!
 }
 
