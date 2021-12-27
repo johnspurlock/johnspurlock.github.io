@@ -13,6 +13,7 @@ Account-level datasets:
 * httpRequests1hGroups
   httpRequests1mGroups
 * httpRequestsOverviewAdaptiveGroups
+* imagesRequestsAdaptiveGroups
   ipFlows1dGroups
   ipFlows1hGroups
   ipFlows1mAttacksGroups
@@ -123,6 +124,8 @@ type account {
   httpRequests1mGroups(filter: AccountHttpRequests1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHttpRequests1mGroupsOrderBy!]): [AccountHttpRequests1mGroups!]!
   # A high-level summary of HTTP requests made by end users.
   httpRequestsOverviewAdaptiveGroups(filter: AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHttpRequestsOverviewAdaptiveGroupsOrderBy!]): [AccountHttpRequestsOverviewAdaptiveGroups!]!
+  # A high-level summary of Cloudflare Images served to end users.
+  imagesRequestsAdaptiveGroups(filter: AccountImagesRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesRequestsAdaptiveGroupsOrderBy!]): [AccountImagesRequestsAdaptiveGroups!]!
   # Beta. Daily rollups of IP flows
   ipFlows1dGroups(filter: AccountIpFlows1dGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountIpFlows1dGroupsOrderBy!]): [AccountIpFlows1dGroups!]!
   # Beta. Hourly rollups of IP flows
@@ -6747,6 +6750,131 @@ type AccountHttpRequestsOverviewAdaptiveGroupsSum {
   requests: uint64!
   # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
   visits: uint64!
+}
+
+# A high-level summary of Cloudflare Images served to end users.
+type AccountImagesRequestsAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountImagesRequestsAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountImagesRequestsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountImagesRequestsAdaptiveGroupsSum
+}
+
+type AccountImagesRequestsAdaptiveGroupsAvg {
+  requests: float64!
+}
+
+type AccountImagesRequestsAdaptiveGroupsDimensions {
+  # The date the event occurred at the edge
+  date: Date!
+  # The date and time the event occurred at the edge
+  datetime: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the event occurred at the edge truncated to hours
+  datetimeHour: Time!
+  # The date and time the event occurred at the edge truncated to the minute
+  datetimeMinute: Time!
+}
+
+input AccountImagesRequestsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountImagesRequestsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountImagesRequestsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+}
+
+enum AccountImagesRequestsAdaptiveGroupsOrderBy {
+  # avg(requests) ascending
+  avg_requests_ASC
+  # avg(requests) descending
+  avg_requests_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # edgeResponseStatus ascending
+  edgeResponseStatus_ASC
+  # edgeResponseStatus descending
+  edgeResponseStatus_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+}
+
+type AccountImagesRequestsAdaptiveGroupsSum {
+  requests: uint64!
 }
 
 # Beta. Daily rollups of IP flows
@@ -13540,6 +13668,7 @@ type AccountSettings {
   httpRequests1hGroups: Settings!
   httpRequests1mGroups: Settings!
   httpRequestsOverviewAdaptiveGroups: Settings!
+  imagesRequestsAdaptiveGroups: Settings!
   ipFlows1dGroups: Settings!
   ipFlows1hGroups: Settings!
   ipFlows1mAttacksGroups: Settings!
