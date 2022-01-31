@@ -134,6 +134,8 @@
 <span class="k">type</span> <a id="AccountCdnNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountCdnNetworkAnalyticsAdaptiveGroupsAvg">AccountCdnNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
 &nbsp;&nbsp;bitRate: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date</span><br />
+&nbsp;&nbsp;bitRateDay: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
@@ -146,6 +148,8 @@
 &nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
 &nbsp;&nbsp;packetRate: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date</span><br />
+&nbsp;&nbsp;packetRateDay: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
@@ -169,6 +173,8 @@
 &nbsp;&nbsp;coloGeohash: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Cloudflare datacenter that received the packet (unique site identifier)</span><br />
 &nbsp;&nbsp;coloName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Date that the packet was received</span><br />
+&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># Date and time that the packet was received</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Date and time that the packet was received, rounded to the start of the nearest fifteen minutes</span><br />
@@ -360,6 +366,14 @@
 &nbsp;&nbsp;coloName_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloName_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;coloName_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_geq: <a href="#Time">Time</a><br />
@@ -939,6 +953,10 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy" href="#AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy">AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateDay) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateDay_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateDay) descending</span><br />
+&nbsp;&nbsp;avg_bitRateDay_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_bitRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) descending</span><br />
@@ -963,6 +981,10 @@
 &nbsp;&nbsp;avg_bitRate_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRate) descending</span><br />
 &nbsp;&nbsp;avg_bitRate_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateDay) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateDay_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateDay) descending</span><br />
+&nbsp;&nbsp;avg_packetRateDay_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
@@ -1007,6 +1029,10 @@
 &nbsp;&nbsp;coloName_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloName descending</span><br />
 &nbsp;&nbsp;coloName_DESC<br />
+&nbsp;&nbsp;<span class="c"># date ascending</span><br />
+&nbsp;&nbsp;date_ASC<br />
+&nbsp;&nbsp;<span class="c"># date descending</span><br />
+&nbsp;&nbsp;date_DESC<br />
 &nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes ascending</span><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes descending</span><br />
@@ -1317,6 +1343,8 @@
 <span class="k">type</span> <a id="AccountDosdAttackAnalyticsAdaptiveGroupsAvg" href="#AccountDosdAttackAnalyticsAdaptiveGroupsAvg">AccountDosdAttackAnalyticsAdaptiveGroupsAvg</a> {<br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
 &nbsp;&nbsp;bitRate: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date</span><br />
+&nbsp;&nbsp;bitRateDay: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
@@ -1329,6 +1357,8 @@
 &nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
 &nbsp;&nbsp;packetRate: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date</span><br />
+&nbsp;&nbsp;packetRateDay: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
@@ -1390,6 +1420,8 @@
 &nbsp;&nbsp;coloGeohash: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Cloudflare datacenter that received the packet (unique site identifier)</span><br />
 &nbsp;&nbsp;coloName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Date that the packet was received</span><br />
+&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># Date and time that the packet was received</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Date and time that the packet was received, rounded to the start of the nearest fifteen minutes</span><br />
@@ -1655,6 +1687,14 @@
 &nbsp;&nbsp;coloName_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloName_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;coloName_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_geq: <a href="#Time">Time</a><br />
@@ -1906,6 +1946,10 @@
 &nbsp;&nbsp;attackType_ASC<br />
 &nbsp;&nbsp;<span class="c"># attackType descending</span><br />
 &nbsp;&nbsp;attackType_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateDay) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateDay_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateDay) descending</span><br />
+&nbsp;&nbsp;avg_bitRateDay_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_bitRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) descending</span><br />
@@ -1930,6 +1974,10 @@
 &nbsp;&nbsp;avg_bitRate_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRate) descending</span><br />
 &nbsp;&nbsp;avg_bitRate_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateDay) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateDay_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateDay) descending</span><br />
+&nbsp;&nbsp;avg_packetRateDay_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
@@ -1974,6 +2022,10 @@
 &nbsp;&nbsp;coloName_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloName descending</span><br />
 &nbsp;&nbsp;coloName_DESC<br />
+&nbsp;&nbsp;<span class="c"># date ascending</span><br />
+&nbsp;&nbsp;date_ASC<br />
+&nbsp;&nbsp;<span class="c"># date descending</span><br />
+&nbsp;&nbsp;date_DESC<br />
 &nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes ascending</span><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes descending</span><br />
@@ -2084,6 +2136,8 @@
 <span class="k">type</span> <a id="AccountDosdNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountDosdNetworkAnalyticsAdaptiveGroupsAvg">AccountDosdNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
 &nbsp;&nbsp;bitRate: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date</span><br />
+&nbsp;&nbsp;bitRateDay: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
@@ -2096,6 +2150,8 @@
 &nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
 &nbsp;&nbsp;packetRate: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date</span><br />
+&nbsp;&nbsp;packetRateDay: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
@@ -2121,6 +2177,8 @@
 &nbsp;&nbsp;coloGeohash: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Cloudflare datacenter that received the packet (unique site identifier)</span><br />
 &nbsp;&nbsp;coloName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Date that the packet was received</span><br />
+&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># Date and time that the packet was received</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Date and time that the packet was received, rounded to the start of the nearest fifteen minutes</span><br />
@@ -2334,6 +2392,14 @@
 &nbsp;&nbsp;coloName_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloName_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;coloName_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_geq: <a href="#Time">Time</a><br />
@@ -2977,6 +3043,10 @@
 &nbsp;&nbsp;attackId_ASC<br />
 &nbsp;&nbsp;<span class="c"># attackId descending</span><br />
 &nbsp;&nbsp;attackId_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateDay) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateDay_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateDay) descending</span><br />
+&nbsp;&nbsp;avg_bitRateDay_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_bitRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) descending</span><br />
@@ -3001,6 +3071,10 @@
 &nbsp;&nbsp;avg_bitRate_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRate) descending</span><br />
 &nbsp;&nbsp;avg_bitRate_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateDay) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateDay_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateDay) descending</span><br />
+&nbsp;&nbsp;avg_packetRateDay_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
@@ -3045,6 +3119,10 @@
 &nbsp;&nbsp;coloName_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloName descending</span><br />
 &nbsp;&nbsp;coloName_DESC<br />
+&nbsp;&nbsp;<span class="c"># date ascending</span><br />
+&nbsp;&nbsp;date_ASC<br />
+&nbsp;&nbsp;<span class="c"># date descending</span><br />
+&nbsp;&nbsp;date_DESC<br />
 &nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes ascending</span><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes descending</span><br />
@@ -4059,6 +4137,8 @@
 <span class="k">type</span> <a id="AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg">AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
 &nbsp;&nbsp;bitRate: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date</span><br />
+&nbsp;&nbsp;bitRateDay: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
@@ -4071,6 +4151,8 @@
 &nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
 &nbsp;&nbsp;packetRate: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date</span><br />
+&nbsp;&nbsp;packetRateDay: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
@@ -4094,6 +4176,8 @@
 &nbsp;&nbsp;coloGeohash: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Cloudflare datacenter that received the packet (unique site identifier)</span><br />
 &nbsp;&nbsp;coloName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Date that the packet was received</span><br />
+&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># Date and time that the packet was received</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Date and time that the packet was received, rounded to the start of the nearest fifteen minutes</span><br />
@@ -4291,6 +4375,14 @@
 &nbsp;&nbsp;coloName_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloName_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;coloName_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_geq: <a href="#Time">Time</a><br />
@@ -4900,6 +4992,10 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy" href="#AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy">AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateDay) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateDay_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateDay) descending</span><br />
+&nbsp;&nbsp;avg_bitRateDay_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_bitRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) descending</span><br />
@@ -4924,6 +5020,10 @@
 &nbsp;&nbsp;avg_bitRate_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRate) descending</span><br />
 &nbsp;&nbsp;avg_bitRate_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateDay) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateDay_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateDay) descending</span><br />
+&nbsp;&nbsp;avg_packetRateDay_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
@@ -4968,6 +5068,10 @@
 &nbsp;&nbsp;coloName_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloName descending</span><br />
 &nbsp;&nbsp;coloName_DESC<br />
+&nbsp;&nbsp;<span class="c"># date ascending</span><br />
+&nbsp;&nbsp;date_ASC<br />
+&nbsp;&nbsp;<span class="c"># date descending</span><br />
+&nbsp;&nbsp;date_DESC<br />
 &nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes ascending</span><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes descending</span><br />
@@ -8427,6 +8531,8 @@
 <span class="k">type</span> <a id="AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg">AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
 &nbsp;&nbsp;bitRate: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date</span><br />
+&nbsp;&nbsp;bitRateDay: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
@@ -8439,6 +8545,8 @@
 &nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
 &nbsp;&nbsp;packetRate: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date</span><br />
+&nbsp;&nbsp;packetRateDay: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
@@ -8462,6 +8570,8 @@
 &nbsp;&nbsp;coloGeohash: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Cloudflare datacenter that received the packet (unique site identifier)</span><br />
 &nbsp;&nbsp;coloName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Date that the packet was received</span><br />
+&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># Date and time that the packet was received</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Date and time that the packet was received, rounded to the start of the nearest fifteen minutes</span><br />
@@ -8657,6 +8767,14 @@
 &nbsp;&nbsp;coloName_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloName_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;coloName_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_geq: <a href="#Time">Time</a><br />
@@ -9256,6 +9374,10 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy" href="#AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy">AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateDay) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateDay_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateDay) descending</span><br />
+&nbsp;&nbsp;avg_bitRateDay_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_bitRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) descending</span><br />
@@ -9280,6 +9402,10 @@
 &nbsp;&nbsp;avg_bitRate_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRate) descending</span><br />
 &nbsp;&nbsp;avg_bitRate_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateDay) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateDay_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateDay) descending</span><br />
+&nbsp;&nbsp;avg_packetRateDay_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
@@ -9324,6 +9450,10 @@
 &nbsp;&nbsp;coloName_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloName descending</span><br />
 &nbsp;&nbsp;coloName_DESC<br />
+&nbsp;&nbsp;<span class="c"># date ascending</span><br />
+&nbsp;&nbsp;date_ASC<br />
+&nbsp;&nbsp;<span class="c"># date descending</span><br />
+&nbsp;&nbsp;date_DESC<br />
 &nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes ascending</span><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes descending</span><br />
@@ -9720,6 +9850,8 @@
 <span class="k">type</span> <a id="AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg">AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
 &nbsp;&nbsp;bitRate: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date</span><br />
+&nbsp;&nbsp;bitRateDay: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
@@ -9732,6 +9864,8 @@
 &nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
 &nbsp;&nbsp;packetRate: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date</span><br />
+&nbsp;&nbsp;packetRateDay: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
@@ -9755,6 +9889,8 @@
 &nbsp;&nbsp;coloGeohash: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Cloudflare datacenter that received the packet (unique site identifier)</span><br />
 &nbsp;&nbsp;coloName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Date that the packet was received</span><br />
+&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># Date and time that the packet was received</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Date and time that the packet was received, rounded to the start of the nearest fifteen minutes</span><br />
@@ -9946,6 +10082,14 @@
 &nbsp;&nbsp;coloName_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloName_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;coloName_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_geq: <a href="#Time">Time</a><br />
@@ -10525,6 +10669,10 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy" href="#AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy">AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateDay) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateDay_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateDay) descending</span><br />
+&nbsp;&nbsp;avg_bitRateDay_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_bitRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) descending</span><br />
@@ -10549,6 +10697,10 @@
 &nbsp;&nbsp;avg_bitRate_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRate) descending</span><br />
 &nbsp;&nbsp;avg_bitRate_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateDay) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateDay_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateDay) descending</span><br />
+&nbsp;&nbsp;avg_packetRateDay_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
@@ -10593,6 +10745,10 @@
 &nbsp;&nbsp;coloName_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloName descending</span><br />
 &nbsp;&nbsp;coloName_DESC<br />
+&nbsp;&nbsp;<span class="c"># date ascending</span><br />
+&nbsp;&nbsp;date_ASC<br />
+&nbsp;&nbsp;<span class="c"># date descending</span><br />
+&nbsp;&nbsp;date_DESC<br />
 &nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes ascending</span><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes descending</span><br />
@@ -13654,6 +13810,8 @@
 <span class="k">type</span> <a id="AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg" href="#AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg">AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg</a> {<br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime</span><br />
 &nbsp;&nbsp;bitRate: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date</span><br />
+&nbsp;&nbsp;bitRateDay: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;bitRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes</span><br />
@@ -13666,6 +13824,8 @@
 &nbsp;&nbsp;bitRateTenSeconds: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime</span><br />
 &nbsp;&nbsp;packetRate: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date</span><br />
+&nbsp;&nbsp;packetRateDay: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes</span><br />
 &nbsp;&nbsp;packetRateFifteenMinutes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes</span><br />
@@ -13689,6 +13849,8 @@
 &nbsp;&nbsp;coloGeohash: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Cloudflare datacenter that received the packet (unique site identifier)</span><br />
 &nbsp;&nbsp;coloName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Date that the packet was received</span><br />
+&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># Date and time that the packet was received</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Date and time that the packet was received, rounded to the start of the nearest fifteen minutes</span><br />
@@ -13880,6 +14042,14 @@
 &nbsp;&nbsp;coloName_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloName_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;coloName_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_geq: <a href="#Time">Time</a><br />
@@ -14459,6 +14629,10 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy" href="#AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy">AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateDay) ascending</span><br />
+&nbsp;&nbsp;avg_bitRateDay_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(bitRateDay) descending</span><br />
+&nbsp;&nbsp;avg_bitRateDay_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_bitRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateFifteenMinutes) descending</span><br />
@@ -14483,6 +14657,10 @@
 &nbsp;&nbsp;avg_bitRate_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRate) descending</span><br />
 &nbsp;&nbsp;avg_bitRate_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateDay) ascending</span><br />
+&nbsp;&nbsp;avg_packetRateDay_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(packetRateDay) descending</span><br />
+&nbsp;&nbsp;avg_packetRateDay_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) ascending</span><br />
 &nbsp;&nbsp;avg_packetRateFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRateFifteenMinutes) descending</span><br />
@@ -14527,6 +14705,10 @@
 &nbsp;&nbsp;coloName_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloName descending</span><br />
 &nbsp;&nbsp;coloName_DESC<br />
+&nbsp;&nbsp;<span class="c"># date ascending</span><br />
+&nbsp;&nbsp;date_ASC<br />
+&nbsp;&nbsp;<span class="c"># date descending</span><br />
+&nbsp;&nbsp;date_DESC<br />
 &nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes ascending</span><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes descending</span><br />

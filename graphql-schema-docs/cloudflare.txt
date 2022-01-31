@@ -185,6 +185,8 @@ type AccountCdnNetworkAnalyticsAdaptiveGroups {
 type AccountCdnNetworkAnalyticsAdaptiveGroupsAvg {
   # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
   bitRate: uint64!
+  # Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date
+  bitRateDay: uint64!
   # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
   bitRateFifteenMinutes: uint64!
   # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
@@ -197,6 +199,8 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsAvg {
   bitRateTenSeconds: uint64!
   # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
   packetRate: uint64!
+  # Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date
+  packetRateDay: uint64!
   # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
   packetRateFifteenMinutes: uint64!
   # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
@@ -220,6 +224,8 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
   coloGeohash: string!
   # Cloudflare datacenter that received the packet (unique site identifier)
   coloName: string!
+  # Date that the packet was received
+  date: Date!
   # Date and time that the packet was received
   datetime: Time!
   # Date and time that the packet was received, rounded to the start of the nearest fifteen minutes
@@ -411,6 +417,14 @@ input AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   coloName_neq: string
   coloName_notin: [string!]
   coloName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
   datetime: Time
   datetimeFifteenMinutes: Time
   datetimeFifteenMinutes_geq: Time
@@ -990,6 +1004,10 @@ input AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # avg(bitRateDay) ascending
+  avg_bitRateDay_ASC
+  # avg(bitRateDay) descending
+  avg_bitRateDay_DESC
   # avg(bitRateFifteenMinutes) ascending
   avg_bitRateFifteenMinutes_ASC
   # avg(bitRateFifteenMinutes) descending
@@ -1014,6 +1032,10 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_bitRate_ASC
   # avg(bitRate) descending
   avg_bitRate_DESC
+  # avg(packetRateDay) ascending
+  avg_packetRateDay_ASC
+  # avg(packetRateDay) descending
+  avg_packetRateDay_DESC
   # avg(packetRateFifteenMinutes) ascending
   avg_packetRateFifteenMinutes_ASC
   # avg(packetRateFifteenMinutes) descending
@@ -1058,6 +1080,10 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   coloName_ASC
   # coloName descending
   coloName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
   # datetimeFifteenMinutes ascending
   datetimeFifteenMinutes_ASC
   # datetimeFifteenMinutes descending
@@ -1368,6 +1394,8 @@ type AccountDosdAttackAnalyticsAdaptiveGroups {
 type AccountDosdAttackAnalyticsAdaptiveGroupsAvg {
   # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
   bitRate: uint64!
+  # Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date
+  bitRateDay: uint64!
   # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
   bitRateFifteenMinutes: uint64!
   # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
@@ -1380,6 +1408,8 @@ type AccountDosdAttackAnalyticsAdaptiveGroupsAvg {
   bitRateTenSeconds: uint64!
   # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
   packetRate: uint64!
+  # Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date
+  packetRateDay: uint64!
   # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
   packetRateFifteenMinutes: uint64!
   # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
@@ -1441,6 +1471,8 @@ type AccountDosdAttackAnalyticsAdaptiveGroupsDimensions {
   coloGeohash: string!
   # Cloudflare datacenter that received the packet (unique site identifier)
   coloName: string!
+  # Date that the packet was received
+  date: Date!
   # Date and time that the packet was received
   datetime: Time!
   # Date and time that the packet was received, rounded to the start of the nearest fifteen minutes
@@ -1706,6 +1738,14 @@ input AccountDosdAttackAnalyticsAdaptiveGroupsFilter_InputObject {
   coloName_neq: string
   coloName_notin: [string!]
   coloName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
   datetime: Time
   datetimeFifteenMinutes: Time
   datetimeFifteenMinutes_geq: Time
@@ -1957,6 +1997,10 @@ enum AccountDosdAttackAnalyticsAdaptiveGroupsOrderBy {
   attackType_ASC
   # attackType descending
   attackType_DESC
+  # avg(bitRateDay) ascending
+  avg_bitRateDay_ASC
+  # avg(bitRateDay) descending
+  avg_bitRateDay_DESC
   # avg(bitRateFifteenMinutes) ascending
   avg_bitRateFifteenMinutes_ASC
   # avg(bitRateFifteenMinutes) descending
@@ -1981,6 +2025,10 @@ enum AccountDosdAttackAnalyticsAdaptiveGroupsOrderBy {
   avg_bitRate_ASC
   # avg(bitRate) descending
   avg_bitRate_DESC
+  # avg(packetRateDay) ascending
+  avg_packetRateDay_ASC
+  # avg(packetRateDay) descending
+  avg_packetRateDay_DESC
   # avg(packetRateFifteenMinutes) ascending
   avg_packetRateFifteenMinutes_ASC
   # avg(packetRateFifteenMinutes) descending
@@ -2025,6 +2073,10 @@ enum AccountDosdAttackAnalyticsAdaptiveGroupsOrderBy {
   coloName_ASC
   # coloName descending
   coloName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
   # datetimeFifteenMinutes ascending
   datetimeFifteenMinutes_ASC
   # datetimeFifteenMinutes descending
@@ -2135,6 +2187,8 @@ type AccountDosdNetworkAnalyticsAdaptiveGroups {
 type AccountDosdNetworkAnalyticsAdaptiveGroupsAvg {
   # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
   bitRate: uint64!
+  # Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date
+  bitRateDay: uint64!
   # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
   bitRateFifteenMinutes: uint64!
   # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
@@ -2147,6 +2201,8 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsAvg {
   bitRateTenSeconds: uint64!
   # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
   packetRate: uint64!
+  # Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date
+  packetRateDay: uint64!
   # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
   packetRateFifteenMinutes: uint64!
   # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
@@ -2172,6 +2228,8 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions {
   coloGeohash: string!
   # Cloudflare datacenter that received the packet (unique site identifier)
   coloName: string!
+  # Date that the packet was received
+  date: Date!
   # Date and time that the packet was received
   datetime: Time!
   # Date and time that the packet was received, rounded to the start of the nearest fifteen minutes
@@ -2385,6 +2443,14 @@ input AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   coloName_neq: string
   coloName_notin: [string!]
   coloName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
   datetime: Time
   datetimeFifteenMinutes: Time
   datetimeFifteenMinutes_geq: Time
@@ -3028,6 +3094,10 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   attackId_ASC
   # attackId descending
   attackId_DESC
+  # avg(bitRateDay) ascending
+  avg_bitRateDay_ASC
+  # avg(bitRateDay) descending
+  avg_bitRateDay_DESC
   # avg(bitRateFifteenMinutes) ascending
   avg_bitRateFifteenMinutes_ASC
   # avg(bitRateFifteenMinutes) descending
@@ -3052,6 +3122,10 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_bitRate_ASC
   # avg(bitRate) descending
   avg_bitRate_DESC
+  # avg(packetRateDay) ascending
+  avg_packetRateDay_ASC
+  # avg(packetRateDay) descending
+  avg_packetRateDay_DESC
   # avg(packetRateFifteenMinutes) ascending
   avg_packetRateFifteenMinutes_ASC
   # avg(packetRateFifteenMinutes) descending
@@ -3096,6 +3170,10 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   coloName_ASC
   # coloName descending
   coloName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
   # datetimeFifteenMinutes ascending
   datetimeFifteenMinutes_ASC
   # datetimeFifteenMinutes descending
@@ -4110,6 +4188,8 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroups {
 type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg {
   # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
   bitRate: uint64!
+  # Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date
+  bitRateDay: uint64!
   # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
   bitRateFifteenMinutes: uint64!
   # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
@@ -4122,6 +4202,8 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg {
   bitRateTenSeconds: uint64!
   # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
   packetRate: uint64!
+  # Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date
+  packetRateDay: uint64!
   # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
   packetRateFifteenMinutes: uint64!
   # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
@@ -4145,6 +4227,8 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions {
   coloGeohash: string!
   # Cloudflare datacenter that received the packet (unique site identifier)
   coloName: string!
+  # Date that the packet was received
+  date: Date!
   # Date and time that the packet was received
   datetime: Time!
   # Date and time that the packet was received, rounded to the start of the nearest fifteen minutes
@@ -4342,6 +4426,14 @@ input AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   coloName_neq: string
   coloName_notin: [string!]
   coloName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
   datetime: Time
   datetimeFifteenMinutes: Time
   datetimeFifteenMinutes_geq: Time
@@ -4951,6 +5043,10 @@ input AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # avg(bitRateDay) ascending
+  avg_bitRateDay_ASC
+  # avg(bitRateDay) descending
+  avg_bitRateDay_DESC
   # avg(bitRateFifteenMinutes) ascending
   avg_bitRateFifteenMinutes_ASC
   # avg(bitRateFifteenMinutes) descending
@@ -4975,6 +5071,10 @@ enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_bitRate_ASC
   # avg(bitRate) descending
   avg_bitRate_DESC
+  # avg(packetRateDay) ascending
+  avg_packetRateDay_ASC
+  # avg(packetRateDay) descending
+  avg_packetRateDay_DESC
   # avg(packetRateFifteenMinutes) ascending
   avg_packetRateFifteenMinutes_ASC
   # avg(packetRateFifteenMinutes) descending
@@ -5019,6 +5119,10 @@ enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
   coloName_ASC
   # coloName descending
   coloName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
   # datetimeFifteenMinutes ascending
   datetimeFifteenMinutes_ASC
   # datetimeFifteenMinutes descending
@@ -8478,6 +8582,8 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroups {
 type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg {
   # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
   bitRate: uint64!
+  # Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date
+  bitRateDay: uint64!
   # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
   bitRateFifteenMinutes: uint64!
   # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
@@ -8490,6 +8596,8 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg {
   bitRateTenSeconds: uint64!
   # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
   packetRate: uint64!
+  # Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date
+  packetRateDay: uint64!
   # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
   packetRateFifteenMinutes: uint64!
   # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
@@ -8513,6 +8621,8 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions {
   coloGeohash: string!
   # Cloudflare datacenter that received the packet (unique site identifier)
   coloName: string!
+  # Date that the packet was received
+  date: Date!
   # Date and time that the packet was received
   datetime: Time!
   # Date and time that the packet was received, rounded to the start of the nearest fifteen minutes
@@ -8708,6 +8818,14 @@ input AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   coloName_neq: string
   coloName_notin: [string!]
   coloName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
   datetime: Time
   datetimeFifteenMinutes: Time
   datetimeFifteenMinutes_geq: Time
@@ -9307,6 +9425,10 @@ input AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # avg(bitRateDay) ascending
+  avg_bitRateDay_ASC
+  # avg(bitRateDay) descending
+  avg_bitRateDay_DESC
   # avg(bitRateFifteenMinutes) ascending
   avg_bitRateFifteenMinutes_ASC
   # avg(bitRateFifteenMinutes) descending
@@ -9331,6 +9453,10 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_bitRate_ASC
   # avg(bitRate) descending
   avg_bitRate_DESC
+  # avg(packetRateDay) ascending
+  avg_packetRateDay_ASC
+  # avg(packetRateDay) descending
+  avg_packetRateDay_DESC
   # avg(packetRateFifteenMinutes) ascending
   avg_packetRateFifteenMinutes_ASC
   # avg(packetRateFifteenMinutes) descending
@@ -9375,6 +9501,10 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   coloName_ASC
   # coloName descending
   coloName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
   # datetimeFifteenMinutes ascending
   datetimeFifteenMinutes_ASC
   # datetimeFifteenMinutes descending
@@ -9771,6 +9901,8 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroups {
 type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg {
   # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
   bitRate: uint64!
+  # Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date
+  bitRateDay: uint64!
   # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
   bitRateFifteenMinutes: uint64!
   # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
@@ -9783,6 +9915,8 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg {
   bitRateTenSeconds: uint64!
   # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
   packetRate: uint64!
+  # Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date
+  packetRateDay: uint64!
   # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
   packetRateFifteenMinutes: uint64!
   # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
@@ -9806,6 +9940,8 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
   coloGeohash: string!
   # Cloudflare datacenter that received the packet (unique site identifier)
   coloName: string!
+  # Date that the packet was received
+  date: Date!
   # Date and time that the packet was received
   datetime: Time!
   # Date and time that the packet was received, rounded to the start of the nearest fifteen minutes
@@ -9997,6 +10133,14 @@ input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   coloName_neq: string
   coloName_notin: [string!]
   coloName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
   datetime: Time
   datetimeFifteenMinutes: Time
   datetimeFifteenMinutes_geq: Time
@@ -10576,6 +10720,10 @@ input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # avg(bitRateDay) ascending
+  avg_bitRateDay_ASC
+  # avg(bitRateDay) descending
+  avg_bitRateDay_DESC
   # avg(bitRateFifteenMinutes) ascending
   avg_bitRateFifteenMinutes_ASC
   # avg(bitRateFifteenMinutes) descending
@@ -10600,6 +10748,10 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_bitRate_ASC
   # avg(bitRate) descending
   avg_bitRate_DESC
+  # avg(packetRateDay) ascending
+  avg_packetRateDay_ASC
+  # avg(packetRateDay) descending
+  avg_packetRateDay_DESC
   # avg(packetRateFifteenMinutes) ascending
   avg_packetRateFifteenMinutes_ASC
   # avg(packetRateFifteenMinutes) descending
@@ -10644,6 +10796,10 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   coloName_ASC
   # coloName descending
   coloName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
   # datetimeFifteenMinutes ascending
   datetimeFifteenMinutes_ASC
   # datetimeFifteenMinutes descending
@@ -13705,6 +13861,8 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroups {
 type AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg {
   # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
   bitRate: uint64!
+  # Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date
+  bitRateDay: uint64!
   # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
   bitRateFifteenMinutes: uint64!
   # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
@@ -13717,6 +13875,8 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg {
   bitRateTenSeconds: uint64!
   # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
   packetRate: uint64!
+  # Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date
+  packetRateDay: uint64!
   # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
   packetRateFifteenMinutes: uint64!
   # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
@@ -13740,6 +13900,8 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions {
   coloGeohash: string!
   # Cloudflare datacenter that received the packet (unique site identifier)
   coloName: string!
+  # Date that the packet was received
+  date: Date!
   # Date and time that the packet was received
   datetime: Time!
   # Date and time that the packet was received, rounded to the start of the nearest fifteen minutes
@@ -13931,6 +14093,14 @@ input AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   coloName_neq: string
   coloName_notin: [string!]
   coloName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
   datetime: Time
   datetimeFifteenMinutes: Time
   datetimeFifteenMinutes_geq: Time
@@ -14510,6 +14680,10 @@ input AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # avg(bitRateDay) ascending
+  avg_bitRateDay_ASC
+  # avg(bitRateDay) descending
+  avg_bitRateDay_DESC
   # avg(bitRateFifteenMinutes) ascending
   avg_bitRateFifteenMinutes_ASC
   # avg(bitRateFifteenMinutes) descending
@@ -14534,6 +14708,10 @@ enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
   avg_bitRate_ASC
   # avg(bitRate) descending
   avg_bitRate_DESC
+  # avg(packetRateDay) ascending
+  avg_packetRateDay_ASC
+  # avg(packetRateDay) descending
+  avg_packetRateDay_DESC
   # avg(packetRateFifteenMinutes) ascending
   avg_packetRateFifteenMinutes_ASC
   # avg(packetRateFifteenMinutes) descending
@@ -14578,6 +14756,10 @@ enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
   coloName_ASC
   # coloName descending
   coloName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
   # datetimeFifteenMinutes ascending
   datetimeFifteenMinutes_ASC
   # datetimeFifteenMinutes descending
