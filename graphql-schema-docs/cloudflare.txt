@@ -1,6 +1,6 @@
 Account-level datasets:
   cdnNetworkAnalyticsAdaptiveGroups
-  dosdAttackAnalyticsAdaptiveGroups
+  dosdAttackAnalyticsGroups
   dosdNetworkAnalyticsAdaptiveGroups
 * durableObjectsInvocationsAdaptiveGroups
 * durableObjectsPeriodicGroups
@@ -29,6 +29,7 @@ Account-level datasets:
 * rumWebVitalsEventsAdaptive
 * rumWebVitalsEventsAdaptiveGroups
   spectrumNetworkAnalyticsAdaptiveGroups
+* streamMinutesViewedAdaptiveGroups
 * videoBufferEventsAdaptiveGroups
 * videoPlaybackEventsAdaptiveGroups
 * videoQualityEventsAdaptiveGroups
@@ -99,7 +100,7 @@ type account {
   # Network analytics data for Cloudflare CDN traffic
   cdnNetworkAnalyticsAdaptiveGroups(filter: AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountCdnNetworkAnalyticsAdaptiveGroups!]!
   # Attack analytics metadata for attacks detected by dosd
-  dosdAttackAnalyticsAdaptiveGroups(filter: AccountDosdAttackAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDosdAttackAnalyticsAdaptiveGroupsOrderBy!]): [AccountDosdAttackAnalyticsAdaptiveGroups!]!
+  dosdAttackAnalyticsGroups(filter: AccountDosdAttackAnalyticsGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDosdAttackAnalyticsGroupsOrderBy!]): [AccountDosdAttackAnalyticsGroups!]!
   # Network analytics data for dosd
   dosdNetworkAnalyticsAdaptiveGroups(filter: AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountDosdNetworkAnalyticsAdaptiveGroups!]!
   # Beta. Durable Objects invocations with adaptive sampling
@@ -157,11 +158,13 @@ type account {
   settings: AccountSettings
   # Network analytics data for Spectrum traffic
   spectrumNetworkAnalyticsAdaptiveGroups(filter: AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountSpectrumNetworkAnalyticsAdaptiveGroups!]!
+  # A high-level summary of Cloudflare Stream minutes viewed.
+  streamMinutesViewedAdaptiveGroups(filter: AccountStreamMinutesViewedAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountStreamMinutesViewedAdaptiveGroupsOrderBy!]): [AccountStreamMinutesViewedAdaptiveGroups!]!
   # Beta. Aggregated video streaming buffer event metrics with adaptive sampling
   videoBufferEventsAdaptiveGroups(filter: AccountVideoBufferEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVideoBufferEventsAdaptiveGroupsOrderBy!]): [AccountVideoBufferEventsAdaptiveGroups!]!
   # Beta. Aggregated video streaming playback event metrics with adaptive sampling
   videoPlaybackEventsAdaptiveGroups(filter: AccountVideoPlaybackEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVideoPlaybackEventsAdaptiveGroupsOrderBy!]): [AccountVideoPlaybackEventsAdaptiveGroups!]!
-  # Beta. Aggregated video streaming quaity change event metrics with adaptive sampling
+  # Beta. Aggregated video streaming quality change event metrics with adaptive sampling
   videoQualityEventsAdaptiveGroups(filter: AccountVideoQualityEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVideoQualityEventsAdaptiveGroupsOrderBy!]): [AccountVideoQualityEventsAdaptiveGroups!]!
   # Beta. Workers invocations with adaptive sampling
   workersInvocationsAdaptive(filter: AccountWorkersInvocationsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersInvocationsAdaptiveOrderBy!]): [AccountWorkersInvocationsAdaptive!]!
@@ -240,6 +243,8 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
   datetimeTenSeconds: Time!
   # ASN associated with the destination IP of the packet, or 0 if there was no mapping available
   destinationAsn: uint32!
+  # Name of ASN associated with the destination IP of the packet, if available
+  destinationAsnName: string!
   # Country where the destination IP of the packet is located (ISO 3166-1 alpha-2)
   destinationCountry: string!
   # Latitude and longitude where the destination IP of the packet is located (Geohash encoding)
@@ -280,6 +285,8 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
   ipMoreFragments: uint8!
   # Value of the Protocol header field in the IPv4 or IPv6 packet
   ipProtocol: uint8!
+  # Name of the protocol specified by the Protocol header field in the IPv4 or IPv6 packet
+  ipProtocolName: string!
   # Value of the Source Address header field in the IPv4 or IPv6 packet
   ipSourceAddress: string!
   # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
@@ -322,6 +329,8 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
   sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
   sourceAsn: uint32!
+  # Name of ASN associated with the source IP of the packet, if available
+  sourceAsnName: string!
   # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
   sourceCountry: string!
   # Latitude and longitude where the source IP of the packet is located (Geohash encoding)
@@ -474,6 +483,16 @@ input AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   datetime_neq: Time
   datetime_notin: [Time!]
   destinationAsn: uint32
+  destinationAsnName: string
+  destinationAsnName_geq: string
+  destinationAsnName_gt: string
+  destinationAsnName_in: [string!]
+  destinationAsnName_leq: string
+  destinationAsnName_like: string
+  destinationAsnName_lt: string
+  destinationAsnName_neq: string
+  destinationAsnName_notin: [string!]
+  destinationAsnName_notlike: string
   destinationAsn_geq: uint32
   destinationAsn_gt: uint32
   destinationAsn_in: [uint32!]
@@ -644,6 +663,16 @@ input AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipMoreFragments_neq: uint8
   ipMoreFragments_notin: bytes
   ipProtocol: uint8
+  ipProtocolName: string
+  ipProtocolName_geq: string
+  ipProtocolName_gt: string
+  ipProtocolName_in: [string!]
+  ipProtocolName_leq: string
+  ipProtocolName_like: string
+  ipProtocolName_lt: string
+  ipProtocolName_neq: string
+  ipProtocolName_notin: [string!]
+  ipProtocolName_notlike: string
   ipProtocol_geq: uint8
   ipProtocol_gt: uint8
   ipProtocol_in: bytes
@@ -824,6 +853,16 @@ input AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
   sourceAsn: uint32
+  sourceAsnName: string
+  sourceAsnName_geq: string
+  sourceAsnName_gt: string
+  sourceAsnName_in: [string!]
+  sourceAsnName_leq: string
+  sourceAsnName_like: string
+  sourceAsnName_lt: string
+  sourceAsnName_neq: string
+  sourceAsnName_notin: [string!]
+  sourceAsnName_notlike: string
   sourceAsn_geq: uint32
   sourceAsn_gt: uint32
   sourceAsn_in: [uint32!]
@@ -1108,6 +1147,10 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # destinationAsnName ascending
+  destinationAsnName_ASC
+  # destinationAsnName descending
+  destinationAsnName_DESC
   # destinationAsn ascending
   destinationAsn_ASC
   # destinationAsn descending
@@ -1188,6 +1231,10 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipMoreFragments_ASC
   # ipMoreFragments descending
   ipMoreFragments_DESC
+  # ipProtocolName ascending
+  ipProtocolName_ASC
+  # ipProtocolName descending
+  ipProtocolName_DESC
   # ipProtocol ascending
   ipProtocol_ASC
   # ipProtocol descending
@@ -1272,6 +1319,10 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # sourceAsnName ascending
+  sourceAsnName_ASC
+  # sourceAsnName descending
+  sourceAsnName_DESC
   # sourceAsn ascending
   sourceAsn_ASC
   # sourceAsn descending
@@ -1382,192 +1433,50 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsSum {
 }
 
 # Attack analytics metadata for attacks detected by dosd
-type AccountDosdAttackAnalyticsAdaptiveGroups {
-  # The average of values for a metric per dimension
-  avg: AccountDosdAttackAnalyticsAdaptiveGroupsAvg
-  # List of dimensions to group by
-  dimensions: AccountDosdAttackAnalyticsAdaptiveGroupsDimensions
-  # The sum of values for a metric per dimension
-  sum: AccountDosdAttackAnalyticsAdaptiveGroupsSum
-}
-
-type AccountDosdAttackAnalyticsAdaptiveGroupsAvg {
-  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
-  bitRate: uint64!
-  # Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date
-  bitRateDay: uint64!
-  # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
-  bitRateFifteenMinutes: uint64!
-  # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
-  bitRateFiveMinutes: uint64!
-  # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
-  bitRateHour: uint64!
-  # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
-  bitRateMinute: uint64!
-  # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
-  bitRateTenSeconds: uint64!
-  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
-  packetRate: uint64!
-  # Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date
-  packetRateDay: uint64!
-  # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
-  packetRateFifteenMinutes: uint64!
-  # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
-  packetRateFiveMinutes: uint64!
-  # Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour
-  packetRateHour: uint64!
-  # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
-  packetRateMinute: uint64!
-  # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
-  packetRateTenSeconds: uint64!
-}
-
-type AccountDosdAttackAnalyticsAdaptiveGroupsDimensions {
-  # Sum of bits received during the attack
-  attackBits: uint64!
-  # Common TCP flags used by attack traffic, if any
-  attackCommonTcpFlags: uint8!
-  # Names of common TCP flags used by attack traffic, if any
-  attackCommonTcpFlagsNames: string!
-  # Fixed destination IP used by attack traffic, if any
-  attackDestinationIp: string!
-  # Fixed destination port used by attack traffic, if any
-  attackDestinationPort: uint16!
-  # Date and time that the attack ended; not available for ongoing attacks
-  attackEndDatetime: Time!
+type AccountDosdAttackAnalyticsGroups {
   # Unique identifier of the mitigation that matched the packet, if any
   attackId: string!
-  # Fixed protocol used by attack traffic, if any
-  attackIpProtocol: uint8!
-  # Fixed protocol used by attack traffic, if any
-  attackIpProtocolName: string!
-  # Type of mitigation applied to attack traffic
-  attackMitigationReason: string!
-  # Whether mitigation was applied in only some locations or globally
-  attackMitigationScope: string!
-  # Type of mitigation applied to attack traffic
-  attackMitigationType: string!
-  # Sum of packets received during the attack
-  attackPackets: uint64!
-  # Fixed source IP used by attack traffic, if any
-  attackSourceIp: string!
-  # Fixed source port used by attack traffic, if any
-  attackSourcePort: uint16!
-  # Date and time that the attack started
-  attackStartDatetime: Time!
-  # Fixed TCP flags used by attack traffic, if any
-  attackTcpFlags: uint8!
-  # Names of fixed TCP flags used by attack traffic, if any
-  attackTcpFlagsNames: string!
   # Type of attack traffic
   attackType: string!
-  # City where the Cloudflare datacenter that received the packet is located
-  coloCity: string!
-  # Cloudflare datacenter that received the packet (nearest IATA airport code)
-  coloCode: string!
-  # Country where the Cloudflare datacenter that received the packet is located (ISO 3166-1 alpha-2)
-  coloCountry: string!
-  # Latitude and longitude where the Cloudflare datacenter that received the packet is located (Geohash encoding)
-  coloGeohash: string!
-  # Cloudflare datacenter that received the packet (unique site identifier)
-  coloName: string!
-  # Date that the packet was received
-  date: Date!
-  # Date and time that the packet was received
-  datetime: Time!
-  # Date and time that the packet was received, rounded to the start of the nearest fifteen minutes
-  datetimeFifteenMinutes: Time!
-  # Date and time that the packet was received, rounded to the start of the nearest five minutes
-  datetimeFiveMinutes: Time!
-  # Date and time that the packet was received, rounded to the start of the nearest hour
-  datetimeHour: Time!
-  # Date and time that the packet was received, rounded to the start of the nearest minute
-  datetimeMinute: Time!
-  # Date and time that the packet was received, rounded to the start of the nearest ten seconds
-  datetimeTenSeconds: Time!
-  # ASN associated with the destination IP of the packet, or 0 if there was no mapping available
-  destinationAsn: uint32!
-  # Country where the destination IP of the packet is located (ISO 3166-1 alpha-2)
-  destinationCountry: string!
-  # Latitude and longitude where the destination IP of the packet is located (Geohash encoding)
-  destinationGeohash: string!
-  # Direction of the packet relative to the customer network (possible values: inbound, outbound, lateral)
-  direction: string!
-  # The action that was taken on the packet (possible values: pass, drop)
-  outcome: string!
-  # Unique identifier of the rule that matched the packet, if any
-  ruleId: string!
-  # Unique identifier of the ruleset containing the rule that matched the packet, if any
-  rulesetId: string!
-  # Unique identifier of the ruleset override containing the rule that matched the packet, if any
-  rulesetOverrideId: string!
-  # ABR sample interval
-  sampleInterval: uint32!
-  # ASN associated with the source IP of the packet, or 0 if there was no mapping available
-  sourceAsn: uint32!
-  # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
-  sourceCountry: string!
-  # Latitude and longitude where the source IP of the packet is located (Geohash encoding)
-  sourceGeohash: string!
-  # The action that Cloudflare thinks should be taken on the packet (possible values: pass, drop)
-  verdict: string!
+  # Sum of bits received during the attack
+  bits: uint64!
+  # Common TCP flags used by attack traffic, if any
+  commonTcpFlags: uint8!
+  # Names of common TCP flags used by attack traffic, if any
+  commonTcpFlagsNames: string!
+  # Fixed destination IP used by attack traffic, if any
+  destinationIp: string!
+  # Fixed destination port used by attack traffic, if any
+  destinationPort: uint16!
+  # Date and time that the attack ended; not available for ongoing attacks
+  endDatetime: Time!
+  # Fixed protocol used by attack traffic, if any
+  ipProtocol: uint8!
+  # Fixed protocol used by attack traffic, if any
+  ipProtocolName: string!
+  # Type of mitigation applied to attack traffic
+  mitigationReason: string!
+  # Whether mitigation was applied in only some locations or globally
+  mitigationScope: string!
+  # Type of mitigation applied to attack traffic
+  mitigationType: string!
+  # Sum of packets received during the attack
+  packets: uint64!
+  # Fixed source IP used by attack traffic, if any
+  sourceIp: string!
+  # Fixed source port used by attack traffic, if any
+  sourcePort: uint16!
+  # Date and time that the attack started
+  startDatetime: Time!
+  # Fixed TCP flags used by attack traffic, if any
+  tcpFlags: uint8!
+  # Names of fixed TCP flags used by attack traffic, if any
+  tcpFlagsNames: string!
 }
 
-input AccountDosdAttackAnalyticsAdaptiveGroupsFilter_InputObject {
-  AND: [AccountDosdAttackAnalyticsAdaptiveGroupsFilter_InputObject!]
-  OR: [AccountDosdAttackAnalyticsAdaptiveGroupsFilter_InputObject!]
-  attackBits: uint64
-  attackBits_geq: uint64
-  attackBits_gt: uint64
-  attackBits_in: [uint64!]
-  attackBits_leq: uint64
-  attackBits_lt: uint64
-  attackBits_neq: uint64
-  attackBits_notin: [uint64!]
-  attackCommonTcpFlags: uint8
-  attackCommonTcpFlagsNames: string
-  attackCommonTcpFlagsNames_geq: string
-  attackCommonTcpFlagsNames_gt: string
-  attackCommonTcpFlagsNames_in: [string!]
-  attackCommonTcpFlagsNames_leq: string
-  attackCommonTcpFlagsNames_like: string
-  attackCommonTcpFlagsNames_lt: string
-  attackCommonTcpFlagsNames_neq: string
-  attackCommonTcpFlagsNames_notin: [string!]
-  attackCommonTcpFlagsNames_notlike: string
-  attackCommonTcpFlags_geq: uint8
-  attackCommonTcpFlags_gt: uint8
-  attackCommonTcpFlags_in: bytes
-  attackCommonTcpFlags_leq: uint8
-  attackCommonTcpFlags_lt: uint8
-  attackCommonTcpFlags_neq: uint8
-  attackCommonTcpFlags_notin: bytes
-  attackDestinationIp: string
-  attackDestinationIp_geq: string
-  attackDestinationIp_gt: string
-  attackDestinationIp_in: [string!]
-  attackDestinationIp_leq: string
-  attackDestinationIp_like: string
-  attackDestinationIp_lt: string
-  attackDestinationIp_neq: string
-  attackDestinationIp_notin: [string!]
-  attackDestinationIp_notlike: string
-  attackDestinationPort: uint16
-  attackDestinationPort_geq: uint16
-  attackDestinationPort_gt: uint16
-  attackDestinationPort_in: [uint16!]
-  attackDestinationPort_leq: uint16
-  attackDestinationPort_lt: uint16
-  attackDestinationPort_neq: uint16
-  attackDestinationPort_notin: [uint16!]
-  attackEndDatetime: Time
-  attackEndDatetime_geq: Time
-  attackEndDatetime_gt: Time
-  attackEndDatetime_in: [Time!]
-  attackEndDatetime_leq: Time
-  attackEndDatetime_lt: Time
-  attackEndDatetime_neq: Time
-  attackEndDatetime_notin: [Time!]
+input AccountDosdAttackAnalyticsGroupsFilter_InputObject {
+  AND: [AccountDosdAttackAnalyticsGroupsFilter_InputObject!]
+  OR: [AccountDosdAttackAnalyticsGroupsFilter_InputObject!]
   attackId: string
   attackId_geq: string
   attackId_gt: string
@@ -1578,106 +1487,6 @@ input AccountDosdAttackAnalyticsAdaptiveGroupsFilter_InputObject {
   attackId_neq: string
   attackId_notin: [string!]
   attackId_notlike: string
-  attackIpProtocol: uint8
-  attackIpProtocolName: string
-  attackIpProtocolName_geq: string
-  attackIpProtocolName_gt: string
-  attackIpProtocolName_in: [string!]
-  attackIpProtocolName_leq: string
-  attackIpProtocolName_like: string
-  attackIpProtocolName_lt: string
-  attackIpProtocolName_neq: string
-  attackIpProtocolName_notin: [string!]
-  attackIpProtocolName_notlike: string
-  attackIpProtocol_geq: uint8
-  attackIpProtocol_gt: uint8
-  attackIpProtocol_in: bytes
-  attackIpProtocol_leq: uint8
-  attackIpProtocol_lt: uint8
-  attackIpProtocol_neq: uint8
-  attackIpProtocol_notin: bytes
-  attackMitigationReason: string
-  attackMitigationReason_geq: string
-  attackMitigationReason_gt: string
-  attackMitigationReason_in: [string!]
-  attackMitigationReason_leq: string
-  attackMitigationReason_like: string
-  attackMitigationReason_lt: string
-  attackMitigationReason_neq: string
-  attackMitigationReason_notin: [string!]
-  attackMitigationReason_notlike: string
-  attackMitigationScope: string
-  attackMitigationScope_geq: string
-  attackMitigationScope_gt: string
-  attackMitigationScope_in: [string!]
-  attackMitigationScope_leq: string
-  attackMitigationScope_like: string
-  attackMitigationScope_lt: string
-  attackMitigationScope_neq: string
-  attackMitigationScope_notin: [string!]
-  attackMitigationScope_notlike: string
-  attackMitigationType: string
-  attackMitigationType_geq: string
-  attackMitigationType_gt: string
-  attackMitigationType_in: [string!]
-  attackMitigationType_leq: string
-  attackMitigationType_like: string
-  attackMitigationType_lt: string
-  attackMitigationType_neq: string
-  attackMitigationType_notin: [string!]
-  attackMitigationType_notlike: string
-  attackPackets: uint64
-  attackPackets_geq: uint64
-  attackPackets_gt: uint64
-  attackPackets_in: [uint64!]
-  attackPackets_leq: uint64
-  attackPackets_lt: uint64
-  attackPackets_neq: uint64
-  attackPackets_notin: [uint64!]
-  attackSourceIp: string
-  attackSourceIp_geq: string
-  attackSourceIp_gt: string
-  attackSourceIp_in: [string!]
-  attackSourceIp_leq: string
-  attackSourceIp_like: string
-  attackSourceIp_lt: string
-  attackSourceIp_neq: string
-  attackSourceIp_notin: [string!]
-  attackSourceIp_notlike: string
-  attackSourcePort: uint16
-  attackSourcePort_geq: uint16
-  attackSourcePort_gt: uint16
-  attackSourcePort_in: [uint16!]
-  attackSourcePort_leq: uint16
-  attackSourcePort_lt: uint16
-  attackSourcePort_neq: uint16
-  attackSourcePort_notin: [uint16!]
-  attackStartDatetime: Time
-  attackStartDatetime_geq: Time
-  attackStartDatetime_gt: Time
-  attackStartDatetime_in: [Time!]
-  attackStartDatetime_leq: Time
-  attackStartDatetime_lt: Time
-  attackStartDatetime_neq: Time
-  attackStartDatetime_notin: [Time!]
-  attackTcpFlags: uint8
-  attackTcpFlagsNames: string
-  attackTcpFlagsNames_geq: string
-  attackTcpFlagsNames_gt: string
-  attackTcpFlagsNames_in: [string!]
-  attackTcpFlagsNames_leq: string
-  attackTcpFlagsNames_like: string
-  attackTcpFlagsNames_lt: string
-  attackTcpFlagsNames_neq: string
-  attackTcpFlagsNames_notin: [string!]
-  attackTcpFlagsNames_notlike: string
-  attackTcpFlags_geq: uint8
-  attackTcpFlags_gt: uint8
-  attackTcpFlags_in: bytes
-  attackTcpFlags_leq: uint8
-  attackTcpFlags_lt: uint8
-  attackTcpFlags_neq: uint8
-  attackTcpFlags_notin: bytes
   attackType: string
   attackType_geq: string
   attackType_gt: string
@@ -1688,490 +1497,237 @@ input AccountDosdAttackAnalyticsAdaptiveGroupsFilter_InputObject {
   attackType_neq: string
   attackType_notin: [string!]
   attackType_notlike: string
-  coloCity: string
-  coloCity_geq: string
-  coloCity_gt: string
-  coloCity_in: [string!]
-  coloCity_leq: string
-  coloCity_like: string
-  coloCity_lt: string
-  coloCity_neq: string
-  coloCity_notin: [string!]
-  coloCity_notlike: string
-  coloCode: string
-  coloCode_geq: string
-  coloCode_gt: string
-  coloCode_in: [string!]
-  coloCode_leq: string
-  coloCode_like: string
-  coloCode_lt: string
-  coloCode_neq: string
-  coloCode_notin: [string!]
-  coloCode_notlike: string
-  coloCountry: string
-  coloCountry_geq: string
-  coloCountry_gt: string
-  coloCountry_in: [string!]
-  coloCountry_leq: string
-  coloCountry_like: string
-  coloCountry_lt: string
-  coloCountry_neq: string
-  coloCountry_notin: [string!]
-  coloCountry_notlike: string
-  coloGeohash: string
-  coloGeohash_geq: string
-  coloGeohash_gt: string
-  coloGeohash_in: [string!]
-  coloGeohash_leq: string
-  coloGeohash_like: string
-  coloGeohash_lt: string
-  coloGeohash_neq: string
-  coloGeohash_notin: [string!]
-  coloGeohash_notlike: string
-  coloName: string
-  coloName_geq: string
-  coloName_gt: string
-  coloName_in: [string!]
-  coloName_leq: string
-  coloName_like: string
-  coloName_lt: string
-  coloName_neq: string
-  coloName_notin: [string!]
-  coloName_notlike: string
-  date: Date
-  date_geq: Date
-  date_gt: Date
-  date_in: [Date!]
-  date_leq: Date
-  date_lt: Date
-  date_neq: Date
-  date_notin: [Date!]
-  datetime: Time
-  datetimeFifteenMinutes: Time
-  datetimeFifteenMinutes_geq: Time
-  datetimeFifteenMinutes_gt: Time
-  datetimeFifteenMinutes_in: [Time!]
-  datetimeFifteenMinutes_leq: Time
-  datetimeFifteenMinutes_lt: Time
-  datetimeFifteenMinutes_neq: Time
-  datetimeFifteenMinutes_notin: [Time!]
-  datetimeFiveMinutes: Time
-  datetimeFiveMinutes_geq: Time
-  datetimeFiveMinutes_gt: Time
-  datetimeFiveMinutes_in: [Time!]
-  datetimeFiveMinutes_leq: Time
-  datetimeFiveMinutes_lt: Time
-  datetimeFiveMinutes_neq: Time
-  datetimeFiveMinutes_notin: [Time!]
-  datetimeHour: Time
-  datetimeHour_geq: Time
-  datetimeHour_gt: Time
-  datetimeHour_in: [Time!]
-  datetimeHour_leq: Time
-  datetimeHour_lt: Time
-  datetimeHour_neq: Time
-  datetimeHour_notin: [Time!]
-  datetimeMinute: Time
-  datetimeMinute_geq: Time
-  datetimeMinute_gt: Time
-  datetimeMinute_in: [Time!]
-  datetimeMinute_leq: Time
-  datetimeMinute_lt: Time
-  datetimeMinute_neq: Time
-  datetimeMinute_notin: [Time!]
-  datetimeTenSeconds: Time
-  datetimeTenSeconds_geq: Time
-  datetimeTenSeconds_gt: Time
-  datetimeTenSeconds_in: [Time!]
-  datetimeTenSeconds_leq: Time
-  datetimeTenSeconds_lt: Time
-  datetimeTenSeconds_neq: Time
-  datetimeTenSeconds_notin: [Time!]
-  datetime_geq: Time
-  datetime_gt: Time
-  datetime_in: [Time!]
-  datetime_leq: Time
-  datetime_lt: Time
-  datetime_neq: Time
-  datetime_notin: [Time!]
-  destinationAsn: uint32
-  destinationAsn_geq: uint32
-  destinationAsn_gt: uint32
-  destinationAsn_in: [uint32!]
-  destinationAsn_leq: uint32
-  destinationAsn_lt: uint32
-  destinationAsn_neq: uint32
-  destinationAsn_notin: [uint32!]
-  destinationCountry: string
-  destinationCountry_geq: string
-  destinationCountry_gt: string
-  destinationCountry_in: [string!]
-  destinationCountry_leq: string
-  destinationCountry_like: string
-  destinationCountry_lt: string
-  destinationCountry_neq: string
-  destinationCountry_notin: [string!]
-  destinationCountry_notlike: string
-  destinationGeohash: string
-  destinationGeohash_geq: string
-  destinationGeohash_gt: string
-  destinationGeohash_in: [string!]
-  destinationGeohash_leq: string
-  destinationGeohash_like: string
-  destinationGeohash_lt: string
-  destinationGeohash_neq: string
-  destinationGeohash_notin: [string!]
-  destinationGeohash_notlike: string
-  direction: string
-  direction_geq: string
-  direction_gt: string
-  direction_in: [string!]
-  direction_leq: string
-  direction_like: string
-  direction_lt: string
-  direction_neq: string
-  direction_notin: [string!]
-  direction_notlike: string
-  outcome: string
-  outcome_geq: string
-  outcome_gt: string
-  outcome_in: [string!]
-  outcome_leq: string
-  outcome_like: string
-  outcome_lt: string
-  outcome_neq: string
-  outcome_notin: [string!]
-  outcome_notlike: string
-  ruleId: string
-  ruleId_geq: string
-  ruleId_gt: string
-  ruleId_in: [string!]
-  ruleId_leq: string
-  ruleId_like: string
-  ruleId_lt: string
-  ruleId_neq: string
-  ruleId_notin: [string!]
-  ruleId_notlike: string
-  rulesetId: string
-  rulesetId_geq: string
-  rulesetId_gt: string
-  rulesetId_in: [string!]
-  rulesetId_leq: string
-  rulesetId_like: string
-  rulesetId_lt: string
-  rulesetId_neq: string
-  rulesetId_notin: [string!]
-  rulesetId_notlike: string
-  rulesetOverrideId: string
-  rulesetOverrideId_geq: string
-  rulesetOverrideId_gt: string
-  rulesetOverrideId_in: [string!]
-  rulesetOverrideId_leq: string
-  rulesetOverrideId_like: string
-  rulesetOverrideId_lt: string
-  rulesetOverrideId_neq: string
-  rulesetOverrideId_notin: [string!]
-  rulesetOverrideId_notlike: string
-  sampleInterval: uint32
-  sampleInterval_geq: uint32
-  sampleInterval_gt: uint32
-  sampleInterval_in: [uint32!]
-  sampleInterval_leq: uint32
-  sampleInterval_lt: uint32
-  sampleInterval_neq: uint32
-  sampleInterval_notin: [uint32!]
-  sourceAsn: uint32
-  sourceAsn_geq: uint32
-  sourceAsn_gt: uint32
-  sourceAsn_in: [uint32!]
-  sourceAsn_leq: uint32
-  sourceAsn_lt: uint32
-  sourceAsn_neq: uint32
-  sourceAsn_notin: [uint32!]
-  sourceCountry: string
-  sourceCountry_geq: string
-  sourceCountry_gt: string
-  sourceCountry_in: [string!]
-  sourceCountry_leq: string
-  sourceCountry_like: string
-  sourceCountry_lt: string
-  sourceCountry_neq: string
-  sourceCountry_notin: [string!]
-  sourceCountry_notlike: string
-  sourceGeohash: string
-  sourceGeohash_geq: string
-  sourceGeohash_gt: string
-  sourceGeohash_in: [string!]
-  sourceGeohash_leq: string
-  sourceGeohash_like: string
-  sourceGeohash_lt: string
-  sourceGeohash_neq: string
-  sourceGeohash_notin: [string!]
-  sourceGeohash_notlike: string
-  verdict: string
-  verdict_geq: string
-  verdict_gt: string
-  verdict_in: [string!]
-  verdict_leq: string
-  verdict_like: string
-  verdict_lt: string
-  verdict_neq: string
-  verdict_notin: [string!]
-  verdict_notlike: string
+  bits: uint64
+  bits_geq: uint64
+  bits_gt: uint64
+  bits_in: [uint64!]
+  bits_leq: uint64
+  bits_lt: uint64
+  bits_neq: uint64
+  bits_notin: [uint64!]
+  commonTcpFlags: uint8
+  commonTcpFlagsNames: string
+  commonTcpFlagsNames_geq: string
+  commonTcpFlagsNames_gt: string
+  commonTcpFlagsNames_in: [string!]
+  commonTcpFlagsNames_leq: string
+  commonTcpFlagsNames_like: string
+  commonTcpFlagsNames_lt: string
+  commonTcpFlagsNames_neq: string
+  commonTcpFlagsNames_notin: [string!]
+  commonTcpFlagsNames_notlike: string
+  commonTcpFlags_geq: uint8
+  commonTcpFlags_gt: uint8
+  commonTcpFlags_in: bytes
+  commonTcpFlags_leq: uint8
+  commonTcpFlags_lt: uint8
+  commonTcpFlags_neq: uint8
+  commonTcpFlags_notin: bytes
+  destinationIp: string
+  destinationIp_geq: string
+  destinationIp_gt: string
+  destinationIp_in: [string!]
+  destinationIp_leq: string
+  destinationIp_like: string
+  destinationIp_lt: string
+  destinationIp_neq: string
+  destinationIp_notin: [string!]
+  destinationIp_notlike: string
+  destinationPort: uint16
+  destinationPort_geq: uint16
+  destinationPort_gt: uint16
+  destinationPort_in: [uint16!]
+  destinationPort_leq: uint16
+  destinationPort_lt: uint16
+  destinationPort_neq: uint16
+  destinationPort_notin: [uint16!]
+  endDatetime: Time
+  endDatetime_geq: Time
+  endDatetime_gt: Time
+  endDatetime_in: [Time!]
+  endDatetime_leq: Time
+  endDatetime_lt: Time
+  endDatetime_neq: Time
+  endDatetime_notin: [Time!]
+  ipProtocol: uint8
+  ipProtocolName: string
+  ipProtocolName_geq: string
+  ipProtocolName_gt: string
+  ipProtocolName_in: [string!]
+  ipProtocolName_leq: string
+  ipProtocolName_like: string
+  ipProtocolName_lt: string
+  ipProtocolName_neq: string
+  ipProtocolName_notin: [string!]
+  ipProtocolName_notlike: string
+  ipProtocol_geq: uint8
+  ipProtocol_gt: uint8
+  ipProtocol_in: bytes
+  ipProtocol_leq: uint8
+  ipProtocol_lt: uint8
+  ipProtocol_neq: uint8
+  ipProtocol_notin: bytes
+  mitigationReason: string
+  mitigationReason_geq: string
+  mitigationReason_gt: string
+  mitigationReason_in: [string!]
+  mitigationReason_leq: string
+  mitigationReason_like: string
+  mitigationReason_lt: string
+  mitigationReason_neq: string
+  mitigationReason_notin: [string!]
+  mitigationReason_notlike: string
+  mitigationScope: string
+  mitigationScope_geq: string
+  mitigationScope_gt: string
+  mitigationScope_in: [string!]
+  mitigationScope_leq: string
+  mitigationScope_like: string
+  mitigationScope_lt: string
+  mitigationScope_neq: string
+  mitigationScope_notin: [string!]
+  mitigationScope_notlike: string
+  mitigationType: string
+  mitigationType_geq: string
+  mitigationType_gt: string
+  mitigationType_in: [string!]
+  mitigationType_leq: string
+  mitigationType_like: string
+  mitigationType_lt: string
+  mitigationType_neq: string
+  mitigationType_notin: [string!]
+  mitigationType_notlike: string
+  packets: uint64
+  packets_geq: uint64
+  packets_gt: uint64
+  packets_in: [uint64!]
+  packets_leq: uint64
+  packets_lt: uint64
+  packets_neq: uint64
+  packets_notin: [uint64!]
+  sourceIp: string
+  sourceIp_geq: string
+  sourceIp_gt: string
+  sourceIp_in: [string!]
+  sourceIp_leq: string
+  sourceIp_like: string
+  sourceIp_lt: string
+  sourceIp_neq: string
+  sourceIp_notin: [string!]
+  sourceIp_notlike: string
+  sourcePort: uint16
+  sourcePort_geq: uint16
+  sourcePort_gt: uint16
+  sourcePort_in: [uint16!]
+  sourcePort_leq: uint16
+  sourcePort_lt: uint16
+  sourcePort_neq: uint16
+  sourcePort_notin: [uint16!]
+  startDatetime: Time
+  startDatetime_geq: Time
+  startDatetime_gt: Time
+  startDatetime_in: [Time!]
+  startDatetime_leq: Time
+  startDatetime_lt: Time
+  startDatetime_neq: Time
+  startDatetime_notin: [Time!]
+  tcpFlags: uint8
+  tcpFlagsNames: string
+  tcpFlagsNames_geq: string
+  tcpFlagsNames_gt: string
+  tcpFlagsNames_in: [string!]
+  tcpFlagsNames_leq: string
+  tcpFlagsNames_like: string
+  tcpFlagsNames_lt: string
+  tcpFlagsNames_neq: string
+  tcpFlagsNames_notin: [string!]
+  tcpFlagsNames_notlike: string
+  tcpFlags_geq: uint8
+  tcpFlags_gt: uint8
+  tcpFlags_in: bytes
+  tcpFlags_leq: uint8
+  tcpFlags_lt: uint8
+  tcpFlags_neq: uint8
+  tcpFlags_notin: bytes
 }
 
-enum AccountDosdAttackAnalyticsAdaptiveGroupsOrderBy {
-  # attackBits ascending
-  attackBits_ASC
-  # attackBits descending
-  attackBits_DESC
-  # attackCommonTcpFlagsNames ascending
-  attackCommonTcpFlagsNames_ASC
-  # attackCommonTcpFlagsNames descending
-  attackCommonTcpFlagsNames_DESC
-  # attackCommonTcpFlags ascending
-  attackCommonTcpFlags_ASC
-  # attackCommonTcpFlags descending
-  attackCommonTcpFlags_DESC
-  # attackDestinationIp ascending
-  attackDestinationIp_ASC
-  # attackDestinationIp descending
-  attackDestinationIp_DESC
-  # attackDestinationPort ascending
-  attackDestinationPort_ASC
-  # attackDestinationPort descending
-  attackDestinationPort_DESC
-  # attackEndDatetime ascending
-  attackEndDatetime_ASC
-  # attackEndDatetime descending
-  attackEndDatetime_DESC
+enum AccountDosdAttackAnalyticsGroupsOrderBy {
   # attackId ascending
   attackId_ASC
   # attackId descending
   attackId_DESC
-  # attackIpProtocolName ascending
-  attackIpProtocolName_ASC
-  # attackIpProtocolName descending
-  attackIpProtocolName_DESC
-  # attackIpProtocol ascending
-  attackIpProtocol_ASC
-  # attackIpProtocol descending
-  attackIpProtocol_DESC
-  # attackMitigationReason ascending
-  attackMitigationReason_ASC
-  # attackMitigationReason descending
-  attackMitigationReason_DESC
-  # attackMitigationScope ascending
-  attackMitigationScope_ASC
-  # attackMitigationScope descending
-  attackMitigationScope_DESC
-  # attackMitigationType ascending
-  attackMitigationType_ASC
-  # attackMitigationType descending
-  attackMitigationType_DESC
-  # attackPackets ascending
-  attackPackets_ASC
-  # attackPackets descending
-  attackPackets_DESC
-  # attackSourceIp ascending
-  attackSourceIp_ASC
-  # attackSourceIp descending
-  attackSourceIp_DESC
-  # attackSourcePort ascending
-  attackSourcePort_ASC
-  # attackSourcePort descending
-  attackSourcePort_DESC
-  # attackStartDatetime ascending
-  attackStartDatetime_ASC
-  # attackStartDatetime descending
-  attackStartDatetime_DESC
-  # attackTcpFlagsNames ascending
-  attackTcpFlagsNames_ASC
-  # attackTcpFlagsNames descending
-  attackTcpFlagsNames_DESC
-  # attackTcpFlags ascending
-  attackTcpFlags_ASC
-  # attackTcpFlags descending
-  attackTcpFlags_DESC
   # attackType ascending
   attackType_ASC
   # attackType descending
   attackType_DESC
-  # avg(bitRateDay) ascending
-  avg_bitRateDay_ASC
-  # avg(bitRateDay) descending
-  avg_bitRateDay_DESC
-  # avg(bitRateFifteenMinutes) ascending
-  avg_bitRateFifteenMinutes_ASC
-  # avg(bitRateFifteenMinutes) descending
-  avg_bitRateFifteenMinutes_DESC
-  # avg(bitRateFiveMinutes) ascending
-  avg_bitRateFiveMinutes_ASC
-  # avg(bitRateFiveMinutes) descending
-  avg_bitRateFiveMinutes_DESC
-  # avg(bitRateHour) ascending
-  avg_bitRateHour_ASC
-  # avg(bitRateHour) descending
-  avg_bitRateHour_DESC
-  # avg(bitRateMinute) ascending
-  avg_bitRateMinute_ASC
-  # avg(bitRateMinute) descending
-  avg_bitRateMinute_DESC
-  # avg(bitRateTenSeconds) ascending
-  avg_bitRateTenSeconds_ASC
-  # avg(bitRateTenSeconds) descending
-  avg_bitRateTenSeconds_DESC
-  # avg(bitRate) ascending
-  avg_bitRate_ASC
-  # avg(bitRate) descending
-  avg_bitRate_DESC
-  # avg(packetRateDay) ascending
-  avg_packetRateDay_ASC
-  # avg(packetRateDay) descending
-  avg_packetRateDay_DESC
-  # avg(packetRateFifteenMinutes) ascending
-  avg_packetRateFifteenMinutes_ASC
-  # avg(packetRateFifteenMinutes) descending
-  avg_packetRateFifteenMinutes_DESC
-  # avg(packetRateFiveMinutes) ascending
-  avg_packetRateFiveMinutes_ASC
-  # avg(packetRateFiveMinutes) descending
-  avg_packetRateFiveMinutes_DESC
-  # avg(packetRateHour) ascending
-  avg_packetRateHour_ASC
-  # avg(packetRateHour) descending
-  avg_packetRateHour_DESC
-  # avg(packetRateMinute) ascending
-  avg_packetRateMinute_ASC
-  # avg(packetRateMinute) descending
-  avg_packetRateMinute_DESC
-  # avg(packetRateTenSeconds) ascending
-  avg_packetRateTenSeconds_ASC
-  # avg(packetRateTenSeconds) descending
-  avg_packetRateTenSeconds_DESC
-  # avg(packetRate) ascending
-  avg_packetRate_ASC
-  # avg(packetRate) descending
-  avg_packetRate_DESC
-  # coloCity ascending
-  coloCity_ASC
-  # coloCity descending
-  coloCity_DESC
-  # coloCode ascending
-  coloCode_ASC
-  # coloCode descending
-  coloCode_DESC
-  # coloCountry ascending
-  coloCountry_ASC
-  # coloCountry descending
-  coloCountry_DESC
-  # coloGeohash ascending
-  coloGeohash_ASC
-  # coloGeohash descending
-  coloGeohash_DESC
-  # coloName ascending
-  coloName_ASC
-  # coloName descending
-  coloName_DESC
-  # date ascending
-  date_ASC
-  # date descending
-  date_DESC
-  # datetimeFifteenMinutes ascending
-  datetimeFifteenMinutes_ASC
-  # datetimeFifteenMinutes descending
-  datetimeFifteenMinutes_DESC
-  # datetimeFiveMinutes ascending
-  datetimeFiveMinutes_ASC
-  # datetimeFiveMinutes descending
-  datetimeFiveMinutes_DESC
-  # datetimeHour ascending
-  datetimeHour_ASC
-  # datetimeHour descending
-  datetimeHour_DESC
-  # datetimeMinute ascending
-  datetimeMinute_ASC
-  # datetimeMinute descending
-  datetimeMinute_DESC
-  # datetimeTenSeconds ascending
-  datetimeTenSeconds_ASC
-  # datetimeTenSeconds descending
-  datetimeTenSeconds_DESC
-  # datetime ascending
-  datetime_ASC
-  # datetime descending
-  datetime_DESC
-  # destinationAsn ascending
-  destinationAsn_ASC
-  # destinationAsn descending
-  destinationAsn_DESC
-  # destinationCountry ascending
-  destinationCountry_ASC
-  # destinationCountry descending
-  destinationCountry_DESC
-  # destinationGeohash ascending
-  destinationGeohash_ASC
-  # destinationGeohash descending
-  destinationGeohash_DESC
-  # direction ascending
-  direction_ASC
-  # direction descending
-  direction_DESC
-  # outcome ascending
-  outcome_ASC
-  # outcome descending
-  outcome_DESC
-  # ruleId ascending
-  ruleId_ASC
-  # ruleId descending
-  ruleId_DESC
-  # rulesetId ascending
-  rulesetId_ASC
-  # rulesetId descending
-  rulesetId_DESC
-  # rulesetOverrideId ascending
-  rulesetOverrideId_ASC
-  # rulesetOverrideId descending
-  rulesetOverrideId_DESC
-  # sampleInterval ascending
-  sampleInterval_ASC
-  # sampleInterval descending
-  sampleInterval_DESC
-  # sourceAsn ascending
-  sourceAsn_ASC
-  # sourceAsn descending
-  sourceAsn_DESC
-  # sourceCountry ascending
-  sourceCountry_ASC
-  # sourceCountry descending
-  sourceCountry_DESC
-  # sourceGeohash ascending
-  sourceGeohash_ASC
-  # sourceGeohash descending
-  sourceGeohash_DESC
-  # sum(bits) ascending
-  sum_bits_ASC
-  # sum(bits) descending
-  sum_bits_DESC
-  # sum(packets) ascending
-  sum_packets_ASC
-  # sum(packets) descending
-  sum_packets_DESC
-  # system ascending
-  system_ASC
-  # system descending
-  system_DESC
-  # verdict ascending
-  verdict_ASC
-  # verdict descending
-  verdict_DESC
-}
-
-type AccountDosdAttackAnalyticsAdaptiveGroupsSum {
-  # Sum of bits received
-  bits: uint64!
-  # Sum of packets received
-  packets: uint64!
+  # bits ascending
+  bits_ASC
+  # bits descending
+  bits_DESC
+  # commonTcpFlagsNames ascending
+  commonTcpFlagsNames_ASC
+  # commonTcpFlagsNames descending
+  commonTcpFlagsNames_DESC
+  # commonTcpFlags ascending
+  commonTcpFlags_ASC
+  # commonTcpFlags descending
+  commonTcpFlags_DESC
+  # destinationIp ascending
+  destinationIp_ASC
+  # destinationIp descending
+  destinationIp_DESC
+  # destinationPort ascending
+  destinationPort_ASC
+  # destinationPort descending
+  destinationPort_DESC
+  # endDatetime ascending
+  endDatetime_ASC
+  # endDatetime descending
+  endDatetime_DESC
+  # ipProtocolName ascending
+  ipProtocolName_ASC
+  # ipProtocolName descending
+  ipProtocolName_DESC
+  # ipProtocol ascending
+  ipProtocol_ASC
+  # ipProtocol descending
+  ipProtocol_DESC
+  # mitigationReason ascending
+  mitigationReason_ASC
+  # mitigationReason descending
+  mitigationReason_DESC
+  # mitigationScope ascending
+  mitigationScope_ASC
+  # mitigationScope descending
+  mitigationScope_DESC
+  # mitigationType ascending
+  mitigationType_ASC
+  # mitigationType descending
+  mitigationType_DESC
+  # packets ascending
+  packets_ASC
+  # packets descending
+  packets_DESC
+  # sourceIp ascending
+  sourceIp_ASC
+  # sourceIp descending
+  sourceIp_DESC
+  # sourcePort ascending
+  sourcePort_ASC
+  # sourcePort descending
+  sourcePort_DESC
+  # startDatetime ascending
+  startDatetime_ASC
+  # startDatetime descending
+  startDatetime_DESC
+  # tcpFlagsNames ascending
+  tcpFlagsNames_ASC
+  # tcpFlagsNames descending
+  tcpFlagsNames_DESC
+  # tcpFlags ascending
+  tcpFlags_ASC
+  # tcpFlags descending
+  tcpFlags_DESC
 }
 
 # Network analytics data for dosd
@@ -2244,6 +1800,8 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions {
   datetimeTenSeconds: Time!
   # ASN associated with the destination IP of the packet, or 0 if there was no mapping available
   destinationAsn: uint32!
+  # Name of ASN associated with the destination IP of the packet, if available
+  destinationAsnName: string!
   # Country where the destination IP of the packet is located (ISO 3166-1 alpha-2)
   destinationCountry: string!
   # Latitude and longitude where the destination IP of the packet is located (Geohash encoding)
@@ -2284,6 +1842,8 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions {
   ipMoreFragments: uint8!
   # Value of the Protocol header field in the IPv4 or IPv6 packet
   ipProtocol: uint8!
+  # Name of the protocol specified by the Protocol header field in the IPv4 or IPv6 packet
+  ipProtocolName: string!
   # Value of the Source Address header field in the IPv4 or IPv6 packet
   ipSourceAddress: string!
   # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
@@ -2336,6 +1896,8 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions {
   sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
   sourceAsn: uint32!
+  # Name of ASN associated with the source IP of the packet, if available
+  sourceAsnName: string!
   # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
   sourceCountry: string!
   # Latitude and longitude where the source IP of the packet is located (Geohash encoding)
@@ -2500,6 +2062,16 @@ input AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   datetime_neq: Time
   datetime_notin: [Time!]
   destinationAsn: uint32
+  destinationAsnName: string
+  destinationAsnName_geq: string
+  destinationAsnName_gt: string
+  destinationAsnName_in: [string!]
+  destinationAsnName_leq: string
+  destinationAsnName_like: string
+  destinationAsnName_lt: string
+  destinationAsnName_neq: string
+  destinationAsnName_notin: [string!]
+  destinationAsnName_notlike: string
   destinationAsn_geq: uint32
   destinationAsn_gt: uint32
   destinationAsn_in: [uint32!]
@@ -2670,6 +2242,16 @@ input AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipMoreFragments_neq: uint8
   ipMoreFragments_notin: bytes
   ipProtocol: uint8
+  ipProtocolName: string
+  ipProtocolName_geq: string
+  ipProtocolName_gt: string
+  ipProtocolName_in: [string!]
+  ipProtocolName_leq: string
+  ipProtocolName_like: string
+  ipProtocolName_lt: string
+  ipProtocolName_neq: string
+  ipProtocolName_notin: [string!]
+  ipProtocolName_notlike: string
   ipProtocol_geq: uint8
   ipProtocol_gt: uint8
   ipProtocol_in: bytes
@@ -2900,6 +2482,16 @@ input AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
   sourceAsn: uint32
+  sourceAsnName: string
+  sourceAsnName_geq: string
+  sourceAsnName_gt: string
+  sourceAsnName_in: [string!]
+  sourceAsnName_leq: string
+  sourceAsnName_like: string
+  sourceAsnName_lt: string
+  sourceAsnName_neq: string
+  sourceAsnName_notin: [string!]
+  sourceAsnName_notlike: string
   sourceAsn_geq: uint32
   sourceAsn_gt: uint32
   sourceAsn_in: [uint32!]
@@ -3198,6 +2790,10 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # destinationAsnName ascending
+  destinationAsnName_ASC
+  # destinationAsnName descending
+  destinationAsnName_DESC
   # destinationAsn ascending
   destinationAsn_ASC
   # destinationAsn descending
@@ -3278,6 +2874,10 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipMoreFragments_ASC
   # ipMoreFragments descending
   ipMoreFragments_DESC
+  # ipProtocolName ascending
+  ipProtocolName_ASC
+  # ipProtocolName descending
+  ipProtocolName_DESC
   # ipProtocol ascending
   ipProtocol_ASC
   # ipProtocol descending
@@ -3382,6 +2982,10 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # sourceAsnName ascending
+  sourceAsnName_ASC
+  # sourceAsnName descending
+  sourceAsnName_DESC
   # sourceAsn ascending
   sourceAsn_ASC
   # sourceAsn descending
@@ -4243,6 +3847,8 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions {
   datetimeTenSeconds: Time!
   # ASN associated with the destination IP of the packet, or 0 if there was no mapping available
   destinationAsn: uint32!
+  # Name of ASN associated with the destination IP of the packet, if available
+  destinationAsnName: string!
   # Country where the destination IP of the packet is located (ISO 3166-1 alpha-2)
   destinationCountry: string!
   # Latitude and longitude where the destination IP of the packet is located (Geohash encoding)
@@ -4283,6 +3889,8 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions {
   ipMoreFragments: uint8!
   # Value of the Protocol header field in the IPv4 or IPv6 packet
   ipProtocol: uint8!
+  # Name of the protocol specified by the Protocol header field in the IPv4 or IPv6 packet
+  ipProtocolName: string!
   # Value of the Source Address header field in the IPv4 or IPv6 packet
   ipSourceAddress: string!
   # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
@@ -4329,6 +3937,8 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions {
   sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
   sourceAsn: uint32!
+  # Name of ASN associated with the source IP of the packet, if available
+  sourceAsnName: string!
   # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
   sourceCountry: string!
   # Latitude and longitude where the source IP of the packet is located (Geohash encoding)
@@ -4483,6 +4093,16 @@ input AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   datetime_neq: Time
   datetime_notin: [Time!]
   destinationAsn: uint32
+  destinationAsnName: string
+  destinationAsnName_geq: string
+  destinationAsnName_gt: string
+  destinationAsnName_in: [string!]
+  destinationAsnName_leq: string
+  destinationAsnName_like: string
+  destinationAsnName_lt: string
+  destinationAsnName_neq: string
+  destinationAsnName_notin: [string!]
+  destinationAsnName_notlike: string
   destinationAsn_geq: uint32
   destinationAsn_gt: uint32
   destinationAsn_in: [uint32!]
@@ -4653,6 +4273,16 @@ input AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipMoreFragments_neq: uint8
   ipMoreFragments_notin: bytes
   ipProtocol: uint8
+  ipProtocolName: string
+  ipProtocolName_geq: string
+  ipProtocolName_gt: string
+  ipProtocolName_in: [string!]
+  ipProtocolName_leq: string
+  ipProtocolName_like: string
+  ipProtocolName_lt: string
+  ipProtocolName_neq: string
+  ipProtocolName_notin: [string!]
+  ipProtocolName_notlike: string
   ipProtocol_geq: uint8
   ipProtocol_gt: uint8
   ipProtocol_in: bytes
@@ -4853,6 +4483,16 @@ input AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
   sourceAsn: uint32
+  sourceAsnName: string
+  sourceAsnName_geq: string
+  sourceAsnName_gt: string
+  sourceAsnName_in: [string!]
+  sourceAsnName_leq: string
+  sourceAsnName_like: string
+  sourceAsnName_lt: string
+  sourceAsnName_neq: string
+  sourceAsnName_notin: [string!]
+  sourceAsnName_notlike: string
   sourceAsn_geq: uint32
   sourceAsn_gt: uint32
   sourceAsn_in: [uint32!]
@@ -5147,6 +4787,10 @@ enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # destinationAsnName ascending
+  destinationAsnName_ASC
+  # destinationAsnName descending
+  destinationAsnName_DESC
   # destinationAsn ascending
   destinationAsn_ASC
   # destinationAsn descending
@@ -5227,6 +4871,10 @@ enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipMoreFragments_ASC
   # ipMoreFragments descending
   ipMoreFragments_DESC
+  # ipProtocolName ascending
+  ipProtocolName_ASC
+  # ipProtocolName descending
+  ipProtocolName_DESC
   # ipProtocol ascending
   ipProtocol_ASC
   # ipProtocol descending
@@ -5319,6 +4967,10 @@ enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # sourceAsnName ascending
+  sourceAsnName_ASC
+  # sourceAsnName descending
+  sourceAsnName_DESC
   # sourceAsn ascending
   sourceAsn_ASC
   # sourceAsn descending
@@ -8637,6 +8289,8 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions {
   datetimeTenSeconds: Time!
   # ASN associated with the destination IP of the packet, or 0 if there was no mapping available
   destinationAsn: uint32!
+  # Name of ASN associated with the destination IP of the packet, if available
+  destinationAsnName: string!
   # Country where the destination IP of the packet is located (ISO 3166-1 alpha-2)
   destinationCountry: string!
   # Latitude and longitude where the destination IP of the packet is located (Geohash encoding)
@@ -8677,6 +8331,8 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions {
   ipMoreFragments: uint8!
   # Value of the Protocol header field in the IPv4 or IPv6 packet
   ipProtocol: uint8!
+  # Name of the protocol specified by the Protocol header field in the IPv4 or IPv6 packet
+  ipProtocolName: string!
   # Value of the Source Address header field in the IPv4 or IPv6 packet
   ipSourceAddress: string!
   # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
@@ -8721,6 +8377,8 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions {
   sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
   sourceAsn: uint32!
+  # Name of ASN associated with the source IP of the packet, if available
+  sourceAsnName: string!
   # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
   sourceCountry: string!
   # Latitude and longitude where the source IP of the packet is located (Geohash encoding)
@@ -8875,6 +8533,16 @@ input AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   datetime_neq: Time
   datetime_notin: [Time!]
   destinationAsn: uint32
+  destinationAsnName: string
+  destinationAsnName_geq: string
+  destinationAsnName_gt: string
+  destinationAsnName_in: [string!]
+  destinationAsnName_leq: string
+  destinationAsnName_like: string
+  destinationAsnName_lt: string
+  destinationAsnName_neq: string
+  destinationAsnName_notin: [string!]
+  destinationAsnName_notlike: string
   destinationAsn_geq: uint32
   destinationAsn_gt: uint32
   destinationAsn_in: [uint32!]
@@ -9045,6 +8713,16 @@ input AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipMoreFragments_neq: uint8
   ipMoreFragments_notin: bytes
   ipProtocol: uint8
+  ipProtocolName: string
+  ipProtocolName_geq: string
+  ipProtocolName_gt: string
+  ipProtocolName_in: [string!]
+  ipProtocolName_leq: string
+  ipProtocolName_like: string
+  ipProtocolName_lt: string
+  ipProtocolName_neq: string
+  ipProtocolName_notin: [string!]
+  ipProtocolName_notlike: string
   ipProtocol_geq: uint8
   ipProtocol_gt: uint8
   ipProtocol_in: bytes
@@ -9235,6 +8913,16 @@ input AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
   sourceAsn: uint32
+  sourceAsnName: string
+  sourceAsnName_geq: string
+  sourceAsnName_gt: string
+  sourceAsnName_in: [string!]
+  sourceAsnName_leq: string
+  sourceAsnName_like: string
+  sourceAsnName_lt: string
+  sourceAsnName_neq: string
+  sourceAsnName_notin: [string!]
+  sourceAsnName_notlike: string
   sourceAsn_geq: uint32
   sourceAsn_gt: uint32
   sourceAsn_in: [uint32!]
@@ -9529,6 +9217,10 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # destinationAsnName ascending
+  destinationAsnName_ASC
+  # destinationAsnName descending
+  destinationAsnName_DESC
   # destinationAsn ascending
   destinationAsn_ASC
   # destinationAsn descending
@@ -9609,6 +9301,10 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipMoreFragments_ASC
   # ipMoreFragments descending
   ipMoreFragments_DESC
+  # ipProtocolName ascending
+  ipProtocolName_ASC
+  # ipProtocolName descending
+  ipProtocolName_DESC
   # ipProtocol ascending
   ipProtocol_ASC
   # ipProtocol descending
@@ -9697,6 +9393,10 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # sourceAsnName ascending
+  sourceAsnName_ASC
+  # sourceAsnName descending
+  sourceAsnName_DESC
   # sourceAsn ascending
   sourceAsn_ASC
   # sourceAsn descending
@@ -9956,6 +9656,8 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
   datetimeTenSeconds: Time!
   # ASN associated with the destination IP of the packet, or 0 if there was no mapping available
   destinationAsn: uint32!
+  # Name of ASN associated with the destination IP of the packet, if available
+  destinationAsnName: string!
   # Country where the destination IP of the packet is located (ISO 3166-1 alpha-2)
   destinationCountry: string!
   # Latitude and longitude where the destination IP of the packet is located (Geohash encoding)
@@ -9996,6 +9698,8 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
   ipMoreFragments: uint8!
   # Value of the Protocol header field in the IPv4 or IPv6 packet
   ipProtocol: uint8!
+  # Name of the protocol specified by the Protocol header field in the IPv4 or IPv6 packet
+  ipProtocolName: string!
   # Value of the Source Address header field in the IPv4 or IPv6 packet
   ipSourceAddress: string!
   # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
@@ -10038,6 +9742,8 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
   sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
   sourceAsn: uint32!
+  # Name of ASN associated with the source IP of the packet, if available
+  sourceAsnName: string!
   # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
   sourceCountry: string!
   # Latitude and longitude where the source IP of the packet is located (Geohash encoding)
@@ -10190,6 +9896,16 @@ input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   datetime_neq: Time
   datetime_notin: [Time!]
   destinationAsn: uint32
+  destinationAsnName: string
+  destinationAsnName_geq: string
+  destinationAsnName_gt: string
+  destinationAsnName_in: [string!]
+  destinationAsnName_leq: string
+  destinationAsnName_like: string
+  destinationAsnName_lt: string
+  destinationAsnName_neq: string
+  destinationAsnName_notin: [string!]
+  destinationAsnName_notlike: string
   destinationAsn_geq: uint32
   destinationAsn_gt: uint32
   destinationAsn_in: [uint32!]
@@ -10360,6 +10076,16 @@ input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipMoreFragments_neq: uint8
   ipMoreFragments_notin: bytes
   ipProtocol: uint8
+  ipProtocolName: string
+  ipProtocolName_geq: string
+  ipProtocolName_gt: string
+  ipProtocolName_in: [string!]
+  ipProtocolName_leq: string
+  ipProtocolName_like: string
+  ipProtocolName_lt: string
+  ipProtocolName_neq: string
+  ipProtocolName_notin: [string!]
+  ipProtocolName_notlike: string
   ipProtocol_geq: uint8
   ipProtocol_gt: uint8
   ipProtocol_in: bytes
@@ -10540,6 +10266,16 @@ input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
   sourceAsn: uint32
+  sourceAsnName: string
+  sourceAsnName_geq: string
+  sourceAsnName_gt: string
+  sourceAsnName_in: [string!]
+  sourceAsnName_leq: string
+  sourceAsnName_like: string
+  sourceAsnName_lt: string
+  sourceAsnName_neq: string
+  sourceAsnName_notin: [string!]
+  sourceAsnName_notlike: string
   sourceAsn_geq: uint32
   sourceAsn_gt: uint32
   sourceAsn_in: [uint32!]
@@ -10824,6 +10560,10 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # destinationAsnName ascending
+  destinationAsnName_ASC
+  # destinationAsnName descending
+  destinationAsnName_DESC
   # destinationAsn ascending
   destinationAsn_ASC
   # destinationAsn descending
@@ -10904,6 +10644,10 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipMoreFragments_ASC
   # ipMoreFragments descending
   ipMoreFragments_DESC
+  # ipProtocolName ascending
+  ipProtocolName_ASC
+  # ipProtocolName descending
+  ipProtocolName_DESC
   # ipProtocol ascending
   ipProtocol_ASC
   # ipProtocol descending
@@ -10988,6 +10732,10 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # sourceAsnName ascending
+  sourceAsnName_ASC
+  # sourceAsnName descending
+  sourceAsnName_DESC
   # sourceAsn ascending
   sourceAsn_ASC
   # sourceAsn descending
@@ -13811,7 +13559,7 @@ enum AccountRumWebVitalsEventsAdaptiveOrderBy {
 # Access and limitations for an account
 type AccountSettings {
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
-  dosdAttackAnalyticsAdaptiveGroups: Settings!
+  dosdAttackAnalyticsGroups: Settings!
   dosdNetworkAnalyticsAdaptiveGroups: Settings!
   durableObjectsInvocationsAdaptiveGroups: Settings!
   durableObjectsPeriodicGroups: Settings!
@@ -13840,6 +13588,7 @@ type AccountSettings {
   rumWebVitalsEventsAdaptive: Settings!
   rumWebVitalsEventsAdaptiveGroups: Settings!
   spectrumNetworkAnalyticsAdaptiveGroups: Settings!
+  streamMinutesViewedAdaptiveGroups: Settings!
   videoBufferEventsAdaptiveGroups: Settings!
   videoPlaybackEventsAdaptiveGroups: Settings!
   videoQualityEventsAdaptiveGroups: Settings!
@@ -13916,6 +13665,8 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions {
   datetimeTenSeconds: Time!
   # ASN associated with the destination IP of the packet, or 0 if there was no mapping available
   destinationAsn: uint32!
+  # Name of ASN associated with the destination IP of the packet, if available
+  destinationAsnName: string!
   # Country where the destination IP of the packet is located (ISO 3166-1 alpha-2)
   destinationCountry: string!
   # Latitude and longitude where the destination IP of the packet is located (Geohash encoding)
@@ -13956,6 +13707,8 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions {
   ipMoreFragments: uint8!
   # Value of the Protocol header field in the IPv4 or IPv6 packet
   ipProtocol: uint8!
+  # Name of the protocol specified by the Protocol header field in the IPv4 or IPv6 packet
+  ipProtocolName: string!
   # Value of the Source Address header field in the IPv4 or IPv6 packet
   ipSourceAddress: string!
   # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
@@ -13998,6 +13751,8 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions {
   sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
   sourceAsn: uint32!
+  # Name of ASN associated with the source IP of the packet, if available
+  sourceAsnName: string!
   # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
   sourceCountry: string!
   # Latitude and longitude where the source IP of the packet is located (Geohash encoding)
@@ -14150,6 +13905,16 @@ input AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   datetime_neq: Time
   datetime_notin: [Time!]
   destinationAsn: uint32
+  destinationAsnName: string
+  destinationAsnName_geq: string
+  destinationAsnName_gt: string
+  destinationAsnName_in: [string!]
+  destinationAsnName_leq: string
+  destinationAsnName_like: string
+  destinationAsnName_lt: string
+  destinationAsnName_neq: string
+  destinationAsnName_notin: [string!]
+  destinationAsnName_notlike: string
   destinationAsn_geq: uint32
   destinationAsn_gt: uint32
   destinationAsn_in: [uint32!]
@@ -14320,6 +14085,16 @@ input AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipMoreFragments_neq: uint8
   ipMoreFragments_notin: bytes
   ipProtocol: uint8
+  ipProtocolName: string
+  ipProtocolName_geq: string
+  ipProtocolName_gt: string
+  ipProtocolName_in: [string!]
+  ipProtocolName_leq: string
+  ipProtocolName_like: string
+  ipProtocolName_lt: string
+  ipProtocolName_neq: string
+  ipProtocolName_notin: [string!]
+  ipProtocolName_notlike: string
   ipProtocol_geq: uint8
   ipProtocol_gt: uint8
   ipProtocol_in: bytes
@@ -14500,6 +14275,16 @@ input AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
   sourceAsn: uint32
+  sourceAsnName: string
+  sourceAsnName_geq: string
+  sourceAsnName_gt: string
+  sourceAsnName_in: [string!]
+  sourceAsnName_leq: string
+  sourceAsnName_like: string
+  sourceAsnName_lt: string
+  sourceAsnName_neq: string
+  sourceAsnName_notin: [string!]
+  sourceAsnName_notlike: string
   sourceAsn_geq: uint32
   sourceAsn_gt: uint32
   sourceAsn_in: [uint32!]
@@ -14784,6 +14569,10 @@ enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # destinationAsnName ascending
+  destinationAsnName_ASC
+  # destinationAsnName descending
+  destinationAsnName_DESC
   # destinationAsn ascending
   destinationAsn_ASC
   # destinationAsn descending
@@ -14864,6 +14653,10 @@ enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipMoreFragments_ASC
   # ipMoreFragments descending
   ipMoreFragments_DESC
+  # ipProtocolName ascending
+  ipProtocolName_ASC
+  # ipProtocolName descending
+  ipProtocolName_DESC
   # ipProtocol ascending
   ipProtocol_ASC
   # ipProtocol descending
@@ -14948,6 +14741,10 @@ enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # sourceAsnName ascending
+  sourceAsnName_ASC
+  # sourceAsnName descending
+  sourceAsnName_DESC
   # sourceAsn ascending
   sourceAsn_ASC
   # sourceAsn descending
@@ -15055,6 +14852,171 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsSum {
   bits: uint64!
   # Sum of packets received
   packets: uint64!
+}
+
+# A high-level summary of Cloudflare Stream minutes viewed.
+type AccountStreamMinutesViewedAdaptiveGroups {
+  # The number of values for a metric per dimension
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountStreamMinutesViewedAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountStreamMinutesViewedAdaptiveGroupsSum
+}
+
+type AccountStreamMinutesViewedAdaptiveGroupsDimensions {
+  # ISO 3166 alpha2 country code from the client
+  clientCountryName: string!
+  # The date the event occurred at the edge
+  date: Date!
+  # The date and time the event occurred at the edge
+  datetime: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the event occurred at the edge truncated to hours
+  datetimeHour: Time!
+  # The date and time the event occurred at the edge truncated to the minute
+  datetimeMinute: Time!
+  # The source of the minutes viewed
+  mediaType: string!
+  # Unique ID of a video
+  uid: string!
+}
+
+input AccountStreamMinutesViewedAdaptiveGroupsFilter_InputObject {
+  AND: [AccountStreamMinutesViewedAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountStreamMinutesViewedAdaptiveGroupsFilter_InputObject!]
+  clientCountryName: string
+  clientCountryName_geq: string
+  clientCountryName_gt: string
+  clientCountryName_in: [string!]
+  clientCountryName_leq: string
+  clientCountryName_like: string
+  clientCountryName_lt: string
+  clientCountryName_neq: string
+  clientCountryName_notin: [string!]
+  clientCountryName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  mediaType: string
+  mediaType_geq: string
+  mediaType_gt: string
+  mediaType_in: [string!]
+  mediaType_leq: string
+  mediaType_like: string
+  mediaType_lt: string
+  mediaType_neq: string
+  mediaType_notin: [string!]
+  mediaType_notlike: string
+  uid: string
+  uid_geq: string
+  uid_gt: string
+  uid_in: [string!]
+  uid_leq: string
+  uid_like: string
+  uid_lt: string
+  uid_neq: string
+  uid_notin: [string!]
+  uid_notlike: string
+}
+
+enum AccountStreamMinutesViewedAdaptiveGroupsOrderBy {
+  # clientCountryName ascending
+  clientCountryName_ASC
+  # clientCountryName descending
+  clientCountryName_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # mediaType ascending
+  mediaType_ASC
+  # mediaType descending
+  mediaType_DESC
+  # sum(minutesViewed) ascending
+  sum_minutesViewed_ASC
+  # sum(minutesViewed) descending
+  sum_minutesViewed_DESC
+  # uid ascending
+  uid_ASC
+  # uid descending
+  uid_DESC
+}
+
+type AccountStreamMinutesViewedAdaptiveGroupsSum {
+  minutesViewed: uint64!
 }
 
 # Beta. Aggregated video streaming buffer event metrics with adaptive sampling
@@ -15493,7 +15455,7 @@ type AccountVideoPlaybackEventsAdaptiveGroupsSum {
   timeViewedMinutes: uint64!
 }
 
-# Beta. Aggregated video streaming quaity change event metrics with adaptive sampling
+# Beta. Aggregated video streaming quality change event metrics with adaptive sampling
 type AccountVideoQualityEventsAdaptiveGroups {
   avg: AccountVideoQualityEventsAdaptiveGroupsAvg
   # Total number of quality change events
