@@ -16391,7 +16391,7 @@ type zone {
   httpRequests1mByColoGroups(filter: ZoneHttpRequests1mByColoGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneHttpRequests1mByColoGroupsOrderBy!]): [ZoneHttpRequests1mByColoGroups!]!
   # Minutely rollups of request data
   httpRequests1mGroups(filter: ZoneHttpRequests1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneHttpRequests1mGroupsOrderBy!]): [ZoneHttpRequests1mGroups!]!
-  # Beta. Aggregated HTTP requests data (10% sample) with adaptive sampling
+  # Aggregated HTTP requests data with adaptive sampling
   httpRequestsAdaptiveGroups(filter: ZoneHttpRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneHttpRequestsAdaptiveGroupsOrderBy!]): [ZoneHttpRequestsAdaptiveGroups!]!
   # Minutely rollups of Image Resizing requests
   imageResizingRequests1mGroups(filter: ZoneImageResizingRequests1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneImageResizingRequests1mGroupsOrderBy!]): [ZoneImageResizingRequests1mGroups!]!
@@ -20269,7 +20269,7 @@ type ZoneHttpRequests1mGroupsUniq {
   uniques: uint64!
 }
 
-# Beta. Aggregated HTTP requests data (10% sample) with adaptive sampling
+# Aggregated HTTP requests data with adaptive sampling
 type ZoneHttpRequestsAdaptiveGroups {
   # The average value used for sample interval
   avg: ZoneHttpRequestsAdaptiveGroupsAvg
