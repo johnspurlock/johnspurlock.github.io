@@ -22,6 +22,7 @@ Account-level datasets:
   magicFirewallSamplesAdaptiveGroups
   magicTransitNetworkAnalyticsAdaptiveGroups
   magicTransitTunnelHealthChecksAdaptiveGroups
+  magicTransitTunnelTrafficAdaptiveGroups
   nelReportsAdaptiveGroups
 * pagesFunctionsInvocationsAdaptiveGroups
 * rumPageloadEventsAdaptiveGroups
@@ -38,6 +39,8 @@ Account-level datasets:
 * workersSubrequestsAdaptiveGroups
 
 Zone-level datasets:
+* emailRoutingAdaptive
+* emailRoutingAdaptiveGroups
 * firewallEventsAdaptive
 * firewallEventsAdaptiveByTimeGroups
   firewallEventsAdaptiveGroups
@@ -103,13 +106,13 @@ type account {
   dosdAttackAnalyticsGroups(filter: AccountDosdAttackAnalyticsGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDosdAttackAnalyticsGroupsOrderBy!]): [AccountDosdAttackAnalyticsGroups!]!
   # Network analytics data for dosd
   dosdNetworkAnalyticsAdaptiveGroups(filter: AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountDosdNetworkAnalyticsAdaptiveGroups!]!
-  # Beta. Durable Objects invocations with adaptive sampling
+  # Durable Objects invocations with adaptive sampling
   durableObjectsInvocationsAdaptiveGroups(filter: AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy!]): [AccountDurableObjectsInvocationsAdaptiveGroups!]!
-  # Beta. Durable Objects periodic metrics
+  # Durable Objects periodic metrics
   durableObjectsPeriodicGroups(filter: AccountDurableObjectsPeriodicGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsPeriodicGroupsOrderBy!]): [AccountDurableObjectsPeriodicGroups!]!
-  # Beta. Durable Objects storage metrics
+  # Durable Objects storage metrics
   durableObjectsStorageGroups(filter: AccountDurableObjectsStorageGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsStorageGroupsOrderBy!]): [AccountDurableObjectsStorageGroups!]!
-  # Beta. Durable Objects subrequests with adaptive sampling
+  # Durable Objects subrequests with adaptive sampling
   durableObjectsSubrequestsAdaptiveGroups(filter: AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy!]): [AccountDurableObjectsSubrequestsAdaptiveGroups!]!
   # Network analytics data for flowtrackd
   flowtrackdNetworkAnalyticsAdaptiveGroups(filter: AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountFlowtrackdNetworkAnalyticsAdaptiveGroups!]!
@@ -143,6 +146,8 @@ type account {
   magicTransitNetworkAnalyticsAdaptiveGroups(filter: AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountMagicTransitNetworkAnalyticsAdaptiveGroups!]!
   # Beta. Magic Transit Health check results for customer GRE Tunnels with adaptive sampling (ABR).
   magicTransitTunnelHealthChecksAdaptiveGroups(filter: AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy!]): [AccountMagicTransitTunnelHealthChecksAdaptiveGroups!]!
+  # Bandwidth usage metric of a Magic Transit tunnel.
+  magicTransitTunnelTrafficAdaptiveGroups(filter: AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy!]): [AccountMagicTransitTunnelTrafficAdaptiveGroups!]!
   # Data to visualize network error logs
   nelReportsAdaptiveGroups(filter: AccountNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountNelReportsAdaptiveGroupsOrderBy!]): [AccountNelReportsAdaptiveGroups!]!
   # Pages Functions invocations with adaptive sampling
@@ -321,7 +326,7 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
   ipv6FlowLabel: uint32!
   # Value of the Identification extension header field in the IPv6 packet
   ipv6Identification: uint32!
-  # Which system dropped the packet (possible values: local, global)
+  # Which system dropped the packet (possible values: dosd, flowtrackd, magic-firewall)
   mitigationSystem: string!
   # The action that was taken on the packet (possible values: pass, drop)
   outcome: string!
@@ -3095,7 +3100,7 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsSum {
   packets: uint64!
 }
 
-# Beta. Durable Objects invocations with adaptive sampling
+# Durable Objects invocations with adaptive sampling
 type AccountDurableObjectsInvocationsAdaptiveGroups {
   # The average value used for sample interval
   avg: AccountDurableObjectsInvocationsAdaptiveGroupsAvg
@@ -3398,7 +3403,7 @@ type AccountDurableObjectsInvocationsAdaptiveGroupsSum {
   wallTime: uint64!
 }
 
-# Beta. Durable Objects periodic metrics
+# Durable Objects periodic metrics
 type AccountDurableObjectsPeriodicGroups {
   # List of dimensions to group by
   dimensions: AccountDurableObjectsPeriodicGroupsDimensions
@@ -3571,7 +3576,7 @@ type AccountDurableObjectsPeriodicGroupsSum {
   subrequests: uint64!
 }
 
-# Beta. Durable Objects storage metrics
+# Durable Objects storage metrics
 type AccountDurableObjectsStorageGroups {
   # List of dimensions to group by
   dimensions: AccountDurableObjectsStorageGroupsDimensions
@@ -3627,7 +3632,7 @@ enum AccountDurableObjectsStorageGroupsOrderBy {
   max_storedBytes_DESC
 }
 
-# Beta. Durable Objects subrequests with adaptive sampling
+# Durable Objects subrequests with adaptive sampling
 type AccountDurableObjectsSubrequestsAdaptiveGroups {
   # List of dimensions to group by
   dimensions: AccountDurableObjectsSubrequestsAdaptiveGroupsDimensions
@@ -9734,7 +9739,7 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
   ipv6FlowLabel: uint32!
   # Value of the Identification extension header field in the IPv6 packet
   ipv6Identification: uint32!
-  # Which system dropped the packet (possible values: local, global)
+  # Which system dropped the packet (possible values: dosd, flowtrackd, magic-firewall)
   mitigationSystem: string!
   # The action that was taken on the packet (possible values: pass, drop)
   outcome: string!
@@ -11090,6 +11095,96 @@ enum AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy {
   resultStatus_ASC
   # resultStatus descending
   resultStatus_DESC
+  # tunnelName ascending
+  tunnelName_ASC
+  # tunnelName descending
+  tunnelName_DESC
+}
+
+# Bandwidth usage metric of a Magic Transit tunnel.
+type AccountMagicTransitTunnelTrafficAdaptiveGroups {
+  # Ingress bandwidth in bits per second for a past duration
+  avg: AccountMagicTransitTunnelTrafficAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountMagicTransitTunnelTrafficAdaptiveGroupsDimensions
+}
+
+type AccountMagicTransitTunnelTrafficAdaptiveGroupsAvg {
+  # Average of bandwidth per second over the last 5 minutes, when filter is applied
+  tunnelTrafficPast5: uint64!
+}
+
+type AccountMagicTransitTunnelTrafficAdaptiveGroupsDimensions {
+  # Date and time that the packet was received
+  datetime: Time!
+  # Traffic Direction
+  direction: string!
+  # System to collect info on
+  system: string!
+  # Egress device info
+  tunnelName: string!
+}
+
+input AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  direction: string
+  direction_geq: string
+  direction_gt: string
+  direction_in: [string!]
+  direction_leq: string
+  direction_like: string
+  direction_lt: string
+  direction_neq: string
+  direction_notin: [string!]
+  direction_notlike: string
+  system: string
+  system_geq: string
+  system_gt: string
+  system_in: [string!]
+  system_leq: string
+  system_like: string
+  system_lt: string
+  system_neq: string
+  system_notin: [string!]
+  system_notlike: string
+  tunnelName: string
+  tunnelName_geq: string
+  tunnelName_gt: string
+  tunnelName_in: [string!]
+  tunnelName_leq: string
+  tunnelName_like: string
+  tunnelName_lt: string
+  tunnelName_neq: string
+  tunnelName_notin: [string!]
+  tunnelName_notlike: string
+}
+
+enum AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy {
+  # avg(tunnelTrafficPast5) ascending
+  avg_tunnelTrafficPast5_ASC
+  # avg(tunnelTrafficPast5) descending
+  avg_tunnelTrafficPast5_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # direction ascending
+  direction_ASC
+  # direction descending
+  direction_DESC
+  # system ascending
+  system_ASC
+  # system descending
+  system_DESC
   # tunnelName ascending
   tunnelName_ASC
   # tunnelName descending
@@ -13581,6 +13676,7 @@ type AccountSettings {
   magicFirewallSamplesAdaptiveGroups: Settings!
   magicTransitNetworkAnalyticsAdaptiveGroups: Settings!
   magicTransitTunnelHealthChecksAdaptiveGroups: Settings!
+  magicTransitTunnelTrafficAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   pagesFunctionsInvocationsAdaptiveGroups: Settings!
   rumPageloadEventsAdaptiveGroups: Settings!
@@ -13743,7 +13839,7 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions {
   ipv6FlowLabel: uint32!
   # Value of the Identification extension header field in the IPv6 packet
   ipv6Identification: uint32!
-  # Which system dropped the packet (possible values: local, global)
+  # Which system dropped the packet (possible values: dosd, flowtrackd, magic-firewall)
   mitigationSystem: string!
   # The action that was taken on the packet (possible values: pass, drop)
   outcome: string!
@@ -16367,6 +16463,10 @@ type viewer {
 }
 
 type zone {
+  # Beta. Raw email routing logs with adaptive sampling
+  emailRoutingAdaptive(filter: ZoneEmailRoutingAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneEmailRoutingAdaptiveOrderBy!]): [ZoneEmailRoutingAdaptive!]!
+  # Beta. Aggregated email routing logs with adaptive sampling
+  emailRoutingAdaptiveGroups(filter: ZoneEmailRoutingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneEmailRoutingAdaptiveGroupsOrderBy!]): [ZoneEmailRoutingAdaptiveGroups!]!
   # Raw Firewall events with adaptive sampling
   firewallEventsAdaptive(filter: ZoneFirewallEventsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneFirewallEventsAdaptiveOrderBy!]): [ZoneFirewallEventsAdaptive!]!
   # Aggregated Firewall events with adaptive sampling grouped by time
@@ -16405,6 +16505,409 @@ type zone {
   # Minutely rollups of average packets per second sent in a SYN attack
   synAvgPps1mGroups(filter: ZoneSynAvgPps1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneSynAvgPps1mGroupsOrderBy!]): [ZoneSynAvgPps1mGroups!]!
   zoneTag: string!
+}
+
+# Beta. Raw email routing logs with adaptive sampling
+type ZoneEmailRoutingAdaptive {
+  # The date and time the source email was received
+  datetime: Time!
+  # DKIM check status of the source email
+  dkim: string!
+  # DMARC check status of the source email
+  dmarc: string!
+  # Detailed error message (if any)
+  errorDetail: string!
+  # The sender email address of the source email
+  from: string!
+  # The Message-ID header of the source email (if present)
+  messageId: string!
+  # The UUID of the routing rule matched by the source email
+  ruleMatched: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # Unique identifier for the email log entry (note: retries for the same email may result in multiple log entries)
+  sessionId: string!
+  # SPF check status of the source email
+  spf: string!
+  # The resulting outcome (action) for the email
+  status: string!
+  # The subject of the source email
+  subject: string!
+  # The recipient email address of the source email
+  to: string!
+}
+
+input ZoneEmailRoutingAdaptiveFilter_InputObject {
+  AND: [ZoneEmailRoutingAdaptiveFilter_InputObject!]
+  OR: [ZoneEmailRoutingAdaptiveFilter_InputObject!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  dkim: string
+  dkim_geq: string
+  dkim_gt: string
+  dkim_in: [string!]
+  dkim_leq: string
+  dkim_like: string
+  dkim_lt: string
+  dkim_neq: string
+  dkim_notin: [string!]
+  dkim_notlike: string
+  dmarc: string
+  dmarc_geq: string
+  dmarc_gt: string
+  dmarc_in: [string!]
+  dmarc_leq: string
+  dmarc_like: string
+  dmarc_lt: string
+  dmarc_neq: string
+  dmarc_notin: [string!]
+  dmarc_notlike: string
+  errorDetail: string
+  errorDetail_geq: string
+  errorDetail_gt: string
+  errorDetail_in: [string!]
+  errorDetail_leq: string
+  errorDetail_like: string
+  errorDetail_lt: string
+  errorDetail_neq: string
+  errorDetail_notin: [string!]
+  errorDetail_notlike: string
+  from: string
+  from_geq: string
+  from_gt: string
+  from_in: [string!]
+  from_leq: string
+  from_like: string
+  from_lt: string
+  from_neq: string
+  from_notin: [string!]
+  from_notlike: string
+  messageId: string
+  messageId_geq: string
+  messageId_gt: string
+  messageId_in: [string!]
+  messageId_leq: string
+  messageId_like: string
+  messageId_lt: string
+  messageId_neq: string
+  messageId_notin: [string!]
+  messageId_notlike: string
+  ruleMatched: string
+  ruleMatched_geq: string
+  ruleMatched_gt: string
+  ruleMatched_in: [string!]
+  ruleMatched_leq: string
+  ruleMatched_like: string
+  ruleMatched_lt: string
+  ruleMatched_neq: string
+  ruleMatched_notin: [string!]
+  ruleMatched_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+  spf: string
+  spf_geq: string
+  spf_gt: string
+  spf_in: [string!]
+  spf_leq: string
+  spf_like: string
+  spf_lt: string
+  spf_neq: string
+  spf_notin: [string!]
+  spf_notlike: string
+  status: string
+  status_geq: string
+  status_gt: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
+  subject: string
+  subject_geq: string
+  subject_gt: string
+  subject_in: [string!]
+  subject_leq: string
+  subject_like: string
+  subject_lt: string
+  subject_neq: string
+  subject_notin: [string!]
+  subject_notlike: string
+  to: string
+  to_geq: string
+  to_gt: string
+  to_in: [string!]
+  to_leq: string
+  to_like: string
+  to_lt: string
+  to_neq: string
+  to_notin: [string!]
+  to_notlike: string
+}
+
+# Beta. Aggregated email routing logs with adaptive sampling
+type ZoneEmailRoutingAdaptiveGroups {
+  # Number of emails processed (approximation when sampleInterval > 1)
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneEmailRoutingAdaptiveGroupsDimensions
+}
+
+type ZoneEmailRoutingAdaptiveGroupsDimensions {
+  # The date the source email was received
+  date: Date!
+  # The date and time the source email was received truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the source email was received truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the source email was received truncated to the hour
+  datetimeHour: Time!
+  # The date and time the source email was received truncated to the minute
+  datetimeMinute: Time!
+  # DKIM check status of the source email
+  dkim: string!
+  # DMARC check status of the source email
+  dmarc: string!
+  # The UUID of the routing rule matched by the source email
+  ruleMatched: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # SPF check status of the source email
+  spf: string!
+  # The resulting outcome (action) for the email
+  status: string!
+}
+
+input ZoneEmailRoutingAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneEmailRoutingAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneEmailRoutingAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  dkim: string
+  dkim_geq: string
+  dkim_gt: string
+  dkim_in: [string!]
+  dkim_leq: string
+  dkim_like: string
+  dkim_lt: string
+  dkim_neq: string
+  dkim_notin: [string!]
+  dkim_notlike: string
+  dmarc: string
+  dmarc_geq: string
+  dmarc_gt: string
+  dmarc_in: [string!]
+  dmarc_leq: string
+  dmarc_like: string
+  dmarc_lt: string
+  dmarc_neq: string
+  dmarc_notin: [string!]
+  dmarc_notlike: string
+  ruleMatched: string
+  ruleMatched_geq: string
+  ruleMatched_gt: string
+  ruleMatched_in: [string!]
+  ruleMatched_leq: string
+  ruleMatched_like: string
+  ruleMatched_lt: string
+  ruleMatched_neq: string
+  ruleMatched_notin: [string!]
+  ruleMatched_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  spf: string
+  spf_geq: string
+  spf_gt: string
+  spf_in: [string!]
+  spf_leq: string
+  spf_like: string
+  spf_lt: string
+  spf_neq: string
+  spf_notin: [string!]
+  spf_notlike: string
+  status: string
+  status_geq: string
+  status_gt: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
+}
+
+enum ZoneEmailRoutingAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # dkim ascending
+  dkim_ASC
+  # dkim descending
+  dkim_DESC
+  # dmarc ascending
+  dmarc_ASC
+  # dmarc descending
+  dmarc_DESC
+  # ruleMatched ascending
+  ruleMatched_ASC
+  # ruleMatched descending
+  ruleMatched_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # spf ascending
+  spf_ASC
+  # spf descending
+  spf_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+}
+
+enum ZoneEmailRoutingAdaptiveOrderBy {
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # dkim ascending
+  dkim_ASC
+  # dkim descending
+  dkim_DESC
+  # dmarc ascending
+  dmarc_ASC
+  # dmarc descending
+  dmarc_DESC
+  # errorDetail ascending
+  errorDetail_ASC
+  # errorDetail descending
+  errorDetail_DESC
+  # from ascending
+  from_ASC
+  # from descending
+  from_DESC
+  # messageId ascending
+  messageId_ASC
+  # messageId descending
+  messageId_DESC
+  # ruleMatched ascending
+  ruleMatched_ASC
+  # ruleMatched descending
+  ruleMatched_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # spf ascending
+  spf_ASC
+  # spf descending
+  spf_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # subject ascending
+  subject_ASC
+  # subject descending
+  subject_DESC
+  # to ascending
+  to_ASC
+  # to descending
+  to_DESC
 }
 
 input ZoneFilter_InputObject {
@@ -22083,6 +22586,8 @@ enum ZoneNelReportsAdaptiveGroupsOrderBy {
 
 # Access and limitations for a zone
 type ZoneSettings {
+  emailRoutingAdaptive: Settings!
+  emailRoutingAdaptiveGroups: Settings!
   firewallEventsAdaptive: Settings!
   firewallEventsAdaptiveByTimeGroups: Settings!
   firewallEventsAdaptiveGroups: Settings!
