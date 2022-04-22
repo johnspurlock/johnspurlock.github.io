@@ -25,6 +25,8 @@ Account-level datasets:
   magicTransitTunnelTrafficAdaptiveGroups
   nelReportsAdaptiveGroups
 * pagesFunctionsInvocationsAdaptiveGroups
+* r2OperationsAdaptiveGroups
+* r2StorageAdaptiveGroups
 * rumPageloadEventsAdaptiveGroups
 * rumPerformanceEventsAdaptiveGroups
 * rumWebVitalsEventsAdaptive
@@ -59,6 +61,8 @@ Zone-level datasets:
   loadBalancingRequestsAdaptiveGroups
   nelReportsAdaptiveGroups
   synAvgPps1mGroups
+  waitingRoomAnalyticsAdaptive
+  waitingRoomAnalyticsAdaptiveGroups
 
 * = available in all Cloudflare plans
 
@@ -152,6 +156,10 @@ type account {
   nelReportsAdaptiveGroups(filter: AccountNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountNelReportsAdaptiveGroupsOrderBy!]): [AccountNelReportsAdaptiveGroups!]!
   # Pages Functions invocations with adaptive sampling
   pagesFunctionsInvocationsAdaptiveGroups(filter: AccountPagesFunctionsInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy!]): [AccountPagesFunctionsInvocationsAdaptiveGroups!]!
+  # Beta. R2 operations with adaptive sampling
+  r2OperationsAdaptiveGroups(filter: AccountR2OperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2OperationsAdaptiveGroupsOrderBy!]): [AccountR2OperationsAdaptiveGroups!]!
+  # Beta. R2 storage with adaptive sampling
+  r2StorageAdaptiveGroups(filter: AccountR2StorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2StorageAdaptiveGroupsOrderBy!]): [AccountR2StorageAdaptiveGroups!]!
   # Beta. Aggregated RUM pageload event metrics with adaptive sampling
   rumPageloadEventsAdaptiveGroups(filter: AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountRumPageloadEventsAdaptiveGroupsOrderBy!]): [AccountRumPageloadEventsAdaptiveGroups!]!
   # Beta. Aggregated RUM performance event metrics with adaptive sampling
@@ -5316,6 +5324,10 @@ enum AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy {
   sum_bytesSent_ASC
   # sum(bytesSent) descending
   sum_bytesSent_DESC
+  # sum(clientBytesRetransmitted) ascending
+  sum_clientBytesRetransmitted_ASC
+  # sum(clientBytesRetransmitted) descending
+  sum_clientBytesRetransmitted_DESC
   # sum(packetsRecvd) ascending
   sum_packetsRecvd_ASC
   # sum(packetsRecvd) descending
@@ -5324,6 +5336,10 @@ enum AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy {
   sum_packetsSent_ASC
   # sum(packetsSent) descending
   sum_packetsSent_DESC
+  # sum(tokenAuthDurationUs) ascending
+  sum_tokenAuthDurationUs_ASC
+  # sum(tokenAuthDurationUs) descending
+  sum_tokenAuthDurationUs_DESC
   # tokenAuthStatus ascending
   tokenAuthStatus_ASC
   # tokenAuthStatus descending
@@ -5350,10 +5366,14 @@ type AccountGatewayL4DownstreamSessionsAdaptiveGroupsSum {
   bytesRecvd: uint64!
   # Total bytes sent in this session
   bytesSent: uint64!
+  # Total bytes retransmitted by client in this session
+  clientBytesRetransmitted: uint64!
   # Total number of packets received in this session
   packetsRecvd: uint64!
   # Total number of packets sent in this session
   packetsSent: uint64!
+  # Time taken for client token authentication in microseconds
+  tokenAuthDurationUs: int64!
 }
 
 # Aggregated metrics about upstream (edge to client) L4 Gateway Sessions. Metrics are reported on TCP, QUIC or UDP session close
@@ -5391,6 +5411,8 @@ type AccountGatewayL4UpstreamSessionsAdaptiveGroupsDimensions {
   httpConnectReqStatus: string!
   # QUIC error code. Possible values are https://www.iana.org/assignments/quic/quic.xhtml#quic-transport-error-codes
   quicErrorCode: uint64!
+  # Transport protocol used for this session. Possible values are tcp | quic | udp
+  transport: string!
   # Transport status. Possible values are unknown | success | failure
   transportStatus: string!
 }
@@ -5514,6 +5536,7 @@ input AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject {
   quicErrorCode_lt: uint64
   quicErrorCode_neq: uint64
   quicErrorCode_notin: [uint64!]
+  transport: string
   transportStatus: string
   transportStatus_geq: string
   transportStatus_gt: string
@@ -5524,6 +5547,15 @@ input AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject {
   transportStatus_neq: string
   transportStatus_notin: [string!]
   transportStatus_notlike: string
+  transport_geq: string
+  transport_gt: string
+  transport_in: [string!]
+  transport_leq: string
+  transport_like: string
+  transport_lt: string
+  transport_neq: string
+  transport_notin: [string!]
+  transport_notlike: string
 }
 
 enum AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy {
@@ -5599,6 +5631,14 @@ enum AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy {
   sum_bytesSent_ASC
   # sum(bytesSent) descending
   sum_bytesSent_DESC
+  # sum(connectReqHandlingDurationUs) ascending
+  sum_connectReqHandlingDurationUs_ASC
+  # sum(connectReqHandlingDurationUs) descending
+  sum_connectReqHandlingDurationUs_DESC
+  # sum(originBytesRetransmitted) ascending
+  sum_originBytesRetransmitted_ASC
+  # sum(originBytesRetransmitted) descending
+  sum_originBytesRetransmitted_DESC
   # sum(packetsRecvd) ascending
   sum_packetsRecvd_ASC
   # sum(packetsRecvd) descending
@@ -5607,10 +5647,22 @@ enum AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy {
   sum_packetsSent_ASC
   # sum(packetsSent) descending
   sum_packetsSent_DESC
+  # sum(totalTunnelSetupDurationUs) ascending
+  sum_totalTunnelSetupDurationUs_ASC
+  # sum(totalTunnelSetupDurationUs) descending
+  sum_totalTunnelSetupDurationUs_DESC
+  # sum(tunnelSetupDurationUs) ascending
+  sum_tunnelSetupDurationUs_ASC
+  # sum(tunnelSetupDurationUs) descending
+  sum_tunnelSetupDurationUs_DESC
   # transportStatus ascending
   transportStatus_ASC
   # transportStatus descending
   transportStatus_DESC
+  # transport ascending
+  transport_ASC
+  # transport descending
+  transport_DESC
 }
 
 type AccountGatewayL4UpstreamSessionsAdaptiveGroupsQuantiles {
@@ -5627,10 +5679,18 @@ type AccountGatewayL4UpstreamSessionsAdaptiveGroupsSum {
   bytesRecvd: uint64!
   # Total bytes sent in this session
   bytesSent: uint64!
+  # Time taken for CONNECT request handling in microseconds
+  connectReqHandlingDurationUs: int64!
+  # Total bytes retransmitted by origin in this session
+  originBytesRetransmitted: uint64!
   # Total number of packets received in this session
   packetsRecvd: uint64!
   # Total number of packets sent in this session
   packetsSent: uint64!
+  # Total time taken for tunnel setup in microseconds
+  totalTunnelSetupDurationUs: int64!
+  # Time taken for tunnel setup in microseconds
+  tunnelSetupDurationUs: int64!
 }
 
 # Daily rollups of request data
@@ -11103,25 +11163,35 @@ enum AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy {
 
 # Bandwidth usage metric of a Magic Transit tunnel.
 type AccountMagicTransitTunnelTrafficAdaptiveGroups {
-  # Ingress bandwidth in bits per second for a past duration
+  # Ingress/Egress bandwidth in bits per second for a past duration
   avg: AccountMagicTransitTunnelTrafficAdaptiveGroupsAvg
   # List of dimensions to group by
   dimensions: AccountMagicTransitTunnelTrafficAdaptiveGroupsDimensions
 }
 
 type AccountMagicTransitTunnelTrafficAdaptiveGroupsAvg {
-  # Average of bandwidth per second over the last 5 minutes, when filter is applied
-  tunnelTrafficPast5: uint64!
+  # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
+  bitRateFifteenMinutes: uint64!
+  # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
+  bitRateFiveMinutes: uint64!
+  # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
+  bitRateHour: uint64!
 }
 
 type AccountMagicTransitTunnelTrafficAdaptiveGroupsDimensions {
   # Date and time that the packet was received
   datetime: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest five minutes
+  datetimeFiveMinutes: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest hour
+  datetimeHour: Time!
   # Traffic Direction
   direction: string!
   # System to collect info on
   system: string!
-  # Egress device info
+  # Tunnel device name
   tunnelName: string!
 }
 
@@ -11129,6 +11199,30 @@ input AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject {
   AND: [AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject!]
   OR: [AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject!]
   datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -11169,10 +11263,30 @@ input AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy {
-  # avg(tunnelTrafficPast5) ascending
-  avg_tunnelTrafficPast5_ASC
-  # avg(tunnelTrafficPast5) descending
-  avg_tunnelTrafficPast5_DESC
+  # avg(bitRateFifteenMinutes) ascending
+  avg_bitRateFifteenMinutes_ASC
+  # avg(bitRateFifteenMinutes) descending
+  avg_bitRateFifteenMinutes_DESC
+  # avg(bitRateFiveMinutes) ascending
+  avg_bitRateFiveMinutes_ASC
+  # avg(bitRateFiveMinutes) descending
+  avg_bitRateFiveMinutes_DESC
+  # avg(bitRateHour) ascending
+  avg_bitRateHour_ASC
+  # avg(bitRateHour) descending
+  avg_bitRateHour_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -11181,6 +11295,10 @@ enum AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy {
   direction_ASC
   # direction descending
   direction_DESC
+  # notCfIps ascending
+  notCfIps_ASC
+  # notCfIps descending
+  notCfIps_DESC
   # system ascending
   system_ASC
   # system descending
@@ -11620,6 +11738,292 @@ type AccountPagesFunctionsInvocationsAdaptiveGroupsSum {
   subrequests: uint64!
   # Sum of Wall Time
   wallTime: uint64!
+}
+
+# Beta. R2 operations with adaptive sampling
+type AccountR2OperationsAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountR2OperationsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountR2OperationsAdaptiveGroupsSum
+}
+
+type AccountR2OperationsAdaptiveGroupsDimensions {
+  # Status of the R2 operation
+  actionStatus: string!
+  # The name of the R2 operation
+  actionType: string!
+  # The name of the R2 bucket, if applicable to this request
+  bucketName: string!
+  # Request timestamp, truncated to start of a day
+  date: Date!
+  # Request timestamp
+  datetime: Time!
+  # Request timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Request timestamp, truncated to start of an minute
+  datetimeMinute: Time!
+  # The name of the R2 object, if applicable to this request
+  objectName: string!
+  # HTTP status code returned by R2
+  responseStatusCode: uint16!
+}
+
+input AccountR2OperationsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountR2OperationsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountR2OperationsAdaptiveGroupsFilter_InputObject!]
+  actionStatus: string
+  actionStatus_geq: string
+  actionStatus_gt: string
+  actionStatus_in: [string!]
+  actionStatus_leq: string
+  actionStatus_like: string
+  actionStatus_lt: string
+  actionStatus_neq: string
+  actionStatus_notin: [string!]
+  actionStatus_notlike: string
+  actionType: string
+  actionType_geq: string
+  actionType_gt: string
+  actionType_in: [string!]
+  actionType_leq: string
+  actionType_like: string
+  actionType_lt: string
+  actionType_neq: string
+  actionType_notin: [string!]
+  actionType_notlike: string
+  bucketName: string
+  bucketName_geq: string
+  bucketName_gt: string
+  bucketName_in: [string!]
+  bucketName_leq: string
+  bucketName_like: string
+  bucketName_lt: string
+  bucketName_neq: string
+  bucketName_notin: [string!]
+  bucketName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  objectName: string
+  objectName_geq: string
+  objectName_gt: string
+  objectName_in: [string!]
+  objectName_leq: string
+  objectName_like: string
+  objectName_lt: string
+  objectName_neq: string
+  objectName_notin: [string!]
+  objectName_notlike: string
+  responseStatusCode: uint16
+  responseStatusCode_geq: uint16
+  responseStatusCode_gt: uint16
+  responseStatusCode_in: [uint16!]
+  responseStatusCode_leq: uint16
+  responseStatusCode_lt: uint16
+  responseStatusCode_neq: uint16
+  responseStatusCode_notin: [uint16!]
+}
+
+enum AccountR2OperationsAdaptiveGroupsOrderBy {
+  # actionStatus ascending
+  actionStatus_ASC
+  # actionStatus descending
+  actionStatus_DESC
+  # actionType ascending
+  actionType_ASC
+  # actionType descending
+  actionType_DESC
+  # bucketName ascending
+  bucketName_ASC
+  # bucketName descending
+  bucketName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # objectName ascending
+  objectName_ASC
+  # objectName descending
+  objectName_DESC
+  # responseStatusCode ascending
+  responseStatusCode_ASC
+  # responseStatusCode descending
+  responseStatusCode_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # sum(responseObjectSize) ascending
+  sum_responseObjectSize_ASC
+  # sum(responseObjectSize) descending
+  sum_responseObjectSize_DESC
+}
+
+type AccountR2OperationsAdaptiveGroupsSum {
+  # Sum of Requests
+  requests: uint64!
+  # Sum of Response Object Sizes
+  responseObjectSize: uint64!
+}
+
+# Beta. R2 storage with adaptive sampling
+type AccountR2StorageAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountR2StorageAdaptiveGroupsDimensions
+  # The max of values for a metric per dimension
+  max: AccountR2StorageAdaptiveGroupsMax
+}
+
+type AccountR2StorageAdaptiveGroupsDimensions {
+  # The name of the R2 bucket, if applicable to this request
+  bucketName: string!
+  # Storage sample timestamp, truncated to start of a day
+  date: Date!
+  # Storage sample timestamp
+  datetime: Time!
+  # Storage sample timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Storage sample timestamp, truncated to start of an minute
+  datetimeMinute: Time!
+}
+
+input AccountR2StorageAdaptiveGroupsFilter_InputObject {
+  AND: [AccountR2StorageAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountR2StorageAdaptiveGroupsFilter_InputObject!]
+  bucketName: string
+  bucketName_geq: string
+  bucketName_gt: string
+  bucketName_in: [string!]
+  bucketName_leq: string
+  bucketName_like: string
+  bucketName_lt: string
+  bucketName_neq: string
+  bucketName_notin: [string!]
+  bucketName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+}
+
+type AccountR2StorageAdaptiveGroupsMax {
+  # Max of metadata size
+  metadataSize: uint64!
+  # Max of object count
+  objectCount: uint64!
+  # Max of payload size
+  payloadSize: uint64!
+  # Max of upload count
+  uploadCount: uint64!
+}
+
+enum AccountR2StorageAdaptiveGroupsOrderBy {
+  # bucketName ascending
+  bucketName_ASC
+  # bucketName descending
+  bucketName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # max(metadataSize) ascending
+  max_metadataSize_ASC
+  # max(metadataSize) descending
+  max_metadataSize_DESC
+  # max(objectCount) ascending
+  max_objectCount_ASC
+  # max(objectCount) descending
+  max_objectCount_DESC
+  # max(payloadSize) ascending
+  max_payloadSize_ASC
+  # max(payloadSize) descending
+  max_payloadSize_DESC
+  # max(uploadCount) ascending
+  max_uploadCount_ASC
+  # max(uploadCount) descending
+  max_uploadCount_DESC
 }
 
 # Beta. Aggregated RUM pageload event metrics with adaptive sampling
@@ -12859,8 +13263,6 @@ type AccountRumWebVitalsEventsAdaptiveGroupsAvg {
   firstInputDelay: int64!
   # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
   largestContentfulPaint: int64!
-  # Size of the largest object in bytes (negative value indicates N/A)
-  largestContentfulPaintElementSize: int64!
   # Average sample interval
   sampleInterval: float64!
 }
@@ -13238,10 +13640,6 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   avg_firstInputDelay_ASC
   # avg(firstInputDelay) descending
   avg_firstInputDelay_DESC
-  # avg(largestContentfulPaintElementSize) ascending
-  avg_largestContentfulPaintElementSize_ASC
-  # avg(largestContentfulPaintElementSize) descending
-  avg_largestContentfulPaintElementSize_DESC
   # avg(largestContentfulPaint) ascending
   avg_largestContentfulPaint_ASC
   # avg(largestContentfulPaint) descending
@@ -13362,22 +13760,6 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   quantiles_firstInputDelayP99_ASC
   # quantiles(firstInputDelayP99) descending
   quantiles_firstInputDelayP99_DESC
-  # quantiles(largestContentfulPaintElementSizeP50) ascending
-  quantiles_largestContentfulPaintElementSizeP50_ASC
-  # quantiles(largestContentfulPaintElementSizeP50) descending
-  quantiles_largestContentfulPaintElementSizeP50_DESC
-  # quantiles(largestContentfulPaintElementSizeP75) ascending
-  quantiles_largestContentfulPaintElementSizeP75_ASC
-  # quantiles(largestContentfulPaintElementSizeP75) descending
-  quantiles_largestContentfulPaintElementSizeP75_DESC
-  # quantiles(largestContentfulPaintElementSizeP90) ascending
-  quantiles_largestContentfulPaintElementSizeP90_ASC
-  # quantiles(largestContentfulPaintElementSizeP90) descending
-  quantiles_largestContentfulPaintElementSizeP90_DESC
-  # quantiles(largestContentfulPaintElementSizeP99) ascending
-  quantiles_largestContentfulPaintElementSizeP99_ASC
-  # quantiles(largestContentfulPaintElementSizeP99) descending
-  quantiles_largestContentfulPaintElementSizeP99_DESC
   # quantiles(largestContentfulPaintP50) ascending
   quantiles_largestContentfulPaintP50_ASC
   # quantiles(largestContentfulPaintP50) descending
@@ -13501,14 +13883,6 @@ type AccountRumWebVitalsEventsAdaptiveGroupsQuantiles {
   firstInputDelayP90: int64!
   # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
   firstInputDelayP99: int64!
-  # Size of the largest object in bytes (negative value indicates N/A)
-  largestContentfulPaintElementSizeP50: int64!
-  # Size of the largest object in bytes (negative value indicates N/A)
-  largestContentfulPaintElementSizeP75: int64!
-  # Size of the largest object in bytes (negative value indicates N/A)
-  largestContentfulPaintElementSizeP90: int64!
-  # Size of the largest object in bytes (negative value indicates N/A)
-  largestContentfulPaintElementSizeP99: int64!
   # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
   largestContentfulPaintP50: int64!
   # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
@@ -13679,6 +14053,8 @@ type AccountSettings {
   magicTransitTunnelTrafficAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   pagesFunctionsInvocationsAdaptiveGroups: Settings!
+  r2OperationsAdaptiveGroups: Settings!
+  r2StorageAdaptiveGroups: Settings!
   rumPageloadEventsAdaptiveGroups: Settings!
   rumPerformanceEventsAdaptiveGroups: Settings!
   rumWebVitalsEventsAdaptive: Settings!
@@ -16504,6 +16880,10 @@ type zone {
   settings: ZoneSettings
   # Minutely rollups of average packets per second sent in a SYN attack
   synAvgPps1mGroups(filter: ZoneSynAvgPps1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneSynAvgPps1mGroupsOrderBy!]): [ZoneSynAvgPps1mGroups!]!
+  # Beta. Raw waiting room analytics logs
+  waitingRoomAnalyticsAdaptive(filter: ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneWaitingRoomAnalyticsAdaptiveOrderBy!]): [ZoneWaitingRoomAnalyticsAdaptive!]!
+  # Beta. Aggregated waiting room analytics logs with adaptive sampling
+  waitingRoomAnalyticsAdaptiveGroups(filter: ZoneWaitingRoomAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy!]): [ZoneWaitingRoomAnalyticsAdaptiveGroups!]!
   zoneTag: string!
 }
 
@@ -22606,6 +22986,8 @@ type ZoneSettings {
   loadBalancingRequestsAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   synAvgPps1mGroups: Settings!
+  waitingRoomAnalyticsAdaptive: Settings!
+  waitingRoomAnalyticsAdaptiveGroups: Settings!
 }
 
 # Minutely rollups of average packets per second sent in a SYN attack
@@ -22724,4 +23106,654 @@ enum ZoneSynAvgPps1mGroupsOrderBy {
 type ZoneSynAvgPps1mGroupsSum {
   # Avg packets per second for this minute.
   avgPpsPerMinute: uint64!
+}
+
+# Beta. Raw waiting room analytics logs
+type ZoneWaitingRoomAnalyticsAdaptive {
+  # Number of users abandoning the queue per minute
+  abandoningUsersPerMinute: uint64!
+  # The date and time of the state of analytics for the waiting room
+  datetime: Time!
+  # Maximum value of estimated time in minutes
+  maxEstimatedTimeMinutes: uint64!
+  # Actual value of new users per minute
+  newUsersPerMinute: uint64!
+  # Configured value of new users per minute
+  newUsersPerMinuteConfig: uint64!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # Configured value of session duration
+  sessionDuration: uint64!
+  # 50th percentile of the time between session refreshes in minutes
+  timeBetweenRefreshesP50: uint64!
+  # 75th percentile of the time between session refreshes in minutes
+  timeBetweenRefreshesP75: uint64!
+  # 90th percentile of the time between session refreshes in minutes
+  timeBetweenRefreshesP90: uint64!
+  # 95th percentile of the time between session refreshes in minutes
+  timeBetweenRefreshesP95: uint64!
+  # 50th percentile of the time spent waiting in queue in minutes
+  timeInQueueP50: uint64!
+  # 75th percentile of the time spent waiting in queue in minutes
+  timeInQueueP75: uint64!
+  # 90th percentile of the time spent waiting in queue in minutes
+  timeInQueueP90: uint64!
+  # 95th percentile of the time spent waiting in queue in minutes
+  timeInQueueP95: uint64!
+  # 50th percentile of the time spent on the origin in minutes
+  timeOnOriginP50: uint64!
+  # 75th percentile of the time spent on the origin in minutes
+  timeOnOriginP75: uint64!
+  # 90th percentile of the time spent on the origin in minutes
+  timeOnOriginP90: uint64!
+  # 95th percentile of the time spent on the origin in minutes
+  timeOnOriginP95: uint64!
+  # Actual value of total active users
+  totalActiveUsers: uint64!
+  # Configured value of total active users
+  totalActiveUsersConfig: uint64!
+  # Total number of users that are queued
+  totalQueuedUsers: uint64!
+  # Unique Identifier for the waiting room
+  waitingRoomId: string!
+  # Name of the waiting room
+  waitingRoomName: string!
+}
+
+input ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject {
+  AND: [ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject!]
+  OR: [ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject!]
+  abandoningUsersPerMinute: uint64
+  abandoningUsersPerMinute_geq: uint64
+  abandoningUsersPerMinute_gt: uint64
+  abandoningUsersPerMinute_in: [uint64!]
+  abandoningUsersPerMinute_leq: uint64
+  abandoningUsersPerMinute_lt: uint64
+  abandoningUsersPerMinute_neq: uint64
+  abandoningUsersPerMinute_notin: [uint64!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  maxEstimatedTimeMinutes: uint64
+  maxEstimatedTimeMinutes_geq: uint64
+  maxEstimatedTimeMinutes_gt: uint64
+  maxEstimatedTimeMinutes_in: [uint64!]
+  maxEstimatedTimeMinutes_leq: uint64
+  maxEstimatedTimeMinutes_lt: uint64
+  maxEstimatedTimeMinutes_neq: uint64
+  maxEstimatedTimeMinutes_notin: [uint64!]
+  newUsersPerMinute: uint64
+  newUsersPerMinuteConfig: uint64
+  newUsersPerMinuteConfig_geq: uint64
+  newUsersPerMinuteConfig_gt: uint64
+  newUsersPerMinuteConfig_in: [uint64!]
+  newUsersPerMinuteConfig_leq: uint64
+  newUsersPerMinuteConfig_lt: uint64
+  newUsersPerMinuteConfig_neq: uint64
+  newUsersPerMinuteConfig_notin: [uint64!]
+  newUsersPerMinute_geq: uint64
+  newUsersPerMinute_gt: uint64
+  newUsersPerMinute_in: [uint64!]
+  newUsersPerMinute_leq: uint64
+  newUsersPerMinute_lt: uint64
+  newUsersPerMinute_neq: uint64
+  newUsersPerMinute_notin: [uint64!]
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  sessionDuration: uint64
+  sessionDuration_geq: uint64
+  sessionDuration_gt: uint64
+  sessionDuration_in: [uint64!]
+  sessionDuration_leq: uint64
+  sessionDuration_lt: uint64
+  sessionDuration_neq: uint64
+  sessionDuration_notin: [uint64!]
+  timeBetweenRefreshesP50: uint64
+  timeBetweenRefreshesP50_geq: uint64
+  timeBetweenRefreshesP50_gt: uint64
+  timeBetweenRefreshesP50_in: [uint64!]
+  timeBetweenRefreshesP50_leq: uint64
+  timeBetweenRefreshesP50_lt: uint64
+  timeBetweenRefreshesP50_neq: uint64
+  timeBetweenRefreshesP50_notin: [uint64!]
+  timeBetweenRefreshesP75: uint64
+  timeBetweenRefreshesP75_geq: uint64
+  timeBetweenRefreshesP75_gt: uint64
+  timeBetweenRefreshesP75_in: [uint64!]
+  timeBetweenRefreshesP75_leq: uint64
+  timeBetweenRefreshesP75_lt: uint64
+  timeBetweenRefreshesP75_neq: uint64
+  timeBetweenRefreshesP75_notin: [uint64!]
+  timeBetweenRefreshesP90: uint64
+  timeBetweenRefreshesP90_geq: uint64
+  timeBetweenRefreshesP90_gt: uint64
+  timeBetweenRefreshesP90_in: [uint64!]
+  timeBetweenRefreshesP90_leq: uint64
+  timeBetweenRefreshesP90_lt: uint64
+  timeBetweenRefreshesP90_neq: uint64
+  timeBetweenRefreshesP90_notin: [uint64!]
+  timeBetweenRefreshesP95: uint64
+  timeBetweenRefreshesP95_geq: uint64
+  timeBetweenRefreshesP95_gt: uint64
+  timeBetweenRefreshesP95_in: [uint64!]
+  timeBetweenRefreshesP95_leq: uint64
+  timeBetweenRefreshesP95_lt: uint64
+  timeBetweenRefreshesP95_neq: uint64
+  timeBetweenRefreshesP95_notin: [uint64!]
+  timeInQueueP50: uint64
+  timeInQueueP50_geq: uint64
+  timeInQueueP50_gt: uint64
+  timeInQueueP50_in: [uint64!]
+  timeInQueueP50_leq: uint64
+  timeInQueueP50_lt: uint64
+  timeInQueueP50_neq: uint64
+  timeInQueueP50_notin: [uint64!]
+  timeInQueueP75: uint64
+  timeInQueueP75_geq: uint64
+  timeInQueueP75_gt: uint64
+  timeInQueueP75_in: [uint64!]
+  timeInQueueP75_leq: uint64
+  timeInQueueP75_lt: uint64
+  timeInQueueP75_neq: uint64
+  timeInQueueP75_notin: [uint64!]
+  timeInQueueP90: uint64
+  timeInQueueP90_geq: uint64
+  timeInQueueP90_gt: uint64
+  timeInQueueP90_in: [uint64!]
+  timeInQueueP90_leq: uint64
+  timeInQueueP90_lt: uint64
+  timeInQueueP90_neq: uint64
+  timeInQueueP90_notin: [uint64!]
+  timeInQueueP95: uint64
+  timeInQueueP95_geq: uint64
+  timeInQueueP95_gt: uint64
+  timeInQueueP95_in: [uint64!]
+  timeInQueueP95_leq: uint64
+  timeInQueueP95_lt: uint64
+  timeInQueueP95_neq: uint64
+  timeInQueueP95_notin: [uint64!]
+  timeOnOriginP50: uint64
+  timeOnOriginP50_geq: uint64
+  timeOnOriginP50_gt: uint64
+  timeOnOriginP50_in: [uint64!]
+  timeOnOriginP50_leq: uint64
+  timeOnOriginP50_lt: uint64
+  timeOnOriginP50_neq: uint64
+  timeOnOriginP50_notin: [uint64!]
+  timeOnOriginP75: uint64
+  timeOnOriginP75_geq: uint64
+  timeOnOriginP75_gt: uint64
+  timeOnOriginP75_in: [uint64!]
+  timeOnOriginP75_leq: uint64
+  timeOnOriginP75_lt: uint64
+  timeOnOriginP75_neq: uint64
+  timeOnOriginP75_notin: [uint64!]
+  timeOnOriginP90: uint64
+  timeOnOriginP90_geq: uint64
+  timeOnOriginP90_gt: uint64
+  timeOnOriginP90_in: [uint64!]
+  timeOnOriginP90_leq: uint64
+  timeOnOriginP90_lt: uint64
+  timeOnOriginP90_neq: uint64
+  timeOnOriginP90_notin: [uint64!]
+  timeOnOriginP95: uint64
+  timeOnOriginP95_geq: uint64
+  timeOnOriginP95_gt: uint64
+  timeOnOriginP95_in: [uint64!]
+  timeOnOriginP95_leq: uint64
+  timeOnOriginP95_lt: uint64
+  timeOnOriginP95_neq: uint64
+  timeOnOriginP95_notin: [uint64!]
+  totalActiveUsers: uint64
+  totalActiveUsersConfig: uint64
+  totalActiveUsersConfig_geq: uint64
+  totalActiveUsersConfig_gt: uint64
+  totalActiveUsersConfig_in: [uint64!]
+  totalActiveUsersConfig_leq: uint64
+  totalActiveUsersConfig_lt: uint64
+  totalActiveUsersConfig_neq: uint64
+  totalActiveUsersConfig_notin: [uint64!]
+  totalActiveUsers_geq: uint64
+  totalActiveUsers_gt: uint64
+  totalActiveUsers_in: [uint64!]
+  totalActiveUsers_leq: uint64
+  totalActiveUsers_lt: uint64
+  totalActiveUsers_neq: uint64
+  totalActiveUsers_notin: [uint64!]
+  totalQueuedUsers: uint64
+  totalQueuedUsers_geq: uint64
+  totalQueuedUsers_gt: uint64
+  totalQueuedUsers_in: [uint64!]
+  totalQueuedUsers_leq: uint64
+  totalQueuedUsers_lt: uint64
+  totalQueuedUsers_neq: uint64
+  totalQueuedUsers_notin: [uint64!]
+  waitingRoomId: string
+  waitingRoomId_geq: string
+  waitingRoomId_gt: string
+  waitingRoomId_in: [string!]
+  waitingRoomId_leq: string
+  waitingRoomId_like: string
+  waitingRoomId_lt: string
+  waitingRoomId_neq: string
+  waitingRoomId_notin: [string!]
+  waitingRoomId_notlike: string
+  waitingRoomName: string
+  waitingRoomName_geq: string
+  waitingRoomName_gt: string
+  waitingRoomName_in: [string!]
+  waitingRoomName_leq: string
+  waitingRoomName_like: string
+  waitingRoomName_lt: string
+  waitingRoomName_neq: string
+  waitingRoomName_notin: [string!]
+  waitingRoomName_notlike: string
+}
+
+# Beta. Aggregated waiting room analytics logs with adaptive sampling
+type ZoneWaitingRoomAnalyticsAdaptiveGroups {
+  # The avg of values for a metric per dimension
+  avg: ZoneWaitingRoomAnalyticsAdaptiveGroupsAvg
+  # The avgWeighted values for a metric per dimension
+  avgWeighted: ZoneWaitingRoomAnalyticsAdaptiveGroupsAvgWeighted
+  # List of dimensions to group by
+  dimensions: ZoneWaitingRoomAnalyticsAdaptiveGroupsDimensions
+  # The max value for a metric per dimenstion
+  max: ZoneWaitingRoomAnalyticsAdaptiveGroupsMax
+}
+
+type ZoneWaitingRoomAnalyticsAdaptiveGroupsAvg {
+  # Average rate of users abandoning the queue
+  abandoningUsersPerMinute: uint64!
+  # Average of the maximum estimated wait time per minute
+  maxEstimatedTimeMinutes: uint64!
+  # Average rate of new users per minute
+  newUsersPerMinute: uint64!
+  # Configured value of new users per minute
+  newUsersPerMinuteConfig: uint64!
+  # Configured value of session duration
+  sessionDuration: uint64!
+  # Average rate of total active users
+  totalActiveUsers: uint64!
+  # Configured value of total active users
+  totalActiveUsersConfig: uint64!
+  # Average of total queued users
+  totalQueuedUsers: uint64!
+}
+
+type ZoneWaitingRoomAnalyticsAdaptiveGroupsAvgWeighted {
+  # Weighted average of 50th percentile of time spent between session refreshes in minutes
+  timeBetweenRefreshesP50: uint64!
+  # Weighted average of 75th percentile of time spent between session refreshes in minutes
+  timeBetweenRefreshesP75: uint64!
+  # Weighted average of 90th percentile of time spent between session refreshes in minutes
+  timeBetweenRefreshesP90: uint64!
+  # Weighted average of 95th percentile of time spent between session refreshes in minutes
+  timeBetweenRefreshesP95: uint64!
+  # Weighted average of 50th percentile of time spent in queue in minutes
+  timeInQueueP50: uint64!
+  # Weighted average of 75th percentile of time spent in queue in minutes
+  timeInQueueP75: uint64!
+  # Weighted average of 90th percentile of time spent in queue in minutes
+  timeInQueueP90: uint64!
+  # Weighted average of 95th percentile of time spent in queue in minutes
+  timeInQueueP95: uint64!
+  # Weighted average of 50th percentile of time spent on origin in minutes
+  timeOnOriginP50: uint64!
+  # Weighted average of 75th percentile of time spent on origin in minutes
+  timeOnOriginP75: uint64!
+  # Weighted average of 90th percentile of time spent on origin in minutes
+  timeOnOriginP90: uint64!
+  # Weighted average of 95th percentile of time spent on origin in minutes
+  timeOnOriginP95: uint64!
+}
+
+type ZoneWaitingRoomAnalyticsAdaptiveGroupsDimensions {
+  # The date the event was written to the database
+  date: Date!
+  # The date and time the event was written to the database
+  datetime: Time!
+  # The date and time the event was written to the database, truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the event was written to the database, truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the event was written to the database, truncated to the hour
+  datetimeHour: Time!
+  # The date and time the event was written to the database, truncated to the minute
+  datetimeMinute: Time!
+  # ABR sample interval
+  sampleInterval: uint32!
+}
+
+input ZoneWaitingRoomAnalyticsAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneWaitingRoomAnalyticsAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneWaitingRoomAnalyticsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+}
+
+type ZoneWaitingRoomAnalyticsAdaptiveGroupsMax {
+  # The maximum value of users abandoning the queue every minute
+  abandoningUsersPerMinute: uint64!
+  # The maximum value of estimated time in minutes
+  maxEstimatedTimeMinutes: uint64!
+  # The maximum value of the actual new users per minute
+  newUsersPerMinute: uint64!
+  # The maximum value of the configured new users per minute
+  newUsersPerMinuteConfig: uint64!
+  # The maximum value of the configured session duration configuration
+  sessionDuration: uint64!
+  # The maximum value of the actual total active users
+  totalActiveUsers: uint64!
+  # The maximum value of the configured total active users
+  totalActiveUsersConfig: uint64!
+  # The maximum value of total number of queued users
+  totalQueuedUsers: uint64!
+}
+
+enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
+  # avgWeighted(timeBetweenRefreshesP50) ascending
+  avgWeighted_timeBetweenRefreshesP50_ASC
+  # avgWeighted(timeBetweenRefreshesP50) descending
+  avgWeighted_timeBetweenRefreshesP50_DESC
+  # avgWeighted(timeBetweenRefreshesP75) ascending
+  avgWeighted_timeBetweenRefreshesP75_ASC
+  # avgWeighted(timeBetweenRefreshesP75) descending
+  avgWeighted_timeBetweenRefreshesP75_DESC
+  # avgWeighted(timeBetweenRefreshesP90) ascending
+  avgWeighted_timeBetweenRefreshesP90_ASC
+  # avgWeighted(timeBetweenRefreshesP90) descending
+  avgWeighted_timeBetweenRefreshesP90_DESC
+  # avgWeighted(timeBetweenRefreshesP95) ascending
+  avgWeighted_timeBetweenRefreshesP95_ASC
+  # avgWeighted(timeBetweenRefreshesP95) descending
+  avgWeighted_timeBetweenRefreshesP95_DESC
+  # avgWeighted(timeInQueueP50) ascending
+  avgWeighted_timeInQueueP50_ASC
+  # avgWeighted(timeInQueueP50) descending
+  avgWeighted_timeInQueueP50_DESC
+  # avgWeighted(timeInQueueP75) ascending
+  avgWeighted_timeInQueueP75_ASC
+  # avgWeighted(timeInQueueP75) descending
+  avgWeighted_timeInQueueP75_DESC
+  # avgWeighted(timeInQueueP90) ascending
+  avgWeighted_timeInQueueP90_ASC
+  # avgWeighted(timeInQueueP90) descending
+  avgWeighted_timeInQueueP90_DESC
+  # avgWeighted(timeInQueueP95) ascending
+  avgWeighted_timeInQueueP95_ASC
+  # avgWeighted(timeInQueueP95) descending
+  avgWeighted_timeInQueueP95_DESC
+  # avgWeighted(timeOnOriginP50) ascending
+  avgWeighted_timeOnOriginP50_ASC
+  # avgWeighted(timeOnOriginP50) descending
+  avgWeighted_timeOnOriginP50_DESC
+  # avgWeighted(timeOnOriginP75) ascending
+  avgWeighted_timeOnOriginP75_ASC
+  # avgWeighted(timeOnOriginP75) descending
+  avgWeighted_timeOnOriginP75_DESC
+  # avgWeighted(timeOnOriginP90) ascending
+  avgWeighted_timeOnOriginP90_ASC
+  # avgWeighted(timeOnOriginP90) descending
+  avgWeighted_timeOnOriginP90_DESC
+  # avgWeighted(timeOnOriginP95) ascending
+  avgWeighted_timeOnOriginP95_ASC
+  # avgWeighted(timeOnOriginP95) descending
+  avgWeighted_timeOnOriginP95_DESC
+  # avg(abandoningUsersPerMinute) ascending
+  avg_abandoningUsersPerMinute_ASC
+  # avg(abandoningUsersPerMinute) descending
+  avg_abandoningUsersPerMinute_DESC
+  # avg(maxEstimatedTimeMinutes) ascending
+  avg_maxEstimatedTimeMinutes_ASC
+  # avg(maxEstimatedTimeMinutes) descending
+  avg_maxEstimatedTimeMinutes_DESC
+  # avg(newUsersPerMinuteConfig) ascending
+  avg_newUsersPerMinuteConfig_ASC
+  # avg(newUsersPerMinuteConfig) descending
+  avg_newUsersPerMinuteConfig_DESC
+  # avg(newUsersPerMinute) ascending
+  avg_newUsersPerMinute_ASC
+  # avg(newUsersPerMinute) descending
+  avg_newUsersPerMinute_DESC
+  # avg(sessionDuration) ascending
+  avg_sessionDuration_ASC
+  # avg(sessionDuration) descending
+  avg_sessionDuration_DESC
+  # avg(totalActiveUsersConfig) ascending
+  avg_totalActiveUsersConfig_ASC
+  # avg(totalActiveUsersConfig) descending
+  avg_totalActiveUsersConfig_DESC
+  # avg(totalActiveUsers) ascending
+  avg_totalActiveUsers_ASC
+  # avg(totalActiveUsers) descending
+  avg_totalActiveUsers_DESC
+  # avg(totalQueuedUsers) ascending
+  avg_totalQueuedUsers_ASC
+  # avg(totalQueuedUsers) descending
+  avg_totalQueuedUsers_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # max(abandoningUsersPerMinute) ascending
+  max_abandoningUsersPerMinute_ASC
+  # max(abandoningUsersPerMinute) descending
+  max_abandoningUsersPerMinute_DESC
+  # max(maxEstimatedTimeMinutes) ascending
+  max_maxEstimatedTimeMinutes_ASC
+  # max(maxEstimatedTimeMinutes) descending
+  max_maxEstimatedTimeMinutes_DESC
+  # max(newUsersPerMinuteConfig) ascending
+  max_newUsersPerMinuteConfig_ASC
+  # max(newUsersPerMinuteConfig) descending
+  max_newUsersPerMinuteConfig_DESC
+  # max(newUsersPerMinute) ascending
+  max_newUsersPerMinute_ASC
+  # max(newUsersPerMinute) descending
+  max_newUsersPerMinute_DESC
+  # max(sessionDuration) ascending
+  max_sessionDuration_ASC
+  # max(sessionDuration) descending
+  max_sessionDuration_DESC
+  # max(totalActiveUsersConfig) ascending
+  max_totalActiveUsersConfig_ASC
+  # max(totalActiveUsersConfig) descending
+  max_totalActiveUsersConfig_DESC
+  # max(totalActiveUsers) ascending
+  max_totalActiveUsers_ASC
+  # max(totalActiveUsers) descending
+  max_totalActiveUsers_DESC
+  # max(totalQueuedUsers) ascending
+  max_totalQueuedUsers_ASC
+  # max(totalQueuedUsers) descending
+  max_totalQueuedUsers_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+}
+
+enum ZoneWaitingRoomAnalyticsAdaptiveOrderBy {
+  # abandoningUsersPerMinute ascending
+  abandoningUsersPerMinute_ASC
+  # abandoningUsersPerMinute descending
+  abandoningUsersPerMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # maxEstimatedTimeMinutes ascending
+  maxEstimatedTimeMinutes_ASC
+  # maxEstimatedTimeMinutes descending
+  maxEstimatedTimeMinutes_DESC
+  # newUsersPerMinuteConfig ascending
+  newUsersPerMinuteConfig_ASC
+  # newUsersPerMinuteConfig descending
+  newUsersPerMinuteConfig_DESC
+  # newUsersPerMinute ascending
+  newUsersPerMinute_ASC
+  # newUsersPerMinute descending
+  newUsersPerMinute_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # sessionDuration ascending
+  sessionDuration_ASC
+  # sessionDuration descending
+  sessionDuration_DESC
+  # timeBetweenRefreshesP50 ascending
+  timeBetweenRefreshesP50_ASC
+  # timeBetweenRefreshesP50 descending
+  timeBetweenRefreshesP50_DESC
+  # timeBetweenRefreshesP75 ascending
+  timeBetweenRefreshesP75_ASC
+  # timeBetweenRefreshesP75 descending
+  timeBetweenRefreshesP75_DESC
+  # timeBetweenRefreshesP90 ascending
+  timeBetweenRefreshesP90_ASC
+  # timeBetweenRefreshesP90 descending
+  timeBetweenRefreshesP90_DESC
+  # timeBetweenRefreshesP95 ascending
+  timeBetweenRefreshesP95_ASC
+  # timeBetweenRefreshesP95 descending
+  timeBetweenRefreshesP95_DESC
+  # timeInQueueP50 ascending
+  timeInQueueP50_ASC
+  # timeInQueueP50 descending
+  timeInQueueP50_DESC
+  # timeInQueueP75 ascending
+  timeInQueueP75_ASC
+  # timeInQueueP75 descending
+  timeInQueueP75_DESC
+  # timeInQueueP90 ascending
+  timeInQueueP90_ASC
+  # timeInQueueP90 descending
+  timeInQueueP90_DESC
+  # timeInQueueP95 ascending
+  timeInQueueP95_ASC
+  # timeInQueueP95 descending
+  timeInQueueP95_DESC
+  # timeOnOriginP50 ascending
+  timeOnOriginP50_ASC
+  # timeOnOriginP50 descending
+  timeOnOriginP50_DESC
+  # timeOnOriginP75 ascending
+  timeOnOriginP75_ASC
+  # timeOnOriginP75 descending
+  timeOnOriginP75_DESC
+  # timeOnOriginP90 ascending
+  timeOnOriginP90_ASC
+  # timeOnOriginP90 descending
+  timeOnOriginP90_DESC
+  # timeOnOriginP95 ascending
+  timeOnOriginP95_ASC
+  # timeOnOriginP95 descending
+  timeOnOriginP95_DESC
+  # totalActiveUsersConfig ascending
+  totalActiveUsersConfig_ASC
+  # totalActiveUsersConfig descending
+  totalActiveUsersConfig_DESC
+  # totalActiveUsers ascending
+  totalActiveUsers_ASC
+  # totalActiveUsers descending
+  totalActiveUsers_DESC
+  # totalQueuedUsers ascending
+  totalQueuedUsers_ASC
+  # totalQueuedUsers descending
+  totalQueuedUsers_DESC
+  # waitingRoomId ascending
+  waitingRoomId_ASC
+  # waitingRoomId descending
+  waitingRoomId_DESC
+  # waitingRoomName ascending
+  waitingRoomName_ASC
+  # waitingRoomName descending
+  waitingRoomName_DESC
 }
