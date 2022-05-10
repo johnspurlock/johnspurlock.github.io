@@ -1,5 +1,6 @@
 Account-level datasets:
   cdnNetworkAnalyticsAdaptiveGroups
+* customEventsAdaptiveGroups
   dosdAttackAnalyticsGroups
   dosdNetworkAnalyticsAdaptiveGroups
 * durableObjectsInvocationsAdaptiveGroups
@@ -9,6 +10,8 @@ Account-level datasets:
   flowtrackdNetworkAnalyticsAdaptiveGroups
   gatewayL4DownstreamSessionsAdaptiveGroups
   gatewayL4UpstreamSessionsAdaptiveGroups
+* gatewayResolverByCategoryAdaptiveGroups
+* gatewayResolverQueriesAdaptiveGroups
 * httpRequests1dGroups
 * httpRequests1hGroups
   httpRequests1mGroups
@@ -41,6 +44,8 @@ Account-level datasets:
 * workersSubrequestsAdaptiveGroups
 
 Zone-level datasets:
+* cacheReserveOperationsAdaptiveGroups
+* cacheReserveStorageAdaptiveGroups
 * emailRoutingAdaptive
 * emailRoutingAdaptiveGroups
 * firewallEventsAdaptive
@@ -106,6 +111,8 @@ type account {
   accountTag: string!
   # Network analytics data for Cloudflare CDN traffic
   cdnNetworkAnalyticsAdaptiveGroups(filter: AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountCdnNetworkAnalyticsAdaptiveGroups!]!
+  # Beta. Custom Events with adaptive sampling
+  customEventsAdaptiveGroups(filter: AccountCustomEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCustomEventsAdaptiveGroupsOrderBy!]): [AccountCustomEventsAdaptiveGroups!]!
   # Attack analytics metadata for attacks detected by dosd
   dosdAttackAnalyticsGroups(filter: AccountDosdAttackAnalyticsGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDosdAttackAnalyticsGroupsOrderBy!]): [AccountDosdAttackAnalyticsGroups!]!
   # Network analytics data for dosd
@@ -124,6 +131,10 @@ type account {
   gatewayL4DownstreamSessionsAdaptiveGroups(filter: AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy!]): [AccountGatewayL4DownstreamSessionsAdaptiveGroups!]!
   # Aggregated metrics about upstream (edge to client) L4 Gateway Sessions. Metrics are reported on TCP, QUIC or UDP session close
   gatewayL4UpstreamSessionsAdaptiveGroups(filter: AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy!]): [AccountGatewayL4UpstreamSessionsAdaptiveGroups!]!
+  # BETA - Aggregate counts of Gateway Resolver queries by category with adaptive sampling
+  gatewayResolverByCategoryAdaptiveGroups(filter: AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayResolverByCategoryAdaptiveGroupsOrderBy!]): [AccountGatewayResolverByCategoryAdaptiveGroups!]!
+  # BETA - Aggregate counts of Gateway Resolver queries with adaptive sampling
+  gatewayResolverQueriesAdaptiveGroups(filter: AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayResolverQueriesAdaptiveGroupsOrderBy!]): [AccountGatewayResolverQueriesAdaptiveGroups!]!
   # Daily rollups of request data
   httpRequests1dGroups(filter: AccountHttpRequests1dGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHttpRequests1dGroupsOrderBy!]): [AccountHttpRequests1dGroups!]!
   # Hourly rollups of request data
@@ -1443,6 +1454,115 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsSum {
   bits: uint64!
   # Sum of packets received
   packets: uint64!
+}
+
+# Beta. Custom Events with adaptive sampling
+type AccountCustomEventsAdaptiveGroups {
+  # The number of values for a metric per dimension
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountCustomEventsAdaptiveGroupsDimensions
+}
+
+type AccountCustomEventsAdaptiveGroupsDimensions {
+  # The date and time the event occurred
+  datetime: Time!
+  # The date and time the event occurred truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the event occurred truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the event occurred truncated to the start of an hour
+  datetimeHour: Time!
+  # The date and time the event occurred truncated to the start of a minute
+  datetimeMinute: Time!
+  # The metric name
+  name: string!
+}
+
+input AccountCustomEventsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountCustomEventsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountCustomEventsAdaptiveGroupsFilter_InputObject!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  name: string
+  name_geq: string
+  name_gt: string
+  name_in: [string!]
+  name_leq: string
+  name_like: string
+  name_lt: string
+  name_neq: string
+  name_notin: [string!]
+  name_notlike: string
+}
+
+enum AccountCustomEventsAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # name ascending
+  name_ASC
+  # name descending
+  name_DESC
 }
 
 # Attack analytics metadata for attacks detected by dosd
@@ -5691,6 +5811,226 @@ type AccountGatewayL4UpstreamSessionsAdaptiveGroupsSum {
   totalTunnelSetupDurationUs: int64!
   # Time taken for tunnel setup in microseconds
   tunnelSetupDurationUs: int64!
+}
+
+# BETA - Aggregate counts of Gateway Resolver queries by category with adaptive sampling
+type AccountGatewayResolverByCategoryAdaptiveGroups {
+  # The number of Gateway Resolver queries
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountGatewayResolverByCategoryAdaptiveGroupsDimensions
+}
+
+type AccountGatewayResolverByCategoryAdaptiveGroupsDimensions {
+  # ID of the category that was assigned to the domain
+  categoryId: uint16!
+  # The date and time the DNS query was resolved
+  datetime: Time!
+  # The date and time the event occurred at the edge truncated to hours
+  datetimeHour: Time!
+  # The date and time the event occurred at the edge truncated to minutes
+  datetimeMinute: Time!
+  # The uuid identifying the customer Location used when resolving
+  locationId: string!
+  # Enum identifier for the decision made by gateway-resolver, one of: (0, unknown) (1, allowedByQueryName) (2, blockedByQueryName) (3, blockedByCategory) (4, allowedOnNoLocation) (5, allowedOnNoPolicyMatch) (6, blockedAlwaysCategory) (7, overrideForSafeSearch) (8, overrideApplied) (9, blockedRule) (10, allowedRule)
+  resolverDecision: uint16!
+}
+
+input AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject {
+  AND: [AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject!]
+  categoryId: uint16
+  categoryId_geq: uint16
+  categoryId_gt: uint16
+  categoryId_in: [uint16!]
+  categoryId_leq: uint16
+  categoryId_lt: uint16
+  categoryId_neq: uint16
+  categoryId_notin: [uint16!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  locationId: string
+  locationId_geq: string
+  locationId_gt: string
+  locationId_in: [string!]
+  locationId_leq: string
+  locationId_like: string
+  locationId_lt: string
+  locationId_neq: string
+  locationId_notin: [string!]
+  locationId_notlike: string
+  resolverDecision: uint16
+  resolverDecision_geq: uint16
+  resolverDecision_gt: uint16
+  resolverDecision_in: [uint16!]
+  resolverDecision_leq: uint16
+  resolverDecision_lt: uint16
+  resolverDecision_neq: uint16
+  resolverDecision_notin: [uint16!]
+}
+
+enum AccountGatewayResolverByCategoryAdaptiveGroupsOrderBy {
+  # categoryId ascending
+  categoryId_ASC
+  # categoryId descending
+  categoryId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # locationId ascending
+  locationId_ASC
+  # locationId descending
+  locationId_DESC
+  # resolverDecision ascending
+  resolverDecision_ASC
+  # resolverDecision descending
+  resolverDecision_DESC
+}
+
+# BETA - Aggregate counts of Gateway Resolver queries with adaptive sampling
+type AccountGatewayResolverQueriesAdaptiveGroups {
+  # The number of Gateway Resolver queries
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountGatewayResolverQueriesAdaptiveGroupsDimensions
+}
+
+type AccountGatewayResolverQueriesAdaptiveGroupsDimensions {
+  # The date and time the DNS query was resolved
+  datetime: Time!
+  # The date and time the event occurred at the edge truncated to hours
+  datetimeHour: Time!
+  # The date and time the event occurred at the edge truncated to minutes
+  datetimeMinute: Time!
+  # The uuid identifying the customer Location used when resolving
+  locationId: string!
+  # Name of the query in reverse order, e.g. com.cloudflare.teams.dash
+  queryNameReversed: string!
+  # Enum identifier for the decision made by gateway-resolver, one of: (0, unknown) (1, allowedByQueryName) (2, blockedByQueryName) (3, blockedByCategory) (4, allowedOnNoLocation) (5, allowedOnNoPolicyMatch) (6, blockedAlwaysCategory) (7, overrideForSafeSearch) (8, overrideApplied) (9, blockedRule) (10, allowedRule)
+  resolverDecision: uint16!
+}
+
+input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
+  AND: [AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  locationId: string
+  locationId_geq: string
+  locationId_gt: string
+  locationId_in: [string!]
+  locationId_leq: string
+  locationId_like: string
+  locationId_lt: string
+  locationId_neq: string
+  locationId_notin: [string!]
+  locationId_notlike: string
+  queryNameReversed: string
+  queryNameReversed_geq: string
+  queryNameReversed_gt: string
+  queryNameReversed_in: [string!]
+  queryNameReversed_leq: string
+  queryNameReversed_like: string
+  queryNameReversed_lt: string
+  queryNameReversed_neq: string
+  queryNameReversed_notin: [string!]
+  queryNameReversed_notlike: string
+  resolverDecision: uint16
+  resolverDecision_geq: uint16
+  resolverDecision_gt: uint16
+  resolverDecision_in: [uint16!]
+  resolverDecision_leq: uint16
+  resolverDecision_lt: uint16
+  resolverDecision_neq: uint16
+  resolverDecision_notin: [uint16!]
+}
+
+enum AccountGatewayResolverQueriesAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # locationId ascending
+  locationId_ASC
+  # locationId descending
+  locationId_DESC
+  # queryNameReversed ascending
+  queryNameReversed_ASC
+  # queryNameReversed descending
+  queryNameReversed_DESC
+  # resolverDecision ascending
+  resolverDecision_ASC
+  # resolverDecision descending
+  resolverDecision_DESC
 }
 
 # Daily rollups of request data
@@ -14028,6 +14368,7 @@ enum AccountRumWebVitalsEventsAdaptiveOrderBy {
 # Access and limitations for an account
 type AccountSettings {
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
+  customEventsAdaptiveGroups: Settings!
   dosdAttackAnalyticsGroups: Settings!
   dosdNetworkAnalyticsAdaptiveGroups: Settings!
   durableObjectsInvocationsAdaptiveGroups: Settings!
@@ -14037,6 +14378,8 @@ type AccountSettings {
   flowtrackdNetworkAnalyticsAdaptiveGroups: Settings!
   gatewayL4DownstreamSessionsAdaptiveGroups: Settings!
   gatewayL4UpstreamSessionsAdaptiveGroups: Settings!
+  gatewayResolverByCategoryAdaptiveGroups: Settings!
+  gatewayResolverQueriesAdaptiveGroups: Settings!
   httpRequests1dGroups: Settings!
   httpRequests1hGroups: Settings!
   httpRequests1mGroups: Settings!
@@ -16855,6 +17198,10 @@ type viewer {
 }
 
 type zone {
+  # Beta. Cache Reserve operations with adaptive sampling
+  cacheReserveOperationsAdaptiveGroups(filter: ZoneCacheReserveOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneCacheReserveOperationsAdaptiveGroupsOrderBy!]): [ZoneCacheReserveOperationsAdaptiveGroups!]!
+  # Beta. Cache Reserve storage with adaptive sampling
+  cacheReserveStorageAdaptiveGroups(filter: ZoneCacheReserveStorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneCacheReserveStorageAdaptiveGroupsOrderBy!]): [ZoneCacheReserveStorageAdaptiveGroups!]!
   # Beta. Raw email routing logs with adaptive sampling
   emailRoutingAdaptive(filter: ZoneEmailRoutingAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneEmailRoutingAdaptiveOrderBy!]): [ZoneEmailRoutingAdaptive!]!
   # Beta. Aggregated email routing logs with adaptive sampling
@@ -16901,6 +17248,222 @@ type zone {
   # Beta. Aggregated waiting room analytics logs with adaptive sampling
   waitingRoomAnalyticsAdaptiveGroups(filter: ZoneWaitingRoomAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy!]): [ZoneWaitingRoomAnalyticsAdaptiveGroups!]!
   zoneTag: string!
+}
+
+# Beta. Cache Reserve operations with adaptive sampling
+type ZoneCacheReserveOperationsAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: ZoneCacheReserveOperationsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: ZoneCacheReserveOperationsAdaptiveGroupsSum
+}
+
+type ZoneCacheReserveOperationsAdaptiveGroupsDimensions {
+  # Status of the R2 operation
+  actionStatus: string!
+  # Request timestamp, truncated to start of a day
+  date: Date!
+  # Request timestamp
+  datetime: Time!
+  # Request timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Request timestamp, truncated to start of an minute
+  datetimeMinute: Time!
+  # Billable class of storage operation
+  operationClass: string!
+}
+
+input ZoneCacheReserveOperationsAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneCacheReserveOperationsAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneCacheReserveOperationsAdaptiveGroupsFilter_InputObject!]
+  actionStatus: string
+  actionStatus_geq: string
+  actionStatus_gt: string
+  actionStatus_in: [string!]
+  actionStatus_leq: string
+  actionStatus_like: string
+  actionStatus_lt: string
+  actionStatus_neq: string
+  actionStatus_notin: [string!]
+  actionStatus_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  operationClass: string
+  operationClass_geq: string
+  operationClass_gt: string
+  operationClass_in: [string!]
+  operationClass_leq: string
+  operationClass_like: string
+  operationClass_lt: string
+  operationClass_neq: string
+  operationClass_notin: [string!]
+  operationClass_notlike: string
+}
+
+enum ZoneCacheReserveOperationsAdaptiveGroupsOrderBy {
+  # actionStatus ascending
+  actionStatus_ASC
+  # actionStatus descending
+  actionStatus_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # operationClass ascending
+  operationClass_ASC
+  # operationClass descending
+  operationClass_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+}
+
+type ZoneCacheReserveOperationsAdaptiveGroupsSum {
+  # Sum of Requests
+  requests: uint64!
+}
+
+# Beta. Cache Reserve storage with adaptive sampling
+type ZoneCacheReserveStorageAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: ZoneCacheReserveStorageAdaptiveGroupsDimensions
+  # The max of values for a metric per dimension
+  max: ZoneCacheReserveStorageAdaptiveGroupsMax
+}
+
+type ZoneCacheReserveStorageAdaptiveGroupsDimensions {
+  # Hash of bucket containing stored objects
+  bucketHash: string!
+  # Storage sample timestamp, truncated to start of a day
+  date: Date!
+  # Storage sample timestamp
+  datetime: Time!
+  # Storage sample timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Storage sample timestamp, truncated to start of an minute
+  datetimeMinute: Time!
+}
+
+input ZoneCacheReserveStorageAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneCacheReserveStorageAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneCacheReserveStorageAdaptiveGroupsFilter_InputObject!]
+  bucketHash: string
+  bucketHash_geq: string
+  bucketHash_gt: string
+  bucketHash_in: [string!]
+  bucketHash_leq: string
+  bucketHash_like: string
+  bucketHash_lt: string
+  bucketHash_neq: string
+  bucketHash_notin: [string!]
+  bucketHash_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+}
+
+type ZoneCacheReserveStorageAdaptiveGroupsMax {
+  # Payload and metadata size of objects in bucket
+  storedBytes: uint64!
+}
+
+enum ZoneCacheReserveStorageAdaptiveGroupsOrderBy {
+  # bucketHash ascending
+  bucketHash_ASC
+  # bucketHash descending
+  bucketHash_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # max(storedBytes) ascending
+  max_storedBytes_ASC
+  # max(storedBytes) descending
+  max_storedBytes_DESC
 }
 
 # Beta. Raw email routing logs with adaptive sampling
@@ -23108,6 +23671,8 @@ enum ZoneNelReportsAdaptiveGroupsOrderBy {
 
 # Access and limitations for a zone
 type ZoneSettings {
+  cacheReserveOperationsAdaptiveGroups: Settings!
+  cacheReserveStorageAdaptiveGroups: Settings!
   emailRoutingAdaptive: Settings!
   emailRoutingAdaptiveGroups: Settings!
   firewallEventsAdaptive: Settings!
