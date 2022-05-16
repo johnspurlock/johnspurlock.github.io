@@ -1,6 +1,5 @@
 Account-level datasets:
   cdnNetworkAnalyticsAdaptiveGroups
-* customEventsAdaptiveGroups
   dosdAttackAnalyticsGroups
   dosdNetworkAnalyticsAdaptiveGroups
 * durableObjectsInvocationsAdaptiveGroups
@@ -9,6 +8,7 @@ Account-level datasets:
 * durableObjectsSubrequestsAdaptiveGroups
   flowtrackdNetworkAnalyticsAdaptiveGroups
   gatewayL4DownstreamSessionsAdaptiveGroups
+* gatewayL4SessionsAdaptiveGroups
   gatewayL4UpstreamSessionsAdaptiveGroups
 * gatewayResolverByCategoryAdaptiveGroups
 * gatewayResolverQueriesAdaptiveGroups
@@ -39,6 +39,7 @@ Account-level datasets:
 * videoBufferEventsAdaptiveGroups
 * videoPlaybackEventsAdaptiveGroups
 * videoQualityEventsAdaptiveGroups
+* workersAnalyticsEngineAdaptiveGroups
 * workersInvocationsAdaptive
 * workersInvocationsScheduled
 * workersSubrequestsAdaptiveGroups
@@ -111,8 +112,6 @@ type account {
   accountTag: string!
   # Network analytics data for Cloudflare CDN traffic
   cdnNetworkAnalyticsAdaptiveGroups(filter: AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountCdnNetworkAnalyticsAdaptiveGroups!]!
-  # Beta. Custom Events with adaptive sampling
-  customEventsAdaptiveGroups(filter: AccountCustomEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCustomEventsAdaptiveGroupsOrderBy!]): [AccountCustomEventsAdaptiveGroups!]!
   # Attack analytics metadata for attacks detected by dosd
   dosdAttackAnalyticsGroups(filter: AccountDosdAttackAnalyticsGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDosdAttackAnalyticsGroupsOrderBy!]): [AccountDosdAttackAnalyticsGroups!]!
   # Network analytics data for dosd
@@ -129,6 +128,8 @@ type account {
   flowtrackdNetworkAnalyticsAdaptiveGroups(filter: AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountFlowtrackdNetworkAnalyticsAdaptiveGroups!]!
   # Aggregated metrics about downstream (client to edge) L4 Gateway Sessions. Metrics are reported on TCP or UDP session close
   gatewayL4DownstreamSessionsAdaptiveGroups(filter: AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy!]): [AccountGatewayL4DownstreamSessionsAdaptiveGroups!]!
+  # BETA - Aggregate counts of Gateway L4 sessions with adaptive sampling
+  gatewayL4SessionsAdaptiveGroups(filter: AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayL4SessionsAdaptiveGroupsOrderBy!]): [AccountGatewayL4SessionsAdaptiveGroups!]!
   # Aggregated metrics about upstream (edge to client) L4 Gateway Sessions. Metrics are reported on TCP, QUIC or UDP session close
   gatewayL4UpstreamSessionsAdaptiveGroups(filter: AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy!]): [AccountGatewayL4UpstreamSessionsAdaptiveGroups!]!
   # BETA - Aggregate counts of Gateway Resolver queries by category with adaptive sampling
@@ -190,6 +191,8 @@ type account {
   videoPlaybackEventsAdaptiveGroups(filter: AccountVideoPlaybackEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVideoPlaybackEventsAdaptiveGroupsOrderBy!]): [AccountVideoPlaybackEventsAdaptiveGroups!]!
   # Beta. Aggregated video streaming quality change event metrics with adaptive sampling
   videoQualityEventsAdaptiveGroups(filter: AccountVideoQualityEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVideoQualityEventsAdaptiveGroupsOrderBy!]): [AccountVideoQualityEventsAdaptiveGroups!]!
+  # Beta. Custom Events with adaptive sampling
+  workersAnalyticsEngineAdaptiveGroups(filter: AccountWorkersAnalyticsEngineAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersAnalyticsEngineAdaptiveGroupsOrderBy!]): [AccountWorkersAnalyticsEngineAdaptiveGroups!]!
   # Beta. Workers invocations with adaptive sampling
   workersInvocationsAdaptive(filter: AccountWorkersInvocationsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersInvocationsAdaptiveOrderBy!]): [AccountWorkersInvocationsAdaptive!]!
   # Workers scheduled invocations
@@ -1454,115 +1457,6 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsSum {
   bits: uint64!
   # Sum of packets received
   packets: uint64!
-}
-
-# Beta. Custom Events with adaptive sampling
-type AccountCustomEventsAdaptiveGroups {
-  # The number of values for a metric per dimension
-  count: uint64!
-  # List of dimensions to group by
-  dimensions: AccountCustomEventsAdaptiveGroupsDimensions
-}
-
-type AccountCustomEventsAdaptiveGroupsDimensions {
-  # The date and time the event occurred
-  datetime: Time!
-  # The date and time the event occurred truncated to a multiple of 15 minutes
-  datetimeFifteenMinutes: Time!
-  # The date and time the event occurred truncated to a multiple of 5 minutes
-  datetimeFiveMinutes: Time!
-  # The date and time the event occurred truncated to the start of an hour
-  datetimeHour: Time!
-  # The date and time the event occurred truncated to the start of a minute
-  datetimeMinute: Time!
-  # The metric name
-  name: string!
-}
-
-input AccountCustomEventsAdaptiveGroupsFilter_InputObject {
-  AND: [AccountCustomEventsAdaptiveGroupsFilter_InputObject!]
-  OR: [AccountCustomEventsAdaptiveGroupsFilter_InputObject!]
-  datetime: Time
-  datetimeFifteenMinutes: Time
-  datetimeFifteenMinutes_geq: Time
-  datetimeFifteenMinutes_gt: Time
-  datetimeFifteenMinutes_in: [Time!]
-  datetimeFifteenMinutes_leq: Time
-  datetimeFifteenMinutes_lt: Time
-  datetimeFifteenMinutes_neq: Time
-  datetimeFifteenMinutes_notin: [Time!]
-  datetimeFiveMinutes: Time
-  datetimeFiveMinutes_geq: Time
-  datetimeFiveMinutes_gt: Time
-  datetimeFiveMinutes_in: [Time!]
-  datetimeFiveMinutes_leq: Time
-  datetimeFiveMinutes_lt: Time
-  datetimeFiveMinutes_neq: Time
-  datetimeFiveMinutes_notin: [Time!]
-  datetimeHour: Time
-  datetimeHour_geq: Time
-  datetimeHour_gt: Time
-  datetimeHour_in: [Time!]
-  datetimeHour_leq: Time
-  datetimeHour_lt: Time
-  datetimeHour_neq: Time
-  datetimeHour_notin: [Time!]
-  datetimeMinute: Time
-  datetimeMinute_geq: Time
-  datetimeMinute_gt: Time
-  datetimeMinute_in: [Time!]
-  datetimeMinute_leq: Time
-  datetimeMinute_lt: Time
-  datetimeMinute_neq: Time
-  datetimeMinute_notin: [Time!]
-  datetime_geq: Time
-  datetime_gt: Time
-  datetime_in: [Time!]
-  datetime_leq: Time
-  datetime_lt: Time
-  datetime_neq: Time
-  datetime_notin: [Time!]
-  name: string
-  name_geq: string
-  name_gt: string
-  name_in: [string!]
-  name_leq: string
-  name_like: string
-  name_lt: string
-  name_neq: string
-  name_notin: [string!]
-  name_notlike: string
-}
-
-enum AccountCustomEventsAdaptiveGroupsOrderBy {
-  # count() ascending
-  count_ASC
-  # count() descending
-  count_DESC
-  # datetimeFifteenMinutes ascending
-  datetimeFifteenMinutes_ASC
-  # datetimeFifteenMinutes descending
-  datetimeFifteenMinutes_DESC
-  # datetimeFiveMinutes ascending
-  datetimeFiveMinutes_ASC
-  # datetimeFiveMinutes descending
-  datetimeFiveMinutes_DESC
-  # datetimeHour ascending
-  datetimeHour_ASC
-  # datetimeHour descending
-  datetimeHour_DESC
-  # datetimeMinute ascending
-  datetimeMinute_ASC
-  # datetimeMinute descending
-  datetimeMinute_DESC
-  # datetime ascending
-  datetime_ASC
-  # datetime descending
-  datetime_DESC
-  # name ascending
-  name_ASC
-  # name descending
-  name_DESC
 }
 
 # Attack analytics metadata for attacks detected by dosd
@@ -5494,6 +5388,191 @@ type AccountGatewayL4DownstreamSessionsAdaptiveGroupsSum {
   packetsSent: uint64!
   # Time taken for client token authentication in microseconds
   tokenAuthDurationUs: int64!
+}
+
+# BETA - Aggregate counts of Gateway L4 sessions with adaptive sampling
+type AccountGatewayL4SessionsAdaptiveGroups {
+  # The number of Gateway L4 sessions
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountGatewayL4SessionsAdaptiveGroupsDimensions
+}
+
+type AccountGatewayL4SessionsAdaptiveGroupsDimensions {
+  # Enum identifier for the action taken by gateway, one of: (0, unknown) (1, allowedByRule) (2, blockByRule) (3, override) (4, allowedOnNoRuleMatch) (5, auditSsh) (6, authenticate)
+  action: uint16!
+  # Datetime that the session was started
+  datetime: Time!
+  # Datetime that the session was started truncated to hours
+  datetimeHour: Time!
+  # Datetime that the session was started truncated to minutes
+  datetimeMinute: Time!
+  # The destination IP address for the session
+  destinationIp: string!
+  # The destination port for the session
+  destinationPort: uint16!
+  # The email address of the gateway user who initiated the session
+  email: string!
+  # The SNI pulled from the session tls handshake, if present
+  sni: string!
+  # The source IP address for the session
+  sourceIp: string!
+  # The source port for the session
+  sourcePort: uint16!
+  # The transport protocol used in the session, one of (0, tcp) (1, quic) (2, udp)
+  transport: uint16!
+}
+
+input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject!]
+  action: uint16
+  action_geq: uint16
+  action_gt: uint16
+  action_in: [uint16!]
+  action_leq: uint16
+  action_lt: uint16
+  action_neq: uint16
+  action_notin: [uint16!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationIp: string
+  destinationIp_geq: string
+  destinationIp_gt: string
+  destinationIp_in: [string!]
+  destinationIp_leq: string
+  destinationIp_like: string
+  destinationIp_lt: string
+  destinationIp_neq: string
+  destinationIp_notin: [string!]
+  destinationIp_notlike: string
+  destinationPort: uint16
+  destinationPort_geq: uint16
+  destinationPort_gt: uint16
+  destinationPort_in: [uint16!]
+  destinationPort_leq: uint16
+  destinationPort_lt: uint16
+  destinationPort_neq: uint16
+  destinationPort_notin: [uint16!]
+  email: string
+  email_geq: string
+  email_gt: string
+  email_in: [string!]
+  email_leq: string
+  email_like: string
+  email_lt: string
+  email_neq: string
+  email_notin: [string!]
+  email_notlike: string
+  sni: string
+  sni_geq: string
+  sni_gt: string
+  sni_in: [string!]
+  sni_leq: string
+  sni_like: string
+  sni_lt: string
+  sni_neq: string
+  sni_notin: [string!]
+  sni_notlike: string
+  sourceIp: string
+  sourceIp_geq: string
+  sourceIp_gt: string
+  sourceIp_in: [string!]
+  sourceIp_leq: string
+  sourceIp_like: string
+  sourceIp_lt: string
+  sourceIp_neq: string
+  sourceIp_notin: [string!]
+  sourceIp_notlike: string
+  sourcePort: uint16
+  sourcePort_geq: uint16
+  sourcePort_gt: uint16
+  sourcePort_in: [uint16!]
+  sourcePort_leq: uint16
+  sourcePort_lt: uint16
+  sourcePort_neq: uint16
+  sourcePort_notin: [uint16!]
+  transport: uint16
+  transport_geq: uint16
+  transport_gt: uint16
+  transport_in: [uint16!]
+  transport_leq: uint16
+  transport_lt: uint16
+  transport_neq: uint16
+  transport_notin: [uint16!]
+}
+
+enum AccountGatewayL4SessionsAdaptiveGroupsOrderBy {
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationIp ascending
+  destinationIp_ASC
+  # destinationIp descending
+  destinationIp_DESC
+  # destinationPort ascending
+  destinationPort_ASC
+  # destinationPort descending
+  destinationPort_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # sni ascending
+  sni_ASC
+  # sni descending
+  sni_DESC
+  # sourceIp ascending
+  sourceIp_ASC
+  # sourceIp descending
+  sourceIp_DESC
+  # sourcePort ascending
+  sourcePort_ASC
+  # sourcePort descending
+  sourcePort_DESC
+  # transport ascending
+  transport_ASC
+  # transport descending
+  transport_DESC
 }
 
 # Aggregated metrics about upstream (edge to client) L4 Gateway Sessions. Metrics are reported on TCP, QUIC or UDP session close
@@ -14368,7 +14447,6 @@ enum AccountRumWebVitalsEventsAdaptiveOrderBy {
 # Access and limitations for an account
 type AccountSettings {
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
-  customEventsAdaptiveGroups: Settings!
   dosdAttackAnalyticsGroups: Settings!
   dosdNetworkAnalyticsAdaptiveGroups: Settings!
   durableObjectsInvocationsAdaptiveGroups: Settings!
@@ -14377,6 +14455,7 @@ type AccountSettings {
   durableObjectsSubrequestsAdaptiveGroups: Settings!
   flowtrackdNetworkAnalyticsAdaptiveGroups: Settings!
   gatewayL4DownstreamSessionsAdaptiveGroups: Settings!
+  gatewayL4SessionsAdaptiveGroups: Settings!
   gatewayL4UpstreamSessionsAdaptiveGroups: Settings!
   gatewayResolverByCategoryAdaptiveGroups: Settings!
   gatewayResolverQueriesAdaptiveGroups: Settings!
@@ -14407,6 +14486,7 @@ type AccountSettings {
   videoBufferEventsAdaptiveGroups: Settings!
   videoPlaybackEventsAdaptiveGroups: Settings!
   videoQualityEventsAdaptiveGroups: Settings!
+  workersAnalyticsEngineAdaptiveGroups: Settings!
   workersInvocationsAdaptive: Settings!
   workersInvocationsScheduled: Settings!
   workersSubrequestsAdaptiveGroups: Settings!
@@ -16515,6 +16595,115 @@ enum AccountVideoQualityEventsAdaptiveGroupsOrderBy {
   uid_DESC
 }
 
+# Beta. Custom Events with adaptive sampling
+type AccountWorkersAnalyticsEngineAdaptiveGroups {
+  # The number of values for a metric per dimension
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountWorkersAnalyticsEngineAdaptiveGroupsDimensions
+}
+
+type AccountWorkersAnalyticsEngineAdaptiveGroupsDimensions {
+  # The date and time the event occurred
+  datetime: Time!
+  # The date and time the event occurred truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the event occurred truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the event occurred truncated to the start of an hour
+  datetimeHour: Time!
+  # The date and time the event occurred truncated to the start of a minute
+  datetimeMinute: Time!
+  # The metric name
+  name: string!
+}
+
+input AccountWorkersAnalyticsEngineAdaptiveGroupsFilter_InputObject {
+  AND: [AccountWorkersAnalyticsEngineAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountWorkersAnalyticsEngineAdaptiveGroupsFilter_InputObject!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  name: string
+  name_geq: string
+  name_gt: string
+  name_in: [string!]
+  name_leq: string
+  name_like: string
+  name_lt: string
+  name_neq: string
+  name_notin: [string!]
+  name_notlike: string
+}
+
+enum AccountWorkersAnalyticsEngineAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # name ascending
+  name_ASC
+  # name descending
+  name_DESC
+}
+
 # Beta. Workers invocations with adaptive sampling
 type AccountWorkersInvocationsAdaptive {
   # The average value used for sample interval
@@ -17041,6 +17230,8 @@ type AccountWorkersSubrequestsAdaptiveGroups {
 }
 
 type AccountWorkersSubrequestsAdaptiveGroupsDimensions {
+  # Cache status
+  cacheStatus: uint64!
   # Request datetime, truncated to start of a day
   date: Date!
   # Request datetime
@@ -17060,6 +17251,14 @@ type AccountWorkersSubrequestsAdaptiveGroupsDimensions {
 input AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject {
   AND: [AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject!]
+  cacheStatus: uint64
+  cacheStatus_geq: uint64
+  cacheStatus_gt: uint64
+  cacheStatus_in: [uint64!]
+  cacheStatus_leq: uint64
+  cacheStatus_lt: uint64
+  cacheStatus_neq: uint64
+  cacheStatus_notin: [uint64!]
   date: Date
   date_geq: Date
   date_gt: Date
@@ -17125,6 +17324,10 @@ input AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountWorkersSubrequestsAdaptiveGroupsOrderBy {
+  # cacheStatus ascending
+  cacheStatus_ASC
+  # cacheStatus descending
+  cacheStatus_DESC
   # date ascending
   date_ASC
   # date descending
@@ -17157,6 +17360,10 @@ enum AccountWorkersSubrequestsAdaptiveGroupsOrderBy {
   sum_requestBodySizeUncached_ASC
   # sum(requestBodySizeUncached) descending
   sum_requestBodySizeUncached_DESC
+  # sum(subrequests) ascending
+  sum_subrequests_ASC
+  # sum(subrequests) descending
+  sum_subrequests_DESC
   # usageModel ascending
   usageModel_ASC
   # usageModel descending
@@ -17166,6 +17373,8 @@ enum AccountWorkersSubrequestsAdaptiveGroupsOrderBy {
 type AccountWorkersSubrequestsAdaptiveGroupsSum {
   # Workers fetch request body size in bytes where the request was not cached
   requestBodySizeUncached: uint64!
+  # Number of subrequests
+  subrequests: uint64!
 }
 
 type mutation {
