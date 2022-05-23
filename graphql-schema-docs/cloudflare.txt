@@ -10,6 +10,7 @@ Account-level datasets:
   gatewayL4DownstreamSessionsAdaptiveGroups
 * gatewayL4SessionsAdaptiveGroups
   gatewayL4UpstreamSessionsAdaptiveGroups
+* gatewayL7RequestsAdaptiveGroups
 * gatewayResolverByCategoryAdaptiveGroups
 * gatewayResolverQueriesAdaptiveGroups
 * httpRequests1dGroups
@@ -62,6 +63,7 @@ Zone-level datasets:
   httpRequests1mByColoGroups
   httpRequests1mGroups
   httpRequestsAdaptiveGroups
+* httpRequestsOverviewAdaptiveGroups
 * imageResizingRequests1mGroups
   loadBalancingRequestsAdaptive
   loadBalancingRequestsAdaptiveGroups
@@ -132,6 +134,8 @@ type account {
   gatewayL4SessionsAdaptiveGroups(filter: AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayL4SessionsAdaptiveGroupsOrderBy!]): [AccountGatewayL4SessionsAdaptiveGroups!]!
   # Aggregated metrics about upstream (edge to client) L4 Gateway Sessions. Metrics are reported on TCP, QUIC or UDP session close
   gatewayL4UpstreamSessionsAdaptiveGroups(filter: AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy!]): [AccountGatewayL4UpstreamSessionsAdaptiveGroups!]!
+  # BETA - Aggregate counts of Gateway L7 requests with adaptive sampling
+  gatewayL7RequestsAdaptiveGroups(filter: AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayL7RequestsAdaptiveGroupsOrderBy!]): [AccountGatewayL7RequestsAdaptiveGroups!]!
   # BETA - Aggregate counts of Gateway Resolver queries by category with adaptive sampling
   gatewayResolverByCategoryAdaptiveGroups(filter: AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayResolverByCategoryAdaptiveGroupsOrderBy!]): [AccountGatewayResolverByCategoryAdaptiveGroups!]!
   # BETA - Aggregate counts of Gateway Resolver queries with adaptive sampling
@@ -5399,8 +5403,8 @@ type AccountGatewayL4SessionsAdaptiveGroups {
 }
 
 type AccountGatewayL4SessionsAdaptiveGroupsDimensions {
-  # Enum identifier for the action taken by gateway, one of: (0, unknown) (1, allowedByRule) (2, blockByRule) (3, override) (4, allowedOnNoRuleMatch) (5, auditSsh) (6, authenticate)
-  action: uint16!
+  # action taken by gateway
+  action: string!
   # Datetime that the session was started
   datetime: Time!
   # Datetime that the session was started truncated to hours
@@ -5426,14 +5430,16 @@ type AccountGatewayL4SessionsAdaptiveGroupsDimensions {
 input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
   AND: [AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject!]
-  action: uint16
-  action_geq: uint16
-  action_gt: uint16
-  action_in: [uint16!]
-  action_leq: uint16
-  action_lt: uint16
-  action_neq: uint16
-  action_notin: [uint16!]
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
   datetime: Time
   datetimeHour: Time
   datetimeHour_geq: Time
@@ -5890,6 +5896,133 @@ type AccountGatewayL4UpstreamSessionsAdaptiveGroupsSum {
   totalTunnelSetupDurationUs: int64!
   # Time taken for tunnel setup in microseconds
   tunnelSetupDurationUs: int64!
+}
+
+# BETA - Aggregate counts of Gateway L7 requests with adaptive sampling
+type AccountGatewayL7RequestsAdaptiveGroups {
+  # The number of Gateway L7 requests
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountGatewayL7RequestsAdaptiveGroupsDimensions
+}
+
+type AccountGatewayL7RequestsAdaptiveGroupsDimensions {
+  # action taken by gateway
+  action: string!
+  # Datetime that the request happened
+  datetime: Time!
+  # Datetime that the request happened truncated to hours
+  datetimeHour: Time!
+  # Datetime that the request happened truncated to minutes
+  datetimeMinute: Time!
+  # The email address of the gateway user who made the request
+  email: string!
+  # The destination host for the request
+  httpHost: string!
+  # Indicates whether this request was made through an isolated link
+  isIsolated: uint16!
+}
+
+input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject!]
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  email: string
+  email_geq: string
+  email_gt: string
+  email_in: [string!]
+  email_leq: string
+  email_like: string
+  email_lt: string
+  email_neq: string
+  email_notin: [string!]
+  email_notlike: string
+  httpHost: string
+  httpHost_geq: string
+  httpHost_gt: string
+  httpHost_in: [string!]
+  httpHost_leq: string
+  httpHost_like: string
+  httpHost_lt: string
+  httpHost_neq: string
+  httpHost_notin: [string!]
+  httpHost_notlike: string
+  isIsolated: uint16
+  isIsolated_geq: uint16
+  isIsolated_gt: uint16
+  isIsolated_in: [uint16!]
+  isIsolated_leq: uint16
+  isIsolated_lt: uint16
+  isIsolated_neq: uint16
+  isIsolated_notin: [uint16!]
+}
+
+enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # httpHost ascending
+  httpHost_ASC
+  # httpHost descending
+  httpHost_DESC
+  # isIsolated ascending
+  isIsolated_ASC
+  # isIsolated descending
+  isIsolated_DESC
 }
 
 # BETA - Aggregate counts of Gateway Resolver queries by category with adaptive sampling
@@ -14457,6 +14590,7 @@ type AccountSettings {
   gatewayL4DownstreamSessionsAdaptiveGroups: Settings!
   gatewayL4SessionsAdaptiveGroups: Settings!
   gatewayL4UpstreamSessionsAdaptiveGroups: Settings!
+  gatewayL7RequestsAdaptiveGroups: Settings!
   gatewayResolverByCategoryAdaptiveGroups: Settings!
   gatewayResolverQueriesAdaptiveGroups: Settings!
   httpRequests1dGroups: Settings!
@@ -17441,6 +17575,8 @@ type zone {
   httpRequests1mGroups(filter: ZoneHttpRequests1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneHttpRequests1mGroupsOrderBy!]): [ZoneHttpRequests1mGroups!]!
   # Aggregated HTTP requests data with adaptive sampling
   httpRequestsAdaptiveGroups(filter: ZoneHttpRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneHttpRequestsAdaptiveGroupsOrderBy!]): [ZoneHttpRequestsAdaptiveGroups!]!
+  # A high-level summary of HTTP requests made by end users.
+  httpRequestsOverviewAdaptiveGroups(filter: ZoneHttpRequestsOverviewAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneHttpRequestsOverviewAdaptiveGroupsOrderBy!]): [ZoneHttpRequestsOverviewAdaptiveGroups!]!
   # Minutely rollups of Image Resizing requests
   imageResizingRequests1mGroups(filter: ZoneImageResizingRequests1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneImageResizingRequests1mGroupsOrderBy!]): [ZoneImageResizingRequests1mGroups!]!
   # Raw Load Balancing origin requests with adaptive sampling
@@ -22703,6 +22839,255 @@ type ZoneHttpRequestsAdaptiveGroupsSum {
   visits: uint64!
 }
 
+# A high-level summary of HTTP requests made by end users.
+type ZoneHttpRequestsOverviewAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: ZoneHttpRequestsOverviewAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: ZoneHttpRequestsOverviewAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: ZoneHttpRequestsOverviewAdaptiveGroupsSum
+}
+
+type ZoneHttpRequestsOverviewAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type ZoneHttpRequestsOverviewAdaptiveGroupsDimensions {
+  # Country from which request originated
+  clientCountryName: string!
+  # HTTP protocol version
+  clientRequestHTTPProtocol: string!
+  # SSL protocol version
+  clientSSLProtocol: string!
+  # The date the event occurred at the edge
+  date: Date!
+  # The date and time the event occurred at the edge
+  datetime: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the event occurred at the edge truncated to hours
+  datetimeHour: Time!
+  # The date and time the event occurred at the edge truncated to the minute
+  datetimeMinute: Time!
+  # Content type returned to client
+  edgeResponseContentTypeName: string!
+  # HTTP response status code returned to client
+  edgeResponseStatus: uint16!
+  # Browser parsed from the user agent
+  userAgentBrowser: string!
+}
+
+input ZoneHttpRequestsOverviewAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneHttpRequestsOverviewAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneHttpRequestsOverviewAdaptiveGroupsFilter_InputObject!]
+  clientCountryName: string
+  clientCountryName_geq: string
+  clientCountryName_gt: string
+  clientCountryName_in: [string!]
+  clientCountryName_leq: string
+  clientCountryName_like: string
+  clientCountryName_lt: string
+  clientCountryName_neq: string
+  clientCountryName_notin: [string!]
+  clientCountryName_notlike: string
+  clientRequestHTTPProtocol: string
+  clientRequestHTTPProtocol_geq: string
+  clientRequestHTTPProtocol_gt: string
+  clientRequestHTTPProtocol_in: [string!]
+  clientRequestHTTPProtocol_leq: string
+  clientRequestHTTPProtocol_like: string
+  clientRequestHTTPProtocol_lt: string
+  clientRequestHTTPProtocol_neq: string
+  clientRequestHTTPProtocol_notin: [string!]
+  clientRequestHTTPProtocol_notlike: string
+  clientSSLProtocol: string
+  clientSSLProtocol_geq: string
+  clientSSLProtocol_gt: string
+  clientSSLProtocol_in: [string!]
+  clientSSLProtocol_leq: string
+  clientSSLProtocol_like: string
+  clientSSLProtocol_lt: string
+  clientSSLProtocol_neq: string
+  clientSSLProtocol_notin: [string!]
+  clientSSLProtocol_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  edgeResponseContentTypeName: string
+  edgeResponseContentTypeName_geq: string
+  edgeResponseContentTypeName_gt: string
+  edgeResponseContentTypeName_in: [string!]
+  edgeResponseContentTypeName_leq: string
+  edgeResponseContentTypeName_like: string
+  edgeResponseContentTypeName_lt: string
+  edgeResponseContentTypeName_neq: string
+  edgeResponseContentTypeName_notin: [string!]
+  edgeResponseContentTypeName_notlike: string
+  edgeResponseStatus: uint16
+  edgeResponseStatus_geq: uint16
+  edgeResponseStatus_gt: uint16
+  edgeResponseStatus_in: [uint16!]
+  edgeResponseStatus_leq: uint16
+  edgeResponseStatus_lt: uint16
+  edgeResponseStatus_neq: uint16
+  edgeResponseStatus_notin: [uint16!]
+  userAgentBrowser: string
+  userAgentBrowser_geq: string
+  userAgentBrowser_gt: string
+  userAgentBrowser_in: [string!]
+  userAgentBrowser_leq: string
+  userAgentBrowser_like: string
+  userAgentBrowser_lt: string
+  userAgentBrowser_neq: string
+  userAgentBrowser_notin: [string!]
+  userAgentBrowser_notlike: string
+}
+
+enum ZoneHttpRequestsOverviewAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # clientCountryName ascending
+  clientCountryName_ASC
+  # clientCountryName descending
+  clientCountryName_DESC
+  # clientRequestHTTPProtocol ascending
+  clientRequestHTTPProtocol_ASC
+  # clientRequestHTTPProtocol descending
+  clientRequestHTTPProtocol_DESC
+  # clientSSLProtocol ascending
+  clientSSLProtocol_ASC
+  # clientSSLProtocol descending
+  clientSSLProtocol_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # edgeResponseContentTypeName ascending
+  edgeResponseContentTypeName_ASC
+  # edgeResponseContentTypeName descending
+  edgeResponseContentTypeName_DESC
+  # edgeResponseStatus ascending
+  edgeResponseStatus_ASC
+  # edgeResponseStatus descending
+  edgeResponseStatus_DESC
+  # requestSource ascending
+  requestSource_ASC
+  # requestSource descending
+  requestSource_DESC
+  # sum(bytes) ascending
+  sum_bytes_ASC
+  # sum(bytes) descending
+  sum_bytes_DESC
+  # sum(cachedBytes) ascending
+  sum_cachedBytes_ASC
+  # sum(cachedBytes) descending
+  sum_cachedBytes_DESC
+  # sum(cachedRequests) ascending
+  sum_cachedRequests_ASC
+  # sum(cachedRequests) descending
+  sum_cachedRequests_DESC
+  # sum(pageViews) ascending
+  sum_pageViews_ASC
+  # sum(pageViews) descending
+  sum_pageViews_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # sum(visits) ascending
+  sum_visits_ASC
+  # sum(visits) descending
+  sum_visits_DESC
+  # userAgentBrowser ascending
+  userAgentBrowser_ASC
+  # userAgentBrowser descending
+  userAgentBrowser_DESC
+}
+
+type ZoneHttpRequestsOverviewAdaptiveGroupsSum {
+  bytes: uint64!
+  # Bytes returned to client from cache
+  cachedBytes: uint64!
+  # Requests served from cache
+  cachedRequests: uint64!
+  # Successful requests for HTML content
+  pageViews: uint64!
+  requests: uint64!
+  # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
+  visits: uint64!
+}
+
 # Minutely rollups of Image Resizing requests
 type ZoneImageResizingRequests1mGroups {
   # Counts a number of rows per specific dimensions
@@ -23897,6 +24282,7 @@ type ZoneSettings {
   httpRequests1mByColoGroups: Settings!
   httpRequests1mGroups: Settings!
   httpRequestsAdaptiveGroups: Settings!
+  httpRequestsOverviewAdaptiveGroups: Settings!
   imageResizingRequests1mGroups: Settings!
   loadBalancingRequestsAdaptive: Settings!
   loadBalancingRequestsAdaptiveGroups: Settings!
