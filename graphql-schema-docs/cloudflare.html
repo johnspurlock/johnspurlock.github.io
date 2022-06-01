@@ -5348,6 +5348,8 @@
 &nbsp;&nbsp;destinationIp: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The destination port for the session</span><br />
 &nbsp;&nbsp;destinationPort: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># The device ID of the gateway user who initiated the session</span><br />
+&nbsp;&nbsp;deviceId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The email address of the gateway user who initiated the session</span><br />
 &nbsp;&nbsp;email: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The SNI pulled from the session tls handshake, if present</span><br />
@@ -5358,6 +5360,8 @@
 &nbsp;&nbsp;sourcePort: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># The transport protocol used in the session, one of (0, tcp) (1, quic) (2, udp)</span><br />
 &nbsp;&nbsp;transport: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># The ID of the gateway user who initiated the session</span><br />
+&nbsp;&nbsp;userId: <a href="#string">string!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject" href="#AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject">AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject</a> {<br />
@@ -5415,6 +5419,16 @@
 &nbsp;&nbsp;destinationPort_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;destinationPort_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;destinationPort_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;deviceId: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;deviceId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;deviceId_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;email: <a href="#string">string</a><br />
 &nbsp;&nbsp;email_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;email_gt: <a href="#string">string</a><br />
@@ -5461,6 +5475,16 @@
 &nbsp;&nbsp;transport_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;transport_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;transport_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;userId: <a href="#string">string</a><br />
+&nbsp;&nbsp;userId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;userId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;userId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;userId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;userId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;userId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;userId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;userId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;userId_notlike: <a href="#string">string</a><br />
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountGatewayL4SessionsAdaptiveGroupsOrderBy" href="#AccountGatewayL4SessionsAdaptiveGroupsOrderBy">AccountGatewayL4SessionsAdaptiveGroupsOrderBy</a> {<br />
@@ -5492,6 +5516,10 @@
 &nbsp;&nbsp;destinationPort_ASC<br />
 &nbsp;&nbsp;<span class="c"># destinationPort descending</span><br />
 &nbsp;&nbsp;destinationPort_DESC<br />
+&nbsp;&nbsp;<span class="c"># deviceId ascending</span><br />
+&nbsp;&nbsp;deviceId_ASC<br />
+&nbsp;&nbsp;<span class="c"># deviceId descending</span><br />
+&nbsp;&nbsp;deviceId_DESC<br />
 &nbsp;&nbsp;<span class="c"># email ascending</span><br />
 &nbsp;&nbsp;email_ASC<br />
 &nbsp;&nbsp;<span class="c"># email descending</span><br />
@@ -5512,6 +5540,10 @@
 &nbsp;&nbsp;transport_ASC<br />
 &nbsp;&nbsp;<span class="c"># transport descending</span><br />
 &nbsp;&nbsp;transport_DESC<br />
+&nbsp;&nbsp;<span class="c"># userId ascending</span><br />
+&nbsp;&nbsp;userId_ASC<br />
+&nbsp;&nbsp;<span class="c"># userId descending</span><br />
+&nbsp;&nbsp;userId_DESC<br />
 }<br />
 <br />
 <span class="c"># Aggregated metrics about upstream (edge to client) L4 Gateway Sessions. Metrics are reported on TCP, QUIC or UDP session close</span><br />
@@ -5848,12 +5880,16 @@
 &nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Datetime that the request happened truncated to minutes</span><br />
 &nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># The device ID of the gateway user who made the request</span><br />
+&nbsp;&nbsp;deviceId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The email address of the gateway user who made the request</span><br />
 &nbsp;&nbsp;email: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The destination host for the request</span><br />
 &nbsp;&nbsp;httpHost: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Indicates whether this request was made through an isolated link</span><br />
 &nbsp;&nbsp;isIsolated: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># The ID of the gateway user who made the request</span><br />
+&nbsp;&nbsp;userId: <a href="#string">string!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject" href="#AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject">AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject</a> {<br />
@@ -5893,6 +5929,16 @@
 &nbsp;&nbsp;datetime_lt: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_neq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;deviceId: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;deviceId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;deviceId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;deviceId_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;email: <a href="#string">string</a><br />
 &nbsp;&nbsp;email_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;email_gt: <a href="#string">string</a><br />
@@ -5921,6 +5967,16 @@
 &nbsp;&nbsp;isIsolated_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;isIsolated_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;isIsolated_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;userId: <a href="#string">string</a><br />
+&nbsp;&nbsp;userId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;userId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;userId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;userId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;userId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;userId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;userId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;userId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;userId_notlike: <a href="#string">string</a><br />
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountGatewayL7RequestsAdaptiveGroupsOrderBy" href="#AccountGatewayL7RequestsAdaptiveGroupsOrderBy">AccountGatewayL7RequestsAdaptiveGroupsOrderBy</a> {<br />
@@ -5944,6 +6000,10 @@
 &nbsp;&nbsp;datetime_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetime descending</span><br />
 &nbsp;&nbsp;datetime_DESC<br />
+&nbsp;&nbsp;<span class="c"># deviceId ascending</span><br />
+&nbsp;&nbsp;deviceId_ASC<br />
+&nbsp;&nbsp;<span class="c"># deviceId descending</span><br />
+&nbsp;&nbsp;deviceId_DESC<br />
 &nbsp;&nbsp;<span class="c"># email ascending</span><br />
 &nbsp;&nbsp;email_ASC<br />
 &nbsp;&nbsp;<span class="c"># email descending</span><br />
@@ -5956,6 +6016,10 @@
 &nbsp;&nbsp;isIsolated_ASC<br />
 &nbsp;&nbsp;<span class="c"># isIsolated descending</span><br />
 &nbsp;&nbsp;isIsolated_DESC<br />
+&nbsp;&nbsp;<span class="c"># userId ascending</span><br />
+&nbsp;&nbsp;userId_ASC<br />
+&nbsp;&nbsp;<span class="c"># userId descending</span><br />
+&nbsp;&nbsp;userId_DESC<br />
 }<br />
 <br />
 <span class="c"># BETA - Aggregate counts of Gateway Resolver queries by category with adaptive sampling</span><br />

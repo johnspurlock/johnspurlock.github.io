@@ -5415,6 +5415,8 @@ type AccountGatewayL4SessionsAdaptiveGroupsDimensions {
   destinationIp: string!
   # The destination port for the session
   destinationPort: uint16!
+  # The device ID of the gateway user who initiated the session
+  deviceId: string!
   # The email address of the gateway user who initiated the session
   email: string!
   # The SNI pulled from the session tls handshake, if present
@@ -5425,6 +5427,8 @@ type AccountGatewayL4SessionsAdaptiveGroupsDimensions {
   sourcePort: uint16!
   # The transport protocol used in the session, one of (0, tcp) (1, quic) (2, udp)
   transport: uint16!
+  # The ID of the gateway user who initiated the session
+  userId: string!
 }
 
 input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
@@ -5482,6 +5486,16 @@ input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
   destinationPort_lt: uint16
   destinationPort_neq: uint16
   destinationPort_notin: [uint16!]
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
   email: string
   email_geq: string
   email_gt: string
@@ -5528,6 +5542,16 @@ input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
   transport_lt: uint16
   transport_neq: uint16
   transport_notin: [uint16!]
+  userId: string
+  userId_geq: string
+  userId_gt: string
+  userId_in: [string!]
+  userId_leq: string
+  userId_like: string
+  userId_lt: string
+  userId_neq: string
+  userId_notin: [string!]
+  userId_notlike: string
 }
 
 enum AccountGatewayL4SessionsAdaptiveGroupsOrderBy {
@@ -5559,6 +5583,10 @@ enum AccountGatewayL4SessionsAdaptiveGroupsOrderBy {
   destinationPort_ASC
   # destinationPort descending
   destinationPort_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
   # email ascending
   email_ASC
   # email descending
@@ -5579,6 +5607,10 @@ enum AccountGatewayL4SessionsAdaptiveGroupsOrderBy {
   transport_ASC
   # transport descending
   transport_DESC
+  # userId ascending
+  userId_ASC
+  # userId descending
+  userId_DESC
 }
 
 # Aggregated metrics about upstream (edge to client) L4 Gateway Sessions. Metrics are reported on TCP, QUIC or UDP session close
@@ -5915,12 +5947,16 @@ type AccountGatewayL7RequestsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Datetime that the request happened truncated to minutes
   datetimeMinute: Time!
+  # The device ID of the gateway user who made the request
+  deviceId: string!
   # The email address of the gateway user who made the request
   email: string!
   # The destination host for the request
   httpHost: string!
   # Indicates whether this request was made through an isolated link
   isIsolated: uint16!
+  # The ID of the gateway user who made the request
+  userId: string!
 }
 
 input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
@@ -5960,6 +5996,16 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
   email: string
   email_geq: string
   email_gt: string
@@ -5988,6 +6034,16 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   isIsolated_lt: uint16
   isIsolated_neq: uint16
   isIsolated_notin: [uint16!]
+  userId: string
+  userId_geq: string
+  userId_gt: string
+  userId_in: [string!]
+  userId_leq: string
+  userId_like: string
+  userId_lt: string
+  userId_neq: string
+  userId_notin: [string!]
+  userId_notlike: string
 }
 
 enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
@@ -6011,6 +6067,10 @@ enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
   # email ascending
   email_ASC
   # email descending
@@ -6023,6 +6083,10 @@ enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
   isIsolated_ASC
   # isIsolated descending
   isIsolated_DESC
+  # userId ascending
+  userId_ASC
+  # userId descending
+  userId_DESC
 }
 
 # BETA - Aggregate counts of Gateway Resolver queries by category with adaptive sampling
