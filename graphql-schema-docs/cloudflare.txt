@@ -44,6 +44,7 @@ Account-level datasets:
 * workersInvocationsAdaptive
 * workersInvocationsScheduled
 * workersSubrequestsAdaptiveGroups
+* zeroTrustPrivateNetworkDiscoveryGroups
 
 Zone-level datasets:
 * cacheReserveOperationsAdaptiveGroups
@@ -203,6 +204,8 @@ type account {
   workersInvocationsScheduled(filter: AccountWorkersInvocationsScheduledFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersInvocationsScheduledOrderBy!]): [AccountWorkersInvocationsScheduled!]!
   # Beta. Workers subrequests with adaptive sampling
   workersSubrequestsAdaptiveGroups(filter: AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersSubrequestsAdaptiveGroupsOrderBy!]): [AccountWorkersSubrequestsAdaptiveGroups!]!
+  # Beta - Unique origins, applications, and users discovered for Zero Trust private networks
+  zeroTrustPrivateNetworkDiscoveryGroups(filter: AccountZeroTrustPrivateNetworkDiscoveryGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountZeroTrustPrivateNetworkDiscoveryGroupsOrderBy!]): [AccountZeroTrustPrivateNetworkDiscoveryGroups!]!
   zones(filter: ZoneFilter_InputObject, limit: uint64): [zone!]!
 }
 
@@ -14688,6 +14691,7 @@ type AccountSettings {
   workersInvocationsAdaptive: Settings!
   workersInvocationsScheduled: Settings!
   workersSubrequestsAdaptiveGroups: Settings!
+  zeroTrustPrivateNetworkDiscoveryGroups: Settings!
 }
 
 # Network analytics data for Spectrum traffic
@@ -17573,6 +17577,183 @@ type AccountWorkersSubrequestsAdaptiveGroupsSum {
   requestBodySizeUncached: uint64!
   # Number of subrequests
   subrequests: uint64!
+}
+
+# Beta - Unique origins, applications, and users discovered for Zero Trust private networks
+type AccountZeroTrustPrivateNetworkDiscoveryGroups {
+  # Sum of network access during the select range
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountZeroTrustPrivateNetworkDiscoveryGroupsDimensions
+  max: AccountZeroTrustPrivateNetworkDiscoveryGroupsMax
+  uniq: AccountZeroTrustPrivateNetworkDiscoveryGroupsUniq
+}
+
+type AccountZeroTrustPrivateNetworkDiscoveryGroupsDimensions {
+  # Request date
+  date: Date!
+  # Request datetime and start of the hour
+  datetimeHour: Time!
+  # Destination IPv4 or IPv6
+  destinationIP: string!
+  # Destination port
+  destinationPort: uint16!
+  # The email address of the user who accessed the resource
+  email: string!
+  # SNI hostname of the origin if TLS intercept is enabled
+  hostname: string!
+  # The transport protocol used in the session, one of (0, tcp) (1, quic) (2, udp)
+  transport: string!
+  # The ID of the user who accessed the resource
+  userId: string!
+}
+
+input AccountZeroTrustPrivateNetworkDiscoveryGroupsFilter_InputObject {
+  AND: [AccountZeroTrustPrivateNetworkDiscoveryGroupsFilter_InputObject!]
+  OR: [AccountZeroTrustPrivateNetworkDiscoveryGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  destinationIP: string
+  destinationIP_geq: string
+  destinationIP_gt: string
+  destinationIP_in: [string!]
+  destinationIP_leq: string
+  destinationIP_like: string
+  destinationIP_lt: string
+  destinationIP_neq: string
+  destinationIP_notin: [string!]
+  destinationIP_notlike: string
+  destinationPort: uint16
+  destinationPort_geq: uint16
+  destinationPort_gt: uint16
+  destinationPort_in: [uint16!]
+  destinationPort_leq: uint16
+  destinationPort_lt: uint16
+  destinationPort_neq: uint16
+  destinationPort_notin: [uint16!]
+  email: string
+  email_geq: string
+  email_gt: string
+  email_in: [string!]
+  email_leq: string
+  email_like: string
+  email_lt: string
+  email_neq: string
+  email_notin: [string!]
+  email_notlike: string
+  hostname: string
+  hostname_geq: string
+  hostname_gt: string
+  hostname_in: [string!]
+  hostname_leq: string
+  hostname_like: string
+  hostname_lt: string
+  hostname_neq: string
+  hostname_notin: [string!]
+  hostname_notlike: string
+  transport: string
+  transport_geq: string
+  transport_gt: string
+  transport_in: [string!]
+  transport_leq: string
+  transport_like: string
+  transport_lt: string
+  transport_neq: string
+  transport_notin: [string!]
+  transport_notlike: string
+  userId: string
+  userId_geq: string
+  userId_gt: string
+  userId_in: [string!]
+  userId_leq: string
+  userId_like: string
+  userId_lt: string
+  userId_neq: string
+  userId_notin: [string!]
+  userId_notlike: string
+}
+
+type AccountZeroTrustPrivateNetworkDiscoveryGroupsMax {
+  # Latest access time of a user
+  dateTime: Time!
+}
+
+enum AccountZeroTrustPrivateNetworkDiscoveryGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # destinationIP ascending
+  destinationIP_ASC
+  # destinationIP descending
+  destinationIP_DESC
+  # destinationPort ascending
+  destinationPort_ASC
+  # destinationPort descending
+  destinationPort_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # hostname ascending
+  hostname_ASC
+  # hostname descending
+  hostname_DESC
+  # max(dateTime) ascending
+  max_dateTime_ASC
+  # max(dateTime) descending
+  max_dateTime_DESC
+  # transport ascending
+  transport_ASC
+  # transport descending
+  transport_DESC
+  # uniq(emails) ascending
+  uniq_emails_ASC
+  # uniq(emails) descending
+  uniq_emails_DESC
+  # uniq(origins) ascending
+  uniq_origins_ASC
+  # uniq(origins) descending
+  uniq_origins_DESC
+  # uniq(userIds) ascending
+  uniq_userIds_ASC
+  # uniq(userIds) descending
+  uniq_userIds_DESC
+  # userId ascending
+  userId_ASC
+  # userId descending
+  userId_DESC
+}
+
+type AccountZeroTrustPrivateNetworkDiscoveryGroupsUniq {
+  # Approximate count of unique emails
+  emails: uint64!
+  # Approximate count of unique origins. An origin is a (transport, destinationIP, destinationPort)
+  origins: uint64!
+  # Approximate count of unique users
+  userIds: uint64!
 }
 
 type mutation {
@@ -24800,6 +24981,8 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # ABR sample interval
   sampleInterval: uint32!
+  # Unique Identifier for the waiting room
+  waitingRoomId: string!
 }
 
 input ZoneWaitingRoomAnalyticsAdaptiveGroupsFilter_InputObject {
@@ -24861,6 +25044,16 @@ input ZoneWaitingRoomAnalyticsAdaptiveGroupsFilter_InputObject {
   sampleInterval_lt: uint32
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
+  waitingRoomId: string
+  waitingRoomId_geq: string
+  waitingRoomId_gt: string
+  waitingRoomId_in: [string!]
+  waitingRoomId_leq: string
+  waitingRoomId_like: string
+  waitingRoomId_lt: string
+  waitingRoomId_neq: string
+  waitingRoomId_notin: [string!]
+  waitingRoomId_notlike: string
 }
 
 type ZoneWaitingRoomAnalyticsAdaptiveGroupsMax {
@@ -25023,6 +25216,10 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # waitingRoomId ascending
+  waitingRoomId_ASC
+  # waitingRoomId descending
+  waitingRoomId_DESC
 }
 
 enum ZoneWaitingRoomAnalyticsAdaptiveOrderBy {
