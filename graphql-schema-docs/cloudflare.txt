@@ -11808,6 +11808,16 @@ type AccountMagicTransitTunnelTrafficAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Traffic Direction
   direction: string!
+  # City where the Cloudflare datacenter that received the packet is located
+  edgeColoCity: string!
+  # Cloudflare datacenter that received the packet (nearest IATA airport code)
+  edgeColoCode: string!
+  # Country where the Cloudflare datacenter that received the packet is located (ISO 3166-1 alpha-2)
+  edgeColoCountry: string!
+  # Latitude and longitude where the Cloudflare datacenter that received the packet is located (Geohash encoding)
+  edgeColoGeohash: string!
+  # Cloudflare datacenter that received the packet (unique site identifier)
+  edgeColoName: string!
   # System to collect info on
   system: string!
   # Tunnel device name
@@ -11859,6 +11869,56 @@ input AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject {
   direction_neq: string
   direction_notin: [string!]
   direction_notlike: string
+  edgeColoCity: string
+  edgeColoCity_geq: string
+  edgeColoCity_gt: string
+  edgeColoCity_in: [string!]
+  edgeColoCity_leq: string
+  edgeColoCity_like: string
+  edgeColoCity_lt: string
+  edgeColoCity_neq: string
+  edgeColoCity_notin: [string!]
+  edgeColoCity_notlike: string
+  edgeColoCode: string
+  edgeColoCode_geq: string
+  edgeColoCode_gt: string
+  edgeColoCode_in: [string!]
+  edgeColoCode_leq: string
+  edgeColoCode_like: string
+  edgeColoCode_lt: string
+  edgeColoCode_neq: string
+  edgeColoCode_notin: [string!]
+  edgeColoCode_notlike: string
+  edgeColoCountry: string
+  edgeColoCountry_geq: string
+  edgeColoCountry_gt: string
+  edgeColoCountry_in: [string!]
+  edgeColoCountry_leq: string
+  edgeColoCountry_like: string
+  edgeColoCountry_lt: string
+  edgeColoCountry_neq: string
+  edgeColoCountry_notin: [string!]
+  edgeColoCountry_notlike: string
+  edgeColoGeohash: string
+  edgeColoGeohash_geq: string
+  edgeColoGeohash_gt: string
+  edgeColoGeohash_in: [string!]
+  edgeColoGeohash_leq: string
+  edgeColoGeohash_like: string
+  edgeColoGeohash_lt: string
+  edgeColoGeohash_neq: string
+  edgeColoGeohash_notin: [string!]
+  edgeColoGeohash_notlike: string
+  edgeColoName: string
+  edgeColoName_geq: string
+  edgeColoName_gt: string
+  edgeColoName_in: [string!]
+  edgeColoName_leq: string
+  edgeColoName_like: string
+  edgeColoName_lt: string
+  edgeColoName_neq: string
+  edgeColoName_notin: [string!]
+  edgeColoName_notlike: string
   system: string
   system_geq: string
   system_gt: string
@@ -11914,6 +11974,26 @@ enum AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy {
   direction_ASC
   # direction descending
   direction_DESC
+  # edgeColoCity ascending
+  edgeColoCity_ASC
+  # edgeColoCity descending
+  edgeColoCity_DESC
+  # edgeColoCode ascending
+  edgeColoCode_ASC
+  # edgeColoCode descending
+  edgeColoCode_DESC
+  # edgeColoCountry ascending
+  edgeColoCountry_ASC
+  # edgeColoCountry descending
+  edgeColoCountry_DESC
+  # edgeColoGeohash ascending
+  edgeColoGeohash_ASC
+  # edgeColoGeohash descending
+  edgeColoGeohash_DESC
+  # edgeColoName ascending
+  edgeColoName_ASC
+  # edgeColoName descending
+  edgeColoName_DESC
   # notCfIps ascending
   notCfIps_ASC
   # notCfIps descending
@@ -16806,6 +16886,10 @@ type AccountWorkersAnalyticsEngineAdaptiveGroups {
 }
 
 type AccountWorkersAnalyticsEngineAdaptiveGroupsDimensions {
+  # The dataset name
+  dataset: string!
+  # The date the event occurred
+  date: Date!
   # The date and time the event occurred
   datetime: Time!
   # The date and time the event occurred truncated to a multiple of 15 minutes
@@ -16816,13 +16900,29 @@ type AccountWorkersAnalyticsEngineAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time the event occurred truncated to the start of a minute
   datetimeMinute: Time!
-  # The metric name
-  name: string!
 }
 
 input AccountWorkersAnalyticsEngineAdaptiveGroupsFilter_InputObject {
   AND: [AccountWorkersAnalyticsEngineAdaptiveGroupsFilter_InputObject!]
   OR: [AccountWorkersAnalyticsEngineAdaptiveGroupsFilter_InputObject!]
+  dataset: string
+  dataset_geq: string
+  dataset_gt: string
+  dataset_in: [string!]
+  dataset_leq: string
+  dataset_like: string
+  dataset_lt: string
+  dataset_neq: string
+  dataset_notin: [string!]
+  dataset_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
   datetime: Time
   datetimeFifteenMinutes: Time
   datetimeFifteenMinutes_geq: Time
@@ -16863,16 +16963,6 @@ input AccountWorkersAnalyticsEngineAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
-  name: string
-  name_geq: string
-  name_gt: string
-  name_in: [string!]
-  name_leq: string
-  name_like: string
-  name_lt: string
-  name_neq: string
-  name_notin: [string!]
-  name_notlike: string
 }
 
 enum AccountWorkersAnalyticsEngineAdaptiveGroupsOrderBy {
@@ -16880,6 +16970,14 @@ enum AccountWorkersAnalyticsEngineAdaptiveGroupsOrderBy {
   count_ASC
   # count() descending
   count_DESC
+  # dataset ascending
+  dataset_ASC
+  # dataset descending
+  dataset_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
   # datetimeFifteenMinutes ascending
   datetimeFifteenMinutes_ASC
   # datetimeFifteenMinutes descending
@@ -16900,10 +16998,6 @@ enum AccountWorkersAnalyticsEngineAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
-  # name ascending
-  name_ASC
-  # name descending
-  name_DESC
 }
 
 # Beta. Workers invocations with adaptive sampling
@@ -17602,6 +17696,10 @@ type AccountZeroTrustPrivateNetworkDiscoveryGroupsDimensions {
   email: string!
   # SNI hostname of the origin if TLS intercept is enabled
   hostname: string!
+  # UUID of the origin if it has been identified before
+  originId: string!
+  # status of the origin, one of unreviewed, in_review, approved, unapproved
+  status: string!
   # The transport protocol used in the session, one of (0, tcp) (1, quic) (2, udp)
   transport: string!
   # The ID of the user who accessed the resource
@@ -17665,6 +17763,26 @@ input AccountZeroTrustPrivateNetworkDiscoveryGroupsFilter_InputObject {
   hostname_neq: string
   hostname_notin: [string!]
   hostname_notlike: string
+  originId: string
+  originId_geq: string
+  originId_gt: string
+  originId_in: [string!]
+  originId_leq: string
+  originId_like: string
+  originId_lt: string
+  originId_neq: string
+  originId_notin: [string!]
+  originId_notlike: string
+  status: string
+  status_geq: string
+  status_gt: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
   transport: string
   transport_geq: string
   transport_gt: string
@@ -17725,6 +17843,14 @@ enum AccountZeroTrustPrivateNetworkDiscoveryGroupsOrderBy {
   max_dateTime_ASC
   # max(dateTime) descending
   max_dateTime_DESC
+  # originId ascending
+  originId_ASC
+  # originId descending
+  originId_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
   # transport ascending
   transport_ASC
   # transport descending
