@@ -1,5 +1,6 @@
 Account-level datasets:
   cdnNetworkAnalyticsAdaptiveGroups
+* challengeApiAdaptiveGroups
   dosdAttackAnalyticsGroups
   dosdNetworkAnalyticsAdaptiveGroups
 * durableObjectsInvocationsAdaptiveGroups
@@ -115,6 +116,8 @@ type account {
   accountTag: string!
   # Network analytics data for Cloudflare CDN traffic
   cdnNetworkAnalyticsAdaptiveGroups(filter: AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountCdnNetworkAnalyticsAdaptiveGroups!]!
+  # Challenge API aggregated events with adaptive sampling
+  challengeApiAdaptiveGroups(filter: AccountChallengeApiAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountChallengeApiAdaptiveGroupsOrderBy!]): [AccountChallengeApiAdaptiveGroups!]!
   # Attack analytics metadata for attacks detected by dosd
   dosdAttackAnalyticsGroups(filter: AccountDosdAttackAnalyticsGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDosdAttackAnalyticsGroupsOrderBy!]): [AccountDosdAttackAnalyticsGroups!]!
   # Network analytics data for dosd
@@ -1464,6 +1467,129 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsSum {
   bits: uint64!
   # Sum of packets received
   packets: uint64!
+}
+
+# Challenge API aggregated events with adaptive sampling
+type AccountChallengeApiAdaptiveGroups {
+  avg: AccountChallengeApiAdaptiveGroupsAvg
+  # Number of Challenge API events processed
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountChallengeApiAdaptiveGroupsDimensions
+}
+
+type AccountChallengeApiAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountChallengeApiAdaptiveGroupsDimensions {
+  # The action tag of the Challenge API event
+  action: string!
+  # The date the challenge event was emitted
+  date: Date!
+  # The date and time the challenge event was emitted
+  datetime: Time!
+  # The date and time the challenge event was emitted truncated to the minute
+  datetimeMinute: Time!
+  # The type of the Challenge API event
+  eventType: string!
+  # The sitekey of the widget associated with the Challenge API event
+  siteKey: string!
+}
+
+input AccountChallengeApiAdaptiveGroupsFilter_InputObject {
+  AND: [AccountChallengeApiAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountChallengeApiAdaptiveGroupsFilter_InputObject!]
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
+  siteKey: string
+  siteKey_geq: string
+  siteKey_gt: string
+  siteKey_in: [string!]
+  siteKey_leq: string
+  siteKey_like: string
+  siteKey_lt: string
+  siteKey_neq: string
+  siteKey_notin: [string!]
+  siteKey_notlike: string
+}
+
+enum AccountChallengeApiAdaptiveGroupsOrderBy {
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
+  # siteKey ascending
+  siteKey_ASC
+  # siteKey descending
+  siteKey_DESC
 }
 
 # Attack analytics metadata for attacks detected by dosd
@@ -14727,6 +14853,7 @@ enum AccountRumWebVitalsEventsAdaptiveOrderBy {
 # Access and limitations for an account
 type AccountSettings {
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
+  challengeApiAdaptiveGroups: Settings!
   dosdAttackAnalyticsGroups: Settings!
   dosdNetworkAnalyticsAdaptiveGroups: Settings!
   durableObjectsInvocationsAdaptiveGroups: Settings!
