@@ -55,10 +55,8 @@ Zone-level datasets:
 * firewallEventsAdaptive
 * firewallEventsAdaptiveByTimeGroups
   firewallEventsAdaptiveGroups
-  healthCheckEvents
   healthCheckEventsAdaptive
   healthCheckEventsAdaptiveGroups
-  healthCheckEventsGroups
   httpRequests1dByColoGroups
 * httpRequests1dGroups
 * httpRequests1hGroups
@@ -17158,8 +17156,12 @@ type AccountWorkersInvocationsAdaptiveDimensions {
   datetimeMinute: Time!
   # The name of the script environment
   environmentName: string!
+  # The name of the script namespace
+  namespaceName: string!
   # The name of the script
   scriptName: string!
+  # The unique tag of the script
+  scriptTag: string!
   # Status of the worker invocation
   status: string!
   # Usage model of the worker invocation
@@ -17211,6 +17213,16 @@ input AccountWorkersInvocationsAdaptiveFilter_InputObject {
   environmentName_neq: string
   environmentName_notin: [string!]
   environmentName_notlike: string
+  namespaceName: string
+  namespaceName_geq: string
+  namespaceName_gt: string
+  namespaceName_in: [string!]
+  namespaceName_leq: string
+  namespaceName_like: string
+  namespaceName_lt: string
+  namespaceName_neq: string
+  namespaceName_notin: [string!]
+  namespaceName_notlike: string
   scriptName: string
   scriptName_geq: string
   scriptName_gt: string
@@ -17221,6 +17233,16 @@ input AccountWorkersInvocationsAdaptiveFilter_InputObject {
   scriptName_neq: string
   scriptName_notin: [string!]
   scriptName_notlike: string
+  scriptTag: string
+  scriptTag_geq: string
+  scriptTag_gt: string
+  scriptTag_in: [string!]
+  scriptTag_leq: string
+  scriptTag_like: string
+  scriptTag_lt: string
+  scriptTag_neq: string
+  scriptTag_notin: [string!]
+  scriptTag_notlike: string
   status: string
   status_geq: string
   status_gt: string
@@ -17322,6 +17344,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   min_wallTime_ASC
   # min(wallTime) descending
   min_wallTime_DESC
+  # namespaceName ascending
+  namespaceName_ASC
+  # namespaceName descending
+  namespaceName_DESC
   # quantiles(cpuTimeP25) ascending
   quantiles_cpuTimeP25_ASC
   # quantiles(cpuTimeP25) descending
@@ -17422,6 +17448,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   scriptName_ASC
   # scriptName descending
   scriptName_DESC
+  # scriptTag ascending
+  scriptTag_ASC
+  # scriptTag descending
+  scriptTag_DESC
   # stableId ascending
   stableId_ASC
   # stableId descending
@@ -18053,14 +18083,10 @@ type zone {
   firewallEventsAdaptiveByTimeGroups(filter: ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy!]): [ZoneFirewallEventsAdaptiveByTimeGroups!]!
   # Aggregated Firewall events with adaptive sampling
   firewallEventsAdaptiveGroups(filter: ZoneFirewallEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneFirewallEventsAdaptiveGroupsOrderBy!]): [ZoneFirewallEventsAdaptiveGroups!]!
-  # Raw Health Check events
-  healthCheckEvents(filter: ZoneHealthCheckEventsFilter_InputObject!, limit: uint64!, orderBy: [ZoneHealthCheckEventsOrderBy!]): [ZoneHealthCheckEvents!]!
   # Raw Health Check events with adaptive sampling
   healthCheckEventsAdaptive(filter: ZoneHealthCheckEventsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneHealthCheckEventsAdaptiveOrderBy!]): [ZoneHealthCheckEventsAdaptive!]!
   # Aggregated Health Check events with adaptive sampling
   healthCheckEventsAdaptiveGroups(filter: ZoneHealthCheckEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneHealthCheckEventsAdaptiveGroupsOrderBy!]): [ZoneHealthCheckEventsAdaptiveGroups!]!
-  # Aggregated Health Check events
-  healthCheckEventsGroups(filter: ZoneHealthCheckEventsGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneHealthCheckEventsGroupsOrderBy!]): [ZoneHealthCheckEventsGroups!]!
   # Deprecated. Daily rollups of request data by colo
   httpRequests1dByColoGroups(filter: ZoneHttpRequests1dByColoGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneHttpRequests1dByColoGroupsOrderBy!]): [ZoneHttpRequests1dByColoGroups!]!
   # Daily rollups of request data
@@ -20527,46 +20553,6 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   wafMlXssAttackScore_DESC
 }
 
-# Raw Health Check events
-type ZoneHealthCheckEvents {
-  # The date the event was written to the database
-  date: Date!
-  # The date and time the event was written to the database
-  datetime: Time!
-  # The event id that created this healthcheck event
-  eventId: string!
-  # The expected response codes for the health check
-  expectedResponseCodes: string!
-  # Reason why the health check failed
-  failureReason: string!
-  # Fully qualified domain name of the origin (if available)
-  fqdn: string!
-  # 1 if the origin health status has changed since the last health check, 0 otherwise
-  healthChanged: uint8!
-  # A unique identifier for the health check
-  healthCheckId: string!
-  # Human-identifiable health check name
-  healthCheckName: string!
-  # Origin health status
-  healthStatus: string!
-  # IP address of the origin
-  originIP: string!
-  # HTTP status code returned by the origin
-  originResponseStatus: uint16!
-  # Region where the health check occurred
-  region: string!
-  # RTT (milliseconds) to reach the origin
-  rttMs: uint64!
-  # Geographic aggregation level of the health status
-  scope: string!
-  # Time taken for the tcp connection to be established
-  tcpConnMs: uint32!
-  # Time taken for the first byte to be received once connection is available
-  timeToFirstByteMs: uint32!
-  # Time taken for the tls handshake to be completed
-  tlsHandshakeMs: uint32!
-}
-
 # Raw Health Check events with adaptive sampling
 type ZoneHealthCheckEventsAdaptive {
   # The date and time the event was written to the database
@@ -21197,608 +21183,6 @@ enum ZoneHealthCheckEventsAdaptiveOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
-  # scope ascending
-  scope_ASC
-  # scope descending
-  scope_DESC
-  # tcpConnMs ascending
-  tcpConnMs_ASC
-  # tcpConnMs descending
-  tcpConnMs_DESC
-  # timeToFirstByteMs ascending
-  timeToFirstByteMs_ASC
-  # timeToFirstByteMs descending
-  timeToFirstByteMs_DESC
-  # tlsHandshakeMs ascending
-  tlsHandshakeMs_ASC
-  # tlsHandshakeMs descending
-  tlsHandshakeMs_DESC
-}
-
-input ZoneHealthCheckEventsFilter_InputObject {
-  AND: [ZoneHealthCheckEventsFilter_InputObject!]
-  OR: [ZoneHealthCheckEventsFilter_InputObject!]
-  date: Date
-  date_geq: Date
-  date_gt: Date
-  date_in: [Date!]
-  date_leq: Date
-  date_lt: Date
-  date_neq: Date
-  date_notin: [Date!]
-  datetime: Time
-  datetime_geq: Time
-  datetime_gt: Time
-  datetime_in: [Time!]
-  datetime_leq: Time
-  datetime_lt: Time
-  datetime_neq: Time
-  datetime_notin: [Time!]
-  eventId: string
-  eventId_geq: string
-  eventId_gt: string
-  eventId_in: [string!]
-  eventId_leq: string
-  eventId_like: string
-  eventId_lt: string
-  eventId_neq: string
-  eventId_notin: [string!]
-  eventId_notlike: string
-  expectedResponseCodes: string
-  expectedResponseCodes_geq: string
-  expectedResponseCodes_gt: string
-  expectedResponseCodes_in: [string!]
-  expectedResponseCodes_leq: string
-  expectedResponseCodes_like: string
-  expectedResponseCodes_lt: string
-  expectedResponseCodes_neq: string
-  expectedResponseCodes_notin: [string!]
-  expectedResponseCodes_notlike: string
-  failureReason: string
-  failureReason_geq: string
-  failureReason_gt: string
-  failureReason_in: [string!]
-  failureReason_leq: string
-  failureReason_like: string
-  failureReason_lt: string
-  failureReason_neq: string
-  failureReason_notin: [string!]
-  failureReason_notlike: string
-  fqdn: string
-  fqdn_geq: string
-  fqdn_gt: string
-  fqdn_in: [string!]
-  fqdn_leq: string
-  fqdn_like: string
-  fqdn_lt: string
-  fqdn_neq: string
-  fqdn_notin: [string!]
-  fqdn_notlike: string
-  healthChanged: uint8
-  healthChanged_geq: uint8
-  healthChanged_gt: uint8
-  healthChanged_in: bytes
-  healthChanged_leq: uint8
-  healthChanged_lt: uint8
-  healthChanged_neq: uint8
-  healthChanged_notin: bytes
-  healthCheckId: string
-  healthCheckId_geq: string
-  healthCheckId_gt: string
-  healthCheckId_in: [string!]
-  healthCheckId_leq: string
-  healthCheckId_like: string
-  healthCheckId_lt: string
-  healthCheckId_neq: string
-  healthCheckId_notin: [string!]
-  healthCheckId_notlike: string
-  healthCheckName: string
-  healthCheckName_geq: string
-  healthCheckName_gt: string
-  healthCheckName_in: [string!]
-  healthCheckName_leq: string
-  healthCheckName_like: string
-  healthCheckName_lt: string
-  healthCheckName_neq: string
-  healthCheckName_notin: [string!]
-  healthCheckName_notlike: string
-  healthStatus: string
-  healthStatus_geq: string
-  healthStatus_gt: string
-  healthStatus_in: [string!]
-  healthStatus_leq: string
-  healthStatus_like: string
-  healthStatus_lt: string
-  healthStatus_neq: string
-  healthStatus_notin: [string!]
-  healthStatus_notlike: string
-  originIP: string
-  originIP_geq: string
-  originIP_gt: string
-  originIP_in: [string!]
-  originIP_leq: string
-  originIP_like: string
-  originIP_lt: string
-  originIP_neq: string
-  originIP_notin: [string!]
-  originIP_notlike: string
-  originResponseStatus: uint16
-  originResponseStatus_geq: uint16
-  originResponseStatus_gt: uint16
-  originResponseStatus_in: [uint16!]
-  originResponseStatus_leq: uint16
-  originResponseStatus_lt: uint16
-  originResponseStatus_neq: uint16
-  originResponseStatus_notin: [uint16!]
-  region: string
-  region_geq: string
-  region_gt: string
-  region_in: [string!]
-  region_leq: string
-  region_like: string
-  region_lt: string
-  region_neq: string
-  region_notin: [string!]
-  region_notlike: string
-  rttMs: uint64
-  rttMs_geq: uint64
-  rttMs_gt: uint64
-  rttMs_in: [uint64!]
-  rttMs_leq: uint64
-  rttMs_lt: uint64
-  rttMs_neq: uint64
-  rttMs_notin: [uint64!]
-  scope: string
-  scope_geq: string
-  scope_gt: string
-  scope_in: [string!]
-  scope_leq: string
-  scope_like: string
-  scope_lt: string
-  scope_neq: string
-  scope_notin: [string!]
-  scope_notlike: string
-  tcpConnMs: uint32
-  tcpConnMs_geq: uint32
-  tcpConnMs_gt: uint32
-  tcpConnMs_in: [uint32!]
-  tcpConnMs_leq: uint32
-  tcpConnMs_lt: uint32
-  tcpConnMs_neq: uint32
-  tcpConnMs_notin: [uint32!]
-  timeToFirstByteMs: uint32
-  timeToFirstByteMs_geq: uint32
-  timeToFirstByteMs_gt: uint32
-  timeToFirstByteMs_in: [uint32!]
-  timeToFirstByteMs_leq: uint32
-  timeToFirstByteMs_lt: uint32
-  timeToFirstByteMs_neq: uint32
-  timeToFirstByteMs_notin: [uint32!]
-  tlsHandshakeMs: uint32
-  tlsHandshakeMs_geq: uint32
-  tlsHandshakeMs_gt: uint32
-  tlsHandshakeMs_in: [uint32!]
-  tlsHandshakeMs_leq: uint32
-  tlsHandshakeMs_lt: uint32
-  tlsHandshakeMs_neq: uint32
-  tlsHandshakeMs_notin: [uint32!]
-}
-
-# Aggregated Health Check events
-type ZoneHealthCheckEventsGroups {
-  # The average value for a metric
-  avg: ZoneHealthCheckEventsGroupsAvg
-  # The number of values for a metric per dimension
-  count: uint64!
-  # List of dimensions to group by
-  dimensions: ZoneHealthCheckEventsGroupsDimensions
-  # The sum of values for a metric per dimension
-  sum: ZoneHealthCheckEventsGroupsSum
-}
-
-type ZoneHealthCheckEventsGroupsAvg {
-  # Average RTT (milliseconds)
-  rttMs: uint64!
-  # Average TCP Connection time (milliseconds)
-  tcpConnMs: uint32!
-  # Average Time To First Byte (milliseconds)
-  timeToFirstByteMs: uint32!
-  # Average TLS Handshake time (milliseconds)
-  tlsHandshakeMs: uint32!
-}
-
-type ZoneHealthCheckEventsGroupsDimensions {
-  # Date the event was written to the database
-  date: Date!
-  # Datetime the event was written to the database
-  datetime: Time!
-  # Datetime the event was written to the database truncated to a multiple of 15 minutes
-  datetimeFifteenMinutes: Time!
-  # Datetime the event was written to the database truncated to a multiple of 5 minutes
-  datetimeFiveMinutes: Time!
-  # Datetime the event was written to the database truncated to the hour
-  datetimeHour: Time!
-  # Datetime the event was written to the database truncated to the minute
-  datetimeMinute: Time!
-  # Reason why the health check failed
-  failureReason: string!
-  # Fully qualified domain name of the origin (if available)
-  fqdn: string!
-  # 1 if the origin health status has changed since the last health check, 0 otherwise
-  healthChanged: uint8!
-  # A unique identifier for the health check
-  healthCheckId: string!
-  # Human-identifiable health check name
-  healthCheckName: string!
-  # Origin health status
-  healthStatus: string!
-  # IP address of the origin
-  originIP: string!
-  # HTTP status code returned by the origin
-  originResponseStatus: uint16!
-  # Region where the health check occurred
-  region: string!
-  # RTT (milliseconds) to reach the origin
-  rttMs: uint64!
-  # Geographic aggregation level of the health status
-  scope: string!
-  # Time taken for the tcp connection to be established
-  tcpConnMs: uint32!
-  # Time taken for the first byte to be received once connection is available
-  timeToFirstByteMs: uint32!
-  # Time taken for the tls handshake to be completed
-  tlsHandshakeMs: uint32!
-}
-
-input ZoneHealthCheckEventsGroupsFilter_InputObject {
-  AND: [ZoneHealthCheckEventsGroupsFilter_InputObject!]
-  OR: [ZoneHealthCheckEventsGroupsFilter_InputObject!]
-  date: Date
-  date_geq: Date
-  date_gt: Date
-  date_in: [Date!]
-  date_leq: Date
-  date_lt: Date
-  date_neq: Date
-  date_notin: [Date!]
-  datetime: Time
-  datetimeFifteenMinutes: Time
-  datetimeFifteenMinutes_geq: Time
-  datetimeFifteenMinutes_gt: Time
-  datetimeFifteenMinutes_in: [Time!]
-  datetimeFifteenMinutes_leq: Time
-  datetimeFifteenMinutes_lt: Time
-  datetimeFifteenMinutes_neq: Time
-  datetimeFifteenMinutes_notin: [Time!]
-  datetimeFiveMinutes: Time
-  datetimeFiveMinutes_geq: Time
-  datetimeFiveMinutes_gt: Time
-  datetimeFiveMinutes_in: [Time!]
-  datetimeFiveMinutes_leq: Time
-  datetimeFiveMinutes_lt: Time
-  datetimeFiveMinutes_neq: Time
-  datetimeFiveMinutes_notin: [Time!]
-  datetimeHour: Time
-  datetimeHour_geq: Time
-  datetimeHour_gt: Time
-  datetimeHour_in: [Time!]
-  datetimeHour_leq: Time
-  datetimeHour_lt: Time
-  datetimeHour_neq: Time
-  datetimeHour_notin: [Time!]
-  datetimeMinute: Time
-  datetimeMinute_geq: Time
-  datetimeMinute_gt: Time
-  datetimeMinute_in: [Time!]
-  datetimeMinute_leq: Time
-  datetimeMinute_lt: Time
-  datetimeMinute_neq: Time
-  datetimeMinute_notin: [Time!]
-  datetime_geq: Time
-  datetime_gt: Time
-  datetime_in: [Time!]
-  datetime_leq: Time
-  datetime_lt: Time
-  datetime_neq: Time
-  datetime_notin: [Time!]
-  failureReason: string
-  failureReason_geq: string
-  failureReason_gt: string
-  failureReason_in: [string!]
-  failureReason_leq: string
-  failureReason_like: string
-  failureReason_lt: string
-  failureReason_neq: string
-  failureReason_notin: [string!]
-  failureReason_notlike: string
-  fqdn: string
-  fqdn_geq: string
-  fqdn_gt: string
-  fqdn_in: [string!]
-  fqdn_leq: string
-  fqdn_like: string
-  fqdn_lt: string
-  fqdn_neq: string
-  fqdn_notin: [string!]
-  fqdn_notlike: string
-  healthChanged: uint8
-  healthChanged_geq: uint8
-  healthChanged_gt: uint8
-  healthChanged_in: bytes
-  healthChanged_leq: uint8
-  healthChanged_lt: uint8
-  healthChanged_neq: uint8
-  healthChanged_notin: bytes
-  healthCheckId: string
-  healthCheckId_geq: string
-  healthCheckId_gt: string
-  healthCheckId_in: [string!]
-  healthCheckId_leq: string
-  healthCheckId_like: string
-  healthCheckId_lt: string
-  healthCheckId_neq: string
-  healthCheckId_notin: [string!]
-  healthCheckId_notlike: string
-  healthCheckName: string
-  healthCheckName_geq: string
-  healthCheckName_gt: string
-  healthCheckName_in: [string!]
-  healthCheckName_leq: string
-  healthCheckName_like: string
-  healthCheckName_lt: string
-  healthCheckName_neq: string
-  healthCheckName_notin: [string!]
-  healthCheckName_notlike: string
-  healthStatus: string
-  healthStatus_geq: string
-  healthStatus_gt: string
-  healthStatus_in: [string!]
-  healthStatus_leq: string
-  healthStatus_like: string
-  healthStatus_lt: string
-  healthStatus_neq: string
-  healthStatus_notin: [string!]
-  healthStatus_notlike: string
-  originIP: string
-  originIP_geq: string
-  originIP_gt: string
-  originIP_in: [string!]
-  originIP_leq: string
-  originIP_like: string
-  originIP_lt: string
-  originIP_neq: string
-  originIP_notin: [string!]
-  originIP_notlike: string
-  originResponseStatus: uint16
-  originResponseStatus_geq: uint16
-  originResponseStatus_gt: uint16
-  originResponseStatus_in: [uint16!]
-  originResponseStatus_leq: uint16
-  originResponseStatus_lt: uint16
-  originResponseStatus_neq: uint16
-  originResponseStatus_notin: [uint16!]
-  region: string
-  region_geq: string
-  region_gt: string
-  region_in: [string!]
-  region_leq: string
-  region_like: string
-  region_lt: string
-  region_neq: string
-  region_notin: [string!]
-  region_notlike: string
-  rttMs: uint64
-  rttMs_geq: uint64
-  rttMs_gt: uint64
-  rttMs_in: [uint64!]
-  rttMs_leq: uint64
-  rttMs_lt: uint64
-  rttMs_neq: uint64
-  rttMs_notin: [uint64!]
-  scope: string
-  scope_geq: string
-  scope_gt: string
-  scope_in: [string!]
-  scope_leq: string
-  scope_like: string
-  scope_lt: string
-  scope_neq: string
-  scope_notin: [string!]
-  scope_notlike: string
-  tcpConnMs: uint32
-  tcpConnMs_geq: uint32
-  tcpConnMs_gt: uint32
-  tcpConnMs_in: [uint32!]
-  tcpConnMs_leq: uint32
-  tcpConnMs_lt: uint32
-  tcpConnMs_neq: uint32
-  tcpConnMs_notin: [uint32!]
-  timeToFirstByteMs: uint32
-  timeToFirstByteMs_geq: uint32
-  timeToFirstByteMs_gt: uint32
-  timeToFirstByteMs_in: [uint32!]
-  timeToFirstByteMs_leq: uint32
-  timeToFirstByteMs_lt: uint32
-  timeToFirstByteMs_neq: uint32
-  timeToFirstByteMs_notin: [uint32!]
-  tlsHandshakeMs: uint32
-  tlsHandshakeMs_geq: uint32
-  tlsHandshakeMs_gt: uint32
-  tlsHandshakeMs_in: [uint32!]
-  tlsHandshakeMs_leq: uint32
-  tlsHandshakeMs_lt: uint32
-  tlsHandshakeMs_neq: uint32
-  tlsHandshakeMs_notin: [uint32!]
-}
-
-enum ZoneHealthCheckEventsGroupsOrderBy {
-  # avg(rttMs) ascending
-  avg_rttMs_ASC
-  # avg(rttMs) descending
-  avg_rttMs_DESC
-  # avg(tcpConnMs) ascending
-  avg_tcpConnMs_ASC
-  # avg(tcpConnMs) descending
-  avg_tcpConnMs_DESC
-  # avg(timeToFirstByteMs) ascending
-  avg_timeToFirstByteMs_ASC
-  # avg(timeToFirstByteMs) descending
-  avg_timeToFirstByteMs_DESC
-  # avg(tlsHandshakeMs) ascending
-  avg_tlsHandshakeMs_ASC
-  # avg(tlsHandshakeMs) descending
-  avg_tlsHandshakeMs_DESC
-  # count() ascending
-  count_ASC
-  # count() descending
-  count_DESC
-  # date ascending
-  date_ASC
-  # date descending
-  date_DESC
-  # datetimeFifteenMinutes ascending
-  datetimeFifteenMinutes_ASC
-  # datetimeFifteenMinutes descending
-  datetimeFifteenMinutes_DESC
-  # datetimeFiveMinutes ascending
-  datetimeFiveMinutes_ASC
-  # datetimeFiveMinutes descending
-  datetimeFiveMinutes_DESC
-  # datetimeHour ascending
-  datetimeHour_ASC
-  # datetimeHour descending
-  datetimeHour_DESC
-  # datetimeMinute ascending
-  datetimeMinute_ASC
-  # datetimeMinute descending
-  datetimeMinute_DESC
-  # datetime ascending
-  datetime_ASC
-  # datetime descending
-  datetime_DESC
-  # failureReason ascending
-  failureReason_ASC
-  # failureReason descending
-  failureReason_DESC
-  # fqdn ascending
-  fqdn_ASC
-  # fqdn descending
-  fqdn_DESC
-  # healthChanged ascending
-  healthChanged_ASC
-  # healthChanged descending
-  healthChanged_DESC
-  # healthCheckId ascending
-  healthCheckId_ASC
-  # healthCheckId descending
-  healthCheckId_DESC
-  # healthCheckName ascending
-  healthCheckName_ASC
-  # healthCheckName descending
-  healthCheckName_DESC
-  # healthStatus ascending
-  healthStatus_ASC
-  # healthStatus descending
-  healthStatus_DESC
-  # originIP ascending
-  originIP_ASC
-  # originIP descending
-  originIP_DESC
-  # originResponseStatus ascending
-  originResponseStatus_ASC
-  # originResponseStatus descending
-  originResponseStatus_DESC
-  # region ascending
-  region_ASC
-  # region descending
-  region_DESC
-  # rttMs ascending
-  rttMs_ASC
-  # rttMs descending
-  rttMs_DESC
-  # scope ascending
-  scope_ASC
-  # scope descending
-  scope_DESC
-  # sum(healthStatus) ascending
-  sum_healthStatus_ASC
-  # sum(healthStatus) descending
-  sum_healthStatus_DESC
-  # tcpConnMs ascending
-  tcpConnMs_ASC
-  # tcpConnMs descending
-  tcpConnMs_DESC
-  # timeToFirstByteMs ascending
-  timeToFirstByteMs_ASC
-  # timeToFirstByteMs descending
-  timeToFirstByteMs_DESC
-  # tlsHandshakeMs ascending
-  tlsHandshakeMs_ASC
-  # tlsHandshakeMs descending
-  tlsHandshakeMs_DESC
-}
-
-type ZoneHealthCheckEventsGroupsSum {
-  healthStatus: uint64!
-}
-
-enum ZoneHealthCheckEventsOrderBy {
-  # date ascending
-  date_ASC
-  # date descending
-  date_DESC
-  # datetime ascending
-  datetime_ASC
-  # datetime descending
-  datetime_DESC
-  # eventId ascending
-  eventId_ASC
-  # eventId descending
-  eventId_DESC
-  # expectedResponseCodes ascending
-  expectedResponseCodes_ASC
-  # expectedResponseCodes descending
-  expectedResponseCodes_DESC
-  # failureReason ascending
-  failureReason_ASC
-  # failureReason descending
-  failureReason_DESC
-  # fqdn ascending
-  fqdn_ASC
-  # fqdn descending
-  fqdn_DESC
-  # healthChanged ascending
-  healthChanged_ASC
-  # healthChanged descending
-  healthChanged_DESC
-  # healthCheckId ascending
-  healthCheckId_ASC
-  # healthCheckId descending
-  healthCheckId_DESC
-  # healthCheckName ascending
-  healthCheckName_ASC
-  # healthCheckName descending
-  healthCheckName_DESC
-  # healthStatus ascending
-  healthStatus_ASC
-  # healthStatus descending
-  healthStatus_DESC
-  # originIP ascending
-  originIP_ASC
-  # originIP descending
-  originIP_DESC
-  # originResponseStatus ascending
-  originResponseStatus_ASC
-  # originResponseStatus descending
-  originResponseStatus_DESC
-  # region ascending
-  region_ASC
-  # region descending
-  region_DESC
-  # rttMs ascending
-  rttMs_ASC
-  # rttMs descending
-  rttMs_DESC
   # scope ascending
   scope_ASC
   # scope descending
@@ -24770,10 +24154,8 @@ type ZoneSettings {
   firewallEventsAdaptive: Settings!
   firewallEventsAdaptiveByTimeGroups: Settings!
   firewallEventsAdaptiveGroups: Settings!
-  healthCheckEvents: Settings!
   healthCheckEventsAdaptive: Settings!
   healthCheckEventsAdaptiveGroups: Settings!
-  healthCheckEventsGroups: Settings!
   httpRequests1dByColoGroups: Settings!
   httpRequests1dGroups: Settings!
   httpRequests1hGroups: Settings!
@@ -24910,8 +24292,6 @@ type ZoneSynAvgPps1mGroupsSum {
 
 # Beta. Raw waiting room analytics logs
 type ZoneWaitingRoomAnalyticsAdaptive {
-  # Number of users abandoning the queue per minute
-  abandoningUsersPerMinute: uint64!
   # The date and time of the state of analytics for the waiting room
   datetime: Time!
   # Maximum value of estimated time in minutes
@@ -24924,29 +24304,29 @@ type ZoneWaitingRoomAnalyticsAdaptive {
   sampleInterval: uint32!
   # Configured value of session duration
   sessionDuration: uint64!
-  # 50th percentile of the time between session refreshes in minutes
+  # 50th percentile of the time between session refreshes in seconds
   timeBetweenRefreshesP50: uint64!
-  # 75th percentile of the time between session refreshes in minutes
+  # 75th percentile of the time between session refreshes in seconds
   timeBetweenRefreshesP75: uint64!
-  # 90th percentile of the time between session refreshes in minutes
+  # 90th percentile of the time between session refreshes in seconds
   timeBetweenRefreshesP90: uint64!
-  # 95th percentile of the time between session refreshes in minutes
+  # 95th percentile of the time between session refreshes in seconds
   timeBetweenRefreshesP95: uint64!
-  # 50th percentile of the time spent waiting in queue in minutes
+  # 50th percentile of the time spent waiting in queue in seconds
   timeInQueueP50: uint64!
-  # 75th percentile of the time spent waiting in queue in minutes
+  # 75th percentile of the time spent waiting in queue in seconds
   timeInQueueP75: uint64!
-  # 90th percentile of the time spent waiting in queue in minutes
+  # 90th percentile of the time spent waiting in queue in seconds
   timeInQueueP90: uint64!
-  # 95th percentile of the time spent waiting in queue in minutes
+  # 95th percentile of the time spent waiting in queue in seconds
   timeInQueueP95: uint64!
-  # 50th percentile of the time spent on the origin in minutes
+  # 50th percentile of the time spent on the origin in seconds
   timeOnOriginP50: uint64!
-  # 75th percentile of the time spent on the origin in minutes
+  # 75th percentile of the time spent on the origin in seconds
   timeOnOriginP75: uint64!
-  # 90th percentile of the time spent on the origin in minutes
+  # 90th percentile of the time spent on the origin in seconds
   timeOnOriginP90: uint64!
-  # 95th percentile of the time spent on the origin in minutes
+  # 95th percentile of the time spent on the origin in seconds
   timeOnOriginP95: uint64!
   # Actual value of total active users
   totalActiveUsers: uint64!
@@ -24963,14 +24343,6 @@ type ZoneWaitingRoomAnalyticsAdaptive {
 input ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject {
   AND: [ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject!]
   OR: [ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject!]
-  abandoningUsersPerMinute: uint64
-  abandoningUsersPerMinute_geq: uint64
-  abandoningUsersPerMinute_gt: uint64
-  abandoningUsersPerMinute_in: [uint64!]
-  abandoningUsersPerMinute_leq: uint64
-  abandoningUsersPerMinute_lt: uint64
-  abandoningUsersPerMinute_neq: uint64
-  abandoningUsersPerMinute_notin: [uint64!]
   datetime: Time
   datetime_geq: Time
   datetime_gt: Time
@@ -25174,14 +24546,14 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroups {
 }
 
 type ZoneWaitingRoomAnalyticsAdaptiveGroupsAvg {
-  # Average rate of users abandoning the queue
-  abandoningUsersPerMinute: uint64!
   # Average of the maximum estimated wait time per minute
   maxEstimatedTimeMinutes: uint64!
   # Average rate of new users per minute
   newUsersPerMinute: uint64!
   # Configured value of new users per minute
   newUsersPerMinuteConfig: uint64!
+  # Average sample interval
+  sampleInterval: float64!
   # Configured value of session duration
   sessionDuration: uint64!
   # Average rate of total active users
@@ -25193,29 +24565,29 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroupsAvg {
 }
 
 type ZoneWaitingRoomAnalyticsAdaptiveGroupsAvgWeighted {
-  # Weighted average of 50th percentile of time spent between session refreshes in minutes
+  # Weighted average of 50th percentile of time spent between session refreshes in seconds
   timeBetweenRefreshesP50: uint64!
-  # Weighted average of 75th percentile of time spent between session refreshes in minutes
+  # Weighted average of 75th percentile of time spent between session refreshes in seconds
   timeBetweenRefreshesP75: uint64!
-  # Weighted average of 90th percentile of time spent between session refreshes in minutes
+  # Weighted average of 90th percentile of time spent between session refreshes in seconds
   timeBetweenRefreshesP90: uint64!
-  # Weighted average of 95th percentile of time spent between session refreshes in minutes
+  # Weighted average of 95th percentile of time spent between session refreshes in seconds
   timeBetweenRefreshesP95: uint64!
-  # Weighted average of 50th percentile of time spent in queue in minutes
+  # Weighted average of 50th percentile of time spent in queue in seconds
   timeInQueueP50: uint64!
-  # Weighted average of 75th percentile of time spent in queue in minutes
+  # Weighted average of 75th percentile of time spent in queue in seconds
   timeInQueueP75: uint64!
-  # Weighted average of 90th percentile of time spent in queue in minutes
+  # Weighted average of 90th percentile of time spent in queue in seconds
   timeInQueueP90: uint64!
-  # Weighted average of 95th percentile of time spent in queue in minutes
+  # Weighted average of 95th percentile of time spent in queue in seconds
   timeInQueueP95: uint64!
-  # Weighted average of 50th percentile of time spent on origin in minutes
+  # Weighted average of 50th percentile of time spent on origin in seconds
   timeOnOriginP50: uint64!
-  # Weighted average of 75th percentile of time spent on origin in minutes
+  # Weighted average of 75th percentile of time spent on origin in seconds
   timeOnOriginP75: uint64!
-  # Weighted average of 90th percentile of time spent on origin in minutes
+  # Weighted average of 90th percentile of time spent on origin in seconds
   timeOnOriginP90: uint64!
-  # Weighted average of 95th percentile of time spent on origin in minutes
+  # Weighted average of 95th percentile of time spent on origin in seconds
   timeOnOriginP95: uint64!
 }
 
@@ -25310,8 +24682,6 @@ input ZoneWaitingRoomAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 type ZoneWaitingRoomAnalyticsAdaptiveGroupsMax {
-  # The maximum value of users abandoning the queue every minute
-  abandoningUsersPerMinute: uint64!
   # The maximum value of estimated time in minutes
   maxEstimatedTimeMinutes: uint64!
   # The maximum value of the actual new users per minute
@@ -25393,6 +24763,10 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   avg_newUsersPerMinute_ASC
   # avg(newUsersPerMinute) descending
   avg_newUsersPerMinute_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
   # avg(sessionDuration) ascending
   avg_sessionDuration_ASC
   # avg(sessionDuration) descending
