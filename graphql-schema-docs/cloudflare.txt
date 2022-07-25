@@ -7,6 +7,7 @@ Account-level datasets:
 * durableObjectsPeriodicGroups
 * durableObjectsStorageGroups
 * durableObjectsSubrequestsAdaptiveGroups
+* fbmFlowDataAdaptiveGroups
   flowtrackdNetworkAnalyticsAdaptiveGroups
   gatewayL4DownstreamSessionsAdaptiveGroups
 * gatewayL4SessionsAdaptiveGroups
@@ -128,6 +129,8 @@ type account {
   durableObjectsStorageGroups(filter: AccountDurableObjectsStorageGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsStorageGroupsOrderBy!]): [AccountDurableObjectsStorageGroups!]!
   # Durable Objects subrequests with adaptive sampling
   durableObjectsSubrequestsAdaptiveGroups(filter: AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy!]): [AccountDurableObjectsSubrequestsAdaptiveGroups!]!
+  # Flow data collected through flow-based monitoring
+  fbmFlowDataAdaptiveGroups(filter: AccountFbmFlowDataAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountFbmFlowDataAdaptiveGroupsOrderBy!]): [AccountFbmFlowDataAdaptiveGroups!]!
   # Network analytics data for flowtrackd
   flowtrackdNetworkAnalyticsAdaptiveGroups(filter: AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountFlowtrackdNetworkAnalyticsAdaptiveGroups!]!
   # Aggregated metrics about downstream (client to edge) L4 Gateway Sessions. Metrics are reported on TCP or UDP session close
@@ -3933,6 +3936,377 @@ type AccountDurableObjectsSubrequestsAdaptiveGroupsSum {
   requestBodySizeUncached: uint64!
 }
 
+# Flow data collected through flow-based monitoring
+type AccountFbmFlowDataAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountFbmFlowDataAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountFbmFlowDataAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountFbmFlowDataAdaptiveGroupsSum
+}
+
+type AccountFbmFlowDataAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRate: float64!
+  # Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date
+  bitRateDay: float64!
+  # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
+  bitRateFifteenMinutes: float64!
+  # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
+  bitRateFiveMinutes: float64!
+  # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
+  bitRateHour: float64!
+  # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
+  bitRateMinute: float64!
+  # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
+  bitRateTenSeconds: float64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRate: float64!
+  # Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date
+  packetRateDay: float64!
+  # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
+  packetRateFifteenMinutes: float64!
+  # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
+  packetRateFiveMinutes: float64!
+  # Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour
+  packetRateHour: float64!
+  # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
+  packetRateMinute: float64!
+  # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
+  packetRateTenSeconds: float64!
+}
+
+type AccountFbmFlowDataAdaptiveGroupsDimensions {
+  # Date that the packet was received
+  date: Date!
+  # Date and time that the packet was received
+  datetime: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest five minutes
+  datetimeFiveMinutes: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest hour
+  datetimeHour: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest minute
+  datetimeMinute: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest ten seconds
+  datetimeTenSeconds: Time!
+  # IP to which the data was sent
+  destinationAddress: string!
+  # Value of the Destination Port header field in the packet
+  destinationPort: uint16!
+  # Value of the Ethertype header field in the Ethernet packet (2048 for IPv4; 34525 for IPv6)
+  ethertype: uint16!
+  # Layer 4 protocol
+  protocol: uint16!
+  # Human-readable string representation of the protocol
+  protocolString: string!
+  # IP of the router that sampled the flows
+  routerAddress: string!
+  # IP from which the data was sent
+  sourceAddress: string!
+  # Value of the Source Port header field in the packet
+  sourcePort: uint16!
+  # Value of the Flags header field in the TCP packet
+  tcpFlags: uint16!
+  # Human-readable string representation of the Flags header field in the TCP packet
+  tcpFlagsString: string!
+}
+
+input AccountFbmFlowDataAdaptiveGroupsFilter_InputObject {
+  AND: [AccountFbmFlowDataAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountFbmFlowDataAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeTenSeconds: Time
+  datetimeTenSeconds_geq: Time
+  datetimeTenSeconds_gt: Time
+  datetimeTenSeconds_in: [Time!]
+  datetimeTenSeconds_leq: Time
+  datetimeTenSeconds_lt: Time
+  datetimeTenSeconds_neq: Time
+  datetimeTenSeconds_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationAddress: string
+  destinationAddress_geq: string
+  destinationAddress_gt: string
+  destinationAddress_in: [string!]
+  destinationAddress_leq: string
+  destinationAddress_like: string
+  destinationAddress_lt: string
+  destinationAddress_neq: string
+  destinationAddress_notin: [string!]
+  destinationAddress_notlike: string
+  destinationPort: uint16
+  destinationPort_geq: uint16
+  destinationPort_gt: uint16
+  destinationPort_in: [uint16!]
+  destinationPort_leq: uint16
+  destinationPort_lt: uint16
+  destinationPort_neq: uint16
+  destinationPort_notin: [uint16!]
+  ethertype: uint16
+  ethertype_geq: uint16
+  ethertype_gt: uint16
+  ethertype_in: [uint16!]
+  ethertype_leq: uint16
+  ethertype_lt: uint16
+  ethertype_neq: uint16
+  ethertype_notin: [uint16!]
+  protocol: uint16
+  protocolString: string
+  protocolString_geq: string
+  protocolString_gt: string
+  protocolString_in: [string!]
+  protocolString_leq: string
+  protocolString_like: string
+  protocolString_lt: string
+  protocolString_neq: string
+  protocolString_notin: [string!]
+  protocolString_notlike: string
+  protocol_geq: uint16
+  protocol_gt: uint16
+  protocol_in: [uint16!]
+  protocol_leq: uint16
+  protocol_lt: uint16
+  protocol_neq: uint16
+  protocol_notin: [uint16!]
+  routerAddress: string
+  routerAddress_geq: string
+  routerAddress_gt: string
+  routerAddress_in: [string!]
+  routerAddress_leq: string
+  routerAddress_like: string
+  routerAddress_lt: string
+  routerAddress_neq: string
+  routerAddress_notin: [string!]
+  routerAddress_notlike: string
+  sourceAddress: string
+  sourceAddress_geq: string
+  sourceAddress_gt: string
+  sourceAddress_in: [string!]
+  sourceAddress_leq: string
+  sourceAddress_like: string
+  sourceAddress_lt: string
+  sourceAddress_neq: string
+  sourceAddress_notin: [string!]
+  sourceAddress_notlike: string
+  sourcePort: uint16
+  sourcePort_geq: uint16
+  sourcePort_gt: uint16
+  sourcePort_in: [uint16!]
+  sourcePort_leq: uint16
+  sourcePort_lt: uint16
+  sourcePort_neq: uint16
+  sourcePort_notin: [uint16!]
+  tcpFlags: uint16
+  tcpFlagsString: string
+  tcpFlagsString_geq: string
+  tcpFlagsString_gt: string
+  tcpFlagsString_in: [string!]
+  tcpFlagsString_leq: string
+  tcpFlagsString_like: string
+  tcpFlagsString_lt: string
+  tcpFlagsString_neq: string
+  tcpFlagsString_notin: [string!]
+  tcpFlagsString_notlike: string
+  tcpFlags_geq: uint16
+  tcpFlags_gt: uint16
+  tcpFlags_in: [uint16!]
+  tcpFlags_leq: uint16
+  tcpFlags_lt: uint16
+  tcpFlags_neq: uint16
+  tcpFlags_notin: [uint16!]
+}
+
+enum AccountFbmFlowDataAdaptiveGroupsOrderBy {
+  # avg(bitRateDay) ascending
+  avg_bitRateDay_ASC
+  # avg(bitRateDay) descending
+  avg_bitRateDay_DESC
+  # avg(bitRateFifteenMinutes) ascending
+  avg_bitRateFifteenMinutes_ASC
+  # avg(bitRateFifteenMinutes) descending
+  avg_bitRateFifteenMinutes_DESC
+  # avg(bitRateFiveMinutes) ascending
+  avg_bitRateFiveMinutes_ASC
+  # avg(bitRateFiveMinutes) descending
+  avg_bitRateFiveMinutes_DESC
+  # avg(bitRateHour) ascending
+  avg_bitRateHour_ASC
+  # avg(bitRateHour) descending
+  avg_bitRateHour_DESC
+  # avg(bitRateMinute) ascending
+  avg_bitRateMinute_ASC
+  # avg(bitRateMinute) descending
+  avg_bitRateMinute_DESC
+  # avg(bitRateTenSeconds) ascending
+  avg_bitRateTenSeconds_ASC
+  # avg(bitRateTenSeconds) descending
+  avg_bitRateTenSeconds_DESC
+  # avg(bitRate) ascending
+  avg_bitRate_ASC
+  # avg(bitRate) descending
+  avg_bitRate_DESC
+  # avg(packetRateDay) ascending
+  avg_packetRateDay_ASC
+  # avg(packetRateDay) descending
+  avg_packetRateDay_DESC
+  # avg(packetRateFifteenMinutes) ascending
+  avg_packetRateFifteenMinutes_ASC
+  # avg(packetRateFifteenMinutes) descending
+  avg_packetRateFifteenMinutes_DESC
+  # avg(packetRateFiveMinutes) ascending
+  avg_packetRateFiveMinutes_ASC
+  # avg(packetRateFiveMinutes) descending
+  avg_packetRateFiveMinutes_DESC
+  # avg(packetRateHour) ascending
+  avg_packetRateHour_ASC
+  # avg(packetRateHour) descending
+  avg_packetRateHour_DESC
+  # avg(packetRateMinute) ascending
+  avg_packetRateMinute_ASC
+  # avg(packetRateMinute) descending
+  avg_packetRateMinute_DESC
+  # avg(packetRateTenSeconds) ascending
+  avg_packetRateTenSeconds_ASC
+  # avg(packetRateTenSeconds) descending
+  avg_packetRateTenSeconds_DESC
+  # avg(packetRate) ascending
+  avg_packetRate_ASC
+  # avg(packetRate) descending
+  avg_packetRate_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeTenSeconds ascending
+  datetimeTenSeconds_ASC
+  # datetimeTenSeconds descending
+  datetimeTenSeconds_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationAddress ascending
+  destinationAddress_ASC
+  # destinationAddress descending
+  destinationAddress_DESC
+  # destinationPort ascending
+  destinationPort_ASC
+  # destinationPort descending
+  destinationPort_DESC
+  # ethertype ascending
+  ethertype_ASC
+  # ethertype descending
+  ethertype_DESC
+  # protocolString ascending
+  protocolString_ASC
+  # protocolString descending
+  protocolString_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # routerAddress ascending
+  routerAddress_ASC
+  # routerAddress descending
+  routerAddress_DESC
+  # sourceAddress ascending
+  sourceAddress_ASC
+  # sourceAddress descending
+  sourceAddress_DESC
+  # sourcePort ascending
+  sourcePort_ASC
+  # sourcePort descending
+  sourcePort_DESC
+  # sum(bits) ascending
+  sum_bits_ASC
+  # sum(bits) descending
+  sum_bits_DESC
+  # sum(packets) ascending
+  sum_packets_ASC
+  # sum(packets) descending
+  sum_packets_DESC
+  # tcpFlagsString ascending
+  tcpFlagsString_ASC
+  # tcpFlagsString descending
+  tcpFlagsString_DESC
+  # tcpFlags ascending
+  tcpFlags_ASC
+  # tcpFlags descending
+  tcpFlags_DESC
+}
+
+type AccountFbmFlowDataAdaptiveGroupsSum {
+  # Sum of bits
+  bits: uint32!
+  # Sum of packets
+  packets: uint32!
+}
+
 input AccountFilter_InputObject {
   accountTag: string!
 }
@@ -5265,14 +5639,20 @@ type AccountGatewayL4DownstreamSessionsAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # QUIC specific error code. Possible values are https://www.iana.org/assignments/quic/quic.xhtml#quic-transport-error-codes
   quicErrorCode: uint64!
+  # Last Round Trip Time estimation for this session in microseconds
+  rttUs: int64!
   # Identifier for this session
   sessionId: string!
   # IP address of the client making this session
   sourceIP: string!
   # Client token authentication status. Possible values are success | failed with invalid token and upto date token key ID | failed with invalid token due to outdated/missing token key ID | failed due to reused token
   tokenAuthStatus: string!
+  # Broad location assigned to client in this session
+  tokenSigningRegion: string!
   # Transport protocol used for this session. Possible values are tcp | quic | udp
   transport: string!
+  # Time taken for TCP/TLS or QUIC handshake in microsecond
+  transportHandshakeDurationUs: int64!
   # Transport Status. Possible values are unknown | success | failure
   transportStatus: string!
 }
@@ -5356,6 +5736,14 @@ input AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject {
   quicErrorCode_lt: uint64
   quicErrorCode_neq: uint64
   quicErrorCode_notin: [uint64!]
+  rttUs: int64
+  rttUs_geq: int64
+  rttUs_gt: int64
+  rttUs_in: [int64!]
+  rttUs_leq: int64
+  rttUs_lt: int64
+  rttUs_neq: int64
+  rttUs_notin: [int64!]
   sessionId: string
   sessionId_geq: string
   sessionId_gt: string
@@ -5386,7 +5774,25 @@ input AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject {
   tokenAuthStatus_neq: string
   tokenAuthStatus_notin: [string!]
   tokenAuthStatus_notlike: string
+  tokenSigningRegion: string
+  tokenSigningRegion_geq: string
+  tokenSigningRegion_gt: string
+  tokenSigningRegion_in: [string!]
+  tokenSigningRegion_leq: string
+  tokenSigningRegion_like: string
+  tokenSigningRegion_lt: string
+  tokenSigningRegion_neq: string
+  tokenSigningRegion_notin: [string!]
+  tokenSigningRegion_notlike: string
   transport: string
+  transportHandshakeDurationUs: int64
+  transportHandshakeDurationUs_geq: int64
+  transportHandshakeDurationUs_gt: int64
+  transportHandshakeDurationUs_in: [int64!]
+  transportHandshakeDurationUs_leq: int64
+  transportHandshakeDurationUs_lt: int64
+  transportHandshakeDurationUs_neq: int64
+  transportHandshakeDurationUs_notin: [int64!]
   transportStatus: string
   transportStatus_geq: string
   transportStatus_gt: string
@@ -5453,6 +5859,10 @@ enum AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy {
   quicErrorCode_ASC
   # quicErrorCode descending
   quicErrorCode_DESC
+  # rttUs ascending
+  rttUs_ASC
+  # rttUs descending
+  rttUs_DESC
   # sessionId ascending
   sessionId_ASC
   # sessionId descending
@@ -5489,6 +5899,14 @@ enum AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy {
   tokenAuthStatus_ASC
   # tokenAuthStatus descending
   tokenAuthStatus_DESC
+  # tokenSigningRegion ascending
+  tokenSigningRegion_ASC
+  # tokenSigningRegion descending
+  tokenSigningRegion_DESC
+  # transportHandshakeDurationUs ascending
+  transportHandshakeDurationUs_ASC
+  # transportHandshakeDurationUs descending
+  transportHandshakeDurationUs_DESC
   # transportStatus ascending
   transportStatus_ASC
   # transportStatus descending
@@ -5775,6 +6193,12 @@ type AccountGatewayL4UpstreamSessionsAdaptiveGroupsDimensions {
   httpConnectReqStatus: string!
   # QUIC error code. Possible values are https://www.iana.org/assignments/quic/quic.xhtml#quic-transport-error-codes
   quicErrorCode: uint64!
+  # Last Round Trip Time estimation for this session in microseconds
+  rttUs: int64!
+  # Broad location assigned to client in this session
+  tokenSigningRegion: string!
+  # Total time taken for tunnel setup in microseconds
+  totalTunnelSetupDurationUs: int64!
   # Transport protocol used for this session. Possible values are tcp | quic | udp
   transport: string!
   # Transport status. Possible values are unknown | success | failure
@@ -5900,6 +6324,32 @@ input AccountGatewayL4UpstreamSessionsAdaptiveGroupsFilter_InputObject {
   quicErrorCode_lt: uint64
   quicErrorCode_neq: uint64
   quicErrorCode_notin: [uint64!]
+  rttUs: int64
+  rttUs_geq: int64
+  rttUs_gt: int64
+  rttUs_in: [int64!]
+  rttUs_leq: int64
+  rttUs_lt: int64
+  rttUs_neq: int64
+  rttUs_notin: [int64!]
+  tokenSigningRegion: string
+  tokenSigningRegion_geq: string
+  tokenSigningRegion_gt: string
+  tokenSigningRegion_in: [string!]
+  tokenSigningRegion_leq: string
+  tokenSigningRegion_like: string
+  tokenSigningRegion_lt: string
+  tokenSigningRegion_neq: string
+  tokenSigningRegion_notin: [string!]
+  tokenSigningRegion_notlike: string
+  totalTunnelSetupDurationUs: int64
+  totalTunnelSetupDurationUs_geq: int64
+  totalTunnelSetupDurationUs_gt: int64
+  totalTunnelSetupDurationUs_in: [int64!]
+  totalTunnelSetupDurationUs_leq: int64
+  totalTunnelSetupDurationUs_lt: int64
+  totalTunnelSetupDurationUs_neq: int64
+  totalTunnelSetupDurationUs_notin: [int64!]
   transport: string
   transportStatus: string
   transportStatus_geq: string
@@ -5987,6 +6437,10 @@ enum AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy {
   quicErrorCode_ASC
   # quicErrorCode descending
   quicErrorCode_DESC
+  # rttUs ascending
+  rttUs_ASC
+  # rttUs descending
+  rttUs_DESC
   # sum(bytesRecvd) ascending
   sum_bytesRecvd_ASC
   # sum(bytesRecvd) descending
@@ -6019,6 +6473,14 @@ enum AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy {
   sum_tunnelSetupDurationUs_ASC
   # sum(tunnelSetupDurationUs) descending
   sum_tunnelSetupDurationUs_DESC
+  # tokenSigningRegion ascending
+  tokenSigningRegion_ASC
+  # tokenSigningRegion descending
+  tokenSigningRegion_DESC
+  # totalTunnelSetupDurationUs ascending
+  totalTunnelSetupDurationUs_ASC
+  # totalTunnelSetupDurationUs descending
+  totalTunnelSetupDurationUs_DESC
   # transportStatus ascending
   transportStatus_ASC
   # transportStatus descending
@@ -7105,6 +7567,10 @@ type AccountHttpRequestsOverviewAdaptiveGroupsDimensions {
   edgeResponseContentTypeName: string!
   # HTTP response status code returned to client
   edgeResponseStatus: uint16!
+  # Unique identifier for HTTP Application
+  httpApplication: string!
+  # Version associated with HTTP Application
+  httpApplicationVersion: uint64!
   # Browser parsed from the user agent
   userAgentBrowser: string!
 }
@@ -7208,6 +7674,24 @@ input AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject {
   edgeResponseStatus_lt: uint16
   edgeResponseStatus_neq: uint16
   edgeResponseStatus_notin: [uint16!]
+  httpApplication: string
+  httpApplicationVersion: uint64
+  httpApplicationVersion_geq: uint64
+  httpApplicationVersion_gt: uint64
+  httpApplicationVersion_in: [uint64!]
+  httpApplicationVersion_leq: uint64
+  httpApplicationVersion_lt: uint64
+  httpApplicationVersion_neq: uint64
+  httpApplicationVersion_notin: [uint64!]
+  httpApplication_geq: string
+  httpApplication_gt: string
+  httpApplication_in: [string!]
+  httpApplication_leq: string
+  httpApplication_like: string
+  httpApplication_lt: string
+  httpApplication_neq: string
+  httpApplication_notin: [string!]
+  httpApplication_notlike: string
   userAgentBrowser: string
   userAgentBrowser_geq: string
   userAgentBrowser_gt: string
@@ -7269,6 +7753,14 @@ enum AccountHttpRequestsOverviewAdaptiveGroupsOrderBy {
   edgeResponseStatus_ASC
   # edgeResponseStatus descending
   edgeResponseStatus_DESC
+  # httpApplicationVersion ascending
+  httpApplicationVersion_ASC
+  # httpApplicationVersion descending
+  httpApplicationVersion_DESC
+  # httpApplication ascending
+  httpApplication_ASC
+  # httpApplication descending
+  httpApplication_DESC
   # requestSource ascending
   requestSource_ASC
   # requestSource descending
@@ -14858,6 +15350,7 @@ type AccountSettings {
   durableObjectsPeriodicGroups: Settings!
   durableObjectsStorageGroups: Settings!
   durableObjectsSubrequestsAdaptiveGroups: Settings!
+  fbmFlowDataAdaptiveGroups: Settings!
   flowtrackdNetworkAnalyticsAdaptiveGroups: Settings!
   gatewayL4DownstreamSessionsAdaptiveGroups: Settings!
   gatewayL4SessionsAdaptiveGroups: Settings!
@@ -18798,6 +19291,10 @@ type ZoneFirewallEventsAdaptive {
   edgeColoName: string!
   # HTTP response status code returned to browser
   edgeResponseStatus: uint16!
+  # Unique identifier for HTTP Application
+  httpApplication: string!
+  # Version associated with HTTP Application
+  httpApplicationVersion: uint64!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
   # The kind of event, currently only possible values are: firewall
@@ -18863,6 +19360,10 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   datetimeHour: Time!
   # The date and time the event occurred at the edge truncated to the minute
   datetimeMinute: Time!
+  # Unique identifier for HTTP Application
+  httpApplication: string!
+  # Version associated with HTTP Application
+  httpApplicationVersion: uint64!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
   # Beta. Overall request score generated by the WAF ML detection module
@@ -19120,6 +19621,24 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   edgeResponseStatus_lt: uint16
   edgeResponseStatus_neq: uint16
   edgeResponseStatus_notin: [uint16!]
+  httpApplication: string
+  httpApplicationVersion: uint64
+  httpApplicationVersion_geq: uint64
+  httpApplicationVersion_gt: uint64
+  httpApplicationVersion_in: [uint64!]
+  httpApplicationVersion_leq: uint64
+  httpApplicationVersion_lt: uint64
+  httpApplicationVersion_neq: uint64
+  httpApplicationVersion_notin: [uint64!]
+  httpApplication_geq: string
+  httpApplication_gt: string
+  httpApplication_in: [string!]
+  httpApplication_leq: string
+  httpApplication_like: string
+  httpApplication_lt: string
+  httpApplication_neq: string
+  httpApplication_notin: [string!]
+  httpApplication_notlike: string
   ja3Hash: string
   ja3Hash_geq: string
   ja3Hash_gt: string
@@ -19301,6 +19820,14 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # httpApplicationVersion ascending
+  httpApplicationVersion_ASC
+  # httpApplicationVersion descending
+  httpApplicationVersion_DESC
+  # httpApplication ascending
+  httpApplication_ASC
+  # httpApplication descending
+  httpApplication_DESC
   # ja3Hash ascending
   ja3Hash_ASC
   # ja3Hash descending
@@ -19570,6 +20097,24 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   edgeResponseStatus_lt: uint16
   edgeResponseStatus_neq: uint16
   edgeResponseStatus_notin: [uint16!]
+  httpApplication: string
+  httpApplicationVersion: uint64
+  httpApplicationVersion_geq: uint64
+  httpApplicationVersion_gt: uint64
+  httpApplicationVersion_in: [uint64!]
+  httpApplicationVersion_leq: uint64
+  httpApplicationVersion_lt: uint64
+  httpApplicationVersion_neq: uint64
+  httpApplicationVersion_notin: [uint64!]
+  httpApplication_geq: string
+  httpApplication_gt: string
+  httpApplication_in: [string!]
+  httpApplication_leq: string
+  httpApplication_like: string
+  httpApplication_lt: string
+  httpApplication_neq: string
+  httpApplication_notin: [string!]
+  httpApplication_notlike: string
   ja3Hash: string
   ja3Hash_geq: string
   ja3Hash_gt: string
@@ -19777,6 +20322,10 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   edgeColoName: string!
   # HTTP response status code returned to browser
   edgeResponseStatus: uint16!
+  # Unique identifier for HTTP Application
+  httpApplication: string!
+  # Version associated with HTTP Application
+  httpApplicationVersion: uint64!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
   # The kind of event, currently only possible values are: firewall
@@ -20056,6 +20605,24 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   edgeResponseStatus_lt: uint16
   edgeResponseStatus_neq: uint16
   edgeResponseStatus_notin: [uint16!]
+  httpApplication: string
+  httpApplicationVersion: uint64
+  httpApplicationVersion_geq: uint64
+  httpApplicationVersion_gt: uint64
+  httpApplicationVersion_in: [uint64!]
+  httpApplicationVersion_leq: uint64
+  httpApplicationVersion_lt: uint64
+  httpApplicationVersion_neq: uint64
+  httpApplicationVersion_notin: [uint64!]
+  httpApplication_geq: string
+  httpApplication_gt: string
+  httpApplication_in: [string!]
+  httpApplication_leq: string
+  httpApplication_like: string
+  httpApplication_lt: string
+  httpApplication_neq: string
+  httpApplication_notin: [string!]
+  httpApplication_notlike: string
   ja3Hash: string
   ja3Hash_geq: string
   ja3Hash_gt: string
@@ -20309,6 +20876,14 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   edgeResponseStatus_ASC
   # edgeResponseStatus descending
   edgeResponseStatus_DESC
+  # httpApplicationVersion ascending
+  httpApplicationVersion_ASC
+  # httpApplicationVersion descending
+  httpApplicationVersion_DESC
+  # httpApplication ascending
+  httpApplication_ASC
+  # httpApplication descending
+  httpApplication_DESC
   # ja3Hash ascending
   ja3Hash_ASC
   # ja3Hash descending
@@ -20487,6 +21062,14 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   edgeResponseStatus_ASC
   # edgeResponseStatus descending
   edgeResponseStatus_DESC
+  # httpApplicationVersion ascending
+  httpApplicationVersion_ASC
+  # httpApplicationVersion descending
+  httpApplicationVersion_DESC
+  # httpApplication ascending
+  httpApplication_ASC
+  # httpApplication descending
+  httpApplication_DESC
   # ja3Hash ascending
   ja3Hash_ASC
   # ja3Hash descending
@@ -22150,6 +22733,10 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   edgeResponseContentTypeName: string!
   edgeResponseStatus: uint16!
+  # Unique identifier for HTTP Application
+  httpApplication: string!
+  # Version associated with HTTP Application
+  httpApplicationVersion: uint64!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
   originASN: uint32!
@@ -22167,6 +22754,8 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   userAgentBrowser: string!
   # OS parsed from the user agent
   userAgentOS: string!
+  # The X-Requested-With header of the client request
+  xRequestedWith: string!
 }
 
 input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
@@ -22434,6 +23023,24 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   edgeResponseStatus_lt: uint16
   edgeResponseStatus_neq: uint16
   edgeResponseStatus_notin: [uint16!]
+  httpApplication: string
+  httpApplicationVersion: uint64
+  httpApplicationVersion_geq: uint64
+  httpApplicationVersion_gt: uint64
+  httpApplicationVersion_in: [uint64!]
+  httpApplicationVersion_leq: uint64
+  httpApplicationVersion_lt: uint64
+  httpApplicationVersion_neq: uint64
+  httpApplicationVersion_notin: [uint64!]
+  httpApplication_geq: string
+  httpApplication_gt: string
+  httpApplication_in: [string!]
+  httpApplication_leq: string
+  httpApplication_like: string
+  httpApplication_lt: string
+  httpApplication_neq: string
+  httpApplication_notin: [string!]
+  httpApplication_notlike: string
   ja3Hash: string
   ja3Hash_geq: string
   ja3Hash_gt: string
@@ -22538,6 +23145,16 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   userAgent_neq: string
   userAgent_notin: [string!]
   userAgent_notlike: string
+  xRequestedWith: string
+  xRequestedWith_geq: string
+  xRequestedWith_gt: string
+  xRequestedWith_in: [string!]
+  xRequestedWith_leq: string
+  xRequestedWith_like: string
+  xRequestedWith_lt: string
+  xRequestedWith_neq: string
+  xRequestedWith_notin: [string!]
+  xRequestedWith_notlike: string
 }
 
 enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
@@ -22661,6 +23278,14 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   edgeResponseStatus_ASC
   # edgeResponseStatus descending
   edgeResponseStatus_DESC
+  # httpApplicationVersion ascending
+  httpApplicationVersion_ASC
+  # httpApplicationVersion descending
+  httpApplicationVersion_DESC
+  # httpApplication ascending
+  httpApplication_ASC
+  # httpApplication descending
+  httpApplication_DESC
   # ja3Hash ascending
   ja3Hash_ASC
   # ja3Hash descending
@@ -22713,6 +23338,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   userAgent_ASC
   # userAgent descending
   userAgent_DESC
+  # xRequestedWith ascending
+  xRequestedWith_ASC
+  # xRequestedWith descending
+  xRequestedWith_DESC
 }
 
 type ZoneHttpRequestsAdaptiveGroupsSum {
@@ -22759,6 +23388,10 @@ type ZoneHttpRequestsOverviewAdaptiveGroupsDimensions {
   edgeResponseContentTypeName: string!
   # HTTP response status code returned to client
   edgeResponseStatus: uint16!
+  # Unique identifier for HTTP Application
+  httpApplication: string!
+  # Version associated with HTTP Application
+  httpApplicationVersion: uint64!
   # Browser parsed from the user agent
   userAgentBrowser: string!
 }
@@ -22862,6 +23495,24 @@ input ZoneHttpRequestsOverviewAdaptiveGroupsFilter_InputObject {
   edgeResponseStatus_lt: uint16
   edgeResponseStatus_neq: uint16
   edgeResponseStatus_notin: [uint16!]
+  httpApplication: string
+  httpApplicationVersion: uint64
+  httpApplicationVersion_geq: uint64
+  httpApplicationVersion_gt: uint64
+  httpApplicationVersion_in: [uint64!]
+  httpApplicationVersion_leq: uint64
+  httpApplicationVersion_lt: uint64
+  httpApplicationVersion_neq: uint64
+  httpApplicationVersion_notin: [uint64!]
+  httpApplication_geq: string
+  httpApplication_gt: string
+  httpApplication_in: [string!]
+  httpApplication_leq: string
+  httpApplication_like: string
+  httpApplication_lt: string
+  httpApplication_neq: string
+  httpApplication_notin: [string!]
+  httpApplication_notlike: string
   userAgentBrowser: string
   userAgentBrowser_geq: string
   userAgentBrowser_gt: string
@@ -22923,6 +23574,14 @@ enum ZoneHttpRequestsOverviewAdaptiveGroupsOrderBy {
   edgeResponseStatus_ASC
   # edgeResponseStatus descending
   edgeResponseStatus_DESC
+  # httpApplicationVersion ascending
+  httpApplicationVersion_ASC
+  # httpApplicationVersion descending
+  httpApplicationVersion_DESC
+  # httpApplication ascending
+  httpApplication_ASC
+  # httpApplication descending
+  httpApplication_DESC
   # requestSource ascending
   requestSource_ASC
   # requestSource descending
