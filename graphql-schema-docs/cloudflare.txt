@@ -3975,6 +3975,8 @@ type AccountFbmFlowDataAdaptiveGroupsAvg {
   packetRateMinute: float64!
   # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
   packetRateTenSeconds: float64!
+  # Average sample interval applied to the data
+  sampleInterval: float64!
 }
 
 type AccountFbmFlowDataAdaptiveGroupsDimensions {
@@ -4222,6 +4224,10 @@ enum AccountFbmFlowDataAdaptiveGroupsOrderBy {
   avg_packetRate_ASC
   # avg(packetRate) descending
   avg_packetRate_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
   # date ascending
   date_ASC
   # date descending
@@ -25194,60 +25200,62 @@ input ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject {
 
 # Beta. Aggregated waiting room analytics logs with adaptive sampling
 type ZoneWaitingRoomAnalyticsAdaptiveGroups {
-  # The avg of values for a metric per dimension
+  # Beta. The avg of values for a metric per dimension
   avg: ZoneWaitingRoomAnalyticsAdaptiveGroupsAvg
-  # The avgWeighted values for a metric per dimension
+  # Beta. The avgWeighted values for a metric per dimension
   avgWeighted: ZoneWaitingRoomAnalyticsAdaptiveGroupsAvgWeighted
   # List of dimensions to group by
   dimensions: ZoneWaitingRoomAnalyticsAdaptiveGroupsDimensions
-  # The max value for a metric per dimenstion
+  # Beta. The max value for a metric per dimenstion
   max: ZoneWaitingRoomAnalyticsAdaptiveGroupsMax
+  # Beta. The minimum value for a metric per dimenstion
+  min: ZoneWaitingRoomAnalyticsAdaptiveGroupsMin
 }
 
 type ZoneWaitingRoomAnalyticsAdaptiveGroupsAvg {
-  # Average of the maximum estimated wait time per minute
-  maxEstimatedTimeMinutes: uint64!
-  # Average rate of new users per minute
-  newUsersPerMinute: uint64!
-  # Configured value of new users per minute
-  newUsersPerMinuteConfig: uint64!
+  # Average of the maximum estimated wait time per minute. A negative number means no data
+  maxEstimatedTimeMinutes: int64!
+  # Average rate of new users per minute. A negative number means no data
+  newUsersPerMinute: int64!
+  # Configured value of new users per minute. A negative number means no data
+  newUsersPerMinuteConfig: int64!
   # Average sample interval
   sampleInterval: float64!
-  # Configured value of session duration
-  sessionDuration: uint64!
-  # Average rate of total active users
-  totalActiveUsers: uint64!
-  # Configured value of total active users
-  totalActiveUsersConfig: uint64!
+  # Configured value of session duration. A negative number means no data
+  sessionDuration: int64!
+  # Average rate of total active users. A negative number means no data
+  totalActiveUsers: int64!
+  # Configured value of total active users. A negative number means no data
+  totalActiveUsersConfig: int64!
   # Average of total queued users
-  totalQueuedUsers: uint64!
+  totalQueuedUsers: int64!
 }
 
 type ZoneWaitingRoomAnalyticsAdaptiveGroupsAvgWeighted {
-  # Weighted average of 50th percentile of time spent between session refreshes in seconds
-  timeBetweenRefreshesP50: uint64!
-  # Weighted average of 75th percentile of time spent between session refreshes in seconds
-  timeBetweenRefreshesP75: uint64!
-  # Weighted average of 90th percentile of time spent between session refreshes in seconds
-  timeBetweenRefreshesP90: uint64!
-  # Weighted average of 95th percentile of time spent between session refreshes in seconds
-  timeBetweenRefreshesP95: uint64!
-  # Weighted average of 50th percentile of time spent in queue in seconds
-  timeInQueueP50: uint64!
-  # Weighted average of 75th percentile of time spent in queue in seconds
-  timeInQueueP75: uint64!
-  # Weighted average of 90th percentile of time spent in queue in seconds
-  timeInQueueP90: uint64!
-  # Weighted average of 95th percentile of time spent in queue in seconds
-  timeInQueueP95: uint64!
-  # Weighted average of 50th percentile of time spent on origin in seconds
-  timeOnOriginP50: uint64!
-  # Weighted average of 75th percentile of time spent on origin in seconds
-  timeOnOriginP75: uint64!
-  # Weighted average of 90th percentile of time spent on origin in seconds
-  timeOnOriginP90: uint64!
-  # Weighted average of 95th percentile of time spent on origin in seconds
-  timeOnOriginP95: uint64!
+  # Weighted average of 50th percentile of time spent between session refreshes in seconds. A negative number means no data
+  timeBetweenRefreshesP50: int64!
+  # Weighted average of 75th percentile of time spent between session refreshes in seconds. A negative number means no data
+  timeBetweenRefreshesP75: int64!
+  # Weighted average of 90th percentile of time spent between session refreshes in seconds. A negative number means no data
+  timeBetweenRefreshesP90: int64!
+  # Weighted average of 95th percentile of time spent between session refreshes in seconds. A negative number means no data
+  timeBetweenRefreshesP95: int64!
+  # Weighted average of 50th percentile of time spent in queue in seconds. A negative number means no data
+  timeInQueueP50: int64!
+  # Weighted average of 75th percentile of time spent in queue in seconds. A negative number means no data
+  timeInQueueP75: int64!
+  # Weighted average of 90th percentile of time spent in queue in seconds. A negative number means no data
+  timeInQueueP90: int64!
+  # Weighted average of 95th percentile of time spent in queue in seconds. A negative number means no data
+  timeInQueueP95: int64!
+  # Weighted average of 50th percentile of time spent on origin in seconds. A negative number means no data
+  timeOnOriginP50: int64!
+  # Weighted average of 75th percentile of time spent on origin in seconds. A negative number means no data
+  timeOnOriginP75: int64!
+  # Weighted average of 90th percentile of time spent on origin in seconds. A negative number means no data
+  timeOnOriginP90: int64!
+  # Weighted average of 95th percentile of time spent on origin in seconds. A negative number means no data
+  timeOnOriginP95: int64!
 }
 
 type ZoneWaitingRoomAnalyticsAdaptiveGroupsDimensions {
@@ -25341,20 +25349,37 @@ input ZoneWaitingRoomAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 type ZoneWaitingRoomAnalyticsAdaptiveGroupsMax {
-  # The maximum value of estimated time in minutes
-  maxEstimatedTimeMinutes: uint64!
-  # The maximum value of the actual new users per minute
-  newUsersPerMinute: uint64!
-  # The maximum value of the configured new users per minute
-  newUsersPerMinuteConfig: uint64!
-  # The maximum value of the configured session duration configuration
-  sessionDuration: uint64!
-  # The maximum value of the actual total active users
-  totalActiveUsers: uint64!
-  # The maximum value of the configured total active users
-  totalActiveUsersConfig: uint64!
-  # The maximum value of total number of queued users
-  totalQueuedUsers: uint64!
+  # The maximum value of estimated time in minutes. A negative number means no data
+  maxEstimatedTimeMinutes: int64!
+  # The maximum value of the actual new users per minute. A negative number means no data
+  newUsersPerMinute: int64!
+  # The maximum value of the configured new users per minute. A negative number means no data
+  newUsersPerMinuteConfig: int64!
+  # The maximum value of the configured session duration configuration. A negative number means no data
+  sessionDuration: int64!
+  # The maximum value of the actual total active users. A negative number means no data
+  totalActiveUsers: int64!
+  # The maximum value of the configured total active users. A negative number means no data
+  totalActiveUsersConfig: int64!
+  # The maximum value of total number of queued users. A negative number means no data
+  totalQueuedUsers: int64!
+}
+
+type ZoneWaitingRoomAnalyticsAdaptiveGroupsMin {
+  # The minimum value of estimated time in minutes. A negative number means no data
+  maxEstimatedTimeMinutes: int64!
+  # The minimum value of the actual new users per minute. A negative number means no data
+  newUsersPerMinute: int64!
+  # The minimum value of the configured new users per minute. A negative number means no data
+  newUsersPerMinuteConfig: int64!
+  # The minimum value of the configured session duration configuration. A negative number means no data
+  sessionDuration: int64!
+  # The minimum value of the actual total active users. A negative number means no data
+  totalActiveUsers: int64!
+  # The minimum value of the configured total active users. A negative number means no data
+  totalActiveUsersConfig: int64!
+  # The minimum value of total number of queued users. A negative number means no data
+  totalQueuedUsers: int64!
 }
 
 enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
@@ -25498,6 +25523,34 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   max_totalQueuedUsers_ASC
   # max(totalQueuedUsers) descending
   max_totalQueuedUsers_DESC
+  # min(maxEstimatedTimeMinutes) ascending
+  min_maxEstimatedTimeMinutes_ASC
+  # min(maxEstimatedTimeMinutes) descending
+  min_maxEstimatedTimeMinutes_DESC
+  # min(newUsersPerMinuteConfig) ascending
+  min_newUsersPerMinuteConfig_ASC
+  # min(newUsersPerMinuteConfig) descending
+  min_newUsersPerMinuteConfig_DESC
+  # min(newUsersPerMinute) ascending
+  min_newUsersPerMinute_ASC
+  # min(newUsersPerMinute) descending
+  min_newUsersPerMinute_DESC
+  # min(sessionDuration) ascending
+  min_sessionDuration_ASC
+  # min(sessionDuration) descending
+  min_sessionDuration_DESC
+  # min(totalActiveUsersConfig) ascending
+  min_totalActiveUsersConfig_ASC
+  # min(totalActiveUsersConfig) descending
+  min_totalActiveUsersConfig_DESC
+  # min(totalActiveUsers) ascending
+  min_totalActiveUsers_ASC
+  # min(totalActiveUsers) descending
+  min_totalActiveUsers_DESC
+  # min(totalQueuedUsers) ascending
+  min_totalQueuedUsers_ASC
+  # min(totalQueuedUsers) descending
+  min_totalQueuedUsers_DESC
   # sampleInterval ascending
   sampleInterval_ASC
   # sampleInterval descending

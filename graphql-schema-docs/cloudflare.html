@@ -3907,6 +3907,8 @@
 &nbsp;&nbsp;packetRateMinute: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds</span><br />
 &nbsp;&nbsp;packetRateTenSeconds: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;<span class="c"># Average sample interval applied to the data</span><br />
+&nbsp;&nbsp;sampleInterval: <a href="#float64">float64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountFbmFlowDataAdaptiveGroupsDimensions" href="#AccountFbmFlowDataAdaptiveGroupsDimensions">AccountFbmFlowDataAdaptiveGroupsDimensions</a> {<br />
@@ -4154,6 +4156,10 @@
 &nbsp;&nbsp;avg_packetRate_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(packetRate) descending</span><br />
 &nbsp;&nbsp;avg_packetRate_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(sampleInterval) ascending</span><br />
+&nbsp;&nbsp;avg_sampleInterval_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(sampleInterval) descending</span><br />
+&nbsp;&nbsp;avg_sampleInterval_DESC<br />
 &nbsp;&nbsp;<span class="c"># date ascending</span><br />
 &nbsp;&nbsp;date_ASC<br />
 &nbsp;&nbsp;<span class="c"># date descending</span><br />
@@ -25126,60 +25132,62 @@
 <br />
 <span class="c"># Beta. Aggregated waiting room analytics logs with adaptive sampling</span><br />
 <span class="k">type</span> <a id="ZoneWaitingRoomAnalyticsAdaptiveGroups" href="#ZoneWaitingRoomAnalyticsAdaptiveGroups">ZoneWaitingRoomAnalyticsAdaptiveGroups</a> {<br />
-&nbsp;&nbsp;<span class="c"># The avg of values for a metric per dimension</span><br />
+&nbsp;&nbsp;<span class="c"># Beta. The avg of values for a metric per dimension</span><br />
 &nbsp;&nbsp;avg: <a href="#ZoneWaitingRoomAnalyticsAdaptiveGroupsAvg">ZoneWaitingRoomAnalyticsAdaptiveGroupsAvg</a><br />
-&nbsp;&nbsp;<span class="c"># The avgWeighted values for a metric per dimension</span><br />
+&nbsp;&nbsp;<span class="c"># Beta. The avgWeighted values for a metric per dimension</span><br />
 &nbsp;&nbsp;avgWeighted: <a href="#ZoneWaitingRoomAnalyticsAdaptiveGroupsAvgWeighted">ZoneWaitingRoomAnalyticsAdaptiveGroupsAvgWeighted</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#ZoneWaitingRoomAnalyticsAdaptiveGroupsDimensions">ZoneWaitingRoomAnalyticsAdaptiveGroupsDimensions</a><br />
-&nbsp;&nbsp;<span class="c"># The max value for a metric per dimenstion</span><br />
+&nbsp;&nbsp;<span class="c"># Beta. The max value for a metric per dimenstion</span><br />
 &nbsp;&nbsp;max: <a href="#ZoneWaitingRoomAnalyticsAdaptiveGroupsMax">ZoneWaitingRoomAnalyticsAdaptiveGroupsMax</a><br />
+&nbsp;&nbsp;<span class="c"># Beta. The minimum value for a metric per dimenstion</span><br />
+&nbsp;&nbsp;min: <a href="#ZoneWaitingRoomAnalyticsAdaptiveGroupsMin">ZoneWaitingRoomAnalyticsAdaptiveGroupsMin</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneWaitingRoomAnalyticsAdaptiveGroupsAvg" href="#ZoneWaitingRoomAnalyticsAdaptiveGroupsAvg">ZoneWaitingRoomAnalyticsAdaptiveGroupsAvg</a> {<br />
-&nbsp;&nbsp;<span class="c"># Average of the maximum estimated wait time per minute</span><br />
-&nbsp;&nbsp;maxEstimatedTimeMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Average rate of new users per minute</span><br />
-&nbsp;&nbsp;newUsersPerMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Configured value of new users per minute</span><br />
-&nbsp;&nbsp;newUsersPerMinuteConfig: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Average of the maximum estimated wait time per minute. A negative number means no data</span><br />
+&nbsp;&nbsp;maxEstimatedTimeMinutes: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Average rate of new users per minute. A negative number means no data</span><br />
+&nbsp;&nbsp;newUsersPerMinute: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Configured value of new users per minute. A negative number means no data</span><br />
+&nbsp;&nbsp;newUsersPerMinuteConfig: <a href="#int64">int64!</a><br />
 &nbsp;&nbsp;<span class="c"># Average sample interval</span><br />
 &nbsp;&nbsp;sampleInterval: <a href="#float64">float64!</a><br />
-&nbsp;&nbsp;<span class="c"># Configured value of session duration</span><br />
-&nbsp;&nbsp;sessionDuration: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Average rate of total active users</span><br />
-&nbsp;&nbsp;totalActiveUsers: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Configured value of total active users</span><br />
-&nbsp;&nbsp;totalActiveUsersConfig: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Configured value of session duration. A negative number means no data</span><br />
+&nbsp;&nbsp;sessionDuration: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Average rate of total active users. A negative number means no data</span><br />
+&nbsp;&nbsp;totalActiveUsers: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Configured value of total active users. A negative number means no data</span><br />
+&nbsp;&nbsp;totalActiveUsersConfig: <a href="#int64">int64!</a><br />
 &nbsp;&nbsp;<span class="c"># Average of total queued users</span><br />
-&nbsp;&nbsp;totalQueuedUsers: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;totalQueuedUsers: <a href="#int64">int64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneWaitingRoomAnalyticsAdaptiveGroupsAvgWeighted" href="#ZoneWaitingRoomAnalyticsAdaptiveGroupsAvgWeighted">ZoneWaitingRoomAnalyticsAdaptiveGroupsAvgWeighted</a> {<br />
-&nbsp;&nbsp;<span class="c"># Weighted average of 50th percentile of time spent between session refreshes in seconds</span><br />
-&nbsp;&nbsp;timeBetweenRefreshesP50: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Weighted average of 75th percentile of time spent between session refreshes in seconds</span><br />
-&nbsp;&nbsp;timeBetweenRefreshesP75: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Weighted average of 90th percentile of time spent between session refreshes in seconds</span><br />
-&nbsp;&nbsp;timeBetweenRefreshesP90: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Weighted average of 95th percentile of time spent between session refreshes in seconds</span><br />
-&nbsp;&nbsp;timeBetweenRefreshesP95: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Weighted average of 50th percentile of time spent in queue in seconds</span><br />
-&nbsp;&nbsp;timeInQueueP50: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Weighted average of 75th percentile of time spent in queue in seconds</span><br />
-&nbsp;&nbsp;timeInQueueP75: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Weighted average of 90th percentile of time spent in queue in seconds</span><br />
-&nbsp;&nbsp;timeInQueueP90: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Weighted average of 95th percentile of time spent in queue in seconds</span><br />
-&nbsp;&nbsp;timeInQueueP95: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Weighted average of 50th percentile of time spent on origin in seconds</span><br />
-&nbsp;&nbsp;timeOnOriginP50: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Weighted average of 75th percentile of time spent on origin in seconds</span><br />
-&nbsp;&nbsp;timeOnOriginP75: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Weighted average of 90th percentile of time spent on origin in seconds</span><br />
-&nbsp;&nbsp;timeOnOriginP90: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Weighted average of 95th percentile of time spent on origin in seconds</span><br />
-&nbsp;&nbsp;timeOnOriginP95: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Weighted average of 50th percentile of time spent between session refreshes in seconds. A negative number means no data</span><br />
+&nbsp;&nbsp;timeBetweenRefreshesP50: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Weighted average of 75th percentile of time spent between session refreshes in seconds. A negative number means no data</span><br />
+&nbsp;&nbsp;timeBetweenRefreshesP75: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Weighted average of 90th percentile of time spent between session refreshes in seconds. A negative number means no data</span><br />
+&nbsp;&nbsp;timeBetweenRefreshesP90: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Weighted average of 95th percentile of time spent between session refreshes in seconds. A negative number means no data</span><br />
+&nbsp;&nbsp;timeBetweenRefreshesP95: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Weighted average of 50th percentile of time spent in queue in seconds. A negative number means no data</span><br />
+&nbsp;&nbsp;timeInQueueP50: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Weighted average of 75th percentile of time spent in queue in seconds. A negative number means no data</span><br />
+&nbsp;&nbsp;timeInQueueP75: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Weighted average of 90th percentile of time spent in queue in seconds. A negative number means no data</span><br />
+&nbsp;&nbsp;timeInQueueP90: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Weighted average of 95th percentile of time spent in queue in seconds. A negative number means no data</span><br />
+&nbsp;&nbsp;timeInQueueP95: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Weighted average of 50th percentile of time spent on origin in seconds. A negative number means no data</span><br />
+&nbsp;&nbsp;timeOnOriginP50: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Weighted average of 75th percentile of time spent on origin in seconds. A negative number means no data</span><br />
+&nbsp;&nbsp;timeOnOriginP75: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Weighted average of 90th percentile of time spent on origin in seconds. A negative number means no data</span><br />
+&nbsp;&nbsp;timeOnOriginP90: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Weighted average of 95th percentile of time spent on origin in seconds. A negative number means no data</span><br />
+&nbsp;&nbsp;timeOnOriginP95: <a href="#int64">int64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneWaitingRoomAnalyticsAdaptiveGroupsDimensions" href="#ZoneWaitingRoomAnalyticsAdaptiveGroupsDimensions">ZoneWaitingRoomAnalyticsAdaptiveGroupsDimensions</a> {<br />
@@ -25273,20 +25281,37 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneWaitingRoomAnalyticsAdaptiveGroupsMax" href="#ZoneWaitingRoomAnalyticsAdaptiveGroupsMax">ZoneWaitingRoomAnalyticsAdaptiveGroupsMax</a> {<br />
-&nbsp;&nbsp;<span class="c"># The maximum value of estimated time in minutes</span><br />
-&nbsp;&nbsp;maxEstimatedTimeMinutes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># The maximum value of the actual new users per minute</span><br />
-&nbsp;&nbsp;newUsersPerMinute: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># The maximum value of the configured new users per minute</span><br />
-&nbsp;&nbsp;newUsersPerMinuteConfig: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># The maximum value of the configured session duration configuration</span><br />
-&nbsp;&nbsp;sessionDuration: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># The maximum value of the actual total active users</span><br />
-&nbsp;&nbsp;totalActiveUsers: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># The maximum value of the configured total active users</span><br />
-&nbsp;&nbsp;totalActiveUsersConfig: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># The maximum value of total number of queued users</span><br />
-&nbsp;&nbsp;totalQueuedUsers: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># The maximum value of estimated time in minutes. A negative number means no data</span><br />
+&nbsp;&nbsp;maxEstimatedTimeMinutes: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The maximum value of the actual new users per minute. A negative number means no data</span><br />
+&nbsp;&nbsp;newUsersPerMinute: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The maximum value of the configured new users per minute. A negative number means no data</span><br />
+&nbsp;&nbsp;newUsersPerMinuteConfig: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The maximum value of the configured session duration configuration. A negative number means no data</span><br />
+&nbsp;&nbsp;sessionDuration: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The maximum value of the actual total active users. A negative number means no data</span><br />
+&nbsp;&nbsp;totalActiveUsers: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The maximum value of the configured total active users. A negative number means no data</span><br />
+&nbsp;&nbsp;totalActiveUsersConfig: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The maximum value of total number of queued users. A negative number means no data</span><br />
+&nbsp;&nbsp;totalQueuedUsers: <a href="#int64">int64!</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="ZoneWaitingRoomAnalyticsAdaptiveGroupsMin" href="#ZoneWaitingRoomAnalyticsAdaptiveGroupsMin">ZoneWaitingRoomAnalyticsAdaptiveGroupsMin</a> {<br />
+&nbsp;&nbsp;<span class="c"># The minimum value of estimated time in minutes. A negative number means no data</span><br />
+&nbsp;&nbsp;maxEstimatedTimeMinutes: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The minimum value of the actual new users per minute. A negative number means no data</span><br />
+&nbsp;&nbsp;newUsersPerMinute: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The minimum value of the configured new users per minute. A negative number means no data</span><br />
+&nbsp;&nbsp;newUsersPerMinuteConfig: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The minimum value of the configured session duration configuration. A negative number means no data</span><br />
+&nbsp;&nbsp;sessionDuration: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The minimum value of the actual total active users. A negative number means no data</span><br />
+&nbsp;&nbsp;totalActiveUsers: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The minimum value of the configured total active users. A negative number means no data</span><br />
+&nbsp;&nbsp;totalActiveUsersConfig: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The minimum value of total number of queued users. A negative number means no data</span><br />
+&nbsp;&nbsp;totalQueuedUsers: <a href="#int64">int64!</a><br />
 }<br />
 <br />
 <span class="k">enum</span> <a id="ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy" href="#ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy">ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy</a> {<br />
@@ -25430,6 +25455,34 @@
 &nbsp;&nbsp;max_totalQueuedUsers_ASC<br />
 &nbsp;&nbsp;<span class="c"># max(totalQueuedUsers) descending</span><br />
 &nbsp;&nbsp;max_totalQueuedUsers_DESC<br />
+&nbsp;&nbsp;<span class="c"># min(maxEstimatedTimeMinutes) ascending</span><br />
+&nbsp;&nbsp;min_maxEstimatedTimeMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># min(maxEstimatedTimeMinutes) descending</span><br />
+&nbsp;&nbsp;min_maxEstimatedTimeMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># min(newUsersPerMinuteConfig) ascending</span><br />
+&nbsp;&nbsp;min_newUsersPerMinuteConfig_ASC<br />
+&nbsp;&nbsp;<span class="c"># min(newUsersPerMinuteConfig) descending</span><br />
+&nbsp;&nbsp;min_newUsersPerMinuteConfig_DESC<br />
+&nbsp;&nbsp;<span class="c"># min(newUsersPerMinute) ascending</span><br />
+&nbsp;&nbsp;min_newUsersPerMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># min(newUsersPerMinute) descending</span><br />
+&nbsp;&nbsp;min_newUsersPerMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># min(sessionDuration) ascending</span><br />
+&nbsp;&nbsp;min_sessionDuration_ASC<br />
+&nbsp;&nbsp;<span class="c"># min(sessionDuration) descending</span><br />
+&nbsp;&nbsp;min_sessionDuration_DESC<br />
+&nbsp;&nbsp;<span class="c"># min(totalActiveUsersConfig) ascending</span><br />
+&nbsp;&nbsp;min_totalActiveUsersConfig_ASC<br />
+&nbsp;&nbsp;<span class="c"># min(totalActiveUsersConfig) descending</span><br />
+&nbsp;&nbsp;min_totalActiveUsersConfig_DESC<br />
+&nbsp;&nbsp;<span class="c"># min(totalActiveUsers) ascending</span><br />
+&nbsp;&nbsp;min_totalActiveUsers_ASC<br />
+&nbsp;&nbsp;<span class="c"># min(totalActiveUsers) descending</span><br />
+&nbsp;&nbsp;min_totalActiveUsers_DESC<br />
+&nbsp;&nbsp;<span class="c"># min(totalQueuedUsers) ascending</span><br />
+&nbsp;&nbsp;min_totalQueuedUsers_ASC<br />
+&nbsp;&nbsp;<span class="c"># min(totalQueuedUsers) descending</span><br />
+&nbsp;&nbsp;min_totalQueuedUsers_DESC<br />
 &nbsp;&nbsp;<span class="c"># sampleInterval ascending</span><br />
 &nbsp;&nbsp;sampleInterval_ASC<br />
 &nbsp;&nbsp;<span class="c"># sampleInterval descending</span><br />
