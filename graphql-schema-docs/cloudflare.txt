@@ -24,6 +24,7 @@ Account-level datasets:
   ipFlows1hGroups
   ipFlows1mAttacksGroups
   ipFlows1mGroups
+* logpushHealthAdaptiveGroups
   magicFirewallNetworkAnalyticsAdaptiveGroups
   magicFirewallSamplesAdaptiveGroups
   magicTransitNetworkAnalyticsAdaptiveGroups
@@ -68,6 +69,7 @@ Zone-level datasets:
 * imageResizingRequests1mGroups
   loadBalancingRequestsAdaptive
   loadBalancingRequestsAdaptiveGroups
+* logpushHealthAdaptiveGroups
   nelReportsAdaptiveGroups
   synAvgPps1mGroups
   waitingRoomAnalyticsAdaptive
@@ -163,6 +165,8 @@ type account {
   ipFlows1mAttacksGroups(filter: AccountIpFlows1mAttacksGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountIpFlows1mAttacksGroupsOrderBy!]): [AccountIpFlows1mAttacksGroups!]!
   # Beta. Minutely rollups of IP flows
   ipFlows1mGroups(filter: AccountIpFlows1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountIpFlows1mGroupsOrderBy!]): [AccountIpFlows1mGroups!]!
+  # Beta. Logpush job health metrics
+  logpushHealthAdaptiveGroups(filter: AccountLogpushHealthAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogpushHealthAdaptiveGroupsOrderBy!]): [AccountLogpushHealthAdaptiveGroups!]!
   # Network analytics data for Magic Firewall
   magicFirewallNetworkAnalyticsAdaptiveGroups(filter: AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountMagicFirewallNetworkAnalyticsAdaptiveGroups!]!
   # Data to visualize traffic allowed and blocked by Magic Firewall rules
@@ -9527,6 +9531,204 @@ type AccountIpFlows1mGroupsSum {
   packets: uint64!
 }
 
+# Beta. Logpush job health metrics
+type AccountLogpushHealthAdaptiveGroups {
+  avg: AccountLogpushHealthAdaptiveGroupsAvg
+  # The number of values for a metric per dimension
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountLogpushHealthAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountLogpushHealthAdaptiveGroupsSum
+}
+
+type AccountLogpushHealthAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountLogpushHealthAdaptiveGroupsDimensions {
+  # Date that we completed pushing the log batch
+  date: Date!
+  # Datetime that we completed pushing the log batch
+  datetime: Time!
+  # Datetime that we completed pushing the log batch, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Datetime that we completed pushing the log batch, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # Datetime that we completed pushing the log batch, truncated to the hour
+  datetimeHour: Time!
+  # Datetime that we completed pushing the log batch, truncated to the minute
+  datetimeMinute: Time!
+  # Destination type, e.g. 'S3' or 'GCS'
+  destinationType: string!
+  # Cloudflare may attempt to push a batch of logs multiple times if we encounter a failure. This field will be set to 'true' if this was the last push attempt for this batch of logs. If this field is set to false, it means the push failed but another retry was attempted. If this field is set to true and status >= 300, then the batch of logs failed to push and log data was lost. If you want to count the total number of logs that succeeded or failed, you should always set final = true.
+  final: uint8!
+  # The Logpush Job ID
+  jobId: uint64!
+  # HTTP response status code of the log destination
+  status: uint16!
+}
+
+input AccountLogpushHealthAdaptiveGroupsFilter_InputObject {
+  AND: [AccountLogpushHealthAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountLogpushHealthAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationType: string
+  destinationType_geq: string
+  destinationType_gt: string
+  destinationType_in: [string!]
+  destinationType_leq: string
+  destinationType_like: string
+  destinationType_lt: string
+  destinationType_neq: string
+  destinationType_notin: [string!]
+  destinationType_notlike: string
+  final: uint8
+  final_geq: uint8
+  final_gt: uint8
+  final_in: bytes
+  final_leq: uint8
+  final_lt: uint8
+  final_neq: uint8
+  final_notin: bytes
+  jobId: uint64
+  jobId_geq: uint64
+  jobId_gt: uint64
+  jobId_in: [uint64!]
+  jobId_leq: uint64
+  jobId_lt: uint64
+  jobId_neq: uint64
+  jobId_notin: [uint64!]
+  status: uint16
+  status_geq: uint16
+  status_gt: uint16
+  status_in: [uint16!]
+  status_leq: uint16
+  status_lt: uint16
+  status_neq: uint16
+  status_notin: [uint16!]
+}
+
+enum AccountLogpushHealthAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationType ascending
+  destinationType_ASC
+  # destinationType descending
+  destinationType_DESC
+  # final ascending
+  final_ASC
+  # final descending
+  final_DESC
+  # jobId ascending
+  jobId_ASC
+  # jobId descending
+  jobId_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # sum(bytesCompressed) ascending
+  sum_bytesCompressed_ASC
+  # sum(bytesCompressed) descending
+  sum_bytesCompressed_DESC
+  # sum(bytes) ascending
+  sum_bytes_ASC
+  # sum(bytes) descending
+  sum_bytes_DESC
+  # sum(records) ascending
+  sum_records_ASC
+  # sum(records) descending
+  sum_records_DESC
+}
+
+type AccountLogpushHealthAdaptiveGroupsSum {
+  # Bytes of uncompressed log data pushed
+  bytes: uint64!
+  # Bytes of compressed log data pushed
+  bytesCompressed: uint64!
+  # A count of the total number of records pushed.
+  records: uint64!
+}
+
 # Network analytics data for Magic Firewall
 type AccountMagicFirewallNetworkAnalyticsAdaptiveGroups {
   # The average of values for a metric per dimension
@@ -15373,6 +15575,7 @@ type AccountSettings {
   ipFlows1hGroups: Settings!
   ipFlows1mAttacksGroups: Settings!
   ipFlows1mGroups: Settings!
+  logpushHealthAdaptiveGroups: Settings!
   magicFirewallNetworkAnalyticsAdaptiveGroups: Settings!
   magicFirewallSamplesAdaptiveGroups: Settings!
   magicTransitNetworkAnalyticsAdaptiveGroups: Settings!
@@ -18606,6 +18809,8 @@ type zone {
   loadBalancingRequestsAdaptive(filter: ZoneLoadBalancingRequestsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneLoadBalancingRequestsAdaptiveOrderBy!]): [ZoneLoadBalancingRequestsAdaptive!]!
   # Aggregated Load Balancing origin requests with adaptive sampling
   loadBalancingRequestsAdaptiveGroups(filter: ZoneLoadBalancingRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneLoadBalancingRequestsAdaptiveGroupsOrderBy!]): [ZoneLoadBalancingRequestsAdaptiveGroups!]!
+  # Beta. Logpush job health metrics
+  logpushHealthAdaptiveGroups(filter: ZoneLogpushHealthAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneLogpushHealthAdaptiveGroupsOrderBy!]): [ZoneLogpushHealthAdaptiveGroups!]!
   # Data to visualize network error logs
   nelReportsAdaptiveGroups(filter: ZoneNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneNelReportsAdaptiveGroupsOrderBy!]): [ZoneNelReportsAdaptiveGroups!]!
   settings: ZoneSettings
@@ -24539,6 +24744,204 @@ type ZoneLoadBalancingRequestsAdaptivePoolsElem {
   poolName: string!
 }
 
+# Beta. Logpush job health metrics
+type ZoneLogpushHealthAdaptiveGroups {
+  avg: ZoneLogpushHealthAdaptiveGroupsAvg
+  # The number of values for a metric per dimension
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneLogpushHealthAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: ZoneLogpushHealthAdaptiveGroupsSum
+}
+
+type ZoneLogpushHealthAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type ZoneLogpushHealthAdaptiveGroupsDimensions {
+  # Date that we completed pushing the log batch
+  date: Date!
+  # Datetime that we completed pushing the log batch
+  datetime: Time!
+  # Datetime that we completed pushing the log batch, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Datetime that we completed pushing the log batch, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # Datetime that we completed pushing the log batch, truncated to the hour
+  datetimeHour: Time!
+  # Datetime that we completed pushing the log batch, truncated to the minute
+  datetimeMinute: Time!
+  # Destination type, e.g. 'S3' or 'GCS'
+  destinationType: string!
+  # Cloudflare may attempt to push a batch of logs multiple times if we encounter a failure. This field will be set to 'true' if this was the last push attempt for this batch of logs. If this field is set to false, it means the push failed but another retry was attempted. If this field is set to true and status >= 300, then the batch of logs failed to push and log data was lost. If you want to count the total number of logs that succeeded or failed, you should always set final = true.
+  final: uint8!
+  # The Logpush Job ID
+  jobId: uint64!
+  # HTTP response status code of the log destination
+  status: uint16!
+}
+
+input ZoneLogpushHealthAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneLogpushHealthAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneLogpushHealthAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationType: string
+  destinationType_geq: string
+  destinationType_gt: string
+  destinationType_in: [string!]
+  destinationType_leq: string
+  destinationType_like: string
+  destinationType_lt: string
+  destinationType_neq: string
+  destinationType_notin: [string!]
+  destinationType_notlike: string
+  final: uint8
+  final_geq: uint8
+  final_gt: uint8
+  final_in: bytes
+  final_leq: uint8
+  final_lt: uint8
+  final_neq: uint8
+  final_notin: bytes
+  jobId: uint64
+  jobId_geq: uint64
+  jobId_gt: uint64
+  jobId_in: [uint64!]
+  jobId_leq: uint64
+  jobId_lt: uint64
+  jobId_neq: uint64
+  jobId_notin: [uint64!]
+  status: uint16
+  status_geq: uint16
+  status_gt: uint16
+  status_in: [uint16!]
+  status_leq: uint16
+  status_lt: uint16
+  status_neq: uint16
+  status_notin: [uint16!]
+}
+
+enum ZoneLogpushHealthAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationType ascending
+  destinationType_ASC
+  # destinationType descending
+  destinationType_DESC
+  # final ascending
+  final_ASC
+  # final descending
+  final_DESC
+  # jobId ascending
+  jobId_ASC
+  # jobId descending
+  jobId_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # sum(bytesCompressed) ascending
+  sum_bytesCompressed_ASC
+  # sum(bytesCompressed) descending
+  sum_bytesCompressed_DESC
+  # sum(bytes) ascending
+  sum_bytes_ASC
+  # sum(bytes) descending
+  sum_bytes_DESC
+  # sum(records) ascending
+  sum_records_ASC
+  # sum(records) descending
+  sum_records_DESC
+}
+
+type ZoneLogpushHealthAdaptiveGroupsSum {
+  # Bytes of uncompressed log data pushed
+  bytes: uint64!
+  # Bytes of compressed log data pushed
+  bytesCompressed: uint64!
+  # A count of the total number of records pushed.
+  records: uint64!
+}
+
 # Data to visualize network error logs
 type ZoneNelReportsAdaptiveGroups {
   avg: ZoneNelReportsAdaptiveGroupsAvg
@@ -24831,6 +25234,7 @@ type ZoneSettings {
   imageResizingRequests1mGroups: Settings!
   loadBalancingRequestsAdaptive: Settings!
   loadBalancingRequestsAdaptiveGroups: Settings!
+  logpushHealthAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   synAvgPps1mGroups: Settings!
   waitingRoomAnalyticsAdaptive: Settings!
