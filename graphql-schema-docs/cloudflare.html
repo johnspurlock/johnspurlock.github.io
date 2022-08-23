@@ -3213,12 +3213,12 @@
 <span class="k">type</span> <a id="AccountDurableObjectsInvocationsAdaptiveGroupsDimensions" href="#AccountDurableObjectsInvocationsAdaptiveGroupsDimensions">AccountDurableObjectsInvocationsAdaptiveGroupsDimensions</a> {<br />
 &nbsp;&nbsp;<span class="c"># Request datetime, truncated to start of a day</span><br />
 &nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
+&nbsp;&nbsp;<span class="c"># Request datetime</span><br />
+&nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Request datetime, truncated to start of an hour</span><br />
 &nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Request datetime, truncated to start of a minute</span><br />
 &nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
-&nbsp;&nbsp;<span class="c"># Request datetime, truncated to start of a second</span><br />
-&nbsp;&nbsp;datetimeSecond: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># The name of the script environment</span><br />
 &nbsp;&nbsp;environmentName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Durable Object namespace ID</span><br />
@@ -3242,6 +3242,7 @@
 &nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour_geq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour_gt: <a href="#Time">Time</a><br />
@@ -3258,14 +3259,13 @@
 &nbsp;&nbsp;datetimeMinute_lt: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeMinute_neq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeMinute_notin: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;datetimeSecond: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeSecond_geq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeSecond_gt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeSecond_in: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;datetimeSecond_leq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeSecond_lt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeSecond_neq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeSecond_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetime_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetime_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_notin: <a href="#Time">[Time!]</a><br />
 &nbsp;&nbsp;environmentName: <a href="#string">string</a><br />
 &nbsp;&nbsp;environmentName_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;environmentName_gt: <a href="#string">string</a><br />
@@ -3349,10 +3349,10 @@
 &nbsp;&nbsp;datetimeMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetimeMinute descending</span><br />
 &nbsp;&nbsp;datetimeMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># datetimeSecond ascending</span><br />
-&nbsp;&nbsp;datetimeSecond_ASC<br />
-&nbsp;&nbsp;<span class="c"># datetimeSecond descending</span><br />
-&nbsp;&nbsp;datetimeSecond_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetime ascending</span><br />
+&nbsp;&nbsp;datetime_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetime descending</span><br />
+&nbsp;&nbsp;datetime_DESC<br />
 &nbsp;&nbsp;<span class="c"># environmentName ascending</span><br />
 &nbsp;&nbsp;environmentName_ASC<br />
 &nbsp;&nbsp;<span class="c"># environmentName descending</span><br />
@@ -3733,12 +3733,12 @@
 <span class="k">type</span> <a id="AccountDurableObjectsSubrequestsAdaptiveGroupsDimensions" href="#AccountDurableObjectsSubrequestsAdaptiveGroupsDimensions">AccountDurableObjectsSubrequestsAdaptiveGroupsDimensions</a> {<br />
 &nbsp;&nbsp;<span class="c"># Request datetime, truncated to start of a day</span><br />
 &nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
+&nbsp;&nbsp;<span class="c"># Request datetime</span><br />
+&nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Request datetime, truncated to start of an hour</span><br />
 &nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Request datetime, truncated to start of a minute</span><br />
 &nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
-&nbsp;&nbsp;<span class="c"># Request datetime, truncated to start of a second</span><br />
-&nbsp;&nbsp;datetimeSecond: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># The name of the script environment</span><br />
 &nbsp;&nbsp;environmentName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Durable Object namespace ID</span><br />
@@ -3760,6 +3760,7 @@
 &nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour_geq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour_gt: <a href="#Time">Time</a><br />
@@ -3776,14 +3777,13 @@
 &nbsp;&nbsp;datetimeMinute_lt: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeMinute_neq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeMinute_notin: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;datetimeSecond: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeSecond_geq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeSecond_gt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeSecond_in: <a href="#Time">[Time!]</a><br />
-&nbsp;&nbsp;datetimeSecond_leq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeSecond_lt: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeSecond_neq: <a href="#Time">Time</a><br />
-&nbsp;&nbsp;datetimeSecond_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetime_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetime_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetime_notin: <a href="#Time">[Time!]</a><br />
 &nbsp;&nbsp;environmentName: <a href="#string">string</a><br />
 &nbsp;&nbsp;environmentName_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;environmentName_gt: <a href="#string">string</a><br />
@@ -3839,10 +3839,10 @@
 &nbsp;&nbsp;datetimeMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetimeMinute descending</span><br />
 &nbsp;&nbsp;datetimeMinute_DESC<br />
-&nbsp;&nbsp;<span class="c"># datetimeSecond ascending</span><br />
-&nbsp;&nbsp;datetimeSecond_ASC<br />
-&nbsp;&nbsp;<span class="c"># datetimeSecond descending</span><br />
-&nbsp;&nbsp;datetimeSecond_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetime ascending</span><br />
+&nbsp;&nbsp;datetime_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetime descending</span><br />
+&nbsp;&nbsp;datetime_DESC<br />
 &nbsp;&nbsp;<span class="c"># environmentName ascending</span><br />
 &nbsp;&nbsp;environmentName_ASC<br />
 &nbsp;&nbsp;<span class="c"># environmentName descending</span><br />
@@ -5869,8 +5869,6 @@
 &nbsp;&nbsp;bytesRecvd: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Total bytes sent in this session</span><br />
 &nbsp;&nbsp;bytesSent: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Total bytes retransmitted by client in this session</span><br />
-&nbsp;&nbsp;clientBytesRetransmitted: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Total number of packets received in this session</span><br />
 &nbsp;&nbsp;packetsRecvd: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Total number of packets sent in this session</span><br />
@@ -6447,8 +6445,6 @@
 &nbsp;&nbsp;bytesSent: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Time taken for CONNECT request handling in microseconds</span><br />
 &nbsp;&nbsp;connectReqHandlingDurationUs: <a href="#int64">int64!</a><br />
-&nbsp;&nbsp;<span class="c"># Total bytes retransmitted by origin in this session</span><br />
-&nbsp;&nbsp;originBytesRetransmitted: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Total number of packets received in this session</span><br />
 &nbsp;&nbsp;packetsRecvd: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Total number of packets sent in this session</span><br />
@@ -7475,6 +7471,8 @@
 &nbsp;&nbsp;avg: <a href="#AccountHttpRequestsOverviewAdaptiveGroupsAvg">AccountHttpRequestsOverviewAdaptiveGroupsAvg</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#AccountHttpRequestsOverviewAdaptiveGroupsDimensions">AccountHttpRequestsOverviewAdaptiveGroupsDimensions</a><br />
+&nbsp;&nbsp;<span class="c"># The ratio of a range of status codes, between 0 and 1</span><br />
+&nbsp;&nbsp;ratio: <a href="#AccountHttpRequestsOverviewAdaptiveGroupsRatio">AccountHttpRequestsOverviewAdaptiveGroupsRatio</a><br />
 &nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
 &nbsp;&nbsp;sum: <a href="#AccountHttpRequestsOverviewAdaptiveGroupsSum">AccountHttpRequestsOverviewAdaptiveGroupsSum</a><br />
 }<br />
@@ -7701,6 +7699,14 @@
 &nbsp;&nbsp;httpApplication_ASC<br />
 &nbsp;&nbsp;<span class="c"># httpApplication descending</span><br />
 &nbsp;&nbsp;httpApplication_DESC<br />
+&nbsp;&nbsp;<span class="c"># ratio(status4xx) ascending</span><br />
+&nbsp;&nbsp;ratio_status4xx_ASC<br />
+&nbsp;&nbsp;<span class="c"># ratio(status4xx) descending</span><br />
+&nbsp;&nbsp;ratio_status4xx_DESC<br />
+&nbsp;&nbsp;<span class="c"># ratio(status5xx) ascending</span><br />
+&nbsp;&nbsp;ratio_status5xx_ASC<br />
+&nbsp;&nbsp;<span class="c"># ratio(status5xx) descending</span><br />
+&nbsp;&nbsp;ratio_status5xx_DESC<br />
 &nbsp;&nbsp;<span class="c"># requestSource ascending</span><br />
 &nbsp;&nbsp;requestSource_ASC<br />
 &nbsp;&nbsp;<span class="c"># requestSource descending</span><br />
@@ -7733,6 +7739,11 @@
 &nbsp;&nbsp;userAgentBrowser_ASC<br />
 &nbsp;&nbsp;<span class="c"># userAgentBrowser descending</span><br />
 &nbsp;&nbsp;userAgentBrowser_DESC<br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountHttpRequestsOverviewAdaptiveGroupsRatio" href="#AccountHttpRequestsOverviewAdaptiveGroupsRatio">AccountHttpRequestsOverviewAdaptiveGroupsRatio</a> {<br />
+&nbsp;&nbsp;status4xx: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;status5xx: <a href="#float64">float64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountHttpRequestsOverviewAdaptiveGroupsSum" href="#AccountHttpRequestsOverviewAdaptiveGroupsSum">AccountHttpRequestsOverviewAdaptiveGroupsSum</a> {<br />
@@ -18981,6 +18992,8 @@
 &nbsp;&nbsp;errorDetail: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The sender email address of the source email</span><br />
 &nbsp;&nbsp;from: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Is this event related to a NDR (bounce) email?</span><br />
+&nbsp;&nbsp;isNDR: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># The Message-ID header of the source email (if present)</span><br />
 &nbsp;&nbsp;messageId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The UUID of the routing rule matched by the source email</span><br />
@@ -19050,6 +19063,14 @@
 &nbsp;&nbsp;from_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;from_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;from_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;isNDR: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isNDR_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isNDR_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isNDR_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;isNDR_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isNDR_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isNDR_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isNDR_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;messageId: <a href="#string">string</a><br />
 &nbsp;&nbsp;messageId_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;messageId_gt: <a href="#string">string</a><br />
@@ -19153,6 +19174,8 @@
 &nbsp;&nbsp;dkim: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># DMARC check status of the source email</span><br />
 &nbsp;&nbsp;dmarc: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Is this event related to a NDR (bounce) email?</span><br />
+&nbsp;&nbsp;isNDR: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># The UUID of the routing rule matched by the source email</span><br />
 &nbsp;&nbsp;ruleMatched: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># ABR sample interval</span><br />
@@ -19226,6 +19249,14 @@
 &nbsp;&nbsp;dmarc_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;dmarc_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;dmarc_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;isNDR: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isNDR_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isNDR_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isNDR_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;isNDR_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isNDR_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isNDR_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isNDR_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;ruleMatched: <a href="#string">string</a><br />
 &nbsp;&nbsp;ruleMatched_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ruleMatched_gt: <a href="#string">string</a><br />
@@ -19299,6 +19330,10 @@
 &nbsp;&nbsp;dmarc_ASC<br />
 &nbsp;&nbsp;<span class="c"># dmarc descending</span><br />
 &nbsp;&nbsp;dmarc_DESC<br />
+&nbsp;&nbsp;<span class="c"># isNDR ascending</span><br />
+&nbsp;&nbsp;isNDR_ASC<br />
+&nbsp;&nbsp;<span class="c"># isNDR descending</span><br />
+&nbsp;&nbsp;isNDR_DESC<br />
 &nbsp;&nbsp;<span class="c"># ruleMatched ascending</span><br />
 &nbsp;&nbsp;ruleMatched_ASC<br />
 &nbsp;&nbsp;<span class="c"># ruleMatched descending</span><br />
@@ -19338,6 +19373,10 @@
 &nbsp;&nbsp;from_ASC<br />
 &nbsp;&nbsp;<span class="c"># from descending</span><br />
 &nbsp;&nbsp;from_DESC<br />
+&nbsp;&nbsp;<span class="c"># isNDR ascending</span><br />
+&nbsp;&nbsp;isNDR_ASC<br />
+&nbsp;&nbsp;<span class="c"># isNDR descending</span><br />
+&nbsp;&nbsp;isNDR_DESC<br />
 &nbsp;&nbsp;<span class="c"># messageId ascending</span><br />
 &nbsp;&nbsp;messageId_ASC<br />
 &nbsp;&nbsp;<span class="c"># messageId descending</span><br />
@@ -19382,6 +19421,8 @@
 <span class="k">type</span> <a id="ZoneFirewallEventsAdaptive" href="#ZoneFirewallEventsAdaptive">ZoneFirewallEventsAdaptive</a> {<br />
 &nbsp;&nbsp;<span class="c"># The code of the first-class action the Cloudflare Firewall took on this request</span><br />
 &nbsp;&nbsp;action: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># API Gateway endpoint matched at the edge</span><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The final score originated from bot management detections.</span><br />
 &nbsp;&nbsp;botScore: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Name of the source detection which generated the bot management score.</span><br />
@@ -19485,6 +19526,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneFirewallEventsAdaptiveByTimeGroupsDimensions" href="#ZoneFirewallEventsAdaptiveByTimeGroupsDimensions">ZoneFirewallEventsAdaptiveByTimeGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># API Gateway endpoint matched at the edge</span><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The final score originated from bot management detections.</span><br />
 &nbsp;&nbsp;botScore: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Name of the source detection which generated the bot management score.</span><br />
@@ -19528,6 +19571,16 @@
 &nbsp;&nbsp;action_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;action_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;action_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;botScore: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;botScoreSrcName: <a href="#string">string</a><br />
 &nbsp;&nbsp;botScoreSrcName_geq: <a href="#string">string</a><br />
@@ -19921,6 +19974,10 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy" href="#ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy">ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint ascending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_ASC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint descending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(sampleInterval) ascending</span><br />
 &nbsp;&nbsp;avg_sampleInterval_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(sampleInterval) descending</span><br />
@@ -20004,6 +20061,16 @@
 &nbsp;&nbsp;action_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;action_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;action_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;botScore: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;botScoreSrcName: <a href="#string">string</a><br />
 &nbsp;&nbsp;botScoreSrcName_geq: <a href="#string">string</a><br />
@@ -20413,6 +20480,8 @@
 <span class="k">type</span> <a id="ZoneFirewallEventsAdaptiveGroupsDimensions" href="#ZoneFirewallEventsAdaptiveGroupsDimensions">ZoneFirewallEventsAdaptiveGroupsDimensions</a> {<br />
 &nbsp;&nbsp;<span class="c"># The code of the first-class action the Cloudflare Firewall took on this request</span><br />
 &nbsp;&nbsp;action: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># API Gateway endpoint matched at the edge</span><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The final score originated from bot management detections.</span><br />
 &nbsp;&nbsp;botScore: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Name of the source detection which generated the bot management score.</span><br />
@@ -20512,6 +20581,16 @@
 &nbsp;&nbsp;action_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;action_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;action_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;botScore: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;botScoreSrcName: <a href="#string">string</a><br />
 &nbsp;&nbsp;botScoreSrcName_geq: <a href="#string">string</a><br />
@@ -20909,6 +20988,10 @@
 &nbsp;&nbsp;action_ASC<br />
 &nbsp;&nbsp;<span class="c"># action descending</span><br />
 &nbsp;&nbsp;action_DESC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint ascending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_ASC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint descending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(sampleInterval) ascending</span><br />
 &nbsp;&nbsp;avg_sampleInterval_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(sampleInterval) descending</span><br />
@@ -21103,6 +21186,10 @@
 &nbsp;&nbsp;action_ASC<br />
 &nbsp;&nbsp;<span class="c"># action descending</span><br />
 &nbsp;&nbsp;action_DESC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint ascending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_ASC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint descending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_DESC<br />
 &nbsp;&nbsp;<span class="c"># botScoreSrcName ascending</span><br />
 &nbsp;&nbsp;botScoreSrcName_ASC<br />
 &nbsp;&nbsp;<span class="c"># botScoreSrcName descending</span><br />
@@ -22816,6 +22903,8 @@
 &nbsp;&nbsp;count: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#ZoneHttpRequestsAdaptiveGroupsDimensions">ZoneHttpRequestsAdaptiveGroupsDimensions</a><br />
+&nbsp;&nbsp;<span class="c"># The ratio of a range of status codes, between 0 and 1</span><br />
+&nbsp;&nbsp;ratio: <a href="#ZoneHttpRequestsAdaptiveGroupsRatio">ZoneHttpRequestsAdaptiveGroupsRatio</a><br />
 &nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
 &nbsp;&nbsp;sum: <a href="#ZoneHttpRequestsAdaptiveGroupsSum">ZoneHttpRequestsAdaptiveGroupsSum</a><br />
 }<br />
@@ -22825,6 +22914,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneHttpRequestsAdaptiveGroupsDimensions" href="#ZoneHttpRequestsAdaptiveGroupsDimensions">ZoneHttpRequestsAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># API Gateway endpoint matched at the edge</span><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Judgement of the bot management system</span><br />
 &nbsp;&nbsp;botManagementDecision: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The final score originated from bot management detections.</span><br />
@@ -22902,6 +22993,16 @@
 <span class="k">input</span> <a id="ZoneHttpRequestsAdaptiveGroupsFilter_InputObject" href="#ZoneHttpRequestsAdaptiveGroupsFilter_InputObject">ZoneHttpRequestsAdaptiveGroupsFilter_InputObject</a> {<br />
 &nbsp;&nbsp;AND: <a href="#ZoneHttpRequestsAdaptiveGroupsFilter_InputObject">[ZoneHttpRequestsAdaptiveGroupsFilter_InputObject!]</a><br />
 &nbsp;&nbsp;OR: <a href="#ZoneHttpRequestsAdaptiveGroupsFilter_InputObject">[ZoneHttpRequestsAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;botManagementDecision: <a href="#string">string</a><br />
 &nbsp;&nbsp;botManagementDecision_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;botManagementDecision_gt: <a href="#string">string</a><br />
@@ -23299,6 +23400,10 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="ZoneHttpRequestsAdaptiveGroupsOrderBy" href="#ZoneHttpRequestsAdaptiveGroupsOrderBy">ZoneHttpRequestsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint ascending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_ASC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint descending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedEndpoint_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(sampleInterval) ascending</span><br />
 &nbsp;&nbsp;avg_sampleInterval_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(sampleInterval) descending</span><br />
@@ -23447,6 +23552,14 @@
 &nbsp;&nbsp;originResponseStatus_ASC<br />
 &nbsp;&nbsp;<span class="c"># originResponseStatus descending</span><br />
 &nbsp;&nbsp;originResponseStatus_DESC<br />
+&nbsp;&nbsp;<span class="c"># ratio(status4xx) ascending</span><br />
+&nbsp;&nbsp;ratio_status4xx_ASC<br />
+&nbsp;&nbsp;<span class="c"># ratio(status4xx) descending</span><br />
+&nbsp;&nbsp;ratio_status4xx_DESC<br />
+&nbsp;&nbsp;<span class="c"># ratio(status5xx) ascending</span><br />
+&nbsp;&nbsp;ratio_status5xx_ASC<br />
+&nbsp;&nbsp;<span class="c"># ratio(status5xx) descending</span><br />
+&nbsp;&nbsp;ratio_status5xx_DESC<br />
 &nbsp;&nbsp;<span class="c"># requestSource ascending</span><br />
 &nbsp;&nbsp;requestSource_ASC<br />
 &nbsp;&nbsp;<span class="c"># requestSource descending</span><br />
@@ -23485,6 +23598,11 @@
 &nbsp;&nbsp;xRequestedWith_DESC<br />
 }<br />
 <br />
+<span class="k">type</span> <a id="ZoneHttpRequestsAdaptiveGroupsRatio" href="#ZoneHttpRequestsAdaptiveGroupsRatio">ZoneHttpRequestsAdaptiveGroupsRatio</a> {<br />
+&nbsp;&nbsp;status4xx: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;status5xx: <a href="#float64">float64!</a><br />
+}<br />
+<br />
 <span class="k">type</span> <a id="ZoneHttpRequestsAdaptiveGroupsSum" href="#ZoneHttpRequestsAdaptiveGroupsSum">ZoneHttpRequestsAdaptiveGroupsSum</a> {<br />
 &nbsp;&nbsp;edgeResponseBytes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)</span><br />
@@ -23497,6 +23615,8 @@
 &nbsp;&nbsp;avg: <a href="#ZoneHttpRequestsOverviewAdaptiveGroupsAvg">ZoneHttpRequestsOverviewAdaptiveGroupsAvg</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#ZoneHttpRequestsOverviewAdaptiveGroupsDimensions">ZoneHttpRequestsOverviewAdaptiveGroupsDimensions</a><br />
+&nbsp;&nbsp;<span class="c"># The ratio of a range of status codes, between 0 and 1</span><br />
+&nbsp;&nbsp;ratio: <a href="#ZoneHttpRequestsOverviewAdaptiveGroupsRatio">ZoneHttpRequestsOverviewAdaptiveGroupsRatio</a><br />
 &nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
 &nbsp;&nbsp;sum: <a href="#ZoneHttpRequestsOverviewAdaptiveGroupsSum">ZoneHttpRequestsOverviewAdaptiveGroupsSum</a><br />
 }<br />
@@ -23723,6 +23843,14 @@
 &nbsp;&nbsp;httpApplication_ASC<br />
 &nbsp;&nbsp;<span class="c"># httpApplication descending</span><br />
 &nbsp;&nbsp;httpApplication_DESC<br />
+&nbsp;&nbsp;<span class="c"># ratio(status4xx) ascending</span><br />
+&nbsp;&nbsp;ratio_status4xx_ASC<br />
+&nbsp;&nbsp;<span class="c"># ratio(status4xx) descending</span><br />
+&nbsp;&nbsp;ratio_status4xx_DESC<br />
+&nbsp;&nbsp;<span class="c"># ratio(status5xx) ascending</span><br />
+&nbsp;&nbsp;ratio_status5xx_ASC<br />
+&nbsp;&nbsp;<span class="c"># ratio(status5xx) descending</span><br />
+&nbsp;&nbsp;ratio_status5xx_DESC<br />
 &nbsp;&nbsp;<span class="c"># requestSource ascending</span><br />
 &nbsp;&nbsp;requestSource_ASC<br />
 &nbsp;&nbsp;<span class="c"># requestSource descending</span><br />
@@ -23755,6 +23883,11 @@
 &nbsp;&nbsp;userAgentBrowser_ASC<br />
 &nbsp;&nbsp;<span class="c"># userAgentBrowser descending</span><br />
 &nbsp;&nbsp;userAgentBrowser_DESC<br />
+}<br />
+<br />
+<span class="k">type</span> <a id="ZoneHttpRequestsOverviewAdaptiveGroupsRatio" href="#ZoneHttpRequestsOverviewAdaptiveGroupsRatio">ZoneHttpRequestsOverviewAdaptiveGroupsRatio</a> {<br />
+&nbsp;&nbsp;status4xx: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;status5xx: <a href="#float64">float64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneHttpRequestsOverviewAdaptiveGroupsSum" href="#ZoneHttpRequestsOverviewAdaptiveGroupsSum">ZoneHttpRequestsOverviewAdaptiveGroupsSum</a> {<br />
