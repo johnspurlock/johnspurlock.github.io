@@ -17867,10 +17867,10 @@ type AccountWorkersInvocationsAdaptiveDimensions {
   datetimeHour: Time!
   # Request datetime, truncated to start of an minute
   datetimeMinute: Time!
+  # The name of the script's dispatch namespace
+  dispatchNamespaceName: string!
   # The name of the script environment
   environmentName: string!
-  # The name of the script namespace
-  namespaceName: string!
   # The name of the script
   scriptName: string!
   # The unique tag of the script
@@ -17916,6 +17916,16 @@ input AccountWorkersInvocationsAdaptiveFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  dispatchNamespaceName: string
+  dispatchNamespaceName_geq: string
+  dispatchNamespaceName_gt: string
+  dispatchNamespaceName_in: [string!]
+  dispatchNamespaceName_leq: string
+  dispatchNamespaceName_like: string
+  dispatchNamespaceName_lt: string
+  dispatchNamespaceName_neq: string
+  dispatchNamespaceName_notin: [string!]
+  dispatchNamespaceName_notlike: string
   environmentName: string
   environmentName_geq: string
   environmentName_gt: string
@@ -17926,16 +17936,6 @@ input AccountWorkersInvocationsAdaptiveFilter_InputObject {
   environmentName_neq: string
   environmentName_notin: [string!]
   environmentName_notlike: string
-  namespaceName: string
-  namespaceName_geq: string
-  namespaceName_gt: string
-  namespaceName_in: [string!]
-  namespaceName_leq: string
-  namespaceName_like: string
-  namespaceName_lt: string
-  namespaceName_neq: string
-  namespaceName_notin: [string!]
-  namespaceName_notlike: string
   scriptName: string
   scriptName_geq: string
   scriptName_gt: string
@@ -18021,6 +18021,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # dispatchNamespaceName ascending
+  dispatchNamespaceName_ASC
+  # dispatchNamespaceName descending
+  dispatchNamespaceName_DESC
   # environmentName ascending
   environmentName_ASC
   # environmentName descending
@@ -18057,10 +18061,6 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   min_wallTime_ASC
   # min(wallTime) descending
   min_wallTime_DESC
-  # namespaceName ascending
-  namespaceName_ASC
-  # namespaceName descending
-  namespaceName_DESC
   # quantiles(cpuTimeP25) ascending
   quantiles_cpuTimeP25_ASC
   # quantiles(cpuTimeP25) descending
@@ -19527,6 +19527,16 @@ type ZoneFirewallEventsAdaptive {
   clientRequestQuery: string!
   # The url scheme requested by the visitor
   clientRequestScheme: string!
+  # 1 if not all contents for this request where successfully scanned, else 0
+  contentScanHasFailed: uint8!
+  # Number of scannable content objects that are malicious
+  contentScanNumMaliciousObj: uint8!
+  # Number of scannable content objects
+  contentScanNumObj: uint8!
+  # Array of scan results in order of detection
+  contentScanObjResults: string!
+  # Array of content types in order of detection
+  contentScanObjTypes: string!
   # The date the event occurred at the edge
   date: Date!
   # The date and time the event occurred at the edge
@@ -20309,6 +20319,50 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   clientRequestScheme_neq: string
   clientRequestScheme_notin: [string!]
   clientRequestScheme_notlike: string
+  contentScanHasFailed: uint8
+  contentScanHasFailed_geq: uint8
+  contentScanHasFailed_gt: uint8
+  contentScanHasFailed_in: bytes
+  contentScanHasFailed_leq: uint8
+  contentScanHasFailed_lt: uint8
+  contentScanHasFailed_neq: uint8
+  contentScanHasFailed_notin: bytes
+  contentScanNumMaliciousObj: uint8
+  contentScanNumMaliciousObj_geq: uint8
+  contentScanNumMaliciousObj_gt: uint8
+  contentScanNumMaliciousObj_in: bytes
+  contentScanNumMaliciousObj_leq: uint8
+  contentScanNumMaliciousObj_lt: uint8
+  contentScanNumMaliciousObj_neq: uint8
+  contentScanNumMaliciousObj_notin: bytes
+  contentScanNumObj: uint8
+  contentScanNumObj_geq: uint8
+  contentScanNumObj_gt: uint8
+  contentScanNumObj_in: bytes
+  contentScanNumObj_leq: uint8
+  contentScanNumObj_lt: uint8
+  contentScanNumObj_neq: uint8
+  contentScanNumObj_notin: bytes
+  contentScanObjResults: string
+  contentScanObjResults_geq: string
+  contentScanObjResults_gt: string
+  contentScanObjResults_in: [string!]
+  contentScanObjResults_leq: string
+  contentScanObjResults_like: string
+  contentScanObjResults_lt: string
+  contentScanObjResults_neq: string
+  contentScanObjResults_notin: [string!]
+  contentScanObjResults_notlike: string
+  contentScanObjTypes: string
+  contentScanObjTypes_geq: string
+  contentScanObjTypes_gt: string
+  contentScanObjTypes_in: [string!]
+  contentScanObjTypes_leq: string
+  contentScanObjTypes_like: string
+  contentScanObjTypes_lt: string
+  contentScanObjTypes_neq: string
+  contentScanObjTypes_notin: [string!]
+  contentScanObjTypes_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -21328,6 +21382,26 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   clientRequestScheme_ASC
   # clientRequestScheme descending
   clientRequestScheme_DESC
+  # contentScanHasFailed ascending
+  contentScanHasFailed_ASC
+  # contentScanHasFailed descending
+  contentScanHasFailed_DESC
+  # contentScanNumMaliciousObj ascending
+  contentScanNumMaliciousObj_ASC
+  # contentScanNumMaliciousObj descending
+  contentScanNumMaliciousObj_DESC
+  # contentScanNumObj ascending
+  contentScanNumObj_ASC
+  # contentScanNumObj descending
+  contentScanNumObj_DESC
+  # contentScanObjResults ascending
+  contentScanObjResults_ASC
+  # contentScanObjResults descending
+  contentScanObjResults_DESC
+  # contentScanObjTypes ascending
+  contentScanObjTypes_ASC
+  # contentScanObjTypes descending
+  contentScanObjTypes_DESC
   # date ascending
   date_ASC
   # date descending
@@ -23021,6 +23095,12 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   # SSL protocol version
   clientSSLProtocol: string!
   coloCode: string!
+  # 1 if not all contents for this request where successfully scanned, else 0
+  contentScanHasFailed: uint8!
+  # Number of scannable content objects that are malicious
+  contentScanNumMaliciousObj: uint8!
+  # Number of scannable content objects
+  contentScanNumObj: uint8!
   # The date the event occurred at the edge
   date: Date!
   # The date and time the event occurred at the edge
@@ -23269,6 +23349,30 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   coloCode_neq: string
   coloCode_notin: [string!]
   coloCode_notlike: string
+  contentScanHasFailed: uint8
+  contentScanHasFailed_geq: uint8
+  contentScanHasFailed_gt: uint8
+  contentScanHasFailed_in: bytes
+  contentScanHasFailed_leq: uint8
+  contentScanHasFailed_lt: uint8
+  contentScanHasFailed_neq: uint8
+  contentScanHasFailed_notin: bytes
+  contentScanNumMaliciousObj: uint8
+  contentScanNumMaliciousObj_geq: uint8
+  contentScanNumMaliciousObj_gt: uint8
+  contentScanNumMaliciousObj_in: bytes
+  contentScanNumMaliciousObj_leq: uint8
+  contentScanNumMaliciousObj_lt: uint8
+  contentScanNumMaliciousObj_neq: uint8
+  contentScanNumMaliciousObj_notin: bytes
+  contentScanNumObj: uint8
+  contentScanNumObj_geq: uint8
+  contentScanNumObj_gt: uint8
+  contentScanNumObj_in: bytes
+  contentScanNumObj_leq: uint8
+  contentScanNumObj_lt: uint8
+  contentScanNumObj_neq: uint8
+  contentScanNumObj_notin: bytes
   date: Date
   date_geq: Date
   date_gt: Date
@@ -23558,6 +23662,18 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   coloCode_ASC
   # coloCode descending
   coloCode_DESC
+  # contentScanHasFailed ascending
+  contentScanHasFailed_ASC
+  # contentScanHasFailed descending
+  contentScanHasFailed_DESC
+  # contentScanNumMaliciousObj ascending
+  contentScanNumMaliciousObj_ASC
+  # contentScanNumMaliciousObj descending
+  contentScanNumMaliciousObj_DESC
+  # contentScanNumObj ascending
+  contentScanNumObj_ASC
+  # contentScanNumObj descending
+  contentScanNumObj_DESC
   # count() ascending
   count_ASC
   # count() descending

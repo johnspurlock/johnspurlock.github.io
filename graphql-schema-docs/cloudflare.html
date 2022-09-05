@@ -17797,10 +17797,10 @@
 &nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Request datetime, truncated to start of an minute</span><br />
 &nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># The name of the script's dispatch namespace</span><br />
+&nbsp;&nbsp;dispatchNamespaceName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The name of the script environment</span><br />
 &nbsp;&nbsp;environmentName: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># The name of the script namespace</span><br />
-&nbsp;&nbsp;namespaceName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The name of the script</span><br />
 &nbsp;&nbsp;scriptName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The unique tag of the script</span><br />
@@ -17846,6 +17846,16 @@
 &nbsp;&nbsp;datetime_lt: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_neq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;dispatchNamespaceName: <a href="#string">string</a><br />
+&nbsp;&nbsp;dispatchNamespaceName_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dispatchNamespaceName_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;dispatchNamespaceName_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;dispatchNamespaceName_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dispatchNamespaceName_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;dispatchNamespaceName_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;dispatchNamespaceName_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dispatchNamespaceName_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;dispatchNamespaceName_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;environmentName: <a href="#string">string</a><br />
 &nbsp;&nbsp;environmentName_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;environmentName_gt: <a href="#string">string</a><br />
@@ -17856,16 +17866,6 @@
 &nbsp;&nbsp;environmentName_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;environmentName_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;environmentName_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;namespaceName: <a href="#string">string</a><br />
-&nbsp;&nbsp;namespaceName_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;namespaceName_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;namespaceName_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;namespaceName_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;namespaceName_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;namespaceName_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;namespaceName_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;namespaceName_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;namespaceName_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;scriptName: <a href="#string">string</a><br />
 &nbsp;&nbsp;scriptName_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;scriptName_gt: <a href="#string">string</a><br />
@@ -17951,6 +17951,10 @@
 &nbsp;&nbsp;datetime_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetime descending</span><br />
 &nbsp;&nbsp;datetime_DESC<br />
+&nbsp;&nbsp;<span class="c"># dispatchNamespaceName ascending</span><br />
+&nbsp;&nbsp;dispatchNamespaceName_ASC<br />
+&nbsp;&nbsp;<span class="c"># dispatchNamespaceName descending</span><br />
+&nbsp;&nbsp;dispatchNamespaceName_DESC<br />
 &nbsp;&nbsp;<span class="c"># environmentName ascending</span><br />
 &nbsp;&nbsp;environmentName_ASC<br />
 &nbsp;&nbsp;<span class="c"># environmentName descending</span><br />
@@ -17987,10 +17991,6 @@
 &nbsp;&nbsp;min_wallTime_ASC<br />
 &nbsp;&nbsp;<span class="c"># min(wallTime) descending</span><br />
 &nbsp;&nbsp;min_wallTime_DESC<br />
-&nbsp;&nbsp;<span class="c"># namespaceName ascending</span><br />
-&nbsp;&nbsp;namespaceName_ASC<br />
-&nbsp;&nbsp;<span class="c"># namespaceName descending</span><br />
-&nbsp;&nbsp;namespaceName_DESC<br />
 &nbsp;&nbsp;<span class="c"># quantiles(cpuTimeP25) ascending</span><br />
 &nbsp;&nbsp;quantiles_cpuTimeP25_ASC<br />
 &nbsp;&nbsp;<span class="c"># quantiles(cpuTimeP25) descending</span><br />
@@ -19457,6 +19457,16 @@
 &nbsp;&nbsp;clientRequestQuery: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The url scheme requested by the visitor</span><br />
 &nbsp;&nbsp;clientRequestScheme: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># 1 if not all contents for this request where successfully scanned, else 0</span><br />
+&nbsp;&nbsp;contentScanHasFailed: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Number of scannable content objects that are malicious</span><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Number of scannable content objects</span><br />
+&nbsp;&nbsp;contentScanNumObj: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Array of scan results in order of detection</span><br />
+&nbsp;&nbsp;contentScanObjResults: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Array of content types in order of detection</span><br />
+&nbsp;&nbsp;contentScanObjTypes: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The date the event occurred at the edge</span><br />
 &nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># The date and time the event occurred at the edge</span><br />
@@ -20239,6 +20249,50 @@
 &nbsp;&nbsp;clientRequestScheme_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientRequestScheme_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;clientRequestScheme_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanHasFailed: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanHasFailed_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumObj: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumObj_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanObjResults: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjResults_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjResults_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjResults_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;contentScanObjResults_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjResults_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjResults_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjResults_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjResults_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;contentScanObjResults_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjTypes: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjTypes_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjTypes_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjTypes_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;contentScanObjTypes_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjTypes_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjTypes_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjTypes_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjTypes_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;contentScanObjTypes_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;date: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
@@ -21258,6 +21312,26 @@
 &nbsp;&nbsp;clientRequestScheme_ASC<br />
 &nbsp;&nbsp;<span class="c"># clientRequestScheme descending</span><br />
 &nbsp;&nbsp;clientRequestScheme_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanHasFailed ascending</span><br />
+&nbsp;&nbsp;contentScanHasFailed_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanHasFailed descending</span><br />
+&nbsp;&nbsp;contentScanHasFailed_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanNumMaliciousObj ascending</span><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanNumMaliciousObj descending</span><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanNumObj ascending</span><br />
+&nbsp;&nbsp;contentScanNumObj_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanNumObj descending</span><br />
+&nbsp;&nbsp;contentScanNumObj_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanObjResults ascending</span><br />
+&nbsp;&nbsp;contentScanObjResults_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanObjResults descending</span><br />
+&nbsp;&nbsp;contentScanObjResults_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanObjTypes ascending</span><br />
+&nbsp;&nbsp;contentScanObjTypes_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanObjTypes descending</span><br />
+&nbsp;&nbsp;contentScanObjTypes_DESC<br />
 &nbsp;&nbsp;<span class="c"># date ascending</span><br />
 &nbsp;&nbsp;date_ASC<br />
 &nbsp;&nbsp;<span class="c"># date descending</span><br />
@@ -22951,6 +23025,12 @@
 &nbsp;&nbsp;<span class="c"># SSL protocol version</span><br />
 &nbsp;&nbsp;clientSSLProtocol: <a href="#string">string!</a><br />
 &nbsp;&nbsp;coloCode: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># 1 if not all contents for this request where successfully scanned, else 0</span><br />
+&nbsp;&nbsp;contentScanHasFailed: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Number of scannable content objects that are malicious</span><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Number of scannable content objects</span><br />
+&nbsp;&nbsp;contentScanNumObj: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># The date the event occurred at the edge</span><br />
 &nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># The date and time the event occurred at the edge</span><br />
@@ -23199,6 +23279,30 @@
 &nbsp;&nbsp;coloCode_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloCode_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;coloCode_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanHasFailed: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanHasFailed_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumObj: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumObj_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;date: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
@@ -23488,6 +23592,18 @@
 &nbsp;&nbsp;coloCode_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCode descending</span><br />
 &nbsp;&nbsp;coloCode_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanHasFailed ascending</span><br />
+&nbsp;&nbsp;contentScanHasFailed_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanHasFailed descending</span><br />
+&nbsp;&nbsp;contentScanHasFailed_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanNumMaliciousObj ascending</span><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanNumMaliciousObj descending</span><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanNumObj ascending</span><br />
+&nbsp;&nbsp;contentScanNumObj_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanNumObj descending</span><br />
+&nbsp;&nbsp;contentScanNumObj_DESC<br />
 &nbsp;&nbsp;<span class="c"># count() ascending</span><br />
 &nbsp;&nbsp;count_ASC<br />
 &nbsp;&nbsp;<span class="c"># count() descending</span><br />
