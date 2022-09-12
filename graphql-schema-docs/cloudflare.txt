@@ -1,4 +1,5 @@
 Account-level datasets:
+* accessLoginRequestsAdaptiveGroups
   cdnNetworkAnalyticsAdaptiveGroups
 * challengeApiAdaptiveGroups
   dosdAttackAnalyticsGroups
@@ -114,6 +115,8 @@ scalar uint64
 scalar uint8
 
 type account {
+  # Access login requests
+  accessLoginRequestsAdaptiveGroups(filter: AccountAccessLoginRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAccessLoginRequestsAdaptiveGroupsOrderBy!]): [AccountAccessLoginRequestsAdaptiveGroups!]!
   accountTag: string!
   # Network analytics data for Cloudflare CDN traffic
   cdnNetworkAnalyticsAdaptiveGroups(filter: AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountCdnNetworkAnalyticsAdaptiveGroups!]!
@@ -215,6 +218,329 @@ type account {
   # Beta - Unique origins, applications, and users discovered for Zero Trust private networks
   zeroTrustPrivateNetworkDiscoveryGroups(filter: AccountZeroTrustPrivateNetworkDiscoveryGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountZeroTrustPrivateNetworkDiscoveryGroupsOrderBy!]): [AccountZeroTrustPrivateNetworkDiscoveryGroups!]!
   zones(filter: ZoneFilter_InputObject, limit: uint64): [zone!]!
+}
+
+# Access login requests
+type AccountAccessLoginRequestsAdaptiveGroups {
+  avg: AccountAccessLoginRequestsAdaptiveGroupsAvg
+  # Number of access login API events processed
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAccessLoginRequestsAdaptiveGroupsDimensions
+}
+
+type AccountAccessLoginRequestsAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountAccessLoginRequestsAdaptiveGroupsDimensions {
+  # Access application ID
+  appId: string!
+  # Policy ID that approved the user
+  approvingPolicyId: string!
+  # CF ray id
+  cfRayId: string!
+  # Country tag
+  country: string!
+  # The date the access login event was emitted
+  date: Date!
+  # The date and time the access login event was emitted
+  datetime: Time!
+  # The date and time the access login event was emitted truncated to the minute
+  datetimeMinute: Time!
+  # Device ID
+  deviceId: string!
+  # Has existing JWT (0 = false, 1 = true)
+  hasExistingJWT: uint8!
+  # Has Gateway enabled (0 = false, 1 = true)
+  hasGatewayEnabled: uint8!
+  # Has WARP enabled (0 = false, 1 = true)
+  hasWarpEnabled: uint8!
+  # Identity provider
+  identityProvider: string!
+  # User IP address
+  ipAddress: string!
+  # If the login was successful (0 = false, 1 = true)
+  isSuccessfulLogin: uint8!
+  # MTLS certificate serial ID
+  mtlsCertSerialId: string!
+  # MTLS common name
+  mtlsCommonName: string!
+  # MTLS status (may show error message if status is not successful)
+  mtlsStatus: string!
+  # Service token ID
+  serviceTokenId: string!
+  # User UUID
+  userUuid: string!
+}
+
+input AccountAccessLoginRequestsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAccessLoginRequestsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAccessLoginRequestsAdaptiveGroupsFilter_InputObject!]
+  appId: string
+  appId_geq: string
+  appId_gt: string
+  appId_in: [string!]
+  appId_leq: string
+  appId_like: string
+  appId_lt: string
+  appId_neq: string
+  appId_notin: [string!]
+  appId_notlike: string
+  approvingPolicyId: string
+  approvingPolicyId_geq: string
+  approvingPolicyId_gt: string
+  approvingPolicyId_in: [string!]
+  approvingPolicyId_leq: string
+  approvingPolicyId_like: string
+  approvingPolicyId_lt: string
+  approvingPolicyId_neq: string
+  approvingPolicyId_notin: [string!]
+  approvingPolicyId_notlike: string
+  cfRayId: string
+  cfRayId_geq: string
+  cfRayId_gt: string
+  cfRayId_in: [string!]
+  cfRayId_leq: string
+  cfRayId_like: string
+  cfRayId_lt: string
+  cfRayId_neq: string
+  cfRayId_notin: [string!]
+  cfRayId_notlike: string
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  hasExistingJWT: uint8
+  hasExistingJWT_geq: uint8
+  hasExistingJWT_gt: uint8
+  hasExistingJWT_in: bytes
+  hasExistingJWT_leq: uint8
+  hasExistingJWT_lt: uint8
+  hasExistingJWT_neq: uint8
+  hasExistingJWT_notin: bytes
+  hasGatewayEnabled: uint8
+  hasGatewayEnabled_geq: uint8
+  hasGatewayEnabled_gt: uint8
+  hasGatewayEnabled_in: bytes
+  hasGatewayEnabled_leq: uint8
+  hasGatewayEnabled_lt: uint8
+  hasGatewayEnabled_neq: uint8
+  hasGatewayEnabled_notin: bytes
+  hasWarpEnabled: uint8
+  hasWarpEnabled_geq: uint8
+  hasWarpEnabled_gt: uint8
+  hasWarpEnabled_in: bytes
+  hasWarpEnabled_leq: uint8
+  hasWarpEnabled_lt: uint8
+  hasWarpEnabled_neq: uint8
+  hasWarpEnabled_notin: bytes
+  identityProvider: string
+  identityProvider_geq: string
+  identityProvider_gt: string
+  identityProvider_in: [string!]
+  identityProvider_leq: string
+  identityProvider_like: string
+  identityProvider_lt: string
+  identityProvider_neq: string
+  identityProvider_notin: [string!]
+  identityProvider_notlike: string
+  ipAddress: string
+  ipAddress_geq: string
+  ipAddress_gt: string
+  ipAddress_in: [string!]
+  ipAddress_leq: string
+  ipAddress_like: string
+  ipAddress_lt: string
+  ipAddress_neq: string
+  ipAddress_notin: [string!]
+  ipAddress_notlike: string
+  isSuccessfulLogin: uint8
+  isSuccessfulLogin_geq: uint8
+  isSuccessfulLogin_gt: uint8
+  isSuccessfulLogin_in: bytes
+  isSuccessfulLogin_leq: uint8
+  isSuccessfulLogin_lt: uint8
+  isSuccessfulLogin_neq: uint8
+  isSuccessfulLogin_notin: bytes
+  mtlsCertSerialId: string
+  mtlsCertSerialId_geq: string
+  mtlsCertSerialId_gt: string
+  mtlsCertSerialId_in: [string!]
+  mtlsCertSerialId_leq: string
+  mtlsCertSerialId_like: string
+  mtlsCertSerialId_lt: string
+  mtlsCertSerialId_neq: string
+  mtlsCertSerialId_notin: [string!]
+  mtlsCertSerialId_notlike: string
+  mtlsCommonName: string
+  mtlsCommonName_geq: string
+  mtlsCommonName_gt: string
+  mtlsCommonName_in: [string!]
+  mtlsCommonName_leq: string
+  mtlsCommonName_like: string
+  mtlsCommonName_lt: string
+  mtlsCommonName_neq: string
+  mtlsCommonName_notin: [string!]
+  mtlsCommonName_notlike: string
+  mtlsStatus: string
+  mtlsStatus_geq: string
+  mtlsStatus_gt: string
+  mtlsStatus_in: [string!]
+  mtlsStatus_leq: string
+  mtlsStatus_like: string
+  mtlsStatus_lt: string
+  mtlsStatus_neq: string
+  mtlsStatus_notin: [string!]
+  mtlsStatus_notlike: string
+  serviceTokenId: string
+  serviceTokenId_geq: string
+  serviceTokenId_gt: string
+  serviceTokenId_in: [string!]
+  serviceTokenId_leq: string
+  serviceTokenId_like: string
+  serviceTokenId_lt: string
+  serviceTokenId_neq: string
+  serviceTokenId_notin: [string!]
+  serviceTokenId_notlike: string
+  userUuid: string
+  userUuid_geq: string
+  userUuid_gt: string
+  userUuid_in: [string!]
+  userUuid_leq: string
+  userUuid_like: string
+  userUuid_lt: string
+  userUuid_neq: string
+  userUuid_notin: [string!]
+  userUuid_notlike: string
+}
+
+enum AccountAccessLoginRequestsAdaptiveGroupsOrderBy {
+  # appId ascending
+  appId_ASC
+  # appId descending
+  appId_DESC
+  # approvingPolicyId ascending
+  approvingPolicyId_ASC
+  # approvingPolicyId descending
+  approvingPolicyId_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # cfRayId ascending
+  cfRayId_ASC
+  # cfRayId descending
+  cfRayId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # hasExistingJWT ascending
+  hasExistingJWT_ASC
+  # hasExistingJWT descending
+  hasExistingJWT_DESC
+  # hasGatewayEnabled ascending
+  hasGatewayEnabled_ASC
+  # hasGatewayEnabled descending
+  hasGatewayEnabled_DESC
+  # hasWarpEnabled ascending
+  hasWarpEnabled_ASC
+  # hasWarpEnabled descending
+  hasWarpEnabled_DESC
+  # identityProvider ascending
+  identityProvider_ASC
+  # identityProvider descending
+  identityProvider_DESC
+  # ipAddress ascending
+  ipAddress_ASC
+  # ipAddress descending
+  ipAddress_DESC
+  # isSuccessfulLogin ascending
+  isSuccessfulLogin_ASC
+  # isSuccessfulLogin descending
+  isSuccessfulLogin_DESC
+  # mtlsCertSerialId ascending
+  mtlsCertSerialId_ASC
+  # mtlsCertSerialId descending
+  mtlsCertSerialId_DESC
+  # mtlsCommonName ascending
+  mtlsCommonName_ASC
+  # mtlsCommonName descending
+  mtlsCommonName_DESC
+  # mtlsStatus ascending
+  mtlsStatus_ASC
+  # mtlsStatus descending
+  mtlsStatus_DESC
+  # serviceTokenId ascending
+  serviceTokenId_ASC
+  # serviceTokenId descending
+  serviceTokenId_DESC
+  # userUuid ascending
+  userUuid_ASC
+  # userUuid descending
+  userUuid_DESC
 }
 
 # Network analytics data for Cloudflare CDN traffic
@@ -4018,6 +4344,8 @@ type AccountFbmFlowDataAdaptiveGroupsDimensions {
   tcpFlags: uint16!
   # Human-readable string representation of the Flags header field in the TCP packet
   tcpFlagsString: string!
+  # Version of the record schema
+  version: int64!
 }
 
 input AccountFbmFlowDataAdaptiveGroupsFilter_InputObject {
@@ -4169,6 +4497,14 @@ input AccountFbmFlowDataAdaptiveGroupsFilter_InputObject {
   tcpFlags_lt: uint16
   tcpFlags_neq: uint16
   tcpFlags_notin: [uint16!]
+  version: int64
+  version_geq: int64
+  version_gt: int64
+  version_in: [int64!]
+  version_leq: int64
+  version_lt: int64
+  version_neq: int64
+  version_notin: [int64!]
 }
 
 enum AccountFbmFlowDataAdaptiveGroupsOrderBy {
@@ -4308,6 +4644,10 @@ enum AccountFbmFlowDataAdaptiveGroupsOrderBy {
   tcpFlags_ASC
   # tcpFlags descending
   tcpFlags_DESC
+  # version ascending
+  version_ASC
+  # version descending
+  version_DESC
 }
 
 type AccountFbmFlowDataAdaptiveGroupsSum {
@@ -7548,6 +7888,8 @@ type AccountHttpRequestsOverviewAdaptiveGroups {
 }
 
 type AccountHttpRequestsOverviewAdaptiveGroupsAvg {
+  # The average originResponseDuration, in milliseconds, excluding 0 values (i.e. cached ones)
+  originResponseDurationMs: float64!
   # Average sample interval
   sampleInterval: float64!
 }
@@ -7713,6 +8055,10 @@ input AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountHttpRequestsOverviewAdaptiveGroupsOrderBy {
+  # avg(originResponseDurationMs) ascending
+  avg_originResponseDurationMs_ASC
+  # avg(originResponseDurationMs) descending
+  avg_originResponseDurationMs_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -15561,6 +15907,7 @@ enum AccountRumWebVitalsEventsAdaptiveOrderBy {
 
 # Access and limitations for an account
 type AccountSettings {
+  accessLoginRequestsAdaptiveGroups: Settings!
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
   challengeApiAdaptiveGroups: Settings!
   dosdAttackAnalyticsGroups: Settings!
@@ -23054,6 +23401,8 @@ type ZoneHttpRequestsAdaptiveGroups {
 }
 
 type ZoneHttpRequestsAdaptiveGroupsAvg {
+  # The average originResponseDuration, in milliseconds, excluding 0 values (i.e. cached ones)
+  originResponseDurationMs: float64!
   sampleInterval: float64!
 }
 
@@ -23578,6 +23927,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   apiGatewayMatchedEndpoint_ASC
   # apiGatewayMatchedEndpoint descending
   apiGatewayMatchedEndpoint_DESC
+  # avg(originResponseDurationMs) ascending
+  avg_originResponseDurationMs_ASC
+  # avg(originResponseDurationMs) descending
+  avg_originResponseDurationMs_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -23808,6 +24161,8 @@ type ZoneHttpRequestsOverviewAdaptiveGroups {
 }
 
 type ZoneHttpRequestsOverviewAdaptiveGroupsAvg {
+  # The average originResponseDuration, in milliseconds, excluding 0 values (i.e. cached ones)
+  originResponseDurationMs: float64!
   # Average sample interval
   sampleInterval: float64!
 }
@@ -23973,6 +24328,10 @@ input ZoneHttpRequestsOverviewAdaptiveGroupsFilter_InputObject {
 }
 
 enum ZoneHttpRequestsOverviewAdaptiveGroupsOrderBy {
+  # avg(originResponseDurationMs) ascending
+  avg_originResponseDurationMs_ASC
+  # avg(originResponseDurationMs) descending
+  avg_originResponseDurationMs_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
