@@ -1,14 +1,12 @@
 Account-level datasets:
 * accessLoginRequestsAdaptiveGroups
   cdnNetworkAnalyticsAdaptiveGroups
-* challengeApiAdaptiveGroups
   dosdAttackAnalyticsGroups
   dosdNetworkAnalyticsAdaptiveGroups
 * durableObjectsInvocationsAdaptiveGroups
 * durableObjectsPeriodicGroups
 * durableObjectsStorageGroups
 * durableObjectsSubrequestsAdaptiveGroups
-* fbmFlowDataAdaptiveGroups
   flowtrackdNetworkAnalyticsAdaptiveGroups
   gatewayL4DownstreamSessionsAdaptiveGroups
 * gatewayL4SessionsAdaptiveGroups
@@ -31,6 +29,7 @@ Account-level datasets:
   magicTransitNetworkAnalyticsAdaptiveGroups
   magicTransitTunnelHealthChecksAdaptiveGroups
   magicTransitTunnelTrafficAdaptiveGroups
+* mnmFlowDataAdaptiveGroups
   nelReportsAdaptiveGroups
 * pagesFunctionsInvocationsAdaptiveGroups
 * r2OperationsAdaptiveGroups
@@ -41,6 +40,7 @@ Account-level datasets:
 * rumWebVitalsEventsAdaptiveGroups
   spectrumNetworkAnalyticsAdaptiveGroups
 * streamMinutesViewedAdaptiveGroups
+* turnstileAdaptiveGroups
 * videoBufferEventsAdaptiveGroups
 * videoPlaybackEventsAdaptiveGroups
 * videoQualityEventsAdaptiveGroups
@@ -120,8 +120,6 @@ type account {
   accountTag: string!
   # Network analytics data for Cloudflare CDN traffic
   cdnNetworkAnalyticsAdaptiveGroups(filter: AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountCdnNetworkAnalyticsAdaptiveGroups!]!
-  # Challenge API aggregated events with adaptive sampling
-  challengeApiAdaptiveGroups(filter: AccountChallengeApiAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountChallengeApiAdaptiveGroupsOrderBy!]): [AccountChallengeApiAdaptiveGroups!]!
   # Attack analytics metadata for attacks detected by dosd
   dosdAttackAnalyticsGroups(filter: AccountDosdAttackAnalyticsGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDosdAttackAnalyticsGroupsOrderBy!]): [AccountDosdAttackAnalyticsGroups!]!
   # Network analytics data for dosd
@@ -134,8 +132,6 @@ type account {
   durableObjectsStorageGroups(filter: AccountDurableObjectsStorageGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsStorageGroupsOrderBy!]): [AccountDurableObjectsStorageGroups!]!
   # Durable Objects subrequests with adaptive sampling
   durableObjectsSubrequestsAdaptiveGroups(filter: AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy!]): [AccountDurableObjectsSubrequestsAdaptiveGroups!]!
-  # Flow data collected through flow-based monitoring
-  fbmFlowDataAdaptiveGroups(filter: AccountFbmFlowDataAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountFbmFlowDataAdaptiveGroupsOrderBy!]): [AccountFbmFlowDataAdaptiveGroups!]!
   # Network analytics data for flowtrackd
   flowtrackdNetworkAnalyticsAdaptiveGroups(filter: AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountFlowtrackdNetworkAnalyticsAdaptiveGroups!]!
   # Aggregated metrics about downstream (client to edge) L4 Gateway Sessions. Metrics are reported on TCP or UDP session close
@@ -180,6 +176,8 @@ type account {
   magicTransitTunnelHealthChecksAdaptiveGroups(filter: AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy!]): [AccountMagicTransitTunnelHealthChecksAdaptiveGroups!]!
   # Bandwidth usage metric of a Magic Transit tunnel.
   magicTransitTunnelTrafficAdaptiveGroups(filter: AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy!]): [AccountMagicTransitTunnelTrafficAdaptiveGroups!]!
+  # Flow data collected through Magic Network Monitoring
+  mnmFlowDataAdaptiveGroups(filter: AccountMnmFlowDataAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMnmFlowDataAdaptiveGroupsOrderBy!]): [AccountMnmFlowDataAdaptiveGroups!]!
   # Data to visualize network error logs
   nelReportsAdaptiveGroups(filter: AccountNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountNelReportsAdaptiveGroupsOrderBy!]): [AccountNelReportsAdaptiveGroups!]!
   # Pages Functions invocations with adaptive sampling
@@ -201,6 +199,8 @@ type account {
   spectrumNetworkAnalyticsAdaptiveGroups(filter: AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountSpectrumNetworkAnalyticsAdaptiveGroups!]!
   # A high-level summary of Cloudflare Stream minutes viewed.
   streamMinutesViewedAdaptiveGroups(filter: AccountStreamMinutesViewedAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountStreamMinutesViewedAdaptiveGroupsOrderBy!]): [AccountStreamMinutesViewedAdaptiveGroups!]!
+  # Beta. Cloudflare Turnstile aggregated events with adaptive sampling
+  turnstileAdaptiveGroups(filter: AccountTurnstileAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountTurnstileAdaptiveGroupsOrderBy!]): [AccountTurnstileAdaptiveGroups!]!
   # Beta. Aggregated video streaming buffer event metrics with adaptive sampling
   videoBufferEventsAdaptiveGroups(filter: AccountVideoBufferEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVideoBufferEventsAdaptiveGroupsOrderBy!]): [AccountVideoBufferEventsAdaptiveGroups!]!
   # Beta. Aggregated video streaming playback event metrics with adaptive sampling
@@ -1798,129 +1798,6 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsSum {
   bits: uint64!
   # Sum of packets received
   packets: uint64!
-}
-
-# Challenge API aggregated events with adaptive sampling
-type AccountChallengeApiAdaptiveGroups {
-  avg: AccountChallengeApiAdaptiveGroupsAvg
-  # Number of Challenge API events processed
-  count: uint64!
-  # List of dimensions to group by
-  dimensions: AccountChallengeApiAdaptiveGroupsDimensions
-}
-
-type AccountChallengeApiAdaptiveGroupsAvg {
-  # Average sample interval
-  sampleInterval: float64!
-}
-
-type AccountChallengeApiAdaptiveGroupsDimensions {
-  # The action tag of the Challenge API event
-  action: string!
-  # The date the challenge event was emitted
-  date: Date!
-  # The date and time the challenge event was emitted
-  datetime: Time!
-  # The date and time the challenge event was emitted truncated to the minute
-  datetimeMinute: Time!
-  # The type of the Challenge API event
-  eventType: string!
-  # The sitekey of the widget associated with the Challenge API event
-  siteKey: string!
-}
-
-input AccountChallengeApiAdaptiveGroupsFilter_InputObject {
-  AND: [AccountChallengeApiAdaptiveGroupsFilter_InputObject!]
-  OR: [AccountChallengeApiAdaptiveGroupsFilter_InputObject!]
-  action: string
-  action_geq: string
-  action_gt: string
-  action_in: [string!]
-  action_leq: string
-  action_like: string
-  action_lt: string
-  action_neq: string
-  action_notin: [string!]
-  action_notlike: string
-  date: Date
-  date_geq: Date
-  date_gt: Date
-  date_in: [Date!]
-  date_leq: Date
-  date_lt: Date
-  date_neq: Date
-  date_notin: [Date!]
-  datetime: Time
-  datetimeMinute: Time
-  datetimeMinute_geq: Time
-  datetimeMinute_gt: Time
-  datetimeMinute_in: [Time!]
-  datetimeMinute_leq: Time
-  datetimeMinute_lt: Time
-  datetimeMinute_neq: Time
-  datetimeMinute_notin: [Time!]
-  datetime_geq: Time
-  datetime_gt: Time
-  datetime_in: [Time!]
-  datetime_leq: Time
-  datetime_lt: Time
-  datetime_neq: Time
-  datetime_notin: [Time!]
-  eventType: string
-  eventType_geq: string
-  eventType_gt: string
-  eventType_in: [string!]
-  eventType_leq: string
-  eventType_like: string
-  eventType_lt: string
-  eventType_neq: string
-  eventType_notin: [string!]
-  eventType_notlike: string
-  siteKey: string
-  siteKey_geq: string
-  siteKey_gt: string
-  siteKey_in: [string!]
-  siteKey_leq: string
-  siteKey_like: string
-  siteKey_lt: string
-  siteKey_neq: string
-  siteKey_notin: [string!]
-  siteKey_notlike: string
-}
-
-enum AccountChallengeApiAdaptiveGroupsOrderBy {
-  # action ascending
-  action_ASC
-  # action descending
-  action_DESC
-  # avg(sampleInterval) ascending
-  avg_sampleInterval_ASC
-  # avg(sampleInterval) descending
-  avg_sampleInterval_DESC
-  # count() ascending
-  count_ASC
-  # count() descending
-  count_DESC
-  # date ascending
-  date_ASC
-  # date descending
-  date_DESC
-  # datetimeMinute ascending
-  datetimeMinute_ASC
-  # datetimeMinute descending
-  datetimeMinute_DESC
-  # datetime ascending
-  datetime_ASC
-  # datetime descending
-  datetime_DESC
-  # eventType ascending
-  eventType_ASC
-  # eventType descending
-  eventType_DESC
-  # siteKey ascending
-  siteKey_ASC
-  # siteKey descending
-  siteKey_DESC
 }
 
 # Attack analytics metadata for attacks detected by dosd
@@ -4264,397 +4141,6 @@ enum AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy {
 type AccountDurableObjectsSubrequestsAdaptiveGroupsSum {
   # Outgoing Durable Objects fetch request body size in bytes where the request was not cached
   requestBodySizeUncached: uint64!
-}
-
-# Flow data collected through flow-based monitoring
-type AccountFbmFlowDataAdaptiveGroups {
-  # The average of values for a metric per dimension
-  avg: AccountFbmFlowDataAdaptiveGroupsAvg
-  # List of dimensions to group by
-  dimensions: AccountFbmFlowDataAdaptiveGroupsDimensions
-  # The sum of values for a metric per dimension
-  sum: AccountFbmFlowDataAdaptiveGroupsSum
-}
-
-type AccountFbmFlowDataAdaptiveGroupsAvg {
-  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
-  bitRate: float64!
-  # Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date
-  bitRateDay: float64!
-  # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
-  bitRateFifteenMinutes: float64!
-  # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
-  bitRateFiveMinutes: float64!
-  # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
-  bitRateHour: float64!
-  # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
-  bitRateMinute: float64!
-  # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
-  bitRateTenSeconds: float64!
-  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
-  packetRate: float64!
-  # Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date
-  packetRateDay: float64!
-  # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
-  packetRateFifteenMinutes: float64!
-  # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
-  packetRateFiveMinutes: float64!
-  # Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour
-  packetRateHour: float64!
-  # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
-  packetRateMinute: float64!
-  # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
-  packetRateTenSeconds: float64!
-  # Average sample interval applied to the data
-  sampleInterval: float64!
-}
-
-type AccountFbmFlowDataAdaptiveGroupsDimensions {
-  # Date that the packet was received
-  date: Date!
-  # Date and time that the packet was received
-  datetime: Time!
-  # Date and time that the packet was received, rounded to the start of the nearest fifteen minutes
-  datetimeFifteenMinutes: Time!
-  # Date and time that the packet was received, rounded to the start of the nearest five minutes
-  datetimeFiveMinutes: Time!
-  # Date and time that the packet was received, rounded to the start of the nearest hour
-  datetimeHour: Time!
-  # Date and time that the packet was received, rounded to the start of the nearest minute
-  datetimeMinute: Time!
-  # Date and time that the packet was received, rounded to the start of the nearest ten seconds
-  datetimeTenSeconds: Time!
-  # IP to which the data was sent
-  destinationAddress: string!
-  # Value of the Destination Port header field in the packet
-  destinationPort: uint16!
-  # Value of the Ethertype header field in the Ethernet packet (2048 for IPv4; 34525 for IPv6)
-  ethertype: uint16!
-  # Layer 4 protocol
-  protocol: uint16!
-  # Human-readable string representation of the protocol
-  protocolString: string!
-  # IP of the router that sampled the flows
-  routerAddress: string!
-  # IP from which the data was sent
-  sourceAddress: string!
-  # Value of the Source Port header field in the packet
-  sourcePort: uint16!
-  # Value of the Flags header field in the TCP packet
-  tcpFlags: uint16!
-  # Human-readable string representation of the Flags header field in the TCP packet
-  tcpFlagsString: string!
-  # Version of the record schema
-  version: int64!
-}
-
-input AccountFbmFlowDataAdaptiveGroupsFilter_InputObject {
-  AND: [AccountFbmFlowDataAdaptiveGroupsFilter_InputObject!]
-  OR: [AccountFbmFlowDataAdaptiveGroupsFilter_InputObject!]
-  date: Date
-  date_geq: Date
-  date_gt: Date
-  date_in: [Date!]
-  date_leq: Date
-  date_lt: Date
-  date_neq: Date
-  date_notin: [Date!]
-  datetime: Time
-  datetimeFifteenMinutes: Time
-  datetimeFifteenMinutes_geq: Time
-  datetimeFifteenMinutes_gt: Time
-  datetimeFifteenMinutes_in: [Time!]
-  datetimeFifteenMinutes_leq: Time
-  datetimeFifteenMinutes_lt: Time
-  datetimeFifteenMinutes_neq: Time
-  datetimeFifteenMinutes_notin: [Time!]
-  datetimeFiveMinutes: Time
-  datetimeFiveMinutes_geq: Time
-  datetimeFiveMinutes_gt: Time
-  datetimeFiveMinutes_in: [Time!]
-  datetimeFiveMinutes_leq: Time
-  datetimeFiveMinutes_lt: Time
-  datetimeFiveMinutes_neq: Time
-  datetimeFiveMinutes_notin: [Time!]
-  datetimeHour: Time
-  datetimeHour_geq: Time
-  datetimeHour_gt: Time
-  datetimeHour_in: [Time!]
-  datetimeHour_leq: Time
-  datetimeHour_lt: Time
-  datetimeHour_neq: Time
-  datetimeHour_notin: [Time!]
-  datetimeMinute: Time
-  datetimeMinute_geq: Time
-  datetimeMinute_gt: Time
-  datetimeMinute_in: [Time!]
-  datetimeMinute_leq: Time
-  datetimeMinute_lt: Time
-  datetimeMinute_neq: Time
-  datetimeMinute_notin: [Time!]
-  datetimeTenSeconds: Time
-  datetimeTenSeconds_geq: Time
-  datetimeTenSeconds_gt: Time
-  datetimeTenSeconds_in: [Time!]
-  datetimeTenSeconds_leq: Time
-  datetimeTenSeconds_lt: Time
-  datetimeTenSeconds_neq: Time
-  datetimeTenSeconds_notin: [Time!]
-  datetime_geq: Time
-  datetime_gt: Time
-  datetime_in: [Time!]
-  datetime_leq: Time
-  datetime_lt: Time
-  datetime_neq: Time
-  datetime_notin: [Time!]
-  destinationAddress: string
-  destinationAddress_geq: string
-  destinationAddress_gt: string
-  destinationAddress_in: [string!]
-  destinationAddress_leq: string
-  destinationAddress_like: string
-  destinationAddress_lt: string
-  destinationAddress_neq: string
-  destinationAddress_notin: [string!]
-  destinationAddress_notlike: string
-  destinationPort: uint16
-  destinationPort_geq: uint16
-  destinationPort_gt: uint16
-  destinationPort_in: [uint16!]
-  destinationPort_leq: uint16
-  destinationPort_lt: uint16
-  destinationPort_neq: uint16
-  destinationPort_notin: [uint16!]
-  ethertype: uint16
-  ethertype_geq: uint16
-  ethertype_gt: uint16
-  ethertype_in: [uint16!]
-  ethertype_leq: uint16
-  ethertype_lt: uint16
-  ethertype_neq: uint16
-  ethertype_notin: [uint16!]
-  protocol: uint16
-  protocolString: string
-  protocolString_geq: string
-  protocolString_gt: string
-  protocolString_in: [string!]
-  protocolString_leq: string
-  protocolString_like: string
-  protocolString_lt: string
-  protocolString_neq: string
-  protocolString_notin: [string!]
-  protocolString_notlike: string
-  protocol_geq: uint16
-  protocol_gt: uint16
-  protocol_in: [uint16!]
-  protocol_leq: uint16
-  protocol_lt: uint16
-  protocol_neq: uint16
-  protocol_notin: [uint16!]
-  routerAddress: string
-  routerAddress_geq: string
-  routerAddress_gt: string
-  routerAddress_in: [string!]
-  routerAddress_leq: string
-  routerAddress_like: string
-  routerAddress_lt: string
-  routerAddress_neq: string
-  routerAddress_notin: [string!]
-  routerAddress_notlike: string
-  sourceAddress: string
-  sourceAddress_geq: string
-  sourceAddress_gt: string
-  sourceAddress_in: [string!]
-  sourceAddress_leq: string
-  sourceAddress_like: string
-  sourceAddress_lt: string
-  sourceAddress_neq: string
-  sourceAddress_notin: [string!]
-  sourceAddress_notlike: string
-  sourcePort: uint16
-  sourcePort_geq: uint16
-  sourcePort_gt: uint16
-  sourcePort_in: [uint16!]
-  sourcePort_leq: uint16
-  sourcePort_lt: uint16
-  sourcePort_neq: uint16
-  sourcePort_notin: [uint16!]
-  tcpFlags: uint16
-  tcpFlagsString: string
-  tcpFlagsString_geq: string
-  tcpFlagsString_gt: string
-  tcpFlagsString_in: [string!]
-  tcpFlagsString_leq: string
-  tcpFlagsString_like: string
-  tcpFlagsString_lt: string
-  tcpFlagsString_neq: string
-  tcpFlagsString_notin: [string!]
-  tcpFlagsString_notlike: string
-  tcpFlags_geq: uint16
-  tcpFlags_gt: uint16
-  tcpFlags_in: [uint16!]
-  tcpFlags_leq: uint16
-  tcpFlags_lt: uint16
-  tcpFlags_neq: uint16
-  tcpFlags_notin: [uint16!]
-  version: int64
-  version_geq: int64
-  version_gt: int64
-  version_in: [int64!]
-  version_leq: int64
-  version_lt: int64
-  version_neq: int64
-  version_notin: [int64!]
-}
-
-enum AccountFbmFlowDataAdaptiveGroupsOrderBy {
-  # avg(bitRateDay) ascending
-  avg_bitRateDay_ASC
-  # avg(bitRateDay) descending
-  avg_bitRateDay_DESC
-  # avg(bitRateFifteenMinutes) ascending
-  avg_bitRateFifteenMinutes_ASC
-  # avg(bitRateFifteenMinutes) descending
-  avg_bitRateFifteenMinutes_DESC
-  # avg(bitRateFiveMinutes) ascending
-  avg_bitRateFiveMinutes_ASC
-  # avg(bitRateFiveMinutes) descending
-  avg_bitRateFiveMinutes_DESC
-  # avg(bitRateHour) ascending
-  avg_bitRateHour_ASC
-  # avg(bitRateHour) descending
-  avg_bitRateHour_DESC
-  # avg(bitRateMinute) ascending
-  avg_bitRateMinute_ASC
-  # avg(bitRateMinute) descending
-  avg_bitRateMinute_DESC
-  # avg(bitRateTenSeconds) ascending
-  avg_bitRateTenSeconds_ASC
-  # avg(bitRateTenSeconds) descending
-  avg_bitRateTenSeconds_DESC
-  # avg(bitRate) ascending
-  avg_bitRate_ASC
-  # avg(bitRate) descending
-  avg_bitRate_DESC
-  # avg(packetRateDay) ascending
-  avg_packetRateDay_ASC
-  # avg(packetRateDay) descending
-  avg_packetRateDay_DESC
-  # avg(packetRateFifteenMinutes) ascending
-  avg_packetRateFifteenMinutes_ASC
-  # avg(packetRateFifteenMinutes) descending
-  avg_packetRateFifteenMinutes_DESC
-  # avg(packetRateFiveMinutes) ascending
-  avg_packetRateFiveMinutes_ASC
-  # avg(packetRateFiveMinutes) descending
-  avg_packetRateFiveMinutes_DESC
-  # avg(packetRateHour) ascending
-  avg_packetRateHour_ASC
-  # avg(packetRateHour) descending
-  avg_packetRateHour_DESC
-  # avg(packetRateMinute) ascending
-  avg_packetRateMinute_ASC
-  # avg(packetRateMinute) descending
-  avg_packetRateMinute_DESC
-  # avg(packetRateTenSeconds) ascending
-  avg_packetRateTenSeconds_ASC
-  # avg(packetRateTenSeconds) descending
-  avg_packetRateTenSeconds_DESC
-  # avg(packetRate) ascending
-  avg_packetRate_ASC
-  # avg(packetRate) descending
-  avg_packetRate_DESC
-  # avg(sampleInterval) ascending
-  avg_sampleInterval_ASC
-  # avg(sampleInterval) descending
-  avg_sampleInterval_DESC
-  # date ascending
-  date_ASC
-  # date descending
-  date_DESC
-  # datetimeFifteenMinutes ascending
-  datetimeFifteenMinutes_ASC
-  # datetimeFifteenMinutes descending
-  datetimeFifteenMinutes_DESC
-  # datetimeFiveMinutes ascending
-  datetimeFiveMinutes_ASC
-  # datetimeFiveMinutes descending
-  datetimeFiveMinutes_DESC
-  # datetimeHour ascending
-  datetimeHour_ASC
-  # datetimeHour descending
-  datetimeHour_DESC
-  # datetimeMinute ascending
-  datetimeMinute_ASC
-  # datetimeMinute descending
-  datetimeMinute_DESC
-  # datetimeTenSeconds ascending
-  datetimeTenSeconds_ASC
-  # datetimeTenSeconds descending
-  datetimeTenSeconds_DESC
-  # datetime ascending
-  datetime_ASC
-  # datetime descending
-  datetime_DESC
-  # destinationAddress ascending
-  destinationAddress_ASC
-  # destinationAddress descending
-  destinationAddress_DESC
-  # destinationPort ascending
-  destinationPort_ASC
-  # destinationPort descending
-  destinationPort_DESC
-  # ethertype ascending
-  ethertype_ASC
-  # ethertype descending
-  ethertype_DESC
-  # protocolString ascending
-  protocolString_ASC
-  # protocolString descending
-  protocolString_DESC
-  # protocol ascending
-  protocol_ASC
-  # protocol descending
-  protocol_DESC
-  # routerAddress ascending
-  routerAddress_ASC
-  # routerAddress descending
-  routerAddress_DESC
-  # sourceAddress ascending
-  sourceAddress_ASC
-  # sourceAddress descending
-  sourceAddress_DESC
-  # sourcePort ascending
-  sourcePort_ASC
-  # sourcePort descending
-  sourcePort_DESC
-  # sum(bits) ascending
-  sum_bits_ASC
-  # sum(bits) descending
-  sum_bits_DESC
-  # sum(packets) ascending
-  sum_packets_ASC
-  # sum(packets) descending
-  sum_packets_DESC
-  # tcpFlagsString ascending
-  tcpFlagsString_ASC
-  # tcpFlagsString descending
-  tcpFlagsString_DESC
-  # tcpFlags ascending
-  tcpFlags_ASC
-  # tcpFlags descending
-  tcpFlags_DESC
-  # version ascending
-  version_ASC
-  # version descending
-  version_DESC
-}
-
-type AccountFbmFlowDataAdaptiveGroupsSum {
-  # Sum of bits
-  bits: uint32!
-  # Sum of packets
-  packets: uint32!
 }
 
 input AccountFilter_InputObject {
@@ -13189,6 +12675,397 @@ enum AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy {
   tunnelName_DESC
 }
 
+# Flow data collected through Magic Network Monitoring
+type AccountMnmFlowDataAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountMnmFlowDataAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountMnmFlowDataAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountMnmFlowDataAdaptiveGroupsSum
+}
+
+type AccountMnmFlowDataAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRate: float64!
+  # Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date
+  bitRateDay: float64!
+  # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
+  bitRateFifteenMinutes: float64!
+  # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
+  bitRateFiveMinutes: float64!
+  # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
+  bitRateHour: float64!
+  # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
+  bitRateMinute: float64!
+  # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
+  bitRateTenSeconds: float64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRate: float64!
+  # Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date
+  packetRateDay: float64!
+  # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
+  packetRateFifteenMinutes: float64!
+  # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
+  packetRateFiveMinutes: float64!
+  # Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour
+  packetRateHour: float64!
+  # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
+  packetRateMinute: float64!
+  # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
+  packetRateTenSeconds: float64!
+  # Average sample interval applied to the data
+  sampleInterval: float64!
+}
+
+type AccountMnmFlowDataAdaptiveGroupsDimensions {
+  # Date that the packet was received
+  date: Date!
+  # Date and time that the packet was received
+  datetime: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest five minutes
+  datetimeFiveMinutes: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest hour
+  datetimeHour: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest minute
+  datetimeMinute: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest ten seconds
+  datetimeTenSeconds: Time!
+  # IP to which the data was sent
+  destinationAddress: string!
+  # Value of the Destination Port header field in the packet
+  destinationPort: uint16!
+  # Value of the Ethertype header field in the Ethernet packet (2048 for IPv4; 34525 for IPv6)
+  ethertype: uint16!
+  # Layer 4 protocol
+  protocol: uint16!
+  # Human-readable string representation of the protocol
+  protocolString: string!
+  # IP of the router that sampled the flows
+  routerAddress: string!
+  # IP from which the data was sent
+  sourceAddress: string!
+  # Value of the Source Port header field in the packet
+  sourcePort: uint16!
+  # Value of the Flags header field in the TCP packet
+  tcpFlags: uint16!
+  # Human-readable string representation of the Flags header field in the TCP packet
+  tcpFlagsString: string!
+  # Version of the record schema
+  version: int64!
+}
+
+input AccountMnmFlowDataAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMnmFlowDataAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMnmFlowDataAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeTenSeconds: Time
+  datetimeTenSeconds_geq: Time
+  datetimeTenSeconds_gt: Time
+  datetimeTenSeconds_in: [Time!]
+  datetimeTenSeconds_leq: Time
+  datetimeTenSeconds_lt: Time
+  datetimeTenSeconds_neq: Time
+  datetimeTenSeconds_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationAddress: string
+  destinationAddress_geq: string
+  destinationAddress_gt: string
+  destinationAddress_in: [string!]
+  destinationAddress_leq: string
+  destinationAddress_like: string
+  destinationAddress_lt: string
+  destinationAddress_neq: string
+  destinationAddress_notin: [string!]
+  destinationAddress_notlike: string
+  destinationPort: uint16
+  destinationPort_geq: uint16
+  destinationPort_gt: uint16
+  destinationPort_in: [uint16!]
+  destinationPort_leq: uint16
+  destinationPort_lt: uint16
+  destinationPort_neq: uint16
+  destinationPort_notin: [uint16!]
+  ethertype: uint16
+  ethertype_geq: uint16
+  ethertype_gt: uint16
+  ethertype_in: [uint16!]
+  ethertype_leq: uint16
+  ethertype_lt: uint16
+  ethertype_neq: uint16
+  ethertype_notin: [uint16!]
+  protocol: uint16
+  protocolString: string
+  protocolString_geq: string
+  protocolString_gt: string
+  protocolString_in: [string!]
+  protocolString_leq: string
+  protocolString_like: string
+  protocolString_lt: string
+  protocolString_neq: string
+  protocolString_notin: [string!]
+  protocolString_notlike: string
+  protocol_geq: uint16
+  protocol_gt: uint16
+  protocol_in: [uint16!]
+  protocol_leq: uint16
+  protocol_lt: uint16
+  protocol_neq: uint16
+  protocol_notin: [uint16!]
+  routerAddress: string
+  routerAddress_geq: string
+  routerAddress_gt: string
+  routerAddress_in: [string!]
+  routerAddress_leq: string
+  routerAddress_like: string
+  routerAddress_lt: string
+  routerAddress_neq: string
+  routerAddress_notin: [string!]
+  routerAddress_notlike: string
+  sourceAddress: string
+  sourceAddress_geq: string
+  sourceAddress_gt: string
+  sourceAddress_in: [string!]
+  sourceAddress_leq: string
+  sourceAddress_like: string
+  sourceAddress_lt: string
+  sourceAddress_neq: string
+  sourceAddress_notin: [string!]
+  sourceAddress_notlike: string
+  sourcePort: uint16
+  sourcePort_geq: uint16
+  sourcePort_gt: uint16
+  sourcePort_in: [uint16!]
+  sourcePort_leq: uint16
+  sourcePort_lt: uint16
+  sourcePort_neq: uint16
+  sourcePort_notin: [uint16!]
+  tcpFlags: uint16
+  tcpFlagsString: string
+  tcpFlagsString_geq: string
+  tcpFlagsString_gt: string
+  tcpFlagsString_in: [string!]
+  tcpFlagsString_leq: string
+  tcpFlagsString_like: string
+  tcpFlagsString_lt: string
+  tcpFlagsString_neq: string
+  tcpFlagsString_notin: [string!]
+  tcpFlagsString_notlike: string
+  tcpFlags_geq: uint16
+  tcpFlags_gt: uint16
+  tcpFlags_in: [uint16!]
+  tcpFlags_leq: uint16
+  tcpFlags_lt: uint16
+  tcpFlags_neq: uint16
+  tcpFlags_notin: [uint16!]
+  version: int64
+  version_geq: int64
+  version_gt: int64
+  version_in: [int64!]
+  version_leq: int64
+  version_lt: int64
+  version_neq: int64
+  version_notin: [int64!]
+}
+
+enum AccountMnmFlowDataAdaptiveGroupsOrderBy {
+  # avg(bitRateDay) ascending
+  avg_bitRateDay_ASC
+  # avg(bitRateDay) descending
+  avg_bitRateDay_DESC
+  # avg(bitRateFifteenMinutes) ascending
+  avg_bitRateFifteenMinutes_ASC
+  # avg(bitRateFifteenMinutes) descending
+  avg_bitRateFifteenMinutes_DESC
+  # avg(bitRateFiveMinutes) ascending
+  avg_bitRateFiveMinutes_ASC
+  # avg(bitRateFiveMinutes) descending
+  avg_bitRateFiveMinutes_DESC
+  # avg(bitRateHour) ascending
+  avg_bitRateHour_ASC
+  # avg(bitRateHour) descending
+  avg_bitRateHour_DESC
+  # avg(bitRateMinute) ascending
+  avg_bitRateMinute_ASC
+  # avg(bitRateMinute) descending
+  avg_bitRateMinute_DESC
+  # avg(bitRateTenSeconds) ascending
+  avg_bitRateTenSeconds_ASC
+  # avg(bitRateTenSeconds) descending
+  avg_bitRateTenSeconds_DESC
+  # avg(bitRate) ascending
+  avg_bitRate_ASC
+  # avg(bitRate) descending
+  avg_bitRate_DESC
+  # avg(packetRateDay) ascending
+  avg_packetRateDay_ASC
+  # avg(packetRateDay) descending
+  avg_packetRateDay_DESC
+  # avg(packetRateFifteenMinutes) ascending
+  avg_packetRateFifteenMinutes_ASC
+  # avg(packetRateFifteenMinutes) descending
+  avg_packetRateFifteenMinutes_DESC
+  # avg(packetRateFiveMinutes) ascending
+  avg_packetRateFiveMinutes_ASC
+  # avg(packetRateFiveMinutes) descending
+  avg_packetRateFiveMinutes_DESC
+  # avg(packetRateHour) ascending
+  avg_packetRateHour_ASC
+  # avg(packetRateHour) descending
+  avg_packetRateHour_DESC
+  # avg(packetRateMinute) ascending
+  avg_packetRateMinute_ASC
+  # avg(packetRateMinute) descending
+  avg_packetRateMinute_DESC
+  # avg(packetRateTenSeconds) ascending
+  avg_packetRateTenSeconds_ASC
+  # avg(packetRateTenSeconds) descending
+  avg_packetRateTenSeconds_DESC
+  # avg(packetRate) ascending
+  avg_packetRate_ASC
+  # avg(packetRate) descending
+  avg_packetRate_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeTenSeconds ascending
+  datetimeTenSeconds_ASC
+  # datetimeTenSeconds descending
+  datetimeTenSeconds_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationAddress ascending
+  destinationAddress_ASC
+  # destinationAddress descending
+  destinationAddress_DESC
+  # destinationPort ascending
+  destinationPort_ASC
+  # destinationPort descending
+  destinationPort_DESC
+  # ethertype ascending
+  ethertype_ASC
+  # ethertype descending
+  ethertype_DESC
+  # protocolString ascending
+  protocolString_ASC
+  # protocolString descending
+  protocolString_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # routerAddress ascending
+  routerAddress_ASC
+  # routerAddress descending
+  routerAddress_DESC
+  # sourceAddress ascending
+  sourceAddress_ASC
+  # sourceAddress descending
+  sourceAddress_DESC
+  # sourcePort ascending
+  sourcePort_ASC
+  # sourcePort descending
+  sourcePort_DESC
+  # sum(bits) ascending
+  sum_bits_ASC
+  # sum(bits) descending
+  sum_bits_DESC
+  # sum(packets) ascending
+  sum_packets_ASC
+  # sum(packets) descending
+  sum_packets_DESC
+  # tcpFlagsString ascending
+  tcpFlagsString_ASC
+  # tcpFlagsString descending
+  tcpFlagsString_DESC
+  # tcpFlags ascending
+  tcpFlags_ASC
+  # tcpFlags descending
+  tcpFlags_DESC
+  # version ascending
+  version_ASC
+  # version descending
+  version_DESC
+}
+
+type AccountMnmFlowDataAdaptiveGroupsSum {
+  # Sum of bits
+  bits: uint32!
+  # Sum of packets
+  packets: uint32!
+}
+
 # Data to visualize network error logs
 type AccountNelReportsAdaptiveGroups {
   avg: AccountNelReportsAdaptiveGroupsAvg
@@ -15909,14 +15786,12 @@ enum AccountRumWebVitalsEventsAdaptiveOrderBy {
 type AccountSettings {
   accessLoginRequestsAdaptiveGroups: Settings!
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
-  challengeApiAdaptiveGroups: Settings!
   dosdAttackAnalyticsGroups: Settings!
   dosdNetworkAnalyticsAdaptiveGroups: Settings!
   durableObjectsInvocationsAdaptiveGroups: Settings!
   durableObjectsPeriodicGroups: Settings!
   durableObjectsStorageGroups: Settings!
   durableObjectsSubrequestsAdaptiveGroups: Settings!
-  fbmFlowDataAdaptiveGroups: Settings!
   flowtrackdNetworkAnalyticsAdaptiveGroups: Settings!
   gatewayL4DownstreamSessionsAdaptiveGroups: Settings!
   gatewayL4SessionsAdaptiveGroups: Settings!
@@ -15939,6 +15814,7 @@ type AccountSettings {
   magicTransitNetworkAnalyticsAdaptiveGroups: Settings!
   magicTransitTunnelHealthChecksAdaptiveGroups: Settings!
   magicTransitTunnelTrafficAdaptiveGroups: Settings!
+  mnmFlowDataAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   pagesFunctionsInvocationsAdaptiveGroups: Settings!
   r2OperationsAdaptiveGroups: Settings!
@@ -15949,6 +15825,7 @@ type AccountSettings {
   rumWebVitalsEventsAdaptiveGroups: Settings!
   spectrumNetworkAnalyticsAdaptiveGroups: Settings!
   streamMinutesViewedAdaptiveGroups: Settings!
+  turnstileAdaptiveGroups: Settings!
   videoBufferEventsAdaptiveGroups: Settings!
   videoPlaybackEventsAdaptiveGroups: Settings!
   videoQualityEventsAdaptiveGroups: Settings!
@@ -17395,6 +17272,199 @@ enum AccountStreamMinutesViewedAdaptiveGroupsOrderBy {
 
 type AccountStreamMinutesViewedAdaptiveGroupsSum {
   minutesViewed: uint64!
+}
+
+# Beta. Cloudflare Turnstile aggregated events with adaptive sampling
+type AccountTurnstileAdaptiveGroups {
+  avg: AccountTurnstileAdaptiveGroupsAvg
+  # Number of Cloudflare Turnstile events processed
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountTurnstileAdaptiveGroupsDimensions
+}
+
+type AccountTurnstileAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountTurnstileAdaptiveGroupsDimensions {
+  # The action tag of the challenge event
+  action: string!
+  # The date the challenge event was emitted
+  date: Date!
+  # The date and time the challenge event was emitted
+  datetime: Time!
+  # The date and time the challenge event was emitted truncated to the day
+  datetimeDay: Time!
+  # The date and time the challenge event was emitted truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the challenge event was emitted truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the challenge event was emitted truncated to a multiple of 30 minutes
+  datetimeHalfOfHour: Time!
+  # The date and time the challenge event was emitted truncated to the hour
+  datetimeHour: Time!
+  # The date and time the challenge event was emitted truncated to the minute
+  datetimeMinute: Time!
+  # The type of the Cloudflare Turnstile event
+  eventType: string!
+  # The sitekey of the widget associated with the event
+  siteKey: string!
+}
+
+input AccountTurnstileAdaptiveGroupsFilter_InputObject {
+  AND: [AccountTurnstileAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountTurnstileAdaptiveGroupsFilter_InputObject!]
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeDay: Time
+  datetimeDay_geq: Time
+  datetimeDay_gt: Time
+  datetimeDay_in: [Time!]
+  datetimeDay_leq: Time
+  datetimeDay_lt: Time
+  datetimeDay_neq: Time
+  datetimeDay_notin: [Time!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHalfOfHour: Time
+  datetimeHalfOfHour_geq: Time
+  datetimeHalfOfHour_gt: Time
+  datetimeHalfOfHour_in: [Time!]
+  datetimeHalfOfHour_leq: Time
+  datetimeHalfOfHour_lt: Time
+  datetimeHalfOfHour_neq: Time
+  datetimeHalfOfHour_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
+  siteKey: string
+  siteKey_geq: string
+  siteKey_gt: string
+  siteKey_in: [string!]
+  siteKey_leq: string
+  siteKey_like: string
+  siteKey_lt: string
+  siteKey_neq: string
+  siteKey_notin: [string!]
+  siteKey_notlike: string
+}
+
+enum AccountTurnstileAdaptiveGroupsOrderBy {
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeDay ascending
+  datetimeDay_ASC
+  # datetimeDay descending
+  datetimeDay_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHalfOfHour ascending
+  datetimeHalfOfHour_ASC
+  # datetimeHalfOfHour descending
+  datetimeHalfOfHour_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
+  # siteKey ascending
+  siteKey_ASC
+  # siteKey descending
+  siteKey_DESC
 }
 
 # Beta. Aggregated video streaming buffer event metrics with adaptive sampling
@@ -19930,12 +20000,20 @@ type ZoneFirewallEventsAdaptive {
   source: string!
   # visitor's user-agent string
   userAgent: string!
-  # Beta. Overall request score generated by the WAF ML detection module
+  # Beta. Overall request score generated by the WAF detection module
+  wafAttackScore: uint8!
+  # Deprecated. Please use wafAttackScore
   wafMlAttackScore: uint8!
-  # Beta. WAF ML score for an SQLi attack
+  # Deprecated. Please use wafSqliAttackScore
   wafMlSqliAttackScore: uint8!
-  # Beta. WAF ML score for an XSS attack
+  # Deprecated. Please use wafXssAttackScore
   wafMlXssAttackScore: uint8!
+  # Beta. WAF score for a RCE attack
+  wafRceAttackScore: uint8!
+  # Beta. WAF score for a SQLi attack
+  wafSqliAttackScore: uint8!
+  # Beta. WAF score for a XSS attack
+  wafXssAttackScore: uint8!
 }
 
 # Aggregated Firewall events with adaptive sampling grouped by time
@@ -19977,12 +20055,20 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   httpApplicationVersion: uint64!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
-  # Beta. Overall request score generated by the WAF ML detection module
+  # Beta. Overall request score generated by the WAF detection module
+  wafAttackScore: uint8!
+  # Deprecated. Please use wafAttackScore
   wafMlAttackScore: uint8!
-  # Beta. WAF ML score for an SQLi attack
+  # Deprecated. Please use wafSqliAttackScore
   wafMlSqliAttackScore: uint8!
-  # Beta. WAF ML score for an XSS attack
+  # Deprecated. Please use wafXssAttackScore
   wafMlXssAttackScore: uint8!
+  # Beta. WAF score for a RCE attack
+  wafRceAttackScore: uint8!
+  # Beta. WAF score for a SQLi attack
+  wafSqliAttackScore: uint8!
+  # Beta. WAF score for a XSS attack
+  wafXssAttackScore: uint8!
 }
 
 input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
@@ -20374,6 +20460,14 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   userAgent_neq: string
   userAgent_notin: [string!]
   userAgent_notlike: string
+  wafAttackScore: uint8
+  wafAttackScore_geq: uint8
+  wafAttackScore_gt: uint8
+  wafAttackScore_in: bytes
+  wafAttackScore_leq: uint8
+  wafAttackScore_lt: uint8
+  wafAttackScore_neq: uint8
+  wafAttackScore_notin: bytes
   wafMlAttackScore: uint8
   wafMlAttackScore_geq: uint8
   wafMlAttackScore_gt: uint8
@@ -20398,6 +20492,30 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   wafMlXssAttackScore_lt: uint8
   wafMlXssAttackScore_neq: uint8
   wafMlXssAttackScore_notin: bytes
+  wafRceAttackScore: uint8
+  wafRceAttackScore_geq: uint8
+  wafRceAttackScore_gt: uint8
+  wafRceAttackScore_in: bytes
+  wafRceAttackScore_leq: uint8
+  wafRceAttackScore_lt: uint8
+  wafRceAttackScore_neq: uint8
+  wafRceAttackScore_notin: bytes
+  wafSqliAttackScore: uint8
+  wafSqliAttackScore_geq: uint8
+  wafSqliAttackScore_gt: uint8
+  wafSqliAttackScore_in: bytes
+  wafSqliAttackScore_leq: uint8
+  wafSqliAttackScore_lt: uint8
+  wafSqliAttackScore_neq: uint8
+  wafSqliAttackScore_notin: bytes
+  wafXssAttackScore: uint8
+  wafXssAttackScore_geq: uint8
+  wafXssAttackScore_gt: uint8
+  wafXssAttackScore_in: bytes
+  wafXssAttackScore_leq: uint8
+  wafXssAttackScore_lt: uint8
+  wafXssAttackScore_neq: uint8
+  wafXssAttackScore_notin: bytes
 }
 
 enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
@@ -20461,6 +20579,10 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   visibility_ASC
   # visibility descending
   visibility_DESC
+  # wafAttackScore ascending
+  wafAttackScore_ASC
+  # wafAttackScore descending
+  wafAttackScore_DESC
   # wafMlAttackScore ascending
   wafMlAttackScore_ASC
   # wafMlAttackScore descending
@@ -20473,6 +20595,18 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   wafMlXssAttackScore_ASC
   # wafMlXssAttackScore descending
   wafMlXssAttackScore_DESC
+  # wafRceAttackScore ascending
+  wafRceAttackScore_ASC
+  # wafRceAttackScore descending
+  wafRceAttackScore_DESC
+  # wafSqliAttackScore ascending
+  wafSqliAttackScore_ASC
+  # wafSqliAttackScore descending
+  wafSqliAttackScore_DESC
+  # wafXssAttackScore ascending
+  wafXssAttackScore_ASC
+  # wafXssAttackScore descending
+  wafXssAttackScore_DESC
 }
 
 input ZoneFirewallEventsAdaptiveFilter_InputObject {
@@ -20908,6 +21042,14 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   userAgent_neq: string
   userAgent_notin: [string!]
   userAgent_notlike: string
+  wafAttackScore: uint8
+  wafAttackScore_geq: uint8
+  wafAttackScore_gt: uint8
+  wafAttackScore_in: bytes
+  wafAttackScore_leq: uint8
+  wafAttackScore_lt: uint8
+  wafAttackScore_neq: uint8
+  wafAttackScore_notin: bytes
   wafMlAttackScore: uint8
   wafMlAttackScore_geq: uint8
   wafMlAttackScore_gt: uint8
@@ -20932,6 +21074,30 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   wafMlXssAttackScore_lt: uint8
   wafMlXssAttackScore_neq: uint8
   wafMlXssAttackScore_notin: bytes
+  wafRceAttackScore: uint8
+  wafRceAttackScore_geq: uint8
+  wafRceAttackScore_gt: uint8
+  wafRceAttackScore_in: bytes
+  wafRceAttackScore_leq: uint8
+  wafRceAttackScore_lt: uint8
+  wafRceAttackScore_neq: uint8
+  wafRceAttackScore_notin: bytes
+  wafSqliAttackScore: uint8
+  wafSqliAttackScore_geq: uint8
+  wafSqliAttackScore_gt: uint8
+  wafSqliAttackScore_in: bytes
+  wafSqliAttackScore_leq: uint8
+  wafSqliAttackScore_lt: uint8
+  wafSqliAttackScore_neq: uint8
+  wafSqliAttackScore_notin: bytes
+  wafXssAttackScore: uint8
+  wafXssAttackScore_geq: uint8
+  wafXssAttackScore_gt: uint8
+  wafXssAttackScore_in: bytes
+  wafXssAttackScore_leq: uint8
+  wafXssAttackScore_lt: uint8
+  wafXssAttackScore_neq: uint8
+  wafXssAttackScore_notin: bytes
 }
 
 # Aggregated Firewall events with adaptive sampling
@@ -21031,12 +21197,20 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   source: string!
   # visitor's user-agent string
   userAgent: string!
-  # Beta. Overall request score generated by the WAF ML detection module
+  # Beta. Overall request score generated by the WAF detection module
+  wafAttackScore: uint8!
+  # Deprecated. Please use wafAttackScore
   wafMlAttackScore: uint8!
-  # Beta. WAF ML score for an SQLi attack
+  # Deprecated. Please use wafSqliAttackScore
   wafMlSqliAttackScore: uint8!
-  # Beta. WAF ML score for an XSS attack
+  # Deprecated. Please use wafXssAttackScore
   wafMlXssAttackScore: uint8!
+  # Beta. WAF score for a RCE attack
+  wafRceAttackScore: uint8!
+  # Beta. WAF score for a SQLi attack
+  wafSqliAttackScore: uint8!
+  # Beta. WAF score for a XSS attack
+  wafXssAttackScore: uint8!
 }
 
 input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
@@ -21428,6 +21602,14 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   userAgent_neq: string
   userAgent_notin: [string!]
   userAgent_notlike: string
+  wafAttackScore: uint8
+  wafAttackScore_geq: uint8
+  wafAttackScore_gt: uint8
+  wafAttackScore_in: bytes
+  wafAttackScore_leq: uint8
+  wafAttackScore_lt: uint8
+  wafAttackScore_neq: uint8
+  wafAttackScore_notin: bytes
   wafMlAttackScore: uint8
   wafMlAttackScore_geq: uint8
   wafMlAttackScore_gt: uint8
@@ -21452,6 +21634,30 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   wafMlXssAttackScore_lt: uint8
   wafMlXssAttackScore_neq: uint8
   wafMlXssAttackScore_notin: bytes
+  wafRceAttackScore: uint8
+  wafRceAttackScore_geq: uint8
+  wafRceAttackScore_gt: uint8
+  wafRceAttackScore_in: bytes
+  wafRceAttackScore_leq: uint8
+  wafRceAttackScore_lt: uint8
+  wafRceAttackScore_neq: uint8
+  wafRceAttackScore_notin: bytes
+  wafSqliAttackScore: uint8
+  wafSqliAttackScore_geq: uint8
+  wafSqliAttackScore_gt: uint8
+  wafSqliAttackScore_in: bytes
+  wafSqliAttackScore_leq: uint8
+  wafSqliAttackScore_lt: uint8
+  wafSqliAttackScore_neq: uint8
+  wafSqliAttackScore_notin: bytes
+  wafXssAttackScore: uint8
+  wafXssAttackScore_geq: uint8
+  wafXssAttackScore_gt: uint8
+  wafXssAttackScore_in: bytes
+  wafXssAttackScore_leq: uint8
+  wafXssAttackScore_lt: uint8
+  wafXssAttackScore_neq: uint8
+  wafXssAttackScore_notin: bytes
 }
 
 enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
@@ -21631,6 +21837,10 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   visibility_ASC
   # visibility descending
   visibility_DESC
+  # wafAttackScore ascending
+  wafAttackScore_ASC
+  # wafAttackScore descending
+  wafAttackScore_DESC
   # wafMlAttackScore ascending
   wafMlAttackScore_ASC
   # wafMlAttackScore descending
@@ -21643,6 +21853,18 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   wafMlXssAttackScore_ASC
   # wafMlXssAttackScore descending
   wafMlXssAttackScore_DESC
+  # wafRceAttackScore ascending
+  wafRceAttackScore_ASC
+  # wafRceAttackScore descending
+  wafRceAttackScore_DESC
+  # wafSqliAttackScore ascending
+  wafSqliAttackScore_ASC
+  # wafSqliAttackScore descending
+  wafSqliAttackScore_DESC
+  # wafXssAttackScore ascending
+  wafXssAttackScore_ASC
+  # wafXssAttackScore descending
+  wafXssAttackScore_DESC
 }
 
 type ZoneFirewallEventsAdaptiveMetadataElem {
@@ -21841,6 +22063,10 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   visibility_ASC
   # visibility descending
   visibility_DESC
+  # wafAttackScore ascending
+  wafAttackScore_ASC
+  # wafAttackScore descending
+  wafAttackScore_DESC
   # wafMlAttackScore ascending
   wafMlAttackScore_ASC
   # wafMlAttackScore descending
@@ -21853,6 +22079,18 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   wafMlXssAttackScore_ASC
   # wafMlXssAttackScore descending
   wafMlXssAttackScore_DESC
+  # wafRceAttackScore ascending
+  wafRceAttackScore_ASC
+  # wafRceAttackScore descending
+  wafRceAttackScore_DESC
+  # wafSqliAttackScore ascending
+  wafSqliAttackScore_ASC
+  # wafSqliAttackScore descending
+  wafSqliAttackScore_DESC
+  # wafXssAttackScore ascending
+  wafXssAttackScore_ASC
+  # wafXssAttackScore descending
+  wafXssAttackScore_DESC
 }
 
 # Raw Health Check events with adaptive sampling
