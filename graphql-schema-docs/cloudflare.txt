@@ -75,6 +75,9 @@ Zone-level datasets:
   synAvgPps1mGroups
   waitingRoomAnalyticsAdaptive
   waitingRoomAnalyticsAdaptiveGroups
+* zarazActionsAdaptiveGroups
+* zarazTrackAdaptiveGroups
+* zarazTriggersAdaptiveGroups
 
 * = available in all Cloudflare plans
 
@@ -13342,6 +13345,8 @@ type AccountPagesFunctionsInvocationsAdaptiveGroups {
   avg: AccountPagesFunctionsInvocationsAdaptiveGroupsAvg
   # List of dimensions to group by
   dimensions: AccountPagesFunctionsInvocationsAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: AccountPagesFunctionsInvocationsAdaptiveGroupsQuantiles
   # The sum of values for a metric per dimension
   sum: AccountPagesFunctionsInvocationsAdaptiveGroupsSum
 }
@@ -13364,6 +13369,8 @@ type AccountPagesFunctionsInvocationsAdaptiveGroupsDimensions {
   scriptName: string!
   # Status of the worker invocation
   status: string!
+  # Usage model of the worker invocation
+  usageModel: string!
 }
 
 input AccountPagesFunctionsInvocationsAdaptiveGroupsFilter_InputObject {
@@ -13421,6 +13428,16 @@ input AccountPagesFunctionsInvocationsAdaptiveGroupsFilter_InputObject {
   status_neq: string
   status_notin: [string!]
   status_notlike: string
+  usageModel: string
+  usageModel_geq: string
+  usageModel_gt: string
+  usageModel_in: [string!]
+  usageModel_leq: string
+  usageModel_like: string
+  usageModel_lt: string
+  usageModel_neq: string
+  usageModel_notin: [string!]
+  usageModel_notlike: string
 }
 
 enum AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy {
@@ -13444,6 +13461,22 @@ enum AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # quantiles(cpuTimeP50) ascending
+  quantiles_cpuTimeP50_ASC
+  # quantiles(cpuTimeP50) descending
+  quantiles_cpuTimeP50_DESC
+  # quantiles(cpuTimeP75) ascending
+  quantiles_cpuTimeP75_ASC
+  # quantiles(cpuTimeP75) descending
+  quantiles_cpuTimeP75_DESC
+  # quantiles(cpuTimeP999) ascending
+  quantiles_cpuTimeP999_ASC
+  # quantiles(cpuTimeP999) descending
+  quantiles_cpuTimeP999_DESC
+  # quantiles(cpuTimeP99) ascending
+  quantiles_cpuTimeP99_ASC
+  # quantiles(cpuTimeP99) descending
+  quantiles_cpuTimeP99_DESC
   # scriptName ascending
   scriptName_ASC
   # scriptName descending
@@ -13480,6 +13513,21 @@ enum AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy {
   sum_wallTime_ASC
   # sum(wallTime) descending
   sum_wallTime_DESC
+  # usageModel ascending
+  usageModel_ASC
+  # usageModel descending
+  usageModel_DESC
+}
+
+type AccountPagesFunctionsInvocationsAdaptiveGroupsQuantiles {
+  # CPU time 50th percentile - microseconds
+  cpuTimeP50: float32!
+  # CPU time 75th percentile - microseconds
+  cpuTimeP75: float32!
+  # CPU time 99th percentile - microseconds
+  cpuTimeP99: float32!
+  # CPU time 99.9th percentile - microseconds
+  cpuTimeP999: float32!
 }
 
 type AccountPagesFunctionsInvocationsAdaptiveGroupsSum {
@@ -18422,6 +18470,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # constantScriptId ascending
+  constantScriptId_ASC
+  # constantScriptId descending
+  constantScriptId_DESC
   # date ascending
   date_ASC
   # date descending
@@ -18911,6 +18963,10 @@ enum AccountWorkersSubrequestsAdaptiveGroupsOrderBy {
   cacheStatus_ASC
   # cacheStatus descending
   cacheStatus_DESC
+  # constantScriptId ascending
+  constantScriptId_ASC
+  # constantScriptId descending
+  constantScriptId_DESC
   # date ascending
   date_ASC
   # date descending
@@ -19248,6 +19304,12 @@ type zone {
   waitingRoomAnalyticsAdaptive(filter: ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneWaitingRoomAnalyticsAdaptiveOrderBy!]): [ZoneWaitingRoomAnalyticsAdaptive!]!
   # Beta. Aggregated waiting room analytics logs with adaptive sampling
   waitingRoomAnalyticsAdaptiveGroups(filter: ZoneWaitingRoomAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy!]): [ZoneWaitingRoomAnalyticsAdaptiveGroups!]!
+  # Zaraz Actions Analytics
+  zarazActionsAdaptiveGroups(filter: ZoneZarazActionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazActionsAdaptiveGroupsOrderBy!]): [ZoneZarazActionsAdaptiveGroups!]!
+  # Zaraz Track Analytics - counts zaraz.track calls
+  zarazTrackAdaptiveGroups(filter: ZoneZarazTrackAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazTrackAdaptiveGroupsOrderBy!]): [ZoneZarazTrackAdaptiveGroups!]!
+  # Zaraz Triggers Analytics (a trigger is a set of rules that can trigger a zaraz action)
+  zarazTriggersAdaptiveGroups(filter: ZoneZarazTriggersAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazTriggersAdaptiveGroupsOrderBy!]): [ZoneZarazTriggersAdaptiveGroups!]!
   zoneTag: string!
 }
 
@@ -23723,6 +23785,14 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   userAgentBrowser: string!
   # OS parsed from the user agent
   userAgentOS: string!
+  # Beta. Overall request score generated by the WAF detection module
+  wafAttackScore: uint8!
+  # Beta. WAF score for a RCE attack
+  wafRceAttackScore: uint8!
+  # Beta. WAF score for a SQLi attack
+  wafSqliAttackScore: uint8!
+  # Beta. WAF score for a XSS attack
+  wafXssAttackScore: uint8!
   # The X-Requested-With header of the client request
   xRequestedWith: string!
 }
@@ -24148,6 +24218,38 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   userAgent_neq: string
   userAgent_notin: [string!]
   userAgent_notlike: string
+  wafAttackScore: uint8
+  wafAttackScore_geq: uint8
+  wafAttackScore_gt: uint8
+  wafAttackScore_in: bytes
+  wafAttackScore_leq: uint8
+  wafAttackScore_lt: uint8
+  wafAttackScore_neq: uint8
+  wafAttackScore_notin: bytes
+  wafRceAttackScore: uint8
+  wafRceAttackScore_geq: uint8
+  wafRceAttackScore_gt: uint8
+  wafRceAttackScore_in: bytes
+  wafRceAttackScore_leq: uint8
+  wafRceAttackScore_lt: uint8
+  wafRceAttackScore_neq: uint8
+  wafRceAttackScore_notin: bytes
+  wafSqliAttackScore: uint8
+  wafSqliAttackScore_geq: uint8
+  wafSqliAttackScore_gt: uint8
+  wafSqliAttackScore_in: bytes
+  wafSqliAttackScore_leq: uint8
+  wafSqliAttackScore_lt: uint8
+  wafSqliAttackScore_neq: uint8
+  wafSqliAttackScore_notin: bytes
+  wafXssAttackScore: uint8
+  wafXssAttackScore_geq: uint8
+  wafXssAttackScore_gt: uint8
+  wafXssAttackScore_in: bytes
+  wafXssAttackScore_leq: uint8
+  wafXssAttackScore_lt: uint8
+  wafXssAttackScore_neq: uint8
+  wafXssAttackScore_notin: bytes
   xRequestedWith: string
   xRequestedWith_geq: string
   xRequestedWith_gt: string
@@ -24369,6 +24471,22 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   userAgent_ASC
   # userAgent descending
   userAgent_DESC
+  # wafAttackScore ascending
+  wafAttackScore_ASC
+  # wafAttackScore descending
+  wafAttackScore_DESC
+  # wafRceAttackScore ascending
+  wafRceAttackScore_ASC
+  # wafRceAttackScore descending
+  wafRceAttackScore_DESC
+  # wafSqliAttackScore ascending
+  wafSqliAttackScore_ASC
+  # wafSqliAttackScore descending
+  wafSqliAttackScore_DESC
+  # wafXssAttackScore ascending
+  wafXssAttackScore_ASC
+  # wafXssAttackScore descending
+  wafXssAttackScore_DESC
   # xRequestedWith ascending
   xRequestedWith_ASC
   # xRequestedWith descending
@@ -26085,6 +26203,9 @@ type ZoneSettings {
   synAvgPps1mGroups: Settings!
   waitingRoomAnalyticsAdaptive: Settings!
   waitingRoomAnalyticsAdaptiveGroups: Settings!
+  zarazActionsAdaptiveGroups: Settings!
+  zarazTrackAdaptiveGroups: Settings!
+  zarazTriggersAdaptiveGroups: Settings!
 }
 
 # Minutely rollups of average packets per second sent in a SYN attack
@@ -26908,4 +27029,363 @@ enum ZoneWaitingRoomAnalyticsAdaptiveOrderBy {
   waitingRoomName_ASC
   # waitingRoomName descending
   waitingRoomName_DESC
+}
+
+# Zaraz Actions Analytics
+type ZoneZarazActionsAdaptiveGroups {
+  # Number of processed Zaraz Actions
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneZarazActionsAdaptiveGroupsDimensions
+}
+
+type ZoneZarazActionsAdaptiveGroupsDimensions {
+  # Action Name
+  actionName: string!
+  # The date the Action was triggered
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Tool Name
+  toolName: string!
+}
+
+input ZoneZarazActionsAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneZarazActionsAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneZarazActionsAdaptiveGroupsFilter_InputObject!]
+  actionName: string
+  actionName_geq: string
+  actionName_gt: string
+  actionName_in: [string!]
+  actionName_leq: string
+  actionName_like: string
+  actionName_lt: string
+  actionName_neq: string
+  actionName_notin: [string!]
+  actionName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  toolName: string
+  toolName_geq: string
+  toolName_gt: string
+  toolName_in: [string!]
+  toolName_leq: string
+  toolName_like: string
+  toolName_lt: string
+  toolName_neq: string
+  toolName_notin: [string!]
+  toolName_notlike: string
+}
+
+enum ZoneZarazActionsAdaptiveGroupsOrderBy {
+  # actionName ascending
+  actionName_ASC
+  # actionName descending
+  actionName_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # toolName ascending
+  toolName_ASC
+  # toolName descending
+  toolName_DESC
+}
+
+# Zaraz Track Analytics - counts zaraz.track calls
+type ZoneZarazTrackAdaptiveGroups {
+  # Number of processed Zaraz Track requests
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneZarazTrackAdaptiveGroupsDimensions
+}
+
+type ZoneZarazTrackAdaptiveGroupsDimensions {
+  # Date when track was called
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Track Name
+  trackName: string!
+  # The URL from where Track was called
+  urlPath: string!
+}
+
+input ZoneZarazTrackAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneZarazTrackAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneZarazTrackAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  trackName: string
+  trackName_geq: string
+  trackName_gt: string
+  trackName_in: [string!]
+  trackName_leq: string
+  trackName_like: string
+  trackName_lt: string
+  trackName_neq: string
+  trackName_notin: [string!]
+  trackName_notlike: string
+  urlPath: string
+  urlPath_geq: string
+  urlPath_gt: string
+  urlPath_in: [string!]
+  urlPath_leq: string
+  urlPath_like: string
+  urlPath_lt: string
+  urlPath_neq: string
+  urlPath_notin: [string!]
+  urlPath_notlike: string
+}
+
+enum ZoneZarazTrackAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # trackName ascending
+  trackName_ASC
+  # trackName descending
+  trackName_DESC
+  # urlPath ascending
+  urlPath_ASC
+  # urlPath descending
+  urlPath_DESC
+}
+
+# Zaraz Triggers Analytics (a trigger is a set of rules that can trigger a zaraz action)
+type ZoneZarazTriggersAdaptiveGroups {
+  # Number of processed Zaraz Triggers
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneZarazTriggersAdaptiveGroupsDimensions
+}
+
+type ZoneZarazTriggersAdaptiveGroupsDimensions {
+  # The date when trigger was triggerd
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Trigger Name
+  triggerName: string!
+}
+
+input ZoneZarazTriggersAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneZarazTriggersAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneZarazTriggersAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  triggerName: string
+  triggerName_geq: string
+  triggerName_gt: string
+  triggerName_in: [string!]
+  triggerName_leq: string
+  triggerName_like: string
+  triggerName_lt: string
+  triggerName_neq: string
+  triggerName_notin: [string!]
+  triggerName_notlike: string
+}
+
+enum ZoneZarazTriggersAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # triggerName ascending
+  triggerName_ASC
+  # triggerName descending
+  triggerName_DESC
 }
