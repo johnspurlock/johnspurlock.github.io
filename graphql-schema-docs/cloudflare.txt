@@ -39,6 +39,7 @@ Account-level datasets:
 * rumWebVitalsEventsAdaptive
 * rumWebVitalsEventsAdaptiveGroups
   spectrumNetworkAnalyticsAdaptiveGroups
+  storageTraces
 * streamMinutesViewedAdaptiveGroups
 * turnstileAdaptiveGroups
 * videoBufferEventsAdaptiveGroups
@@ -200,6 +201,8 @@ type account {
   settings: AccountSettings
   # Network analytics data for Spectrum traffic
   spectrumNetworkAnalyticsAdaptiveGroups(filter: AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountSpectrumNetworkAnalyticsAdaptiveGroups!]!
+  # Storage Tracing Information
+  storageTraces(filter: AccountStorageTracesFilter_InputObject!, limit: uint64!, orderBy: [AccountStorageTracesOrderBy!]): [AccountStorageTraces!]!
   # A high-level summary of Cloudflare Stream minutes viewed.
   streamMinutesViewedAdaptiveGroups(filter: AccountStreamMinutesViewedAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountStreamMinutesViewedAdaptiveGroupsOrderBy!]): [AccountStreamMinutesViewedAdaptiveGroups!]!
   # Beta. Cloudflare Turnstile aggregated events with adaptive sampling
@@ -5768,6 +5771,8 @@ type AccountGatewayL4DownstreamSessionsAdaptiveGroupsSum {
   bytesRecvd: uint64!
   # Total bytes sent in this session
   bytesSent: uint64!
+  # Total bytes retransmitted by client in this session
+  clientBytesRetransmitted: uint64!
   # Total number of packets received in this session
   packetsRecvd: uint64!
   # Total number of packets sent in this session
@@ -6344,6 +6349,8 @@ type AccountGatewayL4UpstreamSessionsAdaptiveGroupsSum {
   bytesSent: uint64!
   # Time taken for CONNECT request handling in microseconds
   connectReqHandlingDurationUs: int64!
+  # Total bytes retransmitted by origin in this session
+  originBytesRetransmitted: uint64!
   # Total number of packets received in this session
   packetsRecvd: uint64!
   # Total number of packets sent in this session
@@ -15872,6 +15879,7 @@ type AccountSettings {
   rumWebVitalsEventsAdaptive: Settings!
   rumWebVitalsEventsAdaptiveGroups: Settings!
   spectrumNetworkAnalyticsAdaptiveGroups: Settings!
+  storageTraces: Settings!
   streamMinutesViewedAdaptiveGroups: Settings!
   turnstileAdaptiveGroups: Settings!
   videoBufferEventsAdaptiveGroups: Settings!
@@ -17139,6 +17147,112 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsSum {
   bits: uint64!
   # Sum of packets received
   packets: uint64!
+}
+
+# Storage Tracing Information
+type AccountStorageTraces {
+  # The container that this resource is stored under.
+  containerId: string!
+  # Storage trace timestamp
+  datetime: Time!
+  # The identifier to access this resource in the container.
+  resourceId: string!
+  # The identifier of the storage service that houses the resourse.
+  serviceId: string!
+  # The ID that this trace entry is under.
+  traceId: string!
+  # The AccountID of the user who owns the resource.
+  userAccountId: string!
+}
+
+input AccountStorageTracesFilter_InputObject {
+  AND: [AccountStorageTracesFilter_InputObject!]
+  OR: [AccountStorageTracesFilter_InputObject!]
+  containerId: string
+  containerId_geq: string
+  containerId_gt: string
+  containerId_in: [string!]
+  containerId_leq: string
+  containerId_like: string
+  containerId_lt: string
+  containerId_neq: string
+  containerId_notin: [string!]
+  containerId_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  resourceId: string
+  resourceId_geq: string
+  resourceId_gt: string
+  resourceId_in: [string!]
+  resourceId_leq: string
+  resourceId_like: string
+  resourceId_lt: string
+  resourceId_neq: string
+  resourceId_notin: [string!]
+  resourceId_notlike: string
+  serviceId: string
+  serviceId_geq: string
+  serviceId_gt: string
+  serviceId_in: [string!]
+  serviceId_leq: string
+  serviceId_like: string
+  serviceId_lt: string
+  serviceId_neq: string
+  serviceId_notin: [string!]
+  serviceId_notlike: string
+  traceId: string
+  traceId_geq: string
+  traceId_gt: string
+  traceId_in: [string!]
+  traceId_leq: string
+  traceId_like: string
+  traceId_lt: string
+  traceId_neq: string
+  traceId_notin: [string!]
+  traceId_notlike: string
+  userAccountId: string
+  userAccountId_geq: string
+  userAccountId_gt: string
+  userAccountId_in: [string!]
+  userAccountId_leq: string
+  userAccountId_like: string
+  userAccountId_lt: string
+  userAccountId_neq: string
+  userAccountId_notin: [string!]
+  userAccountId_notlike: string
+}
+
+enum AccountStorageTracesOrderBy {
+  # containerId ascending
+  containerId_ASC
+  # containerId descending
+  containerId_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # resourceId ascending
+  resourceId_ASC
+  # resourceId descending
+  resourceId_DESC
+  # serviceId ascending
+  serviceId_ASC
+  # serviceId descending
+  serviceId_DESC
+  # traceId ascending
+  traceId_ASC
+  # traceId descending
+  traceId_DESC
+  # userAccountId ascending
+  userAccountId_ASC
+  # userAccountId descending
+  userAccountId_DESC
 }
 
 # A high-level summary of Cloudflare Stream minutes viewed.
@@ -19324,6 +19438,8 @@ type ZoneCacheReserveOperationsAdaptiveGroups {
 type ZoneCacheReserveOperationsAdaptiveGroupsDimensions {
   # Status of the R2 operation
   actionStatus: string!
+  # Name of bucket containing stored objects
+  bucketName: string!
   # Request timestamp, truncated to start of a day
   date: Date!
   # Request timestamp
@@ -19349,6 +19465,16 @@ input ZoneCacheReserveOperationsAdaptiveGroupsFilter_InputObject {
   actionStatus_neq: string
   actionStatus_notin: [string!]
   actionStatus_notlike: string
+  bucketName: string
+  bucketName_geq: string
+  bucketName_gt: string
+  bucketName_in: [string!]
+  bucketName_leq: string
+  bucketName_like: string
+  bucketName_lt: string
+  bucketName_neq: string
+  bucketName_notin: [string!]
+  bucketName_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -19398,6 +19524,10 @@ enum ZoneCacheReserveOperationsAdaptiveGroupsOrderBy {
   actionStatus_ASC
   # actionStatus descending
   actionStatus_DESC
+  # bucketName ascending
+  bucketName_ASC
+  # bucketName descending
+  bucketName_DESC
   # date ascending
   date_ASC
   # date descending
@@ -19440,6 +19570,8 @@ type ZoneCacheReserveStorageAdaptiveGroups {
 type ZoneCacheReserveStorageAdaptiveGroupsDimensions {
   # Hash of bucket containing stored objects
   bucketHash: string!
+  # Name of bucket containing stored objects
+  bucketName: string!
   # Storage sample timestamp, truncated to start of a day
   date: Date!
   # Storage sample timestamp
@@ -19463,6 +19595,16 @@ input ZoneCacheReserveStorageAdaptiveGroupsFilter_InputObject {
   bucketHash_neq: string
   bucketHash_notin: [string!]
   bucketHash_notlike: string
+  bucketName: string
+  bucketName_geq: string
+  bucketName_gt: string
+  bucketName_in: [string!]
+  bucketName_leq: string
+  bucketName_like: string
+  bucketName_lt: string
+  bucketName_neq: string
+  bucketName_notin: [string!]
+  bucketName_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -19507,6 +19649,10 @@ enum ZoneCacheReserveStorageAdaptiveGroupsOrderBy {
   bucketHash_ASC
   # bucketHash descending
   bucketHash_DESC
+  # bucketName ascending
+  bucketName_ASC
+  # bucketName descending
+  bucketName_DESC
   # date ascending
   date_ASC
   # date descending
