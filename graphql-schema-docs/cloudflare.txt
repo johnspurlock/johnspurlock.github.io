@@ -7,6 +7,8 @@ Account-level datasets:
 * durableObjectsPeriodicGroups
 * durableObjectsStorageGroups
 * durableObjectsSubrequestsAdaptiveGroups
+* firewallEventsAdaptive
+  firewallEventsAdaptiveGroups
   flowtrackdNetworkAnalyticsAdaptiveGroups
   gatewayL4DownstreamSessionsAdaptiveGroups
 * gatewayL4SessionsAdaptiveGroups
@@ -136,6 +138,10 @@ type account {
   durableObjectsStorageGroups(filter: AccountDurableObjectsStorageGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsStorageGroupsOrderBy!]): [AccountDurableObjectsStorageGroups!]!
   # Durable Objects subrequests with adaptive sampling
   durableObjectsSubrequestsAdaptiveGroups(filter: AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy!]): [AccountDurableObjectsSubrequestsAdaptiveGroups!]!
+  # Raw Firewall events with adaptive sampling
+  firewallEventsAdaptive(filter: AccountFirewallEventsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountFirewallEventsAdaptiveOrderBy!]): [AccountFirewallEventsAdaptive!]!
+  # Aggregated Firewall events with adaptive sampling
+  firewallEventsAdaptiveGroups(filter: AccountFirewallEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountFirewallEventsAdaptiveGroupsOrderBy!]): [AccountFirewallEventsAdaptiveGroups!]!
   # Network analytics data for flowtrackd
   flowtrackdNetworkAnalyticsAdaptiveGroups(filter: AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountFlowtrackdNetworkAnalyticsAdaptiveGroups!]!
   # Aggregated metrics about downstream (client to edge) L4 Gateway Sessions. Metrics are reported on TCP or UDP session close
@@ -4151,6 +4157,1602 @@ type AccountDurableObjectsSubrequestsAdaptiveGroupsSum {
 
 input AccountFilter_InputObject {
   accountTag: string!
+}
+
+# Raw Firewall events with adaptive sampling
+type AccountFirewallEventsAdaptive {
+  # The code of the first-class action the Cloudflare Firewall took on this request
+  action: string!
+  # API Gateway endpoint matched at the edge
+  apiGatewayMatchedEndpoint: string!
+  # The final score originated from bot management detections.
+  botScore: uint8!
+  # Name of the source detection which generated the bot management score.
+  botScoreSrcName: string!
+  # The ASN of the visitor as string
+  clientASNDescription: string!
+  # The ASN number of the visitor
+  clientAsn: string!
+  # Country from which request originated
+  clientCountryName: string!
+  # The visitor's IP address (IPv4 or IPv6)
+  clientIP: string!
+  # The classification of the visitor's IP address, possible values are: unknown | clean | badHost | searchEngine | allowlist | greylist | monitoringService | securityScanner | noRecord | scan | backupService | mobilePlatform | tor
+  clientIPClass: string!
+  # The referer host
+  clientRefererHost: string!
+  # The referer path requested by visitor
+  clientRefererPath: string!
+  # The referer query-string was requested by the visitor
+  clientRefererQuery: string!
+  # The referer url scheme requested by the visitor
+  clientRefererScheme: string!
+  # The HTTP hostname requested by the visitor
+  clientRequestHTTPHost: string!
+  # The HTTP method used by the visitor
+  clientRequestHTTPMethodName: string!
+  # The version of HTTP protocol requested by the visitor
+  clientRequestHTTPProtocol: string!
+  # The path requested by visitor
+  clientRequestPath: string!
+  # The query-string was requested by the visitor
+  clientRequestQuery: string!
+  # The url scheme requested by the visitor
+  clientRequestScheme: string!
+  # 1 if not all contents for this request where successfully scanned, else 0
+  contentScanHasFailed: uint8!
+  # Number of scannable content objects that are malicious
+  contentScanNumMaliciousObj: uint8!
+  # Number of scannable content objects
+  contentScanNumObj: uint8!
+  # Array of scan results in order of detection
+  contentScanObjResults: string!
+  # Array of content types in order of detection
+  contentScanObjTypes: string!
+  # The date the event occurred at the edge
+  date: Date!
+  # The date and time the event occurred at the edge
+  datetime: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the event occurred at the edge truncated to hours
+  datetimeHour: Time!
+  # The date and time the event occurred at the edge truncated to the minute
+  datetimeMinute: Time!
+  # The airport code of the Cloudflare datacenter that served this request
+  edgeColoName: string!
+  # HTTP response status code returned to browser
+  edgeResponseStatus: uint16!
+  # Unique identifier for HTTP Application
+  httpApplication: string!
+  # Version associated with HTTP Application
+  httpApplicationVersion: uint64!
+  # MD5 hash of the JA3 TLS fingerprint
+  ja3Hash: string!
+  # The kind of event, currently only possible values are: firewall
+  kind: string!
+  # Rules match index in the chain
+  matchIndex: uint16!
+  # Additional product-specific information. Metadata is organized in key:value pairs
+  metadata: [AccountFirewallEventsAdaptiveMetadataElem!]!
+  # HTTP origin response status code returned to browser
+  originResponseStatus: uint16!
+  # The RayId of the request that issued the challenge/jschallenge
+  originatorRayName: string!
+  # The RayId of the request
+  rayName: string!
+  # The ref-field is a user-defined rule identifier that can be set via the API for some firewall products and allows users to label their rules individually alongside cloudflare provided identifiers (only available to entitled customers)
+  ref: string!
+  # The Cloudflare security product-specific RuleId triggered by this request
+  ruleId: string!
+  # The Cloudflare security product-specific RulesetId triggered by this request
+  rulesetId: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # The Cloudflare security product triggered by this request
+  source: string!
+  # visitor's user-agent string
+  userAgent: string!
+  # Beta. Overall request score generated by the WAF detection module
+  wafAttackScore: uint8!
+  # Deprecated. Please use wafAttackScore
+  wafMlAttackScore: uint8!
+  # Deprecated. Please use wafSqliAttackScore
+  wafMlSqliAttackScore: uint8!
+  # Deprecated. Please use wafXssAttackScore
+  wafMlXssAttackScore: uint8!
+  # Beta. WAF score for a RCE attack
+  wafRceAttackScore: uint8!
+  # Beta. WAF score for a SQLi attack
+  wafSqliAttackScore: uint8!
+  # Beta. WAF score for a XSS attack
+  wafXssAttackScore: uint8!
+}
+
+input AccountFirewallEventsAdaptiveFilter_InputObject {
+  AND: [AccountFirewallEventsAdaptiveFilter_InputObject!]
+  OR: [AccountFirewallEventsAdaptiveFilter_InputObject!]
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
+  apiGatewayMatchedEndpoint: string
+  apiGatewayMatchedEndpoint_geq: string
+  apiGatewayMatchedEndpoint_gt: string
+  apiGatewayMatchedEndpoint_in: [string!]
+  apiGatewayMatchedEndpoint_leq: string
+  apiGatewayMatchedEndpoint_like: string
+  apiGatewayMatchedEndpoint_lt: string
+  apiGatewayMatchedEndpoint_neq: string
+  apiGatewayMatchedEndpoint_notin: [string!]
+  apiGatewayMatchedEndpoint_notlike: string
+  botScore: uint8
+  botScoreSrcName: string
+  botScoreSrcName_geq: string
+  botScoreSrcName_gt: string
+  botScoreSrcName_in: [string!]
+  botScoreSrcName_leq: string
+  botScoreSrcName_like: string
+  botScoreSrcName_lt: string
+  botScoreSrcName_neq: string
+  botScoreSrcName_notin: [string!]
+  botScoreSrcName_notlike: string
+  botScore_geq: uint8
+  botScore_gt: uint8
+  botScore_in: bytes
+  botScore_leq: uint8
+  botScore_lt: uint8
+  botScore_neq: uint8
+  botScore_notin: bytes
+  clientASNDescription: string
+  clientASNDescription_geq: string
+  clientASNDescription_gt: string
+  clientASNDescription_in: [string!]
+  clientASNDescription_leq: string
+  clientASNDescription_like: string
+  clientASNDescription_lt: string
+  clientASNDescription_neq: string
+  clientASNDescription_notin: [string!]
+  clientASNDescription_notlike: string
+  clientAsn: string
+  clientAsn_geq: string
+  clientAsn_gt: string
+  clientAsn_in: [string!]
+  clientAsn_leq: string
+  clientAsn_like: string
+  clientAsn_lt: string
+  clientAsn_neq: string
+  clientAsn_notin: [string!]
+  clientAsn_notlike: string
+  clientCountryName: string
+  clientCountryName_geq: string
+  clientCountryName_gt: string
+  clientCountryName_in: [string!]
+  clientCountryName_leq: string
+  clientCountryName_like: string
+  clientCountryName_lt: string
+  clientCountryName_neq: string
+  clientCountryName_notin: [string!]
+  clientCountryName_notlike: string
+  clientIP: string
+  clientIPClass: string
+  clientIPClass_geq: string
+  clientIPClass_gt: string
+  clientIPClass_in: [string!]
+  clientIPClass_leq: string
+  clientIPClass_like: string
+  clientIPClass_lt: string
+  clientIPClass_neq: string
+  clientIPClass_notin: [string!]
+  clientIPClass_notlike: string
+  clientIP_geq: string
+  clientIP_gt: string
+  clientIP_in: [string!]
+  clientIP_leq: string
+  clientIP_like: string
+  clientIP_lt: string
+  clientIP_neq: string
+  clientIP_notin: [string!]
+  clientIP_notlike: string
+  clientRefererHost: string
+  clientRefererHost_geq: string
+  clientRefererHost_gt: string
+  clientRefererHost_in: [string!]
+  clientRefererHost_leq: string
+  clientRefererHost_like: string
+  clientRefererHost_lt: string
+  clientRefererHost_neq: string
+  clientRefererHost_notin: [string!]
+  clientRefererHost_notlike: string
+  clientRefererPath: string
+  clientRefererPath_geq: string
+  clientRefererPath_gt: string
+  clientRefererPath_in: [string!]
+  clientRefererPath_leq: string
+  clientRefererPath_like: string
+  clientRefererPath_lt: string
+  clientRefererPath_neq: string
+  clientRefererPath_notin: [string!]
+  clientRefererPath_notlike: string
+  clientRefererQuery: string
+  clientRefererQuery_geq: string
+  clientRefererQuery_gt: string
+  clientRefererQuery_in: [string!]
+  clientRefererQuery_leq: string
+  clientRefererQuery_like: string
+  clientRefererQuery_lt: string
+  clientRefererQuery_neq: string
+  clientRefererQuery_notin: [string!]
+  clientRefererQuery_notlike: string
+  clientRefererScheme: string
+  clientRefererScheme_geq: string
+  clientRefererScheme_gt: string
+  clientRefererScheme_in: [string!]
+  clientRefererScheme_leq: string
+  clientRefererScheme_like: string
+  clientRefererScheme_lt: string
+  clientRefererScheme_neq: string
+  clientRefererScheme_notin: [string!]
+  clientRefererScheme_notlike: string
+  clientRequestHTTPHost: string
+  clientRequestHTTPHost_geq: string
+  clientRequestHTTPHost_gt: string
+  clientRequestHTTPHost_in: [string!]
+  clientRequestHTTPHost_leq: string
+  clientRequestHTTPHost_like: string
+  clientRequestHTTPHost_lt: string
+  clientRequestHTTPHost_neq: string
+  clientRequestHTTPHost_notin: [string!]
+  clientRequestHTTPHost_notlike: string
+  clientRequestHTTPMethodName: string
+  clientRequestHTTPMethodName_geq: string
+  clientRequestHTTPMethodName_gt: string
+  clientRequestHTTPMethodName_in: [string!]
+  clientRequestHTTPMethodName_leq: string
+  clientRequestHTTPMethodName_like: string
+  clientRequestHTTPMethodName_lt: string
+  clientRequestHTTPMethodName_neq: string
+  clientRequestHTTPMethodName_notin: [string!]
+  clientRequestHTTPMethodName_notlike: string
+  clientRequestHTTPProtocol: string
+  clientRequestHTTPProtocol_geq: string
+  clientRequestHTTPProtocol_gt: string
+  clientRequestHTTPProtocol_in: [string!]
+  clientRequestHTTPProtocol_leq: string
+  clientRequestHTTPProtocol_like: string
+  clientRequestHTTPProtocol_lt: string
+  clientRequestHTTPProtocol_neq: string
+  clientRequestHTTPProtocol_notin: [string!]
+  clientRequestHTTPProtocol_notlike: string
+  clientRequestPath: string
+  clientRequestPath_geq: string
+  clientRequestPath_gt: string
+  clientRequestPath_in: [string!]
+  clientRequestPath_leq: string
+  clientRequestPath_like: string
+  clientRequestPath_lt: string
+  clientRequestPath_neq: string
+  clientRequestPath_notin: [string!]
+  clientRequestPath_notlike: string
+  clientRequestQuery: string
+  clientRequestQuery_geq: string
+  clientRequestQuery_gt: string
+  clientRequestQuery_in: [string!]
+  clientRequestQuery_leq: string
+  clientRequestQuery_like: string
+  clientRequestQuery_lt: string
+  clientRequestQuery_neq: string
+  clientRequestQuery_notin: [string!]
+  clientRequestQuery_notlike: string
+  clientRequestScheme: string
+  clientRequestScheme_geq: string
+  clientRequestScheme_gt: string
+  clientRequestScheme_in: [string!]
+  clientRequestScheme_leq: string
+  clientRequestScheme_like: string
+  clientRequestScheme_lt: string
+  clientRequestScheme_neq: string
+  clientRequestScheme_notin: [string!]
+  clientRequestScheme_notlike: string
+  contentScanHasFailed: uint8
+  contentScanHasFailed_geq: uint8
+  contentScanHasFailed_gt: uint8
+  contentScanHasFailed_in: bytes
+  contentScanHasFailed_leq: uint8
+  contentScanHasFailed_lt: uint8
+  contentScanHasFailed_neq: uint8
+  contentScanHasFailed_notin: bytes
+  contentScanNumMaliciousObj: uint8
+  contentScanNumMaliciousObj_geq: uint8
+  contentScanNumMaliciousObj_gt: uint8
+  contentScanNumMaliciousObj_in: bytes
+  contentScanNumMaliciousObj_leq: uint8
+  contentScanNumMaliciousObj_lt: uint8
+  contentScanNumMaliciousObj_neq: uint8
+  contentScanNumMaliciousObj_notin: bytes
+  contentScanNumObj: uint8
+  contentScanNumObj_geq: uint8
+  contentScanNumObj_gt: uint8
+  contentScanNumObj_in: bytes
+  contentScanNumObj_leq: uint8
+  contentScanNumObj_lt: uint8
+  contentScanNumObj_neq: uint8
+  contentScanNumObj_notin: bytes
+  contentScanObjResults: string
+  contentScanObjResults_geq: string
+  contentScanObjResults_gt: string
+  contentScanObjResults_in: [string!]
+  contentScanObjResults_leq: string
+  contentScanObjResults_like: string
+  contentScanObjResults_lt: string
+  contentScanObjResults_neq: string
+  contentScanObjResults_notin: [string!]
+  contentScanObjResults_notlike: string
+  contentScanObjTypes: string
+  contentScanObjTypes_geq: string
+  contentScanObjTypes_gt: string
+  contentScanObjTypes_in: [string!]
+  contentScanObjTypes_leq: string
+  contentScanObjTypes_like: string
+  contentScanObjTypes_lt: string
+  contentScanObjTypes_neq: string
+  contentScanObjTypes_notin: [string!]
+  contentScanObjTypes_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  edgeColoName: string
+  edgeColoName_geq: string
+  edgeColoName_gt: string
+  edgeColoName_in: [string!]
+  edgeColoName_leq: string
+  edgeColoName_like: string
+  edgeColoName_lt: string
+  edgeColoName_neq: string
+  edgeColoName_notin: [string!]
+  edgeColoName_notlike: string
+  edgeResponseStatus: uint16
+  edgeResponseStatus_geq: uint16
+  edgeResponseStatus_gt: uint16
+  edgeResponseStatus_in: [uint16!]
+  edgeResponseStatus_leq: uint16
+  edgeResponseStatus_lt: uint16
+  edgeResponseStatus_neq: uint16
+  edgeResponseStatus_notin: [uint16!]
+  httpApplication: string
+  httpApplicationVersion: uint64
+  httpApplicationVersion_geq: uint64
+  httpApplicationVersion_gt: uint64
+  httpApplicationVersion_in: [uint64!]
+  httpApplicationVersion_leq: uint64
+  httpApplicationVersion_lt: uint64
+  httpApplicationVersion_neq: uint64
+  httpApplicationVersion_notin: [uint64!]
+  httpApplication_geq: string
+  httpApplication_gt: string
+  httpApplication_in: [string!]
+  httpApplication_leq: string
+  httpApplication_like: string
+  httpApplication_lt: string
+  httpApplication_neq: string
+  httpApplication_notin: [string!]
+  httpApplication_notlike: string
+  ja3Hash: string
+  ja3Hash_geq: string
+  ja3Hash_gt: string
+  ja3Hash_in: [string!]
+  ja3Hash_leq: string
+  ja3Hash_like: string
+  ja3Hash_lt: string
+  ja3Hash_neq: string
+  ja3Hash_notin: [string!]
+  ja3Hash_notlike: string
+  kind: string
+  kind_geq: string
+  kind_gt: string
+  kind_in: [string!]
+  kind_leq: string
+  kind_like: string
+  kind_lt: string
+  kind_neq: string
+  kind_notin: [string!]
+  kind_notlike: string
+  matchIndex: uint16
+  matchIndex_geq: uint16
+  matchIndex_gt: uint16
+  matchIndex_in: [uint16!]
+  matchIndex_leq: uint16
+  matchIndex_lt: uint16
+  matchIndex_neq: uint16
+  matchIndex_notin: [uint16!]
+  originResponseStatus: uint16
+  originResponseStatus_geq: uint16
+  originResponseStatus_gt: uint16
+  originResponseStatus_in: [uint16!]
+  originResponseStatus_leq: uint16
+  originResponseStatus_lt: uint16
+  originResponseStatus_neq: uint16
+  originResponseStatus_notin: [uint16!]
+  originatorRayName: string
+  originatorRayName_geq: string
+  originatorRayName_gt: string
+  originatorRayName_in: [string!]
+  originatorRayName_leq: string
+  originatorRayName_like: string
+  originatorRayName_lt: string
+  originatorRayName_neq: string
+  originatorRayName_notin: [string!]
+  originatorRayName_notlike: string
+  rayName: string
+  rayName_geq: string
+  rayName_gt: string
+  rayName_in: [string!]
+  rayName_leq: string
+  rayName_like: string
+  rayName_lt: string
+  rayName_neq: string
+  rayName_notin: [string!]
+  rayName_notlike: string
+  ref: string
+  ref_geq: string
+  ref_gt: string
+  ref_in: [string!]
+  ref_leq: string
+  ref_like: string
+  ref_lt: string
+  ref_neq: string
+  ref_notin: [string!]
+  ref_notlike: string
+  ruleId: string
+  ruleId_geq: string
+  ruleId_gt: string
+  ruleId_in: [string!]
+  ruleId_leq: string
+  ruleId_like: string
+  ruleId_lt: string
+  ruleId_neq: string
+  ruleId_notin: [string!]
+  ruleId_notlike: string
+  rulesetId: string
+  rulesetId_geq: string
+  rulesetId_gt: string
+  rulesetId_in: [string!]
+  rulesetId_leq: string
+  rulesetId_like: string
+  rulesetId_lt: string
+  rulesetId_neq: string
+  rulesetId_notin: [string!]
+  rulesetId_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  source: string
+  source_geq: string
+  source_gt: string
+  source_in: [string!]
+  source_leq: string
+  source_like: string
+  source_lt: string
+  source_neq: string
+  source_notin: [string!]
+  source_notlike: string
+  userAgent: string
+  userAgent_geq: string
+  userAgent_gt: string
+  userAgent_in: [string!]
+  userAgent_leq: string
+  userAgent_like: string
+  userAgent_lt: string
+  userAgent_neq: string
+  userAgent_notin: [string!]
+  userAgent_notlike: string
+  wafAttackScore: uint8
+  wafAttackScore_geq: uint8
+  wafAttackScore_gt: uint8
+  wafAttackScore_in: bytes
+  wafAttackScore_leq: uint8
+  wafAttackScore_lt: uint8
+  wafAttackScore_neq: uint8
+  wafAttackScore_notin: bytes
+  wafMlAttackScore: uint8
+  wafMlAttackScore_geq: uint8
+  wafMlAttackScore_gt: uint8
+  wafMlAttackScore_in: bytes
+  wafMlAttackScore_leq: uint8
+  wafMlAttackScore_lt: uint8
+  wafMlAttackScore_neq: uint8
+  wafMlAttackScore_notin: bytes
+  wafMlSqliAttackScore: uint8
+  wafMlSqliAttackScore_geq: uint8
+  wafMlSqliAttackScore_gt: uint8
+  wafMlSqliAttackScore_in: bytes
+  wafMlSqliAttackScore_leq: uint8
+  wafMlSqliAttackScore_lt: uint8
+  wafMlSqliAttackScore_neq: uint8
+  wafMlSqliAttackScore_notin: bytes
+  wafMlXssAttackScore: uint8
+  wafMlXssAttackScore_geq: uint8
+  wafMlXssAttackScore_gt: uint8
+  wafMlXssAttackScore_in: bytes
+  wafMlXssAttackScore_leq: uint8
+  wafMlXssAttackScore_lt: uint8
+  wafMlXssAttackScore_neq: uint8
+  wafMlXssAttackScore_notin: bytes
+  wafRceAttackScore: uint8
+  wafRceAttackScore_geq: uint8
+  wafRceAttackScore_gt: uint8
+  wafRceAttackScore_in: bytes
+  wafRceAttackScore_leq: uint8
+  wafRceAttackScore_lt: uint8
+  wafRceAttackScore_neq: uint8
+  wafRceAttackScore_notin: bytes
+  wafSqliAttackScore: uint8
+  wafSqliAttackScore_geq: uint8
+  wafSqliAttackScore_gt: uint8
+  wafSqliAttackScore_in: bytes
+  wafSqliAttackScore_leq: uint8
+  wafSqliAttackScore_lt: uint8
+  wafSqliAttackScore_neq: uint8
+  wafSqliAttackScore_notin: bytes
+  wafXssAttackScore: uint8
+  wafXssAttackScore_geq: uint8
+  wafXssAttackScore_gt: uint8
+  wafXssAttackScore_in: bytes
+  wafXssAttackScore_leq: uint8
+  wafXssAttackScore_lt: uint8
+  wafXssAttackScore_neq: uint8
+  wafXssAttackScore_notin: bytes
+}
+
+# Aggregated Firewall events with adaptive sampling
+type AccountFirewallEventsAdaptiveGroups {
+  # The average value used for sample interval
+  avg: AccountFirewallEventsAdaptiveGroupsAvg
+  # The sum of sample interval values
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountFirewallEventsAdaptiveGroupsDimensions
+}
+
+type AccountFirewallEventsAdaptiveGroupsAvg {
+  sampleInterval: float64!
+}
+
+type AccountFirewallEventsAdaptiveGroupsDimensions {
+  # The code of the first-class action the Cloudflare Firewall took on this request
+  action: string!
+  # API Gateway endpoint matched at the edge
+  apiGatewayMatchedEndpoint: string!
+  # The final score originated from bot management detections.
+  botScore: uint8!
+  # Name of the source detection which generated the bot management score.
+  botScoreSrcName: string!
+  # The ASN of the visitor as string
+  clientASNDescription: string!
+  # The ASN number of the visitor
+  clientAsn: string!
+  # Country from which request originated
+  clientCountryName: string!
+  # The visitor's IP address (IPv4 or IPv6)
+  clientIP: string!
+  # The classification of the visitor's IP address, possible values are: unknown | clean | badHost | searchEngine | allowlist | greylist | monitoringService | securityScanner | noRecord | scan | backupService | mobilePlatform | tor
+  clientIPClass: string!
+  # The referer host
+  clientRefererHost: string!
+  # The referer path requested by visitor
+  clientRefererPath: string!
+  # The referer query-string was requested by the visitor
+  clientRefererQuery: string!
+  # The referer url scheme requested by the visitor
+  clientRefererScheme: string!
+  # The HTTP hostname requested by the visitor
+  clientRequestHTTPHost: string!
+  # The HTTP method used by the visitor
+  clientRequestHTTPMethodName: string!
+  # The version of HTTP protocol requested by the visitor
+  clientRequestHTTPProtocol: string!
+  # The path requested by visitor
+  clientRequestPath: string!
+  # The query-string was requested by the visitor
+  clientRequestQuery: string!
+  # The url scheme requested by the visitor
+  clientRequestScheme: string!
+  # The date the event occurred at the edge
+  date: Date!
+  # The date and time the event occurred at the edge
+  datetime: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the event occurred at the edge truncated to hours
+  datetimeHour: Time!
+  # The date and time the event occurred at the edge truncated to the minute
+  datetimeMinute: Time!
+  # The airport code of the Cloudflare datacenter that served this request
+  edgeColoName: string!
+  # HTTP response status code returned to browser
+  edgeResponseStatus: uint16!
+  # Unique identifier for HTTP Application
+  httpApplication: string!
+  # Version associated with HTTP Application
+  httpApplicationVersion: uint64!
+  # MD5 hash of the JA3 TLS fingerprint
+  ja3Hash: string!
+  # The kind of event, currently only possible values are: firewall
+  kind: string!
+  # Rules match index in the chain
+  matchIndex: uint16!
+  # HTTP origin response status code returned to browser
+  originResponseStatus: uint16!
+  # The RayId of the request that issued the challenge/jschallenge
+  originatorRayName: string!
+  # The RayId of the request
+  rayName: string!
+  # The ref-field is a user-defined rule identifier that can be set via the API for some firewall products and allows users to label their rules individually alongside cloudflare provided identifiers (only available to entitled customers)
+  ref: string!
+  # The Cloudflare security product-specific RuleId triggered by this request
+  ruleId: string!
+  # The Cloudflare security product-specific RulesetId triggered by this request
+  rulesetId: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # The Cloudflare security product triggered by this request
+  source: string!
+  # visitor's user-agent string
+  userAgent: string!
+  # Beta. Overall request score generated by the WAF detection module
+  wafAttackScore: uint8!
+  # Deprecated. Please use wafAttackScore
+  wafMlAttackScore: uint8!
+  # Deprecated. Please use wafSqliAttackScore
+  wafMlSqliAttackScore: uint8!
+  # Deprecated. Please use wafXssAttackScore
+  wafMlXssAttackScore: uint8!
+  # Beta. WAF score for a RCE attack
+  wafRceAttackScore: uint8!
+  # Beta. WAF score for a SQLi attack
+  wafSqliAttackScore: uint8!
+  # Beta. WAF score for a XSS attack
+  wafXssAttackScore: uint8!
+}
+
+input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountFirewallEventsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountFirewallEventsAdaptiveGroupsFilter_InputObject!]
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
+  apiGatewayMatchedEndpoint: string
+  apiGatewayMatchedEndpoint_geq: string
+  apiGatewayMatchedEndpoint_gt: string
+  apiGatewayMatchedEndpoint_in: [string!]
+  apiGatewayMatchedEndpoint_leq: string
+  apiGatewayMatchedEndpoint_like: string
+  apiGatewayMatchedEndpoint_lt: string
+  apiGatewayMatchedEndpoint_neq: string
+  apiGatewayMatchedEndpoint_notin: [string!]
+  apiGatewayMatchedEndpoint_notlike: string
+  botScore: uint8
+  botScoreSrcName: string
+  botScoreSrcName_geq: string
+  botScoreSrcName_gt: string
+  botScoreSrcName_in: [string!]
+  botScoreSrcName_leq: string
+  botScoreSrcName_like: string
+  botScoreSrcName_lt: string
+  botScoreSrcName_neq: string
+  botScoreSrcName_notin: [string!]
+  botScoreSrcName_notlike: string
+  botScore_geq: uint8
+  botScore_gt: uint8
+  botScore_in: bytes
+  botScore_leq: uint8
+  botScore_lt: uint8
+  botScore_neq: uint8
+  botScore_notin: bytes
+  clientASNDescription: string
+  clientASNDescription_geq: string
+  clientASNDescription_gt: string
+  clientASNDescription_in: [string!]
+  clientASNDescription_leq: string
+  clientASNDescription_like: string
+  clientASNDescription_lt: string
+  clientASNDescription_neq: string
+  clientASNDescription_notin: [string!]
+  clientASNDescription_notlike: string
+  clientAsn: string
+  clientAsn_geq: string
+  clientAsn_gt: string
+  clientAsn_in: [string!]
+  clientAsn_leq: string
+  clientAsn_like: string
+  clientAsn_lt: string
+  clientAsn_neq: string
+  clientAsn_notin: [string!]
+  clientAsn_notlike: string
+  clientCountryName: string
+  clientCountryName_geq: string
+  clientCountryName_gt: string
+  clientCountryName_in: [string!]
+  clientCountryName_leq: string
+  clientCountryName_like: string
+  clientCountryName_lt: string
+  clientCountryName_neq: string
+  clientCountryName_notin: [string!]
+  clientCountryName_notlike: string
+  clientIP: string
+  clientIPClass: string
+  clientIPClass_geq: string
+  clientIPClass_gt: string
+  clientIPClass_in: [string!]
+  clientIPClass_leq: string
+  clientIPClass_like: string
+  clientIPClass_lt: string
+  clientIPClass_neq: string
+  clientIPClass_notin: [string!]
+  clientIPClass_notlike: string
+  clientIP_geq: string
+  clientIP_gt: string
+  clientIP_in: [string!]
+  clientIP_leq: string
+  clientIP_like: string
+  clientIP_lt: string
+  clientIP_neq: string
+  clientIP_notin: [string!]
+  clientIP_notlike: string
+  clientRefererHost: string
+  clientRefererHost_geq: string
+  clientRefererHost_gt: string
+  clientRefererHost_in: [string!]
+  clientRefererHost_leq: string
+  clientRefererHost_like: string
+  clientRefererHost_lt: string
+  clientRefererHost_neq: string
+  clientRefererHost_notin: [string!]
+  clientRefererHost_notlike: string
+  clientRefererPath: string
+  clientRefererPath_geq: string
+  clientRefererPath_gt: string
+  clientRefererPath_in: [string!]
+  clientRefererPath_leq: string
+  clientRefererPath_like: string
+  clientRefererPath_lt: string
+  clientRefererPath_neq: string
+  clientRefererPath_notin: [string!]
+  clientRefererPath_notlike: string
+  clientRefererQuery: string
+  clientRefererQuery_geq: string
+  clientRefererQuery_gt: string
+  clientRefererQuery_in: [string!]
+  clientRefererQuery_leq: string
+  clientRefererQuery_like: string
+  clientRefererQuery_lt: string
+  clientRefererQuery_neq: string
+  clientRefererQuery_notin: [string!]
+  clientRefererQuery_notlike: string
+  clientRefererScheme: string
+  clientRefererScheme_geq: string
+  clientRefererScheme_gt: string
+  clientRefererScheme_in: [string!]
+  clientRefererScheme_leq: string
+  clientRefererScheme_like: string
+  clientRefererScheme_lt: string
+  clientRefererScheme_neq: string
+  clientRefererScheme_notin: [string!]
+  clientRefererScheme_notlike: string
+  clientRequestHTTPHost: string
+  clientRequestHTTPHost_geq: string
+  clientRequestHTTPHost_gt: string
+  clientRequestHTTPHost_in: [string!]
+  clientRequestHTTPHost_leq: string
+  clientRequestHTTPHost_like: string
+  clientRequestHTTPHost_lt: string
+  clientRequestHTTPHost_neq: string
+  clientRequestHTTPHost_notin: [string!]
+  clientRequestHTTPHost_notlike: string
+  clientRequestHTTPMethodName: string
+  clientRequestHTTPMethodName_geq: string
+  clientRequestHTTPMethodName_gt: string
+  clientRequestHTTPMethodName_in: [string!]
+  clientRequestHTTPMethodName_leq: string
+  clientRequestHTTPMethodName_like: string
+  clientRequestHTTPMethodName_lt: string
+  clientRequestHTTPMethodName_neq: string
+  clientRequestHTTPMethodName_notin: [string!]
+  clientRequestHTTPMethodName_notlike: string
+  clientRequestHTTPProtocol: string
+  clientRequestHTTPProtocol_geq: string
+  clientRequestHTTPProtocol_gt: string
+  clientRequestHTTPProtocol_in: [string!]
+  clientRequestHTTPProtocol_leq: string
+  clientRequestHTTPProtocol_like: string
+  clientRequestHTTPProtocol_lt: string
+  clientRequestHTTPProtocol_neq: string
+  clientRequestHTTPProtocol_notin: [string!]
+  clientRequestHTTPProtocol_notlike: string
+  clientRequestPath: string
+  clientRequestPath_geq: string
+  clientRequestPath_gt: string
+  clientRequestPath_in: [string!]
+  clientRequestPath_leq: string
+  clientRequestPath_like: string
+  clientRequestPath_lt: string
+  clientRequestPath_neq: string
+  clientRequestPath_notin: [string!]
+  clientRequestPath_notlike: string
+  clientRequestQuery: string
+  clientRequestQuery_geq: string
+  clientRequestQuery_gt: string
+  clientRequestQuery_in: [string!]
+  clientRequestQuery_leq: string
+  clientRequestQuery_like: string
+  clientRequestQuery_lt: string
+  clientRequestQuery_neq: string
+  clientRequestQuery_notin: [string!]
+  clientRequestQuery_notlike: string
+  clientRequestScheme: string
+  clientRequestScheme_geq: string
+  clientRequestScheme_gt: string
+  clientRequestScheme_in: [string!]
+  clientRequestScheme_leq: string
+  clientRequestScheme_like: string
+  clientRequestScheme_lt: string
+  clientRequestScheme_neq: string
+  clientRequestScheme_notin: [string!]
+  clientRequestScheme_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  edgeColoName: string
+  edgeColoName_geq: string
+  edgeColoName_gt: string
+  edgeColoName_in: [string!]
+  edgeColoName_leq: string
+  edgeColoName_like: string
+  edgeColoName_lt: string
+  edgeColoName_neq: string
+  edgeColoName_notin: [string!]
+  edgeColoName_notlike: string
+  edgeResponseStatus: uint16
+  edgeResponseStatus_geq: uint16
+  edgeResponseStatus_gt: uint16
+  edgeResponseStatus_in: [uint16!]
+  edgeResponseStatus_leq: uint16
+  edgeResponseStatus_lt: uint16
+  edgeResponseStatus_neq: uint16
+  edgeResponseStatus_notin: [uint16!]
+  httpApplication: string
+  httpApplicationVersion: uint64
+  httpApplicationVersion_geq: uint64
+  httpApplicationVersion_gt: uint64
+  httpApplicationVersion_in: [uint64!]
+  httpApplicationVersion_leq: uint64
+  httpApplicationVersion_lt: uint64
+  httpApplicationVersion_neq: uint64
+  httpApplicationVersion_notin: [uint64!]
+  httpApplication_geq: string
+  httpApplication_gt: string
+  httpApplication_in: [string!]
+  httpApplication_leq: string
+  httpApplication_like: string
+  httpApplication_lt: string
+  httpApplication_neq: string
+  httpApplication_notin: [string!]
+  httpApplication_notlike: string
+  ja3Hash: string
+  ja3Hash_geq: string
+  ja3Hash_gt: string
+  ja3Hash_in: [string!]
+  ja3Hash_leq: string
+  ja3Hash_like: string
+  ja3Hash_lt: string
+  ja3Hash_neq: string
+  ja3Hash_notin: [string!]
+  ja3Hash_notlike: string
+  kind: string
+  kind_geq: string
+  kind_gt: string
+  kind_in: [string!]
+  kind_leq: string
+  kind_like: string
+  kind_lt: string
+  kind_neq: string
+  kind_notin: [string!]
+  kind_notlike: string
+  matchIndex: uint16
+  matchIndex_geq: uint16
+  matchIndex_gt: uint16
+  matchIndex_in: [uint16!]
+  matchIndex_leq: uint16
+  matchIndex_lt: uint16
+  matchIndex_neq: uint16
+  matchIndex_notin: [uint16!]
+  originResponseStatus: uint16
+  originResponseStatus_geq: uint16
+  originResponseStatus_gt: uint16
+  originResponseStatus_in: [uint16!]
+  originResponseStatus_leq: uint16
+  originResponseStatus_lt: uint16
+  originResponseStatus_neq: uint16
+  originResponseStatus_notin: [uint16!]
+  originatorRayName: string
+  originatorRayName_geq: string
+  originatorRayName_gt: string
+  originatorRayName_in: [string!]
+  originatorRayName_leq: string
+  originatorRayName_like: string
+  originatorRayName_lt: string
+  originatorRayName_neq: string
+  originatorRayName_notin: [string!]
+  originatorRayName_notlike: string
+  rayName: string
+  rayName_geq: string
+  rayName_gt: string
+  rayName_in: [string!]
+  rayName_leq: string
+  rayName_like: string
+  rayName_lt: string
+  rayName_neq: string
+  rayName_notin: [string!]
+  rayName_notlike: string
+  ref: string
+  ref_geq: string
+  ref_gt: string
+  ref_in: [string!]
+  ref_leq: string
+  ref_like: string
+  ref_lt: string
+  ref_neq: string
+  ref_notin: [string!]
+  ref_notlike: string
+  ruleId: string
+  ruleId_geq: string
+  ruleId_gt: string
+  ruleId_in: [string!]
+  ruleId_leq: string
+  ruleId_like: string
+  ruleId_lt: string
+  ruleId_neq: string
+  ruleId_notin: [string!]
+  ruleId_notlike: string
+  rulesetId: string
+  rulesetId_geq: string
+  rulesetId_gt: string
+  rulesetId_in: [string!]
+  rulesetId_leq: string
+  rulesetId_like: string
+  rulesetId_lt: string
+  rulesetId_neq: string
+  rulesetId_notin: [string!]
+  rulesetId_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  source: string
+  source_geq: string
+  source_gt: string
+  source_in: [string!]
+  source_leq: string
+  source_like: string
+  source_lt: string
+  source_neq: string
+  source_notin: [string!]
+  source_notlike: string
+  userAgent: string
+  userAgent_geq: string
+  userAgent_gt: string
+  userAgent_in: [string!]
+  userAgent_leq: string
+  userAgent_like: string
+  userAgent_lt: string
+  userAgent_neq: string
+  userAgent_notin: [string!]
+  userAgent_notlike: string
+  wafAttackScore: uint8
+  wafAttackScore_geq: uint8
+  wafAttackScore_gt: uint8
+  wafAttackScore_in: bytes
+  wafAttackScore_leq: uint8
+  wafAttackScore_lt: uint8
+  wafAttackScore_neq: uint8
+  wafAttackScore_notin: bytes
+  wafMlAttackScore: uint8
+  wafMlAttackScore_geq: uint8
+  wafMlAttackScore_gt: uint8
+  wafMlAttackScore_in: bytes
+  wafMlAttackScore_leq: uint8
+  wafMlAttackScore_lt: uint8
+  wafMlAttackScore_neq: uint8
+  wafMlAttackScore_notin: bytes
+  wafMlSqliAttackScore: uint8
+  wafMlSqliAttackScore_geq: uint8
+  wafMlSqliAttackScore_gt: uint8
+  wafMlSqliAttackScore_in: bytes
+  wafMlSqliAttackScore_leq: uint8
+  wafMlSqliAttackScore_lt: uint8
+  wafMlSqliAttackScore_neq: uint8
+  wafMlSqliAttackScore_notin: bytes
+  wafMlXssAttackScore: uint8
+  wafMlXssAttackScore_geq: uint8
+  wafMlXssAttackScore_gt: uint8
+  wafMlXssAttackScore_in: bytes
+  wafMlXssAttackScore_leq: uint8
+  wafMlXssAttackScore_lt: uint8
+  wafMlXssAttackScore_neq: uint8
+  wafMlXssAttackScore_notin: bytes
+  wafRceAttackScore: uint8
+  wafRceAttackScore_geq: uint8
+  wafRceAttackScore_gt: uint8
+  wafRceAttackScore_in: bytes
+  wafRceAttackScore_leq: uint8
+  wafRceAttackScore_lt: uint8
+  wafRceAttackScore_neq: uint8
+  wafRceAttackScore_notin: bytes
+  wafSqliAttackScore: uint8
+  wafSqliAttackScore_geq: uint8
+  wafSqliAttackScore_gt: uint8
+  wafSqliAttackScore_in: bytes
+  wafSqliAttackScore_leq: uint8
+  wafSqliAttackScore_lt: uint8
+  wafSqliAttackScore_neq: uint8
+  wafSqliAttackScore_notin: bytes
+  wafXssAttackScore: uint8
+  wafXssAttackScore_geq: uint8
+  wafXssAttackScore_gt: uint8
+  wafXssAttackScore_in: bytes
+  wafXssAttackScore_leq: uint8
+  wafXssAttackScore_lt: uint8
+  wafXssAttackScore_neq: uint8
+  wafXssAttackScore_notin: bytes
+}
+
+enum AccountFirewallEventsAdaptiveGroupsOrderBy {
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # apiGatewayMatchedEndpoint ascending
+  apiGatewayMatchedEndpoint_ASC
+  # apiGatewayMatchedEndpoint descending
+  apiGatewayMatchedEndpoint_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # botScoreSrcName ascending
+  botScoreSrcName_ASC
+  # botScoreSrcName descending
+  botScoreSrcName_DESC
+  # botScore ascending
+  botScore_ASC
+  # botScore descending
+  botScore_DESC
+  # clientASNDescription ascending
+  clientASNDescription_ASC
+  # clientASNDescription descending
+  clientASNDescription_DESC
+  # clientAsn ascending
+  clientAsn_ASC
+  # clientAsn descending
+  clientAsn_DESC
+  # clientCountryName ascending
+  clientCountryName_ASC
+  # clientCountryName descending
+  clientCountryName_DESC
+  # clientIPClass ascending
+  clientIPClass_ASC
+  # clientIPClass descending
+  clientIPClass_DESC
+  # clientIP ascending
+  clientIP_ASC
+  # clientIP descending
+  clientIP_DESC
+  # clientRefererHost ascending
+  clientRefererHost_ASC
+  # clientRefererHost descending
+  clientRefererHost_DESC
+  # clientRefererPath ascending
+  clientRefererPath_ASC
+  # clientRefererPath descending
+  clientRefererPath_DESC
+  # clientRefererQuery ascending
+  clientRefererQuery_ASC
+  # clientRefererQuery descending
+  clientRefererQuery_DESC
+  # clientRefererScheme ascending
+  clientRefererScheme_ASC
+  # clientRefererScheme descending
+  clientRefererScheme_DESC
+  # clientRequestHTTPHost ascending
+  clientRequestHTTPHost_ASC
+  # clientRequestHTTPHost descending
+  clientRequestHTTPHost_DESC
+  # clientRequestHTTPMethodName ascending
+  clientRequestHTTPMethodName_ASC
+  # clientRequestHTTPMethodName descending
+  clientRequestHTTPMethodName_DESC
+  # clientRequestHTTPProtocol ascending
+  clientRequestHTTPProtocol_ASC
+  # clientRequestHTTPProtocol descending
+  clientRequestHTTPProtocol_DESC
+  # clientRequestPath ascending
+  clientRequestPath_ASC
+  # clientRequestPath descending
+  clientRequestPath_DESC
+  # clientRequestQuery ascending
+  clientRequestQuery_ASC
+  # clientRequestQuery descending
+  clientRequestQuery_DESC
+  # clientRequestScheme ascending
+  clientRequestScheme_ASC
+  # clientRequestScheme descending
+  clientRequestScheme_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # edgeColoName ascending
+  edgeColoName_ASC
+  # edgeColoName descending
+  edgeColoName_DESC
+  # edgeResponseStatus ascending
+  edgeResponseStatus_ASC
+  # edgeResponseStatus descending
+  edgeResponseStatus_DESC
+  # httpApplicationVersion ascending
+  httpApplicationVersion_ASC
+  # httpApplicationVersion descending
+  httpApplicationVersion_DESC
+  # httpApplication ascending
+  httpApplication_ASC
+  # httpApplication descending
+  httpApplication_DESC
+  # ja3Hash ascending
+  ja3Hash_ASC
+  # ja3Hash descending
+  ja3Hash_DESC
+  # kind ascending
+  kind_ASC
+  # kind descending
+  kind_DESC
+  # matchIndex ascending
+  matchIndex_ASC
+  # matchIndex descending
+  matchIndex_DESC
+  # originResponseStatus ascending
+  originResponseStatus_ASC
+  # originResponseStatus descending
+  originResponseStatus_DESC
+  # originatorRayName ascending
+  originatorRayName_ASC
+  # originatorRayName descending
+  originatorRayName_DESC
+  # rayName ascending
+  rayName_ASC
+  # rayName descending
+  rayName_DESC
+  # ref ascending
+  ref_ASC
+  # ref descending
+  ref_DESC
+  # ruleId ascending
+  ruleId_ASC
+  # ruleId descending
+  ruleId_DESC
+  # rulesetId ascending
+  rulesetId_ASC
+  # rulesetId descending
+  rulesetId_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # source ascending
+  source_ASC
+  # source descending
+  source_DESC
+  # userAgent ascending
+  userAgent_ASC
+  # userAgent descending
+  userAgent_DESC
+  # visibility ascending
+  visibility_ASC
+  # visibility descending
+  visibility_DESC
+  # wafAttackScore ascending
+  wafAttackScore_ASC
+  # wafAttackScore descending
+  wafAttackScore_DESC
+  # wafMlAttackScore ascending
+  wafMlAttackScore_ASC
+  # wafMlAttackScore descending
+  wafMlAttackScore_DESC
+  # wafMlSqliAttackScore ascending
+  wafMlSqliAttackScore_ASC
+  # wafMlSqliAttackScore descending
+  wafMlSqliAttackScore_DESC
+  # wafMlXssAttackScore ascending
+  wafMlXssAttackScore_ASC
+  # wafMlXssAttackScore descending
+  wafMlXssAttackScore_DESC
+  # wafRceAttackScore ascending
+  wafRceAttackScore_ASC
+  # wafRceAttackScore descending
+  wafRceAttackScore_DESC
+  # wafSqliAttackScore ascending
+  wafSqliAttackScore_ASC
+  # wafSqliAttackScore descending
+  wafSqliAttackScore_DESC
+  # wafXssAttackScore ascending
+  wafXssAttackScore_ASC
+  # wafXssAttackScore descending
+  wafXssAttackScore_DESC
+}
+
+type AccountFirewallEventsAdaptiveMetadataElem {
+  # The key of the metadata. Key format can vary by Cloudflare security product and can change over time.
+  key: string!
+  # The value of the metadata. Value format can vary by Cloudflare security product and can change over time.
+  value: string!
+}
+
+enum AccountFirewallEventsAdaptiveOrderBy {
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # apiGatewayMatchedEndpoint ascending
+  apiGatewayMatchedEndpoint_ASC
+  # apiGatewayMatchedEndpoint descending
+  apiGatewayMatchedEndpoint_DESC
+  # botScoreSrcName ascending
+  botScoreSrcName_ASC
+  # botScoreSrcName descending
+  botScoreSrcName_DESC
+  # botScore ascending
+  botScore_ASC
+  # botScore descending
+  botScore_DESC
+  # clientASNDescription ascending
+  clientASNDescription_ASC
+  # clientASNDescription descending
+  clientASNDescription_DESC
+  # clientAsn ascending
+  clientAsn_ASC
+  # clientAsn descending
+  clientAsn_DESC
+  # clientCountryName ascending
+  clientCountryName_ASC
+  # clientCountryName descending
+  clientCountryName_DESC
+  # clientIPClass ascending
+  clientIPClass_ASC
+  # clientIPClass descending
+  clientIPClass_DESC
+  # clientIP ascending
+  clientIP_ASC
+  # clientIP descending
+  clientIP_DESC
+  # clientRefererHost ascending
+  clientRefererHost_ASC
+  # clientRefererHost descending
+  clientRefererHost_DESC
+  # clientRefererPath ascending
+  clientRefererPath_ASC
+  # clientRefererPath descending
+  clientRefererPath_DESC
+  # clientRefererQuery ascending
+  clientRefererQuery_ASC
+  # clientRefererQuery descending
+  clientRefererQuery_DESC
+  # clientRefererScheme ascending
+  clientRefererScheme_ASC
+  # clientRefererScheme descending
+  clientRefererScheme_DESC
+  # clientRequestHTTPHost ascending
+  clientRequestHTTPHost_ASC
+  # clientRequestHTTPHost descending
+  clientRequestHTTPHost_DESC
+  # clientRequestHTTPMethodName ascending
+  clientRequestHTTPMethodName_ASC
+  # clientRequestHTTPMethodName descending
+  clientRequestHTTPMethodName_DESC
+  # clientRequestHTTPProtocol ascending
+  clientRequestHTTPProtocol_ASC
+  # clientRequestHTTPProtocol descending
+  clientRequestHTTPProtocol_DESC
+  # clientRequestPath ascending
+  clientRequestPath_ASC
+  # clientRequestPath descending
+  clientRequestPath_DESC
+  # clientRequestQuery ascending
+  clientRequestQuery_ASC
+  # clientRequestQuery descending
+  clientRequestQuery_DESC
+  # clientRequestScheme ascending
+  clientRequestScheme_ASC
+  # clientRequestScheme descending
+  clientRequestScheme_DESC
+  # contentScanHasFailed ascending
+  contentScanHasFailed_ASC
+  # contentScanHasFailed descending
+  contentScanHasFailed_DESC
+  # contentScanNumMaliciousObj ascending
+  contentScanNumMaliciousObj_ASC
+  # contentScanNumMaliciousObj descending
+  contentScanNumMaliciousObj_DESC
+  # contentScanNumObj ascending
+  contentScanNumObj_ASC
+  # contentScanNumObj descending
+  contentScanNumObj_DESC
+  # contentScanObjResults ascending
+  contentScanObjResults_ASC
+  # contentScanObjResults descending
+  contentScanObjResults_DESC
+  # contentScanObjTypes ascending
+  contentScanObjTypes_ASC
+  # contentScanObjTypes descending
+  contentScanObjTypes_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # edgeColoName ascending
+  edgeColoName_ASC
+  # edgeColoName descending
+  edgeColoName_DESC
+  # edgeResponseStatus ascending
+  edgeResponseStatus_ASC
+  # edgeResponseStatus descending
+  edgeResponseStatus_DESC
+  # httpApplicationVersion ascending
+  httpApplicationVersion_ASC
+  # httpApplicationVersion descending
+  httpApplicationVersion_DESC
+  # httpApplication ascending
+  httpApplication_ASC
+  # httpApplication descending
+  httpApplication_DESC
+  # ja3Hash ascending
+  ja3Hash_ASC
+  # ja3Hash descending
+  ja3Hash_DESC
+  # kind ascending
+  kind_ASC
+  # kind descending
+  kind_DESC
+  # matchIndex ascending
+  matchIndex_ASC
+  # matchIndex descending
+  matchIndex_DESC
+  # originResponseStatus ascending
+  originResponseStatus_ASC
+  # originResponseStatus descending
+  originResponseStatus_DESC
+  # originatorRayName ascending
+  originatorRayName_ASC
+  # originatorRayName descending
+  originatorRayName_DESC
+  # rayName ascending
+  rayName_ASC
+  # rayName descending
+  rayName_DESC
+  # ref ascending
+  ref_ASC
+  # ref descending
+  ref_DESC
+  # ruleId ascending
+  ruleId_ASC
+  # ruleId descending
+  ruleId_DESC
+  # rulesetId ascending
+  rulesetId_ASC
+  # rulesetId descending
+  rulesetId_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # source ascending
+  source_ASC
+  # source descending
+  source_DESC
+  # userAgent ascending
+  userAgent_ASC
+  # userAgent descending
+  userAgent_DESC
+  # visibility ascending
+  visibility_ASC
+  # visibility descending
+  visibility_DESC
+  # wafAttackScore ascending
+  wafAttackScore_ASC
+  # wafAttackScore descending
+  wafAttackScore_DESC
+  # wafMlAttackScore ascending
+  wafMlAttackScore_ASC
+  # wafMlAttackScore descending
+  wafMlAttackScore_DESC
+  # wafMlSqliAttackScore ascending
+  wafMlSqliAttackScore_ASC
+  # wafMlSqliAttackScore descending
+  wafMlSqliAttackScore_DESC
+  # wafMlXssAttackScore ascending
+  wafMlXssAttackScore_ASC
+  # wafMlXssAttackScore descending
+  wafMlXssAttackScore_DESC
+  # wafRceAttackScore ascending
+  wafRceAttackScore_ASC
+  # wafRceAttackScore descending
+  wafRceAttackScore_DESC
+  # wafSqliAttackScore ascending
+  wafSqliAttackScore_ASC
+  # wafSqliAttackScore descending
+  wafSqliAttackScore_DESC
+  # wafXssAttackScore ascending
+  wafXssAttackScore_ASC
+  # wafXssAttackScore descending
+  wafXssAttackScore_DESC
 }
 
 # Network analytics data for flowtrackd
@@ -13484,6 +15086,22 @@ enum AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy {
   quantiles_cpuTimeP99_ASC
   # quantiles(cpuTimeP99) descending
   quantiles_cpuTimeP99_DESC
+  # quantiles(durationP50) ascending
+  quantiles_durationP50_ASC
+  # quantiles(durationP50) descending
+  quantiles_durationP50_DESC
+  # quantiles(durationP75) ascending
+  quantiles_durationP75_ASC
+  # quantiles(durationP75) descending
+  quantiles_durationP75_DESC
+  # quantiles(durationP999) ascending
+  quantiles_durationP999_ASC
+  # quantiles(durationP999) descending
+  quantiles_durationP999_DESC
+  # quantiles(durationP99) ascending
+  quantiles_durationP99_ASC
+  # quantiles(durationP99) descending
+  quantiles_durationP99_DESC
   # scriptName ascending
   scriptName_ASC
   # scriptName descending
@@ -13535,6 +15153,14 @@ type AccountPagesFunctionsInvocationsAdaptiveGroupsQuantiles {
   cpuTimeP99: float32!
   # CPU time 99.9th percentile - microseconds
   cpuTimeP999: float32!
+  # Duration 50th percentile - GB*s
+  durationP50: float32!
+  # Duration 75th percentile - GB*s
+  durationP75: float32!
+  # Duration 99th percentile - GB*s
+  durationP99: float32!
+  # Duration 99.9th percentile - GB*s
+  durationP999: float32!
 }
 
 type AccountPagesFunctionsInvocationsAdaptiveGroupsSum {
@@ -15847,6 +17473,8 @@ type AccountSettings {
   durableObjectsPeriodicGroups: Settings!
   durableObjectsStorageGroups: Settings!
   durableObjectsSubrequestsAdaptiveGroups: Settings!
+  firewallEventsAdaptive: Settings!
+  firewallEventsAdaptiveGroups: Settings!
   flowtrackdNetworkAnalyticsAdaptiveGroups: Settings!
   gatewayL4DownstreamSessionsAdaptiveGroups: Settings!
   gatewayL4SessionsAdaptiveGroups: Settings!
