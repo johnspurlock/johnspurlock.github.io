@@ -7,6 +7,7 @@ Account-level datasets:
 * durableObjectsPeriodicGroups
 * durableObjectsStorageGroups
 * durableObjectsSubrequestsAdaptiveGroups
+  fbmAttackAnalyticsGroups
 * firewallEventsAdaptive
   firewallEventsAdaptiveGroups
   flowtrackdNetworkAnalyticsAdaptiveGroups
@@ -68,6 +69,7 @@ Zone-level datasets:
 * httpRequests1hGroups
   httpRequests1mByColoGroups
   httpRequests1mGroups
+  httpRequestsAdaptive
   httpRequestsAdaptiveGroups
 * httpRequestsOverviewAdaptiveGroups
 * imageResizingRequests1mGroups
@@ -138,6 +140,8 @@ type account {
   durableObjectsStorageGroups(filter: AccountDurableObjectsStorageGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsStorageGroupsOrderBy!]): [AccountDurableObjectsStorageGroups!]!
   # Durable Objects subrequests with adaptive sampling
   durableObjectsSubrequestsAdaptiveGroups(filter: AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy!]): [AccountDurableObjectsSubrequestsAdaptiveGroups!]!
+  # FBM analytics metadata for attacks detected by dosd
+  fbmAttackAnalyticsGroups(filter: AccountFbmAttackAnalyticsGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountFbmAttackAnalyticsGroupsOrderBy!]): [AccountFbmAttackAnalyticsGroups!]!
   # Raw Firewall events with adaptive sampling
   firewallEventsAdaptive(filter: AccountFirewallEventsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountFirewallEventsAdaptiveOrderBy!]): [AccountFirewallEventsAdaptive!]!
   # Aggregated Firewall events with adaptive sampling
@@ -4153,6 +4157,304 @@ enum AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy {
 type AccountDurableObjectsSubrequestsAdaptiveGroupsSum {
   # Outgoing Durable Objects fetch request body size in bytes where the request was not cached
   requestBodySizeUncached: uint64!
+}
+
+# FBM analytics metadata for attacks detected by dosd
+type AccountFbmAttackAnalyticsGroups {
+  # Unique identifier of the mitigation that matched the packet, if any
+  attackId: string!
+  # Type of attack traffic
+  attackType: string!
+  # Sum of bits received during the attack
+  bits: uint64!
+  # Common TCP flags used by attack traffic, if any
+  commonTcpFlags: uint8!
+  # Names of common TCP flags used by attack traffic, if any
+  commonTcpFlagsNames: string!
+  # Fixed destination IP used by attack traffic, if any
+  destinationIp: string!
+  # Fixed destination port used by attack traffic, if any
+  destinationPort: uint16!
+  # Date and time that the attack ended; not available for ongoing attacks
+  endDatetime: Time!
+  # Fixed protocol used by attack traffic, if any
+  ipProtocol: uint8!
+  # Fixed protocol used by attack traffic, if any
+  ipProtocolName: string!
+  # Type of mitigation applied to attack traffic
+  mitigationReason: string!
+  # Whether mitigation was applied in only some locations or globally
+  mitigationScope: string!
+  # Type of mitigation applied to attack traffic
+  mitigationType: string!
+  # Sum of packets received during the attack
+  packets: uint64!
+  # Fixed source IP used by attack traffic, if any
+  sourceIp: string!
+  # Fixed source port used by attack traffic, if any
+  sourcePort: uint16!
+  # Date and time that the attack started
+  startDatetime: Time!
+  # Fixed TCP flags used by attack traffic, if any
+  tcpFlags: uint8!
+  # Names of fixed TCP flags used by attack traffic, if any
+  tcpFlagsNames: string!
+}
+
+input AccountFbmAttackAnalyticsGroupsFilter_InputObject {
+  AND: [AccountFbmAttackAnalyticsGroupsFilter_InputObject!]
+  OR: [AccountFbmAttackAnalyticsGroupsFilter_InputObject!]
+  attackId: string
+  attackId_geq: string
+  attackId_gt: string
+  attackId_in: [string!]
+  attackId_leq: string
+  attackId_like: string
+  attackId_lt: string
+  attackId_neq: string
+  attackId_notin: [string!]
+  attackId_notlike: string
+  attackType: string
+  attackType_geq: string
+  attackType_gt: string
+  attackType_in: [string!]
+  attackType_leq: string
+  attackType_like: string
+  attackType_lt: string
+  attackType_neq: string
+  attackType_notin: [string!]
+  attackType_notlike: string
+  bits: uint64
+  bits_geq: uint64
+  bits_gt: uint64
+  bits_in: [uint64!]
+  bits_leq: uint64
+  bits_lt: uint64
+  bits_neq: uint64
+  bits_notin: [uint64!]
+  commonTcpFlags: uint8
+  commonTcpFlagsNames: string
+  commonTcpFlagsNames_geq: string
+  commonTcpFlagsNames_gt: string
+  commonTcpFlagsNames_in: [string!]
+  commonTcpFlagsNames_leq: string
+  commonTcpFlagsNames_like: string
+  commonTcpFlagsNames_lt: string
+  commonTcpFlagsNames_neq: string
+  commonTcpFlagsNames_notin: [string!]
+  commonTcpFlagsNames_notlike: string
+  commonTcpFlags_geq: uint8
+  commonTcpFlags_gt: uint8
+  commonTcpFlags_in: bytes
+  commonTcpFlags_leq: uint8
+  commonTcpFlags_lt: uint8
+  commonTcpFlags_neq: uint8
+  commonTcpFlags_notin: bytes
+  destinationIp: string
+  destinationIp_geq: string
+  destinationIp_gt: string
+  destinationIp_in: [string!]
+  destinationIp_leq: string
+  destinationIp_like: string
+  destinationIp_lt: string
+  destinationIp_neq: string
+  destinationIp_notin: [string!]
+  destinationIp_notlike: string
+  destinationPort: uint16
+  destinationPort_geq: uint16
+  destinationPort_gt: uint16
+  destinationPort_in: [uint16!]
+  destinationPort_leq: uint16
+  destinationPort_lt: uint16
+  destinationPort_neq: uint16
+  destinationPort_notin: [uint16!]
+  endDatetime: Time
+  endDatetime_geq: Time
+  endDatetime_gt: Time
+  endDatetime_in: [Time!]
+  endDatetime_leq: Time
+  endDatetime_lt: Time
+  endDatetime_neq: Time
+  endDatetime_notin: [Time!]
+  ipProtocol: uint8
+  ipProtocolName: string
+  ipProtocolName_geq: string
+  ipProtocolName_gt: string
+  ipProtocolName_in: [string!]
+  ipProtocolName_leq: string
+  ipProtocolName_like: string
+  ipProtocolName_lt: string
+  ipProtocolName_neq: string
+  ipProtocolName_notin: [string!]
+  ipProtocolName_notlike: string
+  ipProtocol_geq: uint8
+  ipProtocol_gt: uint8
+  ipProtocol_in: bytes
+  ipProtocol_leq: uint8
+  ipProtocol_lt: uint8
+  ipProtocol_neq: uint8
+  ipProtocol_notin: bytes
+  mitigationReason: string
+  mitigationReason_geq: string
+  mitigationReason_gt: string
+  mitigationReason_in: [string!]
+  mitigationReason_leq: string
+  mitigationReason_like: string
+  mitigationReason_lt: string
+  mitigationReason_neq: string
+  mitigationReason_notin: [string!]
+  mitigationReason_notlike: string
+  mitigationScope: string
+  mitigationScope_geq: string
+  mitigationScope_gt: string
+  mitigationScope_in: [string!]
+  mitigationScope_leq: string
+  mitigationScope_like: string
+  mitigationScope_lt: string
+  mitigationScope_neq: string
+  mitigationScope_notin: [string!]
+  mitigationScope_notlike: string
+  mitigationType: string
+  mitigationType_geq: string
+  mitigationType_gt: string
+  mitigationType_in: [string!]
+  mitigationType_leq: string
+  mitigationType_like: string
+  mitigationType_lt: string
+  mitigationType_neq: string
+  mitigationType_notin: [string!]
+  mitigationType_notlike: string
+  packets: uint64
+  packets_geq: uint64
+  packets_gt: uint64
+  packets_in: [uint64!]
+  packets_leq: uint64
+  packets_lt: uint64
+  packets_neq: uint64
+  packets_notin: [uint64!]
+  sourceIp: string
+  sourceIp_geq: string
+  sourceIp_gt: string
+  sourceIp_in: [string!]
+  sourceIp_leq: string
+  sourceIp_like: string
+  sourceIp_lt: string
+  sourceIp_neq: string
+  sourceIp_notin: [string!]
+  sourceIp_notlike: string
+  sourcePort: uint16
+  sourcePort_geq: uint16
+  sourcePort_gt: uint16
+  sourcePort_in: [uint16!]
+  sourcePort_leq: uint16
+  sourcePort_lt: uint16
+  sourcePort_neq: uint16
+  sourcePort_notin: [uint16!]
+  startDatetime: Time
+  startDatetime_geq: Time
+  startDatetime_gt: Time
+  startDatetime_in: [Time!]
+  startDatetime_leq: Time
+  startDatetime_lt: Time
+  startDatetime_neq: Time
+  startDatetime_notin: [Time!]
+  tcpFlags: uint8
+  tcpFlagsNames: string
+  tcpFlagsNames_geq: string
+  tcpFlagsNames_gt: string
+  tcpFlagsNames_in: [string!]
+  tcpFlagsNames_leq: string
+  tcpFlagsNames_like: string
+  tcpFlagsNames_lt: string
+  tcpFlagsNames_neq: string
+  tcpFlagsNames_notin: [string!]
+  tcpFlagsNames_notlike: string
+  tcpFlags_geq: uint8
+  tcpFlags_gt: uint8
+  tcpFlags_in: bytes
+  tcpFlags_leq: uint8
+  tcpFlags_lt: uint8
+  tcpFlags_neq: uint8
+  tcpFlags_notin: bytes
+}
+
+enum AccountFbmAttackAnalyticsGroupsOrderBy {
+  # attackId ascending
+  attackId_ASC
+  # attackId descending
+  attackId_DESC
+  # attackType ascending
+  attackType_ASC
+  # attackType descending
+  attackType_DESC
+  # bits ascending
+  bits_ASC
+  # bits descending
+  bits_DESC
+  # commonTcpFlagsNames ascending
+  commonTcpFlagsNames_ASC
+  # commonTcpFlagsNames descending
+  commonTcpFlagsNames_DESC
+  # commonTcpFlags ascending
+  commonTcpFlags_ASC
+  # commonTcpFlags descending
+  commonTcpFlags_DESC
+  # destinationIp ascending
+  destinationIp_ASC
+  # destinationIp descending
+  destinationIp_DESC
+  # destinationPort ascending
+  destinationPort_ASC
+  # destinationPort descending
+  destinationPort_DESC
+  # endDatetime ascending
+  endDatetime_ASC
+  # endDatetime descending
+  endDatetime_DESC
+  # ipProtocolName ascending
+  ipProtocolName_ASC
+  # ipProtocolName descending
+  ipProtocolName_DESC
+  # ipProtocol ascending
+  ipProtocol_ASC
+  # ipProtocol descending
+  ipProtocol_DESC
+  # mitigationReason ascending
+  mitigationReason_ASC
+  # mitigationReason descending
+  mitigationReason_DESC
+  # mitigationScope ascending
+  mitigationScope_ASC
+  # mitigationScope descending
+  mitigationScope_DESC
+  # mitigationType ascending
+  mitigationType_ASC
+  # mitigationType descending
+  mitigationType_DESC
+  # packets ascending
+  packets_ASC
+  # packets descending
+  packets_DESC
+  # sourceIp ascending
+  sourceIp_ASC
+  # sourceIp descending
+  sourceIp_DESC
+  # sourcePort ascending
+  sourcePort_ASC
+  # sourcePort descending
+  sourcePort_DESC
+  # startDatetime ascending
+  startDatetime_ASC
+  # startDatetime descending
+  startDatetime_DESC
+  # tcpFlagsNames ascending
+  tcpFlagsNames_ASC
+  # tcpFlagsNames descending
+  tcpFlagsNames_DESC
+  # tcpFlags ascending
+  tcpFlags_ASC
+  # tcpFlags descending
+  tcpFlags_DESC
 }
 
 input AccountFilter_InputObject {
@@ -17480,6 +17782,7 @@ type AccountSettings {
   durableObjectsPeriodicGroups: Settings!
   durableObjectsStorageGroups: Settings!
   durableObjectsSubrequestsAdaptiveGroups: Settings!
+  fbmAttackAnalyticsGroups: Settings!
   firewallEventsAdaptive: Settings!
   firewallEventsAdaptiveGroups: Settings!
   flowtrackdNetworkAnalyticsAdaptiveGroups: Settings!
@@ -21036,6 +21339,8 @@ type zone {
   httpRequests1mByColoGroups(filter: ZoneHttpRequests1mByColoGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneHttpRequests1mByColoGroupsOrderBy!]): [ZoneHttpRequests1mByColoGroups!]!
   # Minutely rollups of request data
   httpRequests1mGroups(filter: ZoneHttpRequests1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneHttpRequests1mGroupsOrderBy!]): [ZoneHttpRequests1mGroups!]!
+  # Raw HTTP requests with adaptive sampling
+  httpRequestsAdaptive(filter: ZoneHttpRequestsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneHttpRequestsAdaptiveOrderBy!]): [ZoneHttpRequestsAdaptive!]!
   # Aggregated HTTP requests data with adaptive sampling
   httpRequestsAdaptiveGroups(filter: ZoneHttpRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneHttpRequestsAdaptiveGroupsOrderBy!]): [ZoneHttpRequestsAdaptiveGroups!]!
   # A high-level summary of HTTP requests made by end users.
@@ -25481,6 +25786,568 @@ type ZoneHttpRequests1mGroupsUniq {
   uniques: uint64!
 }
 
+# Raw HTTP requests with adaptive sampling
+type ZoneHttpRequestsAdaptive {
+  # API Gateway endpoint matched at the edge
+  apiGatewayMatchedEndpoint: string!
+  # Judgement of the bot management system
+  botManagementDecision: string!
+  # The final score originated from bot management detections.
+  botScore: uint8!
+  # Range of the bot management score
+  botScoreBucketBy10: uint8!
+  # Name of the source detection which generated the bot management score.
+  botScoreSrcName: string!
+  # Cache status
+  cacheStatus: uint64!
+  # The ASN of the visitor as string
+  clientASNDescription: string!
+  # The ASN number of the visitor
+  clientAsn: string!
+  # Country from which request originated
+  clientCountryName: string!
+  clientDeviceType: string!
+  # The visitor's IP address (IPv4 or IPv6)
+  clientIP: string!
+  # The referrer host
+  clientRefererHost: string!
+  # The HTTP hostname requested by the visitor
+  clientRequestHTTPHost: string!
+  # HTTP method of client request
+  clientRequestHTTPMethodName: string!
+  # The version of HTTP protocol requested by the visitor
+  clientRequestHTTPProtocol: string!
+  # The path requested by visitor
+  clientRequestPath: string!
+  # Query parameters of client request
+  clientRequestQuery: string!
+  # HTTP request referrer
+  clientRequestReferer: string!
+  # The url scheme requested by the visitor
+  clientRequestScheme: string!
+  # SSL protocol version
+  clientSSLProtocol: string!
+  coloCode: string!
+  # 1 if not all contents for this request where successfully scanned, else 0
+  contentScanHasFailed: uint8!
+  # Number of scannable content objects that are malicious
+  contentScanNumMaliciousObj: uint8!
+  # Number of scannable content objects
+  contentScanNumObj: uint8!
+  # The date the event occurred at the edge
+  date: Date!
+  # The date and time the event occurred at the edge
+  datetime: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the event occurred at the edge truncated to hours
+  datetimeHour: Time!
+  # The date and time the event occurred at the edge truncated to the minute
+  datetimeMinute: Time!
+  edgeResponseContentTypeName: string!
+  # HTTP response status code returned to browser
+  edgeResponseStatus: uint16!
+  # Unique identifier for HTTP Application
+  httpApplication: string!
+  # Version associated with HTTP Application
+  httpApplicationVersion: uint64!
+  # MD5 hash of the JA3 TLS fingerprint
+  ja3Hash: string!
+  originASN: uint32!
+  # ASN associated with origin
+  originASNDescription: string!
+  originIP: string!
+  # HTTP origin response status code returned to browser
+  originResponseStatus: uint16!
+  # The RayId of the request
+  rayName: string!
+  requestSource: string!
+  upperTierColoName: string!
+  # visitor's user-agent string
+  userAgent: string!
+  # Browser parsed from the user agent
+  userAgentBrowser: string!
+  # OS parsed from the user agent
+  userAgentOS: string!
+  # Beta. Overall request score generated by the WAF detection module
+  wafAttackScore: uint8!
+  # Beta. WAF score for a RCE attack
+  wafRceAttackScore: uint8!
+  # Beta. WAF score for a SQLi attack
+  wafSqliAttackScore: uint8!
+  # Beta. WAF score for a XSS attack
+  wafXssAttackScore: uint8!
+  # The X-Requested-With header of the client request
+  xRequestedWith: string!
+}
+
+input ZoneHttpRequestsAdaptiveFilter_InputObject {
+  AND: [ZoneHttpRequestsAdaptiveFilter_InputObject!]
+  OR: [ZoneHttpRequestsAdaptiveFilter_InputObject!]
+  apiGatewayMatchedEndpoint: string
+  apiGatewayMatchedEndpoint_geq: string
+  apiGatewayMatchedEndpoint_gt: string
+  apiGatewayMatchedEndpoint_in: [string!]
+  apiGatewayMatchedEndpoint_leq: string
+  apiGatewayMatchedEndpoint_like: string
+  apiGatewayMatchedEndpoint_lt: string
+  apiGatewayMatchedEndpoint_neq: string
+  apiGatewayMatchedEndpoint_notin: [string!]
+  apiGatewayMatchedEndpoint_notlike: string
+  botManagementDecision: string
+  botManagementDecision_geq: string
+  botManagementDecision_gt: string
+  botManagementDecision_in: [string!]
+  botManagementDecision_leq: string
+  botManagementDecision_like: string
+  botManagementDecision_lt: string
+  botManagementDecision_neq: string
+  botManagementDecision_notin: [string!]
+  botManagementDecision_notlike: string
+  botScore: uint8
+  botScoreBucketBy10: uint8
+  botScoreBucketBy10_geq: uint8
+  botScoreBucketBy10_gt: uint8
+  botScoreBucketBy10_in: bytes
+  botScoreBucketBy10_leq: uint8
+  botScoreBucketBy10_lt: uint8
+  botScoreBucketBy10_neq: uint8
+  botScoreBucketBy10_notin: bytes
+  botScoreSrcName: string
+  botScoreSrcName_geq: string
+  botScoreSrcName_gt: string
+  botScoreSrcName_in: [string!]
+  botScoreSrcName_leq: string
+  botScoreSrcName_like: string
+  botScoreSrcName_lt: string
+  botScoreSrcName_neq: string
+  botScoreSrcName_notin: [string!]
+  botScoreSrcName_notlike: string
+  botScore_geq: uint8
+  botScore_gt: uint8
+  botScore_in: bytes
+  botScore_leq: uint8
+  botScore_lt: uint8
+  botScore_neq: uint8
+  botScore_notin: bytes
+  cacheStatus: uint64
+  cacheStatus_geq: uint64
+  cacheStatus_gt: uint64
+  cacheStatus_in: [uint64!]
+  cacheStatus_leq: uint64
+  cacheStatus_lt: uint64
+  cacheStatus_neq: uint64
+  cacheStatus_notin: [uint64!]
+  clientASNDescription: string
+  clientASNDescription_geq: string
+  clientASNDescription_gt: string
+  clientASNDescription_in: [string!]
+  clientASNDescription_leq: string
+  clientASNDescription_like: string
+  clientASNDescription_lt: string
+  clientASNDescription_neq: string
+  clientASNDescription_notin: [string!]
+  clientASNDescription_notlike: string
+  clientAsn: string
+  clientAsn_geq: string
+  clientAsn_gt: string
+  clientAsn_in: [string!]
+  clientAsn_leq: string
+  clientAsn_like: string
+  clientAsn_lt: string
+  clientAsn_neq: string
+  clientAsn_notin: [string!]
+  clientAsn_notlike: string
+  clientCountryName: string
+  clientCountryName_geq: string
+  clientCountryName_gt: string
+  clientCountryName_in: [string!]
+  clientCountryName_leq: string
+  clientCountryName_like: string
+  clientCountryName_lt: string
+  clientCountryName_neq: string
+  clientCountryName_notin: [string!]
+  clientCountryName_notlike: string
+  clientDeviceType: string
+  clientDeviceType_geq: string
+  clientDeviceType_gt: string
+  clientDeviceType_in: [string!]
+  clientDeviceType_leq: string
+  clientDeviceType_like: string
+  clientDeviceType_lt: string
+  clientDeviceType_neq: string
+  clientDeviceType_notin: [string!]
+  clientDeviceType_notlike: string
+  clientIP: string
+  clientIP_geq: string
+  clientIP_gt: string
+  clientIP_in: [string!]
+  clientIP_leq: string
+  clientIP_like: string
+  clientIP_lt: string
+  clientIP_neq: string
+  clientIP_notin: [string!]
+  clientIP_notlike: string
+  clientRefererHost: string
+  clientRefererHost_geq: string
+  clientRefererHost_gt: string
+  clientRefererHost_in: [string!]
+  clientRefererHost_leq: string
+  clientRefererHost_like: string
+  clientRefererHost_lt: string
+  clientRefererHost_neq: string
+  clientRefererHost_notin: [string!]
+  clientRefererHost_notlike: string
+  clientRequestHTTPHost: string
+  clientRequestHTTPHost_geq: string
+  clientRequestHTTPHost_gt: string
+  clientRequestHTTPHost_in: [string!]
+  clientRequestHTTPHost_leq: string
+  clientRequestHTTPHost_like: string
+  clientRequestHTTPHost_lt: string
+  clientRequestHTTPHost_neq: string
+  clientRequestHTTPHost_notin: [string!]
+  clientRequestHTTPHost_notlike: string
+  clientRequestHTTPMethodName: string
+  clientRequestHTTPMethodName_geq: string
+  clientRequestHTTPMethodName_gt: string
+  clientRequestHTTPMethodName_in: [string!]
+  clientRequestHTTPMethodName_leq: string
+  clientRequestHTTPMethodName_like: string
+  clientRequestHTTPMethodName_lt: string
+  clientRequestHTTPMethodName_neq: string
+  clientRequestHTTPMethodName_notin: [string!]
+  clientRequestHTTPMethodName_notlike: string
+  clientRequestHTTPProtocol: string
+  clientRequestHTTPProtocol_geq: string
+  clientRequestHTTPProtocol_gt: string
+  clientRequestHTTPProtocol_in: [string!]
+  clientRequestHTTPProtocol_leq: string
+  clientRequestHTTPProtocol_like: string
+  clientRequestHTTPProtocol_lt: string
+  clientRequestHTTPProtocol_neq: string
+  clientRequestHTTPProtocol_notin: [string!]
+  clientRequestHTTPProtocol_notlike: string
+  clientRequestPath: string
+  clientRequestPath_geq: string
+  clientRequestPath_gt: string
+  clientRequestPath_in: [string!]
+  clientRequestPath_leq: string
+  clientRequestPath_like: string
+  clientRequestPath_lt: string
+  clientRequestPath_neq: string
+  clientRequestPath_notin: [string!]
+  clientRequestPath_notlike: string
+  clientRequestQuery: string
+  clientRequestQuery_geq: string
+  clientRequestQuery_gt: string
+  clientRequestQuery_in: [string!]
+  clientRequestQuery_leq: string
+  clientRequestQuery_like: string
+  clientRequestQuery_lt: string
+  clientRequestQuery_neq: string
+  clientRequestQuery_notin: [string!]
+  clientRequestQuery_notlike: string
+  clientRequestReferer: string
+  clientRequestReferer_geq: string
+  clientRequestReferer_gt: string
+  clientRequestReferer_in: [string!]
+  clientRequestReferer_leq: string
+  clientRequestReferer_like: string
+  clientRequestReferer_lt: string
+  clientRequestReferer_neq: string
+  clientRequestReferer_notin: [string!]
+  clientRequestReferer_notlike: string
+  clientRequestScheme: string
+  clientRequestScheme_geq: string
+  clientRequestScheme_gt: string
+  clientRequestScheme_in: [string!]
+  clientRequestScheme_leq: string
+  clientRequestScheme_like: string
+  clientRequestScheme_lt: string
+  clientRequestScheme_neq: string
+  clientRequestScheme_notin: [string!]
+  clientRequestScheme_notlike: string
+  clientSSLProtocol: string
+  clientSSLProtocol_geq: string
+  clientSSLProtocol_gt: string
+  clientSSLProtocol_in: [string!]
+  clientSSLProtocol_leq: string
+  clientSSLProtocol_like: string
+  clientSSLProtocol_lt: string
+  clientSSLProtocol_neq: string
+  clientSSLProtocol_notin: [string!]
+  clientSSLProtocol_notlike: string
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
+  contentScanHasFailed: uint8
+  contentScanHasFailed_geq: uint8
+  contentScanHasFailed_gt: uint8
+  contentScanHasFailed_in: bytes
+  contentScanHasFailed_leq: uint8
+  contentScanHasFailed_lt: uint8
+  contentScanHasFailed_neq: uint8
+  contentScanHasFailed_notin: bytes
+  contentScanNumMaliciousObj: uint8
+  contentScanNumMaliciousObj_geq: uint8
+  contentScanNumMaliciousObj_gt: uint8
+  contentScanNumMaliciousObj_in: bytes
+  contentScanNumMaliciousObj_leq: uint8
+  contentScanNumMaliciousObj_lt: uint8
+  contentScanNumMaliciousObj_neq: uint8
+  contentScanNumMaliciousObj_notin: bytes
+  contentScanNumObj: uint8
+  contentScanNumObj_geq: uint8
+  contentScanNumObj_gt: uint8
+  contentScanNumObj_in: bytes
+  contentScanNumObj_leq: uint8
+  contentScanNumObj_lt: uint8
+  contentScanNumObj_neq: uint8
+  contentScanNumObj_notin: bytes
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  edgeResponseContentTypeName: string
+  edgeResponseContentTypeName_geq: string
+  edgeResponseContentTypeName_gt: string
+  edgeResponseContentTypeName_in: [string!]
+  edgeResponseContentTypeName_leq: string
+  edgeResponseContentTypeName_like: string
+  edgeResponseContentTypeName_lt: string
+  edgeResponseContentTypeName_neq: string
+  edgeResponseContentTypeName_notin: [string!]
+  edgeResponseContentTypeName_notlike: string
+  edgeResponseStatus: uint16
+  edgeResponseStatus_geq: uint16
+  edgeResponseStatus_gt: uint16
+  edgeResponseStatus_in: [uint16!]
+  edgeResponseStatus_leq: uint16
+  edgeResponseStatus_lt: uint16
+  edgeResponseStatus_neq: uint16
+  edgeResponseStatus_notin: [uint16!]
+  httpApplication: string
+  httpApplicationVersion: uint64
+  httpApplicationVersion_geq: uint64
+  httpApplicationVersion_gt: uint64
+  httpApplicationVersion_in: [uint64!]
+  httpApplicationVersion_leq: uint64
+  httpApplicationVersion_lt: uint64
+  httpApplicationVersion_neq: uint64
+  httpApplicationVersion_notin: [uint64!]
+  httpApplication_geq: string
+  httpApplication_gt: string
+  httpApplication_in: [string!]
+  httpApplication_leq: string
+  httpApplication_like: string
+  httpApplication_lt: string
+  httpApplication_neq: string
+  httpApplication_notin: [string!]
+  httpApplication_notlike: string
+  ja3Hash: string
+  ja3Hash_geq: string
+  ja3Hash_gt: string
+  ja3Hash_in: [string!]
+  ja3Hash_leq: string
+  ja3Hash_like: string
+  ja3Hash_lt: string
+  ja3Hash_neq: string
+  ja3Hash_notin: [string!]
+  ja3Hash_notlike: string
+  originASN: uint32
+  originASNDescription: string
+  originASNDescription_geq: string
+  originASNDescription_gt: string
+  originASNDescription_in: [string!]
+  originASNDescription_leq: string
+  originASNDescription_like: string
+  originASNDescription_lt: string
+  originASNDescription_neq: string
+  originASNDescription_notin: [string!]
+  originASNDescription_notlike: string
+  originASN_geq: uint32
+  originASN_gt: uint32
+  originASN_in: [uint32!]
+  originASN_leq: uint32
+  originASN_lt: uint32
+  originASN_neq: uint32
+  originASN_notin: [uint32!]
+  originIP: string
+  originIP_geq: string
+  originIP_gt: string
+  originIP_in: [string!]
+  originIP_leq: string
+  originIP_like: string
+  originIP_lt: string
+  originIP_neq: string
+  originIP_notin: [string!]
+  originIP_notlike: string
+  originResponseStatus: uint16
+  originResponseStatus_geq: uint16
+  originResponseStatus_gt: uint16
+  originResponseStatus_in: [uint16!]
+  originResponseStatus_leq: uint16
+  originResponseStatus_lt: uint16
+  originResponseStatus_neq: uint16
+  originResponseStatus_notin: [uint16!]
+  rayName: string
+  rayName_geq: string
+  rayName_gt: string
+  rayName_in: [string!]
+  rayName_leq: string
+  rayName_like: string
+  rayName_lt: string
+  rayName_neq: string
+  rayName_notin: [string!]
+  rayName_notlike: string
+  requestSource: string
+  requestSource_geq: string
+  requestSource_gt: string
+  requestSource_in: [string!]
+  requestSource_leq: string
+  requestSource_like: string
+  requestSource_lt: string
+  requestSource_neq: string
+  requestSource_notin: [string!]
+  requestSource_notlike: string
+  upperTierColoName: string
+  upperTierColoName_geq: string
+  upperTierColoName_gt: string
+  upperTierColoName_in: [string!]
+  upperTierColoName_leq: string
+  upperTierColoName_like: string
+  upperTierColoName_lt: string
+  upperTierColoName_neq: string
+  upperTierColoName_notin: [string!]
+  upperTierColoName_notlike: string
+  userAgent: string
+  userAgentBrowser: string
+  userAgentBrowser_geq: string
+  userAgentBrowser_gt: string
+  userAgentBrowser_in: [string!]
+  userAgentBrowser_leq: string
+  userAgentBrowser_like: string
+  userAgentBrowser_lt: string
+  userAgentBrowser_neq: string
+  userAgentBrowser_notin: [string!]
+  userAgentBrowser_notlike: string
+  userAgentOS: string
+  userAgentOS_geq: string
+  userAgentOS_gt: string
+  userAgentOS_in: [string!]
+  userAgentOS_leq: string
+  userAgentOS_like: string
+  userAgentOS_lt: string
+  userAgentOS_neq: string
+  userAgentOS_notin: [string!]
+  userAgentOS_notlike: string
+  userAgent_geq: string
+  userAgent_gt: string
+  userAgent_in: [string!]
+  userAgent_leq: string
+  userAgent_like: string
+  userAgent_lt: string
+  userAgent_neq: string
+  userAgent_notin: [string!]
+  userAgent_notlike: string
+  wafAttackScore: uint8
+  wafAttackScore_geq: uint8
+  wafAttackScore_gt: uint8
+  wafAttackScore_in: bytes
+  wafAttackScore_leq: uint8
+  wafAttackScore_lt: uint8
+  wafAttackScore_neq: uint8
+  wafAttackScore_notin: bytes
+  wafRceAttackScore: uint8
+  wafRceAttackScore_geq: uint8
+  wafRceAttackScore_gt: uint8
+  wafRceAttackScore_in: bytes
+  wafRceAttackScore_leq: uint8
+  wafRceAttackScore_lt: uint8
+  wafRceAttackScore_neq: uint8
+  wafRceAttackScore_notin: bytes
+  wafSqliAttackScore: uint8
+  wafSqliAttackScore_geq: uint8
+  wafSqliAttackScore_gt: uint8
+  wafSqliAttackScore_in: bytes
+  wafSqliAttackScore_leq: uint8
+  wafSqliAttackScore_lt: uint8
+  wafSqliAttackScore_neq: uint8
+  wafSqliAttackScore_notin: bytes
+  wafXssAttackScore: uint8
+  wafXssAttackScore_geq: uint8
+  wafXssAttackScore_gt: uint8
+  wafXssAttackScore_in: bytes
+  wafXssAttackScore_leq: uint8
+  wafXssAttackScore_lt: uint8
+  wafXssAttackScore_neq: uint8
+  wafXssAttackScore_notin: bytes
+  xRequestedWith: string
+  xRequestedWith_geq: string
+  xRequestedWith_gt: string
+  xRequestedWith_in: [string!]
+  xRequestedWith_leq: string
+  xRequestedWith_like: string
+  xRequestedWith_lt: string
+  xRequestedWith_neq: string
+  xRequestedWith_notin: [string!]
+  xRequestedWith_notlike: string
+}
+
 # Aggregated HTTP requests data with adaptive sampling
 type ZoneHttpRequestsAdaptiveGroups {
   # The average value used for sample interval
@@ -26297,6 +27164,209 @@ type ZoneHttpRequestsAdaptiveGroupsSum {
   edgeResponseBytes: uint64!
   # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
   visits: uint64!
+}
+
+enum ZoneHttpRequestsAdaptiveOrderBy {
+  # apiGatewayMatchedEndpoint ascending
+  apiGatewayMatchedEndpoint_ASC
+  # apiGatewayMatchedEndpoint descending
+  apiGatewayMatchedEndpoint_DESC
+  # botManagementDecision ascending
+  botManagementDecision_ASC
+  # botManagementDecision descending
+  botManagementDecision_DESC
+  # botScoreBucketBy10 ascending
+  botScoreBucketBy10_ASC
+  # botScoreBucketBy10 descending
+  botScoreBucketBy10_DESC
+  # botScoreSrcName ascending
+  botScoreSrcName_ASC
+  # botScoreSrcName descending
+  botScoreSrcName_DESC
+  # botScore ascending
+  botScore_ASC
+  # botScore descending
+  botScore_DESC
+  # cacheStatus ascending
+  cacheStatus_ASC
+  # cacheStatus descending
+  cacheStatus_DESC
+  # clientASNDescription ascending
+  clientASNDescription_ASC
+  # clientASNDescription descending
+  clientASNDescription_DESC
+  # clientAsn ascending
+  clientAsn_ASC
+  # clientAsn descending
+  clientAsn_DESC
+  # clientCountryName ascending
+  clientCountryName_ASC
+  # clientCountryName descending
+  clientCountryName_DESC
+  # clientDeviceType ascending
+  clientDeviceType_ASC
+  # clientDeviceType descending
+  clientDeviceType_DESC
+  # clientIP ascending
+  clientIP_ASC
+  # clientIP descending
+  clientIP_DESC
+  # clientRefererHost ascending
+  clientRefererHost_ASC
+  # clientRefererHost descending
+  clientRefererHost_DESC
+  # clientRequestHTTPHost ascending
+  clientRequestHTTPHost_ASC
+  # clientRequestHTTPHost descending
+  clientRequestHTTPHost_DESC
+  # clientRequestHTTPMethodName ascending
+  clientRequestHTTPMethodName_ASC
+  # clientRequestHTTPMethodName descending
+  clientRequestHTTPMethodName_DESC
+  # clientRequestHTTPProtocol ascending
+  clientRequestHTTPProtocol_ASC
+  # clientRequestHTTPProtocol descending
+  clientRequestHTTPProtocol_DESC
+  # clientRequestPath ascending
+  clientRequestPath_ASC
+  # clientRequestPath descending
+  clientRequestPath_DESC
+  # clientRequestQuery ascending
+  clientRequestQuery_ASC
+  # clientRequestQuery descending
+  clientRequestQuery_DESC
+  # clientRequestReferer ascending
+  clientRequestReferer_ASC
+  # clientRequestReferer descending
+  clientRequestReferer_DESC
+  # clientRequestScheme ascending
+  clientRequestScheme_ASC
+  # clientRequestScheme descending
+  clientRequestScheme_DESC
+  # clientSSLProtocol ascending
+  clientSSLProtocol_ASC
+  # clientSSLProtocol descending
+  clientSSLProtocol_DESC
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
+  # contentScanHasFailed ascending
+  contentScanHasFailed_ASC
+  # contentScanHasFailed descending
+  contentScanHasFailed_DESC
+  # contentScanNumMaliciousObj ascending
+  contentScanNumMaliciousObj_ASC
+  # contentScanNumMaliciousObj descending
+  contentScanNumMaliciousObj_DESC
+  # contentScanNumObj ascending
+  contentScanNumObj_ASC
+  # contentScanNumObj descending
+  contentScanNumObj_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # edgeResponseContentTypeName ascending
+  edgeResponseContentTypeName_ASC
+  # edgeResponseContentTypeName descending
+  edgeResponseContentTypeName_DESC
+  # edgeResponseStatus ascending
+  edgeResponseStatus_ASC
+  # edgeResponseStatus descending
+  edgeResponseStatus_DESC
+  # httpApplicationVersion ascending
+  httpApplicationVersion_ASC
+  # httpApplicationVersion descending
+  httpApplicationVersion_DESC
+  # httpApplication ascending
+  httpApplication_ASC
+  # httpApplication descending
+  httpApplication_DESC
+  # ja3Hash ascending
+  ja3Hash_ASC
+  # ja3Hash descending
+  ja3Hash_DESC
+  # originASNDescription ascending
+  originASNDescription_ASC
+  # originASNDescription descending
+  originASNDescription_DESC
+  # originASN ascending
+  originASN_ASC
+  # originASN descending
+  originASN_DESC
+  # originIP ascending
+  originIP_ASC
+  # originIP descending
+  originIP_DESC
+  # originResponseStatus ascending
+  originResponseStatus_ASC
+  # originResponseStatus descending
+  originResponseStatus_DESC
+  # rayName ascending
+  rayName_ASC
+  # rayName descending
+  rayName_DESC
+  # requestSource ascending
+  requestSource_ASC
+  # requestSource descending
+  requestSource_DESC
+  # upperTierColoName ascending
+  upperTierColoName_ASC
+  # upperTierColoName descending
+  upperTierColoName_DESC
+  # userAgentBrowser ascending
+  userAgentBrowser_ASC
+  # userAgentBrowser descending
+  userAgentBrowser_DESC
+  # userAgentOS ascending
+  userAgentOS_ASC
+  # userAgentOS descending
+  userAgentOS_DESC
+  # userAgent ascending
+  userAgent_ASC
+  # userAgent descending
+  userAgent_DESC
+  # wafAttackScore ascending
+  wafAttackScore_ASC
+  # wafAttackScore descending
+  wafAttackScore_DESC
+  # wafRceAttackScore ascending
+  wafRceAttackScore_ASC
+  # wafRceAttackScore descending
+  wafRceAttackScore_DESC
+  # wafSqliAttackScore ascending
+  wafSqliAttackScore_ASC
+  # wafSqliAttackScore descending
+  wafSqliAttackScore_DESC
+  # wafXssAttackScore ascending
+  wafXssAttackScore_ASC
+  # wafXssAttackScore descending
+  wafXssAttackScore_DESC
+  # xRequestedWith ascending
+  xRequestedWith_ASC
+  # xRequestedWith descending
+  xRequestedWith_DESC
 }
 
 # A high-level summary of HTTP requests made by end users.
@@ -27988,6 +29058,7 @@ type ZoneSettings {
   httpRequests1hGroups: Settings!
   httpRequests1mByColoGroups: Settings!
   httpRequests1mGroups: Settings!
+  httpRequestsAdaptive: Settings!
   httpRequestsAdaptiveGroups: Settings!
   httpRequestsOverviewAdaptiveGroups: Settings!
   imageResizingRequests1mGroups: Settings!
