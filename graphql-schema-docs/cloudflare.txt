@@ -35,6 +35,7 @@ Account-level datasets:
 * mnmFlowDataAdaptiveGroups
   nelReportsAdaptiveGroups
 * pagesFunctionsInvocationsAdaptiveGroups
+* queuesMessagesAdaptiveGroups
 * r2OperationsAdaptiveGroups
 * r2StorageAdaptiveGroups
 * rumPageloadEventsAdaptiveGroups
@@ -80,6 +81,8 @@ Zone-level datasets:
   synAvgPps1mGroups
   waitingRoomAnalyticsAdaptive
   waitingRoomAnalyticsAdaptiveGroups
+* workersZoneInvocationsAdaptiveGroups
+* workersZoneSubrequestsAdaptiveGroups
 * zarazActionsAdaptiveGroups
 * zarazTrackAdaptiveGroups
 * zarazTriggersAdaptiveGroups
@@ -196,6 +199,8 @@ type account {
   nelReportsAdaptiveGroups(filter: AccountNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountNelReportsAdaptiveGroupsOrderBy!]): [AccountNelReportsAdaptiveGroups!]!
   # Pages Functions invocations with adaptive sampling
   pagesFunctionsInvocationsAdaptiveGroups(filter: AccountPagesFunctionsInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy!]): [AccountPagesFunctionsInvocationsAdaptiveGroups!]!
+  # Beta. Queue message data with adaptive sampling
+  queuesMessagesAdaptiveGroups(filter: AccountQueuesMessagesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueuesMessagesAdaptiveGroupsOrderBy!]): [AccountQueuesMessagesAdaptiveGroups!]!
   # Beta. R2 operations with adaptive sampling
   r2OperationsAdaptiveGroups(filter: AccountR2OperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2OperationsAdaptiveGroupsOrderBy!]): [AccountR2OperationsAdaptiveGroups!]!
   # Beta. R2 storage with adaptive sampling
@@ -14982,9 +14987,9 @@ enum AccountMnmFlowDataAdaptiveGroupsOrderBy {
 
 type AccountMnmFlowDataAdaptiveGroupsSum {
   # Sum of bits
-  bits: uint32!
+  bits: uint64!
   # Sum of packets
-  packets: uint32!
+  packets: uint64!
 }
 
 # Data to visualize network error logs
@@ -15485,6 +15490,142 @@ type AccountPagesFunctionsInvocationsAdaptiveGroupsSum {
   subrequests: uint64!
   # Sum of Wall Time
   wallTime: uint64!
+}
+
+# Beta. Queue message data with adaptive sampling
+type AccountQueuesMessagesAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountQueuesMessagesAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountQueuesMessagesAdaptiveGroupsDimensions
+  # The max of values for a metric per dimension
+  max: AccountQueuesMessagesAdaptiveGroupsMax
+  # The sum of values for a metric per dimension
+  sum: AccountQueuesMessagesAdaptiveGroupsSum
+}
+
+type AccountQueuesMessagesAdaptiveGroupsAvg {
+  # The average value used for sample interval
+  sampleInterval: float64!
+}
+
+type AccountQueuesMessagesAdaptiveGroupsDimensions {
+  # The name of the Queue operation
+  actionType: string!
+  # Message timestamp
+  datetime: Time!
+  # Message timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Message timestamp, truncated to start of an minute
+  datetimeMinute: Time!
+  # The ID of the Queue
+  queueId: string!
+}
+
+input AccountQueuesMessagesAdaptiveGroupsFilter_InputObject {
+  AND: [AccountQueuesMessagesAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountQueuesMessagesAdaptiveGroupsFilter_InputObject!]
+  actionType: string
+  actionType_geq: string
+  actionType_gt: string
+  actionType_in: [string!]
+  actionType_leq: string
+  actionType_like: string
+  actionType_lt: string
+  actionType_neq: string
+  actionType_notin: [string!]
+  actionType_notlike: string
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  queueId: string
+  queueId_geq: string
+  queueId_gt: string
+  queueId_in: [string!]
+  queueId_leq: string
+  queueId_like: string
+  queueId_lt: string
+  queueId_neq: string
+  queueId_notin: [string!]
+  queueId_notlike: string
+}
+
+type AccountQueuesMessagesAdaptiveGroupsMax {
+  # Max Message Size
+  messageSize: uint32!
+}
+
+enum AccountQueuesMessagesAdaptiveGroupsOrderBy {
+  # actionType ascending
+  actionType_ASC
+  # actionType descending
+  actionType_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # max(messageSize) ascending
+  max_messageSize_ASC
+  # max(messageSize) descending
+  max_messageSize_DESC
+  # queueId ascending
+  queueId_ASC
+  # queueId descending
+  queueId_DESC
+  # sum(billableOperations) ascending
+  sum_billableOperations_ASC
+  # sum(billableOperations) descending
+  sum_billableOperations_DESC
+  # sum(messageSize) ascending
+  sum_messageSize_ASC
+  # sum(messageSize) descending
+  sum_messageSize_DESC
+  # sum(messages) ascending
+  sum_messages_ASC
+  # sum(messages) descending
+  sum_messages_DESC
+}
+
+type AccountQueuesMessagesAdaptiveGroupsSum {
+  # Sum of Billable Operations
+  billableOperations: uint32!
+  # Sum of Message Size
+  messageSize: uint32!
+  # Sum of Messages
+  messages: uint64!
 }
 
 # Beta. R2 operations with adaptive sampling
@@ -17006,12 +17147,18 @@ type AccountRumWebVitalsEventsAdaptiveGroups {
 type AccountRumWebVitalsEventsAdaptiveGroupsAvg {
   # Cumulative Layout Shift (Core Web Vitals) (negative value indicates N/A)
   cumulativeLayoutShift: float64!
+  # First Contentful Paint in microseconds (negative value indicates N/A)
+  firstContentfulPaint: int64!
   # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
   firstInputDelay: int64!
+  # Interaction to Next Paint in microseconds (negative value indicates N/A)
+  interactionToNextPaint: int64!
   # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
   largestContentfulPaint: int64!
   # Average sample interval
   sampleInterval: float64!
+  # Time to First Byte in microseconds (negative value indicates N/A)
+  timeToFirstByte: int64!
 }
 
 type AccountRumWebVitalsEventsAdaptiveGroupsDimensions {
@@ -17383,10 +17530,18 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   avg_cumulativeLayoutShift_ASC
   # avg(cumulativeLayoutShift) descending
   avg_cumulativeLayoutShift_DESC
+  # avg(firstContentfulPaint) ascending
+  avg_firstContentfulPaint_ASC
+  # avg(firstContentfulPaint) descending
+  avg_firstContentfulPaint_DESC
   # avg(firstInputDelay) ascending
   avg_firstInputDelay_ASC
   # avg(firstInputDelay) descending
   avg_firstInputDelay_DESC
+  # avg(interactionToNextPaint) ascending
+  avg_interactionToNextPaint_ASC
+  # avg(interactionToNextPaint) descending
+  avg_interactionToNextPaint_DESC
   # avg(largestContentfulPaint) ascending
   avg_largestContentfulPaint_ASC
   # avg(largestContentfulPaint) descending
@@ -17395,6 +17550,10 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # avg(timeToFirstByte) ascending
+  avg_timeToFirstByte_ASC
+  # avg(timeToFirstByte) descending
+  avg_timeToFirstByte_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -17491,6 +17650,22 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   quantiles_cumulativeLayoutShiftP99_ASC
   # quantiles(cumulativeLayoutShiftP99) descending
   quantiles_cumulativeLayoutShiftP99_DESC
+  # quantiles(firstContentfulPaintP50) ascending
+  quantiles_firstContentfulPaintP50_ASC
+  # quantiles(firstContentfulPaintP50) descending
+  quantiles_firstContentfulPaintP50_DESC
+  # quantiles(firstContentfulPaintP75) ascending
+  quantiles_firstContentfulPaintP75_ASC
+  # quantiles(firstContentfulPaintP75) descending
+  quantiles_firstContentfulPaintP75_DESC
+  # quantiles(firstContentfulPaintP90) ascending
+  quantiles_firstContentfulPaintP90_ASC
+  # quantiles(firstContentfulPaintP90) descending
+  quantiles_firstContentfulPaintP90_DESC
+  # quantiles(firstContentfulPaintP99) ascending
+  quantiles_firstContentfulPaintP99_ASC
+  # quantiles(firstContentfulPaintP99) descending
+  quantiles_firstContentfulPaintP99_DESC
   # quantiles(firstInputDelayP50) ascending
   quantiles_firstInputDelayP50_ASC
   # quantiles(firstInputDelayP50) descending
@@ -17507,6 +17682,22 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   quantiles_firstInputDelayP99_ASC
   # quantiles(firstInputDelayP99) descending
   quantiles_firstInputDelayP99_DESC
+  # quantiles(interactionToNextPaintP50) ascending
+  quantiles_interactionToNextPaintP50_ASC
+  # quantiles(interactionToNextPaintP50) descending
+  quantiles_interactionToNextPaintP50_DESC
+  # quantiles(interactionToNextPaintP75) ascending
+  quantiles_interactionToNextPaintP75_ASC
+  # quantiles(interactionToNextPaintP75) descending
+  quantiles_interactionToNextPaintP75_DESC
+  # quantiles(interactionToNextPaintP90) ascending
+  quantiles_interactionToNextPaintP90_ASC
+  # quantiles(interactionToNextPaintP90) descending
+  quantiles_interactionToNextPaintP90_DESC
+  # quantiles(interactionToNextPaintP99) ascending
+  quantiles_interactionToNextPaintP99_ASC
+  # quantiles(interactionToNextPaintP99) descending
+  quantiles_interactionToNextPaintP99_DESC
   # quantiles(largestContentfulPaintP50) ascending
   quantiles_largestContentfulPaintP50_ASC
   # quantiles(largestContentfulPaintP50) descending
@@ -17523,6 +17714,22 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   quantiles_largestContentfulPaintP99_ASC
   # quantiles(largestContentfulPaintP99) descending
   quantiles_largestContentfulPaintP99_DESC
+  # quantiles(timeToFirstByteP50) ascending
+  quantiles_timeToFirstByteP50_ASC
+  # quantiles(timeToFirstByteP50) descending
+  quantiles_timeToFirstByteP50_DESC
+  # quantiles(timeToFirstByteP75) ascending
+  quantiles_timeToFirstByteP75_ASC
+  # quantiles(timeToFirstByteP75) descending
+  quantiles_timeToFirstByteP75_DESC
+  # quantiles(timeToFirstByteP90) ascending
+  quantiles_timeToFirstByteP90_ASC
+  # quantiles(timeToFirstByteP90) descending
+  quantiles_timeToFirstByteP90_DESC
+  # quantiles(timeToFirstByteP99) ascending
+  quantiles_timeToFirstByteP99_ASC
+  # quantiles(timeToFirstByteP99) descending
+  quantiles_timeToFirstByteP99_DESC
   # refererHost ascending
   refererHost_ASC
   # refererHost descending
@@ -17567,6 +17774,22 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   sum_clsTotal_ASC
   # sum(clsTotal) descending
   sum_clsTotal_DESC
+  # sum(fcpGood) ascending
+  sum_fcpGood_ASC
+  # sum(fcpGood) descending
+  sum_fcpGood_DESC
+  # sum(fcpNeedsImprovement) ascending
+  sum_fcpNeedsImprovement_ASC
+  # sum(fcpNeedsImprovement) descending
+  sum_fcpNeedsImprovement_DESC
+  # sum(fcpPoor) ascending
+  sum_fcpPoor_ASC
+  # sum(fcpPoor) descending
+  sum_fcpPoor_DESC
+  # sum(fcpTotal) ascending
+  sum_fcpTotal_ASC
+  # sum(fcpTotal) descending
+  sum_fcpTotal_DESC
   # sum(fidGood) ascending
   sum_fidGood_ASC
   # sum(fidGood) descending
@@ -17583,6 +17806,22 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   sum_fidTotal_ASC
   # sum(fidTotal) descending
   sum_fidTotal_DESC
+  # sum(inpGood) ascending
+  sum_inpGood_ASC
+  # sum(inpGood) descending
+  sum_inpGood_DESC
+  # sum(inpNeedsImprovement) ascending
+  sum_inpNeedsImprovement_ASC
+  # sum(inpNeedsImprovement) descending
+  sum_inpNeedsImprovement_DESC
+  # sum(inpPoor) ascending
+  sum_inpPoor_ASC
+  # sum(inpPoor) descending
+  sum_inpPoor_DESC
+  # sum(inpTotal) ascending
+  sum_inpTotal_ASC
+  # sum(inpTotal) descending
+  sum_inpTotal_DESC
   # sum(lcpGood) ascending
   sum_lcpGood_ASC
   # sum(lcpGood) descending
@@ -17599,6 +17838,22 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   sum_lcpTotal_ASC
   # sum(lcpTotal) descending
   sum_lcpTotal_DESC
+  # sum(ttfbGood) ascending
+  sum_ttfbGood_ASC
+  # sum(ttfbGood) descending
+  sum_ttfbGood_DESC
+  # sum(ttfbNeedsImprovement) ascending
+  sum_ttfbNeedsImprovement_ASC
+  # sum(ttfbNeedsImprovement) descending
+  sum_ttfbNeedsImprovement_DESC
+  # sum(ttfbPoor) ascending
+  sum_ttfbPoor_ASC
+  # sum(ttfbPoor) descending
+  sum_ttfbPoor_DESC
+  # sum(ttfbTotal) ascending
+  sum_ttfbTotal_ASC
+  # sum(ttfbTotal) descending
+  sum_ttfbTotal_DESC
   # sum(visits) ascending
   sum_visits_ASC
   # sum(visits) descending
@@ -17622,6 +17877,14 @@ type AccountRumWebVitalsEventsAdaptiveGroupsQuantiles {
   cumulativeLayoutShiftP90: float64!
   # Cumulative Layout Shift (Core Web Vitals) (negative value indicates N/A)
   cumulativeLayoutShiftP99: float64!
+  # First Contentful Paint in microseconds (negative value indicates N/A)
+  firstContentfulPaintP50: int64!
+  # First Contentful Paint in microseconds (negative value indicates N/A)
+  firstContentfulPaintP75: int64!
+  # First Contentful Paint in microseconds (negative value indicates N/A)
+  firstContentfulPaintP90: int64!
+  # First Contentful Paint in microseconds (negative value indicates N/A)
+  firstContentfulPaintP99: int64!
   # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
   firstInputDelayP50: int64!
   # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
@@ -17630,6 +17893,14 @@ type AccountRumWebVitalsEventsAdaptiveGroupsQuantiles {
   firstInputDelayP90: int64!
   # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
   firstInputDelayP99: int64!
+  # Interaction to Next Paint in microseconds (negative value indicates N/A)
+  interactionToNextPaintP50: int64!
+  # Interaction to Next Paint in microseconds (negative value indicates N/A)
+  interactionToNextPaintP75: int64!
+  # Interaction to Next Paint in microseconds (negative value indicates N/A)
+  interactionToNextPaintP90: int64!
+  # Interaction to Next Paint in microseconds (negative value indicates N/A)
+  interactionToNextPaintP99: int64!
   # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
   largestContentfulPaintP50: int64!
   # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
@@ -17638,6 +17909,14 @@ type AccountRumWebVitalsEventsAdaptiveGroupsQuantiles {
   largestContentfulPaintP90: int64!
   # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
   largestContentfulPaintP99: int64!
+  # Time to First Byte in microseconds (negative value indicates N/A)
+  timeToFirstByteP50: int64!
+  # Time to First Byte in microseconds (negative value indicates N/A)
+  timeToFirstByteP75: int64!
+  # Time to First Byte in microseconds (negative value indicates N/A)
+  timeToFirstByteP90: int64!
+  # Time to First Byte in microseconds (negative value indicates N/A)
+  timeToFirstByteP99: int64!
 }
 
 type AccountRumWebVitalsEventsAdaptiveGroupsSum {
@@ -17649,6 +17928,14 @@ type AccountRumWebVitalsEventsAdaptiveGroupsSum {
   clsPoor: uint64!
   # Cumulative Layout Shift (Core Web Vitals), total count
   clsTotal: uint64!
+  # First Contentful Paint, count of Good occurrences (under 1.8 s)
+  fcpGood: uint64!
+  # First Contentful Paint, count of Needs Improvement occurrences (between 1.8 s and 3 s)
+  fcpNeedsImprovement: uint64!
+  # First Contentful Paint, count of Poor occurrences (over 3 s)
+  fcpPoor: uint64!
+  # First Contentful Paint, total count
+  fcpTotal: uint64!
   # First Input Delay (Core Web Vitals), count of Good occurrences (under 100 ms)
   fidGood: uint64!
   # First Input Delay (Core Web Vitals), count of Needs Improvement occurrences (between 100 ms and 300ms)
@@ -17657,6 +17944,14 @@ type AccountRumWebVitalsEventsAdaptiveGroupsSum {
   fidPoor: uint64!
   # First Input Delay (Core Web Vitals), total count
   fidTotal: uint64!
+  # Interaction to Next Paint, count of Good occurrences (under 200 ms)
+  inpGood: uint64!
+  # Interaction to Next Paint, count of Needs Improvement occurrences (between 200 ms and 500ms)
+  inpNeedsImprovement: uint64!
+  # Interaction to Next Paint, count of Poor occurrences (over 500 ms)
+  inpPoor: uint64!
+  # Interaction to Next Paint, total count
+  inpTotal: uint64!
   # Largest Contentful Paint (Core Web Vitals), count of Good occurrences (under 2.5 sec)
   lcpGood: uint64!
   # Largest Contentful Paint (Core Web Vitals), count of Needs Improvement occurrences (between 2.5 sec and 4.0 sec)
@@ -17665,6 +17960,14 @@ type AccountRumWebVitalsEventsAdaptiveGroupsSum {
   lcpPoor: uint64!
   # Largest Contentful Paint (Core Web Vitals), total count
   lcpTotal: uint64!
+  # Time to First Byte, count of Good occurrences (under 800 ms)
+  ttfbGood: uint64!
+  # Time to First Byte, count of Needs Improvement occurrences (between 800 ms and 1800ms)
+  ttfbNeedsImprovement: uint64!
+  # Time to First Byte, count of Poor occurrences (over 500 ms)
+  ttfbPoor: uint64!
+  # Time to First Byte, total count
+  ttfbTotal: uint64!
   # The number of pages viewed by end-users that were initiated from a different website (i.e. where the Document.referrer does not match the hostname)
   visits: uint64!
 }
@@ -17810,6 +18113,7 @@ type AccountSettings {
   mnmFlowDataAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   pagesFunctionsInvocationsAdaptiveGroups: Settings!
+  queuesMessagesAdaptiveGroups: Settings!
   r2OperationsAdaptiveGroups: Settings!
   r2StorageAdaptiveGroups: Settings!
   rumPageloadEventsAdaptiveGroups: Settings!
@@ -21362,6 +21666,10 @@ type zone {
   waitingRoomAnalyticsAdaptive(filter: ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneWaitingRoomAnalyticsAdaptiveOrderBy!]): [ZoneWaitingRoomAnalyticsAdaptive!]!
   # Beta. Aggregated waiting room analytics logs with adaptive sampling
   waitingRoomAnalyticsAdaptiveGroups(filter: ZoneWaitingRoomAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy!]): [ZoneWaitingRoomAnalyticsAdaptiveGroups!]!
+  # Workers invocations with adaptive sampling
+  workersZoneInvocationsAdaptiveGroups(filter: ZoneWorkersZoneInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneWorkersZoneInvocationsAdaptiveGroupsOrderBy!]): [ZoneWorkersZoneInvocationsAdaptiveGroups!]!
+  # Workers subrequests with adaptive sampling
+  workersZoneSubrequestsAdaptiveGroups(filter: ZoneWorkersZoneSubrequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneWorkersZoneSubrequestsAdaptiveGroupsOrderBy!]): [ZoneWorkersZoneSubrequestsAdaptiveGroups!]!
   # Zaraz Actions Analytics
   zarazActionsAdaptiveGroups(filter: ZoneZarazActionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazActionsAdaptiveGroupsOrderBy!]): [ZoneZarazActionsAdaptiveGroups!]!
   # Zaraz Track Analytics - counts zaraz.track calls
@@ -25799,7 +26107,7 @@ type ZoneHttpRequestsAdaptive {
   # Name of the source detection which generated the bot management score.
   botScoreSrcName: string!
   # Cache status
-  cacheStatus: uint64!
+  cacheStatus: string!
   # The ASN of the visitor as string
   clientASNDescription: string!
   # The ASN number of the visitor
@@ -25932,14 +26240,16 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   botScore_lt: uint8
   botScore_neq: uint8
   botScore_notin: bytes
-  cacheStatus: uint64
-  cacheStatus_geq: uint64
-  cacheStatus_gt: uint64
-  cacheStatus_in: [uint64!]
-  cacheStatus_leq: uint64
-  cacheStatus_lt: uint64
-  cacheStatus_neq: uint64
-  cacheStatus_notin: [uint64!]
+  cacheStatus: string
+  cacheStatus_geq: string
+  cacheStatus_gt: string
+  cacheStatus_in: [string!]
+  cacheStatus_leq: string
+  cacheStatus_like: string
+  cacheStatus_lt: string
+  cacheStatus_neq: string
+  cacheStatus_notin: [string!]
+  cacheStatus_notlike: string
   clientASNDescription: string
   clientASNDescription_geq: string
   clientASNDescription_gt: string
@@ -29069,6 +29379,8 @@ type ZoneSettings {
   synAvgPps1mGroups: Settings!
   waitingRoomAnalyticsAdaptive: Settings!
   waitingRoomAnalyticsAdaptiveGroups: Settings!
+  workersZoneInvocationsAdaptiveGroups: Settings!
+  workersZoneSubrequestsAdaptiveGroups: Settings!
   zarazActionsAdaptiveGroups: Settings!
   zarazTrackAdaptiveGroups: Settings!
   zarazTriggersAdaptiveGroups: Settings!
@@ -29895,6 +30207,281 @@ enum ZoneWaitingRoomAnalyticsAdaptiveOrderBy {
   waitingRoomName_ASC
   # waitingRoomName descending
   waitingRoomName_DESC
+}
+
+# Workers invocations with adaptive sampling
+type ZoneWorkersZoneInvocationsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: ZoneWorkersZoneInvocationsAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: ZoneWorkersZoneInvocationsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: ZoneWorkersZoneInvocationsAdaptiveGroupsSum
+}
+
+type ZoneWorkersZoneInvocationsAdaptiveGroupsAvg {
+  # Average CPU time used per request (in microseconds)
+  avgCpuTime: uint64!
+}
+
+type ZoneWorkersZoneInvocationsAdaptiveGroupsDimensions {
+  # Worker script Id
+  constantScriptId: uint32!
+  # Request datetime, truncated to start of a day
+  date: Date!
+  # Request datetime
+  datetime: Time!
+  # Request datetime, truncated to start of an hour
+  datetimeHour: Time!
+  # Request datetime, truncated to start of an minute
+  datetimeMinute: Time!
+  # Status of the worker invocation
+  status: string!
+}
+
+input ZoneWorkersZoneInvocationsAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneWorkersZoneInvocationsAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneWorkersZoneInvocationsAdaptiveGroupsFilter_InputObject!]
+  constantScriptId: uint32
+  constantScriptId_geq: uint32
+  constantScriptId_gt: uint32
+  constantScriptId_in: [uint32!]
+  constantScriptId_leq: uint32
+  constantScriptId_lt: uint32
+  constantScriptId_neq: uint32
+  constantScriptId_notin: [uint32!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  status: string
+  status_geq: string
+  status_gt: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
+}
+
+enum ZoneWorkersZoneInvocationsAdaptiveGroupsOrderBy {
+  # avg(avgCpuTime) ascending
+  avg_avgCpuTime_ASC
+  # avg(avgCpuTime) descending
+  avg_avgCpuTime_DESC
+  # constantScriptId ascending
+  constantScriptId_ASC
+  # constantScriptId descending
+  constantScriptId_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # scriptName ascending
+  scriptName_ASC
+  # scriptName descending
+  scriptName_DESC
+  # stableId ascending
+  stableId_ASC
+  # stableId descending
+  stableId_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # sum(subrequests) ascending
+  sum_subrequests_ASC
+  # sum(subrequests) descending
+  sum_subrequests_DESC
+  # sum(totalCpuTime) ascending
+  sum_totalCpuTime_ASC
+  # sum(totalCpuTime) descending
+  sum_totalCpuTime_DESC
+}
+
+type ZoneWorkersZoneInvocationsAdaptiveGroupsSum {
+  # Sum of Requests
+  requests: uint64!
+  # Number of sub-requests issued by the edge worker
+  subrequests: uint64!
+  # Total CPU time used (in microseconds)
+  totalCpuTime: uint64!
+}
+
+# Workers subrequests with adaptive sampling
+type ZoneWorkersZoneSubrequestsAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: ZoneWorkersZoneSubrequestsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: ZoneWorkersZoneSubrequestsAdaptiveGroupsSum
+}
+
+type ZoneWorkersZoneSubrequestsAdaptiveGroupsDimensions {
+  # Cache status
+  cacheStatus: uint64!
+  # Request datetime, truncated to start of a day
+  date: Date!
+  # Request datetime
+  datetime: Time!
+  # Request datetime, truncated to start of an hour
+  datetimeHour: Time!
+  # Request datetime, truncated to start of an minute
+  datetimeMinute: Time!
+  # Origin HTTP response code
+  httpResponseStatus: uint64!
+}
+
+input ZoneWorkersZoneSubrequestsAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneWorkersZoneSubrequestsAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneWorkersZoneSubrequestsAdaptiveGroupsFilter_InputObject!]
+  cacheStatus: uint64
+  cacheStatus_geq: uint64
+  cacheStatus_gt: uint64
+  cacheStatus_in: [uint64!]
+  cacheStatus_leq: uint64
+  cacheStatus_lt: uint64
+  cacheStatus_neq: uint64
+  cacheStatus_notin: [uint64!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  httpResponseStatus: uint64
+  httpResponseStatus_geq: uint64
+  httpResponseStatus_gt: uint64
+  httpResponseStatus_in: [uint64!]
+  httpResponseStatus_leq: uint64
+  httpResponseStatus_lt: uint64
+  httpResponseStatus_neq: uint64
+  httpResponseStatus_notin: [uint64!]
+}
+
+enum ZoneWorkersZoneSubrequestsAdaptiveGroupsOrderBy {
+  # cacheStatus ascending
+  cacheStatus_ASC
+  # cacheStatus descending
+  cacheStatus_DESC
+  # constantScriptId ascending
+  constantScriptId_ASC
+  # constantScriptId descending
+  constantScriptId_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # httpResponseStatus ascending
+  httpResponseStatus_ASC
+  # httpResponseStatus descending
+  httpResponseStatus_DESC
+  # scriptName ascending
+  scriptName_ASC
+  # scriptName descending
+  scriptName_DESC
+  # stableId ascending
+  stableId_ASC
+  # stableId descending
+  stableId_DESC
+  # sum(responseBodySize) ascending
+  sum_responseBodySize_ASC
+  # sum(responseBodySize) descending
+  sum_responseBodySize_DESC
+  # sum(subrequests) ascending
+  sum_subrequests_ASC
+  # sum(subrequests) descending
+  sum_subrequests_DESC
+}
+
+type ZoneWorkersZoneSubrequestsAdaptiveGroupsSum {
+  # Bandwidth (in bytes) received via subrequests
+  responseBodySize: uint64!
+  # Number of subrequests issued by a worker
+  subrequests: uint64!
 }
 
 # Zaraz Actions Analytics
