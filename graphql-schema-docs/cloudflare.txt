@@ -26169,8 +26169,6 @@ type ZoneHttpRequestsAdaptive {
   originIP: string!
   # HTTP origin response status code returned to browser
   originResponseStatus: uint16!
-  # The RayId of the request
-  rayName: string!
   requestSource: string!
   upperTierColoName: string!
   # visitor's user-agent string
@@ -26554,16 +26552,6 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   originResponseStatus_lt: uint16
   originResponseStatus_neq: uint16
   originResponseStatus_notin: [uint16!]
-  rayName: string
-  rayName_geq: string
-  rayName_gt: string
-  rayName_in: [string!]
-  rayName_leq: string
-  rayName_like: string
-  rayName_lt: string
-  rayName_neq: string
-  rayName_notin: [string!]
-  rayName_notlike: string
   requestSource: string
   requestSource_geq: string
   requestSource_gt: string
@@ -27633,10 +27621,6 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   originResponseStatus_ASC
   # originResponseStatus descending
   originResponseStatus_DESC
-  # rayName ascending
-  rayName_ASC
-  # rayName descending
-  rayName_DESC
   # requestSource ascending
   requestSource_ASC
   # requestSource descending
