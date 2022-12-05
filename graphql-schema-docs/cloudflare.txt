@@ -35,6 +35,7 @@ Account-level datasets:
 * mnmFlowDataAdaptiveGroups
   nelReportsAdaptiveGroups
 * pagesFunctionsInvocationsAdaptiveGroups
+* queueMessageOperationsAdaptiveGroups
 * queuesMessagesAdaptiveGroups
 * r2OperationsAdaptiveGroups
 * r2StorageAdaptiveGroups
@@ -199,7 +200,10 @@ type account {
   nelReportsAdaptiveGroups(filter: AccountNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountNelReportsAdaptiveGroupsOrderBy!]): [AccountNelReportsAdaptiveGroups!]!
   # Pages Functions invocations with adaptive sampling
   pagesFunctionsInvocationsAdaptiveGroups(filter: AccountPagesFunctionsInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy!]): [AccountPagesFunctionsInvocationsAdaptiveGroups!]!
+  # Beta. Queue message operation data with adaptive sampling
+  queueMessageOperationsAdaptiveGroups(filter: AccountQueueMessageOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueMessageOperationsAdaptiveGroupsOrderBy!]): [AccountQueueMessageOperationsAdaptiveGroups!]!
   # Beta. Queue message data with adaptive sampling
+  @Deprecated
   queuesMessagesAdaptiveGroups(filter: AccountQueuesMessagesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueuesMessagesAdaptiveGroupsOrderBy!]): [AccountQueuesMessagesAdaptiveGroups!]!
   # Beta. R2 operations with adaptive sampling
   r2OperationsAdaptiveGroups(filter: AccountR2OperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2OperationsAdaptiveGroupsOrderBy!]): [AccountR2OperationsAdaptiveGroups!]!
@@ -15492,6 +15496,156 @@ type AccountPagesFunctionsInvocationsAdaptiveGroupsSum {
   wallTime: uint64!
 }
 
+# Beta. Queue message operation data with adaptive sampling
+type AccountQueueMessageOperationsAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountQueueMessageOperationsAdaptiveGroupsAvg
+  # Number of Message Operations
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountQueueMessageOperationsAdaptiveGroupsDimensions
+  # The max of values for a metric per dimension
+  max: AccountQueueMessageOperationsAdaptiveGroupsMax
+  # The sum of values for a metric per dimension
+  sum: AccountQueueMessageOperationsAdaptiveGroupsSum
+}
+
+type AccountQueueMessageOperationsAdaptiveGroupsAvg {
+  # The average value used for sample interval
+  sampleInterval: float64!
+}
+
+type AccountQueueMessageOperationsAdaptiveGroupsDimensions {
+  # The type of the Queue message operation
+  actionType: string!
+  # Message operation timestamp, truncated to start of a day
+  date: Date!
+  # Message operation timestamp
+  datetime: Time!
+  # Message operation timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Message operation timestamp, truncated to start of an minute
+  datetimeMinute: Time!
+  # The ID of the Queue
+  queueId: string!
+}
+
+input AccountQueueMessageOperationsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountQueueMessageOperationsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountQueueMessageOperationsAdaptiveGroupsFilter_InputObject!]
+  actionType: string
+  actionType_geq: string
+  actionType_gt: string
+  actionType_in: [string!]
+  actionType_leq: string
+  actionType_like: string
+  actionType_lt: string
+  actionType_neq: string
+  actionType_notin: [string!]
+  actionType_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  queueId: string
+  queueId_geq: string
+  queueId_gt: string
+  queueId_in: [string!]
+  queueId_leq: string
+  queueId_like: string
+  queueId_lt: string
+  queueId_neq: string
+  queueId_notin: [string!]
+  queueId_notlike: string
+}
+
+type AccountQueueMessageOperationsAdaptiveGroupsMax {
+  # Max Message Size
+  messageSize: uint32!
+}
+
+enum AccountQueueMessageOperationsAdaptiveGroupsOrderBy {
+  # actionType ascending
+  actionType_ASC
+  # actionType descending
+  actionType_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # max(messageSize) ascending
+  max_messageSize_ASC
+  # max(messageSize) descending
+  max_messageSize_DESC
+  # queueId ascending
+  queueId_ASC
+  # queueId descending
+  queueId_DESC
+  # sum(billableOperations) ascending
+  sum_billableOperations_ASC
+  # sum(billableOperations) descending
+  sum_billableOperations_DESC
+  # sum(bytes) ascending
+  sum_bytes_ASC
+  # sum(bytes) descending
+  sum_bytes_DESC
+}
+
+type AccountQueueMessageOperationsAdaptiveGroupsSum {
+  # Number of Billable Operations (some message operations count as multiple billable operations)
+  billableOperations: uint32!
+  # Total size (in bytes) of message operations
+  bytes: uint32!
+}
+
 # Beta. Queue message data with adaptive sampling
 type AccountQueuesMessagesAdaptiveGroups {
   # The average value for a metric per dimension
@@ -18113,6 +18267,7 @@ type AccountSettings {
   mnmFlowDataAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   pagesFunctionsInvocationsAdaptiveGroups: Settings!
+  queueMessageOperationsAdaptiveGroups: Settings!
   queuesMessagesAdaptiveGroups: Settings!
   r2OperationsAdaptiveGroups: Settings!
   r2StorageAdaptiveGroups: Settings!
@@ -29532,6 +29687,14 @@ type ZoneWaitingRoomAnalyticsAdaptive {
   totalActiveUsersConfig: uint64!
   # Total number of users that are queued
   totalQueuedUsers: uint64!
+  # 50th percentile of the total time (in seconds) spent waiting in queue by users who were queued and then gained access to the origin
+  totalTimeWaitedP50: uint64!
+  # 75th percentile of the total time (in seconds) spent waiting in queue by users who were queued and then gained access to the origin
+  totalTimeWaitedP75: uint64!
+  # 90th percentile of the total time (in seconds) spent waiting in queue by users who were queued and then gained access to the origin
+  totalTimeWaitedP90: uint64!
+  # 95th percentile of the total time (in seconds) spent waiting in queue by users who were queued and then gained access to the origin
+  totalTimeWaitedP95: uint64!
   # Unique Identifier for the waiting room
   waitingRoomId: string!
   # Name of the waiting room
@@ -29709,6 +29872,38 @@ input ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject {
   totalQueuedUsers_lt: uint64
   totalQueuedUsers_neq: uint64
   totalQueuedUsers_notin: [uint64!]
+  totalTimeWaitedP50: uint64
+  totalTimeWaitedP50_geq: uint64
+  totalTimeWaitedP50_gt: uint64
+  totalTimeWaitedP50_in: [uint64!]
+  totalTimeWaitedP50_leq: uint64
+  totalTimeWaitedP50_lt: uint64
+  totalTimeWaitedP50_neq: uint64
+  totalTimeWaitedP50_notin: [uint64!]
+  totalTimeWaitedP75: uint64
+  totalTimeWaitedP75_geq: uint64
+  totalTimeWaitedP75_gt: uint64
+  totalTimeWaitedP75_in: [uint64!]
+  totalTimeWaitedP75_leq: uint64
+  totalTimeWaitedP75_lt: uint64
+  totalTimeWaitedP75_neq: uint64
+  totalTimeWaitedP75_notin: [uint64!]
+  totalTimeWaitedP90: uint64
+  totalTimeWaitedP90_geq: uint64
+  totalTimeWaitedP90_gt: uint64
+  totalTimeWaitedP90_in: [uint64!]
+  totalTimeWaitedP90_leq: uint64
+  totalTimeWaitedP90_lt: uint64
+  totalTimeWaitedP90_neq: uint64
+  totalTimeWaitedP90_notin: [uint64!]
+  totalTimeWaitedP95: uint64
+  totalTimeWaitedP95_geq: uint64
+  totalTimeWaitedP95_gt: uint64
+  totalTimeWaitedP95_in: [uint64!]
+  totalTimeWaitedP95_leq: uint64
+  totalTimeWaitedP95_lt: uint64
+  totalTimeWaitedP95_neq: uint64
+  totalTimeWaitedP95_notin: [uint64!]
   waitingRoomId: string
   waitingRoomId_geq: string
   waitingRoomId_gt: string
@@ -29789,6 +29984,14 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroupsAvgWeighted {
   timeOnOriginP90: float64!
   # Weighted average of 95th percentile of time spent on origin in seconds. A negative number means no data
   timeOnOriginP95: float64!
+  # Weighted average of 50th percentile of the total time spent waiting in queue by users who have gained access to the origin in seconds. A negative number means no data
+  totalTimeWaitedP50: float64!
+  # Weighted average of 75th percentile of the total time spent waiting in queue by users who have gained access to the origin in seconds. A negative number means no data
+  totalTimeWaitedP75: float64!
+  # Weighted average of 90th percentile of the total time spent waiting in queue by users who have gained access to the origin in seconds. A negative number means no data
+  totalTimeWaitedP90: float64!
+  # Weighted average of 95th percentile of the total time spent waiting in queue by users who have gained access to the origin in seconds. A negative number means no data
+  totalTimeWaitedP95: float64!
 }
 
 type ZoneWaitingRoomAnalyticsAdaptiveGroupsDimensions {
@@ -29964,6 +30167,22 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   avgWeighted_timeOnOriginP95_ASC
   # avgWeighted(timeOnOriginP95) descending
   avgWeighted_timeOnOriginP95_DESC
+  # avgWeighted(totalTimeWaitedP50) ascending
+  avgWeighted_totalTimeWaitedP50_ASC
+  # avgWeighted(totalTimeWaitedP50) descending
+  avgWeighted_totalTimeWaitedP50_DESC
+  # avgWeighted(totalTimeWaitedP75) ascending
+  avgWeighted_totalTimeWaitedP75_ASC
+  # avgWeighted(totalTimeWaitedP75) descending
+  avgWeighted_totalTimeWaitedP75_DESC
+  # avgWeighted(totalTimeWaitedP90) ascending
+  avgWeighted_totalTimeWaitedP90_ASC
+  # avgWeighted(totalTimeWaitedP90) descending
+  avgWeighted_totalTimeWaitedP90_DESC
+  # avgWeighted(totalTimeWaitedP95) ascending
+  avgWeighted_totalTimeWaitedP95_ASC
+  # avgWeighted(totalTimeWaitedP95) descending
+  avgWeighted_totalTimeWaitedP95_DESC
   # avg(abandoningUsersPerMinute) ascending
   avg_abandoningUsersPerMinute_ASC
   # avg(abandoningUsersPerMinute) descending
@@ -30183,6 +30402,22 @@ enum ZoneWaitingRoomAnalyticsAdaptiveOrderBy {
   totalQueuedUsers_ASC
   # totalQueuedUsers descending
   totalQueuedUsers_DESC
+  # totalTimeWaitedP50 ascending
+  totalTimeWaitedP50_ASC
+  # totalTimeWaitedP50 descending
+  totalTimeWaitedP50_DESC
+  # totalTimeWaitedP75 ascending
+  totalTimeWaitedP75_ASC
+  # totalTimeWaitedP75 descending
+  totalTimeWaitedP75_DESC
+  # totalTimeWaitedP90 ascending
+  totalTimeWaitedP90_ASC
+  # totalTimeWaitedP90 descending
+  totalTimeWaitedP90_DESC
+  # totalTimeWaitedP95 ascending
+  totalTimeWaitedP95_ASC
+  # totalTimeWaitedP95 descending
+  totalTimeWaitedP95_DESC
   # waitingRoomId ascending
   waitingRoomId_ASC
   # waitingRoomId descending
@@ -30219,6 +30454,8 @@ type ZoneWorkersZoneInvocationsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Request datetime, truncated to start of an minute
   datetimeMinute: Time!
+  # Origin HTTP response code
+  httpResponseStatus: uint16!
   # Status of the worker invocation
   status: string!
 }
@@ -30266,6 +30503,14 @@ input ZoneWorkersZoneInvocationsAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  httpResponseStatus: uint16
+  httpResponseStatus_geq: uint16
+  httpResponseStatus_gt: uint16
+  httpResponseStatus_in: [uint16!]
+  httpResponseStatus_leq: uint16
+  httpResponseStatus_lt: uint16
+  httpResponseStatus_neq: uint16
+  httpResponseStatus_notin: [uint16!]
   status: string
   status_geq: string
   status_gt: string
@@ -30303,6 +30548,10 @@ enum ZoneWorkersZoneInvocationsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # httpResponseStatus ascending
+  httpResponseStatus_ASC
+  # httpResponseStatus descending
+  httpResponseStatus_DESC
   # scriptName ascending
   scriptName_ASC
   # scriptName descending
@@ -30319,6 +30568,10 @@ enum ZoneWorkersZoneInvocationsAdaptiveGroupsOrderBy {
   sum_requests_ASC
   # sum(requests) descending
   sum_requests_DESC
+  # sum(responseBodySize) ascending
+  sum_responseBodySize_ASC
+  # sum(responseBodySize) descending
+  sum_responseBodySize_DESC
   # sum(subrequests) ascending
   sum_subrequests_ASC
   # sum(subrequests) descending
@@ -30332,6 +30585,8 @@ enum ZoneWorkersZoneInvocationsAdaptiveGroupsOrderBy {
 type ZoneWorkersZoneInvocationsAdaptiveGroupsSum {
   # Sum of Requests
   requests: uint64!
+  # Bandwidth (in bytes) returned to eyeball
+  responseBodySize: uint64!
   # Number of sub-requests issued by the edge worker
   subrequests: uint64!
   # Total CPU time used (in microseconds)
