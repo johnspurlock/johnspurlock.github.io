@@ -57,6 +57,7 @@ Account-level datasets:
 * zeroTrustPrivateNetworkDiscoveryGroups
 
 Zone-level datasets:
+* apiRequestSequencesGroups
 * cacheReserveOperationsAdaptiveGroups
 * cacheReserveStorageAdaptiveGroups
 * emailRoutingAdaptive
@@ -21768,6 +21769,8 @@ type viewer {
 }
 
 type zone {
+  # Sequences of API endpoint operations. Sequences are grouped by AuthID and currently ranked by correlation score. Correlation scores are estimated over a 24 hour window and are current to within 10 minutes
+  apiRequestSequencesGroups(filter: ZoneApiRequestSequencesGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneApiRequestSequencesGroupsOrderBy!]): [ZoneApiRequestSequencesGroups!]!
   # Beta. Cache Reserve operations with adaptive sampling
   cacheReserveOperationsAdaptiveGroups(filter: ZoneCacheReserveOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneCacheReserveOperationsAdaptiveGroupsOrderBy!]): [ZoneCacheReserveOperationsAdaptiveGroups!]!
   # Beta. Cache Reserve storage with adaptive sampling
@@ -21832,6 +21835,111 @@ type zone {
   # Zaraz Triggers Analytics (a trigger is a set of rules that can trigger a zaraz action)
   zarazTriggersAdaptiveGroups(filter: ZoneZarazTriggersAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazTriggersAdaptiveGroupsOrderBy!]): [ZoneZarazTriggersAdaptiveGroups!]!
   zoneTag: string!
+}
+
+# Sequences of API endpoint operations. Sequences are grouped by AuthID and currently ranked by correlation score. Correlation scores are estimated over a 24 hour window and are current to within 10 minutes
+type ZoneApiRequestSequencesGroups {
+  aggArgMax: ZoneApiRequestSequencesGroupsAggArgMax
+  aggMax: ZoneApiRequestSequencesGroupsAggMax
+  # List of dimensions to group by
+  dimensions: ZoneApiRequestSequencesGroupsDimensions
+}
+
+type ZoneApiRequestSequencesGroupsAggArgMax {
+  # Correlation score estimated over a 24 hour window (higher scores mean more correlation between requests in the sequence of endpoint operations)
+  correlation: float64!
+  # Estimated number of occurrences of this sequence of endpoint operations
+  numOccurrences: float64!
+  # API endpoints comprising the sequence of operations. Individual endpoints are delimited by # symbols
+  operationsApiEndpoints: string!
+  # HTTP request methods comprising the sequence of operations. Individual request method names are delimited by # symbols
+  operationsClientRequestHTTPMethods: string!
+}
+
+type ZoneApiRequestSequencesGroupsAggMax {
+  # Time of the most recent occurrence of this sequence of endpoint operations (based on the timestamp of the first request in the sequence)
+  timeLastSeen: Time!
+  # The time at which Cloudflare last refreshed this data
+  timeLastUpdated: Time!
+}
+
+type ZoneApiRequestSequencesGroupsDimensions {
+  # The host associated with this sequence of endpoint operations
+  clientRequestHTTPHost: string!
+  # Sequence generation timeslot, truncated to 10 minutes
+  datetime: Time!
+  # Sequence rank based on ordering sequences by correlation
+  rank: uint16!
+}
+
+input ZoneApiRequestSequencesGroupsFilter_InputObject {
+  AND: [ZoneApiRequestSequencesGroupsFilter_InputObject!]
+  OR: [ZoneApiRequestSequencesGroupsFilter_InputObject!]
+  clientRequestHTTPHost: string
+  clientRequestHTTPHost_geq: string
+  clientRequestHTTPHost_gt: string
+  clientRequestHTTPHost_in: [string!]
+  clientRequestHTTPHost_leq: string
+  clientRequestHTTPHost_like: string
+  clientRequestHTTPHost_lt: string
+  clientRequestHTTPHost_neq: string
+  clientRequestHTTPHost_notin: [string!]
+  clientRequestHTTPHost_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  rank: uint16
+  rank_geq: uint16
+  rank_gt: uint16
+  rank_in: [uint16!]
+  rank_leq: uint16
+  rank_lt: uint16
+  rank_neq: uint16
+  rank_notin: [uint16!]
+}
+
+enum ZoneApiRequestSequencesGroupsOrderBy {
+  # aggArgMax(correlation) ascending
+  aggArgMax_correlation_ASC
+  # aggArgMax(correlation) descending
+  aggArgMax_correlation_DESC
+  # aggArgMax(numOccurrences) ascending
+  aggArgMax_numOccurrences_ASC
+  # aggArgMax(numOccurrences) descending
+  aggArgMax_numOccurrences_DESC
+  # aggArgMax(operationsApiEndpoints) ascending
+  aggArgMax_operationsApiEndpoints_ASC
+  # aggArgMax(operationsApiEndpoints) descending
+  aggArgMax_operationsApiEndpoints_DESC
+  # aggArgMax(operationsClientRequestHTTPMethods) ascending
+  aggArgMax_operationsClientRequestHTTPMethods_ASC
+  # aggArgMax(operationsClientRequestHTTPMethods) descending
+  aggArgMax_operationsClientRequestHTTPMethods_DESC
+  # aggMax(timeLastSeen) ascending
+  aggMax_timeLastSeen_ASC
+  # aggMax(timeLastSeen) descending
+  aggMax_timeLastSeen_DESC
+  # aggMax(timeLastUpdated) ascending
+  aggMax_timeLastUpdated_ASC
+  # aggMax(timeLastUpdated) descending
+  aggMax_timeLastUpdated_DESC
+  # clientRequestHTTPHost ascending
+  clientRequestHTTPHost_ASC
+  # clientRequestHTTPHost descending
+  clientRequestHTTPHost_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # rank ascending
+  rank_ASC
+  # rank descending
+  rank_DESC
 }
 
 # Beta. Cache Reserve operations with adaptive sampling
@@ -29493,6 +29601,7 @@ enum ZoneNelReportsAdaptiveGroupsOrderBy {
 
 # Access and limitations for a zone
 type ZoneSettings {
+  apiRequestSequencesGroups: Settings!
   cacheReserveOperationsAdaptiveGroups: Settings!
   cacheReserveStorageAdaptiveGroups: Settings!
   emailRoutingAdaptive: Settings!
