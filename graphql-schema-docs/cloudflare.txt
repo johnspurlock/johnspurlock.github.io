@@ -8558,6 +8558,8 @@ type AccountGatewayResolverQueriesAdaptiveGroups {
 }
 
 type AccountGatewayResolverQueriesAdaptiveGroupsDimensions {
+  # Json array of categories for this query
+  categoryIds: string!
   # The date and time the DNS query was resolved
   datetime: Time!
   # The date and time the event occurred at the edge truncated to hours
@@ -8570,11 +8572,23 @@ type AccountGatewayResolverQueriesAdaptiveGroupsDimensions {
   queryNameReversed: string!
   # Enum identifier for the decision made by gateway-resolver, one of: (0, unknown) (1, allowedByQueryName) (2, blockedByQueryName) (3, blockedByCategory) (4, allowedOnNoLocation) (5, allowedOnNoPolicyMatch) (6, blockedAlwaysCategory) (7, overrideForSafeSearch) (8, overrideApplied) (9, blockedRule) (10, allowedRule)
   resolverDecision: uint16!
+  # Json object of schedule releated information
+  scheduleInfo: string!
 }
 
 input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   AND: [AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject!]
   OR: [AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject!]
+  categoryIds: string
+  categoryIds_geq: string
+  categoryIds_gt: string
+  categoryIds_in: [string!]
+  categoryIds_leq: string
+  categoryIds_like: string
+  categoryIds_lt: string
+  categoryIds_neq: string
+  categoryIds_notin: [string!]
+  categoryIds_notlike: string
   datetime: Time
   datetimeHour: Time
   datetimeHour_geq: Time
@@ -8627,9 +8641,23 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   resolverDecision_lt: uint16
   resolverDecision_neq: uint16
   resolverDecision_notin: [uint16!]
+  scheduleInfo: string
+  scheduleInfo_geq: string
+  scheduleInfo_gt: string
+  scheduleInfo_in: [string!]
+  scheduleInfo_leq: string
+  scheduleInfo_like: string
+  scheduleInfo_lt: string
+  scheduleInfo_neq: string
+  scheduleInfo_notin: [string!]
+  scheduleInfo_notlike: string
 }
 
 enum AccountGatewayResolverQueriesAdaptiveGroupsOrderBy {
+  # categoryIds ascending
+  categoryIds_ASC
+  # categoryIds descending
+  categoryIds_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -8658,6 +8686,10 @@ enum AccountGatewayResolverQueriesAdaptiveGroupsOrderBy {
   resolverDecision_ASC
   # resolverDecision descending
   resolverDecision_DESC
+  # scheduleInfo ascending
+  scheduleInfo_ASC
+  # scheduleInfo descending
+  scheduleInfo_DESC
 }
 
 # Daily rollups of request data
@@ -9298,7 +9330,7 @@ type AccountHttpRequestsOverviewAdaptiveGroups {
   avg: AccountHttpRequestsOverviewAdaptiveGroupsAvg
   # List of dimensions to group by
   dimensions: AccountHttpRequestsOverviewAdaptiveGroupsDimensions
-  # The ratio of a range of status codes, between 0 and 1
+  # The ratio of a metric in comparison to the rest of the traffic, between 0 and 1
   ratio: AccountHttpRequestsOverviewAdaptiveGroupsRatio
   # The sum of values for a metric per dimension
   sum: AccountHttpRequestsOverviewAdaptiveGroupsSum
@@ -9532,6 +9564,22 @@ enum AccountHttpRequestsOverviewAdaptiveGroupsOrderBy {
   httpApplication_ASC
   # httpApplication descending
   httpApplication_DESC
+  # ratio(cachedBytes) ascending
+  ratio_cachedBytes_ASC
+  # ratio(cachedBytes) descending
+  ratio_cachedBytes_DESC
+  # ratio(cachedRequests) ascending
+  ratio_cachedRequests_ASC
+  # ratio(cachedRequests) descending
+  ratio_cachedRequests_DESC
+  # ratio(encryptedBytes) ascending
+  ratio_encryptedBytes_ASC
+  # ratio(encryptedBytes) descending
+  ratio_encryptedBytes_DESC
+  # ratio(encryptedRequests) ascending
+  ratio_encryptedRequests_ASC
+  # ratio(encryptedRequests) descending
+  ratio_encryptedRequests_DESC
   # ratio(status4xx) ascending
   ratio_status4xx_ASC
   # ratio(status4xx) descending
@@ -9575,6 +9623,10 @@ enum AccountHttpRequestsOverviewAdaptiveGroupsOrderBy {
 }
 
 type AccountHttpRequestsOverviewAdaptiveGroupsRatio {
+  cachedBytes: uint64!
+  cachedRequests: uint64!
+  encryptedBytes: float64!
+  encryptedRequests: float64!
   status4xx: float64!
   status5xx: float64!
 }
@@ -27932,7 +27984,7 @@ type ZoneHttpRequestsOverviewAdaptiveGroups {
   avg: ZoneHttpRequestsOverviewAdaptiveGroupsAvg
   # List of dimensions to group by
   dimensions: ZoneHttpRequestsOverviewAdaptiveGroupsDimensions
-  # The ratio of a range of status codes, between 0 and 1
+  # The ratio of a metric in comparison to the rest of the traffic, between 0 and 1
   ratio: ZoneHttpRequestsOverviewAdaptiveGroupsRatio
   # The sum of values for a metric per dimension
   sum: ZoneHttpRequestsOverviewAdaptiveGroupsSum
@@ -28166,6 +28218,22 @@ enum ZoneHttpRequestsOverviewAdaptiveGroupsOrderBy {
   httpApplication_ASC
   # httpApplication descending
   httpApplication_DESC
+  # ratio(cachedBytes) ascending
+  ratio_cachedBytes_ASC
+  # ratio(cachedBytes) descending
+  ratio_cachedBytes_DESC
+  # ratio(cachedRequests) ascending
+  ratio_cachedRequests_ASC
+  # ratio(cachedRequests) descending
+  ratio_cachedRequests_DESC
+  # ratio(encryptedBytes) ascending
+  ratio_encryptedBytes_ASC
+  # ratio(encryptedBytes) descending
+  ratio_encryptedBytes_DESC
+  # ratio(encryptedRequests) ascending
+  ratio_encryptedRequests_ASC
+  # ratio(encryptedRequests) descending
+  ratio_encryptedRequests_DESC
   # ratio(status4xx) ascending
   ratio_status4xx_ASC
   # ratio(status4xx) descending
@@ -28209,6 +28277,10 @@ enum ZoneHttpRequestsOverviewAdaptiveGroupsOrderBy {
 }
 
 type ZoneHttpRequestsOverviewAdaptiveGroupsRatio {
+  cachedBytes: uint64!
+  cachedRequests: uint64!
+  encryptedBytes: float64!
+  encryptedRequests: float64!
   status4xx: float64!
   status5xx: float64!
 }

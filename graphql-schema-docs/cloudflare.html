@@ -8474,6 +8474,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountGatewayResolverQueriesAdaptiveGroupsDimensions" href="#AccountGatewayResolverQueriesAdaptiveGroupsDimensions">AccountGatewayResolverQueriesAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># Json array of categories for this query</span><br />
+&nbsp;&nbsp;categoryIds: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The date and time the DNS query was resolved</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># The date and time the event occurred at the edge truncated to hours</span><br />
@@ -8486,11 +8488,23 @@
 &nbsp;&nbsp;queryNameReversed: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Enum identifier for the decision made by gateway-resolver, one of: (0, unknown) (1, allowedByQueryName) (2, blockedByQueryName) (3, blockedByCategory) (4, allowedOnNoLocation) (5, allowedOnNoPolicyMatch) (6, blockedAlwaysCategory) (7, overrideForSafeSearch) (8, overrideApplied) (9, blockedRule) (10, allowedRule)</span><br />
 &nbsp;&nbsp;resolverDecision: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># Json object of schedule releated information</span><br />
+&nbsp;&nbsp;scheduleInfo: <a href="#string">string!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject" href="#AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject">AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject</a> {<br />
 &nbsp;&nbsp;AND: <a href="#AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject">[AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject!]</a><br />
 &nbsp;&nbsp;OR: <a href="#AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject">[AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;categoryIds: <a href="#string">string</a><br />
+&nbsp;&nbsp;categoryIds_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;categoryIds_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;categoryIds_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;categoryIds_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;categoryIds_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;categoryIds_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;categoryIds_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;categoryIds_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;categoryIds_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour_geq: <a href="#Time">Time</a><br />
@@ -8543,9 +8557,23 @@
 &nbsp;&nbsp;resolverDecision_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;resolverDecision_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;resolverDecision_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;scheduleInfo: <a href="#string">string</a><br />
+&nbsp;&nbsp;scheduleInfo_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;scheduleInfo_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;scheduleInfo_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;scheduleInfo_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;scheduleInfo_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;scheduleInfo_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;scheduleInfo_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;scheduleInfo_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;scheduleInfo_notlike: <a href="#string">string</a><br />
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountGatewayResolverQueriesAdaptiveGroupsOrderBy" href="#AccountGatewayResolverQueriesAdaptiveGroupsOrderBy">AccountGatewayResolverQueriesAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># categoryIds ascending</span><br />
+&nbsp;&nbsp;categoryIds_ASC<br />
+&nbsp;&nbsp;<span class="c"># categoryIds descending</span><br />
+&nbsp;&nbsp;categoryIds_DESC<br />
 &nbsp;&nbsp;<span class="c"># count() ascending</span><br />
 &nbsp;&nbsp;count_ASC<br />
 &nbsp;&nbsp;<span class="c"># count() descending</span><br />
@@ -8574,6 +8602,10 @@
 &nbsp;&nbsp;resolverDecision_ASC<br />
 &nbsp;&nbsp;<span class="c"># resolverDecision descending</span><br />
 &nbsp;&nbsp;resolverDecision_DESC<br />
+&nbsp;&nbsp;<span class="c"># scheduleInfo ascending</span><br />
+&nbsp;&nbsp;scheduleInfo_ASC<br />
+&nbsp;&nbsp;<span class="c"># scheduleInfo descending</span><br />
+&nbsp;&nbsp;scheduleInfo_DESC<br />
 }<br />
 <br />
 <span class="c"># Daily rollups of request data</span><br />
@@ -9214,7 +9246,7 @@
 &nbsp;&nbsp;avg: <a href="#AccountHttpRequestsOverviewAdaptiveGroupsAvg">AccountHttpRequestsOverviewAdaptiveGroupsAvg</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#AccountHttpRequestsOverviewAdaptiveGroupsDimensions">AccountHttpRequestsOverviewAdaptiveGroupsDimensions</a><br />
-&nbsp;&nbsp;<span class="c"># The ratio of a range of status codes, between 0 and 1</span><br />
+&nbsp;&nbsp;<span class="c"># The ratio of a metric in comparison to the rest of the traffic, between 0 and 1</span><br />
 &nbsp;&nbsp;ratio: <a href="#AccountHttpRequestsOverviewAdaptiveGroupsRatio">AccountHttpRequestsOverviewAdaptiveGroupsRatio</a><br />
 &nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
 &nbsp;&nbsp;sum: <a href="#AccountHttpRequestsOverviewAdaptiveGroupsSum">AccountHttpRequestsOverviewAdaptiveGroupsSum</a><br />
@@ -9448,6 +9480,22 @@
 &nbsp;&nbsp;httpApplication_ASC<br />
 &nbsp;&nbsp;<span class="c"># httpApplication descending</span><br />
 &nbsp;&nbsp;httpApplication_DESC<br />
+&nbsp;&nbsp;<span class="c"># ratio(cachedBytes) ascending</span><br />
+&nbsp;&nbsp;ratio_cachedBytes_ASC<br />
+&nbsp;&nbsp;<span class="c"># ratio(cachedBytes) descending</span><br />
+&nbsp;&nbsp;ratio_cachedBytes_DESC<br />
+&nbsp;&nbsp;<span class="c"># ratio(cachedRequests) ascending</span><br />
+&nbsp;&nbsp;ratio_cachedRequests_ASC<br />
+&nbsp;&nbsp;<span class="c"># ratio(cachedRequests) descending</span><br />
+&nbsp;&nbsp;ratio_cachedRequests_DESC<br />
+&nbsp;&nbsp;<span class="c"># ratio(encryptedBytes) ascending</span><br />
+&nbsp;&nbsp;ratio_encryptedBytes_ASC<br />
+&nbsp;&nbsp;<span class="c"># ratio(encryptedBytes) descending</span><br />
+&nbsp;&nbsp;ratio_encryptedBytes_DESC<br />
+&nbsp;&nbsp;<span class="c"># ratio(encryptedRequests) ascending</span><br />
+&nbsp;&nbsp;ratio_encryptedRequests_ASC<br />
+&nbsp;&nbsp;<span class="c"># ratio(encryptedRequests) descending</span><br />
+&nbsp;&nbsp;ratio_encryptedRequests_DESC<br />
 &nbsp;&nbsp;<span class="c"># ratio(status4xx) ascending</span><br />
 &nbsp;&nbsp;ratio_status4xx_ASC<br />
 &nbsp;&nbsp;<span class="c"># ratio(status4xx) descending</span><br />
@@ -9491,6 +9539,10 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountHttpRequestsOverviewAdaptiveGroupsRatio" href="#AccountHttpRequestsOverviewAdaptiveGroupsRatio">AccountHttpRequestsOverviewAdaptiveGroupsRatio</a> {<br />
+&nbsp;&nbsp;cachedBytes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;cachedRequests: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;encryptedBytes: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;encryptedRequests: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;status4xx: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;status5xx: <a href="#float64">float64!</a><br />
 }<br />
@@ -27848,7 +27900,7 @@
 &nbsp;&nbsp;avg: <a href="#ZoneHttpRequestsOverviewAdaptiveGroupsAvg">ZoneHttpRequestsOverviewAdaptiveGroupsAvg</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#ZoneHttpRequestsOverviewAdaptiveGroupsDimensions">ZoneHttpRequestsOverviewAdaptiveGroupsDimensions</a><br />
-&nbsp;&nbsp;<span class="c"># The ratio of a range of status codes, between 0 and 1</span><br />
+&nbsp;&nbsp;<span class="c"># The ratio of a metric in comparison to the rest of the traffic, between 0 and 1</span><br />
 &nbsp;&nbsp;ratio: <a href="#ZoneHttpRequestsOverviewAdaptiveGroupsRatio">ZoneHttpRequestsOverviewAdaptiveGroupsRatio</a><br />
 &nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
 &nbsp;&nbsp;sum: <a href="#ZoneHttpRequestsOverviewAdaptiveGroupsSum">ZoneHttpRequestsOverviewAdaptiveGroupsSum</a><br />
@@ -28082,6 +28134,22 @@
 &nbsp;&nbsp;httpApplication_ASC<br />
 &nbsp;&nbsp;<span class="c"># httpApplication descending</span><br />
 &nbsp;&nbsp;httpApplication_DESC<br />
+&nbsp;&nbsp;<span class="c"># ratio(cachedBytes) ascending</span><br />
+&nbsp;&nbsp;ratio_cachedBytes_ASC<br />
+&nbsp;&nbsp;<span class="c"># ratio(cachedBytes) descending</span><br />
+&nbsp;&nbsp;ratio_cachedBytes_DESC<br />
+&nbsp;&nbsp;<span class="c"># ratio(cachedRequests) ascending</span><br />
+&nbsp;&nbsp;ratio_cachedRequests_ASC<br />
+&nbsp;&nbsp;<span class="c"># ratio(cachedRequests) descending</span><br />
+&nbsp;&nbsp;ratio_cachedRequests_DESC<br />
+&nbsp;&nbsp;<span class="c"># ratio(encryptedBytes) ascending</span><br />
+&nbsp;&nbsp;ratio_encryptedBytes_ASC<br />
+&nbsp;&nbsp;<span class="c"># ratio(encryptedBytes) descending</span><br />
+&nbsp;&nbsp;ratio_encryptedBytes_DESC<br />
+&nbsp;&nbsp;<span class="c"># ratio(encryptedRequests) ascending</span><br />
+&nbsp;&nbsp;ratio_encryptedRequests_ASC<br />
+&nbsp;&nbsp;<span class="c"># ratio(encryptedRequests) descending</span><br />
+&nbsp;&nbsp;ratio_encryptedRequests_DESC<br />
 &nbsp;&nbsp;<span class="c"># ratio(status4xx) ascending</span><br />
 &nbsp;&nbsp;ratio_status4xx_ASC<br />
 &nbsp;&nbsp;<span class="c"># ratio(status4xx) descending</span><br />
@@ -28125,6 +28193,10 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneHttpRequestsOverviewAdaptiveGroupsRatio" href="#ZoneHttpRequestsOverviewAdaptiveGroupsRatio">ZoneHttpRequestsOverviewAdaptiveGroupsRatio</a> {<br />
+&nbsp;&nbsp;cachedBytes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;cachedRequests: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;encryptedBytes: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;encryptedRequests: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;status4xx: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;status5xx: <a href="#float64">float64!</a><br />
 }<br />
