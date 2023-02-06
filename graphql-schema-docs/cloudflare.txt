@@ -3907,6 +3907,10 @@ enum AccountDurableObjectsPeriodicGroupsOrderBy {
   sum_cpuTime_ASC
   # sum(cpuTime) descending
   sum_cpuTime_DESC
+  # sum(duration) ascending
+  sum_duration_ASC
+  # sum(duration) descending
+  sum_duration_DESC
   # sum(exceededCpuErrors) ascending
   sum_exceededCpuErrors_ASC
   # sum(exceededCpuErrors) descending
@@ -3950,6 +3954,8 @@ type AccountDurableObjectsPeriodicGroupsSum {
   activeTime: uint64!
   # Sum of CPU time - microseconds
   cpuTime: uint64!
+  # Sum of Duration - GB*s
+  duration: float64!
   # Sum of CPU exceeded errors
   exceededCpuErrors: uint64!
   # Sum of memory exceeded errors
@@ -31409,53 +31415,53 @@ type ZoneWaitingRoomAnalyticsAdaptive {
   # The date and time of the state of analytics for the waiting room
   datetime: Time!
   # Maximum value of estimated time in minutes
-  maxEstimatedTimeMinutes: uint64!
+  maxEstimatedTimeMinutes: int64!
   # Actual value of new users per minute
-  newUsersPerMinute: uint64!
+  newUsersPerMinute: int64!
   # Configured value of new users per minute
-  newUsersPerMinuteConfig: uint64!
+  newUsersPerMinuteConfig: int64!
   # ABR sample interval
   sampleInterval: uint32!
   # Configured value of session duration
-  sessionDuration: uint64!
+  sessionDuration: int64!
   # 50th percentile of the time between session refreshes in seconds
-  timeBetweenRefreshesP50: uint64!
+  timeBetweenRefreshesP50: int64!
   # 75th percentile of the time between session refreshes in seconds
-  timeBetweenRefreshesP75: uint64!
+  timeBetweenRefreshesP75: int64!
   # 90th percentile of the time between session refreshes in seconds
-  timeBetweenRefreshesP90: uint64!
+  timeBetweenRefreshesP90: int64!
   # 95th percentile of the time between session refreshes in seconds
-  timeBetweenRefreshesP95: uint64!
+  timeBetweenRefreshesP95: int64!
   # 50th percentile of the time spent waiting in queue in seconds
-  timeInQueueP50: uint64!
+  timeInQueueP50: int64!
   # 75th percentile of the time spent waiting in queue in seconds
-  timeInQueueP75: uint64!
+  timeInQueueP75: int64!
   # 90th percentile of the time spent waiting in queue in seconds
-  timeInQueueP90: uint64!
+  timeInQueueP90: int64!
   # 95th percentile of the time spent waiting in queue in seconds
-  timeInQueueP95: uint64!
+  timeInQueueP95: int64!
   # 50th percentile of the time spent on the origin in seconds
-  timeOnOriginP50: uint64!
+  timeOnOriginP50: int64!
   # 75th percentile of the time spent on the origin in seconds
-  timeOnOriginP75: uint64!
+  timeOnOriginP75: int64!
   # 90th percentile of the time spent on the origin in seconds
-  timeOnOriginP90: uint64!
+  timeOnOriginP90: int64!
   # 95th percentile of the time spent on the origin in seconds
-  timeOnOriginP95: uint64!
+  timeOnOriginP95: int64!
   # Actual value of total active users
-  totalActiveUsers: uint64!
+  totalActiveUsers: int64!
   # Configured value of total active users
-  totalActiveUsersConfig: uint64!
+  totalActiveUsersConfig: int64!
   # Total number of users that are queued
-  totalQueuedUsers: uint64!
+  totalQueuedUsers: int64!
   # 50th percentile of the total time (in seconds) spent waiting in queue by users who were queued and then gained access to the origin
-  totalTimeWaitedP50: uint64!
+  totalTimeWaitedP50: int64!
   # 75th percentile of the total time (in seconds) spent waiting in queue by users who were queued and then gained access to the origin
-  totalTimeWaitedP75: uint64!
+  totalTimeWaitedP75: int64!
   # 90th percentile of the total time (in seconds) spent waiting in queue by users who were queued and then gained access to the origin
-  totalTimeWaitedP90: uint64!
+  totalTimeWaitedP90: int64!
   # 95th percentile of the total time (in seconds) spent waiting in queue by users who were queued and then gained access to the origin
-  totalTimeWaitedP95: uint64!
+  totalTimeWaitedP95: int64!
   # Unique Identifier for the waiting room
   waitingRoomId: string!
   # Name of the waiting room
@@ -31473,30 +31479,30 @@ input ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
-  maxEstimatedTimeMinutes: uint64
-  maxEstimatedTimeMinutes_geq: uint64
-  maxEstimatedTimeMinutes_gt: uint64
-  maxEstimatedTimeMinutes_in: [uint64!]
-  maxEstimatedTimeMinutes_leq: uint64
-  maxEstimatedTimeMinutes_lt: uint64
-  maxEstimatedTimeMinutes_neq: uint64
-  maxEstimatedTimeMinutes_notin: [uint64!]
-  newUsersPerMinute: uint64
-  newUsersPerMinuteConfig: uint64
-  newUsersPerMinuteConfig_geq: uint64
-  newUsersPerMinuteConfig_gt: uint64
-  newUsersPerMinuteConfig_in: [uint64!]
-  newUsersPerMinuteConfig_leq: uint64
-  newUsersPerMinuteConfig_lt: uint64
-  newUsersPerMinuteConfig_neq: uint64
-  newUsersPerMinuteConfig_notin: [uint64!]
-  newUsersPerMinute_geq: uint64
-  newUsersPerMinute_gt: uint64
-  newUsersPerMinute_in: [uint64!]
-  newUsersPerMinute_leq: uint64
-  newUsersPerMinute_lt: uint64
-  newUsersPerMinute_neq: uint64
-  newUsersPerMinute_notin: [uint64!]
+  maxEstimatedTimeMinutes: int64
+  maxEstimatedTimeMinutes_geq: int64
+  maxEstimatedTimeMinutes_gt: int64
+  maxEstimatedTimeMinutes_in: [int64!]
+  maxEstimatedTimeMinutes_leq: int64
+  maxEstimatedTimeMinutes_lt: int64
+  maxEstimatedTimeMinutes_neq: int64
+  maxEstimatedTimeMinutes_notin: [int64!]
+  newUsersPerMinute: int64
+  newUsersPerMinuteConfig: int64
+  newUsersPerMinuteConfig_geq: int64
+  newUsersPerMinuteConfig_gt: int64
+  newUsersPerMinuteConfig_in: [int64!]
+  newUsersPerMinuteConfig_leq: int64
+  newUsersPerMinuteConfig_lt: int64
+  newUsersPerMinuteConfig_neq: int64
+  newUsersPerMinuteConfig_notin: [int64!]
+  newUsersPerMinute_geq: int64
+  newUsersPerMinute_gt: int64
+  newUsersPerMinute_in: [int64!]
+  newUsersPerMinute_leq: int64
+  newUsersPerMinute_lt: int64
+  newUsersPerMinute_neq: int64
+  newUsersPerMinute_notin: [int64!]
   sampleInterval: uint32
   sampleInterval_geq: uint32
   sampleInterval_gt: uint32
@@ -31505,166 +31511,166 @@ input ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject {
   sampleInterval_lt: uint32
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
-  sessionDuration: uint64
-  sessionDuration_geq: uint64
-  sessionDuration_gt: uint64
-  sessionDuration_in: [uint64!]
-  sessionDuration_leq: uint64
-  sessionDuration_lt: uint64
-  sessionDuration_neq: uint64
-  sessionDuration_notin: [uint64!]
-  timeBetweenRefreshesP50: uint64
-  timeBetweenRefreshesP50_geq: uint64
-  timeBetweenRefreshesP50_gt: uint64
-  timeBetweenRefreshesP50_in: [uint64!]
-  timeBetweenRefreshesP50_leq: uint64
-  timeBetweenRefreshesP50_lt: uint64
-  timeBetweenRefreshesP50_neq: uint64
-  timeBetweenRefreshesP50_notin: [uint64!]
-  timeBetweenRefreshesP75: uint64
-  timeBetweenRefreshesP75_geq: uint64
-  timeBetweenRefreshesP75_gt: uint64
-  timeBetweenRefreshesP75_in: [uint64!]
-  timeBetweenRefreshesP75_leq: uint64
-  timeBetweenRefreshesP75_lt: uint64
-  timeBetweenRefreshesP75_neq: uint64
-  timeBetweenRefreshesP75_notin: [uint64!]
-  timeBetweenRefreshesP90: uint64
-  timeBetweenRefreshesP90_geq: uint64
-  timeBetweenRefreshesP90_gt: uint64
-  timeBetweenRefreshesP90_in: [uint64!]
-  timeBetweenRefreshesP90_leq: uint64
-  timeBetweenRefreshesP90_lt: uint64
-  timeBetweenRefreshesP90_neq: uint64
-  timeBetweenRefreshesP90_notin: [uint64!]
-  timeBetweenRefreshesP95: uint64
-  timeBetweenRefreshesP95_geq: uint64
-  timeBetweenRefreshesP95_gt: uint64
-  timeBetweenRefreshesP95_in: [uint64!]
-  timeBetweenRefreshesP95_leq: uint64
-  timeBetweenRefreshesP95_lt: uint64
-  timeBetweenRefreshesP95_neq: uint64
-  timeBetweenRefreshesP95_notin: [uint64!]
-  timeInQueueP50: uint64
-  timeInQueueP50_geq: uint64
-  timeInQueueP50_gt: uint64
-  timeInQueueP50_in: [uint64!]
-  timeInQueueP50_leq: uint64
-  timeInQueueP50_lt: uint64
-  timeInQueueP50_neq: uint64
-  timeInQueueP50_notin: [uint64!]
-  timeInQueueP75: uint64
-  timeInQueueP75_geq: uint64
-  timeInQueueP75_gt: uint64
-  timeInQueueP75_in: [uint64!]
-  timeInQueueP75_leq: uint64
-  timeInQueueP75_lt: uint64
-  timeInQueueP75_neq: uint64
-  timeInQueueP75_notin: [uint64!]
-  timeInQueueP90: uint64
-  timeInQueueP90_geq: uint64
-  timeInQueueP90_gt: uint64
-  timeInQueueP90_in: [uint64!]
-  timeInQueueP90_leq: uint64
-  timeInQueueP90_lt: uint64
-  timeInQueueP90_neq: uint64
-  timeInQueueP90_notin: [uint64!]
-  timeInQueueP95: uint64
-  timeInQueueP95_geq: uint64
-  timeInQueueP95_gt: uint64
-  timeInQueueP95_in: [uint64!]
-  timeInQueueP95_leq: uint64
-  timeInQueueP95_lt: uint64
-  timeInQueueP95_neq: uint64
-  timeInQueueP95_notin: [uint64!]
-  timeOnOriginP50: uint64
-  timeOnOriginP50_geq: uint64
-  timeOnOriginP50_gt: uint64
-  timeOnOriginP50_in: [uint64!]
-  timeOnOriginP50_leq: uint64
-  timeOnOriginP50_lt: uint64
-  timeOnOriginP50_neq: uint64
-  timeOnOriginP50_notin: [uint64!]
-  timeOnOriginP75: uint64
-  timeOnOriginP75_geq: uint64
-  timeOnOriginP75_gt: uint64
-  timeOnOriginP75_in: [uint64!]
-  timeOnOriginP75_leq: uint64
-  timeOnOriginP75_lt: uint64
-  timeOnOriginP75_neq: uint64
-  timeOnOriginP75_notin: [uint64!]
-  timeOnOriginP90: uint64
-  timeOnOriginP90_geq: uint64
-  timeOnOriginP90_gt: uint64
-  timeOnOriginP90_in: [uint64!]
-  timeOnOriginP90_leq: uint64
-  timeOnOriginP90_lt: uint64
-  timeOnOriginP90_neq: uint64
-  timeOnOriginP90_notin: [uint64!]
-  timeOnOriginP95: uint64
-  timeOnOriginP95_geq: uint64
-  timeOnOriginP95_gt: uint64
-  timeOnOriginP95_in: [uint64!]
-  timeOnOriginP95_leq: uint64
-  timeOnOriginP95_lt: uint64
-  timeOnOriginP95_neq: uint64
-  timeOnOriginP95_notin: [uint64!]
-  totalActiveUsers: uint64
-  totalActiveUsersConfig: uint64
-  totalActiveUsersConfig_geq: uint64
-  totalActiveUsersConfig_gt: uint64
-  totalActiveUsersConfig_in: [uint64!]
-  totalActiveUsersConfig_leq: uint64
-  totalActiveUsersConfig_lt: uint64
-  totalActiveUsersConfig_neq: uint64
-  totalActiveUsersConfig_notin: [uint64!]
-  totalActiveUsers_geq: uint64
-  totalActiveUsers_gt: uint64
-  totalActiveUsers_in: [uint64!]
-  totalActiveUsers_leq: uint64
-  totalActiveUsers_lt: uint64
-  totalActiveUsers_neq: uint64
-  totalActiveUsers_notin: [uint64!]
-  totalQueuedUsers: uint64
-  totalQueuedUsers_geq: uint64
-  totalQueuedUsers_gt: uint64
-  totalQueuedUsers_in: [uint64!]
-  totalQueuedUsers_leq: uint64
-  totalQueuedUsers_lt: uint64
-  totalQueuedUsers_neq: uint64
-  totalQueuedUsers_notin: [uint64!]
-  totalTimeWaitedP50: uint64
-  totalTimeWaitedP50_geq: uint64
-  totalTimeWaitedP50_gt: uint64
-  totalTimeWaitedP50_in: [uint64!]
-  totalTimeWaitedP50_leq: uint64
-  totalTimeWaitedP50_lt: uint64
-  totalTimeWaitedP50_neq: uint64
-  totalTimeWaitedP50_notin: [uint64!]
-  totalTimeWaitedP75: uint64
-  totalTimeWaitedP75_geq: uint64
-  totalTimeWaitedP75_gt: uint64
-  totalTimeWaitedP75_in: [uint64!]
-  totalTimeWaitedP75_leq: uint64
-  totalTimeWaitedP75_lt: uint64
-  totalTimeWaitedP75_neq: uint64
-  totalTimeWaitedP75_notin: [uint64!]
-  totalTimeWaitedP90: uint64
-  totalTimeWaitedP90_geq: uint64
-  totalTimeWaitedP90_gt: uint64
-  totalTimeWaitedP90_in: [uint64!]
-  totalTimeWaitedP90_leq: uint64
-  totalTimeWaitedP90_lt: uint64
-  totalTimeWaitedP90_neq: uint64
-  totalTimeWaitedP90_notin: [uint64!]
-  totalTimeWaitedP95: uint64
-  totalTimeWaitedP95_geq: uint64
-  totalTimeWaitedP95_gt: uint64
-  totalTimeWaitedP95_in: [uint64!]
-  totalTimeWaitedP95_leq: uint64
-  totalTimeWaitedP95_lt: uint64
-  totalTimeWaitedP95_neq: uint64
-  totalTimeWaitedP95_notin: [uint64!]
+  sessionDuration: int64
+  sessionDuration_geq: int64
+  sessionDuration_gt: int64
+  sessionDuration_in: [int64!]
+  sessionDuration_leq: int64
+  sessionDuration_lt: int64
+  sessionDuration_neq: int64
+  sessionDuration_notin: [int64!]
+  timeBetweenRefreshesP50: int64
+  timeBetweenRefreshesP50_geq: int64
+  timeBetweenRefreshesP50_gt: int64
+  timeBetweenRefreshesP50_in: [int64!]
+  timeBetweenRefreshesP50_leq: int64
+  timeBetweenRefreshesP50_lt: int64
+  timeBetweenRefreshesP50_neq: int64
+  timeBetweenRefreshesP50_notin: [int64!]
+  timeBetweenRefreshesP75: int64
+  timeBetweenRefreshesP75_geq: int64
+  timeBetweenRefreshesP75_gt: int64
+  timeBetweenRefreshesP75_in: [int64!]
+  timeBetweenRefreshesP75_leq: int64
+  timeBetweenRefreshesP75_lt: int64
+  timeBetweenRefreshesP75_neq: int64
+  timeBetweenRefreshesP75_notin: [int64!]
+  timeBetweenRefreshesP90: int64
+  timeBetweenRefreshesP90_geq: int64
+  timeBetweenRefreshesP90_gt: int64
+  timeBetweenRefreshesP90_in: [int64!]
+  timeBetweenRefreshesP90_leq: int64
+  timeBetweenRefreshesP90_lt: int64
+  timeBetweenRefreshesP90_neq: int64
+  timeBetweenRefreshesP90_notin: [int64!]
+  timeBetweenRefreshesP95: int64
+  timeBetweenRefreshesP95_geq: int64
+  timeBetweenRefreshesP95_gt: int64
+  timeBetweenRefreshesP95_in: [int64!]
+  timeBetweenRefreshesP95_leq: int64
+  timeBetweenRefreshesP95_lt: int64
+  timeBetweenRefreshesP95_neq: int64
+  timeBetweenRefreshesP95_notin: [int64!]
+  timeInQueueP50: int64
+  timeInQueueP50_geq: int64
+  timeInQueueP50_gt: int64
+  timeInQueueP50_in: [int64!]
+  timeInQueueP50_leq: int64
+  timeInQueueP50_lt: int64
+  timeInQueueP50_neq: int64
+  timeInQueueP50_notin: [int64!]
+  timeInQueueP75: int64
+  timeInQueueP75_geq: int64
+  timeInQueueP75_gt: int64
+  timeInQueueP75_in: [int64!]
+  timeInQueueP75_leq: int64
+  timeInQueueP75_lt: int64
+  timeInQueueP75_neq: int64
+  timeInQueueP75_notin: [int64!]
+  timeInQueueP90: int64
+  timeInQueueP90_geq: int64
+  timeInQueueP90_gt: int64
+  timeInQueueP90_in: [int64!]
+  timeInQueueP90_leq: int64
+  timeInQueueP90_lt: int64
+  timeInQueueP90_neq: int64
+  timeInQueueP90_notin: [int64!]
+  timeInQueueP95: int64
+  timeInQueueP95_geq: int64
+  timeInQueueP95_gt: int64
+  timeInQueueP95_in: [int64!]
+  timeInQueueP95_leq: int64
+  timeInQueueP95_lt: int64
+  timeInQueueP95_neq: int64
+  timeInQueueP95_notin: [int64!]
+  timeOnOriginP50: int64
+  timeOnOriginP50_geq: int64
+  timeOnOriginP50_gt: int64
+  timeOnOriginP50_in: [int64!]
+  timeOnOriginP50_leq: int64
+  timeOnOriginP50_lt: int64
+  timeOnOriginP50_neq: int64
+  timeOnOriginP50_notin: [int64!]
+  timeOnOriginP75: int64
+  timeOnOriginP75_geq: int64
+  timeOnOriginP75_gt: int64
+  timeOnOriginP75_in: [int64!]
+  timeOnOriginP75_leq: int64
+  timeOnOriginP75_lt: int64
+  timeOnOriginP75_neq: int64
+  timeOnOriginP75_notin: [int64!]
+  timeOnOriginP90: int64
+  timeOnOriginP90_geq: int64
+  timeOnOriginP90_gt: int64
+  timeOnOriginP90_in: [int64!]
+  timeOnOriginP90_leq: int64
+  timeOnOriginP90_lt: int64
+  timeOnOriginP90_neq: int64
+  timeOnOriginP90_notin: [int64!]
+  timeOnOriginP95: int64
+  timeOnOriginP95_geq: int64
+  timeOnOriginP95_gt: int64
+  timeOnOriginP95_in: [int64!]
+  timeOnOriginP95_leq: int64
+  timeOnOriginP95_lt: int64
+  timeOnOriginP95_neq: int64
+  timeOnOriginP95_notin: [int64!]
+  totalActiveUsers: int64
+  totalActiveUsersConfig: int64
+  totalActiveUsersConfig_geq: int64
+  totalActiveUsersConfig_gt: int64
+  totalActiveUsersConfig_in: [int64!]
+  totalActiveUsersConfig_leq: int64
+  totalActiveUsersConfig_lt: int64
+  totalActiveUsersConfig_neq: int64
+  totalActiveUsersConfig_notin: [int64!]
+  totalActiveUsers_geq: int64
+  totalActiveUsers_gt: int64
+  totalActiveUsers_in: [int64!]
+  totalActiveUsers_leq: int64
+  totalActiveUsers_lt: int64
+  totalActiveUsers_neq: int64
+  totalActiveUsers_notin: [int64!]
+  totalQueuedUsers: int64
+  totalQueuedUsers_geq: int64
+  totalQueuedUsers_gt: int64
+  totalQueuedUsers_in: [int64!]
+  totalQueuedUsers_leq: int64
+  totalQueuedUsers_lt: int64
+  totalQueuedUsers_neq: int64
+  totalQueuedUsers_notin: [int64!]
+  totalTimeWaitedP50: int64
+  totalTimeWaitedP50_geq: int64
+  totalTimeWaitedP50_gt: int64
+  totalTimeWaitedP50_in: [int64!]
+  totalTimeWaitedP50_leq: int64
+  totalTimeWaitedP50_lt: int64
+  totalTimeWaitedP50_neq: int64
+  totalTimeWaitedP50_notin: [int64!]
+  totalTimeWaitedP75: int64
+  totalTimeWaitedP75_geq: int64
+  totalTimeWaitedP75_gt: int64
+  totalTimeWaitedP75_in: [int64!]
+  totalTimeWaitedP75_leq: int64
+  totalTimeWaitedP75_lt: int64
+  totalTimeWaitedP75_neq: int64
+  totalTimeWaitedP75_notin: [int64!]
+  totalTimeWaitedP90: int64
+  totalTimeWaitedP90_geq: int64
+  totalTimeWaitedP90_gt: int64
+  totalTimeWaitedP90_in: [int64!]
+  totalTimeWaitedP90_leq: int64
+  totalTimeWaitedP90_lt: int64
+  totalTimeWaitedP90_neq: int64
+  totalTimeWaitedP90_notin: [int64!]
+  totalTimeWaitedP95: int64
+  totalTimeWaitedP95_geq: int64
+  totalTimeWaitedP95_gt: int64
+  totalTimeWaitedP95_in: [int64!]
+  totalTimeWaitedP95_leq: int64
+  totalTimeWaitedP95_lt: int64
+  totalTimeWaitedP95_neq: int64
+  totalTimeWaitedP95_notin: [int64!]
   waitingRoomId: string
   waitingRoomId_geq: string
   waitingRoomId_gt: string
@@ -31699,6 +31705,8 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroups {
   max: ZoneWaitingRoomAnalyticsAdaptiveGroupsMax
   # Beta. The minimum value for a metric per dimenstion
   min: ZoneWaitingRoomAnalyticsAdaptiveGroupsMin
+  # The sum for a metric per dimension
+  sum: ZoneWaitingRoomAnalyticsAdaptiveGroupsSum
 }
 
 type ZoneWaitingRoomAnalyticsAdaptiveGroupsAvg {
@@ -32068,10 +32076,19 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # sum(newUsersPerMinute) ascending
+  sum_newUsersPerMinute_ASC
+  # sum(newUsersPerMinute) descending
+  sum_newUsersPerMinute_DESC
   # waitingRoomId ascending
   waitingRoomId_ASC
   # waitingRoomId descending
   waitingRoomId_DESC
+}
+
+type ZoneWaitingRoomAnalyticsAdaptiveGroupsSum {
+  # Sum of new users per minute. A negative number means no data
+  newUsersPerMinute: int64!
 }
 
 enum ZoneWaitingRoomAnalyticsAdaptiveOrderBy {
