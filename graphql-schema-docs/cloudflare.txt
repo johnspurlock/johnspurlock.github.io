@@ -52,6 +52,7 @@ Account-level datasets:
 * videoBufferEventsAdaptiveGroups
 * videoPlaybackEventsAdaptiveGroups
 * videoQualityEventsAdaptiveGroups
+* warpDeviceAdaptiveGroups
 * workersAnalyticsEngineAdaptiveGroups
 * workersInvocationsAdaptive
 * workersInvocationsScheduled
@@ -238,6 +239,8 @@ type account {
   videoPlaybackEventsAdaptiveGroups(filter: AccountVideoPlaybackEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVideoPlaybackEventsAdaptiveGroupsOrderBy!]): [AccountVideoPlaybackEventsAdaptiveGroups!]!
   # Beta. Aggregated video streaming quality change event metrics with adaptive sampling
   videoQualityEventsAdaptiveGroups(filter: AccountVideoQualityEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVideoQualityEventsAdaptiveGroupsOrderBy!]): [AccountVideoQualityEventsAdaptiveGroups!]!
+  # Beta. Warp device health events with adaptive sampling
+  warpDeviceAdaptiveGroups(filter: AccountWarpDeviceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWarpDeviceAdaptiveGroupsOrderBy!]): [AccountWarpDeviceAdaptiveGroups!]!
   # Beta. Custom Events with adaptive sampling
   workersAnalyticsEngineAdaptiveGroups(filter: AccountWorkersAnalyticsEngineAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersAnalyticsEngineAdaptiveGroupsOrderBy!]): [AccountWorkersAnalyticsEngineAdaptiveGroups!]!
   # Beta. Workers invocations with adaptive sampling
@@ -19921,6 +19924,7 @@ type AccountSettings {
   videoBufferEventsAdaptiveGroups: Settings!
   videoPlaybackEventsAdaptiveGroups: Settings!
   videoQualityEventsAdaptiveGroups: Settings!
+  warpDeviceAdaptiveGroups: Settings!
   workersAnalyticsEngineAdaptiveGroups: Settings!
   workersInvocationsAdaptive: Settings!
   workersInvocationsScheduled: Settings!
@@ -22328,6 +22332,205 @@ enum AccountVideoQualityEventsAdaptiveGroupsOrderBy {
   uid_ASC
   # uid descending
   uid_DESC
+}
+
+# Beta. Warp device health events with adaptive sampling
+type AccountWarpDeviceAdaptiveGroups {
+  # Number of device health events, which usually occur at 2m intervals per device
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountWarpDeviceAdaptiveGroupsDimensions
+  uniq: AccountWarpDeviceAdaptiveGroupsUniq
+}
+
+type AccountWarpDeviceAdaptiveGroupsDimensions {
+  # Device's OS
+  clientPlatform: string!
+  # Device's Warp version
+  clientVersion: string!
+  # Device's connected colo
+  colo: string!
+  # The date of the device log
+  date: Date!
+  # The date and time of the device log
+  datetime: Time!
+  # The date and time of the device log truncated to every five minutes
+  datetimeFiveMinute: Time!
+  # The date and time of the device log truncated to the hour
+  datetimeHour: Time!
+  # The date and time of the device log truncated to every ten minutes
+  datetimeTenMinute: Time!
+  # Device ID
+  deviceId: string!
+  # Device's Warp mode
+  mode: string!
+  # Device connection status
+  status: string!
+}
+
+input AccountWarpDeviceAdaptiveGroupsFilter_InputObject {
+  AND: [AccountWarpDeviceAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountWarpDeviceAdaptiveGroupsFilter_InputObject!]
+  clientPlatform: string
+  clientPlatform_geq: string
+  clientPlatform_gt: string
+  clientPlatform_in: [string!]
+  clientPlatform_leq: string
+  clientPlatform_like: string
+  clientPlatform_lt: string
+  clientPlatform_neq: string
+  clientPlatform_notin: [string!]
+  clientPlatform_notlike: string
+  clientVersion: string
+  clientVersion_geq: string
+  clientVersion_gt: string
+  clientVersion_in: [string!]
+  clientVersion_leq: string
+  clientVersion_like: string
+  clientVersion_lt: string
+  clientVersion_neq: string
+  clientVersion_notin: [string!]
+  clientVersion_notlike: string
+  colo: string
+  colo_geq: string
+  colo_gt: string
+  colo_in: [string!]
+  colo_leq: string
+  colo_like: string
+  colo_lt: string
+  colo_neq: string
+  colo_notin: [string!]
+  colo_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFiveMinute: Time
+  datetimeFiveMinute_geq: Time
+  datetimeFiveMinute_gt: Time
+  datetimeFiveMinute_in: [Time!]
+  datetimeFiveMinute_leq: Time
+  datetimeFiveMinute_lt: Time
+  datetimeFiveMinute_neq: Time
+  datetimeFiveMinute_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeTenMinute: Time
+  datetimeTenMinute_geq: Time
+  datetimeTenMinute_gt: Time
+  datetimeTenMinute_in: [Time!]
+  datetimeTenMinute_leq: Time
+  datetimeTenMinute_lt: Time
+  datetimeTenMinute_neq: Time
+  datetimeTenMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  mode: string
+  mode_geq: string
+  mode_gt: string
+  mode_in: [string!]
+  mode_leq: string
+  mode_like: string
+  mode_lt: string
+  mode_neq: string
+  mode_notin: [string!]
+  mode_notlike: string
+  status: string
+  status_geq: string
+  status_gt: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
+}
+
+enum AccountWarpDeviceAdaptiveGroupsOrderBy {
+  # clientPlatform ascending
+  clientPlatform_ASC
+  # clientPlatform descending
+  clientPlatform_DESC
+  # clientVersion ascending
+  clientVersion_ASC
+  # clientVersion descending
+  clientVersion_DESC
+  # colo ascending
+  colo_ASC
+  # colo descending
+  colo_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFiveMinute ascending
+  datetimeFiveMinute_ASC
+  # datetimeFiveMinute descending
+  datetimeFiveMinute_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeTenMinute ascending
+  datetimeTenMinute_ASC
+  # datetimeTenMinute descending
+  datetimeTenMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # mode ascending
+  mode_ASC
+  # mode descending
+  mode_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # uniq(deviceIds) ascending
+  uniq_deviceIds_ASC
+  # uniq(deviceIds) descending
+  uniq_deviceIds_DESC
+}
+
+type AccountWarpDeviceAdaptiveGroupsUniq {
+  # Approximate count of unique deviceIds
+  deviceIds: uint64!
 }
 
 # Beta. Custom Events with adaptive sampling
