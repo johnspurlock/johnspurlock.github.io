@@ -65,6 +65,7 @@ Zone-level datasets:
 * apiRequestSequencesGroups
 * cacheReserveOperationsAdaptiveGroups
 * cacheReserveStorageAdaptiveGroups
+* dmarcReportsAdaptive
 * emailRoutingAdaptive
 * emailRoutingAdaptiveGroups
 * firewallEventsAdaptive
@@ -2180,6 +2181,8 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsAvg {
 type AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions {
   # Unique identifier of the mitigation that matched the packet, if any
   attackId: string!
+  # Attack vector of the rule that matched the packet, if any
+  attackVector: string!
   # City where the Cloudflare datacenter that received the packet is located
   coloCity: string!
   # Cloudflare datacenter that received the packet (nearest IATA airport code)
@@ -2294,6 +2297,8 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions {
   protocolState: string!
   # Unique identifier of the rule that matched the packet, if any
   ruleId: string!
+  # Human-readable name of the rule that matched the packet, if any
+  ruleName: string!
   # Unique identifier of the ruleset containing the rule that matched the packet, if any
   rulesetId: string!
   # Unique identifier of the ruleset override containing the rule that matched the packet, if any
@@ -2361,6 +2366,16 @@ input AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   attackId_neq: string
   attackId_notin: [string!]
   attackId_notlike: string
+  attackVector: string
+  attackVector_geq: string
+  attackVector_gt: string
+  attackVector_in: [string!]
+  attackVector_leq: string
+  attackVector_like: string
+  attackVector_lt: string
+  attackVector_neq: string
+  attackVector_notin: [string!]
+  attackVector_notlike: string
   coloCity: string
   coloCity_geq: string
   coloCity_gt: string
@@ -2859,6 +2874,16 @@ input AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ruleId_neq: string
   ruleId_notin: [string!]
   ruleId_notlike: string
+  ruleName: string
+  ruleName_geq: string
+  ruleName_gt: string
+  ruleName_in: [string!]
+  ruleName_leq: string
+  ruleName_like: string
+  ruleName_lt: string
+  ruleName_neq: string
+  ruleName_notin: [string!]
+  ruleName_notlike: string
   rulesetId: string
   rulesetId_geq: string
   rulesetId_gt: string
@@ -3092,6 +3117,10 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   attackId_ASC
   # attackId descending
   attackId_DESC
+  # attackVector ascending
+  attackVector_ASC
+  # attackVector descending
+  attackVector_DESC
   # avg(bitRateDay) ascending
   avg_bitRateDay_ASC
   # avg(bitRateDay) descending
@@ -3376,6 +3405,10 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   ruleId_ASC
   # ruleId descending
   ruleId_DESC
+  # ruleName ascending
+  ruleName_ASC
+  # ruleName descending
+  ruleName_DESC
   # rulesetId ascending
   rulesetId_ASC
   # rulesetId descending
@@ -4604,6 +4637,8 @@ type AccountFirewallEventsAdaptive {
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
   wafXssAttackScore: uint8!
+  # Associated zone
+  zoneTag: string!
 }
 
 input AccountFirewallEventsAdaptiveFilter_InputObject {
@@ -5105,6 +5140,16 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   wafXssAttackScore_lt: uint8
   wafXssAttackScore_neq: uint8
   wafXssAttackScore_notin: bytes
+  zoneTag: string
+  zoneTag_geq: string
+  zoneTag_gt: string
+  zoneTag_in: [string!]
+  zoneTag_leq: string
+  zoneTag_like: string
+  zoneTag_lt: string
+  zoneTag_neq: string
+  zoneTag_notin: [string!]
+  zoneTag_notlike: string
 }
 
 # Aggregated Firewall events with adaptive sampling
@@ -5223,6 +5268,8 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
   wafXssAttackScore: uint8!
+  # Associated zone
+  zoneTag: string!
 }
 
 input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
@@ -5680,6 +5727,16 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   wafXssAttackScore_lt: uint8
   wafXssAttackScore_neq: uint8
   wafXssAttackScore_notin: bytes
+  zoneTag: string
+  zoneTag_geq: string
+  zoneTag_gt: string
+  zoneTag_in: [string!]
+  zoneTag_leq: string
+  zoneTag_like: string
+  zoneTag_lt: string
+  zoneTag_neq: string
+  zoneTag_notin: [string!]
+  zoneTag_notlike: string
 }
 
 enum AccountFirewallEventsAdaptiveGroupsOrderBy {
@@ -5891,6 +5948,10 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   wafXssAttackScore_ASC
   # wafXssAttackScore descending
   wafXssAttackScore_DESC
+  # zoneTag ascending
+  zoneTag_ASC
+  # zoneTag descending
+  zoneTag_DESC
 }
 
 type AccountFirewallEventsAdaptiveMetadataElem {
@@ -6121,6 +6182,10 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   wafXssAttackScore_ASC
   # wafXssAttackScore descending
   wafXssAttackScore_DESC
+  # zoneTag ascending
+  zoneTag_ASC
+  # zoneTag descending
+  zoneTag_DESC
 }
 
 # Network analytics data for flowtrackd
@@ -9469,6 +9534,8 @@ type AccountHttpRequestsAdaptive {
   wafXssAttackScore: uint8!
   # The X-Requested-With header of the client request
   xRequestedWith: string!
+  # Associated zone
+  zoneTag: string!
 }
 
 input AccountHttpRequestsAdaptiveFilter_InputObject {
@@ -9936,6 +10003,16 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   xRequestedWith_neq: string
   xRequestedWith_notin: [string!]
   xRequestedWith_notlike: string
+  zoneTag: string
+  zoneTag_geq: string
+  zoneTag_gt: string
+  zoneTag_in: [string!]
+  zoneTag_leq: string
+  zoneTag_like: string
+  zoneTag_lt: string
+  zoneTag_neq: string
+  zoneTag_notin: [string!]
+  zoneTag_notlike: string
 }
 
 # Aggregated HTTP requests data with adaptive sampling
@@ -10049,6 +10126,8 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   wafXssAttackScore: uint8!
   # The X-Requested-With header of the client request
   xRequestedWith: string!
+  # Associated zone
+  zoneTag: string!
 }
 
 input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
@@ -10524,6 +10603,16 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   xRequestedWith_neq: string
   xRequestedWith_notin: [string!]
   xRequestedWith_notlike: string
+  zoneTag: string
+  zoneTag_geq: string
+  zoneTag_gt: string
+  zoneTag_in: [string!]
+  zoneTag_leq: string
+  zoneTag_like: string
+  zoneTag_lt: string
+  zoneTag_neq: string
+  zoneTag_notin: [string!]
+  zoneTag_notlike: string
 }
 
 enum AccountHttpRequestsAdaptiveGroupsOrderBy {
@@ -10759,6 +10848,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   xRequestedWith_ASC
   # xRequestedWith descending
   xRequestedWith_DESC
+  # zoneTag ascending
+  zoneTag_ASC
+  # zoneTag descending
+  zoneTag_DESC
 }
 
 type AccountHttpRequestsAdaptiveGroupsRatio {
@@ -10973,6 +11066,10 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   xRequestedWith_ASC
   # xRequestedWith descending
   xRequestedWith_DESC
+  # zoneTag ascending
+  zoneTag_ASC
+  # zoneTag descending
+  zoneTag_DESC
 }
 
 # A high-level summary of HTTP requests made by end users.
@@ -23855,6 +23952,8 @@ type zone {
   cacheReserveOperationsAdaptiveGroups(filter: ZoneCacheReserveOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneCacheReserveOperationsAdaptiveGroupsOrderBy!]): [ZoneCacheReserveOperationsAdaptiveGroups!]!
   # Beta. Cache Reserve storage with adaptive sampling
   cacheReserveStorageAdaptiveGroups(filter: ZoneCacheReserveStorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneCacheReserveStorageAdaptiveGroupsOrderBy!]): [ZoneCacheReserveStorageAdaptiveGroups!]!
+  # Dmarc report records with adaptive sampling
+  dmarcReportsAdaptive(filter: ZoneDmarcReportsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneDmarcReportsAdaptiveOrderBy!]): [ZoneDmarcReportsAdaptive!]!
   # Beta. Raw email routing logs with adaptive sampling
   emailRoutingAdaptive(filter: ZoneEmailRoutingAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneEmailRoutingAdaptiveOrderBy!]): [ZoneEmailRoutingAdaptive!]!
   # Beta. Aggregated email routing logs with adaptive sampling
@@ -24437,6 +24536,372 @@ enum ZoneCacheReserveStorageAdaptiveGroupsOrderBy {
   max_storedBytes_ASC
   # max(storedBytes) descending
   max_storedBytes_DESC
+}
+
+# Dmarc report records with adaptive sampling
+type ZoneDmarcReportsAdaptive {
+  # The date and time the source email was received
+  datetime: Time!
+  # DMARC policy disposition
+  disposition: string!
+  # DKIM result
+  dkim: string!
+  # Domain to which this report refers to
+  domain: string!
+  # Envelope To of emails
+  envelopeTo: string!
+  # Reason (if any) why the record was evaluated
+  evaluatedReason: string!
+  # Header From of emails
+  headerFrom: string!
+  # Number of messages that matched
+  matchingMessages: uint32!
+  # Organization that generated report
+  orgName: string!
+  # DKIM alignment mode specified in the policy
+  policyDKIMAlignmentMode: string!
+  # DMARC policy of the domain
+  policyDomain: string!
+  # Percentage of emails that should be checked
+  policyPercentage: uint8!
+  # SPF alignment mode specified in the policy
+  policySPFAlignmentMode: string!
+  # DMARC policy of subdomains
+  policySubDomain: string!
+  # Unique identifier of this record
+  recordId: string!
+  # Index of this record within the report
+  recordIndex: uint32!
+  # Start of the reporting period
+  reportBegin: Time!
+  # End of the reporting period
+  reportEnd: Time!
+  # Error message (if any)
+  reportError: string!
+  # Unique identifier of the report to which this record belongs
+  reportId: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # Source IP address of the email
+  sourceIP: string!
+  # SPF result
+  spf: string!
+}
+
+input ZoneDmarcReportsAdaptiveFilter_InputObject {
+  AND: [ZoneDmarcReportsAdaptiveFilter_InputObject!]
+  OR: [ZoneDmarcReportsAdaptiveFilter_InputObject!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  disposition: string
+  disposition_geq: string
+  disposition_gt: string
+  disposition_in: [string!]
+  disposition_leq: string
+  disposition_like: string
+  disposition_lt: string
+  disposition_neq: string
+  disposition_notin: [string!]
+  disposition_notlike: string
+  dkim: string
+  dkim_geq: string
+  dkim_gt: string
+  dkim_in: [string!]
+  dkim_leq: string
+  dkim_like: string
+  dkim_lt: string
+  dkim_neq: string
+  dkim_notin: [string!]
+  dkim_notlike: string
+  domain: string
+  domain_geq: string
+  domain_gt: string
+  domain_in: [string!]
+  domain_leq: string
+  domain_like: string
+  domain_lt: string
+  domain_neq: string
+  domain_notin: [string!]
+  domain_notlike: string
+  envelopeTo: string
+  envelopeTo_geq: string
+  envelopeTo_gt: string
+  envelopeTo_in: [string!]
+  envelopeTo_leq: string
+  envelopeTo_like: string
+  envelopeTo_lt: string
+  envelopeTo_neq: string
+  envelopeTo_notin: [string!]
+  envelopeTo_notlike: string
+  evaluatedReason: string
+  evaluatedReason_geq: string
+  evaluatedReason_gt: string
+  evaluatedReason_in: [string!]
+  evaluatedReason_leq: string
+  evaluatedReason_like: string
+  evaluatedReason_lt: string
+  evaluatedReason_neq: string
+  evaluatedReason_notin: [string!]
+  evaluatedReason_notlike: string
+  headerFrom: string
+  headerFrom_geq: string
+  headerFrom_gt: string
+  headerFrom_in: [string!]
+  headerFrom_leq: string
+  headerFrom_like: string
+  headerFrom_lt: string
+  headerFrom_neq: string
+  headerFrom_notin: [string!]
+  headerFrom_notlike: string
+  matchingMessages: uint32
+  matchingMessages_geq: uint32
+  matchingMessages_gt: uint32
+  matchingMessages_in: [uint32!]
+  matchingMessages_leq: uint32
+  matchingMessages_lt: uint32
+  matchingMessages_neq: uint32
+  matchingMessages_notin: [uint32!]
+  orgName: string
+  orgName_geq: string
+  orgName_gt: string
+  orgName_in: [string!]
+  orgName_leq: string
+  orgName_like: string
+  orgName_lt: string
+  orgName_neq: string
+  orgName_notin: [string!]
+  orgName_notlike: string
+  policyDKIMAlignmentMode: string
+  policyDKIMAlignmentMode_geq: string
+  policyDKIMAlignmentMode_gt: string
+  policyDKIMAlignmentMode_in: [string!]
+  policyDKIMAlignmentMode_leq: string
+  policyDKIMAlignmentMode_like: string
+  policyDKIMAlignmentMode_lt: string
+  policyDKIMAlignmentMode_neq: string
+  policyDKIMAlignmentMode_notin: [string!]
+  policyDKIMAlignmentMode_notlike: string
+  policyDomain: string
+  policyDomain_geq: string
+  policyDomain_gt: string
+  policyDomain_in: [string!]
+  policyDomain_leq: string
+  policyDomain_like: string
+  policyDomain_lt: string
+  policyDomain_neq: string
+  policyDomain_notin: [string!]
+  policyDomain_notlike: string
+  policyPercentage: uint8
+  policyPercentage_geq: uint8
+  policyPercentage_gt: uint8
+  policyPercentage_in: bytes
+  policyPercentage_leq: uint8
+  policyPercentage_lt: uint8
+  policyPercentage_neq: uint8
+  policyPercentage_notin: bytes
+  policySPFAlignmentMode: string
+  policySPFAlignmentMode_geq: string
+  policySPFAlignmentMode_gt: string
+  policySPFAlignmentMode_in: [string!]
+  policySPFAlignmentMode_leq: string
+  policySPFAlignmentMode_like: string
+  policySPFAlignmentMode_lt: string
+  policySPFAlignmentMode_neq: string
+  policySPFAlignmentMode_notin: [string!]
+  policySPFAlignmentMode_notlike: string
+  policySubDomain: string
+  policySubDomain_geq: string
+  policySubDomain_gt: string
+  policySubDomain_in: [string!]
+  policySubDomain_leq: string
+  policySubDomain_like: string
+  policySubDomain_lt: string
+  policySubDomain_neq: string
+  policySubDomain_notin: [string!]
+  policySubDomain_notlike: string
+  recordId: string
+  recordId_geq: string
+  recordId_gt: string
+  recordId_in: [string!]
+  recordId_leq: string
+  recordId_like: string
+  recordId_lt: string
+  recordId_neq: string
+  recordId_notin: [string!]
+  recordId_notlike: string
+  recordIndex: uint32
+  recordIndex_geq: uint32
+  recordIndex_gt: uint32
+  recordIndex_in: [uint32!]
+  recordIndex_leq: uint32
+  recordIndex_lt: uint32
+  recordIndex_neq: uint32
+  recordIndex_notin: [uint32!]
+  reportBegin: Time
+  reportBegin_geq: Time
+  reportBegin_gt: Time
+  reportBegin_in: [Time!]
+  reportBegin_leq: Time
+  reportBegin_lt: Time
+  reportBegin_neq: Time
+  reportBegin_notin: [Time!]
+  reportEnd: Time
+  reportEnd_geq: Time
+  reportEnd_gt: Time
+  reportEnd_in: [Time!]
+  reportEnd_leq: Time
+  reportEnd_lt: Time
+  reportEnd_neq: Time
+  reportEnd_notin: [Time!]
+  reportError: string
+  reportError_geq: string
+  reportError_gt: string
+  reportError_in: [string!]
+  reportError_leq: string
+  reportError_like: string
+  reportError_lt: string
+  reportError_neq: string
+  reportError_notin: [string!]
+  reportError_notlike: string
+  reportId: string
+  reportId_geq: string
+  reportId_gt: string
+  reportId_in: [string!]
+  reportId_leq: string
+  reportId_like: string
+  reportId_lt: string
+  reportId_neq: string
+  reportId_notin: [string!]
+  reportId_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
+  spf: string
+  spf_geq: string
+  spf_gt: string
+  spf_in: [string!]
+  spf_leq: string
+  spf_like: string
+  spf_lt: string
+  spf_neq: string
+  spf_notin: [string!]
+  spf_notlike: string
+}
+
+enum ZoneDmarcReportsAdaptiveOrderBy {
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # disposition ascending
+  disposition_ASC
+  # disposition descending
+  disposition_DESC
+  # dkim ascending
+  dkim_ASC
+  # dkim descending
+  dkim_DESC
+  # domain ascending
+  domain_ASC
+  # domain descending
+  domain_DESC
+  # envelopeTo ascending
+  envelopeTo_ASC
+  # envelopeTo descending
+  envelopeTo_DESC
+  # evaluatedReason ascending
+  evaluatedReason_ASC
+  # evaluatedReason descending
+  evaluatedReason_DESC
+  # headerFrom ascending
+  headerFrom_ASC
+  # headerFrom descending
+  headerFrom_DESC
+  # matchingMessages ascending
+  matchingMessages_ASC
+  # matchingMessages descending
+  matchingMessages_DESC
+  # orgName ascending
+  orgName_ASC
+  # orgName descending
+  orgName_DESC
+  # policyDKIMAlignmentMode ascending
+  policyDKIMAlignmentMode_ASC
+  # policyDKIMAlignmentMode descending
+  policyDKIMAlignmentMode_DESC
+  # policyDomain ascending
+  policyDomain_ASC
+  # policyDomain descending
+  policyDomain_DESC
+  # policyPercentage ascending
+  policyPercentage_ASC
+  # policyPercentage descending
+  policyPercentage_DESC
+  # policySPFAlignmentMode ascending
+  policySPFAlignmentMode_ASC
+  # policySPFAlignmentMode descending
+  policySPFAlignmentMode_DESC
+  # policySubDomain ascending
+  policySubDomain_ASC
+  # policySubDomain descending
+  policySubDomain_DESC
+  # recordId ascending
+  recordId_ASC
+  # recordId descending
+  recordId_DESC
+  # recordIndex ascending
+  recordIndex_ASC
+  # recordIndex descending
+  recordIndex_DESC
+  # reportBegin ascending
+  reportBegin_ASC
+  # reportBegin descending
+  reportBegin_DESC
+  # reportEnd ascending
+  reportEnd_ASC
+  # reportEnd descending
+  reportEnd_DESC
+  # reportError ascending
+  reportError_ASC
+  # reportError descending
+  reportError_DESC
+  # reportId ascending
+  reportId_ASC
+  # reportId descending
+  reportId_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # spf ascending
+  spf_ASC
+  # spf descending
+  spf_DESC
 }
 
 # Beta. Raw email routing logs with adaptive sampling
@@ -31954,6 +32419,7 @@ type ZoneSettings {
   apiRequestSequencesGroups: Settings!
   cacheReserveOperationsAdaptiveGroups: Settings!
   cacheReserveStorageAdaptiveGroups: Settings!
+  dmarcReportsAdaptive: Settings!
   emailRoutingAdaptive: Settings!
   emailRoutingAdaptiveGroups: Settings!
   firewallEventsAdaptive: Settings!
