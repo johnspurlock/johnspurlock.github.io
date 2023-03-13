@@ -9515,6 +9515,10 @@ type AccountHttpRequestsAdaptive {
   # HTTP origin response status code returned to browser
   originResponseStatus: uint16!
   requestSource: string!
+  # The code of the first-class action the Cloudflare Firewall took on this request
+  securityAction: string!
+  # The Cloudflare security product triggered by this request
+  securitySource: string!
   upperTierColoName: string!
   # visitor's user-agent string
   userAgent: string!
@@ -9911,6 +9915,26 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   requestSource_neq: string
   requestSource_notin: [string!]
   requestSource_notlike: string
+  securityAction: string
+  securityAction_geq: string
+  securityAction_gt: string
+  securityAction_in: [string!]
+  securityAction_leq: string
+  securityAction_like: string
+  securityAction_lt: string
+  securityAction_neq: string
+  securityAction_notin: [string!]
+  securityAction_notlike: string
+  securitySource: string
+  securitySource_geq: string
+  securitySource_gt: string
+  securitySource_in: [string!]
+  securitySource_leq: string
+  securitySource_like: string
+  securitySource_lt: string
+  securitySource_neq: string
+  securitySource_notin: [string!]
+  securitySource_notlike: string
   upperTierColoName: string
   upperTierColoName_geq: string
   upperTierColoName_gt: string
@@ -10108,6 +10132,10 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   requestSource: string!
   # ABR sample interval
   sampleInterval: uint32!
+  # The code of the first-class action the Cloudflare Firewall took on this request
+  securityAction: string!
+  # The Cloudflare security product triggered by this request
+  securitySource: string!
   upperTierColoName: string!
   userAgent: string!
   # Browser parsed from the user agent
@@ -10511,6 +10539,26 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   sampleInterval_lt: uint32
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
+  securityAction: string
+  securityAction_geq: string
+  securityAction_gt: string
+  securityAction_in: [string!]
+  securityAction_leq: string
+  securityAction_like: string
+  securityAction_lt: string
+  securityAction_neq: string
+  securityAction_notin: [string!]
+  securityAction_notlike: string
+  securitySource: string
+  securitySource_geq: string
+  securitySource_gt: string
+  securitySource_in: [string!]
+  securitySource_leq: string
+  securitySource_like: string
+  securitySource_lt: string
+  securitySource_neq: string
+  securitySource_notin: [string!]
+  securitySource_notlike: string
   upperTierColoName: string
   upperTierColoName_geq: string
   upperTierColoName_gt: string
@@ -10800,6 +10848,14 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # securityAction ascending
+  securityAction_ASC
+  # securityAction descending
+  securityAction_DESC
+  # securitySource ascending
+  securitySource_ASC
+  # securitySource descending
+  securitySource_DESC
   # sum(edgeResponseBytes) ascending
   sum_edgeResponseBytes_ASC
   # sum(edgeResponseBytes) descending
@@ -11026,6 +11082,14 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   requestSource_ASC
   # requestSource descending
   requestSource_DESC
+  # securityAction ascending
+  securityAction_ASC
+  # securityAction descending
+  securityAction_DESC
+  # securitySource ascending
+  securitySource_ASC
+  # securitySource descending
+  securitySource_DESC
   # upperTierColoName ascending
   upperTierColoName_ASC
   # upperTierColoName descending
@@ -14748,6 +14812,10 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
   destinationPort: uint16!
   # Direction of the packet relative to the customer network (possible values: inbound, outbound, lateral)
   direction: string!
+  # GRE or IPSec Egress Tunnel ID for Magic WAN and Magic Transit traffic
+  egressTunnelID: string!
+  # GRE or IPSec Egress Tunnel name for Magic WAN and Magic Transit traffic
+  egressTunnelName: string!
   # Value of the Ethertype header field in the Ethernet packet (2048 for IPv4; 34525 for IPv6)
   ethertype: uint16!
   # Value of the Checkusm header field in the GRE packet
@@ -14768,6 +14836,10 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
   icmpCode: uint8!
   # Value of the Type header field in the ICMP packet
   icmpType: uint8!
+  # GRE or IPSec Ingress Tunnel ID for Magic WAN and Magic Transit traffic
+  ingressTunnelID: string!
+  # GRE or IPSec Ingress Tunnel name for Magic WAN and Magic Transit traffic
+  ingressTunnelName: string!
   # Value of the Destination Address header field in the IPv4 or IPv6 packet
   ipDestinationAddress: string!
   # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
@@ -15033,6 +15105,26 @@ input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   direction_neq: string
   direction_notin: [string!]
   direction_notlike: string
+  egressTunnelID: string
+  egressTunnelID_geq: string
+  egressTunnelID_gt: string
+  egressTunnelID_in: [string!]
+  egressTunnelID_leq: string
+  egressTunnelID_like: string
+  egressTunnelID_lt: string
+  egressTunnelID_neq: string
+  egressTunnelID_notin: [string!]
+  egressTunnelID_notlike: string
+  egressTunnelName: string
+  egressTunnelName_geq: string
+  egressTunnelName_gt: string
+  egressTunnelName_in: [string!]
+  egressTunnelName_leq: string
+  egressTunnelName_like: string
+  egressTunnelName_lt: string
+  egressTunnelName_neq: string
+  egressTunnelName_notin: [string!]
+  egressTunnelName_notlike: string
   ethertype: uint16
   ethertype_geq: uint16
   ethertype_gt: uint16
@@ -15113,6 +15205,26 @@ input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   icmpType_lt: uint8
   icmpType_neq: uint8
   icmpType_notin: bytes
+  ingressTunnelID: string
+  ingressTunnelID_geq: string
+  ingressTunnelID_gt: string
+  ingressTunnelID_in: [string!]
+  ingressTunnelID_leq: string
+  ingressTunnelID_like: string
+  ingressTunnelID_lt: string
+  ingressTunnelID_neq: string
+  ingressTunnelID_notin: [string!]
+  ingressTunnelID_notlike: string
+  ingressTunnelName: string
+  ingressTunnelName_geq: string
+  ingressTunnelName_gt: string
+  ingressTunnelName_in: [string!]
+  ingressTunnelName_leq: string
+  ingressTunnelName_like: string
+  ingressTunnelName_lt: string
+  ingressTunnelName_neq: string
+  ingressTunnelName_notin: [string!]
+  ingressTunnelName_notlike: string
   ipDestinationAddress: string
   ipDestinationAddress_geq: string
   ipDestinationAddress_gt: string
@@ -15666,6 +15778,14 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   direction_ASC
   # direction descending
   direction_DESC
+  # egressTunnelID ascending
+  egressTunnelID_ASC
+  # egressTunnelID descending
+  egressTunnelID_DESC
+  # egressTunnelName ascending
+  egressTunnelName_ASC
+  # egressTunnelName descending
+  egressTunnelName_DESC
   # ethertype ascending
   ethertype_ASC
   # ethertype descending
@@ -15706,6 +15826,14 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   icmpType_ASC
   # icmpType descending
   icmpType_DESC
+  # ingressTunnelID ascending
+  ingressTunnelID_ASC
+  # ingressTunnelID descending
+  ingressTunnelID_DESC
+  # ingressTunnelName ascending
+  ingressTunnelName_ASC
+  # ingressTunnelName descending
+  ingressTunnelName_DESC
   # ipDestinationAddress ascending
   ipDestinationAddress_ASC
   # ipDestinationAddress descending
@@ -24202,6 +24330,8 @@ type ZoneApiRequestSequencesGroupsAggArgMax {
   operationsApiEndpoints: string!
   # HTTP request methods comprising the sequence of operations. Individual request method names are delimited by # symbols
   operationsClientRequestHTTPMethods: string!
+  # Fraction of requests sampled
+  samplingFraction: float64!
 }
 
 type ZoneApiRequestSequencesGroupsAggMax {
@@ -24268,6 +24398,10 @@ enum ZoneApiRequestSequencesGroupsOrderBy {
   aggArgMax_operationsClientRequestHTTPMethods_ASC
   # aggArgMax(operationsClientRequestHTTPMethods) descending
   aggArgMax_operationsClientRequestHTTPMethods_DESC
+  # aggArgMax(samplingFraction) ascending
+  aggArgMax_samplingFraction_ASC
+  # aggArgMax(samplingFraction) descending
+  aggArgMax_samplingFraction_DESC
   # aggMax(timeLastSeen) ascending
   aggMax_timeLastSeen_ASC
   # aggMax(timeLastSeen) descending
@@ -29195,6 +29329,10 @@ type ZoneHttpRequestsAdaptive {
   # HTTP origin response status code returned to browser
   originResponseStatus: uint16!
   requestSource: string!
+  # The code of the first-class action the Cloudflare Firewall took on this request
+  securityAction: string!
+  # The Cloudflare security product triggered by this request
+  securitySource: string!
   upperTierColoName: string!
   # visitor's user-agent string
   userAgent: string!
@@ -29589,6 +29727,26 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   requestSource_neq: string
   requestSource_notin: [string!]
   requestSource_notlike: string
+  securityAction: string
+  securityAction_geq: string
+  securityAction_gt: string
+  securityAction_in: [string!]
+  securityAction_leq: string
+  securityAction_like: string
+  securityAction_lt: string
+  securityAction_neq: string
+  securityAction_notin: [string!]
+  securityAction_notlike: string
+  securitySource: string
+  securitySource_geq: string
+  securitySource_gt: string
+  securitySource_in: [string!]
+  securitySource_leq: string
+  securitySource_like: string
+  securitySource_lt: string
+  securitySource_neq: string
+  securitySource_notin: [string!]
+  securitySource_notlike: string
   upperTierColoName: string
   upperTierColoName_geq: string
   upperTierColoName_gt: string
@@ -29776,6 +29934,10 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   requestSource: string!
   # ABR sample interval
   sampleInterval: uint32!
+  # The code of the first-class action the Cloudflare Firewall took on this request
+  securityAction: string!
+  # The Cloudflare security product triggered by this request
+  securitySource: string!
   upperTierColoName: string!
   userAgent: string!
   # Browser parsed from the user agent
@@ -30177,6 +30339,26 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   sampleInterval_lt: uint32
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
+  securityAction: string
+  securityAction_geq: string
+  securityAction_gt: string
+  securityAction_in: [string!]
+  securityAction_leq: string
+  securityAction_like: string
+  securityAction_lt: string
+  securityAction_neq: string
+  securityAction_notin: [string!]
+  securityAction_notlike: string
+  securitySource: string
+  securitySource_geq: string
+  securitySource_gt: string
+  securitySource_in: [string!]
+  securitySource_leq: string
+  securitySource_like: string
+  securitySource_lt: string
+  securitySource_neq: string
+  securitySource_notin: [string!]
+  securitySource_notlike: string
   upperTierColoName: string
   upperTierColoName_geq: string
   upperTierColoName_gt: string
@@ -30456,6 +30638,14 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # securityAction ascending
+  securityAction_ASC
+  # securityAction descending
+  securityAction_DESC
+  # securitySource ascending
+  securitySource_ASC
+  # securitySource descending
+  securitySource_DESC
   # sum(edgeResponseBytes) ascending
   sum_edgeResponseBytes_ASC
   # sum(edgeResponseBytes) descending
@@ -30678,6 +30868,14 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   requestSource_ASC
   # requestSource descending
   requestSource_DESC
+  # securityAction ascending
+  securityAction_ASC
+  # securityAction descending
+  securityAction_DESC
+  # securitySource ascending
+  securitySource_ASC
+  # securitySource descending
+  securitySource_DESC
   # upperTierColoName ascending
   upperTierColoName_ASC
   # upperTierColoName descending

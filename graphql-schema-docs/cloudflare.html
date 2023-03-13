@@ -9425,6 +9425,10 @@
 &nbsp;&nbsp;<span class="c"># HTTP origin response status code returned to browser</span><br />
 &nbsp;&nbsp;originResponseStatus: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;requestSource: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The code of the first-class action the Cloudflare Firewall took on this request</span><br />
+&nbsp;&nbsp;securityAction: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The Cloudflare security product triggered by this request</span><br />
+&nbsp;&nbsp;securitySource: <a href="#string">string!</a><br />
 &nbsp;&nbsp;upperTierColoName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># visitor's user-agent string</span><br />
 &nbsp;&nbsp;userAgent: <a href="#string">string!</a><br />
@@ -9821,6 +9825,26 @@
 &nbsp;&nbsp;requestSource_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;requestSource_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;requestSource_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;securityAction_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;securityAction_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;securitySource_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;securitySource_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;upperTierColoName: <a href="#string">string</a><br />
 &nbsp;&nbsp;upperTierColoName_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;upperTierColoName_gt: <a href="#string">string</a><br />
@@ -10018,6 +10042,10 @@
 &nbsp;&nbsp;requestSource: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># ABR sample interval</span><br />
 &nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;<span class="c"># The code of the first-class action the Cloudflare Firewall took on this request</span><br />
+&nbsp;&nbsp;securityAction: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The Cloudflare security product triggered by this request</span><br />
+&nbsp;&nbsp;securitySource: <a href="#string">string!</a><br />
 &nbsp;&nbsp;upperTierColoName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;userAgent: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Browser parsed from the user agent</span><br />
@@ -10421,6 +10449,26 @@
 &nbsp;&nbsp;sampleInterval_lt: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sampleInterval_neq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sampleInterval_notin: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;securityAction: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;securityAction_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;securityAction_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;securitySource_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;securitySource_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;upperTierColoName: <a href="#string">string</a><br />
 &nbsp;&nbsp;upperTierColoName_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;upperTierColoName_gt: <a href="#string">string</a><br />
@@ -10710,6 +10758,14 @@
 &nbsp;&nbsp;sampleInterval_ASC<br />
 &nbsp;&nbsp;<span class="c"># sampleInterval descending</span><br />
 &nbsp;&nbsp;sampleInterval_DESC<br />
+&nbsp;&nbsp;<span class="c"># securityAction ascending</span><br />
+&nbsp;&nbsp;securityAction_ASC<br />
+&nbsp;&nbsp;<span class="c"># securityAction descending</span><br />
+&nbsp;&nbsp;securityAction_DESC<br />
+&nbsp;&nbsp;<span class="c"># securitySource ascending</span><br />
+&nbsp;&nbsp;securitySource_ASC<br />
+&nbsp;&nbsp;<span class="c"># securitySource descending</span><br />
+&nbsp;&nbsp;securitySource_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(edgeResponseBytes) ascending</span><br />
 &nbsp;&nbsp;sum_edgeResponseBytes_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(edgeResponseBytes) descending</span><br />
@@ -10936,6 +10992,14 @@
 &nbsp;&nbsp;requestSource_ASC<br />
 &nbsp;&nbsp;<span class="c"># requestSource descending</span><br />
 &nbsp;&nbsp;requestSource_DESC<br />
+&nbsp;&nbsp;<span class="c"># securityAction ascending</span><br />
+&nbsp;&nbsp;securityAction_ASC<br />
+&nbsp;&nbsp;<span class="c"># securityAction descending</span><br />
+&nbsp;&nbsp;securityAction_DESC<br />
+&nbsp;&nbsp;<span class="c"># securitySource ascending</span><br />
+&nbsp;&nbsp;securitySource_ASC<br />
+&nbsp;&nbsp;<span class="c"># securitySource descending</span><br />
+&nbsp;&nbsp;securitySource_DESC<br />
 &nbsp;&nbsp;<span class="c"># upperTierColoName ascending</span><br />
 &nbsp;&nbsp;upperTierColoName_ASC<br />
 &nbsp;&nbsp;<span class="c"># upperTierColoName descending</span><br />
@@ -14658,6 +14722,10 @@
 &nbsp;&nbsp;destinationPort: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># Direction of the packet relative to the customer network (possible values: inbound, outbound, lateral)</span><br />
 &nbsp;&nbsp;direction: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># GRE or IPSec Egress Tunnel ID for Magic WAN and Magic Transit traffic</span><br />
+&nbsp;&nbsp;egressTunnelID: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># GRE or IPSec Egress Tunnel name for Magic WAN and Magic Transit traffic</span><br />
+&nbsp;&nbsp;egressTunnelName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Ethertype header field in the Ethernet packet (2048 for IPv4; 34525 for IPv6)</span><br />
 &nbsp;&nbsp;ethertype: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Checkusm header field in the GRE packet</span><br />
@@ -14678,6 +14746,10 @@
 &nbsp;&nbsp;icmpCode: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Type header field in the ICMP packet</span><br />
 &nbsp;&nbsp;icmpType: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># GRE or IPSec Ingress Tunnel ID for Magic WAN and Magic Transit traffic</span><br />
+&nbsp;&nbsp;ingressTunnelID: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># GRE or IPSec Ingress Tunnel name for Magic WAN and Magic Transit traffic</span><br />
+&nbsp;&nbsp;ingressTunnelName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Destination Address header field in the IPv4 or IPv6 packet</span><br />
 &nbsp;&nbsp;ipDestinationAddress: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)</span><br />
@@ -14943,6 +15015,26 @@
 &nbsp;&nbsp;direction_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;direction_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;direction_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;egressTunnelID: <a href="#string">string</a><br />
+&nbsp;&nbsp;egressTunnelID_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;egressTunnelID_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;egressTunnelID_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;egressTunnelID_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;egressTunnelID_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;egressTunnelID_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;egressTunnelID_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;egressTunnelID_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;egressTunnelID_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;egressTunnelName: <a href="#string">string</a><br />
+&nbsp;&nbsp;egressTunnelName_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;egressTunnelName_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;egressTunnelName_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;egressTunnelName_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;egressTunnelName_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;egressTunnelName_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;egressTunnelName_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;egressTunnelName_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;egressTunnelName_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;ethertype: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ethertype_geq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ethertype_gt: <a href="#uint16">uint16</a><br />
@@ -15023,6 +15115,26 @@
 &nbsp;&nbsp;icmpType_lt: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;icmpType_neq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;icmpType_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;ingressTunnelID: <a href="#string">string</a><br />
+&nbsp;&nbsp;ingressTunnelID_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ingressTunnelID_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ingressTunnelID_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ingressTunnelID_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ingressTunnelID_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;ingressTunnelID_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ingressTunnelID_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ingressTunnelID_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ingressTunnelID_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;ingressTunnelName: <a href="#string">string</a><br />
+&nbsp;&nbsp;ingressTunnelName_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ingressTunnelName_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ingressTunnelName_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ingressTunnelName_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ingressTunnelName_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;ingressTunnelName_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ingressTunnelName_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ingressTunnelName_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ingressTunnelName_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;ipDestinationAddress: <a href="#string">string</a><br />
 &nbsp;&nbsp;ipDestinationAddress_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ipDestinationAddress_gt: <a href="#string">string</a><br />
@@ -15576,6 +15688,14 @@
 &nbsp;&nbsp;direction_ASC<br />
 &nbsp;&nbsp;<span class="c"># direction descending</span><br />
 &nbsp;&nbsp;direction_DESC<br />
+&nbsp;&nbsp;<span class="c"># egressTunnelID ascending</span><br />
+&nbsp;&nbsp;egressTunnelID_ASC<br />
+&nbsp;&nbsp;<span class="c"># egressTunnelID descending</span><br />
+&nbsp;&nbsp;egressTunnelID_DESC<br />
+&nbsp;&nbsp;<span class="c"># egressTunnelName ascending</span><br />
+&nbsp;&nbsp;egressTunnelName_ASC<br />
+&nbsp;&nbsp;<span class="c"># egressTunnelName descending</span><br />
+&nbsp;&nbsp;egressTunnelName_DESC<br />
 &nbsp;&nbsp;<span class="c"># ethertype ascending</span><br />
 &nbsp;&nbsp;ethertype_ASC<br />
 &nbsp;&nbsp;<span class="c"># ethertype descending</span><br />
@@ -15616,6 +15736,14 @@
 &nbsp;&nbsp;icmpType_ASC<br />
 &nbsp;&nbsp;<span class="c"># icmpType descending</span><br />
 &nbsp;&nbsp;icmpType_DESC<br />
+&nbsp;&nbsp;<span class="c"># ingressTunnelID ascending</span><br />
+&nbsp;&nbsp;ingressTunnelID_ASC<br />
+&nbsp;&nbsp;<span class="c"># ingressTunnelID descending</span><br />
+&nbsp;&nbsp;ingressTunnelID_DESC<br />
+&nbsp;&nbsp;<span class="c"># ingressTunnelName ascending</span><br />
+&nbsp;&nbsp;ingressTunnelName_ASC<br />
+&nbsp;&nbsp;<span class="c"># ingressTunnelName descending</span><br />
+&nbsp;&nbsp;ingressTunnelName_DESC<br />
 &nbsp;&nbsp;<span class="c"># ipDestinationAddress ascending</span><br />
 &nbsp;&nbsp;ipDestinationAddress_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipDestinationAddress descending</span><br />
@@ -24112,6 +24240,8 @@
 &nbsp;&nbsp;operationsApiEndpoints: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># HTTP request methods comprising the sequence of operations. Individual request method names are delimited by # symbols</span><br />
 &nbsp;&nbsp;operationsClientRequestHTTPMethods: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Fraction of requests sampled</span><br />
+&nbsp;&nbsp;samplingFraction: <a href="#float64">float64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneApiRequestSequencesGroupsAggMax" href="#ZoneApiRequestSequencesGroupsAggMax">ZoneApiRequestSequencesGroupsAggMax</a> {<br />
@@ -24178,6 +24308,10 @@
 &nbsp;&nbsp;aggArgMax_operationsClientRequestHTTPMethods_ASC<br />
 &nbsp;&nbsp;<span class="c"># aggArgMax(operationsClientRequestHTTPMethods) descending</span><br />
 &nbsp;&nbsp;aggArgMax_operationsClientRequestHTTPMethods_DESC<br />
+&nbsp;&nbsp;<span class="c"># aggArgMax(samplingFraction) ascending</span><br />
+&nbsp;&nbsp;aggArgMax_samplingFraction_ASC<br />
+&nbsp;&nbsp;<span class="c"># aggArgMax(samplingFraction) descending</span><br />
+&nbsp;&nbsp;aggArgMax_samplingFraction_DESC<br />
 &nbsp;&nbsp;<span class="c"># aggMax(timeLastSeen) ascending</span><br />
 &nbsp;&nbsp;aggMax_timeLastSeen_ASC<br />
 &nbsp;&nbsp;<span class="c"># aggMax(timeLastSeen) descending</span><br />
@@ -29105,6 +29239,10 @@
 &nbsp;&nbsp;<span class="c"># HTTP origin response status code returned to browser</span><br />
 &nbsp;&nbsp;originResponseStatus: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;requestSource: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The code of the first-class action the Cloudflare Firewall took on this request</span><br />
+&nbsp;&nbsp;securityAction: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The Cloudflare security product triggered by this request</span><br />
+&nbsp;&nbsp;securitySource: <a href="#string">string!</a><br />
 &nbsp;&nbsp;upperTierColoName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># visitor's user-agent string</span><br />
 &nbsp;&nbsp;userAgent: <a href="#string">string!</a><br />
@@ -29499,6 +29637,26 @@
 &nbsp;&nbsp;requestSource_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;requestSource_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;requestSource_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;securityAction_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;securityAction_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;securitySource_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;securitySource_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;upperTierColoName: <a href="#string">string</a><br />
 &nbsp;&nbsp;upperTierColoName_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;upperTierColoName_gt: <a href="#string">string</a><br />
@@ -29686,6 +29844,10 @@
 &nbsp;&nbsp;requestSource: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># ABR sample interval</span><br />
 &nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;<span class="c"># The code of the first-class action the Cloudflare Firewall took on this request</span><br />
+&nbsp;&nbsp;securityAction: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The Cloudflare security product triggered by this request</span><br />
+&nbsp;&nbsp;securitySource: <a href="#string">string!</a><br />
 &nbsp;&nbsp;upperTierColoName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;userAgent: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Browser parsed from the user agent</span><br />
@@ -30087,6 +30249,26 @@
 &nbsp;&nbsp;sampleInterval_lt: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sampleInterval_neq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sampleInterval_notin: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;securityAction: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;securityAction_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securityAction_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;securityAction_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;securitySource_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;securitySource_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;securitySource_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;upperTierColoName: <a href="#string">string</a><br />
 &nbsp;&nbsp;upperTierColoName_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;upperTierColoName_gt: <a href="#string">string</a><br />
@@ -30366,6 +30548,14 @@
 &nbsp;&nbsp;sampleInterval_ASC<br />
 &nbsp;&nbsp;<span class="c"># sampleInterval descending</span><br />
 &nbsp;&nbsp;sampleInterval_DESC<br />
+&nbsp;&nbsp;<span class="c"># securityAction ascending</span><br />
+&nbsp;&nbsp;securityAction_ASC<br />
+&nbsp;&nbsp;<span class="c"># securityAction descending</span><br />
+&nbsp;&nbsp;securityAction_DESC<br />
+&nbsp;&nbsp;<span class="c"># securitySource ascending</span><br />
+&nbsp;&nbsp;securitySource_ASC<br />
+&nbsp;&nbsp;<span class="c"># securitySource descending</span><br />
+&nbsp;&nbsp;securitySource_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(edgeResponseBytes) ascending</span><br />
 &nbsp;&nbsp;sum_edgeResponseBytes_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(edgeResponseBytes) descending</span><br />
@@ -30588,6 +30778,14 @@
 &nbsp;&nbsp;requestSource_ASC<br />
 &nbsp;&nbsp;<span class="c"># requestSource descending</span><br />
 &nbsp;&nbsp;requestSource_DESC<br />
+&nbsp;&nbsp;<span class="c"># securityAction ascending</span><br />
+&nbsp;&nbsp;securityAction_ASC<br />
+&nbsp;&nbsp;<span class="c"># securityAction descending</span><br />
+&nbsp;&nbsp;securityAction_DESC<br />
+&nbsp;&nbsp;<span class="c"># securitySource ascending</span><br />
+&nbsp;&nbsp;securitySource_ASC<br />
+&nbsp;&nbsp;<span class="c"># securitySource descending</span><br />
+&nbsp;&nbsp;securitySource_DESC<br />
 &nbsp;&nbsp;<span class="c"># upperTierColoName ascending</span><br />
 &nbsp;&nbsp;upperTierColoName_ASC<br />
 &nbsp;&nbsp;<span class="c"># upperTierColoName descending</span><br />
