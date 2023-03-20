@@ -66,6 +66,7 @@ Zone-level datasets:
 * cacheReserveOperationsAdaptiveGroups
 * cacheReserveStorageAdaptiveGroups
 * dmarcReportsAdaptive
+* dmarcReportsSourcesAdaptiveGroups
 * emailRoutingAdaptive
 * emailRoutingAdaptiveGroups
 * firewallEventsAdaptive
@@ -4584,6 +4585,8 @@ type AccountFirewallEventsAdaptive {
   datetimeHour: Time!
   # The date and time the event occurred at the edge truncated to the minute
   datetimeMinute: Time!
+  # The description of the rule triggered by this request
+  description: string!
   # The airport code of the Cloudflare datacenter that served this request
   edgeColoName: string!
   # HTTP response status code returned to browser
@@ -4924,6 +4927,16 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  description: string
+  description_geq: string
+  description_gt: string
+  description_in: [string!]
+  description_leq: string
+  description_like: string
+  description_lt: string
+  description_neq: string
+  description_notin: [string!]
+  description_notlike: string
   edgeColoName: string
   edgeColoName_geq: string
   edgeColoName_gt: string
@@ -5217,6 +5230,8 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time the event occurred at the edge truncated to the minute
   datetimeMinute: Time!
+  # The description of the rule triggered by this request
+  description: string!
   # The airport code of the Cloudflare datacenter that served this request
   edgeColoName: string!
   # HTTP response status code returned to browser
@@ -5511,6 +5526,16 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  description: string
+  description_geq: string
+  description_gt: string
+  description_in: [string!]
+  description_leq: string
+  description_like: string
+  description_lt: string
+  description_neq: string
+  description_notin: [string!]
+  description_notlike: string
   edgeColoName: string
   edgeColoName_geq: string
   edgeColoName_gt: string
@@ -5848,6 +5873,10 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # description ascending
+  description_ASC
+  # description descending
+  description_DESC
   # edgeColoName ascending
   edgeColoName_ASC
   # edgeColoName descending
@@ -6082,6 +6111,10 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # description ascending
+  description_ASC
+  # description descending
+  description_DESC
   # edgeColoName ascending
   edgeColoName_ASC
   # edgeColoName descending
@@ -24082,6 +24115,8 @@ type zone {
   cacheReserveStorageAdaptiveGroups(filter: ZoneCacheReserveStorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneCacheReserveStorageAdaptiveGroupsOrderBy!]): [ZoneCacheReserveStorageAdaptiveGroups!]!
   # Dmarc report records with adaptive sampling
   dmarcReportsAdaptive(filter: ZoneDmarcReportsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneDmarcReportsAdaptiveOrderBy!]): [ZoneDmarcReportsAdaptive!]!
+  # Aggregated dmarc reports by sources logs with adaptive sampling
+  dmarcReportsSourcesAdaptiveGroups(filter: ZoneDmarcReportsSourcesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneDmarcReportsSourcesAdaptiveGroupsOrderBy!]): [ZoneDmarcReportsSourcesAdaptiveGroups!]!
   # Beta. Raw email routing logs with adaptive sampling
   emailRoutingAdaptive(filter: ZoneEmailRoutingAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneEmailRoutingAdaptiveOrderBy!]): [ZoneEmailRoutingAdaptive!]!
   # Beta. Aggregated email routing logs with adaptive sampling
@@ -24718,8 +24753,18 @@ type ZoneDmarcReportsAdaptive {
   sampleInterval: uint32!
   # Source IP address of the email
   sourceIP: string!
+  # Country name from source IP
+  sourceLocationName: string!
+  # Source IP address organisation name
+  sourceOrgName: string!
+  # Source IP address organisation slug
+  sourceOrgSlug: string!
+  # Source Domain from IP address
+  sourcePTR: string!
   # SPF result
   spf: string!
+  # Checked domain from scope mfrom
+  spfMFromDomain: string!
 }
 
 input ZoneDmarcReportsAdaptiveFilter_InputObject {
@@ -24931,7 +24976,57 @@ input ZoneDmarcReportsAdaptiveFilter_InputObject {
   sourceIP_neq: string
   sourceIP_notin: [string!]
   sourceIP_notlike: string
+  sourceLocationName: string
+  sourceLocationName_geq: string
+  sourceLocationName_gt: string
+  sourceLocationName_in: [string!]
+  sourceLocationName_leq: string
+  sourceLocationName_like: string
+  sourceLocationName_lt: string
+  sourceLocationName_neq: string
+  sourceLocationName_notin: [string!]
+  sourceLocationName_notlike: string
+  sourceOrgName: string
+  sourceOrgName_geq: string
+  sourceOrgName_gt: string
+  sourceOrgName_in: [string!]
+  sourceOrgName_leq: string
+  sourceOrgName_like: string
+  sourceOrgName_lt: string
+  sourceOrgName_neq: string
+  sourceOrgName_notin: [string!]
+  sourceOrgName_notlike: string
+  sourceOrgSlug: string
+  sourceOrgSlug_geq: string
+  sourceOrgSlug_gt: string
+  sourceOrgSlug_in: [string!]
+  sourceOrgSlug_leq: string
+  sourceOrgSlug_like: string
+  sourceOrgSlug_lt: string
+  sourceOrgSlug_neq: string
+  sourceOrgSlug_notin: [string!]
+  sourceOrgSlug_notlike: string
+  sourcePTR: string
+  sourcePTR_geq: string
+  sourcePTR_gt: string
+  sourcePTR_in: [string!]
+  sourcePTR_leq: string
+  sourcePTR_like: string
+  sourcePTR_lt: string
+  sourcePTR_neq: string
+  sourcePTR_notin: [string!]
+  sourcePTR_notlike: string
   spf: string
+  spfMFromDomain: string
+  spfMFromDomain_geq: string
+  spfMFromDomain_gt: string
+  spfMFromDomain_in: [string!]
+  spfMFromDomain_leq: string
+  spfMFromDomain_like: string
+  spfMFromDomain_lt: string
+  spfMFromDomain_neq: string
+  spfMFromDomain_notin: [string!]
+  spfMFromDomain_notlike: string
   spf_geq: string
   spf_gt: string
   spf_in: [string!]
@@ -25032,10 +25127,412 @@ enum ZoneDmarcReportsAdaptiveOrderBy {
   sourceIP_ASC
   # sourceIP descending
   sourceIP_DESC
+  # sourceLocationName ascending
+  sourceLocationName_ASC
+  # sourceLocationName descending
+  sourceLocationName_DESC
+  # sourceOrgName ascending
+  sourceOrgName_ASC
+  # sourceOrgName descending
+  sourceOrgName_DESC
+  # sourceOrgSlug ascending
+  sourceOrgSlug_ASC
+  # sourceOrgSlug descending
+  sourceOrgSlug_DESC
+  # sourcePTR ascending
+  sourcePTR_ASC
+  # sourcePTR descending
+  sourcePTR_DESC
+  # spfMFromDomain ascending
+  spfMFromDomain_ASC
+  # spfMFromDomain descending
+  spfMFromDomain_DESC
   # spf ascending
   spf_ASC
   # spf descending
   spf_DESC
+}
+
+# Aggregated dmarc reports by sources logs with adaptive sampling
+type ZoneDmarcReportsSourcesAdaptiveGroups {
+  # Beta. The avg of values for a metric per dimension
+  avg: ZoneDmarcReportsSourcesAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: ZoneDmarcReportsSourcesAdaptiveGroupsDimensions
+  sum: ZoneDmarcReportsSourcesAdaptiveGroupsSum
+  uniq: ZoneDmarcReportsSourcesAdaptiveGroupsUniq
+}
+
+type ZoneDmarcReportsSourcesAdaptiveGroupsAvg {
+  # Percentage of dkim messages pass
+  dkimPass: float64!
+  # Percentage of dmarc messages pass
+  dmarc: float64!
+  # Percentage of spf messages pass
+  spfPass: float64!
+}
+
+type ZoneDmarcReportsSourcesAdaptiveGroupsDimensions {
+  # The date the source email was received
+  date: Date!
+  # The date and time the source email was received truncated to the day
+  datetimeDay: Time!
+  # The date and time the source email was received truncated to the hour
+  datetimeHour: Time!
+  # The date and time the source email was received truncated to the last 31 days
+  datetimeLast31Days: Time!
+  # The date and time the source email was received truncated to the month
+  datetimeMonth: Time!
+  # The date and time the source email was received truncated to the week
+  datetimeWeek: Time!
+  # DMARC policy disposition
+  disposition: string!
+  # DKIM result
+  dkim: string!
+  # Domain to which this report refers to
+  domain: string!
+  # Envelope To of emails
+  envelopeTo: string!
+  # Reason (if any) why the record was evaluated
+  evaluatedReason: string!
+  # Header From of emails
+  headerFrom: string!
+  # Organization that generated report
+  orgName: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # Source IP address of the email
+  sourceIP: string!
+  # Country name from source IP
+  sourceLocationName: string!
+  # Source IP address organisation name
+  sourceOrgName: string!
+  # Source IP address organisation slug
+  sourceOrgSlug: string!
+  # Source Domain from IP address
+  sourcePTR: string!
+  # SPF result
+  spf: string!
+  # Checked domain from scope mfrom
+  spfMFromDomain: string!
+}
+
+input ZoneDmarcReportsSourcesAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneDmarcReportsSourcesAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneDmarcReportsSourcesAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeDay: Time
+  datetimeDay_geq: Time
+  datetimeDay_gt: Time
+  datetimeDay_in: [Time!]
+  datetimeDay_leq: Time
+  datetimeDay_lt: Time
+  datetimeDay_neq: Time
+  datetimeDay_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeLast31Days: Time
+  datetimeLast31Days_geq: Time
+  datetimeLast31Days_gt: Time
+  datetimeLast31Days_in: [Time!]
+  datetimeLast31Days_leq: Time
+  datetimeLast31Days_lt: Time
+  datetimeLast31Days_neq: Time
+  datetimeLast31Days_notin: [Time!]
+  datetimeMonth: Time
+  datetimeMonth_geq: Time
+  datetimeMonth_gt: Time
+  datetimeMonth_in: [Time!]
+  datetimeMonth_leq: Time
+  datetimeMonth_lt: Time
+  datetimeMonth_neq: Time
+  datetimeMonth_notin: [Time!]
+  datetimeWeek: Time
+  datetimeWeek_geq: Time
+  datetimeWeek_gt: Time
+  datetimeWeek_in: [Time!]
+  datetimeWeek_leq: Time
+  datetimeWeek_lt: Time
+  datetimeWeek_neq: Time
+  datetimeWeek_notin: [Time!]
+  disposition: string
+  disposition_geq: string
+  disposition_gt: string
+  disposition_in: [string!]
+  disposition_leq: string
+  disposition_like: string
+  disposition_lt: string
+  disposition_neq: string
+  disposition_notin: [string!]
+  disposition_notlike: string
+  dkim: string
+  dkim_geq: string
+  dkim_gt: string
+  dkim_in: [string!]
+  dkim_leq: string
+  dkim_like: string
+  dkim_lt: string
+  dkim_neq: string
+  dkim_notin: [string!]
+  dkim_notlike: string
+  domain: string
+  domain_geq: string
+  domain_gt: string
+  domain_in: [string!]
+  domain_leq: string
+  domain_like: string
+  domain_lt: string
+  domain_neq: string
+  domain_notin: [string!]
+  domain_notlike: string
+  envelopeTo: string
+  envelopeTo_geq: string
+  envelopeTo_gt: string
+  envelopeTo_in: [string!]
+  envelopeTo_leq: string
+  envelopeTo_like: string
+  envelopeTo_lt: string
+  envelopeTo_neq: string
+  envelopeTo_notin: [string!]
+  envelopeTo_notlike: string
+  evaluatedReason: string
+  evaluatedReason_geq: string
+  evaluatedReason_gt: string
+  evaluatedReason_in: [string!]
+  evaluatedReason_leq: string
+  evaluatedReason_like: string
+  evaluatedReason_lt: string
+  evaluatedReason_neq: string
+  evaluatedReason_notin: [string!]
+  evaluatedReason_notlike: string
+  headerFrom: string
+  headerFrom_geq: string
+  headerFrom_gt: string
+  headerFrom_in: [string!]
+  headerFrom_leq: string
+  headerFrom_like: string
+  headerFrom_lt: string
+  headerFrom_neq: string
+  headerFrom_notin: [string!]
+  headerFrom_notlike: string
+  orgName: string
+  orgName_geq: string
+  orgName_gt: string
+  orgName_in: [string!]
+  orgName_leq: string
+  orgName_like: string
+  orgName_lt: string
+  orgName_neq: string
+  orgName_notin: [string!]
+  orgName_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
+  sourceLocationName: string
+  sourceLocationName_geq: string
+  sourceLocationName_gt: string
+  sourceLocationName_in: [string!]
+  sourceLocationName_leq: string
+  sourceLocationName_like: string
+  sourceLocationName_lt: string
+  sourceLocationName_neq: string
+  sourceLocationName_notin: [string!]
+  sourceLocationName_notlike: string
+  sourceOrgName: string
+  sourceOrgName_geq: string
+  sourceOrgName_gt: string
+  sourceOrgName_in: [string!]
+  sourceOrgName_leq: string
+  sourceOrgName_like: string
+  sourceOrgName_lt: string
+  sourceOrgName_neq: string
+  sourceOrgName_notin: [string!]
+  sourceOrgName_notlike: string
+  sourceOrgSlug: string
+  sourceOrgSlug_geq: string
+  sourceOrgSlug_gt: string
+  sourceOrgSlug_in: [string!]
+  sourceOrgSlug_leq: string
+  sourceOrgSlug_like: string
+  sourceOrgSlug_lt: string
+  sourceOrgSlug_neq: string
+  sourceOrgSlug_notin: [string!]
+  sourceOrgSlug_notlike: string
+  sourcePTR: string
+  sourcePTR_geq: string
+  sourcePTR_gt: string
+  sourcePTR_in: [string!]
+  sourcePTR_leq: string
+  sourcePTR_like: string
+  sourcePTR_lt: string
+  sourcePTR_neq: string
+  sourcePTR_notin: [string!]
+  sourcePTR_notlike: string
+  spf: string
+  spfMFromDomain: string
+  spfMFromDomain_geq: string
+  spfMFromDomain_gt: string
+  spfMFromDomain_in: [string!]
+  spfMFromDomain_leq: string
+  spfMFromDomain_like: string
+  spfMFromDomain_lt: string
+  spfMFromDomain_neq: string
+  spfMFromDomain_notin: [string!]
+  spfMFromDomain_notlike: string
+  spf_geq: string
+  spf_gt: string
+  spf_in: [string!]
+  spf_leq: string
+  spf_like: string
+  spf_lt: string
+  spf_neq: string
+  spf_notin: [string!]
+  spf_notlike: string
+}
+
+enum ZoneDmarcReportsSourcesAdaptiveGroupsOrderBy {
+  # avg(dkimPass) ascending
+  avg_dkimPass_ASC
+  # avg(dkimPass) descending
+  avg_dkimPass_DESC
+  # avg(dmarc) ascending
+  avg_dmarc_ASC
+  # avg(dmarc) descending
+  avg_dmarc_DESC
+  # avg(spfPass) ascending
+  avg_spfPass_ASC
+  # avg(spfPass) descending
+  avg_spfPass_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeDay ascending
+  datetimeDay_ASC
+  # datetimeDay descending
+  datetimeDay_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeLast31Days ascending
+  datetimeLast31Days_ASC
+  # datetimeLast31Days descending
+  datetimeLast31Days_DESC
+  # datetimeMonth ascending
+  datetimeMonth_ASC
+  # datetimeMonth descending
+  datetimeMonth_DESC
+  # datetimeWeek ascending
+  datetimeWeek_ASC
+  # datetimeWeek descending
+  datetimeWeek_DESC
+  # disposition ascending
+  disposition_ASC
+  # disposition descending
+  disposition_DESC
+  # dkim ascending
+  dkim_ASC
+  # dkim descending
+  dkim_DESC
+  # domain ascending
+  domain_ASC
+  # domain descending
+  domain_DESC
+  # envelopeTo ascending
+  envelopeTo_ASC
+  # envelopeTo descending
+  envelopeTo_DESC
+  # evaluatedReason ascending
+  evaluatedReason_ASC
+  # evaluatedReason descending
+  evaluatedReason_DESC
+  # headerFrom ascending
+  headerFrom_ASC
+  # headerFrom descending
+  headerFrom_DESC
+  # orgName ascending
+  orgName_ASC
+  # orgName descending
+  orgName_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sourceLocationName ascending
+  sourceLocationName_ASC
+  # sourceLocationName descending
+  sourceLocationName_DESC
+  # sourceOrgName ascending
+  sourceOrgName_ASC
+  # sourceOrgName descending
+  sourceOrgName_DESC
+  # sourceOrgSlug ascending
+  sourceOrgSlug_ASC
+  # sourceOrgSlug descending
+  sourceOrgSlug_DESC
+  # sourcePTR ascending
+  sourcePTR_ASC
+  # sourcePTR descending
+  sourcePTR_DESC
+  # spfMFromDomain ascending
+  spfMFromDomain_ASC
+  # spfMFromDomain descending
+  spfMFromDomain_DESC
+  # spf ascending
+  spf_ASC
+  # spf descending
+  spf_DESC
+  # sum(totalMatchingMessages) ascending
+  sum_totalMatchingMessages_ASC
+  # sum(totalMatchingMessages) descending
+  sum_totalMatchingMessages_DESC
+  # uniq(ipCount) ascending
+  uniq_ipCount_ASC
+  # uniq(ipCount) descending
+  uniq_ipCount_DESC
+}
+
+type ZoneDmarcReportsSourcesAdaptiveGroupsSum {
+  # Total matching messages
+  totalMatchingMessages: uint64!
+}
+
+type ZoneDmarcReportsSourcesAdaptiveGroupsUniq {
+  # Number of distinct IPs
+  ipCount: uint64!
 }
 
 # Beta. Raw email routing logs with adaptive sampling
@@ -25537,6 +26034,8 @@ type ZoneFirewallEventsAdaptive {
   datetimeHour: Time!
   # The date and time the event occurred at the edge truncated to the minute
   datetimeMinute: Time!
+  # The description of the rule triggered by this request
+  description: string!
   # The airport code of the Cloudflare datacenter that served this request
   edgeColoName: string!
   # HTTP response status code returned to browser
@@ -25625,6 +26124,8 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   datetimeHour: Time!
   # The date and time the event occurred at the edge truncated to the minute
   datetimeMinute: Time!
+  # The description of the rule triggered by this request
+  description: string!
   # Unique identifier for HTTP Application
   httpApplication: string!
   # Version associated with HTTP Application
@@ -25891,6 +26392,16 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  description: string
+  description_geq: string
+  description_gt: string
+  description_in: [string!]
+  description_leq: string
+  description_like: string
+  description_lt: string
+  description_neq: string
+  description_notin: [string!]
+  description_notlike: string
   edgeColoName: string
   edgeColoName_geq: string
   edgeColoName_gt: string
@@ -26154,6 +26665,10 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # description ascending
+  description_ASC
+  # description descending
+  description_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -26487,6 +27002,16 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  description: string
+  description_geq: string
+  description_gt: string
+  description_in: [string!]
+  description_leq: string
+  description_like: string
+  description_lt: string
+  description_neq: string
+  description_notin: [string!]
+  description_notlike: string
   edgeColoName: string
   edgeColoName_geq: string
   edgeColoName_gt: string
@@ -26770,6 +27295,8 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time the event occurred at the edge truncated to the minute
   datetimeMinute: Time!
+  # The description of the rule triggered by this request
+  description: string!
   # The airport code of the Cloudflare datacenter that served this request
   edgeColoName: string!
   # HTTP response status code returned to browser
@@ -27062,6 +27589,16 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  description: string
+  description_geq: string
+  description_gt: string
+  description_in: [string!]
+  description_leq: string
+  description_like: string
+  description_lt: string
+  description_neq: string
+  description_notin: [string!]
+  description_notlike: string
   edgeColoName: string
   edgeColoName_geq: string
   edgeColoName_gt: string
@@ -27389,6 +27926,10 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # description ascending
+  description_ASC
+  # description descending
+  description_DESC
   # edgeColoName ascending
   edgeColoName_ASC
   # edgeColoName descending
@@ -27619,6 +28160,10 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # description ascending
+  description_ASC
+  # description descending
+  description_DESC
   # edgeColoName ascending
   edgeColoName_ASC
   # edgeColoName descending
@@ -32618,6 +33163,7 @@ type ZoneSettings {
   cacheReserveOperationsAdaptiveGroups: Settings!
   cacheReserveStorageAdaptiveGroups: Settings!
   dmarcReportsAdaptive: Settings!
+  dmarcReportsSourcesAdaptiveGroups: Settings!
   emailRoutingAdaptive: Settings!
   emailRoutingAdaptiveGroups: Settings!
   firewallEventsAdaptive: Settings!
