@@ -39,6 +39,7 @@ Account-level datasets:
   nelReportsAdaptiveGroups
 * pagesFunctionsInvocationsAdaptiveGroups
 * queueBacklogAdaptiveGroups
+* queueConsumerMetricsAdaptiveGroups
 * queueMessageOperationsAdaptiveGroups
 * r2OperationsAdaptiveGroups
 * r2StorageAdaptiveGroups
@@ -61,6 +62,7 @@ Account-level datasets:
 * zeroTrustPrivateNetworkDiscoveryGroups
 
 Zone-level datasets:
+* apiGatewayGraphqlQueryAnalyticsGroups
 * apiGatewayMatchedSessionIDsAdaptiveGroups
 * apiRequestSequencesGroups
 * cacheReserveOperationsAdaptiveGroups
@@ -87,6 +89,7 @@ Zone-level datasets:
   loadBalancingRequestsAdaptiveGroups
 * logpushHealthAdaptiveGroups
   nelReportsAdaptiveGroups
+  pageShieldReportsAdaptiveGroups
   synAvgPps1mGroups
   waitingRoomAnalyticsAdaptive
   waitingRoomAnalyticsAdaptiveGroups
@@ -113,8 +116,14 @@ scalar float32
 # Scalar type float64
 scalar float64
 
+# Scalar type int16
+scalar int16
+
 # Scalar type int64
 scalar int64
+
+# Scalar type int8
+scalar int8
 
 # Scalar type string
 scalar string
@@ -216,6 +225,8 @@ type account {
   pagesFunctionsInvocationsAdaptiveGroups(filter: AccountPagesFunctionsInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy!]): [AccountPagesFunctionsInvocationsAdaptiveGroups!]!
   # Beta. Queue backlog data with adaptive sampling. Queues that are not being written to, or read from, will not return data, even if they have a backlog.
   queueBacklogAdaptiveGroups(filter: AccountQueueBacklogAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueBacklogAdaptiveGroupsOrderBy!]): [AccountQueueBacklogAdaptiveGroups!]!
+  # Beta. Queue consumer metrics with adaptive sampling. Inactive queues will not return data.
+  queueConsumerMetricsAdaptiveGroups(filter: AccountQueueConsumerMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueConsumerMetricsAdaptiveGroupsOrderBy!]): [AccountQueueConsumerMetricsAdaptiveGroups!]!
   # Beta. Queue message operation data with adaptive sampling
   queueMessageOperationsAdaptiveGroups(filter: AccountQueueMessageOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueMessageOperationsAdaptiveGroupsOrderBy!]): [AccountQueueMessageOperationsAdaptiveGroups!]!
   # Beta. R2 operations with adaptive sampling
@@ -655,6 +666,8 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
   destinationAsnName: string!
   # Country where the destination IP of the packet is located (ISO 3166-1 alpha-2)
   destinationCountry: string!
+  # Device tag associated with the destination IP of the packet
+  destinationDeviceTag: string!
   # Latitude and longitude where the destination IP of the packet is located (Geohash encoding)
   destinationGeohash: string!
   # Value of the Destination Port header field in the TCP or UDP packet
@@ -741,6 +754,8 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
   sourceAsnName: string!
   # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
   sourceCountry: string!
+  # Device tag associated with the source IP of the packet
+  sourceDeviceTag: string!
   # Latitude and longitude where the source IP of the packet is located (Geohash encoding)
   sourceGeohash: string!
   # Value of the Source Port header field in the TCP or UDP packet
@@ -918,6 +933,16 @@ input AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   destinationCountry_neq: string
   destinationCountry_notin: [string!]
   destinationCountry_notlike: string
+  destinationDeviceTag: string
+  destinationDeviceTag_geq: string
+  destinationDeviceTag_gt: string
+  destinationDeviceTag_in: [string!]
+  destinationDeviceTag_leq: string
+  destinationDeviceTag_like: string
+  destinationDeviceTag_lt: string
+  destinationDeviceTag_neq: string
+  destinationDeviceTag_notin: [string!]
+  destinationDeviceTag_notlike: string
   destinationGeohash: string
   destinationGeohash_geq: string
   destinationGeohash_gt: string
@@ -1288,6 +1313,16 @@ input AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   sourceCountry_neq: string
   sourceCountry_notin: [string!]
   sourceCountry_notlike: string
+  sourceDeviceTag: string
+  sourceDeviceTag_geq: string
+  sourceDeviceTag_gt: string
+  sourceDeviceTag_in: [string!]
+  sourceDeviceTag_leq: string
+  sourceDeviceTag_like: string
+  sourceDeviceTag_lt: string
+  sourceDeviceTag_neq: string
+  sourceDeviceTag_notin: [string!]
+  sourceDeviceTag_notlike: string
   sourceGeohash: string
   sourceGeohash_geq: string
   sourceGeohash_gt: string
@@ -1567,6 +1602,10 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   destinationCountry_ASC
   # destinationCountry descending
   destinationCountry_DESC
+  # destinationDeviceTag ascending
+  destinationDeviceTag_ASC
+  # destinationDeviceTag descending
+  destinationDeviceTag_DESC
   # destinationGeohash ascending
   destinationGeohash_ASC
   # destinationGeohash descending
@@ -1739,6 +1778,10 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   sourceCountry_ASC
   # sourceCountry descending
   sourceCountry_DESC
+  # sourceDeviceTag ascending
+  sourceDeviceTag_ASC
+  # sourceDeviceTag descending
+  sourceDeviceTag_DESC
   # sourceGeohash ascending
   sourceGeohash_ASC
   # sourceGeohash descending
@@ -7876,6 +7919,8 @@ type AccountGatewayL4SessionsAdaptiveGroupsDimensions {
   email: string!
   # The SNI pulled from the session tls handshake, if present
   sni: string!
+  # Local LAN IP of the device. Only available when connected via a GRE/IPsec tunnel on-ramp
+  sourceInternalIp: string!
   # The source IP address for the session
   sourceIp: string!
   # The source port for the session
@@ -7971,6 +8016,16 @@ input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
   sni_neq: string
   sni_notin: [string!]
   sni_notlike: string
+  sourceInternalIp: string
+  sourceInternalIp_geq: string
+  sourceInternalIp_gt: string
+  sourceInternalIp_in: [string!]
+  sourceInternalIp_leq: string
+  sourceInternalIp_like: string
+  sourceInternalIp_lt: string
+  sourceInternalIp_neq: string
+  sourceInternalIp_notin: [string!]
+  sourceInternalIp_notlike: string
   sourceIp: string
   sourceIp_geq: string
   sourceIp_gt: string
@@ -8050,6 +8105,10 @@ enum AccountGatewayL4SessionsAdaptiveGroupsOrderBy {
   sni_ASC
   # sni descending
   sni_DESC
+  # sourceInternalIp ascending
+  sourceInternalIp_ASC
+  # sourceInternalIp descending
+  sourceInternalIp_DESC
   # sourceIp ascending
   sourceIp_ASC
   # sourceIp descending
@@ -8452,8 +8511,14 @@ type AccountGatewayL7RequestsAdaptiveGroupsDimensions {
   email: string!
   # The destination host for the request
   httpHost: string!
+  # HTTP status code gateway returned to the user. 0 if nothing was returned(e.g client disconnected)
+  httpStatusCode: float64!
   # Indicates whether this request was made through an isolated link
   isIsolated: uint16!
+  # Local LAN IP of the device. Only available when connected via a GRE/IPsec tunnel on-ramp
+  sourceInternalIp: string!
+  # Action taken when an untrusted origin certificate error occurs
+  untrustedCertificateAction: string!
   # The ID of the gateway user who made the request
   userId: string!
 }
@@ -8525,6 +8590,14 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   httpHost_neq: string
   httpHost_notin: [string!]
   httpHost_notlike: string
+  httpStatusCode: float64
+  httpStatusCode_geq: float64
+  httpStatusCode_gt: float64
+  httpStatusCode_in: [float64!]
+  httpStatusCode_leq: float64
+  httpStatusCode_lt: float64
+  httpStatusCode_neq: float64
+  httpStatusCode_notin: [float64!]
   isIsolated: uint16
   isIsolated_geq: uint16
   isIsolated_gt: uint16
@@ -8533,6 +8606,26 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   isIsolated_lt: uint16
   isIsolated_neq: uint16
   isIsolated_notin: [uint16!]
+  sourceInternalIp: string
+  sourceInternalIp_geq: string
+  sourceInternalIp_gt: string
+  sourceInternalIp_in: [string!]
+  sourceInternalIp_leq: string
+  sourceInternalIp_like: string
+  sourceInternalIp_lt: string
+  sourceInternalIp_neq: string
+  sourceInternalIp_notin: [string!]
+  sourceInternalIp_notlike: string
+  untrustedCertificateAction: string
+  untrustedCertificateAction_geq: string
+  untrustedCertificateAction_gt: string
+  untrustedCertificateAction_in: [string!]
+  untrustedCertificateAction_leq: string
+  untrustedCertificateAction_like: string
+  untrustedCertificateAction_lt: string
+  untrustedCertificateAction_neq: string
+  untrustedCertificateAction_notin: [string!]
+  untrustedCertificateAction_notlike: string
   userId: string
   userId_geq: string
   userId_gt: string
@@ -8578,10 +8671,22 @@ enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
   httpHost_ASC
   # httpHost descending
   httpHost_DESC
+  # httpStatusCode ascending
+  httpStatusCode_ASC
+  # httpStatusCode descending
+  httpStatusCode_DESC
   # isIsolated ascending
   isIsolated_ASC
   # isIsolated descending
   isIsolated_DESC
+  # sourceInternalIp ascending
+  sourceInternalIp_ASC
+  # sourceInternalIp descending
+  sourceInternalIp_DESC
+  # untrustedCertificateAction ascending
+  untrustedCertificateAction_ASC
+  # untrustedCertificateAction descending
+  untrustedCertificateAction_DESC
   # userId ascending
   userId_ASC
   # userId descending
@@ -13472,6 +13577,8 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions {
   destinationAsnName: string!
   # Country where the destination IP of the packet is located (ISO 3166-1 alpha-2)
   destinationCountry: string!
+  # Device tag associated with the destination IP of the packet
+  destinationDeviceTag: string!
   # Latitude and longitude where the destination IP of the packet is located (Geohash encoding)
   destinationGeohash: string!
   # Value of the Destination Port header field in the TCP or UDP packet
@@ -13560,6 +13667,8 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions {
   sourceAsnName: string!
   # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
   sourceCountry: string!
+  # Device tag associated with the source IP of the packet
+  sourceDeviceTag: string!
   # Latitude and longitude where the source IP of the packet is located (Geohash encoding)
   sourceGeohash: string!
   # Value of the Source Port header field in the TCP or UDP packet
@@ -13739,6 +13848,16 @@ input AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   destinationCountry_neq: string
   destinationCountry_notin: [string!]
   destinationCountry_notlike: string
+  destinationDeviceTag: string
+  destinationDeviceTag_geq: string
+  destinationDeviceTag_gt: string
+  destinationDeviceTag_in: [string!]
+  destinationDeviceTag_leq: string
+  destinationDeviceTag_like: string
+  destinationDeviceTag_lt: string
+  destinationDeviceTag_neq: string
+  destinationDeviceTag_notin: [string!]
+  destinationDeviceTag_notlike: string
   destinationGeohash: string
   destinationGeohash_geq: string
   destinationGeohash_gt: string
@@ -14119,6 +14238,16 @@ input AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   sourceCountry_neq: string
   sourceCountry_notin: [string!]
   sourceCountry_notlike: string
+  sourceDeviceTag: string
+  sourceDeviceTag_geq: string
+  sourceDeviceTag_gt: string
+  sourceDeviceTag_in: [string!]
+  sourceDeviceTag_leq: string
+  sourceDeviceTag_like: string
+  sourceDeviceTag_lt: string
+  sourceDeviceTag_neq: string
+  sourceDeviceTag_notin: [string!]
+  sourceDeviceTag_notlike: string
   sourceGeohash: string
   sourceGeohash_geq: string
   sourceGeohash_gt: string
@@ -14408,6 +14537,10 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   destinationCountry_ASC
   # destinationCountry descending
   destinationCountry_DESC
+  # destinationDeviceTag ascending
+  destinationDeviceTag_ASC
+  # destinationDeviceTag descending
+  destinationDeviceTag_DESC
   # destinationGeohash ascending
   destinationGeohash_ASC
   # destinationGeohash descending
@@ -14584,6 +14717,10 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   sourceCountry_ASC
   # sourceCountry descending
   sourceCountry_DESC
+  # sourceDeviceTag ascending
+  sourceDeviceTag_ASC
+  # sourceDeviceTag descending
+  sourceDeviceTag_DESC
   # sourceGeohash ascending
   sourceGeohash_ASC
   # sourceGeohash descending
@@ -17738,6 +17875,112 @@ enum AccountQueueBacklogAdaptiveGroupsOrderBy {
   queueId_DESC
 }
 
+# Beta. Queue consumer metrics with adaptive sampling. Inactive queues will not return data.
+type AccountQueueConsumerMetricsAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountQueueConsumerMetricsAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountQueueConsumerMetricsAdaptiveGroupsDimensions
+}
+
+type AccountQueueConsumerMetricsAdaptiveGroupsAvg {
+  # The average concurrency of the queue
+  concurrency: float64!
+  # The average value used for sample interval
+  sampleInterval: float64!
+}
+
+type AccountQueueConsumerMetricsAdaptiveGroupsDimensions {
+  # Consumer metric timestamp, truncated to start of a day
+  date: Date!
+  # Consumer metric timestamp
+  datetime: Time!
+  # Consumer metric timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Consumer metric timestamp, truncated to start of an minute
+  datetimeMinute: Time!
+  # The ID of the Queue
+  queueId: string!
+}
+
+input AccountQueueConsumerMetricsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountQueueConsumerMetricsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountQueueConsumerMetricsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  queueId: string
+  queueId_geq: string
+  queueId_gt: string
+  queueId_in: [string!]
+  queueId_leq: string
+  queueId_like: string
+  queueId_lt: string
+  queueId_neq: string
+  queueId_notin: [string!]
+  queueId_notlike: string
+}
+
+enum AccountQueueConsumerMetricsAdaptiveGroupsOrderBy {
+  # avg(concurrency) ascending
+  avg_concurrency_ASC
+  # avg(concurrency) descending
+  avg_concurrency_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # queueId ascending
+  queueId_ASC
+  # queueId descending
+  queueId_DESC
+}
+
 # Beta. Queue message operation data with adaptive sampling
 type AccountQueueMessageOperationsAdaptiveGroups {
   # The average value for a metric per dimension
@@ -20405,6 +20648,7 @@ type AccountSettings {
   nelReportsAdaptiveGroups: Settings!
   pagesFunctionsInvocationsAdaptiveGroups: Settings!
   queueBacklogAdaptiveGroups: Settings!
+  queueConsumerMetricsAdaptiveGroups: Settings!
   queueMessageOperationsAdaptiveGroups: Settings!
   r2OperationsAdaptiveGroups: Settings!
   r2StorageAdaptiveGroups: Settings!
@@ -24105,6 +24349,8 @@ type viewer {
 }
 
 type zone {
+  # GraphQL query attributes and trends
+  apiGatewayGraphqlQueryAnalyticsGroups(filter: ZoneApiGatewayGraphqlQueryAnalyticsGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneApiGatewayGraphqlQueryAnalyticsGroupsOrderBy!]): [ZoneApiGatewayGraphqlQueryAnalyticsGroups!]!
   # Beta. Aggregated count of Session Identifier matches
   apiGatewayMatchedSessionIDsAdaptiveGroups(filter: ZoneApiGatewayMatchedSessionIDsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneApiGatewayMatchedSessionIDsAdaptiveGroupsOrderBy!]): [ZoneApiGatewayMatchedSessionIDsAdaptiveGroups!]!
   # Sequences of API endpoint operations. Sequences are grouped by AuthID and currently ranked by correlation score. Correlation scores are estimated over a 24 hour window and are current to within 10 minutes
@@ -24159,6 +24405,8 @@ type zone {
   logpushHealthAdaptiveGroups(filter: ZoneLogpushHealthAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneLogpushHealthAdaptiveGroupsOrderBy!]): [ZoneLogpushHealthAdaptiveGroups!]!
   # Data to visualize network error logs
   nelReportsAdaptiveGroups(filter: ZoneNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneNelReportsAdaptiveGroupsOrderBy!]): [ZoneNelReportsAdaptiveGroups!]!
+  # Page Shield CSP reports
+  pageShieldReportsAdaptiveGroups(filter: ZonePageShieldReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZonePageShieldReportsAdaptiveGroupsOrderBy!]): [ZonePageShieldReportsAdaptiveGroups!]!
   settings: ZoneSettings
   # Minutely rollups of average packets per second sent in a SYN attack
   synAvgPps1mGroups(filter: ZoneSynAvgPps1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneSynAvgPps1mGroupsOrderBy!]): [ZoneSynAvgPps1mGroups!]!
@@ -24177,6 +24425,171 @@ type zone {
   # Zaraz Triggers Analytics (a trigger is a set of rules that can trigger a zaraz action)
   zarazTriggersAdaptiveGroups(filter: ZoneZarazTriggersAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazTriggersAdaptiveGroupsOrderBy!]): [ZoneZarazTriggersAdaptiveGroups!]!
   zoneTag: string!
+}
+
+# GraphQL query attributes and trends
+type ZoneApiGatewayGraphqlQueryAnalyticsGroups {
+  avg: ZoneApiGatewayGraphqlQueryAnalyticsGroupsAvg
+  # Number of events with GraphQL query attributes computed
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneApiGatewayGraphqlQueryAnalyticsGroupsDimensions
+}
+
+type ZoneApiGatewayGraphqlQueryAnalyticsGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type ZoneApiGatewayGraphqlQueryAnalyticsGroupsDimensions {
+  # Maximum depth level of a terminal (leaf) field in the query
+  apiGatewayGraphqlQueryDepth: int8!
+  # Number of terminal (leaf) fields in the query
+  apiGatewayGraphqlQuerySize: int16!
+  date: Date!
+  datetime: Time!
+  datetimeDay: Time!
+  datetimeFifteenMinutes: Time!
+  datetimeFiveMinutes: Time!
+  datetimeHalfOfHour: Time!
+  datetimeHour: Time!
+  datetimeMinute: Time!
+}
+
+input ZoneApiGatewayGraphqlQueryAnalyticsGroupsFilter_InputObject {
+  AND: [ZoneApiGatewayGraphqlQueryAnalyticsGroupsFilter_InputObject!]
+  OR: [ZoneApiGatewayGraphqlQueryAnalyticsGroupsFilter_InputObject!]
+  apiGatewayGraphqlQueryDepth: int8
+  apiGatewayGraphqlQueryDepth_geq: int8
+  apiGatewayGraphqlQueryDepth_gt: int8
+  apiGatewayGraphqlQueryDepth_in: [int8!]
+  apiGatewayGraphqlQueryDepth_leq: int8
+  apiGatewayGraphqlQueryDepth_lt: int8
+  apiGatewayGraphqlQueryDepth_neq: int8
+  apiGatewayGraphqlQueryDepth_notin: [int8!]
+  apiGatewayGraphqlQuerySize: int16
+  apiGatewayGraphqlQuerySize_geq: int16
+  apiGatewayGraphqlQuerySize_gt: int16
+  apiGatewayGraphqlQuerySize_in: [int16!]
+  apiGatewayGraphqlQuerySize_leq: int16
+  apiGatewayGraphqlQuerySize_lt: int16
+  apiGatewayGraphqlQuerySize_neq: int16
+  apiGatewayGraphqlQuerySize_notin: [int16!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeDay: Time
+  datetimeDay_geq: Time
+  datetimeDay_gt: Time
+  datetimeDay_in: [Time!]
+  datetimeDay_leq: Time
+  datetimeDay_lt: Time
+  datetimeDay_neq: Time
+  datetimeDay_notin: [Time!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHalfOfHour: Time
+  datetimeHalfOfHour_geq: Time
+  datetimeHalfOfHour_gt: Time
+  datetimeHalfOfHour_in: [Time!]
+  datetimeHalfOfHour_leq: Time
+  datetimeHalfOfHour_lt: Time
+  datetimeHalfOfHour_neq: Time
+  datetimeHalfOfHour_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+}
+
+enum ZoneApiGatewayGraphqlQueryAnalyticsGroupsOrderBy {
+  # apiGatewayGraphqlQueryDepth ascending
+  apiGatewayGraphqlQueryDepth_ASC
+  # apiGatewayGraphqlQueryDepth descending
+  apiGatewayGraphqlQueryDepth_DESC
+  # apiGatewayGraphqlQuerySize ascending
+  apiGatewayGraphqlQuerySize_ASC
+  # apiGatewayGraphqlQuerySize descending
+  apiGatewayGraphqlQuerySize_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeDay ascending
+  datetimeDay_ASC
+  # datetimeDay descending
+  datetimeDay_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHalfOfHour ascending
+  datetimeHalfOfHour_ASC
+  # datetimeHalfOfHour descending
+  datetimeHalfOfHour_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
 }
 
 # Beta. Aggregated count of Session Identifier matches
@@ -33156,8 +33569,235 @@ enum ZoneNelReportsAdaptiveGroupsOrderBy {
   type_DESC
 }
 
+# Page Shield CSP reports
+type ZonePageShieldReportsAdaptiveGroups {
+  avg: ZonePageShieldReportsAdaptiveGroupsAvg
+  # Number of Page Shield CSP reports
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZonePageShieldReportsAdaptiveGroupsDimensions
+}
+
+type ZonePageShieldReportsAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type ZonePageShieldReportsAdaptiveGroupsDimensions {
+  # policy action, log | allow
+  action: string!
+  date: Date!
+  # The date and time the event occurred at the edge
+  datetime: Time!
+  # Report datetime from edge, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Report datetime from edge, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # Report datetime from edge, truncated to multiple of 30 minutes
+  datetimeHalfOfHour: Time!
+  # Report datetime from edge, truncated to the hour
+  datetimeHour: Time!
+  # Report datetime from edge, truncated to the minute
+  datetimeMinute: Time!
+  # hostname of the zone
+  host: string!
+  # page on which the resource was found
+  pageURL: string!
+  # resource type e.g script
+  resourceType: string!
+  # URL of the CSP reported resource
+  url: string!
+  # hostname of the resource URL
+  urlHost: string!
+}
+
+input ZonePageShieldReportsAdaptiveGroupsFilter_InputObject {
+  AND: [ZonePageShieldReportsAdaptiveGroupsFilter_InputObject!]
+  OR: [ZonePageShieldReportsAdaptiveGroupsFilter_InputObject!]
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHalfOfHour: Time
+  datetimeHalfOfHour_geq: Time
+  datetimeHalfOfHour_gt: Time
+  datetimeHalfOfHour_in: [Time!]
+  datetimeHalfOfHour_leq: Time
+  datetimeHalfOfHour_lt: Time
+  datetimeHalfOfHour_neq: Time
+  datetimeHalfOfHour_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  host: string
+  host_geq: string
+  host_gt: string
+  host_in: [string!]
+  host_leq: string
+  host_like: string
+  host_lt: string
+  host_neq: string
+  host_notin: [string!]
+  host_notlike: string
+  pageURL: string
+  pageURL_geq: string
+  pageURL_gt: string
+  pageURL_in: [string!]
+  pageURL_leq: string
+  pageURL_like: string
+  pageURL_lt: string
+  pageURL_neq: string
+  pageURL_notin: [string!]
+  pageURL_notlike: string
+  resourceType: string
+  resourceType_geq: string
+  resourceType_gt: string
+  resourceType_in: [string!]
+  resourceType_leq: string
+  resourceType_like: string
+  resourceType_lt: string
+  resourceType_neq: string
+  resourceType_notin: [string!]
+  resourceType_notlike: string
+  url: string
+  urlHost: string
+  urlHost_geq: string
+  urlHost_gt: string
+  urlHost_in: [string!]
+  urlHost_leq: string
+  urlHost_like: string
+  urlHost_lt: string
+  urlHost_neq: string
+  urlHost_notin: [string!]
+  urlHost_notlike: string
+  url_geq: string
+  url_gt: string
+  url_in: [string!]
+  url_leq: string
+  url_like: string
+  url_lt: string
+  url_neq: string
+  url_notin: [string!]
+  url_notlike: string
+}
+
+enum ZonePageShieldReportsAdaptiveGroupsOrderBy {
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHalfOfHour ascending
+  datetimeHalfOfHour_ASC
+  # datetimeHalfOfHour descending
+  datetimeHalfOfHour_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # host ascending
+  host_ASC
+  # host descending
+  host_DESC
+  # pageURL ascending
+  pageURL_ASC
+  # pageURL descending
+  pageURL_DESC
+  # resourceType ascending
+  resourceType_ASC
+  # resourceType descending
+  resourceType_DESC
+  # urlHost ascending
+  urlHost_ASC
+  # urlHost descending
+  urlHost_DESC
+  # url ascending
+  url_ASC
+  # url descending
+  url_DESC
+}
+
 # Access and limitations for a zone
 type ZoneSettings {
+  apiGatewayGraphqlQueryAnalyticsGroups: Settings!
   apiGatewayMatchedSessionIDsAdaptiveGroups: Settings!
   apiRequestSequencesGroups: Settings!
   cacheReserveOperationsAdaptiveGroups: Settings!
@@ -33184,6 +33824,7 @@ type ZoneSettings {
   loadBalancingRequestsAdaptiveGroups: Settings!
   logpushHealthAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
+  pageShieldReportsAdaptiveGroups: Settings!
   synAvgPps1mGroups: Settings!
   waitingRoomAnalyticsAdaptive: Settings!
   waitingRoomAnalyticsAdaptiveGroups: Settings!
