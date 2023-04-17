@@ -17679,9 +17679,9 @@
 <br />
 <span class="k">type</span> <a id="AccountQueueBacklogAdaptiveGroupsAvg" href="#AccountQueueBacklogAdaptiveGroupsAvg">AccountQueueBacklogAdaptiveGroupsAvg</a> {<br />
 &nbsp;&nbsp;<span class="c"># The average size of the backlog in bytes for sample interval</span><br />
-&nbsp;&nbsp;bytes: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;bytes: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># The average number of messages in the backlog for sample interval</span><br />
-&nbsp;&nbsp;messages: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;messages: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># The average value used for sample interval</span><br />
 &nbsp;&nbsp;sampleInterval: <a href="#float64">float64!</a><br />
 }<br />
@@ -17903,7 +17903,7 @@
 <br />
 <span class="k">type</span> <a id="AccountQueueMessageOperationsAdaptiveGroupsAvg" href="#AccountQueueMessageOperationsAdaptiveGroupsAvg">AccountQueueMessageOperationsAdaptiveGroupsAvg</a> {<br />
 &nbsp;&nbsp;<span class="c"># The average time in milliseconds between when the message was written to the queue and the current operation over the sample interval. Will always be 0 for WriteMessage operations.</span><br />
-&nbsp;&nbsp;lagTime: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;lagTime: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># The average number of retries per message operation. A retry occurs after an unsucessful delivery, if the queue is configured to retry failed attempts. Only applicable to ReadMessage and DeleteMessage operations. Will always be 0 for WriteMessage operations.</span><br />
 &nbsp;&nbsp;retryCount: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># The average value used for sample interval</span><br />
@@ -18060,9 +18060,9 @@
 <br />
 <span class="k">type</span> <a id="AccountQueueMessageOperationsAdaptiveGroupsSum" href="#AccountQueueMessageOperationsAdaptiveGroupsSum">AccountQueueMessageOperationsAdaptiveGroupsSum</a> {<br />
 &nbsp;&nbsp;<span class="c"># Number of Billable Operations (some message operations count as multiple billable operations)</span><br />
-&nbsp;&nbsp;billableOperations: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;billableOperations: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Total size (in bytes) of message operations</span><br />
-&nbsp;&nbsp;bytes: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;bytes: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="c"># Beta. R2 operations with adaptive sampling</span><br />

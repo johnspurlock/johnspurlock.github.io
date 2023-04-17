@@ -17773,9 +17773,9 @@ type AccountQueueBacklogAdaptiveGroups {
 
 type AccountQueueBacklogAdaptiveGroupsAvg {
   # The average size of the backlog in bytes for sample interval
-  bytes: uint32!
+  bytes: uint64!
   # The average number of messages in the backlog for sample interval
-  messages: uint32!
+  messages: uint64!
   # The average value used for sample interval
   sampleInterval: float64!
 }
@@ -17997,7 +17997,7 @@ type AccountQueueMessageOperationsAdaptiveGroups {
 
 type AccountQueueMessageOperationsAdaptiveGroupsAvg {
   # The average time in milliseconds between when the message was written to the queue and the current operation over the sample interval. Will always be 0 for WriteMessage operations.
-  lagTime: uint32!
+  lagTime: uint64!
   # The average number of retries per message operation. A retry occurs after an unsucessful delivery, if the queue is configured to retry failed attempts. Only applicable to ReadMessage and DeleteMessage operations. Will always be 0 for WriteMessage operations.
   retryCount: uint32!
   # The average value used for sample interval
@@ -18154,9 +18154,9 @@ enum AccountQueueMessageOperationsAdaptiveGroupsOrderBy {
 
 type AccountQueueMessageOperationsAdaptiveGroupsSum {
   # Number of Billable Operations (some message operations count as multiple billable operations)
-  billableOperations: uint32!
+  billableOperations: uint64!
   # Total size (in bytes) of message operations
-  bytes: uint32!
+  bytes: uint64!
 }
 
 # Beta. R2 operations with adaptive sampling
