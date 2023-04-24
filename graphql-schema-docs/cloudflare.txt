@@ -33603,6 +33603,8 @@ type ZonePageShieldReportsAdaptiveGroupsDimensions {
   host: string!
   # page on which the resource was found
   pageURL: string!
+  # The ID of the Policy
+  policyID: string!
   # resource type e.g script
   resourceType: string!
   # URL of the CSP reported resource
@@ -33700,6 +33702,16 @@ input ZonePageShieldReportsAdaptiveGroupsFilter_InputObject {
   pageURL_neq: string
   pageURL_notin: [string!]
   pageURL_notlike: string
+  policyID: string
+  policyID_geq: string
+  policyID_gt: string
+  policyID_in: [string!]
+  policyID_leq: string
+  policyID_like: string
+  policyID_lt: string
+  policyID_neq: string
+  policyID_notin: [string!]
+  policyID_notlike: string
   resourceType: string
   resourceType_geq: string
   resourceType_gt: string
@@ -33781,6 +33793,10 @@ enum ZonePageShieldReportsAdaptiveGroupsOrderBy {
   pageURL_ASC
   # pageURL descending
   pageURL_DESC
+  # policyID ascending
+  policyID_ASC
+  # policyID descending
+  policyID_DESC
   # resourceType ascending
   resourceType_ASC
   # resourceType descending
