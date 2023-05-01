@@ -59,6 +59,7 @@ Account-level datasets:
 * workersInvocationsAdaptive
 * workersInvocationsScheduled
 * workersSubrequestsAdaptiveGroups
+* zarazTriggersAdaptiveGroups
 * zeroTrustPrivateNetworkDiscoveryGroups
 
 Zone-level datasets:
@@ -66,6 +67,7 @@ Zone-level datasets:
 * apiGatewayMatchedSessionIDsAdaptiveGroups
 * apiRequestSequencesGroups
 * cacheReserveOperationsAdaptiveGroups
+  cacheReserveRequestsAdaptiveGroups
 * cacheReserveStorageAdaptiveGroups
 * dmarcReportsAdaptive
 * dmarcReportsSourcesAdaptiveGroups
@@ -266,6 +268,8 @@ type account {
   workersInvocationsScheduled(filter: AccountWorkersInvocationsScheduledFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersInvocationsScheduledOrderBy!]): [AccountWorkersInvocationsScheduled!]!
   # Beta. Workers subrequests with adaptive sampling
   workersSubrequestsAdaptiveGroups(filter: AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersSubrequestsAdaptiveGroupsOrderBy!]): [AccountWorkersSubrequestsAdaptiveGroups!]!
+  # Zaraz Triggers Analytics (a trigger is a set of rules that can trigger a zaraz action)
+  zarazTriggersAdaptiveGroups(filter: AccountZarazTriggersAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountZarazTriggersAdaptiveGroupsOrderBy!]): [AccountZarazTriggersAdaptiveGroups!]!
   # Beta - Unique origins, applications, and users discovered for Zero Trust private networks
   zeroTrustPrivateNetworkDiscoveryGroups(filter: AccountZeroTrustPrivateNetworkDiscoveryGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountZeroTrustPrivateNetworkDiscoveryGroupsOrderBy!]): [AccountZeroTrustPrivateNetworkDiscoveryGroups!]!
   zones(filter: ZoneFilter_InputObject, limit: uint64): [zone!]!
@@ -9589,6 +9593,8 @@ type AccountHttpRequestsAdaptive {
   botScoreBucketBy10: uint8!
   # Name of the source detection which generated the bot management score.
   botScoreSrcName: string!
+  # Used Cache Reserve to serve the response
+  cacheReserveUsed: uint8!
   # Cache status
   cacheStatus: string!
   # The ASN of the visitor as string
@@ -9729,6 +9735,14 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   botScore_lt: uint8
   botScore_neq: uint8
   botScore_notin: bytes
+  cacheReserveUsed: uint8
+  cacheReserveUsed_geq: uint8
+  cacheReserveUsed_gt: uint8
+  cacheReserveUsed_in: bytes
+  cacheReserveUsed_leq: uint8
+  cacheReserveUsed_lt: uint8
+  cacheReserveUsed_neq: uint8
+  cacheReserveUsed_notin: bytes
   cacheStatus: string
   cacheStatus_geq: string
   cacheStatus_gt: string
@@ -10208,6 +10222,8 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   botScoreBucketBy10: uint8!
   # Name of the source detection which generated the bot management score.
   botScoreSrcName: string!
+  # Used Cache Reserve to serve the response
+  cacheReserveUsed: uint8!
   cacheStatus: string!
   # The ASN of the visitor as string
   clientASNDescription: string!
@@ -10345,6 +10361,14 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   botScore_lt: uint8
   botScore_neq: uint8
   botScore_notin: bytes
+  cacheReserveUsed: uint8
+  cacheReserveUsed_geq: uint8
+  cacheReserveUsed_gt: uint8
+  cacheReserveUsed_in: bytes
+  cacheReserveUsed_leq: uint8
+  cacheReserveUsed_lt: uint8
+  cacheReserveUsed_neq: uint8
+  cacheReserveUsed_notin: bytes
   cacheStatus: string
   cacheStatus_geq: string
   cacheStatus_gt: string
@@ -10830,6 +10854,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   botScore_ASC
   # botScore descending
   botScore_DESC
+  # cacheReserveUsed ascending
+  cacheReserveUsed_ASC
+  # cacheReserveUsed descending
+  cacheReserveUsed_DESC
   # cacheStatus ascending
   cacheStatus_ASC
   # cacheStatus descending
@@ -11080,6 +11108,10 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   botScore_ASC
   # botScore descending
   botScore_DESC
+  # cacheReserveUsed ascending
+  cacheReserveUsed_ASC
+  # cacheReserveUsed descending
+  cacheReserveUsed_DESC
   # cacheStatus ascending
   cacheStatus_ASC
   # cacheStatus descending
@@ -16216,6 +16248,10 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   verdict_ASC
   # verdict descending
   verdict_DESC
+  # visibility ascending
+  visibility_ASC
+  # visibility descending
+  visibility_DESC
 }
 
 type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsSum {
@@ -20668,6 +20704,7 @@ type AccountSettings {
   workersInvocationsAdaptive: Settings!
   workersInvocationsScheduled: Settings!
   workersSubrequestsAdaptiveGroups: Settings!
+  zarazTriggersAdaptiveGroups: Settings!
   zeroTrustPrivateNetworkDiscoveryGroups: Settings!
 }
 
@@ -24108,6 +24145,115 @@ type AccountWorkersSubrequestsAdaptiveGroupsSum {
   subrequests: uint64!
 }
 
+# Zaraz Triggers Analytics (a trigger is a set of rules that can trigger a zaraz action)
+type AccountZarazTriggersAdaptiveGroups {
+  # Number of processed Zaraz Triggers
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountZarazTriggersAdaptiveGroupsDimensions
+}
+
+type AccountZarazTriggersAdaptiveGroupsDimensions {
+  # The date when trigger was triggerd
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Trigger Name
+  triggerName: string!
+}
+
+input AccountZarazTriggersAdaptiveGroupsFilter_InputObject {
+  AND: [AccountZarazTriggersAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountZarazTriggersAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  triggerName: string
+  triggerName_geq: string
+  triggerName_gt: string
+  triggerName_in: [string!]
+  triggerName_leq: string
+  triggerName_like: string
+  triggerName_lt: string
+  triggerName_neq: string
+  triggerName_notin: [string!]
+  triggerName_notlike: string
+}
+
+enum AccountZarazTriggersAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # triggerName ascending
+  triggerName_ASC
+  # triggerName descending
+  triggerName_DESC
+}
+
 # Beta - Unique origins, applications, and users discovered for Zero Trust private networks
 type AccountZeroTrustPrivateNetworkDiscoveryGroups {
   # Sum of network access during the select range
@@ -24357,6 +24503,8 @@ type zone {
   apiRequestSequencesGroups(filter: ZoneApiRequestSequencesGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneApiRequestSequencesGroupsOrderBy!]): [ZoneApiRequestSequencesGroups!]!
   # Beta. Cache Reserve operations with adaptive sampling
   cacheReserveOperationsAdaptiveGroups(filter: ZoneCacheReserveOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneCacheReserveOperationsAdaptiveGroupsOrderBy!]): [ZoneCacheReserveOperationsAdaptiveGroups!]!
+  # Cache Reserve HTTP requests data with adaptive sampling
+  cacheReserveRequestsAdaptiveGroups(filter: ZoneCacheReserveRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneCacheReserveRequestsAdaptiveGroupsOrderBy!]): [ZoneCacheReserveRequestsAdaptiveGroups!]!
   # Beta. Cache Reserve storage with adaptive sampling
   cacheReserveStorageAdaptiveGroups(filter: ZoneCacheReserveStorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneCacheReserveStorageAdaptiveGroupsOrderBy!]): [ZoneCacheReserveStorageAdaptiveGroups!]!
   # Dmarc report records with adaptive sampling
@@ -24410,9 +24558,9 @@ type zone {
   settings: ZoneSettings
   # Minutely rollups of average packets per second sent in a SYN attack
   synAvgPps1mGroups(filter: ZoneSynAvgPps1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneSynAvgPps1mGroupsOrderBy!]): [ZoneSynAvgPps1mGroups!]!
-  # Beta. Raw waiting room analytics logs
+  # Raw Waiting Room analytics logs
   waitingRoomAnalyticsAdaptive(filter: ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneWaitingRoomAnalyticsAdaptiveOrderBy!]): [ZoneWaitingRoomAnalyticsAdaptive!]!
-  # Beta. Aggregated waiting room analytics logs with adaptive sampling
+  # Aggregated Waiting Room analytics logs with adaptive sampling
   waitingRoomAnalyticsAdaptiveGroups(filter: ZoneWaitingRoomAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy!]): [ZoneWaitingRoomAnalyticsAdaptiveGroups!]!
   # Workers invocations with adaptive sampling
   workersZoneInvocationsAdaptiveGroups(filter: ZoneWorkersZoneInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneWorkersZoneInvocationsAdaptiveGroupsOrderBy!]): [ZoneWorkersZoneInvocationsAdaptiveGroups!]!
@@ -24889,6 +25037,10 @@ type ZoneCacheReserveOperationsAdaptiveGroupsDimensions {
   date: Date!
   # Request timestamp
   datetime: Time!
+  # Request timestamp, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Request timestamp, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
   # Request timestamp, truncated to start of an hour
   datetimeHour: Time!
   # Request timestamp, truncated to start of an minute
@@ -24929,6 +25081,22 @@ input ZoneCacheReserveOperationsAdaptiveGroupsFilter_InputObject {
   date_neq: Date
   date_notin: [Date!]
   datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
   datetimeHour: Time
   datetimeHour_geq: Time
   datetimeHour_gt: Time
@@ -24977,6 +25145,14 @@ enum ZoneCacheReserveOperationsAdaptiveGroupsOrderBy {
   date_ASC
   # date descending
   date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
   # datetimeHour ascending
   datetimeHour_ASC
   # datetimeHour descending
@@ -25004,6 +25180,182 @@ type ZoneCacheReserveOperationsAdaptiveGroupsSum {
   requests: uint64!
 }
 
+# Cache Reserve HTTP requests data with adaptive sampling
+type ZoneCacheReserveRequestsAdaptiveGroups {
+  # The average value used for sample interval
+  avg: ZoneCacheReserveRequestsAdaptiveGroupsAvg
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneCacheReserveRequestsAdaptiveGroupsDimensions
+  # Sum of bytes returned to client
+  sum: ZoneCacheReserveRequestsAdaptiveGroupsSum
+}
+
+type ZoneCacheReserveRequestsAdaptiveGroupsAvg {
+  sampleInterval: float64!
+}
+
+type ZoneCacheReserveRequestsAdaptiveGroupsDimensions {
+  # Cache status
+  cacheStatus: string!
+  # The date the event occurred at the edge
+  date: Date!
+  # The date and time the event occurred at the edge
+  datetime: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the event occurred at the edge truncated to hours
+  datetimeHour: Time!
+  # The date and time the event occurred at the edge truncated to the minute
+  datetimeMinute: Time!
+  # Content type returned to client
+  edgeResponseContentTypeName: string!
+  # HTTP response status code returned to browser
+  edgeResponseStatus: uint16!
+}
+
+input ZoneCacheReserveRequestsAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneCacheReserveRequestsAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneCacheReserveRequestsAdaptiveGroupsFilter_InputObject!]
+  cacheStatus: string
+  cacheStatus_geq: string
+  cacheStatus_gt: string
+  cacheStatus_in: [string!]
+  cacheStatus_leq: string
+  cacheStatus_like: string
+  cacheStatus_lt: string
+  cacheStatus_neq: string
+  cacheStatus_notin: [string!]
+  cacheStatus_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  edgeResponseContentTypeName: string
+  edgeResponseContentTypeName_geq: string
+  edgeResponseContentTypeName_gt: string
+  edgeResponseContentTypeName_in: [string!]
+  edgeResponseContentTypeName_leq: string
+  edgeResponseContentTypeName_like: string
+  edgeResponseContentTypeName_lt: string
+  edgeResponseContentTypeName_neq: string
+  edgeResponseContentTypeName_notin: [string!]
+  edgeResponseContentTypeName_notlike: string
+  edgeResponseStatus: uint16
+  edgeResponseStatus_geq: uint16
+  edgeResponseStatus_gt: uint16
+  edgeResponseStatus_in: [uint16!]
+  edgeResponseStatus_leq: uint16
+  edgeResponseStatus_lt: uint16
+  edgeResponseStatus_neq: uint16
+  edgeResponseStatus_notin: [uint16!]
+}
+
+enum ZoneCacheReserveRequestsAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # cacheReserveUsed ascending
+  cacheReserveUsed_ASC
+  # cacheReserveUsed descending
+  cacheReserveUsed_DESC
+  # cacheStatus ascending
+  cacheStatus_ASC
+  # cacheStatus descending
+  cacheStatus_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # edgeResponseContentTypeName ascending
+  edgeResponseContentTypeName_ASC
+  # edgeResponseContentTypeName descending
+  edgeResponseContentTypeName_DESC
+  # edgeResponseStatus ascending
+  edgeResponseStatus_ASC
+  # edgeResponseStatus descending
+  edgeResponseStatus_DESC
+  # sum(edgeResponseBytes) ascending
+  sum_edgeResponseBytes_ASC
+  # sum(edgeResponseBytes) descending
+  sum_edgeResponseBytes_DESC
+}
+
+type ZoneCacheReserveRequestsAdaptiveGroupsSum {
+  edgeResponseBytes: uint64!
+}
+
 # Beta. Cache Reserve storage with adaptive sampling
 type ZoneCacheReserveStorageAdaptiveGroups {
   # List of dimensions to group by
@@ -25021,6 +25373,10 @@ type ZoneCacheReserveStorageAdaptiveGroupsDimensions {
   date: Date!
   # Storage sample timestamp
   datetime: Time!
+  # Storage sample timestamp, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Storage sample timestamp, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
   # Storage sample timestamp, truncated to start of an hour
   datetimeHour: Time!
   # Storage sample timestamp, truncated to start of an minute
@@ -25059,6 +25415,22 @@ input ZoneCacheReserveStorageAdaptiveGroupsFilter_InputObject {
   date_neq: Date
   date_notin: [Date!]
   datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
   datetimeHour: Time
   datetimeHour_geq: Time
   datetimeHour_gt: Time
@@ -25102,6 +25474,14 @@ enum ZoneCacheReserveStorageAdaptiveGroupsOrderBy {
   date_ASC
   # date descending
   date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
   # datetimeHour ascending
   datetimeHour_ASC
   # datetimeHour descending
@@ -30223,6 +30603,8 @@ type ZoneHttpRequestsAdaptive {
   botScoreBucketBy10: uint8!
   # Name of the source detection which generated the bot management score.
   botScoreSrcName: string!
+  # Used Cache Reserve to serve the response
+  cacheReserveUsed: uint8!
   # Cache status
   cacheStatus: string!
   # The ASN of the visitor as string
@@ -30361,6 +30743,14 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   botScore_lt: uint8
   botScore_neq: uint8
   botScore_notin: bytes
+  cacheReserveUsed: uint8
+  cacheReserveUsed_geq: uint8
+  cacheReserveUsed_gt: uint8
+  cacheReserveUsed_in: bytes
+  cacheReserveUsed_leq: uint8
+  cacheReserveUsed_lt: uint8
+  cacheReserveUsed_neq: uint8
+  cacheReserveUsed_notin: bytes
   cacheStatus: string
   cacheStatus_geq: string
   cacheStatus_gt: string
@@ -30830,6 +31220,8 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   botScoreBucketBy10: uint8!
   # Name of the source detection which generated the bot management score.
   botScoreSrcName: string!
+  # Used Cache Reserve to serve the response
+  cacheReserveUsed: uint8!
   cacheStatus: string!
   # The ASN of the visitor as string
   clientASNDescription: string!
@@ -30965,6 +31357,14 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   botScore_lt: uint8
   botScore_neq: uint8
   botScore_notin: bytes
+  cacheReserveUsed: uint8
+  cacheReserveUsed_geq: uint8
+  cacheReserveUsed_gt: uint8
+  cacheReserveUsed_in: bytes
+  cacheReserveUsed_leq: uint8
+  cacheReserveUsed_lt: uint8
+  cacheReserveUsed_neq: uint8
+  cacheReserveUsed_notin: bytes
   cacheStatus: string
   cacheStatus_geq: string
   cacheStatus_gt: string
@@ -31440,6 +31840,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   botScore_ASC
   # botScore descending
   botScore_DESC
+  # cacheReserveUsed ascending
+  cacheReserveUsed_ASC
+  # cacheReserveUsed descending
+  cacheReserveUsed_DESC
   # cacheStatus ascending
   cacheStatus_ASC
   # cacheStatus descending
@@ -31686,6 +32090,10 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   botScore_ASC
   # botScore descending
   botScore_DESC
+  # cacheReserveUsed ascending
+  cacheReserveUsed_ASC
+  # cacheReserveUsed descending
+  cacheReserveUsed_DESC
   # cacheStatus ascending
   cacheStatus_ASC
   # cacheStatus descending
@@ -33817,6 +34225,7 @@ type ZoneSettings {
   apiGatewayMatchedSessionIDsAdaptiveGroups: Settings!
   apiRequestSequencesGroups: Settings!
   cacheReserveOperationsAdaptiveGroups: Settings!
+  cacheReserveRequestsAdaptiveGroups: Settings!
   cacheReserveStorageAdaptiveGroups: Settings!
   dmarcReportsAdaptive: Settings!
   dmarcReportsSourcesAdaptiveGroups: Settings!
@@ -33969,7 +34378,7 @@ type ZoneSynAvgPps1mGroupsSum {
   avgPpsPerMinute: uint64!
 }
 
-# Beta. Raw waiting room analytics logs
+# Raw Waiting Room analytics logs
 type ZoneWaitingRoomAnalyticsAdaptive {
   # The date and time of the state of analytics for the waiting room
   datetime: Time!
@@ -34252,7 +34661,7 @@ input ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject {
   waitingRoomName_notlike: string
 }
 
-# Beta. Aggregated waiting room analytics logs with adaptive sampling
+# Aggregated Waiting Room analytics logs with adaptive sampling
 type ZoneWaitingRoomAnalyticsAdaptiveGroups {
   # Beta. The avg of values for a metric per dimension
   avg: ZoneWaitingRoomAnalyticsAdaptiveGroupsAvg
@@ -34264,7 +34673,7 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroups {
   max: ZoneWaitingRoomAnalyticsAdaptiveGroupsMax
   # Beta. The minimum value for a metric per dimenstion
   min: ZoneWaitingRoomAnalyticsAdaptiveGroupsMin
-  # The sum for a metric per dimension
+  # The sum for a metric per dimension. Use for shorter queries since data gets sampled after 7 days.
   sum: ZoneWaitingRoomAnalyticsAdaptiveGroupsSum
 }
 
@@ -34434,13 +34843,13 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroupsMin {
   maxEstimatedTimeMinutes: int64!
   # The minimum value of the actual new users per minute. A negative number means no data
   newUsersPerMinute: int64!
-  # The minimum value of the configured new users per minute. A negative number means no data
+  # The minimum value of the configured new users per minute. A negative number means either Waiting Room is in passthrough or no data
   newUsersPerMinuteConfig: int64!
   # The minimum value of the configured session duration configuration. A negative number means no data
   sessionDuration: int64!
   # The minimum value of the actual total active users. A negative number means no data
   totalActiveUsers: int64!
-  # The minimum value of the configured total active users. A negative number means no data
+  # The minimum value of the configured total active users. A negative number means either Waiting Room is in passthrough or no data
   totalActiveUsersConfig: int64!
   # The minimum value of total number of queued users. A negative number means no data
   totalQueuedUsers: int64!
