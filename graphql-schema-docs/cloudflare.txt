@@ -55,6 +55,7 @@ Account-level datasets:
 * videoPlaybackEventsAdaptiveGroups
 * videoQualityEventsAdaptiveGroups
 * warpDeviceAdaptiveGroups
+* workerPlacementAdaptiveGroups
 * workersAnalyticsEngineAdaptiveGroups
 * workersInvocationsAdaptive
 * workersInvocationsScheduled
@@ -260,6 +261,8 @@ type account {
   videoQualityEventsAdaptiveGroups(filter: AccountVideoQualityEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVideoQualityEventsAdaptiveGroupsOrderBy!]): [AccountVideoQualityEventsAdaptiveGroups!]!
   # Beta. Warp device health events with adaptive sampling
   warpDeviceAdaptiveGroups(filter: AccountWarpDeviceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWarpDeviceAdaptiveGroupsOrderBy!]): [AccountWarpDeviceAdaptiveGroups!]!
+  # Worker placement metrics
+  workerPlacementAdaptiveGroups(filter: AccountWorkerPlacementAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkerPlacementAdaptiveGroupsOrderBy!]): [AccountWorkerPlacementAdaptiveGroups!]!
   # Beta. Custom Events with adaptive sampling
   workersAnalyticsEngineAdaptiveGroups(filter: AccountWorkersAnalyticsEngineAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersAnalyticsEngineAdaptiveGroupsOrderBy!]): [AccountWorkersAnalyticsEngineAdaptiveGroups!]!
   # Beta. Workers invocations with adaptive sampling
@@ -8825,7 +8828,9 @@ type AccountGatewayResolverQueriesAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # The uuid identifying the customer Location used when resolving
   locationId: string!
-  # Name of the query in reverse order, e.g. com.cloudflare.teams.dash
+  # Name of the query, e.g. one.dash.cloudflare.com
+  queryName: string!
+  # Name of the query in reverse order, e.g. com.cloudflare.dash.one
   queryNameReversed: string!
   # Enum identifier for the decision made by gateway-resolver, one of: (0, unknown) (1, allowedByQueryName) (2, blockedByQueryName) (3, blockedByCategory) (4, allowedOnNoLocation) (5, allowedOnNoPolicyMatch) (6, blockedAlwaysCategory) (7, overrideForSafeSearch) (8, overrideApplied) (9, blockedRule) (10, allowedRule)
   resolverDecision: uint16!
@@ -8880,6 +8885,7 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   locationId_neq: string
   locationId_notin: [string!]
   locationId_notlike: string
+  queryName: string
   queryNameReversed: string
   queryNameReversed_geq: string
   queryNameReversed_gt: string
@@ -8890,6 +8896,15 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   queryNameReversed_neq: string
   queryNameReversed_notin: [string!]
   queryNameReversed_notlike: string
+  queryName_geq: string
+  queryName_gt: string
+  queryName_in: [string!]
+  queryName_leq: string
+  queryName_like: string
+  queryName_lt: string
+  queryName_neq: string
+  queryName_notin: [string!]
+  queryName_notlike: string
   resolverDecision: uint16
   resolverDecision_geq: uint16
   resolverDecision_gt: uint16
@@ -8939,6 +8954,10 @@ enum AccountGatewayResolverQueriesAdaptiveGroupsOrderBy {
   queryNameReversed_ASC
   # queryNameReversed descending
   queryNameReversed_DESC
+  # queryName ascending
+  queryName_ASC
+  # queryName descending
+  queryName_DESC
   # resolverDecision ascending
   resolverDecision_ASC
   # resolverDecision descending
@@ -16538,7 +16557,7 @@ type AccountMagicTransitTunnelTrafficAdaptiveGroupsDimensions {
   datetimeFiveMinutes: Time!
   # Date and time that the packet was received, rounded to the start of the nearest hour
   datetimeHour: Time!
-  # Traffic Direction
+  # Direction of the packet relative to the customer network (possible values: inbound, outbound, lateral)
   direction: string!
   # City where the Cloudflare datacenter that received the packet is located
   edgeColoCity: string!
@@ -16550,8 +16569,6 @@ type AccountMagicTransitTunnelTrafficAdaptiveGroupsDimensions {
   edgeColoGeohash: string!
   # Cloudflare datacenter that received the packet (unique site identifier)
   edgeColoName: string!
-  # System to collect info on
-  system: string!
   # Tunnel device name
   tunnelName: string!
 }
@@ -16651,16 +16668,6 @@ input AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject {
   edgeColoName_neq: string
   edgeColoName_notin: [string!]
   edgeColoName_notlike: string
-  system: string
-  system_geq: string
-  system_gt: string
-  system_in: [string!]
-  system_leq: string
-  system_like: string
-  system_lt: string
-  system_neq: string
-  system_notin: [string!]
-  system_notlike: string
   tunnelName: string
   tunnelName_geq: string
   tunnelName_gt: string
@@ -16726,10 +16733,6 @@ enum AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy {
   edgeColoName_ASC
   # edgeColoName descending
   edgeColoName_DESC
-  # notCfIps ascending
-  notCfIps_ASC
-  # notCfIps descending
-  notCfIps_DESC
   # system ascending
   system_ASC
   # system descending
@@ -16738,6 +16741,10 @@ enum AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy {
   tunnelName_ASC
   # tunnelName descending
   tunnelName_DESC
+  # visibility ascending
+  visibility_ASC
+  # visibility descending
+  visibility_DESC
 }
 
 # Beta. Magic WAN Connector Metrics
@@ -19722,6 +19729,12 @@ type AccountRumWebVitalsEventsAdaptiveGroupsAvg {
   interactionToNextPaint: int64!
   # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
   largestContentfulPaint: int64!
+  # Largest Contentful Paint Attributions Element Render Delay in microseconds (negative value indicates N/A)
+  lcpElementRenderDelay: int64!
+  # Largest Contentful Paint Attributions Resource Load Delay in microseconds (negative value indicates N/A)
+  lcpResourceLoadDelay: int64!
+  # Largest Contentful Paint Attributions Resource Load Time in microseconds (negative value indicates N/A)
+  lcpResourceLoadTime: int64!
   # Average sample interval
   sampleInterval: float64!
   # Time to First Byte in microseconds (negative value indicates N/A)
@@ -19767,6 +19780,10 @@ type AccountRumWebVitalsEventsAdaptiveGroupsDimensions {
   largestContentfulPaintObjectScheme: string!
   # Observed path of the Largest Contentful Paint (Core Web Vitals)
   largestContentfulPaintPath: string!
+  # Fetch priority of the LCP element.
+  lcpFetchPriority: string!
+  # Initiator type of the LCP element.
+  lcpInitiatorType: string!
   # Host of the HTTP request referer
   refererHost: string!
   # Path of the HTTP request referer
@@ -20000,6 +20017,26 @@ input AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject {
   largestContentfulPaint_lt: int64
   largestContentfulPaint_neq: int64
   largestContentfulPaint_notin: [int64!]
+  lcpFetchPriority: string
+  lcpFetchPriority_geq: string
+  lcpFetchPriority_gt: string
+  lcpFetchPriority_in: [string!]
+  lcpFetchPriority_leq: string
+  lcpFetchPriority_like: string
+  lcpFetchPriority_lt: string
+  lcpFetchPriority_neq: string
+  lcpFetchPriority_notin: [string!]
+  lcpFetchPriority_notlike: string
+  lcpInitiatorType: string
+  lcpInitiatorType_geq: string
+  lcpInitiatorType_gt: string
+  lcpInitiatorType_in: [string!]
+  lcpInitiatorType_leq: string
+  lcpInitiatorType_like: string
+  lcpInitiatorType_lt: string
+  lcpInitiatorType_neq: string
+  lcpInitiatorType_notin: [string!]
+  lcpInitiatorType_notlike: string
   refererHost: string
   refererHost_geq: string
   refererHost_gt: string
@@ -20113,6 +20150,18 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   avg_largestContentfulPaint_ASC
   # avg(largestContentfulPaint) descending
   avg_largestContentfulPaint_DESC
+  # avg(lcpElementRenderDelay) ascending
+  avg_lcpElementRenderDelay_ASC
+  # avg(lcpElementRenderDelay) descending
+  avg_lcpElementRenderDelay_DESC
+  # avg(lcpResourceLoadDelay) ascending
+  avg_lcpResourceLoadDelay_ASC
+  # avg(lcpResourceLoadDelay) descending
+  avg_lcpResourceLoadDelay_DESC
+  # avg(lcpResourceLoadTime) ascending
+  avg_lcpResourceLoadTime_ASC
+  # avg(lcpResourceLoadTime) descending
+  avg_lcpResourceLoadTime_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -20201,6 +20250,14 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   largestContentfulPaintPath_ASC
   # largestContentfulPaintPath descending
   largestContentfulPaintPath_DESC
+  # lcpFetchPriority ascending
+  lcpFetchPriority_ASC
+  # lcpFetchPriority descending
+  lcpFetchPriority_DESC
+  # lcpInitiatorType ascending
+  lcpInitiatorType_ASC
+  # lcpInitiatorType descending
+  lcpInitiatorType_DESC
   # quantiles(cumulativeLayoutShiftP50) ascending
   quantiles_cumulativeLayoutShiftP50_ASC
   # quantiles(cumulativeLayoutShiftP50) descending
@@ -20281,6 +20338,54 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   quantiles_largestContentfulPaintP99_ASC
   # quantiles(largestContentfulPaintP99) descending
   quantiles_largestContentfulPaintP99_DESC
+  # quantiles(lcpElementRenderDelayP50) ascending
+  quantiles_lcpElementRenderDelayP50_ASC
+  # quantiles(lcpElementRenderDelayP50) descending
+  quantiles_lcpElementRenderDelayP50_DESC
+  # quantiles(lcpElementRenderDelayP75) ascending
+  quantiles_lcpElementRenderDelayP75_ASC
+  # quantiles(lcpElementRenderDelayP75) descending
+  quantiles_lcpElementRenderDelayP75_DESC
+  # quantiles(lcpElementRenderDelayP90) ascending
+  quantiles_lcpElementRenderDelayP90_ASC
+  # quantiles(lcpElementRenderDelayP90) descending
+  quantiles_lcpElementRenderDelayP90_DESC
+  # quantiles(lcpElementRenderDelayP99) ascending
+  quantiles_lcpElementRenderDelayP99_ASC
+  # quantiles(lcpElementRenderDelayP99) descending
+  quantiles_lcpElementRenderDelayP99_DESC
+  # quantiles(lcpResourceLoadDelayP50) ascending
+  quantiles_lcpResourceLoadDelayP50_ASC
+  # quantiles(lcpResourceLoadDelayP50) descending
+  quantiles_lcpResourceLoadDelayP50_DESC
+  # quantiles(lcpResourceLoadDelayP75) ascending
+  quantiles_lcpResourceLoadDelayP75_ASC
+  # quantiles(lcpResourceLoadDelayP75) descending
+  quantiles_lcpResourceLoadDelayP75_DESC
+  # quantiles(lcpResourceLoadDelayP90) ascending
+  quantiles_lcpResourceLoadDelayP90_ASC
+  # quantiles(lcpResourceLoadDelayP90) descending
+  quantiles_lcpResourceLoadDelayP90_DESC
+  # quantiles(lcpResourceLoadDelayP99) ascending
+  quantiles_lcpResourceLoadDelayP99_ASC
+  # quantiles(lcpResourceLoadDelayP99) descending
+  quantiles_lcpResourceLoadDelayP99_DESC
+  # quantiles(lcpResourceLoadTimeP50) ascending
+  quantiles_lcpResourceLoadTimeP50_ASC
+  # quantiles(lcpResourceLoadTimeP50) descending
+  quantiles_lcpResourceLoadTimeP50_DESC
+  # quantiles(lcpResourceLoadTimeP75) ascending
+  quantiles_lcpResourceLoadTimeP75_ASC
+  # quantiles(lcpResourceLoadTimeP75) descending
+  quantiles_lcpResourceLoadTimeP75_DESC
+  # quantiles(lcpResourceLoadTimeP90) ascending
+  quantiles_lcpResourceLoadTimeP90_ASC
+  # quantiles(lcpResourceLoadTimeP90) descending
+  quantiles_lcpResourceLoadTimeP90_DESC
+  # quantiles(lcpResourceLoadTimeP99) ascending
+  quantiles_lcpResourceLoadTimeP99_ASC
+  # quantiles(lcpResourceLoadTimeP99) descending
+  quantiles_lcpResourceLoadTimeP99_DESC
   # quantiles(timeToFirstByteP50) ascending
   quantiles_timeToFirstByteP50_ASC
   # quantiles(timeToFirstByteP50) descending
@@ -20476,6 +20581,30 @@ type AccountRumWebVitalsEventsAdaptiveGroupsQuantiles {
   largestContentfulPaintP90: int64!
   # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
   largestContentfulPaintP99: int64!
+  # Largest Contentful Paint Attributions Element Render Delay in microseconds (negative value indicates N/A)
+  lcpElementRenderDelayP50: int64!
+  # Largest Contentful Paint Attributions Element Render Delay in microseconds (negative value indicates N/A)
+  lcpElementRenderDelayP75: int64!
+  # Largest Contentful Paint Attributions Element Render Delay in microseconds (negative value indicates N/A)
+  lcpElementRenderDelayP90: int64!
+  # Largest Contentful Paint Attributions Element Render Delay in microseconds (negative value indicates N/A)
+  lcpElementRenderDelayP99: int64!
+  # Largest Contentful Paint Attributions Resource Load Delay in microseconds (negative value indicates N/A)
+  lcpResourceLoadDelayP50: int64!
+  # Largest Contentful Paint Attributions Resource Load Delay in microseconds (negative value indicates N/A)
+  lcpResourceLoadDelayP75: int64!
+  # Largest Contentful Paint Attributions Resource Load Delay in microseconds (negative value indicates N/A)
+  lcpResourceLoadDelayP90: int64!
+  # Largest Contentful Paint Attributions Resource Load Delay in microseconds (negative value indicates N/A)
+  lcpResourceLoadDelayP99: int64!
+  # Largest Contentful Paint Attributions Resource Load Time in microseconds (negative value indicates N/A)
+  lcpResourceLoadTimeP50: int64!
+  # Largest Contentful Paint Attributions Resource Load Time in microseconds (negative value indicates N/A)
+  lcpResourceLoadTimeP75: int64!
+  # Largest Contentful Paint Attributions Resource Load Time in microseconds (negative value indicates N/A)
+  lcpResourceLoadTimeP90: int64!
+  # Largest Contentful Paint Attributions Resource Load Time in microseconds (negative value indicates N/A)
+  lcpResourceLoadTimeP99: int64!
   # Time to First Byte in microseconds (negative value indicates N/A)
   timeToFirstByteP50: int64!
   # Time to First Byte in microseconds (negative value indicates N/A)
@@ -20700,6 +20829,7 @@ type AccountSettings {
   videoPlaybackEventsAdaptiveGroups: Settings!
   videoQualityEventsAdaptiveGroups: Settings!
   warpDeviceAdaptiveGroups: Settings!
+  workerPlacementAdaptiveGroups: Settings!
   workersAnalyticsEngineAdaptiveGroups: Settings!
   workersInvocationsAdaptive: Settings!
   workersInvocationsScheduled: Settings!
@@ -23307,6 +23437,184 @@ enum AccountWarpDeviceAdaptiveGroupsOrderBy {
 type AccountWarpDeviceAdaptiveGroupsUniq {
   # Approximate count of unique deviceIds
   deviceIds: uint64!
+}
+
+# Worker placement metrics
+type AccountWorkerPlacementAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountWorkerPlacementAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountWorkerPlacementAdaptiveGroupsSum
+}
+
+type AccountWorkerPlacementAdaptiveGroupsDimensions {
+  # Request timestamp, truncated to start of a day
+  date: Date!
+  # Request timestamp
+  datetime: Time!
+  # Request timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Request timestamp, truncated to start of an minute
+  datetimeMinute: Time!
+  # Response status of worker
+  httpStatus: uint16!
+  # 1 if the request was processed using Smart Placement, 0 if it was processed in default mode
+  placementUsed: uint8!
+  # Bucket of request duration rounded down to nearest 10*2^n
+  requestDurationBucketMin: uint32!
+  # Bucket of request duration rounded down to nearest 100ms
+  requestDurationBucketMin100ms: uint32!
+  # The script name
+  scriptName: string!
+  # The unique tag of the script
+  scriptTag: string!
+}
+
+input AccountWorkerPlacementAdaptiveGroupsFilter_InputObject {
+  AND: [AccountWorkerPlacementAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountWorkerPlacementAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  httpStatus: uint16
+  httpStatus_geq: uint16
+  httpStatus_gt: uint16
+  httpStatus_in: [uint16!]
+  httpStatus_leq: uint16
+  httpStatus_lt: uint16
+  httpStatus_neq: uint16
+  httpStatus_notin: [uint16!]
+  placementUsed: uint8
+  placementUsed_geq: uint8
+  placementUsed_gt: uint8
+  placementUsed_in: bytes
+  placementUsed_leq: uint8
+  placementUsed_lt: uint8
+  placementUsed_neq: uint8
+  placementUsed_notin: bytes
+  requestDurationBucketMin: uint32
+  requestDurationBucketMin100ms: uint32
+  requestDurationBucketMin100ms_geq: uint32
+  requestDurationBucketMin100ms_gt: uint32
+  requestDurationBucketMin100ms_in: [uint32!]
+  requestDurationBucketMin100ms_leq: uint32
+  requestDurationBucketMin100ms_lt: uint32
+  requestDurationBucketMin100ms_neq: uint32
+  requestDurationBucketMin100ms_notin: [uint32!]
+  requestDurationBucketMin_geq: uint32
+  requestDurationBucketMin_gt: uint32
+  requestDurationBucketMin_in: [uint32!]
+  requestDurationBucketMin_leq: uint32
+  requestDurationBucketMin_lt: uint32
+  requestDurationBucketMin_neq: uint32
+  requestDurationBucketMin_notin: [uint32!]
+  scriptName: string
+  scriptName_geq: string
+  scriptName_gt: string
+  scriptName_in: [string!]
+  scriptName_leq: string
+  scriptName_like: string
+  scriptName_lt: string
+  scriptName_neq: string
+  scriptName_notin: [string!]
+  scriptName_notlike: string
+  scriptTag: string
+  scriptTag_geq: string
+  scriptTag_gt: string
+  scriptTag_in: [string!]
+  scriptTag_leq: string
+  scriptTag_like: string
+  scriptTag_lt: string
+  scriptTag_neq: string
+  scriptTag_notin: [string!]
+  scriptTag_notlike: string
+}
+
+enum AccountWorkerPlacementAdaptiveGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # httpStatus ascending
+  httpStatus_ASC
+  # httpStatus descending
+  httpStatus_DESC
+  # placementUsed ascending
+  placementUsed_ASC
+  # placementUsed descending
+  placementUsed_DESC
+  # requestDurationBucketMin100ms ascending
+  requestDurationBucketMin100ms_ASC
+  # requestDurationBucketMin100ms descending
+  requestDurationBucketMin100ms_DESC
+  # requestDurationBucketMin ascending
+  requestDurationBucketMin_ASC
+  # requestDurationBucketMin descending
+  requestDurationBucketMin_DESC
+  # scriptName ascending
+  scriptName_ASC
+  # scriptName descending
+  scriptName_DESC
+  # scriptTag ascending
+  scriptTag_ASC
+  # scriptTag descending
+  scriptTag_DESC
+  # sum(requestDuration) ascending
+  sum_requestDuration_ASC
+  # sum(requestDuration) descending
+  sum_requestDuration_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+}
+
+type AccountWorkerPlacementAdaptiveGroupsSum {
+  # Sum of duration ms of requests measured at the data centers that receive the requests
+  requestDuration: uint64!
+  # Total number of requests
+  requests: uint64!
 }
 
 # Beta. Custom Events with adaptive sampling
