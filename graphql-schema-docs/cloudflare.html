@@ -23361,6 +23361,8 @@
 &nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Response status of worker</span><br />
 &nbsp;&nbsp;httpStatus: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># 1 if the request was sampled to bypass Smart Placement, 0 otherwise</span><br />
+&nbsp;&nbsp;isSample: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># 1 if the request was processed using Smart Placement, 0 if it was processed in default mode</span><br />
 &nbsp;&nbsp;placementUsed: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Bucket of request duration rounded down to nearest 10*2^n</span><br />
@@ -23416,6 +23418,14 @@
 &nbsp;&nbsp;httpStatus_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;httpStatus_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;httpStatus_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;isSample: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isSample_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isSample_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isSample_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;isSample_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isSample_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isSample_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;isSample_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;placementUsed: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;placementUsed_geq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;placementUsed_gt: <a href="#uint8">uint8</a><br />
@@ -23483,6 +23493,10 @@
 &nbsp;&nbsp;httpStatus_ASC<br />
 &nbsp;&nbsp;<span class="c"># httpStatus descending</span><br />
 &nbsp;&nbsp;httpStatus_DESC<br />
+&nbsp;&nbsp;<span class="c"># isSample ascending</span><br />
+&nbsp;&nbsp;isSample_ASC<br />
+&nbsp;&nbsp;<span class="c"># isSample descending</span><br />
+&nbsp;&nbsp;isSample_DESC<br />
 &nbsp;&nbsp;<span class="c"># placementUsed ascending</span><br />
 &nbsp;&nbsp;placementUsed_ASC<br />
 &nbsp;&nbsp;<span class="c"># placementUsed descending</span><br />

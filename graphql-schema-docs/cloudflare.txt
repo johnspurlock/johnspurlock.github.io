@@ -23458,6 +23458,8 @@ type AccountWorkerPlacementAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # Response status of worker
   httpStatus: uint16!
+  # 1 if the request was sampled to bypass Smart Placement, 0 otherwise
+  isSample: uint8!
   # 1 if the request was processed using Smart Placement, 0 if it was processed in default mode
   placementUsed: uint8!
   # Bucket of request duration rounded down to nearest 10*2^n
@@ -23513,6 +23515,14 @@ input AccountWorkerPlacementAdaptiveGroupsFilter_InputObject {
   httpStatus_lt: uint16
   httpStatus_neq: uint16
   httpStatus_notin: [uint16!]
+  isSample: uint8
+  isSample_geq: uint8
+  isSample_gt: uint8
+  isSample_in: bytes
+  isSample_leq: uint8
+  isSample_lt: uint8
+  isSample_neq: uint8
+  isSample_notin: bytes
   placementUsed: uint8
   placementUsed_geq: uint8
   placementUsed_gt: uint8
@@ -23580,6 +23590,10 @@ enum AccountWorkerPlacementAdaptiveGroupsOrderBy {
   httpStatus_ASC
   # httpStatus descending
   httpStatus_DESC
+  # isSample ascending
+  isSample_ASC
+  # isSample descending
+  isSample_DESC
   # placementUsed ascending
   placementUsed_ASC
   # placementUsed descending
