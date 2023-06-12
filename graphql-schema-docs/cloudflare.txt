@@ -2,6 +2,7 @@ Account-level datasets:
   MagicWANConnectorMetricsAdaptiveGroups
 * accessLoginRequestsAdaptiveGroups
   cdnNetworkAnalyticsAdaptiveGroups
+* d1AnalyticsAdaptiveGroups
   dosdAttackAnalyticsGroups
   dosdNetworkAnalyticsAdaptiveGroups
 * durableObjectsInvocationsAdaptiveGroups
@@ -154,6 +155,8 @@ type account {
   accountTag: string!
   # Network analytics data for Cloudflare CDN traffic
   cdnNetworkAnalyticsAdaptiveGroups(filter: AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountCdnNetworkAnalyticsAdaptiveGroups!]!
+  # Beta. Aggregated D1 analytics with adaptive sampling
+  d1AnalyticsAdaptiveGroups(filter: AccountD1AnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1AnalyticsAdaptiveGroupsOrderBy!]): [AccountD1AnalyticsAdaptiveGroups!]!
   # Attack analytics metadata for attacks detected by dosd
   dosdAttackAnalyticsGroups(filter: AccountDosdAttackAnalyticsGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDosdAttackAnalyticsGroupsOrderBy!]): [AccountDosdAttackAnalyticsGroups!]!
   # Network analytics data for dosd
@@ -1888,6 +1891,166 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsSum {
   bits: uint64!
   # Sum of packets received
   packets: uint64!
+}
+
+# Beta. Aggregated D1 analytics with adaptive sampling
+type AccountD1AnalyticsAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountD1AnalyticsAdaptiveGroupsAvg
+  # Number of requests to D1 processed (approximation when sampleInterval > 1)
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountD1AnalyticsAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: AccountD1AnalyticsAdaptiveGroupsQuantiles
+  # The sum of values for a metric per dimension
+  sum: AccountD1AnalyticsAdaptiveGroupsSum
+}
+
+type AccountD1AnalyticsAdaptiveGroupsAvg {
+  # Query batch response time in milliseconds (average/mean).
+  queryBatchTimeMs: uint64!
+  # The average value used for sample interval
+  sampleInterval: float64!
+}
+
+type AccountD1AnalyticsAdaptiveGroupsDimensions {
+  # The UUID of a D1 database
+  databaseId: string!
+  # The date the D1 request was received
+  date: Date!
+  # The date and time the D1 request was received truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the D1 request was received truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the D1 request was received truncated to the hour
+  datetimeHour: Time!
+  # The date and time the D1 request was received truncated to the minute
+  datetimeMinute: Time!
+}
+
+input AccountD1AnalyticsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountD1AnalyticsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountD1AnalyticsAdaptiveGroupsFilter_InputObject!]
+  databaseId: string
+  databaseId_geq: string
+  databaseId_gt: string
+  databaseId_in: [string!]
+  databaseId_leq: string
+  databaseId_like: string
+  databaseId_lt: string
+  databaseId_neq: string
+  databaseId_notin: [string!]
+  databaseId_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+}
+
+enum AccountD1AnalyticsAdaptiveGroupsOrderBy {
+  # avg(queryBatchTimeMs) ascending
+  avg_queryBatchTimeMs_ASC
+  # avg(queryBatchTimeMs) descending
+  avg_queryBatchTimeMs_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # databaseId ascending
+  databaseId_ASC
+  # databaseId descending
+  databaseId_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # quantiles(queryBatchTimeMsP90) ascending
+  quantiles_queryBatchTimeMsP90_ASC
+  # quantiles(queryBatchTimeMsP90) descending
+  quantiles_queryBatchTimeMsP90_DESC
+  # sum(queryBatchResponseBytes) ascending
+  sum_queryBatchResponseBytes_ASC
+  # sum(queryBatchResponseBytes) descending
+  sum_queryBatchResponseBytes_DESC
+  # sum(readQueries) ascending
+  sum_readQueries_ASC
+  # sum(readQueries) descending
+  sum_readQueries_DESC
+  # sum(writeQueries) ascending
+  sum_writeQueries_ASC
+  # sum(writeQueries) descending
+  sum_writeQueries_DESC
+}
+
+type AccountD1AnalyticsAdaptiveGroupsQuantiles {
+  # Query batch response time in milliseconds (90th percentile).
+  queryBatchTimeMsP90: float32!
+}
+
+type AccountD1AnalyticsAdaptiveGroupsSum {
+  # The total number of bytes in the response, including all returned rows and metadata.
+  queryBatchResponseBytes: uint64!
+  # The number of read queries
+  readQueries: uint64!
+  # The number of write queries.
+  writeQueries: uint64!
 }
 
 # Attack analytics metadata for attacks detected by dosd
@@ -20776,6 +20939,7 @@ type AccountSettings {
   MagicWANConnectorMetricsAdaptiveGroups: Settings!
   accessLoginRequestsAdaptiveGroups: Settings!
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
+  d1AnalyticsAdaptiveGroups: Settings!
   dosdAttackAnalyticsGroups: Settings!
   dosdNetworkAnalyticsAdaptiveGroups: Settings!
   durableObjectsInvocationsAdaptiveGroups: Settings!
