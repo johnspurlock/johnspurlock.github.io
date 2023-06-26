@@ -1813,7 +1813,7 @@
 <br />
 <span class="k">type</span> <a id="AccountD1AnalyticsAdaptiveGroupsAvg" href="#AccountD1AnalyticsAdaptiveGroupsAvg">AccountD1AnalyticsAdaptiveGroupsAvg</a> {<br />
 &nbsp;&nbsp;<span class="c"># Query batch response time in milliseconds (average/mean).</span><br />
-&nbsp;&nbsp;queryBatchTimeMs: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;queryBatchTimeMs: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># The average value used for sample interval</span><br />
 &nbsp;&nbsp;sampleInterval: <a href="#float64">float64!</a><br />
 }<br />
@@ -1945,12 +1945,12 @@
 <br />
 <span class="k">type</span> <a id="AccountD1AnalyticsAdaptiveGroupsQuantiles" href="#AccountD1AnalyticsAdaptiveGroupsQuantiles">AccountD1AnalyticsAdaptiveGroupsQuantiles</a> {<br />
 &nbsp;&nbsp;<span class="c"># Query batch response time in milliseconds (90th percentile).</span><br />
-&nbsp;&nbsp;queryBatchTimeMsP90: <a href="#float32">float32!</a><br />
+&nbsp;&nbsp;queryBatchTimeMsP90: <a href="#float64">float64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountD1AnalyticsAdaptiveGroupsSum" href="#AccountD1AnalyticsAdaptiveGroupsSum">AccountD1AnalyticsAdaptiveGroupsSum</a> {<br />
 &nbsp;&nbsp;<span class="c"># The total number of bytes in the response, including all returned rows and metadata.</span><br />
-&nbsp;&nbsp;queryBatchResponseBytes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;queryBatchResponseBytes: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># The number of read queries</span><br />
 &nbsp;&nbsp;readQueries: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># The number of write queries.</span><br />
@@ -26904,10 +26904,16 @@
 <br />
 <span class="c"># Beta. Cache Reserve operations with adaptive sampling</span><br />
 <span class="k">type</span> <a id="ZoneCacheReserveOperationsAdaptiveGroups" href="#ZoneCacheReserveOperationsAdaptiveGroups">ZoneCacheReserveOperationsAdaptiveGroups</a> {<br />
+&nbsp;&nbsp;<span class="c"># The average value used for sample interval</span><br />
+&nbsp;&nbsp;avg: <a href="#ZoneCacheReserveOperationsAdaptiveGroupsAvg">ZoneCacheReserveOperationsAdaptiveGroupsAvg</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#ZoneCacheReserveOperationsAdaptiveGroupsDimensions">ZoneCacheReserveOperationsAdaptiveGroupsDimensions</a><br />
 &nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
 &nbsp;&nbsp;sum: <a href="#ZoneCacheReserveOperationsAdaptiveGroupsSum">ZoneCacheReserveOperationsAdaptiveGroupsSum</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="ZoneCacheReserveOperationsAdaptiveGroupsAvg" href="#ZoneCacheReserveOperationsAdaptiveGroupsAvg">ZoneCacheReserveOperationsAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;sampleInterval: <a href="#float64">float64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneCacheReserveOperationsAdaptiveGroupsDimensions" href="#ZoneCacheReserveOperationsAdaptiveGroupsDimensions">ZoneCacheReserveOperationsAdaptiveGroupsDimensions</a> {<br />
@@ -27019,6 +27025,10 @@
 &nbsp;&nbsp;actionStatus_ASC<br />
 &nbsp;&nbsp;<span class="c"># actionStatus descending</span><br />
 &nbsp;&nbsp;actionStatus_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(sampleInterval) ascending</span><br />
+&nbsp;&nbsp;avg_sampleInterval_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(sampleInterval) descending</span><br />
+&nbsp;&nbsp;avg_sampleInterval_DESC<br />
 &nbsp;&nbsp;<span class="c"># bucketName ascending</span><br />
 &nbsp;&nbsp;bucketName_ASC<br />
 &nbsp;&nbsp;<span class="c"># bucketName descending</span><br />
@@ -27240,10 +27250,16 @@
 <br />
 <span class="c"># Beta. Cache Reserve storage with adaptive sampling</span><br />
 <span class="k">type</span> <a id="ZoneCacheReserveStorageAdaptiveGroups" href="#ZoneCacheReserveStorageAdaptiveGroups">ZoneCacheReserveStorageAdaptiveGroups</a> {<br />
+&nbsp;&nbsp;<span class="c"># The average value used for sample interval</span><br />
+&nbsp;&nbsp;avg: <a href="#ZoneCacheReserveStorageAdaptiveGroupsAvg">ZoneCacheReserveStorageAdaptiveGroupsAvg</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#ZoneCacheReserveStorageAdaptiveGroupsDimensions">ZoneCacheReserveStorageAdaptiveGroupsDimensions</a><br />
 &nbsp;&nbsp;<span class="c"># The max of values for a metric per dimension</span><br />
 &nbsp;&nbsp;max: <a href="#ZoneCacheReserveStorageAdaptiveGroupsMax">ZoneCacheReserveStorageAdaptiveGroupsMax</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="ZoneCacheReserveStorageAdaptiveGroupsAvg" href="#ZoneCacheReserveStorageAdaptiveGroupsAvg">ZoneCacheReserveStorageAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;sampleInterval: <a href="#float64">float64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneCacheReserveStorageAdaptiveGroupsDimensions" href="#ZoneCacheReserveStorageAdaptiveGroupsDimensions">ZoneCacheReserveStorageAdaptiveGroupsDimensions</a> {<br />
@@ -27346,6 +27362,10 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="ZoneCacheReserveStorageAdaptiveGroupsOrderBy" href="#ZoneCacheReserveStorageAdaptiveGroupsOrderBy">ZoneCacheReserveStorageAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># avg(sampleInterval) ascending</span><br />
+&nbsp;&nbsp;avg_sampleInterval_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(sampleInterval) descending</span><br />
+&nbsp;&nbsp;avg_sampleInterval_DESC<br />
 &nbsp;&nbsp;<span class="c"># bucketHash ascending</span><br />
 &nbsp;&nbsp;bucketHash_ASC<br />
 &nbsp;&nbsp;<span class="c"># bucketHash descending</span><br />
@@ -27398,6 +27418,8 @@
 &nbsp;&nbsp;dkim: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Domain to which this report refers to</span><br />
 &nbsp;&nbsp;domain: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Envelope From of emails</span><br />
+&nbsp;&nbsp;envelopeFrom: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Envelope To of emails</span><br />
 &nbsp;&nbsp;envelopeTo: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Reason (if any) why the record was evaluated</span><br />
@@ -27489,6 +27511,16 @@
 &nbsp;&nbsp;domain_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;domain_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;domain_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;envelopeFrom: <a href="#string">string</a><br />
+&nbsp;&nbsp;envelopeFrom_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;envelopeFrom_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;envelopeFrom_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;envelopeFrom_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;envelopeFrom_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;envelopeFrom_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;envelopeFrom_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;envelopeFrom_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;envelopeFrom_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;envelopeTo: <a href="#string">string</a><br />
 &nbsp;&nbsp;envelopeTo_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;envelopeTo_gt: <a href="#string">string</a><br />
@@ -27736,6 +27768,10 @@
 &nbsp;&nbsp;domain_ASC<br />
 &nbsp;&nbsp;<span class="c"># domain descending</span><br />
 &nbsp;&nbsp;domain_DESC<br />
+&nbsp;&nbsp;<span class="c"># envelopeFrom ascending</span><br />
+&nbsp;&nbsp;envelopeFrom_ASC<br />
+&nbsp;&nbsp;<span class="c"># envelopeFrom descending</span><br />
+&nbsp;&nbsp;envelopeFrom_DESC<br />
 &nbsp;&nbsp;<span class="c"># envelopeTo ascending</span><br />
 &nbsp;&nbsp;envelopeTo_ASC<br />
 &nbsp;&nbsp;<span class="c"># envelopeTo descending</span><br />
@@ -27872,6 +27908,8 @@
 &nbsp;&nbsp;dkim: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Domain to which this report refers to</span><br />
 &nbsp;&nbsp;domain: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Envelope From of emails</span><br />
+&nbsp;&nbsp;envelopeFrom: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Envelope To of emails</span><br />
 &nbsp;&nbsp;envelopeTo: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Reason (if any) why the record was evaluated</span><br />
@@ -27979,6 +28017,16 @@
 &nbsp;&nbsp;domain_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;domain_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;domain_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;envelopeFrom: <a href="#string">string</a><br />
+&nbsp;&nbsp;envelopeFrom_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;envelopeFrom_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;envelopeFrom_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;envelopeFrom_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;envelopeFrom_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;envelopeFrom_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;envelopeFrom_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;envelopeFrom_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;envelopeFrom_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;envelopeTo: <a href="#string">string</a><br />
 &nbsp;&nbsp;envelopeTo_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;envelopeTo_gt: <a href="#string">string</a><br />
@@ -28148,6 +28196,10 @@
 &nbsp;&nbsp;domain_ASC<br />
 &nbsp;&nbsp;<span class="c"># domain descending</span><br />
 &nbsp;&nbsp;domain_DESC<br />
+&nbsp;&nbsp;<span class="c"># envelopeFrom ascending</span><br />
+&nbsp;&nbsp;envelopeFrom_ASC<br />
+&nbsp;&nbsp;<span class="c"># envelopeFrom descending</span><br />
+&nbsp;&nbsp;envelopeFrom_DESC<br />
 &nbsp;&nbsp;<span class="c"># envelopeTo ascending</span><br />
 &nbsp;&nbsp;envelopeTo_ASC<br />
 &nbsp;&nbsp;<span class="c"># envelopeTo descending</span><br />

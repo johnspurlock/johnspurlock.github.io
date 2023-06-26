@@ -1912,7 +1912,7 @@ type AccountD1AnalyticsAdaptiveGroups {
 
 type AccountD1AnalyticsAdaptiveGroupsAvg {
   # Query batch response time in milliseconds (average/mean).
-  queryBatchTimeMs: uint64!
+  queryBatchTimeMs: float64!
   # The average value used for sample interval
   sampleInterval: float64!
 }
@@ -2044,12 +2044,12 @@ enum AccountD1AnalyticsAdaptiveGroupsOrderBy {
 
 type AccountD1AnalyticsAdaptiveGroupsQuantiles {
   # Query batch response time in milliseconds (90th percentile).
-  queryBatchTimeMsP90: float32!
+  queryBatchTimeMsP90: float64!
 }
 
 type AccountD1AnalyticsAdaptiveGroupsSum {
   # The total number of bytes in the response, including all returned rows and metadata.
-  queryBatchResponseBytes: uint64!
+  queryBatchResponseBytes: float64!
   # The number of read queries
   readQueries: uint64!
   # The number of write queries.
@@ -27003,10 +27003,16 @@ enum ZoneApiRequestSequencesGroupsOrderBy {
 
 # Beta. Cache Reserve operations with adaptive sampling
 type ZoneCacheReserveOperationsAdaptiveGroups {
+  # The average value used for sample interval
+  avg: ZoneCacheReserveOperationsAdaptiveGroupsAvg
   # List of dimensions to group by
   dimensions: ZoneCacheReserveOperationsAdaptiveGroupsDimensions
   # The sum of values for a metric per dimension
   sum: ZoneCacheReserveOperationsAdaptiveGroupsSum
+}
+
+type ZoneCacheReserveOperationsAdaptiveGroupsAvg {
+  sampleInterval: float64!
 }
 
 type ZoneCacheReserveOperationsAdaptiveGroupsDimensions {
@@ -27118,6 +27124,10 @@ enum ZoneCacheReserveOperationsAdaptiveGroupsOrderBy {
   actionStatus_ASC
   # actionStatus descending
   actionStatus_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
   # bucketName ascending
   bucketName_ASC
   # bucketName descending
@@ -27339,10 +27349,16 @@ type ZoneCacheReserveRequestsAdaptiveGroupsSum {
 
 # Beta. Cache Reserve storage with adaptive sampling
 type ZoneCacheReserveStorageAdaptiveGroups {
+  # The average value used for sample interval
+  avg: ZoneCacheReserveStorageAdaptiveGroupsAvg
   # List of dimensions to group by
   dimensions: ZoneCacheReserveStorageAdaptiveGroupsDimensions
   # The max of values for a metric per dimension
   max: ZoneCacheReserveStorageAdaptiveGroupsMax
+}
+
+type ZoneCacheReserveStorageAdaptiveGroupsAvg {
+  sampleInterval: float64!
 }
 
 type ZoneCacheReserveStorageAdaptiveGroupsDimensions {
@@ -27445,6 +27461,10 @@ type ZoneCacheReserveStorageAdaptiveGroupsMax {
 }
 
 enum ZoneCacheReserveStorageAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
   # bucketHash ascending
   bucketHash_ASC
   # bucketHash descending
@@ -27497,6 +27517,8 @@ type ZoneDmarcReportsAdaptive {
   dkim: string!
   # Domain to which this report refers to
   domain: string!
+  # Envelope From of emails
+  envelopeFrom: string!
   # Envelope To of emails
   envelopeTo: string!
   # Reason (if any) why the record was evaluated
@@ -27588,6 +27610,16 @@ input ZoneDmarcReportsAdaptiveFilter_InputObject {
   domain_neq: string
   domain_notin: [string!]
   domain_notlike: string
+  envelopeFrom: string
+  envelopeFrom_geq: string
+  envelopeFrom_gt: string
+  envelopeFrom_in: [string!]
+  envelopeFrom_leq: string
+  envelopeFrom_like: string
+  envelopeFrom_lt: string
+  envelopeFrom_neq: string
+  envelopeFrom_notin: [string!]
+  envelopeFrom_notlike: string
   envelopeTo: string
   envelopeTo_geq: string
   envelopeTo_gt: string
@@ -27835,6 +27867,10 @@ enum ZoneDmarcReportsAdaptiveOrderBy {
   domain_ASC
   # domain descending
   domain_DESC
+  # envelopeFrom ascending
+  envelopeFrom_ASC
+  # envelopeFrom descending
+  envelopeFrom_DESC
   # envelopeTo ascending
   envelopeTo_ASC
   # envelopeTo descending
@@ -27971,6 +28007,8 @@ type ZoneDmarcReportsSourcesAdaptiveGroupsDimensions {
   dkim: string!
   # Domain to which this report refers to
   domain: string!
+  # Envelope From of emails
+  envelopeFrom: string!
   # Envelope To of emails
   envelopeTo: string!
   # Reason (if any) why the record was evaluated
@@ -28078,6 +28116,16 @@ input ZoneDmarcReportsSourcesAdaptiveGroupsFilter_InputObject {
   domain_neq: string
   domain_notin: [string!]
   domain_notlike: string
+  envelopeFrom: string
+  envelopeFrom_geq: string
+  envelopeFrom_gt: string
+  envelopeFrom_in: [string!]
+  envelopeFrom_leq: string
+  envelopeFrom_like: string
+  envelopeFrom_lt: string
+  envelopeFrom_neq: string
+  envelopeFrom_notin: [string!]
+  envelopeFrom_notlike: string
   envelopeTo: string
   envelopeTo_geq: string
   envelopeTo_gt: string
@@ -28247,6 +28295,10 @@ enum ZoneDmarcReportsSourcesAdaptiveGroupsOrderBy {
   domain_ASC
   # domain descending
   domain_DESC
+  # envelopeFrom ascending
+  envelopeFrom_ASC
+  # envelopeFrom descending
+  envelopeFrom_DESC
   # envelopeTo ascending
   envelopeTo_ASC
   # envelopeTo descending
