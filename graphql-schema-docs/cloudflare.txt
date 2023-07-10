@@ -18,6 +18,7 @@ Account-level datasets:
   gatewayL4UpstreamSessionsAdaptiveGroups
 * gatewayL7RequestsAdaptiveGroups
 * gatewayResolverByCategoryAdaptiveGroups
+* gatewayResolverByRuleExecutionPerformanceAdaptiveGroups
 * gatewayResolverQueriesAdaptiveGroups
 * httpRequests1dGroups
 * httpRequests1hGroups
@@ -188,6 +189,8 @@ type account {
   gatewayL7RequestsAdaptiveGroups(filter: AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayL7RequestsAdaptiveGroupsOrderBy!]): [AccountGatewayL7RequestsAdaptiveGroups!]!
   # BETA - Aggregate counts of Gateway Resolver queries by category with adaptive sampling
   gatewayResolverByCategoryAdaptiveGroups(filter: AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayResolverByCategoryAdaptiveGroupsOrderBy!]): [AccountGatewayResolverByCategoryAdaptiveGroups!]!
+  # Total time spent on executing firewall rules at the edge
+  gatewayResolverByRuleExecutionPerformanceAdaptiveGroups(filter: AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsOrderBy!]): [AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroups!]!
   # BETA - Aggregate counts of Gateway Resolver queries with adaptive sampling
   gatewayResolverQueriesAdaptiveGroups(filter: AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayResolverQueriesAdaptiveGroupsOrderBy!]): [AccountGatewayResolverQueriesAdaptiveGroups!]!
   # Daily rollups of request data
@@ -1911,6 +1914,8 @@ type AccountD1AnalyticsAdaptiveGroups {
 }
 
 type AccountD1AnalyticsAdaptiveGroupsAvg {
+  # The total number of bytes in the response, including all returned rows and metadata (average/mean).
+  queryBatchResponseBytes: float64!
   # Query batch response time in milliseconds (average/mean).
   queryBatchTimeMs: float64!
   # The average value used for sample interval
@@ -1988,6 +1993,10 @@ input AccountD1AnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountD1AnalyticsAdaptiveGroupsOrderBy {
+  # avg(queryBatchResponseBytes) ascending
+  avg_queryBatchResponseBytes_ASC
+  # avg(queryBatchResponseBytes) descending
+  avg_queryBatchResponseBytes_DESC
   # avg(queryBatchTimeMs) ascending
   avg_queryBatchTimeMs_ASC
   # avg(queryBatchTimeMs) descending
@@ -2024,6 +2033,18 @@ enum AccountD1AnalyticsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # quantiles(queryBatchResponseBytesP50) ascending
+  quantiles_queryBatchResponseBytesP50_ASC
+  # quantiles(queryBatchResponseBytesP50) descending
+  quantiles_queryBatchResponseBytesP50_DESC
+  # quantiles(queryBatchResponseBytesP90) ascending
+  quantiles_queryBatchResponseBytesP90_ASC
+  # quantiles(queryBatchResponseBytesP90) descending
+  quantiles_queryBatchResponseBytesP90_DESC
+  # quantiles(queryBatchTimeMsP50) ascending
+  quantiles_queryBatchTimeMsP50_ASC
+  # quantiles(queryBatchTimeMsP50) descending
+  quantiles_queryBatchTimeMsP50_DESC
   # quantiles(queryBatchTimeMsP90) ascending
   quantiles_queryBatchTimeMsP90_ASC
   # quantiles(queryBatchTimeMsP90) descending
@@ -2043,6 +2064,12 @@ enum AccountD1AnalyticsAdaptiveGroupsOrderBy {
 }
 
 type AccountD1AnalyticsAdaptiveGroupsQuantiles {
+  # The total number of bytes in the response, including all returned rows and metadata (50th percentile).
+  queryBatchResponseBytesP50: float64!
+  # The total number of bytes in the response, including all returned rows and metadata (90th percentile).
+  queryBatchResponseBytesP90: float64!
+  # Query batch response time in milliseconds (50th percentile).
+  queryBatchTimeMsP50: float64!
   # Query batch response time in milliseconds (90th percentile).
   queryBatchTimeMsP90: float64!
 }
@@ -8076,6 +8103,8 @@ type AccountGatewayL4SessionsAdaptiveGroups {
 type AccountGatewayL4SessionsAdaptiveGroupsDimensions {
   # action taken by gateway
   action: string!
+  # Colo Code of edge server
+  coloCode: string!
   # Datetime that the session was started
   datetime: Time!
   # Datetime that the session was started truncated to hours
@@ -8086,6 +8115,8 @@ type AccountGatewayL4SessionsAdaptiveGroupsDimensions {
   destinationIp: string!
   # The destination port for the session
   destinationPort: uint16!
+  # The detected protocol of network traffic
+  detectedProtocol: string!
   # The device ID of the gateway user who initiated the session
   deviceId: string!
   # The email address of the gateway user who initiated the session
@@ -8117,6 +8148,16 @@ input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
   action_neq: string
   action_notin: [string!]
   action_notlike: string
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
   datetime: Time
   datetimeHour: Time
   datetimeHour_geq: Time
@@ -8159,6 +8200,16 @@ input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
   destinationPort_lt: uint16
   destinationPort_neq: uint16
   destinationPort_notin: [uint16!]
+  detectedProtocol: string
+  detectedProtocol_geq: string
+  detectedProtocol_gt: string
+  detectedProtocol_in: [string!]
+  detectedProtocol_leq: string
+  detectedProtocol_like: string
+  detectedProtocol_lt: string
+  detectedProtocol_neq: string
+  detectedProtocol_notin: [string!]
+  detectedProtocol_notlike: string
   deviceId: string
   deviceId_geq: string
   deviceId_gt: string
@@ -8242,6 +8293,10 @@ enum AccountGatewayL4SessionsAdaptiveGroupsOrderBy {
   action_ASC
   # action descending
   action_DESC
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -8266,6 +8321,10 @@ enum AccountGatewayL4SessionsAdaptiveGroupsOrderBy {
   destinationPort_ASC
   # destinationPort descending
   destinationPort_DESC
+  # detectedProtocol ascending
+  detectedProtocol_ASC
+  # detectedProtocol descending
+  detectedProtocol_DESC
   # deviceId ascending
   deviceId_ASC
   # deviceId descending
@@ -8672,6 +8731,8 @@ type AccountGatewayL7RequestsAdaptiveGroups {
 type AccountGatewayL7RequestsAdaptiveGroupsDimensions {
   # action taken by gateway
   action: string!
+  # Colo Code of edge server
+  coloCode: string!
   # Datetime that the request happened
   datetime: Time!
   # Datetime that the request happened truncated to hours
@@ -8709,6 +8770,16 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   action_neq: string
   action_notin: [string!]
   action_notlike: string
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
   datetime: Time
   datetimeHour: Time
   datetimeHour_geq: Time
@@ -8816,6 +8887,10 @@ enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
   action_ASC
   # action descending
   action_DESC
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -8973,6 +9048,126 @@ enum AccountGatewayResolverByCategoryAdaptiveGroupsOrderBy {
   resolverDecision_ASC
   # resolverDecision descending
   resolverDecision_DESC
+}
+
+# Total time spent on executing firewall rules at the edge
+type AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsAvg
+  # The number of Gateway Resolver queries
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsDimensions
+  # Maximum execution time
+  max: AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsMax
+  # Quantiles of a rule execution performance
+  quantiles: AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsQuantiles
+}
+
+type AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsDimensions {
+  # Request timestamp
+  datetime: Time!
+  # Request timestamp month
+  datetimeMonth: Time!
+}
+
+input AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsFilter_InputObject {
+  AND: [AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsFilter_InputObject!]
+  datetime: Time
+  datetimeMonth: Time
+  datetimeMonth_geq: Time
+  datetimeMonth_gt: Time
+  datetimeMonth_in: [Time!]
+  datetimeMonth_leq: Time
+  datetimeMonth_lt: Time
+  datetimeMonth_neq: Time
+  datetimeMonth_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+}
+
+type AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsMax {
+  # Maximum execution time
+  executionTime: float64!
+}
+
+enum AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeMonth ascending
+  datetimeMonth_ASC
+  # datetimeMonth descending
+  datetimeMonth_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # max(executionTime) ascending
+  max_executionTime_ASC
+  # max(executionTime) descending
+  max_executionTime_DESC
+  # quantiles(executionTimeMsP25) ascending
+  quantiles_executionTimeMsP25_ASC
+  # quantiles(executionTimeMsP25) descending
+  quantiles_executionTimeMsP25_DESC
+  # quantiles(executionTimeMsP50) ascending
+  quantiles_executionTimeMsP50_ASC
+  # quantiles(executionTimeMsP50) descending
+  quantiles_executionTimeMsP50_DESC
+  # quantiles(executionTimeMsP75) ascending
+  quantiles_executionTimeMsP75_ASC
+  # quantiles(executionTimeMsP75) descending
+  quantiles_executionTimeMsP75_DESC
+  # quantiles(executionTimeMsP90) ascending
+  quantiles_executionTimeMsP90_ASC
+  # quantiles(executionTimeMsP90) descending
+  quantiles_executionTimeMsP90_DESC
+  # quantiles(executionTimeMsP95) ascending
+  quantiles_executionTimeMsP95_ASC
+  # quantiles(executionTimeMsP95) descending
+  quantiles_executionTimeMsP95_DESC
+  # quantiles(executionTimeMsP98) ascending
+  quantiles_executionTimeMsP98_ASC
+  # quantiles(executionTimeMsP98) descending
+  quantiles_executionTimeMsP98_DESC
+  # quantiles(executionTimeMsP99) ascending
+  quantiles_executionTimeMsP99_ASC
+  # quantiles(executionTimeMsP99) descending
+  quantiles_executionTimeMsP99_DESC
+}
+
+type AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsQuantiles {
+  # Execution time performance of 25th percentile in milliseconds
+  executionTimeMsP25: float64!
+  # Execution time performance of 50th percentile in milliseconds
+  executionTimeMsP50: float64!
+  # Execution time performance of 75th percentile in milliseconds
+  executionTimeMsP75: float64!
+  # Execution time performance of 90th percentile in milliseconds
+  executionTimeMsP90: float64!
+  # Execution time performance of 95th percentile in milliseconds
+  executionTimeMsP95: float64!
+  # Execution time performance of 98th percentile in milliseconds
+  executionTimeMsP98: float64!
+  # Execution time performance of 99th percentile in milliseconds
+  executionTimeMsP99: float64!
 }
 
 # BETA - Aggregate counts of Gateway Resolver queries with adaptive sampling
@@ -18413,6 +18608,14 @@ type AccountMagicWANConnectorMetricsAdaptiveGroups {
 }
 
 type AccountMagicWANConnectorMetricsAdaptiveGroupsAvg {
+  # Average CPU load percentage
+  cpuLoadPercentage: float64!
+  # Average CPU temperature
+  cpuTemperature: float64!
+  # Average Disk usage percentage
+  diskUsagePercentage: float64!
+  # Average Memory usage percentage
+  memoryUsagePercentage: float64!
   # Rx Bitrate over 5 minutes
   rxBitrateFiveMinute: uint64!
   # Rx Bitrate over 1 minute
@@ -18432,6 +18635,7 @@ type AccountMagicWANConnectorMetricsAdaptiveGroupsAvg {
 }
 
 type AccountMagicWANConnectorMetricsAdaptiveGroupsDimensions {
+  # The date and time the event was recorded
   datetime: Time!
   # The date and time the event occurred at the edge truncated to a multiple of 5 minutes
   datetimeFiveMinutes: Time!
@@ -18510,6 +18714,22 @@ type AccountMagicWANConnectorMetricsAdaptiveGroupsMax {
 }
 
 enum AccountMagicWANConnectorMetricsAdaptiveGroupsOrderBy {
+  # avg(cpuLoadPercentage) ascending
+  avg_cpuLoadPercentage_ASC
+  # avg(cpuLoadPercentage) descending
+  avg_cpuLoadPercentage_DESC
+  # avg(cpuTemperature) ascending
+  avg_cpuTemperature_ASC
+  # avg(cpuTemperature) descending
+  avg_cpuTemperature_DESC
+  # avg(diskUsagePercentage) ascending
+  avg_diskUsagePercentage_ASC
+  # avg(diskUsagePercentage) descending
+  avg_diskUsagePercentage_DESC
+  # avg(memoryUsagePercentage) ascending
+  avg_memoryUsagePercentage_ASC
+  # avg(memoryUsagePercentage) descending
+  avg_memoryUsagePercentage_DESC
   # avg(rxBitrateFiveMinute) ascending
   avg_rxBitrateFiveMinute_ASC
   # avg(rxBitrateFiveMinute) descending
@@ -20161,6 +20381,8 @@ type AccountRumPageloadEventsAdaptiveGroupsAvg {
 }
 
 type AccountRumPageloadEventsAdaptiveGroupsDimensions {
+  # Indicates if the request is likely from a bot (non-human traffic). Returns 1 if from a bot, 0 otherwise.
+  bot: uint8!
   # Client country ISO 3166 alpha2 code
   countryName: string!
   # Signed Exchange enabled status
@@ -20202,6 +20424,14 @@ type AccountRumPageloadEventsAdaptiveGroupsDimensions {
 input AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject {
   AND: [AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject!]
+  bot: uint8
+  bot_geq: uint8
+  bot_gt: uint8
+  bot_in: bytes
+  bot_leq: uint8
+  bot_lt: uint8
+  bot_neq: uint8
+  bot_notin: bytes
   countryName: string
   countryName_geq: string
   countryName_gt: string
@@ -20385,6 +20615,10 @@ enum AccountRumPageloadEventsAdaptiveGroupsOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # bot ascending
+  bot_ASC
+  # bot descending
+  bot_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -20507,6 +20741,8 @@ type AccountRumPerformanceEventsAdaptiveGroupsAvg {
 }
 
 type AccountRumPerformanceEventsAdaptiveGroupsDimensions {
+  # Indicates if the request is likely from a bot (non-human traffic). Returns 1 if from a bot, 0 otherwise.
+  bot: uint8!
   # Client country ISO 3166 alpha2 code
   countryName: string!
   # Signed Exchange enabled status
@@ -20548,6 +20784,14 @@ type AccountRumPerformanceEventsAdaptiveGroupsDimensions {
 input AccountRumPerformanceEventsAdaptiveGroupsFilter_InputObject {
   AND: [AccountRumPerformanceEventsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountRumPerformanceEventsAdaptiveGroupsFilter_InputObject!]
+  bot: uint8
+  bot_geq: uint8
+  bot_gt: uint8
+  bot_in: bytes
+  bot_leq: uint8
+  bot_lt: uint8
+  bot_neq: uint8
+  bot_notin: bytes
   countryName: string
   countryName_geq: string
   countryName_gt: string
@@ -20767,6 +21011,10 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # bot ascending
+  bot_ASC
+  # bot descending
+  bot_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -21075,6 +21323,8 @@ type AccountRumPerformanceEventsAdaptiveGroupsSum {
 
 # Beta. RUM Web Vitals event metrics with adaptive sampling
 type AccountRumWebVitalsEventsAdaptive {
+  # Indicates if the request is likely from a bot (non-human traffic). Returns 1 if from a bot, 0 otherwise.
+  bot: uint8!
   # Client country ISO 3166 alpha2 code
   countryName: string!
   # Cumulative Layout Shift (Core Web Vitals) (-1 indicates N/A)
@@ -21130,6 +21380,14 @@ type AccountRumWebVitalsEventsAdaptive {
 input AccountRumWebVitalsEventsAdaptiveFilter_InputObject {
   AND: [AccountRumWebVitalsEventsAdaptiveFilter_InputObject!]
   OR: [AccountRumWebVitalsEventsAdaptiveFilter_InputObject!]
+  bot: uint8
+  bot_geq: uint8
+  bot_gt: uint8
+  bot_in: bytes
+  bot_leq: uint8
+  bot_lt: uint8
+  bot_neq: uint8
+  bot_notin: bytes
   countryName: string
   countryName_geq: string
   countryName_gt: string
@@ -21399,6 +21657,8 @@ type AccountRumWebVitalsEventsAdaptiveGroupsAvg {
 }
 
 type AccountRumWebVitalsEventsAdaptiveGroupsDimensions {
+  # Indicates if the request is likely from a bot (non-human traffic). Returns 1 if from a bot, 0 otherwise.
+  bot: uint8!
   # Client country ISO 3166 alpha2 code
   countryName: string!
   # DOM selector name of the largest layout shift
@@ -21464,6 +21724,14 @@ type AccountRumWebVitalsEventsAdaptiveGroupsDimensions {
 input AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject {
   AND: [AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject!]
+  bot: uint8
+  bot_geq: uint8
+  bot_gt: uint8
+  bot_in: bytes
+  bot_leq: uint8
+  bot_lt: uint8
+  bot_neq: uint8
+  bot_notin: bytes
   countryName: string
   countryName_geq: string
   countryName_gt: string
@@ -21827,6 +22095,10 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   avg_timeToFirstByte_ASC
   # avg(timeToFirstByte) descending
   avg_timeToFirstByte_DESC
+  # bot ascending
+  bot_ASC
+  # bot descending
+  bot_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -22326,6 +22598,10 @@ type AccountRumWebVitalsEventsAdaptiveGroupsSum {
 }
 
 enum AccountRumWebVitalsEventsAdaptiveOrderBy {
+  # bot ascending
+  bot_ASC
+  # bot descending
+  bot_DESC
   # countryName ascending
   countryName_ASC
   # countryName descending
@@ -22449,6 +22725,7 @@ type AccountSettings {
   gatewayL4UpstreamSessionsAdaptiveGroups: Settings!
   gatewayL7RequestsAdaptiveGroups: Settings!
   gatewayResolverByCategoryAdaptiveGroups: Settings!
+  gatewayResolverByRuleExecutionPerformanceAdaptiveGroups: Settings!
   gatewayResolverQueriesAdaptiveGroups: Settings!
   httpRequests1dGroups: Settings!
   httpRequests1hGroups: Settings!
@@ -36257,6 +36534,8 @@ type ZonePageShieldReportsAdaptiveGroupsAvg {
 type ZonePageShieldReportsAdaptiveGroupsDimensions {
   # policy action, log | allow
   action: string!
+  # csp directive e.g 'script-src'
+  cspDirective: string!
   date: Date!
   # The date and time the event occurred at the edge
   datetime: Time!
@@ -36297,6 +36576,16 @@ input ZonePageShieldReportsAdaptiveGroupsFilter_InputObject {
   action_neq: string
   action_notin: [string!]
   action_notlike: string
+  cspDirective: string
+  cspDirective_geq: string
+  cspDirective_gt: string
+  cspDirective_in: [string!]
+  cspDirective_leq: string
+  cspDirective_like: string
+  cspDirective_lt: string
+  cspDirective_neq: string
+  cspDirective_notin: [string!]
+  cspDirective_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -36428,6 +36717,10 @@ enum ZonePageShieldReportsAdaptiveGroupsOrderBy {
   count_ASC
   # count() descending
   count_DESC
+  # cspDirective ascending
+  cspDirective_ASC
+  # cspDirective descending
+  cspDirective_DESC
   # date ascending
   date_ASC
   # date descending
