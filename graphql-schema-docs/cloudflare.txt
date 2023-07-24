@@ -75,6 +75,8 @@ Zone-level datasets:
 * cacheReserveStorageAdaptiveGroups
 * dmarcReportsAdaptive
 * dmarcReportsSourcesAdaptiveGroups
+* dnsAnalyticsAdaptive
+* dnsAnalyticsAdaptiveGroups
 * emailRoutingAdaptive
 * emailRoutingAdaptiveGroups
 * firewallEventsAdaptive
@@ -762,6 +764,8 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
   mitigationSystem: string!
   # The action that was taken on the packet (possible values: pass, drop)
   outcome: string!
+  # IP prefix tag associated with the packet
+  prefixTag: string!
   # ABR sample interval
   sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
@@ -1293,6 +1297,16 @@ input AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   outcome_neq: string
   outcome_notin: [string!]
   outcome_notlike: string
+  prefixTag: string
+  prefixTag_geq: string
+  prefixTag_gt: string
+  prefixTag_in: [string!]
+  prefixTag_leq: string
+  prefixTag_like: string
+  prefixTag_lt: string
+  prefixTag_neq: string
+  prefixTag_notin: [string!]
+  prefixTag_notlike: string
   sampleInterval: uint32
   sampleInterval_geq: uint32
   sampleInterval_gt: uint32
@@ -1778,6 +1792,10 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   outcome_ASC
   # outcome descending
   outcome_DESC
+  # prefixTag ascending
+  prefixTag_ASC
+  # prefixTag descending
+  prefixTag_DESC
   # sampleInterval ascending
   sampleInterval_ASC
   # sampleInterval descending
@@ -2537,6 +2555,8 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions {
   mitigationScope: string!
   # The action that was taken on the packet (possible values: pass, drop)
   outcome: string!
+  # IP prefix tag associated with the packet
+  prefixTag: string!
   # State of the packet in the context of the protocol, if available
   protocolState: string!
   # Unique identifier of the rule that matched the packet, if any
@@ -3098,6 +3118,16 @@ input AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   outcome_neq: string
   outcome_notin: [string!]
   outcome_notlike: string
+  prefixTag: string
+  prefixTag_geq: string
+  prefixTag_gt: string
+  prefixTag_in: [string!]
+  prefixTag_leq: string
+  prefixTag_like: string
+  prefixTag_lt: string
+  prefixTag_neq: string
+  prefixTag_notin: [string!]
+  prefixTag_notlike: string
   protocolState: string
   protocolState_geq: string
   protocolState_gt: string
@@ -3641,6 +3671,10 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   outcome_ASC
   # outcome descending
   outcome_DESC
+  # prefixTag ascending
+  prefixTag_ASC
+  # prefixTag descending
+  prefixTag_DESC
   # protocolState ascending
   protocolState_ASC
   # protocolState descending
@@ -6616,6 +6650,8 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions {
   mitigationScope: string!
   # The action that was taken on the packet (possible values: pass, drop)
   outcome: string!
+  # IP prefix tag associated with the packet
+  prefixTag: string!
   # State of the packet in the context of the protocol, if available
   protocolState: string!
   # ABR sample interval
@@ -7149,6 +7185,16 @@ input AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   outcome_neq: string
   outcome_notin: [string!]
   outcome_notlike: string
+  prefixTag: string
+  prefixTag_geq: string
+  prefixTag_gt: string
+  prefixTag_in: [string!]
+  prefixTag_leq: string
+  prefixTag_like: string
+  prefixTag_lt: string
+  prefixTag_neq: string
+  prefixTag_notin: [string!]
+  prefixTag_notlike: string
   protocolState: string
   protocolState_geq: string
   protocolState_gt: string
@@ -7644,6 +7690,10 @@ enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
   outcome_ASC
   # outcome descending
   outcome_DESC
+  # prefixTag ascending
+  prefixTag_ASC
+  # prefixTag descending
+  prefixTag_DESC
   # protocolState ascending
   protocolState_ASC
   # protocolState descending
@@ -9189,6 +9239,8 @@ type AccountGatewayResolverQueriesAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # The uuid identifying the customer Location used when resolving
   locationId: string!
+  # Json array of indicator feed IDs for this query that matched rule
+  matchedIndicatorFeedIds: string!
   # Name of the query, e.g. one.dash.cloudflare.com
   queryName: string!
   # Name of the query in reverse order, e.g. com.cloudflare.dash.one
@@ -9246,6 +9298,16 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   locationId_neq: string
   locationId_notin: [string!]
   locationId_notlike: string
+  matchedIndicatorFeedIds: string
+  matchedIndicatorFeedIds_geq: string
+  matchedIndicatorFeedIds_gt: string
+  matchedIndicatorFeedIds_in: [string!]
+  matchedIndicatorFeedIds_leq: string
+  matchedIndicatorFeedIds_like: string
+  matchedIndicatorFeedIds_lt: string
+  matchedIndicatorFeedIds_neq: string
+  matchedIndicatorFeedIds_notin: [string!]
+  matchedIndicatorFeedIds_notlike: string
   queryName: string
   queryNameReversed: string
   queryNameReversed_geq: string
@@ -9311,6 +9373,10 @@ enum AccountGatewayResolverQueriesAdaptiveGroupsOrderBy {
   locationId_ASC
   # locationId descending
   locationId_DESC
+  # matchedIndicatorFeedIds ascending
+  matchedIndicatorFeedIds_ASC
+  # matchedIndicatorFeedIds descending
+  matchedIndicatorFeedIds_DESC
   # queryNameReversed ascending
   queryNameReversed_ASC
   # queryNameReversed descending
@@ -10614,6 +10680,8 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
 type AccountHttpRequestsAdaptiveGroups {
   # The average value used for sample interval
   avg: AccountHttpRequestsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountHttpRequestsAdaptiveGroupsConfidence!
   # The number of values for a metric per dimension
   count: uint64!
   # List of dimensions to group by
@@ -10634,6 +10702,15 @@ type AccountHttpRequestsAdaptiveGroupsAvg {
   # The average originResponseDuration, in milliseconds, excluding 0 values (i.e. cached ones)
   originResponseDurationMs: float64!
   sampleInterval: float64!
+}
+
+type AccountHttpRequestsAdaptiveGroupsConfidence {
+  # The number of values for a metric per dimension, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountHttpRequestsAdaptiveGroupsSumConfidence
 }
 
 type AccountHttpRequestsAdaptiveGroupsDimensions {
@@ -11655,6 +11732,11 @@ type AccountHttpRequestsAdaptiveGroupsSum {
   originResponseDurationMs: uint64!
   # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
   visits: uint64!
+}
+
+type AccountHttpRequestsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  edgeResponseBytes: Confidence!
 }
 
 enum AccountHttpRequestsAdaptiveOrderBy {
@@ -14273,6 +14355,8 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions {
   ipv6Identification: uint32!
   # The action that was taken on the packet (possible values: pass, drop)
   outcome: string!
+  # IP prefix tag associated with the packet
+  prefixTag: string!
   # Unique identifier of the rule that matched the packet, if any
   ruleId: string!
   # Unique identifier of the ruleset containing the rule that matched the packet, if any
@@ -14800,6 +14884,16 @@ input AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   outcome_neq: string
   outcome_notin: [string!]
   outcome_notlike: string
+  prefixTag: string
+  prefixTag_geq: string
+  prefixTag_gt: string
+  prefixTag_in: [string!]
+  prefixTag_leq: string
+  prefixTag_like: string
+  prefixTag_lt: string
+  prefixTag_neq: string
+  prefixTag_notin: [string!]
+  prefixTag_notlike: string
   ruleId: string
   ruleId_geq: string
   ruleId_gt: string
@@ -15311,6 +15405,10 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   outcome_ASC
   # outcome descending
   outcome_DESC
+  # prefixTag ascending
+  prefixTag_ASC
+  # prefixTag descending
+  prefixTag_DESC
   # ruleId ascending
   ruleId_ASC
   # ruleId descending
@@ -16965,6 +17063,8 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
   mitigationSystem: string!
   # The action that was taken on the packet (possible values: pass, drop)
   outcome: string!
+  # IP prefix tag associated with the packet
+  prefixTag: string!
   # ABR sample interval
   sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
@@ -17524,6 +17624,16 @@ input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   outcome_neq: string
   outcome_notin: [string!]
   outcome_notlike: string
+  prefixTag: string
+  prefixTag_geq: string
+  prefixTag_gt: string
+  prefixTag_in: [string!]
+  prefixTag_leq: string
+  prefixTag_like: string
+  prefixTag_lt: string
+  prefixTag_neq: string
+  prefixTag_notin: [string!]
+  prefixTag_notlike: string
   sampleInterval: uint32
   sampleInterval_geq: uint32
   sampleInterval_gt: uint32
@@ -18011,6 +18121,10 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   outcome_ASC
   # outcome descending
   outcome_DESC
+  # prefixTag ascending
+  prefixTag_ASC
+  # prefixTag descending
+  prefixTag_DESC
   # sampleInterval ascending
   sampleInterval_ASC
   # sampleInterval descending
@@ -22924,6 +23038,8 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions {
   mitigationSystem: string!
   # The action that was taken on the packet (possible values: pass, drop)
   outcome: string!
+  # IP prefix tag associated with the packet
+  prefixTag: string!
   # ABR sample interval
   sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
@@ -23443,6 +23559,16 @@ input AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   outcome_neq: string
   outcome_notin: [string!]
   outcome_notlike: string
+  prefixTag: string
+  prefixTag_geq: string
+  prefixTag_gt: string
+  prefixTag_in: [string!]
+  prefixTag_leq: string
+  prefixTag_like: string
+  prefixTag_lt: string
+  prefixTag_neq: string
+  prefixTag_notin: [string!]
+  prefixTag_notlike: string
   sampleInterval: uint32
   sampleInterval_geq: uint32
   sampleInterval_gt: uint32
@@ -23914,6 +24040,10 @@ enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
   outcome_ASC
   # outcome descending
   outcome_DESC
+  # prefixTag ascending
+  prefixTag_ASC
+  # prefixTag descending
+  prefixTag_DESC
   # sampleInterval ascending
   sampleInterval_ASC
   # sampleInterval descending
@@ -26721,6 +26851,19 @@ type AccountZeroTrustPrivateNetworkDiscoveryGroupsUniq {
   userIds: uint64!
 }
 
+type Confidence {
+  # Estimated value of this metric
+  estimate: float64!
+  # True if the confidence interval is valid, i.e. there is enough samples at low enough sample interval
+  isValid: bool!
+  # Lower bound of confidence interval
+  lower: float64!
+  # Number of samples that contributed to the estimate
+  sampleSize: int64!
+  # Upper bound of confidence interval
+  upper: float64!
+}
+
 # Mutations are not supported
 type Mutation {
   do(nothing: bool!): string!
@@ -26769,6 +26912,10 @@ type zone {
   dmarcReportsAdaptive(filter: ZoneDmarcReportsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneDmarcReportsAdaptiveOrderBy!]): [ZoneDmarcReportsAdaptive!]!
   # Aggregated dmarc reports by sources logs with adaptive sampling
   dmarcReportsSourcesAdaptiveGroups(filter: ZoneDmarcReportsSourcesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneDmarcReportsSourcesAdaptiveGroupsOrderBy!]): [ZoneDmarcReportsSourcesAdaptiveGroups!]!
+  # Analytics data for DNS queries
+  dnsAnalyticsAdaptive(filter: ZoneDnsAnalyticsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneDnsAnalyticsAdaptiveOrderBy!]): [ZoneDnsAnalyticsAdaptive!]!
+  # Analytics data for DNS queries
+  dnsAnalyticsAdaptiveGroups(filter: ZoneDnsAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneDnsAnalyticsAdaptiveGroupsOrderBy!]): [ZoneDnsAnalyticsAdaptiveGroups!]!
   # Beta. Raw email routing logs with adaptive sampling
   emailRoutingAdaptive(filter: ZoneEmailRoutingAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneEmailRoutingAdaptiveOrderBy!]): [ZoneEmailRoutingAdaptive!]!
   # Beta. Aggregated email routing logs with adaptive sampling
@@ -28660,6 +28807,463 @@ type ZoneDmarcReportsSourcesAdaptiveGroupsSum {
 type ZoneDmarcReportsSourcesAdaptiveGroupsUniq {
   # Number of distinct IPs
   ipCount: uint64!
+}
+
+# Analytics data for DNS queries
+type ZoneDnsAnalyticsAdaptive {
+  # IATA airport code of the data center that processed the query
+  coloName: string!
+  # Internet Protocol version over which the query was received
+  ipVersion: uint8!
+  # Transport protocol over which the query was received
+  protocol: string!
+  # DNS query name without trailing dot
+  queryName: string!
+  # Size of the DNS query in bytes
+  querySize: uint16!
+  # DNS query type
+  queryType: string!
+  # Whether the DNS response was served from cache
+  responseCached: uint8!
+  # DNS response code
+  responseCode: string!
+  # Size of the DNS response in bytes
+  responseSize: uint16!
+  # Whether a stale DNS response was served from cache
+  responseStale: uint8!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # Time at which the query was received
+  timestamp: Time!
+  # Upstream server that the query was forwarded to
+  upstream: string!
+}
+
+input ZoneDnsAnalyticsAdaptiveFilter_InputObject {
+  AND: [ZoneDnsAnalyticsAdaptiveFilter_InputObject!]
+  OR: [ZoneDnsAnalyticsAdaptiveFilter_InputObject!]
+  coloName: string
+  coloName_geq: string
+  coloName_gt: string
+  coloName_in: [string!]
+  coloName_leq: string
+  coloName_like: string
+  coloName_lt: string
+  coloName_neq: string
+  coloName_notin: [string!]
+  coloName_notlike: string
+  ipVersion: uint8
+  ipVersion_geq: uint8
+  ipVersion_gt: uint8
+  ipVersion_in: bytes
+  ipVersion_leq: uint8
+  ipVersion_lt: uint8
+  ipVersion_neq: uint8
+  ipVersion_notin: bytes
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  queryName: string
+  queryName_geq: string
+  queryName_gt: string
+  queryName_in: [string!]
+  queryName_leq: string
+  queryName_like: string
+  queryName_lt: string
+  queryName_neq: string
+  queryName_notin: [string!]
+  queryName_notlike: string
+  querySize: uint16
+  querySize_geq: uint16
+  querySize_gt: uint16
+  querySize_in: [uint16!]
+  querySize_leq: uint16
+  querySize_lt: uint16
+  querySize_neq: uint16
+  querySize_notin: [uint16!]
+  queryType: string
+  queryType_geq: string
+  queryType_gt: string
+  queryType_in: [string!]
+  queryType_leq: string
+  queryType_like: string
+  queryType_lt: string
+  queryType_neq: string
+  queryType_notin: [string!]
+  queryType_notlike: string
+  responseCached: uint8
+  responseCached_geq: uint8
+  responseCached_gt: uint8
+  responseCached_in: bytes
+  responseCached_leq: uint8
+  responseCached_lt: uint8
+  responseCached_neq: uint8
+  responseCached_notin: bytes
+  responseCode: string
+  responseCode_geq: string
+  responseCode_gt: string
+  responseCode_in: [string!]
+  responseCode_leq: string
+  responseCode_like: string
+  responseCode_lt: string
+  responseCode_neq: string
+  responseCode_notin: [string!]
+  responseCode_notlike: string
+  responseSize: uint16
+  responseSize_geq: uint16
+  responseSize_gt: uint16
+  responseSize_in: [uint16!]
+  responseSize_leq: uint16
+  responseSize_lt: uint16
+  responseSize_neq: uint16
+  responseSize_notin: [uint16!]
+  responseStale: uint8
+  responseStale_geq: uint8
+  responseStale_gt: uint8
+  responseStale_in: bytes
+  responseStale_leq: uint8
+  responseStale_lt: uint8
+  responseStale_neq: uint8
+  responseStale_notin: bytes
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  timestamp: Time
+  timestamp_geq: Time
+  timestamp_gt: Time
+  timestamp_in: [Time!]
+  timestamp_leq: Time
+  timestamp_lt: Time
+  timestamp_neq: Time
+  timestamp_notin: [Time!]
+  upstream: string
+  upstream_geq: string
+  upstream_gt: string
+  upstream_in: [string!]
+  upstream_leq: string
+  upstream_like: string
+  upstream_lt: string
+  upstream_neq: string
+  upstream_notin: [string!]
+  upstream_notlike: string
+}
+
+# Analytics data for DNS queries
+type ZoneDnsAnalyticsAdaptiveGroups {
+  # Average of a metric per dimension
+  avg: ZoneDnsAnalyticsAdaptiveGroupsAvg
+  # Number of queries per dimension
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneDnsAnalyticsAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: ZoneDnsAnalyticsAdaptiveGroupsQuantiles
+}
+
+type ZoneDnsAnalyticsAdaptiveGroupsAvg {
+  # Average response time in microseconds
+  responseTimeUs: float64!
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type ZoneDnsAnalyticsAdaptiveGroupsDimensions {
+  # IATA airport code of the data center that processed the query
+  coloName: string!
+  # Internet Protocol version over which the query was received
+  ipVersion: uint8!
+  # Transport protocol over which the query was received
+  protocol: string!
+  # DNS query name without trailing dot
+  queryName: string!
+  # Size of the DNS query in bytes (in multiples of 16)
+  querySizeBucket: uint16!
+  # DNS query type
+  queryType: string!
+  # Whether the DNS response was served from cache
+  responseCached: uint8!
+  # DNS response code
+  responseCode: string!
+  # Size of the DNS response in bytes (in multiples of 16)
+  responseSizeBucket: uint16!
+  # Whether a stale DNS response was served from cache
+  responseStale: uint8!
+  # Time at which the query was received
+  timestamp: Time!
+  # Upstream server that the query was forwarded to
+  upstream: string!
+}
+
+input ZoneDnsAnalyticsAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneDnsAnalyticsAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneDnsAnalyticsAdaptiveGroupsFilter_InputObject!]
+  coloName: string
+  coloName_geq: string
+  coloName_gt: string
+  coloName_in: [string!]
+  coloName_leq: string
+  coloName_like: string
+  coloName_lt: string
+  coloName_neq: string
+  coloName_notin: [string!]
+  coloName_notlike: string
+  ipVersion: uint8
+  ipVersion_geq: uint8
+  ipVersion_gt: uint8
+  ipVersion_in: bytes
+  ipVersion_leq: uint8
+  ipVersion_lt: uint8
+  ipVersion_neq: uint8
+  ipVersion_notin: bytes
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  queryName: string
+  queryName_geq: string
+  queryName_gt: string
+  queryName_in: [string!]
+  queryName_leq: string
+  queryName_like: string
+  queryName_lt: string
+  queryName_neq: string
+  queryName_notin: [string!]
+  queryName_notlike: string
+  querySizeBucket: uint16
+  querySizeBucket_geq: uint16
+  querySizeBucket_gt: uint16
+  querySizeBucket_in: [uint16!]
+  querySizeBucket_leq: uint16
+  querySizeBucket_lt: uint16
+  querySizeBucket_neq: uint16
+  querySizeBucket_notin: [uint16!]
+  queryType: string
+  queryType_geq: string
+  queryType_gt: string
+  queryType_in: [string!]
+  queryType_leq: string
+  queryType_like: string
+  queryType_lt: string
+  queryType_neq: string
+  queryType_notin: [string!]
+  queryType_notlike: string
+  responseCached: uint8
+  responseCached_geq: uint8
+  responseCached_gt: uint8
+  responseCached_in: bytes
+  responseCached_leq: uint8
+  responseCached_lt: uint8
+  responseCached_neq: uint8
+  responseCached_notin: bytes
+  responseCode: string
+  responseCode_geq: string
+  responseCode_gt: string
+  responseCode_in: [string!]
+  responseCode_leq: string
+  responseCode_like: string
+  responseCode_lt: string
+  responseCode_neq: string
+  responseCode_notin: [string!]
+  responseCode_notlike: string
+  responseSizeBucket: uint16
+  responseSizeBucket_geq: uint16
+  responseSizeBucket_gt: uint16
+  responseSizeBucket_in: [uint16!]
+  responseSizeBucket_leq: uint16
+  responseSizeBucket_lt: uint16
+  responseSizeBucket_neq: uint16
+  responseSizeBucket_notin: [uint16!]
+  responseStale: uint8
+  responseStale_geq: uint8
+  responseStale_gt: uint8
+  responseStale_in: bytes
+  responseStale_leq: uint8
+  responseStale_lt: uint8
+  responseStale_neq: uint8
+  responseStale_notin: bytes
+  timestamp: Time
+  timestamp_geq: Time
+  timestamp_gt: Time
+  timestamp_in: [Time!]
+  timestamp_leq: Time
+  timestamp_lt: Time
+  timestamp_neq: Time
+  timestamp_notin: [Time!]
+  upstream: string
+  upstream_geq: string
+  upstream_gt: string
+  upstream_in: [string!]
+  upstream_leq: string
+  upstream_like: string
+  upstream_lt: string
+  upstream_neq: string
+  upstream_notin: [string!]
+  upstream_notlike: string
+}
+
+enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
+  # avg(responseTimeUs) ascending
+  avg_responseTimeUs_ASC
+  # avg(responseTimeUs) descending
+  avg_responseTimeUs_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # coloName ascending
+  coloName_ASC
+  # coloName descending
+  coloName_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # instanceCode ascending
+  instanceCode_ASC
+  # instanceCode descending
+  instanceCode_DESC
+  # ipVersion ascending
+  ipVersion_ASC
+  # ipVersion descending
+  ipVersion_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # quantiles(responseTimeUsP50) ascending
+  quantiles_responseTimeUsP50_ASC
+  # quantiles(responseTimeUsP50) descending
+  quantiles_responseTimeUsP50_DESC
+  # quantiles(responseTimeUsP90) ascending
+  quantiles_responseTimeUsP90_ASC
+  # quantiles(responseTimeUsP90) descending
+  quantiles_responseTimeUsP90_DESC
+  # quantiles(responseTimeUsP99) ascending
+  quantiles_responseTimeUsP99_ASC
+  # quantiles(responseTimeUsP99) descending
+  quantiles_responseTimeUsP99_DESC
+  # queryName ascending
+  queryName_ASC
+  # queryName descending
+  queryName_DESC
+  # querySizeBucket ascending
+  querySizeBucket_ASC
+  # querySizeBucket descending
+  querySizeBucket_DESC
+  # queryType ascending
+  queryType_ASC
+  # queryType descending
+  queryType_DESC
+  # responseCached ascending
+  responseCached_ASC
+  # responseCached descending
+  responseCached_DESC
+  # responseCode ascending
+  responseCode_ASC
+  # responseCode descending
+  responseCode_DESC
+  # responseSizeBucket ascending
+  responseSizeBucket_ASC
+  # responseSizeBucket descending
+  responseSizeBucket_DESC
+  # responseStale ascending
+  responseStale_ASC
+  # responseStale descending
+  responseStale_DESC
+  # timestamp ascending
+  timestamp_ASC
+  # timestamp descending
+  timestamp_DESC
+  # upstream ascending
+  upstream_ASC
+  # upstream descending
+  upstream_DESC
+}
+
+type ZoneDnsAnalyticsAdaptiveGroupsQuantiles {
+  # 50th percentile response time in microseconds (median)
+  responseTimeUsP50: float64!
+  # 90th percentile response time in microseconds
+  responseTimeUsP90: float64!
+  # 99th percentile response time in microseconds
+  responseTimeUsP99: float64!
+}
+
+enum ZoneDnsAnalyticsAdaptiveOrderBy {
+  # coloName ascending
+  coloName_ASC
+  # coloName descending
+  coloName_DESC
+  # instanceCode ascending
+  instanceCode_ASC
+  # instanceCode descending
+  instanceCode_DESC
+  # ipVersion ascending
+  ipVersion_ASC
+  # ipVersion descending
+  ipVersion_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # queryName ascending
+  queryName_ASC
+  # queryName descending
+  queryName_DESC
+  # querySize ascending
+  querySize_ASC
+  # querySize descending
+  querySize_DESC
+  # queryType ascending
+  queryType_ASC
+  # queryType descending
+  queryType_DESC
+  # responseCached ascending
+  responseCached_ASC
+  # responseCached descending
+  responseCached_DESC
+  # responseCode ascending
+  responseCode_ASC
+  # responseCode descending
+  responseCode_DESC
+  # responseSize ascending
+  responseSize_ASC
+  # responseSize descending
+  responseSize_DESC
+  # responseStale ascending
+  responseStale_ASC
+  # responseStale descending
+  responseStale_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # timestamp ascending
+  timestamp_ASC
+  # timestamp descending
+  timestamp_DESC
+  # upstream ascending
+  upstream_ASC
+  # upstream descending
+  upstream_DESC
 }
 
 # Beta. Raw email routing logs with adaptive sampling
@@ -33566,6 +34170,8 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
 type ZoneHttpRequestsAdaptiveGroups {
   # The average value used for sample interval
   avg: ZoneHttpRequestsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): ZoneHttpRequestsAdaptiveGroupsConfidence!
   # The number of values for a metric per dimension
   count: uint64!
   # List of dimensions to group by
@@ -33586,6 +34192,15 @@ type ZoneHttpRequestsAdaptiveGroupsAvg {
   # The average originResponseDuration, in milliseconds, excluding 0 values (i.e. cached ones)
   originResponseDurationMs: float64!
   sampleInterval: float64!
+}
+
+type ZoneHttpRequestsAdaptiveGroupsConfidence {
+  # The number of values for a metric per dimension, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: ZoneHttpRequestsAdaptiveGroupsSumConfidence
 }
 
 type ZoneHttpRequestsAdaptiveGroupsDimensions {
@@ -34591,6 +35206,11 @@ type ZoneHttpRequestsAdaptiveGroupsSum {
   originResponseDurationMs: uint64!
   # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
   visits: uint64!
+}
+
+type ZoneHttpRequestsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  edgeResponseBytes: Confidence!
 }
 
 enum ZoneHttpRequestsAdaptiveOrderBy {
@@ -36785,6 +37405,8 @@ type ZoneSettings {
   cacheReserveStorageAdaptiveGroups: Settings!
   dmarcReportsAdaptive: Settings!
   dmarcReportsSourcesAdaptiveGroups: Settings!
+  dnsAnalyticsAdaptive: Settings!
+  dnsAnalyticsAdaptiveGroups: Settings!
   emailRoutingAdaptive: Settings!
   emailRoutingAdaptiveGroups: Settings!
   firewallEventsAdaptive: Settings!
