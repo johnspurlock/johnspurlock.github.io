@@ -4806,6 +4806,8 @@ type AccountFirewallEventsAdaptive {
   action: string!
   # API Gateway endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
+  # API Gateway host matched at the edge
+  apiGatewayMatchedHost: string!
   # The final score originated from bot management detections.
   botScore: uint8!
   # Name of the source detection which generated the bot management score.
@@ -4944,6 +4946,16 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   apiGatewayMatchedEndpoint_neq: string
   apiGatewayMatchedEndpoint_notin: [string!]
   apiGatewayMatchedEndpoint_notlike: string
+  apiGatewayMatchedHost: string
+  apiGatewayMatchedHost_geq: string
+  apiGatewayMatchedHost_gt: string
+  apiGatewayMatchedHost_in: [string!]
+  apiGatewayMatchedHost_leq: string
+  apiGatewayMatchedHost_like: string
+  apiGatewayMatchedHost_lt: string
+  apiGatewayMatchedHost_neq: string
+  apiGatewayMatchedHost_notin: [string!]
+  apiGatewayMatchedHost_notlike: string
   botScore: uint8
   botScoreSrcName: string
   botScoreSrcName_geq: string
@@ -5461,6 +5473,8 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   action: string!
   # API Gateway endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
+  # API Gateway host matched at the edge
+  apiGatewayMatchedHost: string!
   # The final score originated from bot management detections.
   botScore: uint8!
   # Name of the source detection which generated the bot management score.
@@ -5587,6 +5601,16 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedEndpoint_neq: string
   apiGatewayMatchedEndpoint_notin: [string!]
   apiGatewayMatchedEndpoint_notlike: string
+  apiGatewayMatchedHost: string
+  apiGatewayMatchedHost_geq: string
+  apiGatewayMatchedHost_gt: string
+  apiGatewayMatchedHost_in: [string!]
+  apiGatewayMatchedHost_leq: string
+  apiGatewayMatchedHost_like: string
+  apiGatewayMatchedHost_lt: string
+  apiGatewayMatchedHost_neq: string
+  apiGatewayMatchedHost_notin: [string!]
+  apiGatewayMatchedHost_notlike: string
   botScore: uint8
   botScoreSrcName: string
   botScoreSrcName_geq: string
@@ -6050,6 +6074,10 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   apiGatewayMatchedEndpoint_ASC
   # apiGatewayMatchedEndpoint descending
   apiGatewayMatchedEndpoint_DESC
+  # apiGatewayMatchedHost ascending
+  apiGatewayMatchedHost_ASC
+  # apiGatewayMatchedHost descending
+  apiGatewayMatchedHost_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -6276,6 +6304,10 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   apiGatewayMatchedEndpoint_ASC
   # apiGatewayMatchedEndpoint descending
   apiGatewayMatchedEndpoint_DESC
+  # apiGatewayMatchedHost ascending
+  apiGatewayMatchedHost_ASC
+  # apiGatewayMatchedHost descending
+  apiGatewayMatchedHost_DESC
   # botScoreSrcName ascending
   botScoreSrcName_ASC
   # botScoreSrcName descending
@@ -27344,6 +27376,9 @@ type ZoneApiRequestSequencesGroupsAggMax {
 
 type ZoneApiRequestSequencesGroupsDimensions {
   # The host associated with this sequence of endpoint operations
+  apiHost: string!
+  # The host associated with this sequence of endpoint operations
+  @Deprecated
   clientRequestHTTPHost: string!
   # Sequence generation timeslot, truncated to 10 minutes
   datetime: Time!
@@ -27354,6 +27389,16 @@ type ZoneApiRequestSequencesGroupsDimensions {
 input ZoneApiRequestSequencesGroupsFilter_InputObject {
   AND: [ZoneApiRequestSequencesGroupsFilter_InputObject!]
   OR: [ZoneApiRequestSequencesGroupsFilter_InputObject!]
+  apiHost: string
+  apiHost_geq: string
+  apiHost_gt: string
+  apiHost_in: [string!]
+  apiHost_leq: string
+  apiHost_like: string
+  apiHost_lt: string
+  apiHost_neq: string
+  apiHost_notin: [string!]
+  apiHost_notlike: string
   clientRequestHTTPHost: string
   clientRequestHTTPHost_geq: string
   clientRequestHTTPHost_gt: string
@@ -27411,6 +27456,10 @@ enum ZoneApiRequestSequencesGroupsOrderBy {
   aggMax_timeLastUpdated_ASC
   # aggMax(timeLastUpdated) descending
   aggMax_timeLastUpdated_DESC
+  # apiHost ascending
+  apiHost_ASC
+  # apiHost descending
+  apiHost_DESC
   # clientRequestHTTPHost ascending
   clientRequestHTTPHost_ASC
   # clientRequestHTTPHost descending
@@ -29709,6 +29758,8 @@ type ZoneFirewallEventsAdaptive {
   action: string!
   # API Gateway endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
+  # API Gateway host matched at the edge
+  apiGatewayMatchedHost: string!
   # The final score originated from bot management detections.
   botScore: uint8!
   # Name of the source detection which generated the bot management score.
@@ -29839,6 +29890,8 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsAvg {
 type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   # API Gateway endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
+  # API Gateway host matched at the edge
+  apiGatewayMatchedHost: string!
   # The final score originated from bot management detections.
   botScore: uint8!
   # Name of the source detection which generated the bot management score.
@@ -29907,6 +29960,16 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   apiGatewayMatchedEndpoint_neq: string
   apiGatewayMatchedEndpoint_notin: [string!]
   apiGatewayMatchedEndpoint_notlike: string
+  apiGatewayMatchedHost: string
+  apiGatewayMatchedHost_geq: string
+  apiGatewayMatchedHost_gt: string
+  apiGatewayMatchedHost_in: [string!]
+  apiGatewayMatchedHost_leq: string
+  apiGatewayMatchedHost_like: string
+  apiGatewayMatchedHost_lt: string
+  apiGatewayMatchedHost_neq: string
+  apiGatewayMatchedHost_notin: [string!]
+  apiGatewayMatchedHost_notlike: string
   botScore: uint8
   botScoreSrcName: string
   botScoreSrcName_geq: string
@@ -30356,6 +30419,10 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   apiGatewayMatchedEndpoint_ASC
   # apiGatewayMatchedEndpoint descending
   apiGatewayMatchedEndpoint_DESC
+  # apiGatewayMatchedHost ascending
+  apiGatewayMatchedHost_ASC
+  # apiGatewayMatchedHost descending
+  apiGatewayMatchedHost_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -30473,6 +30540,16 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   apiGatewayMatchedEndpoint_neq: string
   apiGatewayMatchedEndpoint_notin: [string!]
   apiGatewayMatchedEndpoint_notlike: string
+  apiGatewayMatchedHost: string
+  apiGatewayMatchedHost_geq: string
+  apiGatewayMatchedHost_gt: string
+  apiGatewayMatchedHost_in: [string!]
+  apiGatewayMatchedHost_leq: string
+  apiGatewayMatchedHost_like: string
+  apiGatewayMatchedHost_lt: string
+  apiGatewayMatchedHost_neq: string
+  apiGatewayMatchedHost_notin: [string!]
+  apiGatewayMatchedHost_notlike: string
   botScore: uint8
   botScoreSrcName: string
   botScoreSrcName_geq: string
@@ -30980,6 +31057,8 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   action: string!
   # API Gateway endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
+  # API Gateway host matched at the edge
+  apiGatewayMatchedHost: string!
   # The final score originated from bot management detections.
   botScore: uint8!
   # Name of the source detection which generated the bot management score.
@@ -31104,6 +31183,16 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedEndpoint_neq: string
   apiGatewayMatchedEndpoint_notin: [string!]
   apiGatewayMatchedEndpoint_notlike: string
+  apiGatewayMatchedHost: string
+  apiGatewayMatchedHost_geq: string
+  apiGatewayMatchedHost_gt: string
+  apiGatewayMatchedHost_in: [string!]
+  apiGatewayMatchedHost_leq: string
+  apiGatewayMatchedHost_like: string
+  apiGatewayMatchedHost_lt: string
+  apiGatewayMatchedHost_neq: string
+  apiGatewayMatchedHost_notin: [string!]
+  apiGatewayMatchedHost_notlike: string
   botScore: uint8
   botScoreSrcName: string
   botScoreSrcName_geq: string
@@ -31557,6 +31646,10 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   apiGatewayMatchedEndpoint_ASC
   # apiGatewayMatchedEndpoint descending
   apiGatewayMatchedEndpoint_DESC
+  # apiGatewayMatchedHost ascending
+  apiGatewayMatchedHost_ASC
+  # apiGatewayMatchedHost descending
+  apiGatewayMatchedHost_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -31779,6 +31872,10 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   apiGatewayMatchedEndpoint_ASC
   # apiGatewayMatchedEndpoint descending
   apiGatewayMatchedEndpoint_DESC
+  # apiGatewayMatchedHost ascending
+  apiGatewayMatchedHost_ASC
+  # apiGatewayMatchedHost descending
+  apiGatewayMatchedHost_DESC
   # botScoreSrcName ascending
   botScoreSrcName_ASC
   # botScoreSrcName descending

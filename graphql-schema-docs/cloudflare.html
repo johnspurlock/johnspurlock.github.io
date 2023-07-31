@@ -4704,6 +4704,8 @@
 &nbsp;&nbsp;action: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># API Gateway endpoint matched at the edge</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># API Gateway host matched at the edge</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The final score originated from bot management detections.</span><br />
 &nbsp;&nbsp;botScore: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Name of the source detection which generated the bot management score.</span><br />
@@ -4842,6 +4844,16 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;botScore: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;botScoreSrcName: <a href="#string">string</a><br />
 &nbsp;&nbsp;botScoreSrcName_geq: <a href="#string">string</a><br />
@@ -5359,6 +5371,8 @@
 &nbsp;&nbsp;action: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># API Gateway endpoint matched at the edge</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># API Gateway host matched at the edge</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The final score originated from bot management detections.</span><br />
 &nbsp;&nbsp;botScore: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Name of the source detection which generated the bot management score.</span><br />
@@ -5485,6 +5499,16 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;botScore: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;botScoreSrcName: <a href="#string">string</a><br />
 &nbsp;&nbsp;botScoreSrcName_geq: <a href="#string">string</a><br />
@@ -5948,6 +5972,10 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_ASC<br />
 &nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint descending</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_DESC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost ascending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_ASC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost descending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(sampleInterval) ascending</span><br />
 &nbsp;&nbsp;avg_sampleInterval_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(sampleInterval) descending</span><br />
@@ -6174,6 +6202,10 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_ASC<br />
 &nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint descending</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_DESC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost ascending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_ASC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost descending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_DESC<br />
 &nbsp;&nbsp;<span class="c"># botScoreSrcName ascending</span><br />
 &nbsp;&nbsp;botScoreSrcName_ASC<br />
 &nbsp;&nbsp;<span class="c"># botScoreSrcName descending</span><br />
@@ -27242,6 +27274,9 @@
 <br />
 <span class="k">type</span> <a id="ZoneApiRequestSequencesGroupsDimensions" href="#ZoneApiRequestSequencesGroupsDimensions">ZoneApiRequestSequencesGroupsDimensions</a> {<br />
 &nbsp;&nbsp;<span class="c"># The host associated with this sequence of endpoint operations</span><br />
+&nbsp;&nbsp;apiHost: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The host associated with this sequence of endpoint operations</span><br />
+&nbsp;&nbsp;@Deprecated<br />
 &nbsp;&nbsp;clientRequestHTTPHost: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Sequence generation timeslot, truncated to 10 minutes</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
@@ -27252,6 +27287,16 @@
 <span class="k">input</span> <a id="ZoneApiRequestSequencesGroupsFilter_InputObject" href="#ZoneApiRequestSequencesGroupsFilter_InputObject">ZoneApiRequestSequencesGroupsFilter_InputObject</a> {<br />
 &nbsp;&nbsp;AND: <a href="#ZoneApiRequestSequencesGroupsFilter_InputObject">[ZoneApiRequestSequencesGroupsFilter_InputObject!]</a><br />
 &nbsp;&nbsp;OR: <a href="#ZoneApiRequestSequencesGroupsFilter_InputObject">[ZoneApiRequestSequencesGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;apiHost: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiHost_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiHost_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiHost_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiHost_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiHost_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiHost_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiHost_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiHost_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiHost_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientRequestHTTPHost: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientRequestHTTPHost_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientRequestHTTPHost_gt: <a href="#string">string</a><br />
@@ -27309,6 +27354,10 @@
 &nbsp;&nbsp;aggMax_timeLastUpdated_ASC<br />
 &nbsp;&nbsp;<span class="c"># aggMax(timeLastUpdated) descending</span><br />
 &nbsp;&nbsp;aggMax_timeLastUpdated_DESC<br />
+&nbsp;&nbsp;<span class="c"># apiHost ascending</span><br />
+&nbsp;&nbsp;apiHost_ASC<br />
+&nbsp;&nbsp;<span class="c"># apiHost descending</span><br />
+&nbsp;&nbsp;apiHost_DESC<br />
 &nbsp;&nbsp;<span class="c"># clientRequestHTTPHost ascending</span><br />
 &nbsp;&nbsp;clientRequestHTTPHost_ASC<br />
 &nbsp;&nbsp;<span class="c"># clientRequestHTTPHost descending</span><br />
@@ -29607,6 +29656,8 @@
 &nbsp;&nbsp;action: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># API Gateway endpoint matched at the edge</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># API Gateway host matched at the edge</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The final score originated from bot management detections.</span><br />
 &nbsp;&nbsp;botScore: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Name of the source detection which generated the bot management score.</span><br />
@@ -29737,6 +29788,8 @@
 <span class="k">type</span> <a id="ZoneFirewallEventsAdaptiveByTimeGroupsDimensions" href="#ZoneFirewallEventsAdaptiveByTimeGroupsDimensions">ZoneFirewallEventsAdaptiveByTimeGroupsDimensions</a> {<br />
 &nbsp;&nbsp;<span class="c"># API Gateway endpoint matched at the edge</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># API Gateway host matched at the edge</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The final score originated from bot management detections.</span><br />
 &nbsp;&nbsp;botScore: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Name of the source detection which generated the bot management score.</span><br />
@@ -29805,6 +29858,16 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;botScore: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;botScoreSrcName: <a href="#string">string</a><br />
 &nbsp;&nbsp;botScoreSrcName_geq: <a href="#string">string</a><br />
@@ -30254,6 +30317,10 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_ASC<br />
 &nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint descending</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_DESC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost ascending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_ASC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost descending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(sampleInterval) ascending</span><br />
 &nbsp;&nbsp;avg_sampleInterval_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(sampleInterval) descending</span><br />
@@ -30371,6 +30438,16 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;botScore: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;botScoreSrcName: <a href="#string">string</a><br />
 &nbsp;&nbsp;botScoreSrcName_geq: <a href="#string">string</a><br />
@@ -30878,6 +30955,8 @@
 &nbsp;&nbsp;action: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># API Gateway endpoint matched at the edge</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># API Gateway host matched at the edge</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The final score originated from bot management detections.</span><br />
 &nbsp;&nbsp;botScore: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Name of the source detection which generated the bot management score.</span><br />
@@ -31002,6 +31081,16 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;botScore: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;botScoreSrcName: <a href="#string">string</a><br />
 &nbsp;&nbsp;botScoreSrcName_geq: <a href="#string">string</a><br />
@@ -31455,6 +31544,10 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_ASC<br />
 &nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint descending</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_DESC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost ascending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_ASC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost descending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(sampleInterval) ascending</span><br />
 &nbsp;&nbsp;avg_sampleInterval_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(sampleInterval) descending</span><br />
@@ -31677,6 +31770,10 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_ASC<br />
 &nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint descending</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_DESC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost ascending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_ASC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost descending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_DESC<br />
 &nbsp;&nbsp;<span class="c"># botScoreSrcName ascending</span><br />
 &nbsp;&nbsp;botScoreSrcName_ASC<br />
 &nbsp;&nbsp;<span class="c"># botScoreSrcName descending</span><br />
