@@ -2125,6 +2125,10 @@ type AccountDosdAttackAnalyticsGroups {
   destinationIp: string!
   # Fixed destination port used by attack traffic, if any
   destinationPort: uint16!
+  # Sum of bits dropped during the attack
+  droppedBits: uint64!
+  # Sum of packets dropped during the attack
+  droppedPackets: uint64!
   # Date and time that the attack ended; not available for ongoing attacks
   endDatetime: Time!
   # Fixed protocol used by attack traffic, if any
@@ -2218,6 +2222,22 @@ input AccountDosdAttackAnalyticsGroupsFilter_InputObject {
   destinationPort_lt: uint16
   destinationPort_neq: uint16
   destinationPort_notin: [uint16!]
+  droppedBits: uint64
+  droppedBits_geq: uint64
+  droppedBits_gt: uint64
+  droppedBits_in: [uint64!]
+  droppedBits_leq: uint64
+  droppedBits_lt: uint64
+  droppedBits_neq: uint64
+  droppedBits_notin: [uint64!]
+  droppedPackets: uint64
+  droppedPackets_geq: uint64
+  droppedPackets_gt: uint64
+  droppedPackets_in: [uint64!]
+  droppedPackets_leq: uint64
+  droppedPackets_lt: uint64
+  droppedPackets_neq: uint64
+  droppedPackets_notin: [uint64!]
   endDatetime: Time
   endDatetime_geq: Time
   endDatetime_gt: Time
@@ -2357,6 +2377,14 @@ enum AccountDosdAttackAnalyticsGroupsOrderBy {
   destinationPort_ASC
   # destinationPort descending
   destinationPort_DESC
+  # droppedBits ascending
+  droppedBits_ASC
+  # droppedBits descending
+  droppedBits_DESC
+  # droppedPackets ascending
+  droppedPackets_ASC
+  # droppedPackets descending
+  droppedPackets_DESC
   # endDatetime ascending
   endDatetime_ASC
   # endDatetime descending
@@ -4522,6 +4550,10 @@ type AccountFbmAttackAnalyticsGroups {
   destinationIp: string!
   # Fixed destination port used by attack traffic, if any
   destinationPort: uint16!
+  # Sum of bits dropped during the attack
+  droppedBits: uint64!
+  # Sum of packets dropped during the attack
+  droppedPackets: uint64!
   # Date and time that the attack ended; not available for ongoing attacks
   endDatetime: Time!
   # Fixed protocol used by attack traffic, if any
@@ -4615,6 +4647,22 @@ input AccountFbmAttackAnalyticsGroupsFilter_InputObject {
   destinationPort_lt: uint16
   destinationPort_neq: uint16
   destinationPort_notin: [uint16!]
+  droppedBits: uint64
+  droppedBits_geq: uint64
+  droppedBits_gt: uint64
+  droppedBits_in: [uint64!]
+  droppedBits_leq: uint64
+  droppedBits_lt: uint64
+  droppedBits_neq: uint64
+  droppedBits_notin: [uint64!]
+  droppedPackets: uint64
+  droppedPackets_geq: uint64
+  droppedPackets_gt: uint64
+  droppedPackets_in: [uint64!]
+  droppedPackets_leq: uint64
+  droppedPackets_lt: uint64
+  droppedPackets_neq: uint64
+  droppedPackets_notin: [uint64!]
   endDatetime: Time
   endDatetime_geq: Time
   endDatetime_gt: Time
@@ -4754,6 +4802,14 @@ enum AccountFbmAttackAnalyticsGroupsOrderBy {
   destinationPort_ASC
   # destinationPort descending
   destinationPort_DESC
+  # droppedBits ascending
+  droppedBits_ASC
+  # droppedBits descending
+  droppedBits_DESC
+  # droppedPackets ascending
+  droppedPackets_ASC
+  # droppedPackets descending
+  droppedPackets_DESC
   # endDatetime ascending
   endDatetime_ASC
   # endDatetime descending
@@ -10071,6 +10127,8 @@ type AccountHttpRequests1mGroupsUniq {
 type AccountHttpRequestsAdaptive {
   # API Gateway endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
+  # API Gateway host matched at the edge
+  apiGatewayMatchedHost: string!
   # Judgement of the bot management system
   botManagementDecision: string!
   # The final score originated from bot management detections.
@@ -10192,6 +10250,16 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   apiGatewayMatchedEndpoint_neq: string
   apiGatewayMatchedEndpoint_notin: [string!]
   apiGatewayMatchedEndpoint_notlike: string
+  apiGatewayMatchedHost: string
+  apiGatewayMatchedHost_geq: string
+  apiGatewayMatchedHost_gt: string
+  apiGatewayMatchedHost_in: [string!]
+  apiGatewayMatchedHost_leq: string
+  apiGatewayMatchedHost_like: string
+  apiGatewayMatchedHost_lt: string
+  apiGatewayMatchedHost_neq: string
+  apiGatewayMatchedHost_notin: [string!]
+  apiGatewayMatchedHost_notlike: string
   botManagementDecision: string
   botManagementDecision_geq: string
   botManagementDecision_gt: string
@@ -10756,6 +10824,8 @@ type AccountHttpRequestsAdaptiveGroupsConfidence {
 type AccountHttpRequestsAdaptiveGroupsDimensions {
   # API Gateway endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
+  # API Gateway host matched at the edge
+  apiGatewayMatchedHost: string!
   # Judgement of the bot management system
   botManagementDecision: string!
   # The final score originated from bot management detections.
@@ -10874,6 +10944,16 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedEndpoint_neq: string
   apiGatewayMatchedEndpoint_notin: [string!]
   apiGatewayMatchedEndpoint_notlike: string
+  apiGatewayMatchedHost: string
+  apiGatewayMatchedHost_geq: string
+  apiGatewayMatchedHost_gt: string
+  apiGatewayMatchedHost_in: [string!]
+  apiGatewayMatchedHost_leq: string
+  apiGatewayMatchedHost_like: string
+  apiGatewayMatchedHost_lt: string
+  apiGatewayMatchedHost_neq: string
+  apiGatewayMatchedHost_notin: [string!]
+  apiGatewayMatchedHost_notlike: string
   botManagementDecision: string
   botManagementDecision_geq: string
   botManagementDecision_gt: string
@@ -11411,6 +11491,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   apiGatewayMatchedEndpoint_ASC
   # apiGatewayMatchedEndpoint descending
   apiGatewayMatchedEndpoint_DESC
+  # apiGatewayMatchedHost ascending
+  apiGatewayMatchedHost_ASC
+  # apiGatewayMatchedHost descending
+  apiGatewayMatchedHost_DESC
   # avg(crossZoneSubrequests) ascending
   avg_crossZoneSubrequests_ASC
   # avg(crossZoneSubrequests) descending
@@ -11784,6 +11868,10 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   apiGatewayMatchedEndpoint_ASC
   # apiGatewayMatchedEndpoint descending
   apiGatewayMatchedEndpoint_DESC
+  # apiGatewayMatchedHost ascending
+  apiGatewayMatchedHost_ASC
+  # apiGatewayMatchedHost descending
+  apiGatewayMatchedHost_DESC
   # botManagementDecision ascending
   botManagementDecision_ASC
   # botManagementDecision descending
@@ -33654,6 +33742,8 @@ type ZoneHttpRequests1mGroupsUniq {
 type ZoneHttpRequestsAdaptive {
   # API Gateway endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
+  # API Gateway host matched at the edge
+  apiGatewayMatchedHost: string!
   # Judgement of the bot management system
   botManagementDecision: string!
   # The final score originated from bot management detections.
@@ -33773,6 +33863,16 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   apiGatewayMatchedEndpoint_neq: string
   apiGatewayMatchedEndpoint_notin: [string!]
   apiGatewayMatchedEndpoint_notlike: string
+  apiGatewayMatchedHost: string
+  apiGatewayMatchedHost_geq: string
+  apiGatewayMatchedHost_gt: string
+  apiGatewayMatchedHost_in: [string!]
+  apiGatewayMatchedHost_leq: string
+  apiGatewayMatchedHost_like: string
+  apiGatewayMatchedHost_lt: string
+  apiGatewayMatchedHost_neq: string
+  apiGatewayMatchedHost_notin: [string!]
+  apiGatewayMatchedHost_notlike: string
   botManagementDecision: string
   botManagementDecision_geq: string
   botManagementDecision_gt: string
@@ -34327,6 +34427,8 @@ type ZoneHttpRequestsAdaptiveGroupsConfidence {
 type ZoneHttpRequestsAdaptiveGroupsDimensions {
   # API Gateway endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
+  # API Gateway host matched at the edge
+  apiGatewayMatchedHost: string!
   # Judgement of the bot management system
   botManagementDecision: string!
   # The final score originated from bot management detections.
@@ -34443,6 +34545,16 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedEndpoint_neq: string
   apiGatewayMatchedEndpoint_notin: [string!]
   apiGatewayMatchedEndpoint_notlike: string
+  apiGatewayMatchedHost: string
+  apiGatewayMatchedHost_geq: string
+  apiGatewayMatchedHost_gt: string
+  apiGatewayMatchedHost_in: [string!]
+  apiGatewayMatchedHost_leq: string
+  apiGatewayMatchedHost_like: string
+  apiGatewayMatchedHost_lt: string
+  apiGatewayMatchedHost_neq: string
+  apiGatewayMatchedHost_notin: [string!]
+  apiGatewayMatchedHost_notlike: string
   botManagementDecision: string
   botManagementDecision_geq: string
   botManagementDecision_gt: string
@@ -34970,6 +35082,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   apiGatewayMatchedEndpoint_ASC
   # apiGatewayMatchedEndpoint descending
   apiGatewayMatchedEndpoint_DESC
+  # apiGatewayMatchedHost ascending
+  apiGatewayMatchedHost_ASC
+  # apiGatewayMatchedHost descending
+  apiGatewayMatchedHost_DESC
   # avg(crossZoneSubrequests) ascending
   avg_crossZoneSubrequests_ASC
   # avg(crossZoneSubrequests) descending
@@ -35339,6 +35455,10 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   apiGatewayMatchedEndpoint_ASC
   # apiGatewayMatchedEndpoint descending
   apiGatewayMatchedEndpoint_DESC
+  # apiGatewayMatchedHost ascending
+  apiGatewayMatchedHost_ASC
+  # apiGatewayMatchedHost descending
+  apiGatewayMatchedHost_DESC
   # botManagementDecision ascending
   botManagementDecision_ASC
   # botManagementDecision descending

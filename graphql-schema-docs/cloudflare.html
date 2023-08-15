@@ -2023,6 +2023,10 @@
 &nbsp;&nbsp;destinationIp: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Fixed destination port used by attack traffic, if any</span><br />
 &nbsp;&nbsp;destinationPort: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits dropped during the attack</span><br />
+&nbsp;&nbsp;droppedBits: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets dropped during the attack</span><br />
+&nbsp;&nbsp;droppedPackets: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Date and time that the attack ended; not available for ongoing attacks</span><br />
 &nbsp;&nbsp;endDatetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Fixed protocol used by attack traffic, if any</span><br />
@@ -2116,6 +2120,22 @@
 &nbsp;&nbsp;destinationPort_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;destinationPort_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;destinationPort_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;droppedBits: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedBits_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedBits_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedBits_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;droppedBits_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedBits_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedBits_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedBits_notin: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;droppedPackets: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedPackets_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedPackets_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedPackets_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;droppedPackets_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedPackets_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedPackets_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedPackets_notin: <a href="#uint64">[uint64!]</a><br />
 &nbsp;&nbsp;endDatetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;endDatetime_geq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;endDatetime_gt: <a href="#Time">Time</a><br />
@@ -2255,6 +2275,14 @@
 &nbsp;&nbsp;destinationPort_ASC<br />
 &nbsp;&nbsp;<span class="c"># destinationPort descending</span><br />
 &nbsp;&nbsp;destinationPort_DESC<br />
+&nbsp;&nbsp;<span class="c"># droppedBits ascending</span><br />
+&nbsp;&nbsp;droppedBits_ASC<br />
+&nbsp;&nbsp;<span class="c"># droppedBits descending</span><br />
+&nbsp;&nbsp;droppedBits_DESC<br />
+&nbsp;&nbsp;<span class="c"># droppedPackets ascending</span><br />
+&nbsp;&nbsp;droppedPackets_ASC<br />
+&nbsp;&nbsp;<span class="c"># droppedPackets descending</span><br />
+&nbsp;&nbsp;droppedPackets_DESC<br />
 &nbsp;&nbsp;<span class="c"># endDatetime ascending</span><br />
 &nbsp;&nbsp;endDatetime_ASC<br />
 &nbsp;&nbsp;<span class="c"># endDatetime descending</span><br />
@@ -4420,6 +4448,10 @@
 &nbsp;&nbsp;destinationIp: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Fixed destination port used by attack traffic, if any</span><br />
 &nbsp;&nbsp;destinationPort: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of bits dropped during the attack</span><br />
+&nbsp;&nbsp;droppedBits: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of packets dropped during the attack</span><br />
+&nbsp;&nbsp;droppedPackets: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Date and time that the attack ended; not available for ongoing attacks</span><br />
 &nbsp;&nbsp;endDatetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Fixed protocol used by attack traffic, if any</span><br />
@@ -4513,6 +4545,22 @@
 &nbsp;&nbsp;destinationPort_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;destinationPort_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;destinationPort_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;droppedBits: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedBits_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedBits_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedBits_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;droppedBits_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedBits_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedBits_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedBits_notin: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;droppedPackets: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedPackets_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedPackets_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedPackets_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;droppedPackets_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedPackets_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedPackets_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;droppedPackets_notin: <a href="#uint64">[uint64!]</a><br />
 &nbsp;&nbsp;endDatetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;endDatetime_geq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;endDatetime_gt: <a href="#Time">Time</a><br />
@@ -4652,6 +4700,14 @@
 &nbsp;&nbsp;destinationPort_ASC<br />
 &nbsp;&nbsp;<span class="c"># destinationPort descending</span><br />
 &nbsp;&nbsp;destinationPort_DESC<br />
+&nbsp;&nbsp;<span class="c"># droppedBits ascending</span><br />
+&nbsp;&nbsp;droppedBits_ASC<br />
+&nbsp;&nbsp;<span class="c"># droppedBits descending</span><br />
+&nbsp;&nbsp;droppedBits_DESC<br />
+&nbsp;&nbsp;<span class="c"># droppedPackets ascending</span><br />
+&nbsp;&nbsp;droppedPackets_ASC<br />
+&nbsp;&nbsp;<span class="c"># droppedPackets descending</span><br />
+&nbsp;&nbsp;droppedPackets_DESC<br />
 &nbsp;&nbsp;<span class="c"># endDatetime ascending</span><br />
 &nbsp;&nbsp;endDatetime_ASC<br />
 &nbsp;&nbsp;<span class="c"># endDatetime descending</span><br />
@@ -9969,6 +10025,8 @@
 <span class="k">type</span> <a id="AccountHttpRequestsAdaptive" href="#AccountHttpRequestsAdaptive">AccountHttpRequestsAdaptive</a> {<br />
 &nbsp;&nbsp;<span class="c"># API Gateway endpoint matched at the edge</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># API Gateway host matched at the edge</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Judgement of the bot management system</span><br />
 &nbsp;&nbsp;botManagementDecision: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The final score originated from bot management detections.</span><br />
@@ -10090,6 +10148,16 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;botManagementDecision: <a href="#string">string</a><br />
 &nbsp;&nbsp;botManagementDecision_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;botManagementDecision_gt: <a href="#string">string</a><br />
@@ -10654,6 +10722,8 @@
 <span class="k">type</span> <a id="AccountHttpRequestsAdaptiveGroupsDimensions" href="#AccountHttpRequestsAdaptiveGroupsDimensions">AccountHttpRequestsAdaptiveGroupsDimensions</a> {<br />
 &nbsp;&nbsp;<span class="c"># API Gateway endpoint matched at the edge</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># API Gateway host matched at the edge</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Judgement of the bot management system</span><br />
 &nbsp;&nbsp;botManagementDecision: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The final score originated from bot management detections.</span><br />
@@ -10772,6 +10842,16 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;botManagementDecision: <a href="#string">string</a><br />
 &nbsp;&nbsp;botManagementDecision_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;botManagementDecision_gt: <a href="#string">string</a><br />
@@ -11309,6 +11389,10 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_ASC<br />
 &nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint descending</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_DESC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost ascending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_ASC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost descending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(crossZoneSubrequests) ascending</span><br />
 &nbsp;&nbsp;avg_crossZoneSubrequests_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(crossZoneSubrequests) descending</span><br />
@@ -11682,6 +11766,10 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_ASC<br />
 &nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint descending</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_DESC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost ascending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_ASC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost descending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_DESC<br />
 &nbsp;&nbsp;<span class="c"># botManagementDecision ascending</span><br />
 &nbsp;&nbsp;botManagementDecision_ASC<br />
 &nbsp;&nbsp;<span class="c"># botManagementDecision descending</span><br />
@@ -33552,6 +33640,8 @@
 <span class="k">type</span> <a id="ZoneHttpRequestsAdaptive" href="#ZoneHttpRequestsAdaptive">ZoneHttpRequestsAdaptive</a> {<br />
 &nbsp;&nbsp;<span class="c"># API Gateway endpoint matched at the edge</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># API Gateway host matched at the edge</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Judgement of the bot management system</span><br />
 &nbsp;&nbsp;botManagementDecision: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The final score originated from bot management detections.</span><br />
@@ -33671,6 +33761,16 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;botManagementDecision: <a href="#string">string</a><br />
 &nbsp;&nbsp;botManagementDecision_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;botManagementDecision_gt: <a href="#string">string</a><br />
@@ -34225,6 +34325,8 @@
 <span class="k">type</span> <a id="ZoneHttpRequestsAdaptiveGroupsDimensions" href="#ZoneHttpRequestsAdaptiveGroupsDimensions">ZoneHttpRequestsAdaptiveGroupsDimensions</a> {<br />
 &nbsp;&nbsp;<span class="c"># API Gateway endpoint matched at the edge</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># API Gateway host matched at the edge</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Judgement of the bot management system</span><br />
 &nbsp;&nbsp;botManagementDecision: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The final score originated from bot management detections.</span><br />
@@ -34341,6 +34443,16 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;botManagementDecision: <a href="#string">string</a><br />
 &nbsp;&nbsp;botManagementDecision_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;botManagementDecision_gt: <a href="#string">string</a><br />
@@ -34868,6 +34980,10 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_ASC<br />
 &nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint descending</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_DESC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost ascending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_ASC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost descending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(crossZoneSubrequests) ascending</span><br />
 &nbsp;&nbsp;avg_crossZoneSubrequests_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(crossZoneSubrequests) descending</span><br />
@@ -35237,6 +35353,10 @@
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_ASC<br />
 &nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint descending</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_DESC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost ascending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_ASC<br />
+&nbsp;&nbsp;<span class="c"># apiGatewayMatchedHost descending</span><br />
+&nbsp;&nbsp;apiGatewayMatchedHost_DESC<br />
 &nbsp;&nbsp;<span class="c"># botManagementDecision ascending</span><br />
 &nbsp;&nbsp;botManagementDecision_ASC<br />
 &nbsp;&nbsp;<span class="c"># botManagementDecision descending</span><br />
