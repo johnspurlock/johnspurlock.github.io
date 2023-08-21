@@ -19112,6 +19112,8 @@ type AccountMnmFlowDataAdaptiveGroupsDimensions {
   protocolString: string!
   # IP of the router that sampled the flows
   routerAddress: string!
+  # List of flow matching rules
+  ruleIDs: [string!]!
   # IP from which the data was sent
   sourceAddress: string!
   # Value of the Source Port header field in the packet
@@ -19237,6 +19239,10 @@ input AccountMnmFlowDataAdaptiveGroupsFilter_InputObject {
   routerAddress_neq: string
   routerAddress_notin: [string!]
   routerAddress_notlike: string
+  ruleIDs_has: string
+  ruleIDs_hasall: [string!]
+  ruleIDs_hasany: [string!]
+  ruleIDs_nothas: string
   sourceAddress: string
   sourceAddress_geq: string
   sourceAddress_gt: string
@@ -19396,6 +19402,10 @@ enum AccountMnmFlowDataAdaptiveGroupsOrderBy {
   routerAddress_ASC
   # routerAddress descending
   routerAddress_DESC
+  # ruleIDs ascending
+  ruleIDs_ASC
+  # ruleIDs descending
+  ruleIDs_DESC
   # sourceAddress ascending
   sourceAddress_ASC
   # sourceAddress descending
@@ -29150,7 +29160,7 @@ type ZoneDnsAnalyticsAdaptiveGroupsDimensions {
   # DNS query name without trailing dot
   queryName: string!
   # Size of the DNS query in bytes (in multiples of 16)
-  querySizeBucket: uint16!
+  querySizeBucket: string!
   # DNS query type
   queryType: string!
   # Whether the DNS response was served from cache
@@ -29158,7 +29168,7 @@ type ZoneDnsAnalyticsAdaptiveGroupsDimensions {
   # DNS response code
   responseCode: string!
   # Size of the DNS response in bytes (in multiples of 16)
-  responseSizeBucket: uint16!
+  responseSizeBucket: string!
   # Whether a stale DNS response was served from cache
   responseStale: uint8!
   # Time at which the query was received
@@ -29208,14 +29218,16 @@ input ZoneDnsAnalyticsAdaptiveGroupsFilter_InputObject {
   queryName_neq: string
   queryName_notin: [string!]
   queryName_notlike: string
-  querySizeBucket: uint16
-  querySizeBucket_geq: uint16
-  querySizeBucket_gt: uint16
-  querySizeBucket_in: [uint16!]
-  querySizeBucket_leq: uint16
-  querySizeBucket_lt: uint16
-  querySizeBucket_neq: uint16
-  querySizeBucket_notin: [uint16!]
+  querySizeBucket: string
+  querySizeBucket_geq: string
+  querySizeBucket_gt: string
+  querySizeBucket_in: [string!]
+  querySizeBucket_leq: string
+  querySizeBucket_like: string
+  querySizeBucket_lt: string
+  querySizeBucket_neq: string
+  querySizeBucket_notin: [string!]
+  querySizeBucket_notlike: string
   queryType: string
   queryType_geq: string
   queryType_gt: string
@@ -29244,14 +29256,16 @@ input ZoneDnsAnalyticsAdaptiveGroupsFilter_InputObject {
   responseCode_neq: string
   responseCode_notin: [string!]
   responseCode_notlike: string
-  responseSizeBucket: uint16
-  responseSizeBucket_geq: uint16
-  responseSizeBucket_gt: uint16
-  responseSizeBucket_in: [uint16!]
-  responseSizeBucket_leq: uint16
-  responseSizeBucket_lt: uint16
-  responseSizeBucket_neq: uint16
-  responseSizeBucket_notin: [uint16!]
+  responseSizeBucket: string
+  responseSizeBucket_geq: string
+  responseSizeBucket_gt: string
+  responseSizeBucket_in: [string!]
+  responseSizeBucket_leq: string
+  responseSizeBucket_like: string
+  responseSizeBucket_lt: string
+  responseSizeBucket_neq: string
+  responseSizeBucket_notin: [string!]
+  responseSizeBucket_notlike: string
   responseStale: uint8
   responseStale_geq: uint8
   responseStale_gt: uint8
@@ -32208,6 +32222,8 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
 
 # Raw Health Check events with adaptive sampling
 type ZoneHealthCheckEventsAdaptive {
+  # The date the event was written to the database
+  date: Date!
   # The date and time the event was written to the database
   datetime: Time!
   # The event id that created this healthcheck event
@@ -32249,6 +32265,14 @@ type ZoneHealthCheckEventsAdaptive {
 input ZoneHealthCheckEventsAdaptiveFilter_InputObject {
   AND: [ZoneHealthCheckEventsAdaptiveFilter_InputObject!]
   OR: [ZoneHealthCheckEventsAdaptiveFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
   datetime: Time
   datetime_geq: Time
   datetime_gt: Time
@@ -32441,6 +32465,8 @@ type ZoneHealthCheckEventsAdaptiveGroupsAvg {
 }
 
 type ZoneHealthCheckEventsAdaptiveGroupsDimensions {
+  # The date the event was written to the database
+  date: Date!
   # Datetime the event was written to the database
   datetime: Time!
   # Datetime the event was written to the database truncated to a multiple of 15 minutes
@@ -32486,6 +32512,14 @@ type ZoneHealthCheckEventsAdaptiveGroupsDimensions {
 input ZoneHealthCheckEventsAdaptiveGroupsFilter_InputObject {
   AND: [ZoneHealthCheckEventsAdaptiveGroupsFilter_InputObject!]
   OR: [ZoneHealthCheckEventsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
   datetime: Time
   datetimeFifteenMinutes: Time
   datetimeFifteenMinutes_geq: Time
@@ -32689,6 +32723,10 @@ enum ZoneHealthCheckEventsAdaptiveGroupsOrderBy {
   count_ASC
   # count() descending
   count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
   # datetimeFifteenMinutes ascending
   datetimeFifteenMinutes_ASC
   # datetimeFifteenMinutes descending
@@ -32780,6 +32818,10 @@ type ZoneHealthCheckEventsAdaptiveGroupsSum {
 }
 
 enum ZoneHealthCheckEventsAdaptiveOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending

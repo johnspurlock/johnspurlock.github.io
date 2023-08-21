@@ -19010,6 +19010,8 @@
 &nbsp;&nbsp;protocolString: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># IP of the router that sampled the flows</span><br />
 &nbsp;&nbsp;routerAddress: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># List of flow matching rules</span><br />
+&nbsp;&nbsp;ruleIDs: <a href="#string">[string!]!</a><br />
 &nbsp;&nbsp;<span class="c"># IP from which the data was sent</span><br />
 &nbsp;&nbsp;sourceAddress: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Source Port header field in the packet</span><br />
@@ -19135,6 +19137,10 @@
 &nbsp;&nbsp;routerAddress_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;routerAddress_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;routerAddress_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleIDs_has: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleIDs_hasall: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ruleIDs_hasany: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ruleIDs_nothas: <a href="#string">string</a><br />
 &nbsp;&nbsp;sourceAddress: <a href="#string">string</a><br />
 &nbsp;&nbsp;sourceAddress_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;sourceAddress_gt: <a href="#string">string</a><br />
@@ -19294,6 +19300,10 @@
 &nbsp;&nbsp;routerAddress_ASC<br />
 &nbsp;&nbsp;<span class="c"># routerAddress descending</span><br />
 &nbsp;&nbsp;routerAddress_DESC<br />
+&nbsp;&nbsp;<span class="c"># ruleIDs ascending</span><br />
+&nbsp;&nbsp;ruleIDs_ASC<br />
+&nbsp;&nbsp;<span class="c"># ruleIDs descending</span><br />
+&nbsp;&nbsp;ruleIDs_DESC<br />
 &nbsp;&nbsp;<span class="c"># sourceAddress ascending</span><br />
 &nbsp;&nbsp;sourceAddress_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourceAddress descending</span><br />
@@ -29048,7 +29058,7 @@
 &nbsp;&nbsp;<span class="c"># DNS query name without trailing dot</span><br />
 &nbsp;&nbsp;queryName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Size of the DNS query in bytes (in multiples of 16)</span><br />
-&nbsp;&nbsp;querySizeBucket: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;querySizeBucket: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># DNS query type</span><br />
 &nbsp;&nbsp;queryType: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Whether the DNS response was served from cache</span><br />
@@ -29056,7 +29066,7 @@
 &nbsp;&nbsp;<span class="c"># DNS response code</span><br />
 &nbsp;&nbsp;responseCode: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Size of the DNS response in bytes (in multiples of 16)</span><br />
-&nbsp;&nbsp;responseSizeBucket: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;responseSizeBucket: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Whether a stale DNS response was served from cache</span><br />
 &nbsp;&nbsp;responseStale: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Time at which the query was received</span><br />
@@ -29106,14 +29116,16 @@
 &nbsp;&nbsp;queryName_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;queryName_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;queryName_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;querySizeBucket: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;querySizeBucket_geq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;querySizeBucket_gt: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;querySizeBucket_in: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;querySizeBucket_leq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;querySizeBucket_lt: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;querySizeBucket_neq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;querySizeBucket_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;querySizeBucket: <a href="#string">string</a><br />
+&nbsp;&nbsp;querySizeBucket_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;querySizeBucket_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;querySizeBucket_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;querySizeBucket_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;querySizeBucket_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;querySizeBucket_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;querySizeBucket_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;querySizeBucket_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;querySizeBucket_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;queryType: <a href="#string">string</a><br />
 &nbsp;&nbsp;queryType_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;queryType_gt: <a href="#string">string</a><br />
@@ -29142,14 +29154,16 @@
 &nbsp;&nbsp;responseCode_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;responseCode_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;responseCode_notlike: <a href="#string">string</a><br />
-&nbsp;&nbsp;responseSizeBucket: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;responseSizeBucket_geq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;responseSizeBucket_gt: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;responseSizeBucket_in: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;responseSizeBucket_leq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;responseSizeBucket_lt: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;responseSizeBucket_neq: <a href="#uint16">uint16</a><br />
-&nbsp;&nbsp;responseSizeBucket_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;responseSizeBucket: <a href="#string">string</a><br />
+&nbsp;&nbsp;responseSizeBucket_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;responseSizeBucket_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;responseSizeBucket_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;responseSizeBucket_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;responseSizeBucket_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;responseSizeBucket_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;responseSizeBucket_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;responseSizeBucket_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;responseSizeBucket_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;responseStale: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;responseStale_geq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;responseStale_gt: <a href="#uint8">uint8</a><br />
@@ -32106,6 +32120,8 @@
 <br />
 <span class="c"># Raw Health Check events with adaptive sampling</span><br />
 <span class="k">type</span> <a id="ZoneHealthCheckEventsAdaptive" href="#ZoneHealthCheckEventsAdaptive">ZoneHealthCheckEventsAdaptive</a> {<br />
+&nbsp;&nbsp;<span class="c"># The date the event was written to the database</span><br />
+&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># The date and time the event was written to the database</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># The event id that created this healthcheck event</span><br />
@@ -32147,6 +32163,14 @@
 <span class="k">input</span> <a id="ZoneHealthCheckEventsAdaptiveFilter_InputObject" href="#ZoneHealthCheckEventsAdaptiveFilter_InputObject">ZoneHealthCheckEventsAdaptiveFilter_InputObject</a> {<br />
 &nbsp;&nbsp;AND: <a href="#ZoneHealthCheckEventsAdaptiveFilter_InputObject">[ZoneHealthCheckEventsAdaptiveFilter_InputObject!]</a><br />
 &nbsp;&nbsp;OR: <a href="#ZoneHealthCheckEventsAdaptiveFilter_InputObject">[ZoneHealthCheckEventsAdaptiveFilter_InputObject!]</a><br />
+&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_geq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_gt: <a href="#Time">Time</a><br />
@@ -32339,6 +32363,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneHealthCheckEventsAdaptiveGroupsDimensions" href="#ZoneHealthCheckEventsAdaptiveGroupsDimensions">ZoneHealthCheckEventsAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># The date the event was written to the database</span><br />
+&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># Datetime the event was written to the database</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Datetime the event was written to the database truncated to a multiple of 15 minutes</span><br />
@@ -32384,6 +32410,14 @@
 <span class="k">input</span> <a id="ZoneHealthCheckEventsAdaptiveGroupsFilter_InputObject" href="#ZoneHealthCheckEventsAdaptiveGroupsFilter_InputObject">ZoneHealthCheckEventsAdaptiveGroupsFilter_InputObject</a> {<br />
 &nbsp;&nbsp;AND: <a href="#ZoneHealthCheckEventsAdaptiveGroupsFilter_InputObject">[ZoneHealthCheckEventsAdaptiveGroupsFilter_InputObject!]</a><br />
 &nbsp;&nbsp;OR: <a href="#ZoneHealthCheckEventsAdaptiveGroupsFilter_InputObject">[ZoneHealthCheckEventsAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_geq: <a href="#Time">Time</a><br />
@@ -32587,6 +32621,10 @@
 &nbsp;&nbsp;count_ASC<br />
 &nbsp;&nbsp;<span class="c"># count() descending</span><br />
 &nbsp;&nbsp;count_DESC<br />
+&nbsp;&nbsp;<span class="c"># date ascending</span><br />
+&nbsp;&nbsp;date_ASC<br />
+&nbsp;&nbsp;<span class="c"># date descending</span><br />
+&nbsp;&nbsp;date_DESC<br />
 &nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes ascending</span><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes descending</span><br />
@@ -32678,6 +32716,10 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="ZoneHealthCheckEventsAdaptiveOrderBy" href="#ZoneHealthCheckEventsAdaptiveOrderBy">ZoneHealthCheckEventsAdaptiveOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># date ascending</span><br />
+&nbsp;&nbsp;date_ASC<br />
+&nbsp;&nbsp;<span class="c"># date descending</span><br />
+&nbsp;&nbsp;date_DESC<br />
 &nbsp;&nbsp;<span class="c"># datetime ascending</span><br />
 &nbsp;&nbsp;datetime_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetime descending</span><br />
