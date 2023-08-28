@@ -1981,6 +1981,14 @@
 &nbsp;&nbsp;sum_readQueries_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(readQueries) descending</span><br />
 &nbsp;&nbsp;sum_readQueries_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(rowsRead) ascending</span><br />
+&nbsp;&nbsp;sum_rowsRead_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(rowsRead) descending</span><br />
+&nbsp;&nbsp;sum_rowsRead_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(rowsWritten) ascending</span><br />
+&nbsp;&nbsp;sum_rowsWritten_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(rowsWritten) descending</span><br />
+&nbsp;&nbsp;sum_rowsWritten_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(writeQueries) ascending</span><br />
 &nbsp;&nbsp;sum_writeQueries_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(writeQueries) descending</span><br />
@@ -2001,8 +2009,12 @@
 <span class="k">type</span> <a id="AccountD1AnalyticsAdaptiveGroupsSum" href="#AccountD1AnalyticsAdaptiveGroupsSum">AccountD1AnalyticsAdaptiveGroupsSum</a> {<br />
 &nbsp;&nbsp;<span class="c"># The total number of bytes in the response, including all returned rows and metadata.</span><br />
 &nbsp;&nbsp;queryBatchResponseBytes: <a href="#float64">float64!</a><br />
-&nbsp;&nbsp;<span class="c"># The number of read queries</span><br />
+&nbsp;&nbsp;<span class="c"># The number of read queries.</span><br />
 &nbsp;&nbsp;readQueries: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># The number of rows your queries read.</span><br />
+&nbsp;&nbsp;rowsRead: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># The number of rows your queries wrote.</span><br />
+&nbsp;&nbsp;rowsWritten: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># The number of write queries.</span><br />
 &nbsp;&nbsp;writeQueries: <a href="#uint64">uint64!</a><br />
 }<br />
@@ -4832,9 +4844,8 @@
 &nbsp;&nbsp;edgeColoName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># HTTP response status code returned to browser</span><br />
 &nbsp;&nbsp;edgeResponseStatus: <a href="#uint16">uint16!</a><br />
-&nbsp;&nbsp;<span class="c"># Unique identifier for HTTP Application</span><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Version associated with HTTP Application</span><br />
+&nbsp;&nbsp;@Deprecated<br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># MD5 hash of the JA3 TLS fingerprint</span><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string!</a><br />
@@ -4883,6 +4894,8 @@
 &nbsp;&nbsp;wafXssAttackScore: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Associated zone</span><br />
 &nbsp;&nbsp;zoneTag: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The version of a zone</span><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="AccountFirewallEventsAdaptiveFilter_InputObject" href="#AccountFirewallEventsAdaptiveFilter_InputObject">AccountFirewallEventsAdaptiveFilter_InputObject</a> {<br />
@@ -5206,7 +5219,6 @@
 &nbsp;&nbsp;edgeResponseStatus_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeResponseStatus_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeResponseStatus_notin: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string</a><br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_geq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_gt: <a href="#uint64">uint64</a><br />
@@ -5215,15 +5227,6 @@
 &nbsp;&nbsp;httpApplicationVersion_lt: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_neq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_notin: <a href="#uint64">[uint64!]</a><br />
-&nbsp;&nbsp;httpApplication_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_gt: <a href="#string">string</a><br />
@@ -5414,6 +5417,14 @@
 &nbsp;&nbsp;zoneTag_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;zoneTag_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;zoneTag_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;zoneVersion_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_notin: <a href="#uint64">[uint64!]</a><br />
 }<br />
 <br />
 <span class="c"># Aggregated Firewall events with adaptive sampling</span><br />
@@ -5489,9 +5500,8 @@
 &nbsp;&nbsp;edgeColoName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># HTTP response status code returned to browser</span><br />
 &nbsp;&nbsp;edgeResponseStatus: <a href="#uint16">uint16!</a><br />
-&nbsp;&nbsp;<span class="c"># Unique identifier for HTTP Application</span><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Version associated with HTTP Application</span><br />
+&nbsp;&nbsp;@Deprecated<br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># MD5 hash of the JA3 TLS fingerprint</span><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string!</a><br />
@@ -5538,6 +5548,8 @@
 &nbsp;&nbsp;wafXssAttackScore: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Associated zone</span><br />
 &nbsp;&nbsp;zoneTag: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The version of a zone</span><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="AccountFirewallEventsAdaptiveGroupsFilter_InputObject" href="#AccountFirewallEventsAdaptiveGroupsFilter_InputObject">AccountFirewallEventsAdaptiveGroupsFilter_InputObject</a> {<br />
@@ -5817,7 +5829,6 @@
 &nbsp;&nbsp;edgeResponseStatus_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeResponseStatus_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeResponseStatus_notin: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string</a><br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_geq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_gt: <a href="#uint64">uint64</a><br />
@@ -5826,15 +5837,6 @@
 &nbsp;&nbsp;httpApplicationVersion_lt: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_neq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_notin: <a href="#uint64">[uint64!]</a><br />
-&nbsp;&nbsp;httpApplication_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_gt: <a href="#string">string</a><br />
@@ -6025,6 +6027,14 @@
 &nbsp;&nbsp;zoneTag_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;zoneTag_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;zoneTag_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;zoneVersion_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_notin: <a href="#uint64">[uint64!]</a><br />
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountFirewallEventsAdaptiveGroupsOrderBy" href="#AccountFirewallEventsAdaptiveGroupsOrderBy">AccountFirewallEventsAdaptiveGroupsOrderBy</a> {<br />
@@ -6156,10 +6166,6 @@
 &nbsp;&nbsp;httpApplicationVersion_ASC<br />
 &nbsp;&nbsp;<span class="c"># httpApplicationVersion descending</span><br />
 &nbsp;&nbsp;httpApplicationVersion_DESC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication ascending</span><br />
-&nbsp;&nbsp;httpApplication_ASC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication descending</span><br />
-&nbsp;&nbsp;httpApplication_DESC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash ascending</span><br />
 &nbsp;&nbsp;ja3Hash_ASC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash descending</span><br />
@@ -6248,6 +6254,10 @@
 &nbsp;&nbsp;zoneTag_ASC<br />
 &nbsp;&nbsp;<span class="c"># zoneTag descending</span><br />
 &nbsp;&nbsp;zoneTag_DESC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion ascending</span><br />
+&nbsp;&nbsp;zoneVersion_ASC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion descending</span><br />
+&nbsp;&nbsp;zoneVersion_DESC<br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountFirewallEventsAdaptiveMetadataElem" href="#AccountFirewallEventsAdaptiveMetadataElem">AccountFirewallEventsAdaptiveMetadataElem</a> {<br />
@@ -6398,10 +6408,6 @@
 &nbsp;&nbsp;httpApplicationVersion_ASC<br />
 &nbsp;&nbsp;<span class="c"># httpApplicationVersion descending</span><br />
 &nbsp;&nbsp;httpApplicationVersion_DESC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication ascending</span><br />
-&nbsp;&nbsp;httpApplication_ASC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication descending</span><br />
-&nbsp;&nbsp;httpApplication_DESC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash ascending</span><br />
 &nbsp;&nbsp;ja3Hash_ASC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash descending</span><br />
@@ -6490,6 +6496,10 @@
 &nbsp;&nbsp;zoneTag_ASC<br />
 &nbsp;&nbsp;<span class="c"># zoneTag descending</span><br />
 &nbsp;&nbsp;zoneTag_DESC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion ascending</span><br />
+&nbsp;&nbsp;zoneVersion_ASC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion descending</span><br />
+&nbsp;&nbsp;zoneVersion_DESC<br />
 }<br />
 <br />
 <span class="c"># Network analytics data for flowtrackd</span><br />
@@ -10092,9 +10102,8 @@
 &nbsp;&nbsp;edgeResponseStatus: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># The time elapsed between processing the first byte of the request until when we started sending a response</span><br />
 &nbsp;&nbsp;edgeTimeToFirstByteMs: <a href="#uint16">uint16!</a><br />
-&nbsp;&nbsp;<span class="c"># Unique identifier for HTTP Application</span><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Version associated with HTTP Application</span><br />
+&nbsp;&nbsp;@Deprecated<br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># '1' if a request was inititiated by a Cloudflare Worker on another zone; '0' otherwise.</span><br />
 &nbsp;&nbsp;isCrossZoneSubrequest: <a href="#uint8">uint8!</a><br />
@@ -10133,6 +10142,8 @@
 &nbsp;&nbsp;xRequestedWith: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Associated zone</span><br />
 &nbsp;&nbsp;zoneTag: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The version of a zone</span><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="AccountHttpRequestsAdaptiveFilter_InputObject" href="#AccountHttpRequestsAdaptiveFilter_InputObject">AccountHttpRequestsAdaptiveFilter_InputObject</a> {<br />
@@ -10468,7 +10479,6 @@
 &nbsp;&nbsp;edgeTimeToFirstByteMs_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeTimeToFirstByteMs_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeTimeToFirstByteMs_notin: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string</a><br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_geq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_gt: <a href="#uint64">uint64</a><br />
@@ -10477,15 +10487,6 @@
 &nbsp;&nbsp;httpApplicationVersion_lt: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_neq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_notin: <a href="#uint64">[uint64!]</a><br />
-&nbsp;&nbsp;httpApplication_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;isCrossZoneSubrequest: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;isCrossZoneSubrequest_geq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;isCrossZoneSubrequest_gt: <a href="#uint8">uint8</a><br />
@@ -10680,6 +10681,14 @@
 &nbsp;&nbsp;zoneTag_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;zoneTag_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;zoneTag_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;zoneVersion_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_notin: <a href="#uint64">[uint64!]</a><br />
 }<br />
 <br />
 <span class="c"># Aggregated HTTP requests data with adaptive sampling</span><br />
@@ -10785,9 +10794,8 @@
 &nbsp;&nbsp;edgeResponseStatus: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># The time elapsed between processing the first byte of the request until when we started sending a response</span><br />
 &nbsp;&nbsp;edgeTimeToFirstByteMs: <a href="#uint16">uint16!</a><br />
-&nbsp;&nbsp;<span class="c"># Unique identifier for HTTP Application</span><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Version associated with HTTP Application</span><br />
+&nbsp;&nbsp;@Deprecated<br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># '1' if a request was inititiated by a Cloudflare Worker on another zone; '0' otherwise.</span><br />
 &nbsp;&nbsp;isCrossZoneSubrequest: <a href="#uint8">uint8!</a><br />
@@ -10827,6 +10835,8 @@
 &nbsp;&nbsp;xRequestedWith: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Associated zone</span><br />
 &nbsp;&nbsp;zoneTag: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The version of a zone</span><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="AccountHttpRequestsAdaptiveGroupsFilter_InputObject" href="#AccountHttpRequestsAdaptiveGroupsFilter_InputObject">AccountHttpRequestsAdaptiveGroupsFilter_InputObject</a> {<br />
@@ -11162,7 +11172,6 @@
 &nbsp;&nbsp;edgeTimeToFirstByteMs_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeTimeToFirstByteMs_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeTimeToFirstByteMs_notin: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string</a><br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_geq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_gt: <a href="#uint64">uint64</a><br />
@@ -11171,15 +11180,6 @@
 &nbsp;&nbsp;httpApplicationVersion_lt: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_neq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_notin: <a href="#uint64">[uint64!]</a><br />
-&nbsp;&nbsp;httpApplication_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;isCrossZoneSubrequest: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;isCrossZoneSubrequest_geq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;isCrossZoneSubrequest_gt: <a href="#uint8">uint8</a><br />
@@ -11382,6 +11382,14 @@
 &nbsp;&nbsp;zoneTag_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;zoneTag_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;zoneTag_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;zoneVersion_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_notin: <a href="#uint64">[uint64!]</a><br />
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountHttpRequestsAdaptiveGroupsOrderBy" href="#AccountHttpRequestsAdaptiveGroupsOrderBy">AccountHttpRequestsAdaptiveGroupsOrderBy</a> {<br />
@@ -11557,10 +11565,6 @@
 &nbsp;&nbsp;httpApplicationVersion_ASC<br />
 &nbsp;&nbsp;<span class="c"># httpApplicationVersion descending</span><br />
 &nbsp;&nbsp;httpApplicationVersion_DESC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication ascending</span><br />
-&nbsp;&nbsp;httpApplication_ASC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication descending</span><br />
-&nbsp;&nbsp;httpApplication_DESC<br />
 &nbsp;&nbsp;<span class="c"># isCrossZoneSubrequest ascending</span><br />
 &nbsp;&nbsp;isCrossZoneSubrequest_ASC<br />
 &nbsp;&nbsp;<span class="c"># isCrossZoneSubrequest descending</span><br />
@@ -11717,6 +11721,10 @@
 &nbsp;&nbsp;zoneTag_ASC<br />
 &nbsp;&nbsp;<span class="c"># zoneTag descending</span><br />
 &nbsp;&nbsp;zoneTag_DESC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion ascending</span><br />
+&nbsp;&nbsp;zoneVersion_ASC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion descending</span><br />
+&nbsp;&nbsp;zoneVersion_DESC<br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountHttpRequestsAdaptiveGroupsQuantiles" href="#AccountHttpRequestsAdaptiveGroupsQuantiles">AccountHttpRequestsAdaptiveGroupsQuantiles</a> {<br />
@@ -11910,10 +11918,6 @@
 &nbsp;&nbsp;httpApplicationVersion_ASC<br />
 &nbsp;&nbsp;<span class="c"># httpApplicationVersion descending</span><br />
 &nbsp;&nbsp;httpApplicationVersion_DESC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication ascending</span><br />
-&nbsp;&nbsp;httpApplication_ASC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication descending</span><br />
-&nbsp;&nbsp;httpApplication_DESC<br />
 &nbsp;&nbsp;<span class="c"># isCrossZoneSubrequest ascending</span><br />
 &nbsp;&nbsp;isCrossZoneSubrequest_ASC<br />
 &nbsp;&nbsp;<span class="c"># isCrossZoneSubrequest descending</span><br />
@@ -11998,6 +12002,10 @@
 &nbsp;&nbsp;zoneTag_ASC<br />
 &nbsp;&nbsp;<span class="c"># zoneTag descending</span><br />
 &nbsp;&nbsp;zoneTag_DESC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion ascending</span><br />
+&nbsp;&nbsp;zoneVersion_ASC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion descending</span><br />
+&nbsp;&nbsp;zoneVersion_DESC<br />
 }<br />
 <br />
 <span class="c"># A high-level summary of HTTP requests made by end users.</span><br />
@@ -12042,12 +12050,13 @@
 &nbsp;&nbsp;edgeResponseContentTypeName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># HTTP response status code returned to client</span><br />
 &nbsp;&nbsp;edgeResponseStatus: <a href="#uint16">uint16!</a><br />
-&nbsp;&nbsp;<span class="c"># Unique identifier for HTTP Application</span><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Version associated with HTTP Application</span><br />
+&nbsp;&nbsp;@Deprecated<br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Browser parsed from the user agent</span><br />
 &nbsp;&nbsp;userAgentBrowser: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The version of a zone</span><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject" href="#AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject">AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject</a> {<br />
@@ -12149,7 +12158,6 @@
 &nbsp;&nbsp;edgeResponseStatus_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeResponseStatus_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeResponseStatus_notin: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string</a><br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_geq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_gt: <a href="#uint64">uint64</a><br />
@@ -12158,15 +12166,6 @@
 &nbsp;&nbsp;httpApplicationVersion_lt: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_neq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_notin: <a href="#uint64">[uint64!]</a><br />
-&nbsp;&nbsp;httpApplication_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;userAgentBrowser: <a href="#string">string</a><br />
 &nbsp;&nbsp;userAgentBrowser_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;userAgentBrowser_gt: <a href="#string">string</a><br />
@@ -12177,6 +12176,14 @@
 &nbsp;&nbsp;userAgentBrowser_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;userAgentBrowser_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;userAgentBrowser_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;zoneVersion_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_notin: <a href="#uint64">[uint64!]</a><br />
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountHttpRequestsOverviewAdaptiveGroupsOrderBy" href="#AccountHttpRequestsOverviewAdaptiveGroupsOrderBy">AccountHttpRequestsOverviewAdaptiveGroupsOrderBy</a> {<br />
@@ -12236,10 +12243,6 @@
 &nbsp;&nbsp;httpApplicationVersion_ASC<br />
 &nbsp;&nbsp;<span class="c"># httpApplicationVersion descending</span><br />
 &nbsp;&nbsp;httpApplicationVersion_DESC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication ascending</span><br />
-&nbsp;&nbsp;httpApplication_ASC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication descending</span><br />
-&nbsp;&nbsp;httpApplication_DESC<br />
 &nbsp;&nbsp;<span class="c"># ratio(cachedBytes) ascending</span><br />
 &nbsp;&nbsp;ratio_cachedBytes_ASC<br />
 &nbsp;&nbsp;<span class="c"># ratio(cachedBytes) descending</span><br />
@@ -12296,6 +12299,10 @@
 &nbsp;&nbsp;userAgentBrowser_ASC<br />
 &nbsp;&nbsp;<span class="c"># userAgentBrowser descending</span><br />
 &nbsp;&nbsp;userAgentBrowser_DESC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion ascending</span><br />
+&nbsp;&nbsp;zoneVersion_ASC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion descending</span><br />
+&nbsp;&nbsp;zoneVersion_DESC<br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountHttpRequestsOverviewAdaptiveGroupsRatio" href="#AccountHttpRequestsOverviewAdaptiveGroupsRatio">AccountHttpRequestsOverviewAdaptiveGroupsRatio</a> {<br />
@@ -29846,9 +29853,8 @@
 &nbsp;&nbsp;edgeColoName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># HTTP response status code returned to browser</span><br />
 &nbsp;&nbsp;edgeResponseStatus: <a href="#uint16">uint16!</a><br />
-&nbsp;&nbsp;<span class="c"># Unique identifier for HTTP Application</span><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Version associated with HTTP Application</span><br />
+&nbsp;&nbsp;@Deprecated<br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># MD5 hash of the JA3 TLS fingerprint</span><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string!</a><br />
@@ -29895,6 +29901,8 @@
 &nbsp;&nbsp;wafSqliAttackScore: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. WAF score for a XSS attack</span><br />
 &nbsp;&nbsp;wafXssAttackScore: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># The version of a zone</span><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="c"># Aggregated Firewall events with adaptive sampling grouped by time</span><br />
@@ -29934,9 +29942,8 @@
 &nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># The description of the rule triggered by this request</span><br />
 &nbsp;&nbsp;description: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># Unique identifier for HTTP Application</span><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Version associated with HTTP Application</span><br />
+&nbsp;&nbsp;@Deprecated<br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># MD5 hash of the JA3 TLS fingerprint</span><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string!</a><br />
@@ -29959,6 +29966,8 @@
 &nbsp;&nbsp;wafSqliAttackScore: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. WAF score for a XSS attack</span><br />
 &nbsp;&nbsp;wafXssAttackScore: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># The version of a zone</span><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject" href="#ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject">ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject</a> {<br />
@@ -30238,7 +30247,6 @@
 &nbsp;&nbsp;edgeResponseStatus_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeResponseStatus_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeResponseStatus_notin: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string</a><br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_geq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_gt: <a href="#uint64">uint64</a><br />
@@ -30247,15 +30255,6 @@
 &nbsp;&nbsp;httpApplicationVersion_lt: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_neq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_notin: <a href="#uint64">[uint64!]</a><br />
-&nbsp;&nbsp;httpApplication_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_gt: <a href="#string">string</a><br />
@@ -30436,6 +30435,14 @@
 &nbsp;&nbsp;wafXssAttackScore_lt: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;wafXssAttackScore_neq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;wafXssAttackScore_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;zoneVersion_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_notin: <a href="#uint64">[uint64!]</a><br />
 }<br />
 <br />
 <span class="k">enum</span> <a id="ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy" href="#ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy">ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy</a> {<br />
@@ -30495,10 +30502,6 @@
 &nbsp;&nbsp;httpApplicationVersion_ASC<br />
 &nbsp;&nbsp;<span class="c"># httpApplicationVersion descending</span><br />
 &nbsp;&nbsp;httpApplicationVersion_DESC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication ascending</span><br />
-&nbsp;&nbsp;httpApplication_ASC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication descending</span><br />
-&nbsp;&nbsp;httpApplication_DESC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash ascending</span><br />
 &nbsp;&nbsp;ja3Hash_ASC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash descending</span><br />
@@ -30539,6 +30542,10 @@
 &nbsp;&nbsp;wafXssAttackScore_ASC<br />
 &nbsp;&nbsp;<span class="c"># wafXssAttackScore descending</span><br />
 &nbsp;&nbsp;wafXssAttackScore_DESC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion ascending</span><br />
+&nbsp;&nbsp;zoneVersion_ASC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion descending</span><br />
+&nbsp;&nbsp;zoneVersion_DESC<br />
 }<br />
 <br />
 <span class="k">input</span> <a id="ZoneFirewallEventsAdaptiveFilter_InputObject" href="#ZoneFirewallEventsAdaptiveFilter_InputObject">ZoneFirewallEventsAdaptiveFilter_InputObject</a> {<br />
@@ -30862,7 +30869,6 @@
 &nbsp;&nbsp;edgeResponseStatus_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeResponseStatus_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeResponseStatus_notin: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string</a><br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_geq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_gt: <a href="#uint64">uint64</a><br />
@@ -30871,15 +30877,6 @@
 &nbsp;&nbsp;httpApplicationVersion_lt: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_neq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_notin: <a href="#uint64">[uint64!]</a><br />
-&nbsp;&nbsp;httpApplication_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_gt: <a href="#string">string</a><br />
@@ -31060,6 +31057,14 @@
 &nbsp;&nbsp;wafXssAttackScore_lt: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;wafXssAttackScore_neq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;wafXssAttackScore_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;zoneVersion_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_notin: <a href="#uint64">[uint64!]</a><br />
 }<br />
 <br />
 <span class="c"># Aggregated Firewall events with adaptive sampling</span><br />
@@ -31135,9 +31140,8 @@
 &nbsp;&nbsp;edgeColoName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># HTTP response status code returned to browser</span><br />
 &nbsp;&nbsp;edgeResponseStatus: <a href="#uint16">uint16!</a><br />
-&nbsp;&nbsp;<span class="c"># Unique identifier for HTTP Application</span><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Version associated with HTTP Application</span><br />
+&nbsp;&nbsp;@Deprecated<br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># MD5 hash of the JA3 TLS fingerprint</span><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string!</a><br />
@@ -31182,6 +31186,8 @@
 &nbsp;&nbsp;wafSqliAttackScore: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. WAF score for a XSS attack</span><br />
 &nbsp;&nbsp;wafXssAttackScore: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># The version of a zone</span><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="ZoneFirewallEventsAdaptiveGroupsFilter_InputObject" href="#ZoneFirewallEventsAdaptiveGroupsFilter_InputObject">ZoneFirewallEventsAdaptiveGroupsFilter_InputObject</a> {<br />
@@ -31461,7 +31467,6 @@
 &nbsp;&nbsp;edgeResponseStatus_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeResponseStatus_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeResponseStatus_notin: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string</a><br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_geq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_gt: <a href="#uint64">uint64</a><br />
@@ -31470,15 +31475,6 @@
 &nbsp;&nbsp;httpApplicationVersion_lt: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_neq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_notin: <a href="#uint64">[uint64!]</a><br />
-&nbsp;&nbsp;httpApplication_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_gt: <a href="#string">string</a><br />
@@ -31659,6 +31655,14 @@
 &nbsp;&nbsp;wafXssAttackScore_lt: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;wafXssAttackScore_neq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;wafXssAttackScore_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;zoneVersion_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_notin: <a href="#uint64">[uint64!]</a><br />
 }<br />
 <br />
 <span class="k">enum</span> <a id="ZoneFirewallEventsAdaptiveGroupsOrderBy" href="#ZoneFirewallEventsAdaptiveGroupsOrderBy">ZoneFirewallEventsAdaptiveGroupsOrderBy</a> {<br />
@@ -31790,10 +31794,6 @@
 &nbsp;&nbsp;httpApplicationVersion_ASC<br />
 &nbsp;&nbsp;<span class="c"># httpApplicationVersion descending</span><br />
 &nbsp;&nbsp;httpApplicationVersion_DESC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication ascending</span><br />
-&nbsp;&nbsp;httpApplication_ASC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication descending</span><br />
-&nbsp;&nbsp;httpApplication_DESC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash ascending</span><br />
 &nbsp;&nbsp;ja3Hash_ASC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash descending</span><br />
@@ -31878,6 +31878,10 @@
 &nbsp;&nbsp;wafXssAttackScore_ASC<br />
 &nbsp;&nbsp;<span class="c"># wafXssAttackScore descending</span><br />
 &nbsp;&nbsp;wafXssAttackScore_DESC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion ascending</span><br />
+&nbsp;&nbsp;zoneVersion_ASC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion descending</span><br />
+&nbsp;&nbsp;zoneVersion_DESC<br />
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneFirewallEventsAdaptiveMetadataElem" href="#ZoneFirewallEventsAdaptiveMetadataElem">ZoneFirewallEventsAdaptiveMetadataElem</a> {<br />
@@ -32028,10 +32032,6 @@
 &nbsp;&nbsp;httpApplicationVersion_ASC<br />
 &nbsp;&nbsp;<span class="c"># httpApplicationVersion descending</span><br />
 &nbsp;&nbsp;httpApplicationVersion_DESC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication ascending</span><br />
-&nbsp;&nbsp;httpApplication_ASC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication descending</span><br />
-&nbsp;&nbsp;httpApplication_DESC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash ascending</span><br />
 &nbsp;&nbsp;ja3Hash_ASC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash descending</span><br />
@@ -32116,6 +32116,10 @@
 &nbsp;&nbsp;wafXssAttackScore_ASC<br />
 &nbsp;&nbsp;<span class="c"># wafXssAttackScore descending</span><br />
 &nbsp;&nbsp;wafXssAttackScore_DESC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion ascending</span><br />
+&nbsp;&nbsp;zoneVersion_ASC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion descending</span><br />
+&nbsp;&nbsp;zoneVersion_DESC<br />
 }<br />
 <br />
 <span class="c"># Raw Health Check events with adaptive sampling</span><br />
@@ -33749,9 +33753,8 @@
 &nbsp;&nbsp;edgeResponseStatus: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># The time elapsed between processing the first byte of the request until when we started sending a response</span><br />
 &nbsp;&nbsp;edgeTimeToFirstByteMs: <a href="#uint16">uint16!</a><br />
-&nbsp;&nbsp;<span class="c"># Unique identifier for HTTP Application</span><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Version associated with HTTP Application</span><br />
+&nbsp;&nbsp;@Deprecated<br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># '1' if a request was inititiated by a Cloudflare Worker on another zone; '0' otherwise.</span><br />
 &nbsp;&nbsp;isCrossZoneSubrequest: <a href="#uint8">uint8!</a><br />
@@ -33788,6 +33791,8 @@
 &nbsp;&nbsp;wafXssAttackScore: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># The X-Requested-With header of the client request</span><br />
 &nbsp;&nbsp;xRequestedWith: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The version of a zone</span><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="ZoneHttpRequestsAdaptiveFilter_InputObject" href="#ZoneHttpRequestsAdaptiveFilter_InputObject">ZoneHttpRequestsAdaptiveFilter_InputObject</a> {<br />
@@ -34123,7 +34128,6 @@
 &nbsp;&nbsp;edgeTimeToFirstByteMs_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeTimeToFirstByteMs_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeTimeToFirstByteMs_notin: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string</a><br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_geq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_gt: <a href="#uint64">uint64</a><br />
@@ -34132,15 +34136,6 @@
 &nbsp;&nbsp;httpApplicationVersion_lt: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_neq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_notin: <a href="#uint64">[uint64!]</a><br />
-&nbsp;&nbsp;httpApplication_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;isCrossZoneSubrequest: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;isCrossZoneSubrequest_geq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;isCrossZoneSubrequest_gt: <a href="#uint8">uint8</a><br />
@@ -34325,6 +34320,14 @@
 &nbsp;&nbsp;xRequestedWith_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;xRequestedWith_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;xRequestedWith_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;zoneVersion_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_notin: <a href="#uint64">[uint64!]</a><br />
 }<br />
 <br />
 <span class="c"># Aggregated HTTP requests data with adaptive sampling</span><br />
@@ -34430,9 +34433,8 @@
 &nbsp;&nbsp;edgeResponseStatus: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># The time elapsed between processing the first byte of the request until when we started sending a response</span><br />
 &nbsp;&nbsp;edgeTimeToFirstByteMs: <a href="#uint16">uint16!</a><br />
-&nbsp;&nbsp;<span class="c"># Unique identifier for HTTP Application</span><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Version associated with HTTP Application</span><br />
+&nbsp;&nbsp;@Deprecated<br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># '1' if a request was inititiated by a Cloudflare Worker on another zone; '0' otherwise.</span><br />
 &nbsp;&nbsp;isCrossZoneSubrequest: <a href="#uint8">uint8!</a><br />
@@ -34470,6 +34472,8 @@
 &nbsp;&nbsp;wafXssAttackScore: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># The X-Requested-With header of the client request</span><br />
 &nbsp;&nbsp;xRequestedWith: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The version of a zone</span><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="ZoneHttpRequestsAdaptiveGroupsFilter_InputObject" href="#ZoneHttpRequestsAdaptiveGroupsFilter_InputObject">ZoneHttpRequestsAdaptiveGroupsFilter_InputObject</a> {<br />
@@ -34805,7 +34809,6 @@
 &nbsp;&nbsp;edgeTimeToFirstByteMs_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeTimeToFirstByteMs_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeTimeToFirstByteMs_notin: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string</a><br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_geq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_gt: <a href="#uint64">uint64</a><br />
@@ -34814,15 +34817,6 @@
 &nbsp;&nbsp;httpApplicationVersion_lt: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_neq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_notin: <a href="#uint64">[uint64!]</a><br />
-&nbsp;&nbsp;httpApplication_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;isCrossZoneSubrequest: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;isCrossZoneSubrequest_geq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;isCrossZoneSubrequest_gt: <a href="#uint8">uint8</a><br />
@@ -35015,6 +35009,14 @@
 &nbsp;&nbsp;xRequestedWith_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;xRequestedWith_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;xRequestedWith_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;zoneVersion_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_notin: <a href="#uint64">[uint64!]</a><br />
 }<br />
 <br />
 <span class="k">enum</span> <a id="ZoneHttpRequestsAdaptiveGroupsOrderBy" href="#ZoneHttpRequestsAdaptiveGroupsOrderBy">ZoneHttpRequestsAdaptiveGroupsOrderBy</a> {<br />
@@ -35190,10 +35192,6 @@
 &nbsp;&nbsp;httpApplicationVersion_ASC<br />
 &nbsp;&nbsp;<span class="c"># httpApplicationVersion descending</span><br />
 &nbsp;&nbsp;httpApplicationVersion_DESC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication ascending</span><br />
-&nbsp;&nbsp;httpApplication_ASC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication descending</span><br />
-&nbsp;&nbsp;httpApplication_DESC<br />
 &nbsp;&nbsp;<span class="c"># isCrossZoneSubrequest ascending</span><br />
 &nbsp;&nbsp;isCrossZoneSubrequest_ASC<br />
 &nbsp;&nbsp;<span class="c"># isCrossZoneSubrequest descending</span><br />
@@ -35346,6 +35344,10 @@
 &nbsp;&nbsp;xRequestedWith_ASC<br />
 &nbsp;&nbsp;<span class="c"># xRequestedWith descending</span><br />
 &nbsp;&nbsp;xRequestedWith_DESC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion ascending</span><br />
+&nbsp;&nbsp;zoneVersion_ASC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion descending</span><br />
+&nbsp;&nbsp;zoneVersion_DESC<br />
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneHttpRequestsAdaptiveGroupsQuantiles" href="#ZoneHttpRequestsAdaptiveGroupsQuantiles">ZoneHttpRequestsAdaptiveGroupsQuantiles</a> {<br />
@@ -35539,10 +35541,6 @@
 &nbsp;&nbsp;httpApplicationVersion_ASC<br />
 &nbsp;&nbsp;<span class="c"># httpApplicationVersion descending</span><br />
 &nbsp;&nbsp;httpApplicationVersion_DESC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication ascending</span><br />
-&nbsp;&nbsp;httpApplication_ASC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication descending</span><br />
-&nbsp;&nbsp;httpApplication_DESC<br />
 &nbsp;&nbsp;<span class="c"># isCrossZoneSubrequest ascending</span><br />
 &nbsp;&nbsp;isCrossZoneSubrequest_ASC<br />
 &nbsp;&nbsp;<span class="c"># isCrossZoneSubrequest descending</span><br />
@@ -35623,6 +35621,10 @@
 &nbsp;&nbsp;xRequestedWith_ASC<br />
 &nbsp;&nbsp;<span class="c"># xRequestedWith descending</span><br />
 &nbsp;&nbsp;xRequestedWith_DESC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion ascending</span><br />
+&nbsp;&nbsp;zoneVersion_ASC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion descending</span><br />
+&nbsp;&nbsp;zoneVersion_DESC<br />
 }<br />
 <br />
 <span class="c"># A high-level summary of HTTP requests made by end users.</span><br />
@@ -35667,12 +35669,13 @@
 &nbsp;&nbsp;edgeResponseContentTypeName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># HTTP response status code returned to client</span><br />
 &nbsp;&nbsp;edgeResponseStatus: <a href="#uint16">uint16!</a><br />
-&nbsp;&nbsp;<span class="c"># Unique identifier for HTTP Application</span><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Version associated with HTTP Application</span><br />
+&nbsp;&nbsp;@Deprecated<br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Browser parsed from the user agent</span><br />
 &nbsp;&nbsp;userAgentBrowser: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The version of a zone</span><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="ZoneHttpRequestsOverviewAdaptiveGroupsFilter_InputObject" href="#ZoneHttpRequestsOverviewAdaptiveGroupsFilter_InputObject">ZoneHttpRequestsOverviewAdaptiveGroupsFilter_InputObject</a> {<br />
@@ -35774,7 +35777,6 @@
 &nbsp;&nbsp;edgeResponseStatus_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeResponseStatus_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;edgeResponseStatus_notin: <a href="#uint16">[uint16!]</a><br />
-&nbsp;&nbsp;httpApplication: <a href="#string">string</a><br />
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_geq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_gt: <a href="#uint64">uint64</a><br />
@@ -35783,15 +35785,6 @@
 &nbsp;&nbsp;httpApplicationVersion_lt: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_neq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;httpApplicationVersion_notin: <a href="#uint64">[uint64!]</a><br />
-&nbsp;&nbsp;httpApplication_geq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_gt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_in: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_leq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_like: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_lt: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_neq: <a href="#string">string</a><br />
-&nbsp;&nbsp;httpApplication_notin: <a href="#string">[string!]</a><br />
-&nbsp;&nbsp;httpApplication_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;userAgentBrowser: <a href="#string">string</a><br />
 &nbsp;&nbsp;userAgentBrowser_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;userAgentBrowser_gt: <a href="#string">string</a><br />
@@ -35802,6 +35795,14 @@
 &nbsp;&nbsp;userAgentBrowser_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;userAgentBrowser_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;userAgentBrowser_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;zoneVersion: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;zoneVersion_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;zoneVersion_notin: <a href="#uint64">[uint64!]</a><br />
 }<br />
 <br />
 <span class="k">enum</span> <a id="ZoneHttpRequestsOverviewAdaptiveGroupsOrderBy" href="#ZoneHttpRequestsOverviewAdaptiveGroupsOrderBy">ZoneHttpRequestsOverviewAdaptiveGroupsOrderBy</a> {<br />
@@ -35861,10 +35862,6 @@
 &nbsp;&nbsp;httpApplicationVersion_ASC<br />
 &nbsp;&nbsp;<span class="c"># httpApplicationVersion descending</span><br />
 &nbsp;&nbsp;httpApplicationVersion_DESC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication ascending</span><br />
-&nbsp;&nbsp;httpApplication_ASC<br />
-&nbsp;&nbsp;<span class="c"># httpApplication descending</span><br />
-&nbsp;&nbsp;httpApplication_DESC<br />
 &nbsp;&nbsp;<span class="c"># ratio(cachedBytes) ascending</span><br />
 &nbsp;&nbsp;ratio_cachedBytes_ASC<br />
 &nbsp;&nbsp;<span class="c"># ratio(cachedBytes) descending</span><br />
@@ -35921,6 +35918,10 @@
 &nbsp;&nbsp;userAgentBrowser_ASC<br />
 &nbsp;&nbsp;<span class="c"># userAgentBrowser descending</span><br />
 &nbsp;&nbsp;userAgentBrowser_DESC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion ascending</span><br />
+&nbsp;&nbsp;zoneVersion_ASC<br />
+&nbsp;&nbsp;<span class="c"># zoneVersion descending</span><br />
+&nbsp;&nbsp;zoneVersion_DESC<br />
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneHttpRequestsOverviewAdaptiveGroupsRatio" href="#ZoneHttpRequestsOverviewAdaptiveGroupsRatio">ZoneHttpRequestsOverviewAdaptiveGroupsRatio</a> {<br />
