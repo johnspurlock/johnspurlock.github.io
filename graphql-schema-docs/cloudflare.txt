@@ -27,10 +27,6 @@ Account-level datasets:
   httpRequestsAdaptiveGroups
 * httpRequestsOverviewAdaptiveGroups
 * imagesRequestsAdaptiveGroups
-  ipFlows1dGroups
-  ipFlows1hGroups
-  ipFlows1mAttacksGroups
-  ipFlows1mGroups
 * logpushHealthAdaptiveGroups
   magicFirewallNetworkAnalyticsAdaptiveGroups
   magicFirewallSamplesAdaptiveGroups
@@ -50,6 +46,8 @@ Account-level datasets:
 * rumPerformanceEventsAdaptiveGroups
 * rumWebVitalsEventsAdaptive
 * rumWebVitalsEventsAdaptiveGroups
+  sinkholeRequestLogsAdaptive
+  sinkholeRequestLogsAdaptiveGroups
   spectrumNetworkAnalyticsAdaptiveGroups
   storageTraces
 * streamMinutesViewedAdaptiveGroups
@@ -98,7 +96,6 @@ Zone-level datasets:
 * logpushHealthAdaptiveGroups
   nelReportsAdaptiveGroups
   pageShieldReportsAdaptiveGroups
-  synAvgPps1mGroups
   waitingRoomAnalyticsAdaptive
   waitingRoomAnalyticsAdaptiveGroups
 * workersZoneInvocationsAdaptiveGroups
@@ -209,14 +206,6 @@ type account {
   httpRequestsOverviewAdaptiveGroups(filter: AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHttpRequestsOverviewAdaptiveGroupsOrderBy!]): [AccountHttpRequestsOverviewAdaptiveGroups!]!
   # A high-level summary of Cloudflare Images served to end users.
   imagesRequestsAdaptiveGroups(filter: AccountImagesRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesRequestsAdaptiveGroupsOrderBy!]): [AccountImagesRequestsAdaptiveGroups!]!
-  # Beta. Daily rollups of IP flows
-  ipFlows1dGroups(filter: AccountIpFlows1dGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountIpFlows1dGroupsOrderBy!]): [AccountIpFlows1dGroups!]!
-  # Beta. Hourly rollups of IP flows
-  ipFlows1hGroups(filter: AccountIpFlows1hGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountIpFlows1hGroupsOrderBy!]): [AccountIpFlows1hGroups!]!
-  # Beta. Minutely rollups of IP flows including only attack traffic
-  ipFlows1mAttacksGroups(filter: AccountIpFlows1mAttacksGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountIpFlows1mAttacksGroupsOrderBy!]): [AccountIpFlows1mAttacksGroups!]!
-  # Beta. Minutely rollups of IP flows
-  ipFlows1mGroups(filter: AccountIpFlows1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountIpFlows1mGroupsOrderBy!]): [AccountIpFlows1mGroups!]!
   # Beta. Logpush job health metrics
   logpushHealthAdaptiveGroups(filter: AccountLogpushHealthAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogpushHealthAdaptiveGroupsOrderBy!]): [AccountLogpushHealthAdaptiveGroups!]!
   # Network analytics data for Magic Firewall
@@ -256,6 +245,10 @@ type account {
   # Beta. Aggregated RUM Web Vitals event metrics with adaptive sampling
   rumWebVitalsEventsAdaptiveGroups(filter: AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountRumWebVitalsEventsAdaptiveGroupsOrderBy!]): [AccountRumWebVitalsEventsAdaptiveGroups!]!
   settings: AccountSettings
+  # Sinkhole Request Logs
+  sinkholeRequestLogsAdaptive(filter: AccountSinkholeRequestLogsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountSinkholeRequestLogsAdaptiveOrderBy!]): [AccountSinkholeRequestLogsAdaptive!]!
+  # Sinkhole Request Logs
+  sinkholeRequestLogsAdaptiveGroups(filter: AccountSinkholeRequestLogsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountSinkholeRequestLogsAdaptiveGroupsOrderBy!]): [AccountSinkholeRequestLogsAdaptiveGroups!]!
   # Network analytics data for Spectrum traffic
   spectrumNetworkAnalyticsAdaptiveGroups(filter: AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountSpectrumNetworkAnalyticsAdaptiveGroups!]!
   # Storage Tracing Information
@@ -12554,1594 +12547,6 @@ type AccountImagesRequestsAdaptiveGroupsSum {
   requests: uint64!
 }
 
-# Beta. Daily rollups of IP flows
-type AccountIpFlows1dGroups {
-  # The average value for a metric
-  avg: AccountIpFlows1dGroupsAvg
-  # List of dimensions to group by
-  dimensions: AccountIpFlows1dGroupsDimensions
-  # The sum of values for a metric per dimension
-  sum: AccountIpFlows1dGroupsSum
-}
-
-type AccountIpFlows1dGroupsAvg {
-  # ipFlows sample interval. Data for this node is sampled at a rate of 1/8192.
-  sampleInterval: uint64!
-}
-
-type AccountIpFlows1dGroupsDimensions {
-  # Destination IP used by packets during an attack
-  attackDestinationIP: string!
-  # Destination port used by packets during an attack
-  attackDestinationPort: uint16!
-  # The Cloudflare unique attack identifier this packet was part of
-  attackId: string!
-  # Type of action (Block, Rate-limit, Connection-Tracking) used to mitigate the attack
-  attackMitigationType: string!
-  # IP protocol used by packets during an attack
-  attackProtocol: string!
-  # Source port used by packets during an attack
-  attackSourcePort: uint16!
-  # TCP flags used by packets during an attack
-  attackTcpFlags: string!
-  # Classification of the attack
-  attackType: string!
-  # City of data center that received the packet
-  coloCity: string!
-  # IATA airport code of data center that received the packet
-  coloCode: string!
-  # Country of data center that received the packet
-  coloCountry: string!
-  # Region of data center that received the packet
-  coloRegion: string!
-  # Date the packet was received
-  date: Date!
-  # Destination IP of the packet
-  destinationIP: string!
-  # Destination IP/23 range of the packet
-  destinationIPv4Range23: string!
-  # Destination IP/24 range of the packet
-  destinationIPv4Range24: string!
-  # Destination port of the TCP/UDP packet
-  destinationPort: uint16!
-  # IP protocol
-  ipProtocol: string!
-  # IP version
-  ipVersion: uint8!
-}
-
-input AccountIpFlows1dGroupsFilter_InputObject {
-  AND: [AccountIpFlows1dGroupsFilter_InputObject!]
-  OR: [AccountIpFlows1dGroupsFilter_InputObject!]
-  attackDestinationIP: string
-  attackDestinationIP_geq: string
-  attackDestinationIP_gt: string
-  attackDestinationIP_in: [string!]
-  attackDestinationIP_leq: string
-  attackDestinationIP_like: string
-  attackDestinationIP_lt: string
-  attackDestinationIP_neq: string
-  attackDestinationIP_notin: [string!]
-  attackDestinationIP_notlike: string
-  attackDestinationPort: uint16
-  attackDestinationPort_geq: uint16
-  attackDestinationPort_gt: uint16
-  attackDestinationPort_in: [uint16!]
-  attackDestinationPort_leq: uint16
-  attackDestinationPort_lt: uint16
-  attackDestinationPort_neq: uint16
-  attackDestinationPort_notin: [uint16!]
-  attackId: string
-  attackId_geq: string
-  attackId_gt: string
-  attackId_in: [string!]
-  attackId_leq: string
-  attackId_like: string
-  attackId_lt: string
-  attackId_neq: string
-  attackId_notin: [string!]
-  attackId_notlike: string
-  attackMitigationType: string
-  attackMitigationType_geq: string
-  attackMitigationType_gt: string
-  attackMitigationType_in: [string!]
-  attackMitigationType_leq: string
-  attackMitigationType_like: string
-  attackMitigationType_lt: string
-  attackMitigationType_neq: string
-  attackMitigationType_notin: [string!]
-  attackMitigationType_notlike: string
-  attackProtocol: string
-  attackProtocol_geq: string
-  attackProtocol_gt: string
-  attackProtocol_in: [string!]
-  attackProtocol_leq: string
-  attackProtocol_like: string
-  attackProtocol_lt: string
-  attackProtocol_neq: string
-  attackProtocol_notin: [string!]
-  attackProtocol_notlike: string
-  attackSourcePort: uint16
-  attackSourcePort_geq: uint16
-  attackSourcePort_gt: uint16
-  attackSourcePort_in: [uint16!]
-  attackSourcePort_leq: uint16
-  attackSourcePort_lt: uint16
-  attackSourcePort_neq: uint16
-  attackSourcePort_notin: [uint16!]
-  attackTcpFlags: string
-  attackTcpFlags_geq: string
-  attackTcpFlags_gt: string
-  attackTcpFlags_in: [string!]
-  attackTcpFlags_leq: string
-  attackTcpFlags_like: string
-  attackTcpFlags_lt: string
-  attackTcpFlags_neq: string
-  attackTcpFlags_notin: [string!]
-  attackTcpFlags_notlike: string
-  attackType: string
-  attackType_geq: string
-  attackType_gt: string
-  attackType_in: [string!]
-  attackType_leq: string
-  attackType_like: string
-  attackType_lt: string
-  attackType_neq: string
-  attackType_notin: [string!]
-  attackType_notlike: string
-  coloCity: string
-  coloCity_geq: string
-  coloCity_gt: string
-  coloCity_in: [string!]
-  coloCity_leq: string
-  coloCity_like: string
-  coloCity_lt: string
-  coloCity_neq: string
-  coloCity_notin: [string!]
-  coloCity_notlike: string
-  coloCode: string
-  coloCode_geq: string
-  coloCode_gt: string
-  coloCode_in: [string!]
-  coloCode_leq: string
-  coloCode_like: string
-  coloCode_lt: string
-  coloCode_neq: string
-  coloCode_notin: [string!]
-  coloCode_notlike: string
-  coloCountry: string
-  coloCountry_geq: string
-  coloCountry_gt: string
-  coloCountry_in: [string!]
-  coloCountry_leq: string
-  coloCountry_like: string
-  coloCountry_lt: string
-  coloCountry_neq: string
-  coloCountry_notin: [string!]
-  coloCountry_notlike: string
-  coloRegion: string
-  coloRegion_geq: string
-  coloRegion_gt: string
-  coloRegion_in: [string!]
-  coloRegion_leq: string
-  coloRegion_like: string
-  coloRegion_lt: string
-  coloRegion_neq: string
-  coloRegion_notin: [string!]
-  coloRegion_notlike: string
-  date: Date
-  date_geq: Date
-  date_gt: Date
-  date_in: [Date!]
-  date_leq: Date
-  date_lt: Date
-  date_neq: Date
-  date_notin: [Date!]
-  destinationIP: string
-  destinationIP_geq: string
-  destinationIP_gt: string
-  destinationIP_in: [string!]
-  destinationIP_leq: string
-  destinationIP_like: string
-  destinationIP_lt: string
-  destinationIP_neq: string
-  destinationIP_notin: [string!]
-  destinationIP_notlike: string
-  destinationIPv4Range23: string
-  destinationIPv4Range23_geq: string
-  destinationIPv4Range23_gt: string
-  destinationIPv4Range23_in: [string!]
-  destinationIPv4Range23_leq: string
-  destinationIPv4Range23_like: string
-  destinationIPv4Range23_lt: string
-  destinationIPv4Range23_neq: string
-  destinationIPv4Range23_notin: [string!]
-  destinationIPv4Range23_notlike: string
-  destinationIPv4Range24: string
-  destinationIPv4Range24_geq: string
-  destinationIPv4Range24_gt: string
-  destinationIPv4Range24_in: [string!]
-  destinationIPv4Range24_leq: string
-  destinationIPv4Range24_like: string
-  destinationIPv4Range24_lt: string
-  destinationIPv4Range24_neq: string
-  destinationIPv4Range24_notin: [string!]
-  destinationIPv4Range24_notlike: string
-  destinationPort: uint16
-  destinationPort_geq: uint16
-  destinationPort_gt: uint16
-  destinationPort_in: [uint16!]
-  destinationPort_leq: uint16
-  destinationPort_lt: uint16
-  destinationPort_neq: uint16
-  destinationPort_notin: [uint16!]
-  ipProtocol: string
-  ipProtocol_geq: string
-  ipProtocol_gt: string
-  ipProtocol_in: [string!]
-  ipProtocol_leq: string
-  ipProtocol_like: string
-  ipProtocol_lt: string
-  ipProtocol_neq: string
-  ipProtocol_notin: [string!]
-  ipProtocol_notlike: string
-  ipVersion: uint8
-  ipVersion_geq: uint8
-  ipVersion_gt: uint8
-  ipVersion_in: bytes
-  ipVersion_leq: uint8
-  ipVersion_lt: uint8
-  ipVersion_neq: uint8
-  ipVersion_notin: bytes
-}
-
-enum AccountIpFlows1dGroupsOrderBy {
-  # attackDestinationIP ascending
-  attackDestinationIP_ASC
-  # attackDestinationIP descending
-  attackDestinationIP_DESC
-  # attackDestinationPort ascending
-  attackDestinationPort_ASC
-  # attackDestinationPort descending
-  attackDestinationPort_DESC
-  # attackId ascending
-  attackId_ASC
-  # attackId descending
-  attackId_DESC
-  # attackMitigationType ascending
-  attackMitigationType_ASC
-  # attackMitigationType descending
-  attackMitigationType_DESC
-  # attackProtocol ascending
-  attackProtocol_ASC
-  # attackProtocol descending
-  attackProtocol_DESC
-  # attackSourcePort ascending
-  attackSourcePort_ASC
-  # attackSourcePort descending
-  attackSourcePort_DESC
-  # attackTcpFlags ascending
-  attackTcpFlags_ASC
-  # attackTcpFlags descending
-  attackTcpFlags_DESC
-  # attackType ascending
-  attackType_ASC
-  # attackType descending
-  attackType_DESC
-  # avg(sampleInterval) ascending
-  avg_sampleInterval_ASC
-  # avg(sampleInterval) descending
-  avg_sampleInterval_DESC
-  # coloCity ascending
-  coloCity_ASC
-  # coloCity descending
-  coloCity_DESC
-  # coloCode ascending
-  coloCode_ASC
-  # coloCode descending
-  coloCode_DESC
-  # coloCountry ascending
-  coloCountry_ASC
-  # coloCountry descending
-  coloCountry_DESC
-  # coloRegion ascending
-  coloRegion_ASC
-  # coloRegion descending
-  coloRegion_DESC
-  # date ascending
-  date_ASC
-  # date descending
-  date_DESC
-  # destinationIP ascending
-  destinationIP_ASC
-  # destinationIP descending
-  destinationIP_DESC
-  # destinationIPv4Range23 ascending
-  destinationIPv4Range23_ASC
-  # destinationIPv4Range23 descending
-  destinationIPv4Range23_DESC
-  # destinationIPv4Range24 ascending
-  destinationIPv4Range24_ASC
-  # destinationIPv4Range24 descending
-  destinationIPv4Range24_DESC
-  # destinationPort ascending
-  destinationPort_ASC
-  # destinationPort descending
-  destinationPort_DESC
-  # ipProtocol ascending
-  ipProtocol_ASC
-  # ipProtocol descending
-  ipProtocol_DESC
-  # ipVersion ascending
-  ipVersion_ASC
-  # ipVersion descending
-  ipVersion_DESC
-  # sum(bits) ascending
-  sum_bits_ASC
-  # sum(bits) descending
-  sum_bits_DESC
-  # sum(packets) ascending
-  sum_packets_ASC
-  # sum(packets) descending
-  sum_packets_DESC
-}
-
-type AccountIpFlows1dGroupsSum {
-  # Total number of bits received
-  bits: uint64!
-  # Total number of packets received
-  packets: uint64!
-}
-
-# Beta. Hourly rollups of IP flows
-type AccountIpFlows1hGroups {
-  # The average value for a metric
-  avg: AccountIpFlows1hGroupsAvg
-  # List of dimensions to group by
-  dimensions: AccountIpFlows1hGroupsDimensions
-  # The sum of values for a metric per dimension
-  sum: AccountIpFlows1hGroupsSum
-}
-
-type AccountIpFlows1hGroupsAvg {
-  # ipFlows sample interval. Data for this node is sampled at a rate of 1/8192.
-  sampleInterval: uint64!
-}
-
-type AccountIpFlows1hGroupsDimensions {
-  # Destination IP used by packets during an attack
-  attackDestinationIP: string!
-  # Destination port used by packets during an attack
-  attackDestinationPort: uint16!
-  # The Cloudflare unique attack identifier this packet was part of
-  attackId: string!
-  # Type of action (Block, Rate-limit, Connection-Tracking) used to mitigate the attack
-  attackMitigationType: string!
-  # IP protocol used by packets during an attack
-  attackProtocol: string!
-  # Source port used by packets during an attack
-  attackSourcePort: uint16!
-  # TCP flags used by packets during an attack
-  attackTcpFlags: string!
-  # Classification of the attack
-  attackType: string!
-  # City of data center that received the packet
-  coloCity: string!
-  # IATA airport code of data center that received the packet
-  coloCode: string!
-  # Country of data center that received the packet
-  coloCountry: string!
-  # Region of data center that received the packet
-  coloRegion: string!
-  # Date the packet was received
-  date: Date!
-  # Datetime the packet was received truncated to multiple of one hour
-  datetimeHour: Time!
-  # Destination IP of the packet
-  destinationIP: string!
-  # Destination IP/23 range of the packet
-  destinationIPv4Range23: string!
-  # Destination IP/24 range of the packet
-  destinationIPv4Range24: string!
-  # Destination port of the TCP/UDP packet
-  destinationPort: uint16!
-  # IP protocol
-  ipProtocol: string!
-  # IP version
-  ipVersion: uint8!
-  # The ASN description associated with the source IP
-  sourceIPASNDescription: string!
-  # The ASN associated with the source IP
-  sourceIPAsn: string!
-  # The country associated with the source IP
-  sourceIPCountry: string!
-  # Source port of the TCP/UDP packet
-  sourcePort: uint16!
-  # List of TCP flags
-  tcpFlags: string!
-}
-
-input AccountIpFlows1hGroupsFilter_InputObject {
-  AND: [AccountIpFlows1hGroupsFilter_InputObject!]
-  OR: [AccountIpFlows1hGroupsFilter_InputObject!]
-  attackDestinationIP: string
-  attackDestinationIP_geq: string
-  attackDestinationIP_gt: string
-  attackDestinationIP_in: [string!]
-  attackDestinationIP_leq: string
-  attackDestinationIP_like: string
-  attackDestinationIP_lt: string
-  attackDestinationIP_neq: string
-  attackDestinationIP_notin: [string!]
-  attackDestinationIP_notlike: string
-  attackDestinationPort: uint16
-  attackDestinationPort_geq: uint16
-  attackDestinationPort_gt: uint16
-  attackDestinationPort_in: [uint16!]
-  attackDestinationPort_leq: uint16
-  attackDestinationPort_lt: uint16
-  attackDestinationPort_neq: uint16
-  attackDestinationPort_notin: [uint16!]
-  attackId: string
-  attackId_geq: string
-  attackId_gt: string
-  attackId_in: [string!]
-  attackId_leq: string
-  attackId_like: string
-  attackId_lt: string
-  attackId_neq: string
-  attackId_notin: [string!]
-  attackId_notlike: string
-  attackMitigationType: string
-  attackMitigationType_geq: string
-  attackMitigationType_gt: string
-  attackMitigationType_in: [string!]
-  attackMitigationType_leq: string
-  attackMitigationType_like: string
-  attackMitigationType_lt: string
-  attackMitigationType_neq: string
-  attackMitigationType_notin: [string!]
-  attackMitigationType_notlike: string
-  attackProtocol: string
-  attackProtocol_geq: string
-  attackProtocol_gt: string
-  attackProtocol_in: [string!]
-  attackProtocol_leq: string
-  attackProtocol_like: string
-  attackProtocol_lt: string
-  attackProtocol_neq: string
-  attackProtocol_notin: [string!]
-  attackProtocol_notlike: string
-  attackSourcePort: uint16
-  attackSourcePort_geq: uint16
-  attackSourcePort_gt: uint16
-  attackSourcePort_in: [uint16!]
-  attackSourcePort_leq: uint16
-  attackSourcePort_lt: uint16
-  attackSourcePort_neq: uint16
-  attackSourcePort_notin: [uint16!]
-  attackTcpFlags: string
-  attackTcpFlags_geq: string
-  attackTcpFlags_gt: string
-  attackTcpFlags_in: [string!]
-  attackTcpFlags_leq: string
-  attackTcpFlags_like: string
-  attackTcpFlags_lt: string
-  attackTcpFlags_neq: string
-  attackTcpFlags_notin: [string!]
-  attackTcpFlags_notlike: string
-  attackType: string
-  attackType_geq: string
-  attackType_gt: string
-  attackType_in: [string!]
-  attackType_leq: string
-  attackType_like: string
-  attackType_lt: string
-  attackType_neq: string
-  attackType_notin: [string!]
-  attackType_notlike: string
-  coloCity: string
-  coloCity_geq: string
-  coloCity_gt: string
-  coloCity_in: [string!]
-  coloCity_leq: string
-  coloCity_like: string
-  coloCity_lt: string
-  coloCity_neq: string
-  coloCity_notin: [string!]
-  coloCity_notlike: string
-  coloCode: string
-  coloCode_geq: string
-  coloCode_gt: string
-  coloCode_in: [string!]
-  coloCode_leq: string
-  coloCode_like: string
-  coloCode_lt: string
-  coloCode_neq: string
-  coloCode_notin: [string!]
-  coloCode_notlike: string
-  coloCountry: string
-  coloCountry_geq: string
-  coloCountry_gt: string
-  coloCountry_in: [string!]
-  coloCountry_leq: string
-  coloCountry_like: string
-  coloCountry_lt: string
-  coloCountry_neq: string
-  coloCountry_notin: [string!]
-  coloCountry_notlike: string
-  coloRegion: string
-  coloRegion_geq: string
-  coloRegion_gt: string
-  coloRegion_in: [string!]
-  coloRegion_leq: string
-  coloRegion_like: string
-  coloRegion_lt: string
-  coloRegion_neq: string
-  coloRegion_notin: [string!]
-  coloRegion_notlike: string
-  date: Date
-  date_geq: Date
-  date_gt: Date
-  date_in: [Date!]
-  date_leq: Date
-  date_lt: Date
-  date_neq: Date
-  date_notin: [Date!]
-  datetimeHour: Time
-  datetimeHour_geq: Time
-  datetimeHour_gt: Time
-  datetimeHour_in: [Time!]
-  datetimeHour_leq: Time
-  datetimeHour_lt: Time
-  datetimeHour_neq: Time
-  datetimeHour_notin: [Time!]
-  destinationIP: string
-  destinationIP_geq: string
-  destinationIP_gt: string
-  destinationIP_in: [string!]
-  destinationIP_leq: string
-  destinationIP_like: string
-  destinationIP_lt: string
-  destinationIP_neq: string
-  destinationIP_notin: [string!]
-  destinationIP_notlike: string
-  destinationIPv4Range23: string
-  destinationIPv4Range23_geq: string
-  destinationIPv4Range23_gt: string
-  destinationIPv4Range23_in: [string!]
-  destinationIPv4Range23_leq: string
-  destinationIPv4Range23_like: string
-  destinationIPv4Range23_lt: string
-  destinationIPv4Range23_neq: string
-  destinationIPv4Range23_notin: [string!]
-  destinationIPv4Range23_notlike: string
-  destinationIPv4Range24: string
-  destinationIPv4Range24_geq: string
-  destinationIPv4Range24_gt: string
-  destinationIPv4Range24_in: [string!]
-  destinationIPv4Range24_leq: string
-  destinationIPv4Range24_like: string
-  destinationIPv4Range24_lt: string
-  destinationIPv4Range24_neq: string
-  destinationIPv4Range24_notin: [string!]
-  destinationIPv4Range24_notlike: string
-  destinationPort: uint16
-  destinationPort_geq: uint16
-  destinationPort_gt: uint16
-  destinationPort_in: [uint16!]
-  destinationPort_leq: uint16
-  destinationPort_lt: uint16
-  destinationPort_neq: uint16
-  destinationPort_notin: [uint16!]
-  ipProtocol: string
-  ipProtocol_geq: string
-  ipProtocol_gt: string
-  ipProtocol_in: [string!]
-  ipProtocol_leq: string
-  ipProtocol_like: string
-  ipProtocol_lt: string
-  ipProtocol_neq: string
-  ipProtocol_notin: [string!]
-  ipProtocol_notlike: string
-  ipVersion: uint8
-  ipVersion_geq: uint8
-  ipVersion_gt: uint8
-  ipVersion_in: bytes
-  ipVersion_leq: uint8
-  ipVersion_lt: uint8
-  ipVersion_neq: uint8
-  ipVersion_notin: bytes
-  sourceIPASNDescription: string
-  sourceIPASNDescription_geq: string
-  sourceIPASNDescription_gt: string
-  sourceIPASNDescription_in: [string!]
-  sourceIPASNDescription_leq: string
-  sourceIPASNDescription_like: string
-  sourceIPASNDescription_lt: string
-  sourceIPASNDescription_neq: string
-  sourceIPASNDescription_notin: [string!]
-  sourceIPASNDescription_notlike: string
-  sourceIPAsn: string
-  sourceIPAsn_geq: string
-  sourceIPAsn_gt: string
-  sourceIPAsn_in: [string!]
-  sourceIPAsn_leq: string
-  sourceIPAsn_like: string
-  sourceIPAsn_lt: string
-  sourceIPAsn_neq: string
-  sourceIPAsn_notin: [string!]
-  sourceIPAsn_notlike: string
-  sourceIPCountry: string
-  sourceIPCountry_geq: string
-  sourceIPCountry_gt: string
-  sourceIPCountry_in: [string!]
-  sourceIPCountry_leq: string
-  sourceIPCountry_like: string
-  sourceIPCountry_lt: string
-  sourceIPCountry_neq: string
-  sourceIPCountry_notin: [string!]
-  sourceIPCountry_notlike: string
-  sourcePort: uint16
-  sourcePort_geq: uint16
-  sourcePort_gt: uint16
-  sourcePort_in: [uint16!]
-  sourcePort_leq: uint16
-  sourcePort_lt: uint16
-  sourcePort_neq: uint16
-  sourcePort_notin: [uint16!]
-  tcpFlags: string
-  tcpFlags_geq: string
-  tcpFlags_gt: string
-  tcpFlags_in: [string!]
-  tcpFlags_leq: string
-  tcpFlags_like: string
-  tcpFlags_lt: string
-  tcpFlags_neq: string
-  tcpFlags_notin: [string!]
-  tcpFlags_notlike: string
-}
-
-enum AccountIpFlows1hGroupsOrderBy {
-  # attackDestinationIP ascending
-  attackDestinationIP_ASC
-  # attackDestinationIP descending
-  attackDestinationIP_DESC
-  # attackDestinationPort ascending
-  attackDestinationPort_ASC
-  # attackDestinationPort descending
-  attackDestinationPort_DESC
-  # attackId ascending
-  attackId_ASC
-  # attackId descending
-  attackId_DESC
-  # attackMitigationType ascending
-  attackMitigationType_ASC
-  # attackMitigationType descending
-  attackMitigationType_DESC
-  # attackProtocol ascending
-  attackProtocol_ASC
-  # attackProtocol descending
-  attackProtocol_DESC
-  # attackSourcePort ascending
-  attackSourcePort_ASC
-  # attackSourcePort descending
-  attackSourcePort_DESC
-  # attackTcpFlags ascending
-  attackTcpFlags_ASC
-  # attackTcpFlags descending
-  attackTcpFlags_DESC
-  # attackType ascending
-  attackType_ASC
-  # attackType descending
-  attackType_DESC
-  # avg(sampleInterval) ascending
-  avg_sampleInterval_ASC
-  # avg(sampleInterval) descending
-  avg_sampleInterval_DESC
-  # coloCity ascending
-  coloCity_ASC
-  # coloCity descending
-  coloCity_DESC
-  # coloCode ascending
-  coloCode_ASC
-  # coloCode descending
-  coloCode_DESC
-  # coloCountry ascending
-  coloCountry_ASC
-  # coloCountry descending
-  coloCountry_DESC
-  # coloRegion ascending
-  coloRegion_ASC
-  # coloRegion descending
-  coloRegion_DESC
-  # date ascending
-  date_ASC
-  # date descending
-  date_DESC
-  # datetimeHour ascending
-  datetimeHour_ASC
-  # datetimeHour descending
-  datetimeHour_DESC
-  # destinationIP ascending
-  destinationIP_ASC
-  # destinationIP descending
-  destinationIP_DESC
-  # destinationIPv4Range23 ascending
-  destinationIPv4Range23_ASC
-  # destinationIPv4Range23 descending
-  destinationIPv4Range23_DESC
-  # destinationIPv4Range24 ascending
-  destinationIPv4Range24_ASC
-  # destinationIPv4Range24 descending
-  destinationIPv4Range24_DESC
-  # destinationPort ascending
-  destinationPort_ASC
-  # destinationPort descending
-  destinationPort_DESC
-  # ipProtocol ascending
-  ipProtocol_ASC
-  # ipProtocol descending
-  ipProtocol_DESC
-  # ipVersion ascending
-  ipVersion_ASC
-  # ipVersion descending
-  ipVersion_DESC
-  # sourceIPASNDescription ascending
-  sourceIPASNDescription_ASC
-  # sourceIPASNDescription descending
-  sourceIPASNDescription_DESC
-  # sourceIPAsn ascending
-  sourceIPAsn_ASC
-  # sourceIPAsn descending
-  sourceIPAsn_DESC
-  # sourceIPCountry ascending
-  sourceIPCountry_ASC
-  # sourceIPCountry descending
-  sourceIPCountry_DESC
-  # sourcePort ascending
-  sourcePort_ASC
-  # sourcePort descending
-  sourcePort_DESC
-  # sum(bits) ascending
-  sum_bits_ASC
-  # sum(bits) descending
-  sum_bits_DESC
-  # sum(packets) ascending
-  sum_packets_ASC
-  # sum(packets) descending
-  sum_packets_DESC
-  # tcpFlags ascending
-  tcpFlags_ASC
-  # tcpFlags descending
-  tcpFlags_DESC
-}
-
-type AccountIpFlows1hGroupsSum {
-  # Total number of bits received
-  bits: uint64!
-  # Total number of packets received
-  packets: uint64!
-}
-
-# Beta. Minutely rollups of IP flows including only attack traffic
-type AccountIpFlows1mAttacksGroups {
-  # The average value for a metric
-  avg: AccountIpFlows1mAttacksGroupsAvg
-  # List of dimensions to group by
-  dimensions: AccountIpFlows1mAttacksGroupsDimensions
-  # The max value for a metric
-  max: AccountIpFlows1mAttacksGroupsMax
-  # The min value for a metric
-  min: AccountIpFlows1mAttacksGroupsMin
-  # The sum of values for a metric per dimension
-  sum: AccountIpFlows1mAttacksGroupsSum
-}
-
-type AccountIpFlows1mAttacksGroupsAvg {
-  # Average rate of bits received
-  bitsPerSecond: float64!
-  # Average rate of packets received
-  packetsPerSecond: float64!
-  # ipFlows sample interval. Data for this node is sampled at a rate of 1/8192.
-  sampleInterval: uint64!
-}
-
-type AccountIpFlows1mAttacksGroupsDimensions {
-  # Destination IP used by packets during an attack
-  attackDestinationIP: string!
-  # Destination port used by packets during an attack
-  attackDestinationPort: uint16!
-  # The Cloudflare unique attack identifier this packet was part of
-  attackId: string!
-  # Type of action (Block, Rate-limit, Connection-Tracking) used to mitigate the attack
-  attackMitigationType: string!
-  # IP protocol used by packets during an attack
-  attackProtocol: string!
-  # Source port used by packets during an attack
-  attackSourcePort: uint16!
-  # TCP flags used by packets during an attack
-  attackTcpFlags: string!
-  # Classification of the attack
-  attackType: string!
-  # Date the packet was received
-  date: Date!
-  # Destination IP of the packet
-  destinationIP: string!
-  # Destination port of the TCP/UDP packet
-  destinationPort: uint16!
-}
-
-input AccountIpFlows1mAttacksGroupsFilter_InputObject {
-  AND: [AccountIpFlows1mAttacksGroupsFilter_InputObject!]
-  OR: [AccountIpFlows1mAttacksGroupsFilter_InputObject!]
-  attackDestinationIP: string
-  attackDestinationIP_geq: string
-  attackDestinationIP_gt: string
-  attackDestinationIP_in: [string!]
-  attackDestinationIP_leq: string
-  attackDestinationIP_like: string
-  attackDestinationIP_lt: string
-  attackDestinationIP_neq: string
-  attackDestinationIP_notin: [string!]
-  attackDestinationIP_notlike: string
-  attackDestinationPort: uint16
-  attackDestinationPort_geq: uint16
-  attackDestinationPort_gt: uint16
-  attackDestinationPort_in: [uint16!]
-  attackDestinationPort_leq: uint16
-  attackDestinationPort_lt: uint16
-  attackDestinationPort_neq: uint16
-  attackDestinationPort_notin: [uint16!]
-  attackId: string
-  attackId_geq: string
-  attackId_gt: string
-  attackId_in: [string!]
-  attackId_leq: string
-  attackId_like: string
-  attackId_lt: string
-  attackId_neq: string
-  attackId_notin: [string!]
-  attackId_notlike: string
-  attackMitigationType: string
-  attackMitigationType_geq: string
-  attackMitigationType_gt: string
-  attackMitigationType_in: [string!]
-  attackMitigationType_leq: string
-  attackMitigationType_like: string
-  attackMitigationType_lt: string
-  attackMitigationType_neq: string
-  attackMitigationType_notin: [string!]
-  attackMitigationType_notlike: string
-  attackProtocol: string
-  attackProtocol_geq: string
-  attackProtocol_gt: string
-  attackProtocol_in: [string!]
-  attackProtocol_leq: string
-  attackProtocol_like: string
-  attackProtocol_lt: string
-  attackProtocol_neq: string
-  attackProtocol_notin: [string!]
-  attackProtocol_notlike: string
-  attackSourcePort: uint16
-  attackSourcePort_geq: uint16
-  attackSourcePort_gt: uint16
-  attackSourcePort_in: [uint16!]
-  attackSourcePort_leq: uint16
-  attackSourcePort_lt: uint16
-  attackSourcePort_neq: uint16
-  attackSourcePort_notin: [uint16!]
-  attackTcpFlags: string
-  attackTcpFlags_geq: string
-  attackTcpFlags_gt: string
-  attackTcpFlags_in: [string!]
-  attackTcpFlags_leq: string
-  attackTcpFlags_like: string
-  attackTcpFlags_lt: string
-  attackTcpFlags_neq: string
-  attackTcpFlags_notin: [string!]
-  attackTcpFlags_notlike: string
-  attackType: string
-  attackType_geq: string
-  attackType_gt: string
-  attackType_in: [string!]
-  attackType_leq: string
-  attackType_like: string
-  attackType_lt: string
-  attackType_neq: string
-  attackType_notin: [string!]
-  attackType_notlike: string
-  date: Date
-  date_geq: Date
-  date_gt: Date
-  date_in: [Date!]
-  date_leq: Date
-  date_lt: Date
-  date_neq: Date
-  date_notin: [Date!]
-  destinationIP: string
-  destinationIP_geq: string
-  destinationIP_gt: string
-  destinationIP_in: [string!]
-  destinationIP_leq: string
-  destinationIP_like: string
-  destinationIP_lt: string
-  destinationIP_neq: string
-  destinationIP_notin: [string!]
-  destinationIP_notlike: string
-  destinationPort: uint16
-  destinationPort_geq: uint16
-  destinationPort_gt: uint16
-  destinationPort_in: [uint16!]
-  destinationPort_leq: uint16
-  destinationPort_lt: uint16
-  destinationPort_neq: uint16
-  destinationPort_notin: [uint16!]
-}
-
-type AccountIpFlows1mAttacksGroupsMax {
-  # Max rate of bits received
-  bitsPerSecond: float64!
-  # Max datetime truncated to minute a packet was received
-  datetimeMinute: Time!
-  # Max rate of packets received
-  packetsPerSecond: float64!
-}
-
-type AccountIpFlows1mAttacksGroupsMin {
-  # Min rate of bits received
-  bitsPerSecond: float64!
-  # Min datetime truncated to minute a packet was received
-  datetimeMinute: Time!
-  # Min rate of packets received
-  packetsPerSecond: float64!
-}
-
-enum AccountIpFlows1mAttacksGroupsOrderBy {
-  # attackDestinationIP ascending
-  attackDestinationIP_ASC
-  # attackDestinationIP descending
-  attackDestinationIP_DESC
-  # attackDestinationPort ascending
-  attackDestinationPort_ASC
-  # attackDestinationPort descending
-  attackDestinationPort_DESC
-  # attackId ascending
-  attackId_ASC
-  # attackId descending
-  attackId_DESC
-  # attackMitigationType ascending
-  attackMitigationType_ASC
-  # attackMitigationType descending
-  attackMitigationType_DESC
-  # attackProtocol ascending
-  attackProtocol_ASC
-  # attackProtocol descending
-  attackProtocol_DESC
-  # attackSourcePort ascending
-  attackSourcePort_ASC
-  # attackSourcePort descending
-  attackSourcePort_DESC
-  # attackTcpFlags ascending
-  attackTcpFlags_ASC
-  # attackTcpFlags descending
-  attackTcpFlags_DESC
-  # attackType ascending
-  attackType_ASC
-  # attackType descending
-  attackType_DESC
-  # avg(bitsPerSecond) ascending
-  avg_bitsPerSecond_ASC
-  # avg(bitsPerSecond) descending
-  avg_bitsPerSecond_DESC
-  # avg(packetsPerSecond) ascending
-  avg_packetsPerSecond_ASC
-  # avg(packetsPerSecond) descending
-  avg_packetsPerSecond_DESC
-  # avg(sampleInterval) ascending
-  avg_sampleInterval_ASC
-  # avg(sampleInterval) descending
-  avg_sampleInterval_DESC
-  # date ascending
-  date_ASC
-  # date descending
-  date_DESC
-  # destinationIP ascending
-  destinationIP_ASC
-  # destinationIP descending
-  destinationIP_DESC
-  # destinationPort ascending
-  destinationPort_ASC
-  # destinationPort descending
-  destinationPort_DESC
-  # max(bitsPerSecond) ascending
-  max_bitsPerSecond_ASC
-  # max(bitsPerSecond) descending
-  max_bitsPerSecond_DESC
-  # max(datetimeMinute) ascending
-  max_datetimeMinute_ASC
-  # max(datetimeMinute) descending
-  max_datetimeMinute_DESC
-  # max(packetsPerSecond) ascending
-  max_packetsPerSecond_ASC
-  # max(packetsPerSecond) descending
-  max_packetsPerSecond_DESC
-  # min(bitsPerSecond) ascending
-  min_bitsPerSecond_ASC
-  # min(bitsPerSecond) descending
-  min_bitsPerSecond_DESC
-  # min(datetimeMinute) ascending
-  min_datetimeMinute_ASC
-  # min(datetimeMinute) descending
-  min_datetimeMinute_DESC
-  # min(packetsPerSecond) ascending
-  min_packetsPerSecond_ASC
-  # min(packetsPerSecond) descending
-  min_packetsPerSecond_DESC
-  # sum(bits) ascending
-  sum_bits_ASC
-  # sum(bits) descending
-  sum_bits_DESC
-  # sum(packets) ascending
-  sum_packets_ASC
-  # sum(packets) descending
-  sum_packets_DESC
-}
-
-type AccountIpFlows1mAttacksGroupsSum {
-  # Total number of bits received
-  bits: uint64!
-  # Total number of packets received
-  packets: uint64!
-}
-
-# Beta. Minutely rollups of IP flows
-type AccountIpFlows1mGroups {
-  # The average value for a metric
-  avg: AccountIpFlows1mGroupsAvg
-  # List of dimensions to group by
-  dimensions: AccountIpFlows1mGroupsDimensions
-  # The max value for a metric
-  max: AccountIpFlows1mGroupsMax
-  # The min value for a metric
-  min: AccountIpFlows1mGroupsMin
-  # The sum of values for a metric per dimension
-  sum: AccountIpFlows1mGroupsSum
-}
-
-type AccountIpFlows1mGroupsAvg {
-  # Average rate of bits received
-  bitsPerSecond: float64!
-  # Average rate of packets received
-  packetsPerSecond: float64!
-  # ipFlows sample interval. Data for this node is sampled at a rate of 1/8192.
-  sampleInterval: uint64!
-}
-
-type AccountIpFlows1mGroupsDimensions {
-  # Destination IP used by packets during an attack
-  attackDestinationIP: string!
-  # Destination port used by packets during an attack
-  attackDestinationPort: uint16!
-  # The Cloudflare unique attack identifier this packet was part of
-  attackId: string!
-  # Type of action (Block, Rate-limit, Connection-Tracking) used to mitigate the attack
-  attackMitigationType: string!
-  # IP protocol used by packets during an attack
-  attackProtocol: string!
-  # Source port used by packets during an attack
-  attackSourcePort: uint16!
-  # TCP flags used by packets during an attack
-  attackTcpFlags: string!
-  # Classification of the attack
-  attackType: string!
-  # City of data center that received the packet
-  coloCity: string!
-  # IATA airport code of data center that received the packet
-  coloCode: string!
-  # Country of data center that received the packet
-  coloCountry: string!
-  # Region of data center that received the packet
-  coloRegion: string!
-  # Date the packet was received
-  date: Date!
-  # Datetime the packet was received truncated to multiple of 15 minutes
-  datetimeFifteenMinutes: Time!
-  # Datetime the packet was received truncated to multiple of 5 minutes
-  datetimeFiveMinutes: Time!
-  # Datetime the packet was received truncated to multiple of one hour
-  datetimeHour: Time!
-  # Datetime the packet was received truncated to the minute
-  datetimeMinute: Time!
-  # Destination IP of the packet
-  destinationIP: string!
-  # Destination IP/23 range of the packet
-  destinationIPv4Range23: string!
-  # Destination IP/24 range of the packet
-  destinationIPv4Range24: string!
-  # Destination port of the TCP/UDP packet
-  destinationPort: uint16!
-  # IP protocol
-  ipProtocol: string!
-  # IP version
-  ipVersion: uint8!
-  # Source IP of the packet
-  sourceIP: string!
-  # The ASN description associated with the source IP
-  sourceIPASNDescription: string!
-  # The ASN associated with the source IP
-  sourceIPAsn: string!
-  # The country associated with the source IP
-  sourceIPCountry: string!
-  # Source port of the TCP/UDP packet
-  sourcePort: uint16!
-  # List of TCP flags
-  tcpFlags: string!
-}
-
-input AccountIpFlows1mGroupsFilter_InputObject {
-  AND: [AccountIpFlows1mGroupsFilter_InputObject!]
-  OR: [AccountIpFlows1mGroupsFilter_InputObject!]
-  attackDestinationIP: string
-  attackDestinationIP_geq: string
-  attackDestinationIP_gt: string
-  attackDestinationIP_in: [string!]
-  attackDestinationIP_leq: string
-  attackDestinationIP_like: string
-  attackDestinationIP_lt: string
-  attackDestinationIP_neq: string
-  attackDestinationIP_notin: [string!]
-  attackDestinationIP_notlike: string
-  attackDestinationPort: uint16
-  attackDestinationPort_geq: uint16
-  attackDestinationPort_gt: uint16
-  attackDestinationPort_in: [uint16!]
-  attackDestinationPort_leq: uint16
-  attackDestinationPort_lt: uint16
-  attackDestinationPort_neq: uint16
-  attackDestinationPort_notin: [uint16!]
-  attackId: string
-  attackId_geq: string
-  attackId_gt: string
-  attackId_in: [string!]
-  attackId_leq: string
-  attackId_like: string
-  attackId_lt: string
-  attackId_neq: string
-  attackId_notin: [string!]
-  attackId_notlike: string
-  attackMitigationType: string
-  attackMitigationType_geq: string
-  attackMitigationType_gt: string
-  attackMitigationType_in: [string!]
-  attackMitigationType_leq: string
-  attackMitigationType_like: string
-  attackMitigationType_lt: string
-  attackMitigationType_neq: string
-  attackMitigationType_notin: [string!]
-  attackMitigationType_notlike: string
-  attackProtocol: string
-  attackProtocol_geq: string
-  attackProtocol_gt: string
-  attackProtocol_in: [string!]
-  attackProtocol_leq: string
-  attackProtocol_like: string
-  attackProtocol_lt: string
-  attackProtocol_neq: string
-  attackProtocol_notin: [string!]
-  attackProtocol_notlike: string
-  attackSourcePort: uint16
-  attackSourcePort_geq: uint16
-  attackSourcePort_gt: uint16
-  attackSourcePort_in: [uint16!]
-  attackSourcePort_leq: uint16
-  attackSourcePort_lt: uint16
-  attackSourcePort_neq: uint16
-  attackSourcePort_notin: [uint16!]
-  attackTcpFlags: string
-  attackTcpFlags_geq: string
-  attackTcpFlags_gt: string
-  attackTcpFlags_in: [string!]
-  attackTcpFlags_leq: string
-  attackTcpFlags_like: string
-  attackTcpFlags_lt: string
-  attackTcpFlags_neq: string
-  attackTcpFlags_notin: [string!]
-  attackTcpFlags_notlike: string
-  attackType: string
-  attackType_geq: string
-  attackType_gt: string
-  attackType_in: [string!]
-  attackType_leq: string
-  attackType_like: string
-  attackType_lt: string
-  attackType_neq: string
-  attackType_notin: [string!]
-  attackType_notlike: string
-  coloCity: string
-  coloCity_geq: string
-  coloCity_gt: string
-  coloCity_in: [string!]
-  coloCity_leq: string
-  coloCity_like: string
-  coloCity_lt: string
-  coloCity_neq: string
-  coloCity_notin: [string!]
-  coloCity_notlike: string
-  coloCode: string
-  coloCode_geq: string
-  coloCode_gt: string
-  coloCode_in: [string!]
-  coloCode_leq: string
-  coloCode_like: string
-  coloCode_lt: string
-  coloCode_neq: string
-  coloCode_notin: [string!]
-  coloCode_notlike: string
-  coloCountry: string
-  coloCountry_geq: string
-  coloCountry_gt: string
-  coloCountry_in: [string!]
-  coloCountry_leq: string
-  coloCountry_like: string
-  coloCountry_lt: string
-  coloCountry_neq: string
-  coloCountry_notin: [string!]
-  coloCountry_notlike: string
-  coloRegion: string
-  coloRegion_geq: string
-  coloRegion_gt: string
-  coloRegion_in: [string!]
-  coloRegion_leq: string
-  coloRegion_like: string
-  coloRegion_lt: string
-  coloRegion_neq: string
-  coloRegion_notin: [string!]
-  coloRegion_notlike: string
-  date: Date
-  date_geq: Date
-  date_gt: Date
-  date_in: [Date!]
-  date_leq: Date
-  date_lt: Date
-  date_neq: Date
-  date_notin: [Date!]
-  datetimeFifteenMinutes: Time
-  datetimeFifteenMinutes_geq: Time
-  datetimeFifteenMinutes_gt: Time
-  datetimeFifteenMinutes_in: [Time!]
-  datetimeFifteenMinutes_leq: Time
-  datetimeFifteenMinutes_lt: Time
-  datetimeFifteenMinutes_neq: Time
-  datetimeFifteenMinutes_notin: [Time!]
-  datetimeFiveMinutes: Time
-  datetimeFiveMinutes_geq: Time
-  datetimeFiveMinutes_gt: Time
-  datetimeFiveMinutes_in: [Time!]
-  datetimeFiveMinutes_leq: Time
-  datetimeFiveMinutes_lt: Time
-  datetimeFiveMinutes_neq: Time
-  datetimeFiveMinutes_notin: [Time!]
-  datetimeHour: Time
-  datetimeHour_geq: Time
-  datetimeHour_gt: Time
-  datetimeHour_in: [Time!]
-  datetimeHour_leq: Time
-  datetimeHour_lt: Time
-  datetimeHour_neq: Time
-  datetimeHour_notin: [Time!]
-  datetimeMinute: Time
-  datetimeMinute_geq: Time
-  datetimeMinute_gt: Time
-  datetimeMinute_in: [Time!]
-  datetimeMinute_leq: Time
-  datetimeMinute_lt: Time
-  datetimeMinute_neq: Time
-  datetimeMinute_notin: [Time!]
-  destinationIP: string
-  destinationIP_geq: string
-  destinationIP_gt: string
-  destinationIP_in: [string!]
-  destinationIP_leq: string
-  destinationIP_like: string
-  destinationIP_lt: string
-  destinationIP_neq: string
-  destinationIP_notin: [string!]
-  destinationIP_notlike: string
-  destinationIPv4Range23: string
-  destinationIPv4Range23_geq: string
-  destinationIPv4Range23_gt: string
-  destinationIPv4Range23_in: [string!]
-  destinationIPv4Range23_leq: string
-  destinationIPv4Range23_like: string
-  destinationIPv4Range23_lt: string
-  destinationIPv4Range23_neq: string
-  destinationIPv4Range23_notin: [string!]
-  destinationIPv4Range23_notlike: string
-  destinationIPv4Range24: string
-  destinationIPv4Range24_geq: string
-  destinationIPv4Range24_gt: string
-  destinationIPv4Range24_in: [string!]
-  destinationIPv4Range24_leq: string
-  destinationIPv4Range24_like: string
-  destinationIPv4Range24_lt: string
-  destinationIPv4Range24_neq: string
-  destinationIPv4Range24_notin: [string!]
-  destinationIPv4Range24_notlike: string
-  destinationPort: uint16
-  destinationPort_geq: uint16
-  destinationPort_gt: uint16
-  destinationPort_in: [uint16!]
-  destinationPort_leq: uint16
-  destinationPort_lt: uint16
-  destinationPort_neq: uint16
-  destinationPort_notin: [uint16!]
-  ipProtocol: string
-  ipProtocol_geq: string
-  ipProtocol_gt: string
-  ipProtocol_in: [string!]
-  ipProtocol_leq: string
-  ipProtocol_like: string
-  ipProtocol_lt: string
-  ipProtocol_neq: string
-  ipProtocol_notin: [string!]
-  ipProtocol_notlike: string
-  ipVersion: uint8
-  ipVersion_geq: uint8
-  ipVersion_gt: uint8
-  ipVersion_in: bytes
-  ipVersion_leq: uint8
-  ipVersion_lt: uint8
-  ipVersion_neq: uint8
-  ipVersion_notin: bytes
-  sourceIP: string
-  sourceIPASNDescription: string
-  sourceIPASNDescription_geq: string
-  sourceIPASNDescription_gt: string
-  sourceIPASNDescription_in: [string!]
-  sourceIPASNDescription_leq: string
-  sourceIPASNDescription_like: string
-  sourceIPASNDescription_lt: string
-  sourceIPASNDescription_neq: string
-  sourceIPASNDescription_notin: [string!]
-  sourceIPASNDescription_notlike: string
-  sourceIPAsn: string
-  sourceIPAsn_geq: string
-  sourceIPAsn_gt: string
-  sourceIPAsn_in: [string!]
-  sourceIPAsn_leq: string
-  sourceIPAsn_like: string
-  sourceIPAsn_lt: string
-  sourceIPAsn_neq: string
-  sourceIPAsn_notin: [string!]
-  sourceIPAsn_notlike: string
-  sourceIPCountry: string
-  sourceIPCountry_geq: string
-  sourceIPCountry_gt: string
-  sourceIPCountry_in: [string!]
-  sourceIPCountry_leq: string
-  sourceIPCountry_like: string
-  sourceIPCountry_lt: string
-  sourceIPCountry_neq: string
-  sourceIPCountry_notin: [string!]
-  sourceIPCountry_notlike: string
-  sourceIP_geq: string
-  sourceIP_gt: string
-  sourceIP_in: [string!]
-  sourceIP_leq: string
-  sourceIP_like: string
-  sourceIP_lt: string
-  sourceIP_neq: string
-  sourceIP_notin: [string!]
-  sourceIP_notlike: string
-  sourcePort: uint16
-  sourcePort_geq: uint16
-  sourcePort_gt: uint16
-  sourcePort_in: [uint16!]
-  sourcePort_leq: uint16
-  sourcePort_lt: uint16
-  sourcePort_neq: uint16
-  sourcePort_notin: [uint16!]
-  tcpFlags: string
-  tcpFlags_geq: string
-  tcpFlags_gt: string
-  tcpFlags_in: [string!]
-  tcpFlags_leq: string
-  tcpFlags_like: string
-  tcpFlags_lt: string
-  tcpFlags_neq: string
-  tcpFlags_notin: [string!]
-  tcpFlags_notlike: string
-}
-
-type AccountIpFlows1mGroupsMax {
-  # Max rate of bits received
-  bitsPerSecond: float64!
-  # Max datetime truncated to minute a packet was received
-  datetimeMinute: Time!
-  # Max rate of packets received
-  packetsPerSecond: float64!
-}
-
-type AccountIpFlows1mGroupsMin {
-  # Min rate of bits received
-  bitsPerSecond: float64!
-  # Min datetime truncated to minute a packet was received
-  datetimeMinute: Time!
-  # Min rate of packets received
-  packetsPerSecond: float64!
-}
-
-enum AccountIpFlows1mGroupsOrderBy {
-  # attackDestinationIP ascending
-  attackDestinationIP_ASC
-  # attackDestinationIP descending
-  attackDestinationIP_DESC
-  # attackDestinationPort ascending
-  attackDestinationPort_ASC
-  # attackDestinationPort descending
-  attackDestinationPort_DESC
-  # attackId ascending
-  attackId_ASC
-  # attackId descending
-  attackId_DESC
-  # attackMitigationType ascending
-  attackMitigationType_ASC
-  # attackMitigationType descending
-  attackMitigationType_DESC
-  # attackProtocol ascending
-  attackProtocol_ASC
-  # attackProtocol descending
-  attackProtocol_DESC
-  # attackSourcePort ascending
-  attackSourcePort_ASC
-  # attackSourcePort descending
-  attackSourcePort_DESC
-  # attackTcpFlags ascending
-  attackTcpFlags_ASC
-  # attackTcpFlags descending
-  attackTcpFlags_DESC
-  # attackType ascending
-  attackType_ASC
-  # attackType descending
-  attackType_DESC
-  # avg(bitsPerSecond) ascending
-  avg_bitsPerSecond_ASC
-  # avg(bitsPerSecond) descending
-  avg_bitsPerSecond_DESC
-  # avg(packetsPerSecond) ascending
-  avg_packetsPerSecond_ASC
-  # avg(packetsPerSecond) descending
-  avg_packetsPerSecond_DESC
-  # avg(sampleInterval) ascending
-  avg_sampleInterval_ASC
-  # avg(sampleInterval) descending
-  avg_sampleInterval_DESC
-  # coloCity ascending
-  coloCity_ASC
-  # coloCity descending
-  coloCity_DESC
-  # coloCode ascending
-  coloCode_ASC
-  # coloCode descending
-  coloCode_DESC
-  # coloCountry ascending
-  coloCountry_ASC
-  # coloCountry descending
-  coloCountry_DESC
-  # coloRegion ascending
-  coloRegion_ASC
-  # coloRegion descending
-  coloRegion_DESC
-  # date ascending
-  date_ASC
-  # date descending
-  date_DESC
-  # datetimeFifteenMinutes ascending
-  datetimeFifteenMinutes_ASC
-  # datetimeFifteenMinutes descending
-  datetimeFifteenMinutes_DESC
-  # datetimeFiveMinutes ascending
-  datetimeFiveMinutes_ASC
-  # datetimeFiveMinutes descending
-  datetimeFiveMinutes_DESC
-  # datetimeHour ascending
-  datetimeHour_ASC
-  # datetimeHour descending
-  datetimeHour_DESC
-  # datetimeMinute ascending
-  datetimeMinute_ASC
-  # datetimeMinute descending
-  datetimeMinute_DESC
-  # destinationIP ascending
-  destinationIP_ASC
-  # destinationIP descending
-  destinationIP_DESC
-  # destinationIPv4Range23 ascending
-  destinationIPv4Range23_ASC
-  # destinationIPv4Range23 descending
-  destinationIPv4Range23_DESC
-  # destinationIPv4Range24 ascending
-  destinationIPv4Range24_ASC
-  # destinationIPv4Range24 descending
-  destinationIPv4Range24_DESC
-  # destinationPort ascending
-  destinationPort_ASC
-  # destinationPort descending
-  destinationPort_DESC
-  # ipProtocol ascending
-  ipProtocol_ASC
-  # ipProtocol descending
-  ipProtocol_DESC
-  # ipVersion ascending
-  ipVersion_ASC
-  # ipVersion descending
-  ipVersion_DESC
-  # max(bitsPerSecond) ascending
-  max_bitsPerSecond_ASC
-  # max(bitsPerSecond) descending
-  max_bitsPerSecond_DESC
-  # max(datetimeMinute) ascending
-  max_datetimeMinute_ASC
-  # max(datetimeMinute) descending
-  max_datetimeMinute_DESC
-  # max(packetsPerSecond) ascending
-  max_packetsPerSecond_ASC
-  # max(packetsPerSecond) descending
-  max_packetsPerSecond_DESC
-  # min(bitsPerSecond) ascending
-  min_bitsPerSecond_ASC
-  # min(bitsPerSecond) descending
-  min_bitsPerSecond_DESC
-  # min(datetimeMinute) ascending
-  min_datetimeMinute_ASC
-  # min(datetimeMinute) descending
-  min_datetimeMinute_DESC
-  # min(packetsPerSecond) ascending
-  min_packetsPerSecond_ASC
-  # min(packetsPerSecond) descending
-  min_packetsPerSecond_DESC
-  # sourceIPASNDescription ascending
-  sourceIPASNDescription_ASC
-  # sourceIPASNDescription descending
-  sourceIPASNDescription_DESC
-  # sourceIPAsn ascending
-  sourceIPAsn_ASC
-  # sourceIPAsn descending
-  sourceIPAsn_DESC
-  # sourceIPCountry ascending
-  sourceIPCountry_ASC
-  # sourceIPCountry descending
-  sourceIPCountry_DESC
-  # sourceIP ascending
-  sourceIP_ASC
-  # sourceIP descending
-  sourceIP_DESC
-  # sourcePort ascending
-  sourcePort_ASC
-  # sourcePort descending
-  sourcePort_DESC
-  # sum(bits) ascending
-  sum_bits_ASC
-  # sum(bits) descending
-  sum_bits_DESC
-  # sum(packets) ascending
-  sum_packets_ASC
-  # sum(packets) descending
-  sum_packets_DESC
-  # tcpFlags ascending
-  tcpFlags_ASC
-  # tcpFlags descending
-  tcpFlags_DESC
-}
-
-type AccountIpFlows1mGroupsSum {
-  # Total number of bits received
-  bits: uint64!
-  # Total number of packets received
-  packets: uint64!
-}
-
 # Beta. Logpush job health metrics
 type AccountLogpushHealthAdaptiveGroups {
   avg: AccountLogpushHealthAdaptiveGroupsAvg
@@ -23001,10 +21406,6 @@ type AccountSettings {
   httpRequestsAdaptiveGroups: Settings!
   httpRequestsOverviewAdaptiveGroups: Settings!
   imagesRequestsAdaptiveGroups: Settings!
-  ipFlows1dGroups: Settings!
-  ipFlows1hGroups: Settings!
-  ipFlows1mAttacksGroups: Settings!
-  ipFlows1mGroups: Settings!
   logpushHealthAdaptiveGroups: Settings!
   magicFirewallNetworkAnalyticsAdaptiveGroups: Settings!
   magicFirewallSamplesAdaptiveGroups: Settings!
@@ -23024,6 +21425,8 @@ type AccountSettings {
   rumPerformanceEventsAdaptiveGroups: Settings!
   rumWebVitalsEventsAdaptive: Settings!
   rumWebVitalsEventsAdaptiveGroups: Settings!
+  sinkholeRequestLogsAdaptive: Settings!
+  sinkholeRequestLogsAdaptiveGroups: Settings!
   spectrumNetworkAnalyticsAdaptiveGroups: Settings!
   storageTraces: Settings!
   streamMinutesViewedAdaptiveGroups: Settings!
@@ -23039,6 +21442,467 @@ type AccountSettings {
   workersSubrequestsAdaptiveGroups: Settings!
   zarazTriggersAdaptiveGroups: Settings!
   zeroTrustPrivateNetworkDiscoveryGroups: Settings!
+}
+
+# Sinkhole Request Logs
+type AccountSinkholeRequestLogsAdaptive {
+  # The request body
+  body: string!
+  # The date and time the event was recorded
+  datetime: Time!
+  # The destination IP address of the request
+  destinationAddress: string!
+  # The request headers. If a header has multiple values, the values are comma separated. Each header is newline separated.
+  headers: string!
+  # The host the request was sent to
+  host: string!
+  # The request method
+  method: string!
+  # The path to the object within the R2 bucket linked to this sinkhole that stores overflow body and header data. Blank if neither headers nor body was larger than 256 bytes.
+  r2Path: string!
+  # The referrer of the request
+  referrer: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # The ID of the sinkhole that logged the request
+  sinkholeId: string!
+  # The sender's IP address
+  sourceAddress: string!
+  # The request uri
+  uri: string!
+  # The request url
+  url: string!
+  # The request user agent
+  userAgent: string!
+}
+
+input AccountSinkholeRequestLogsAdaptiveFilter_InputObject {
+  AND: [AccountSinkholeRequestLogsAdaptiveFilter_InputObject!]
+  OR: [AccountSinkholeRequestLogsAdaptiveFilter_InputObject!]
+  body: string
+  body_geq: string
+  body_gt: string
+  body_in: [string!]
+  body_leq: string
+  body_like: string
+  body_lt: string
+  body_neq: string
+  body_notin: [string!]
+  body_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationAddress: string
+  destinationAddress_geq: string
+  destinationAddress_gt: string
+  destinationAddress_in: [string!]
+  destinationAddress_leq: string
+  destinationAddress_like: string
+  destinationAddress_lt: string
+  destinationAddress_neq: string
+  destinationAddress_notin: [string!]
+  destinationAddress_notlike: string
+  headers: string
+  headers_geq: string
+  headers_gt: string
+  headers_in: [string!]
+  headers_leq: string
+  headers_like: string
+  headers_lt: string
+  headers_neq: string
+  headers_notin: [string!]
+  headers_notlike: string
+  host: string
+  host_geq: string
+  host_gt: string
+  host_in: [string!]
+  host_leq: string
+  host_like: string
+  host_lt: string
+  host_neq: string
+  host_notin: [string!]
+  host_notlike: string
+  method: string
+  method_geq: string
+  method_gt: string
+  method_in: [string!]
+  method_leq: string
+  method_like: string
+  method_lt: string
+  method_neq: string
+  method_notin: [string!]
+  method_notlike: string
+  r2Path: string
+  r2Path_geq: string
+  r2Path_gt: string
+  r2Path_in: [string!]
+  r2Path_leq: string
+  r2Path_like: string
+  r2Path_lt: string
+  r2Path_neq: string
+  r2Path_notin: [string!]
+  r2Path_notlike: string
+  referrer: string
+  referrer_geq: string
+  referrer_gt: string
+  referrer_in: [string!]
+  referrer_leq: string
+  referrer_like: string
+  referrer_lt: string
+  referrer_neq: string
+  referrer_notin: [string!]
+  referrer_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  sinkholeId: string
+  sinkholeId_geq: string
+  sinkholeId_gt: string
+  sinkholeId_in: [string!]
+  sinkholeId_leq: string
+  sinkholeId_like: string
+  sinkholeId_lt: string
+  sinkholeId_neq: string
+  sinkholeId_notin: [string!]
+  sinkholeId_notlike: string
+  sourceAddress: string
+  sourceAddress_geq: string
+  sourceAddress_gt: string
+  sourceAddress_in: [string!]
+  sourceAddress_leq: string
+  sourceAddress_like: string
+  sourceAddress_lt: string
+  sourceAddress_neq: string
+  sourceAddress_notin: [string!]
+  sourceAddress_notlike: string
+  uri: string
+  uri_geq: string
+  uri_gt: string
+  uri_in: [string!]
+  uri_leq: string
+  uri_like: string
+  uri_lt: string
+  uri_neq: string
+  uri_notin: [string!]
+  uri_notlike: string
+  url: string
+  url_geq: string
+  url_gt: string
+  url_in: [string!]
+  url_leq: string
+  url_like: string
+  url_lt: string
+  url_neq: string
+  url_notin: [string!]
+  url_notlike: string
+  userAgent: string
+  userAgent_geq: string
+  userAgent_gt: string
+  userAgent_in: [string!]
+  userAgent_leq: string
+  userAgent_like: string
+  userAgent_lt: string
+  userAgent_neq: string
+  userAgent_notin: [string!]
+  userAgent_notlike: string
+}
+
+# Sinkhole Request Logs
+type AccountSinkholeRequestLogsAdaptiveGroups {
+  # Number of requests logged (approximation when sampleInterval > 1)
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountSinkholeRequestLogsAdaptiveGroupsDimensions
+}
+
+type AccountSinkholeRequestLogsAdaptiveGroupsDimensions {
+  # The request body
+  body: string!
+  # The date and time the event was recorded
+  datetime: Time!
+  # The destination IP address of the request
+  destinationAddress: string!
+  # The request headers. If a header has multiple values, the values are comma separated. Each header is newline separated.
+  headers: string!
+  # The host the request was sent to
+  host: string!
+  # The request method
+  method: string!
+  # The path to the object within the R2 bucket linked to this sinkhole that stores overflow body and header data. Blank if neither headers nor body was larger than 256 bytes.
+  r2Path: string!
+  # The referrer of the request
+  referrer: string!
+  # The ID of the sinkhole that logged the request
+  sinkholeId: string!
+  # The sender's IP address
+  sourceAddress: string!
+  # The request uri
+  uri: string!
+  # The request url
+  url: string!
+  # The request user agent
+  userAgent: string!
+}
+
+input AccountSinkholeRequestLogsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountSinkholeRequestLogsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountSinkholeRequestLogsAdaptiveGroupsFilter_InputObject!]
+  body: string
+  body_geq: string
+  body_gt: string
+  body_in: [string!]
+  body_leq: string
+  body_like: string
+  body_lt: string
+  body_neq: string
+  body_notin: [string!]
+  body_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationAddress: string
+  destinationAddress_geq: string
+  destinationAddress_gt: string
+  destinationAddress_in: [string!]
+  destinationAddress_leq: string
+  destinationAddress_like: string
+  destinationAddress_lt: string
+  destinationAddress_neq: string
+  destinationAddress_notin: [string!]
+  destinationAddress_notlike: string
+  headers: string
+  headers_geq: string
+  headers_gt: string
+  headers_in: [string!]
+  headers_leq: string
+  headers_like: string
+  headers_lt: string
+  headers_neq: string
+  headers_notin: [string!]
+  headers_notlike: string
+  host: string
+  host_geq: string
+  host_gt: string
+  host_in: [string!]
+  host_leq: string
+  host_like: string
+  host_lt: string
+  host_neq: string
+  host_notin: [string!]
+  host_notlike: string
+  method: string
+  method_geq: string
+  method_gt: string
+  method_in: [string!]
+  method_leq: string
+  method_like: string
+  method_lt: string
+  method_neq: string
+  method_notin: [string!]
+  method_notlike: string
+  r2Path: string
+  r2Path_geq: string
+  r2Path_gt: string
+  r2Path_in: [string!]
+  r2Path_leq: string
+  r2Path_like: string
+  r2Path_lt: string
+  r2Path_neq: string
+  r2Path_notin: [string!]
+  r2Path_notlike: string
+  referrer: string
+  referrer_geq: string
+  referrer_gt: string
+  referrer_in: [string!]
+  referrer_leq: string
+  referrer_like: string
+  referrer_lt: string
+  referrer_neq: string
+  referrer_notin: [string!]
+  referrer_notlike: string
+  sinkholeId: string
+  sinkholeId_geq: string
+  sinkholeId_gt: string
+  sinkholeId_in: [string!]
+  sinkholeId_leq: string
+  sinkholeId_like: string
+  sinkholeId_lt: string
+  sinkholeId_neq: string
+  sinkholeId_notin: [string!]
+  sinkholeId_notlike: string
+  sourceAddress: string
+  sourceAddress_geq: string
+  sourceAddress_gt: string
+  sourceAddress_in: [string!]
+  sourceAddress_leq: string
+  sourceAddress_like: string
+  sourceAddress_lt: string
+  sourceAddress_neq: string
+  sourceAddress_notin: [string!]
+  sourceAddress_notlike: string
+  uri: string
+  uri_geq: string
+  uri_gt: string
+  uri_in: [string!]
+  uri_leq: string
+  uri_like: string
+  uri_lt: string
+  uri_neq: string
+  uri_notin: [string!]
+  uri_notlike: string
+  url: string
+  url_geq: string
+  url_gt: string
+  url_in: [string!]
+  url_leq: string
+  url_like: string
+  url_lt: string
+  url_neq: string
+  url_notin: [string!]
+  url_notlike: string
+  userAgent: string
+  userAgent_geq: string
+  userAgent_gt: string
+  userAgent_in: [string!]
+  userAgent_leq: string
+  userAgent_like: string
+  userAgent_lt: string
+  userAgent_neq: string
+  userAgent_notin: [string!]
+  userAgent_notlike: string
+}
+
+enum AccountSinkholeRequestLogsAdaptiveGroupsOrderBy {
+  # body ascending
+  body_ASC
+  # body descending
+  body_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationAddress ascending
+  destinationAddress_ASC
+  # destinationAddress descending
+  destinationAddress_DESC
+  # headers ascending
+  headers_ASC
+  # headers descending
+  headers_DESC
+  # host ascending
+  host_ASC
+  # host descending
+  host_DESC
+  # method ascending
+  method_ASC
+  # method descending
+  method_DESC
+  # r2Path ascending
+  r2Path_ASC
+  # r2Path descending
+  r2Path_DESC
+  # referrer ascending
+  referrer_ASC
+  # referrer descending
+  referrer_DESC
+  # sinkholeId ascending
+  sinkholeId_ASC
+  # sinkholeId descending
+  sinkholeId_DESC
+  # sourceAddress ascending
+  sourceAddress_ASC
+  # sourceAddress descending
+  sourceAddress_DESC
+  # uri ascending
+  uri_ASC
+  # uri descending
+  uri_DESC
+  # url ascending
+  url_ASC
+  # url descending
+  url_DESC
+  # userAgent ascending
+  userAgent_ASC
+  # userAgent descending
+  userAgent_DESC
+}
+
+enum AccountSinkholeRequestLogsAdaptiveOrderBy {
+  # body ascending
+  body_ASC
+  # body descending
+  body_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationAddress ascending
+  destinationAddress_ASC
+  # destinationAddress descending
+  destinationAddress_DESC
+  # headers ascending
+  headers_ASC
+  # headers descending
+  headers_DESC
+  # host ascending
+  host_ASC
+  # host descending
+  host_DESC
+  # method ascending
+  method_ASC
+  # method descending
+  method_DESC
+  # r2Path ascending
+  r2Path_ASC
+  # r2Path descending
+  r2Path_DESC
+  # referrer ascending
+  referrer_ASC
+  # referrer descending
+  referrer_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # sinkholeId ascending
+  sinkholeId_ASC
+  # sinkholeId descending
+  sinkholeId_DESC
+  # sourceAddress ascending
+  sourceAddress_ASC
+  # sourceAddress descending
+  sourceAddress_DESC
+  # uri ascending
+  uri_ASC
+  # uri descending
+  uri_DESC
+  # url ascending
+  url_ASC
+  # url descending
+  url_DESC
+  # userAgent ascending
+  userAgent_ASC
+  # userAgent descending
+  userAgent_DESC
 }
 
 # Network analytics data for Spectrum traffic
@@ -27122,8 +25986,6 @@ type zone {
   # Page Shield CSP reports
   pageShieldReportsAdaptiveGroups(filter: ZonePageShieldReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZonePageShieldReportsAdaptiveGroupsOrderBy!]): [ZonePageShieldReportsAdaptiveGroups!]!
   settings: ZoneSettings
-  # Minutely rollups of average packets per second sent in a SYN attack
-  synAvgPps1mGroups(filter: ZoneSynAvgPps1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneSynAvgPps1mGroupsOrderBy!]): [ZoneSynAvgPps1mGroups!]!
   # Raw Waiting Room analytics logs
   waitingRoomAnalyticsAdaptive(filter: ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneWaitingRoomAnalyticsAdaptiveOrderBy!]): [ZoneWaitingRoomAnalyticsAdaptive!]!
   # Aggregated Waiting Room analytics logs with adaptive sampling
@@ -37712,7 +36574,6 @@ type ZoneSettings {
   logpushHealthAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   pageShieldReportsAdaptiveGroups: Settings!
-  synAvgPps1mGroups: Settings!
   waitingRoomAnalyticsAdaptive: Settings!
   waitingRoomAnalyticsAdaptiveGroups: Settings!
   workersZoneInvocationsAdaptiveGroups: Settings!
@@ -37720,124 +36581,6 @@ type ZoneSettings {
   zarazActionsAdaptiveGroups: Settings!
   zarazTrackAdaptiveGroups: Settings!
   zarazTriggersAdaptiveGroups: Settings!
-}
-
-# Minutely rollups of average packets per second sent in a SYN attack
-type ZoneSynAvgPps1mGroups {
-  # Counts a number of rows per specific dimensions
-  count: uint64!
-  # List of dimensions to group by
-  dimensions: ZoneSynAvgPps1mGroupsDimensions
-  # Calculates a sum of each field per speicific dimensions
-  sum: ZoneSynAvgPps1mGroupsSum
-}
-
-type ZoneSynAvgPps1mGroupsDimensions {
-  # Date of this record.
-  date: Date!
-  # Specific minute for which we gathered samples truncated to a multiple of a day.
-  datetimeDay: Time!
-  # Specific minute for which we gathered samples truncated to a multiple of 15 minutes.
-  datetimeFifteenMinutes: Time!
-  # Specific minute for which we gathered samples truncated to a multiple of 5 minutes.
-  datetimeFiveMinutes: Time!
-  # Specific minute for which we gathered samples truncated to a multiple of an hour.
-  datetimeHour: Time!
-  # Specific minute for which we gathered samples.
-  datetimeMinute: Time!
-}
-
-input ZoneSynAvgPps1mGroupsFilter_InputObject {
-  AND: [ZoneSynAvgPps1mGroupsFilter_InputObject!]
-  OR: [ZoneSynAvgPps1mGroupsFilter_InputObject!]
-  date: Date
-  date_geq: Date
-  date_gt: Date
-  date_in: [Date!]
-  date_leq: Date
-  date_lt: Date
-  date_neq: Date
-  date_notin: [Date!]
-  datetimeDay: Time
-  datetimeDay_geq: Time
-  datetimeDay_gt: Time
-  datetimeDay_in: [Time!]
-  datetimeDay_leq: Time
-  datetimeDay_lt: Time
-  datetimeDay_neq: Time
-  datetimeDay_notin: [Time!]
-  datetimeFifteenMinutes: Time
-  datetimeFifteenMinutes_geq: Time
-  datetimeFifteenMinutes_gt: Time
-  datetimeFifteenMinutes_in: [Time!]
-  datetimeFifteenMinutes_leq: Time
-  datetimeFifteenMinutes_lt: Time
-  datetimeFifteenMinutes_neq: Time
-  datetimeFifteenMinutes_notin: [Time!]
-  datetimeFiveMinutes: Time
-  datetimeFiveMinutes_geq: Time
-  datetimeFiveMinutes_gt: Time
-  datetimeFiveMinutes_in: [Time!]
-  datetimeFiveMinutes_leq: Time
-  datetimeFiveMinutes_lt: Time
-  datetimeFiveMinutes_neq: Time
-  datetimeFiveMinutes_notin: [Time!]
-  datetimeHour: Time
-  datetimeHour_geq: Time
-  datetimeHour_gt: Time
-  datetimeHour_in: [Time!]
-  datetimeHour_leq: Time
-  datetimeHour_lt: Time
-  datetimeHour_neq: Time
-  datetimeHour_notin: [Time!]
-  datetimeMinute: Time
-  datetimeMinute_geq: Time
-  datetimeMinute_gt: Time
-  datetimeMinute_in: [Time!]
-  datetimeMinute_leq: Time
-  datetimeMinute_lt: Time
-  datetimeMinute_neq: Time
-  datetimeMinute_notin: [Time!]
-}
-
-enum ZoneSynAvgPps1mGroupsOrderBy {
-  # count() ascending
-  count_ASC
-  # count() descending
-  count_DESC
-  # date ascending
-  date_ASC
-  # date descending
-  date_DESC
-  # datetimeDay ascending
-  datetimeDay_ASC
-  # datetimeDay descending
-  datetimeDay_DESC
-  # datetimeFifteenMinutes ascending
-  datetimeFifteenMinutes_ASC
-  # datetimeFifteenMinutes descending
-  datetimeFifteenMinutes_DESC
-  # datetimeFiveMinutes ascending
-  datetimeFiveMinutes_ASC
-  # datetimeFiveMinutes descending
-  datetimeFiveMinutes_DESC
-  # datetimeHour ascending
-  datetimeHour_ASC
-  # datetimeHour descending
-  datetimeHour_DESC
-  # datetimeMinute ascending
-  datetimeMinute_ASC
-  # datetimeMinute descending
-  datetimeMinute_DESC
-  # sum(avgPpsPerMinute) ascending
-  sum_avgPpsPerMinute_ASC
-  # sum(avgPpsPerMinute) descending
-  sum_avgPpsPerMinute_DESC
-}
-
-type ZoneSynAvgPps1mGroupsSum {
-  # Avg packets per second for this minute.
-  avgPpsPerMinute: uint64!
 }
 
 # Raw Waiting Room analytics logs
