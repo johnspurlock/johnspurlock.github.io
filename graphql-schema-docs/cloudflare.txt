@@ -1,6 +1,9 @@
 Account-level datasets:
   MagicWANConnectorMetricsAdaptiveGroups
 * accessLoginRequestsAdaptiveGroups
+* aiGatewayCacheAdaptiveGroups
+* aiGatewayErrorsAdaptiveGroups
+* aiGatewayRequestsAdaptiveGroups
   cdnNetworkAnalyticsAdaptiveGroups
 * d1AnalyticsAdaptiveGroups
   dosdAttackAnalyticsGroups
@@ -154,6 +157,12 @@ type account {
   # Access login requests
   accessLoginRequestsAdaptiveGroups(filter: AccountAccessLoginRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAccessLoginRequestsAdaptiveGroupsOrderBy!]): [AccountAccessLoginRequestsAdaptiveGroups!]!
   accountTag: string!
+  # AI Gateway Cache
+  aiGatewayCacheAdaptiveGroups(filter: AccountAiGatewayCacheAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayCacheAdaptiveGroupsOrderBy!]): [AccountAiGatewayCacheAdaptiveGroups!]!
+  # AI Gateway Errors
+  aiGatewayErrorsAdaptiveGroups(filter: AccountAiGatewayErrorsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayErrorsAdaptiveGroupsOrderBy!]): [AccountAiGatewayErrorsAdaptiveGroups!]!
+  # AI Gateway Requests
+  aiGatewayRequestsAdaptiveGroups(filter: AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayRequestsAdaptiveGroupsOrderBy!]): [AccountAiGatewayRequestsAdaptiveGroups!]!
   # Network analytics data for Cloudflare CDN traffic
   cdnNetworkAnalyticsAdaptiveGroups(filter: AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountCdnNetworkAnalyticsAdaptiveGroups!]!
   # Beta. Aggregated D1 analytics with adaptive sampling
@@ -603,6 +612,411 @@ enum AccountAccessLoginRequestsAdaptiveGroupsOrderBy {
   userUuid_ASC
   # userUuid descending
   userUuid_DESC
+}
+
+# AI Gateway Cache
+type AccountAiGatewayCacheAdaptiveGroups {
+  # Counts cache hits and misses as well - number of requests for an account with caching enabled
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiGatewayCacheAdaptiveGroupsDimensions
+}
+
+type AccountAiGatewayCacheAdaptiveGroupsDimensions {
+  # The date when trigger was triggerd
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Provider Error
+  hit: uint8!
+  # Which provider was the request sent to
+  provider: string!
+}
+
+input AccountAiGatewayCacheAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiGatewayCacheAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiGatewayCacheAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  hit: uint8
+  hit_geq: uint8
+  hit_gt: uint8
+  hit_in: bytes
+  hit_leq: uint8
+  hit_lt: uint8
+  hit_neq: uint8
+  hit_notin: bytes
+  provider: string
+  provider_geq: string
+  provider_gt: string
+  provider_in: [string!]
+  provider_leq: string
+  provider_like: string
+  provider_lt: string
+  provider_neq: string
+  provider_notin: [string!]
+  provider_notlike: string
+}
+
+enum AccountAiGatewayCacheAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # hit ascending
+  hit_ASC
+  # hit descending
+  hit_DESC
+  # provider ascending
+  provider_ASC
+  # provider descending
+  provider_DESC
+}
+
+# AI Gateway Errors
+type AccountAiGatewayErrorsAdaptiveGroups {
+  # Number of errors
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiGatewayErrorsAdaptiveGroupsDimensions
+}
+
+type AccountAiGatewayErrorsAdaptiveGroupsDimensions {
+  # The date when trigger was triggerd
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Provider Error
+  error: string!
+  # Which models was the request sent to
+  model: string!
+  # Which provider was the request sent to
+  provider: string!
+}
+
+input AccountAiGatewayErrorsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiGatewayErrorsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiGatewayErrorsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  error: string
+  error_geq: string
+  error_gt: string
+  error_in: [string!]
+  error_leq: string
+  error_like: string
+  error_lt: string
+  error_neq: string
+  error_notin: [string!]
+  error_notlike: string
+  model: string
+  model_geq: string
+  model_gt: string
+  model_in: [string!]
+  model_leq: string
+  model_like: string
+  model_lt: string
+  model_neq: string
+  model_notin: [string!]
+  model_notlike: string
+  provider: string
+  provider_geq: string
+  provider_gt: string
+  provider_in: [string!]
+  provider_leq: string
+  provider_like: string
+  provider_lt: string
+  provider_neq: string
+  provider_notin: [string!]
+  provider_notlike: string
+}
+
+enum AccountAiGatewayErrorsAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # error ascending
+  error_ASC
+  # error descending
+  error_DESC
+  # model ascending
+  model_ASC
+  # model descending
+  model_DESC
+  # provider ascending
+  provider_ASC
+  # provider descending
+  provider_DESC
+}
+
+# AI Gateway Requests
+type AccountAiGatewayRequestsAdaptiveGroups {
+  # Number of processed requests
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiGatewayRequestsAdaptiveGroupsDimensions
+}
+
+type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
+  # The date when trigger was triggerd
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Provider Endpoint
+  endpoint: string!
+  # Which models was the request sent to
+  model: string!
+  # Which provider was the request sent to
+  provider: string!
+}
+
+input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  endpoint: string
+  endpoint_geq: string
+  endpoint_gt: string
+  endpoint_in: [string!]
+  endpoint_leq: string
+  endpoint_like: string
+  endpoint_lt: string
+  endpoint_neq: string
+  endpoint_notin: [string!]
+  endpoint_notlike: string
+  model: string
+  model_geq: string
+  model_gt: string
+  model_in: [string!]
+  model_leq: string
+  model_like: string
+  model_lt: string
+  model_neq: string
+  model_notin: [string!]
+  model_notlike: string
+  provider: string
+  provider_geq: string
+  provider_gt: string
+  provider_in: [string!]
+  provider_leq: string
+  provider_like: string
+  provider_lt: string
+  provider_neq: string
+  provider_notin: [string!]
+  provider_notlike: string
+}
+
+enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # endpoint ascending
+  endpoint_ASC
+  # endpoint descending
+  endpoint_DESC
+  # model ascending
+  model_ASC
+  # model descending
+  model_DESC
+  # provider ascending
+  provider_ASC
+  # provider descending
+  provider_DESC
 }
 
 # Network analytics data for Cloudflare CDN traffic
@@ -21380,6 +21794,9 @@ enum AccountRumWebVitalsEventsAdaptiveOrderBy {
 type AccountSettings {
   MagicWANConnectorMetricsAdaptiveGroups: Settings!
   accessLoginRequestsAdaptiveGroups: Settings!
+  aiGatewayCacheAdaptiveGroups: Settings!
+  aiGatewayErrorsAdaptiveGroups: Settings!
+  aiGatewayRequestsAdaptiveGroups: Settings!
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
   d1AnalyticsAdaptiveGroups: Settings!
   dosdAttackAnalyticsGroups: Settings!
