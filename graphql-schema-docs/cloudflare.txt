@@ -1,9 +1,12 @@
 Account-level datasets:
   MagicWANConnectorMetricsAdaptiveGroups
 * accessLoginRequestsAdaptiveGroups
+  advancedDnsProtectionNetworkAnalyticsAdaptiveGroups
+  advancedTcpProtectionNetworkAnalyticsAdaptiveGroups
 * aiGatewayCacheAdaptiveGroups
 * aiGatewayErrorsAdaptiveGroups
 * aiGatewayRequestsAdaptiveGroups
+* aiInferenceAdaptiveGroups
   cdnNetworkAnalyticsAdaptiveGroups
 * d1AnalyticsAdaptiveGroups
   dosdAttackAnalyticsGroups
@@ -157,12 +160,19 @@ type account {
   # Access login requests
   accessLoginRequestsAdaptiveGroups(filter: AccountAccessLoginRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAccessLoginRequestsAdaptiveGroupsOrderBy!]): [AccountAccessLoginRequestsAdaptiveGroups!]!
   accountTag: string!
+  # Network analytics data for Advanced DNS Protection
+  advancedDnsProtectionNetworkAnalyticsAdaptiveGroups(filter: AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroups!]!
+  # Network analytics data for Advanced TCP Protection
+  @Deprecated
+  advancedTcpProtectionNetworkAnalyticsAdaptiveGroups(filter: AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroups!]!
   # AI Gateway Cache
   aiGatewayCacheAdaptiveGroups(filter: AccountAiGatewayCacheAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayCacheAdaptiveGroupsOrderBy!]): [AccountAiGatewayCacheAdaptiveGroups!]!
   # AI Gateway Errors
   aiGatewayErrorsAdaptiveGroups(filter: AccountAiGatewayErrorsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayErrorsAdaptiveGroupsOrderBy!]): [AccountAiGatewayErrorsAdaptiveGroups!]!
   # AI Gateway Requests
   aiGatewayRequestsAdaptiveGroups(filter: AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayRequestsAdaptiveGroupsOrderBy!]): [AccountAiGatewayRequestsAdaptiveGroups!]!
+  # Aggregated AI Inference logs with adaptive sampling
+  aiInferenceAdaptiveGroups(filter: AccountAiInferenceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveGroupsOrderBy!]): [AccountAiInferenceAdaptiveGroups!]!
   # Network analytics data for Cloudflare CDN traffic
   cdnNetworkAnalyticsAdaptiveGroups(filter: AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountCdnNetworkAnalyticsAdaptiveGroups!]!
   # Beta. Aggregated D1 analytics with adaptive sampling
@@ -186,6 +196,7 @@ type account {
   # Aggregated Firewall events with adaptive sampling
   firewallEventsAdaptiveGroups(filter: AccountFirewallEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountFirewallEventsAdaptiveGroupsOrderBy!]): [AccountFirewallEventsAdaptiveGroups!]!
   # Network analytics data for flowtrackd
+  @Deprecated
   flowtrackdNetworkAnalyticsAdaptiveGroups(filter: AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountFlowtrackdNetworkAnalyticsAdaptiveGroups!]!
   # Aggregated metrics about downstream (client to edge) L4 Gateway Sessions. Metrics are reported on TCP or UDP session close
   gatewayL4DownstreamSessionsAdaptiveGroups(filter: AccountGatewayL4DownstreamSessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy!]): [AccountGatewayL4DownstreamSessionsAdaptiveGroups!]!
@@ -614,15 +625,2651 @@ enum AccountAccessLoginRequestsAdaptiveGroupsOrderBy {
   userUuid_DESC
 }
 
+# Network analytics data for Advanced DNS Protection
+type AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsSum
+}
+
+type AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRate: uint64!
+  # Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date
+  bitRateDay: uint64!
+  # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
+  bitRateFifteenMinutes: uint64!
+  # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
+  bitRateFiveMinutes: uint64!
+  # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
+  bitRateHour: uint64!
+  # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
+  bitRateMinute: uint64!
+  # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
+  bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRate: uint64!
+  # Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date
+  packetRateDay: uint64!
+  # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
+  packetRateFifteenMinutes: uint64!
+  # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
+  packetRateFiveMinutes: uint64!
+  # Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour
+  packetRateHour: uint64!
+  # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
+  packetRateMinute: uint64!
+  # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
+  packetRateTenSeconds: uint64!
+}
+
+type AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsDimensions {
+  # City where the Cloudflare datacenter that received the packet is located
+  coloCity: string!
+  # Cloudflare datacenter that received the packet (nearest IATA airport code)
+  coloCode: string!
+  # Country where the Cloudflare datacenter that received the packet is located (ISO 3166-1 alpha-2)
+  coloCountry: string!
+  # Latitude and longitude where the Cloudflare datacenter that received the packet is located (Geohash encoding)
+  coloGeohash: string!
+  # Cloudflare datacenter that received the packet (unique site identifier)
+  coloName: string!
+  # Date that the packet was received
+  date: Date!
+  # Date and time that the packet was received
+  datetime: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest five minutes
+  datetimeFiveMinutes: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest hour
+  datetimeHour: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest minute
+  datetimeMinute: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest ten seconds
+  datetimeTenSeconds: Time!
+  # ASN associated with the destination IP of the packet, or 0 if there was no mapping available
+  destinationAsn: uint32!
+  # Name of ASN associated with the destination IP of the packet, if available
+  destinationAsnName: string!
+  # Country where the destination IP of the packet is located (ISO 3166-1 alpha-2)
+  destinationCountry: string!
+  # Latitude and longitude where the destination IP of the packet is located (Geohash encoding)
+  destinationGeohash: string!
+  # Value of the Destination Port header field in the TCP or UDP packet
+  destinationPort: uint16!
+  # Direction of the packet relative to the customer network (possible values: inbound, outbound, lateral)
+  direction: string!
+  # Value of the Ethertype header field in the Ethernet packet (2048 for IPv4; 34525 for IPv6)
+  ethertype: uint16!
+  # Value of the Checkusm header field in the GRE packet
+  greChecksum: uint16!
+  # Value of the Ethertype header field in the GRE packet
+  greEthertype: uint16!
+  # Length of the GRE packet header, in bytes
+  greHeaderLength: uint16!
+  # Value of the Key header field in the GRE packet
+  greKey: uint32!
+  # Value of the Sequence Number header field in the GRE packet
+  greSequenceNumber: uint32!
+  # Value of the Version header field in the GRE packet
+  greVersion: uint8!
+  # Value of the Checkusm header field in the ICMP packet
+  icmpChecksum: uint16!
+  # Value of the Code header field in the ICMP packet
+  icmpCode: uint8!
+  # Value of the Type header field in the ICMP packet
+  icmpType: uint8!
+  # Value of the Destination Address header field in the IPv4 or IPv6 packet
+  ipDestinationAddress: string!
+  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  ipDestinationSubnet: string!
+  # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
+  ipFragmentOffset: uint16!
+  # Length of the IPv4 or IPv6 packet header, in bytes
+  ipHeaderLength: uint16!
+  # Value of the More Fragments header field in the IPv4 or IPv6 packet
+  ipMoreFragments: uint8!
+  # Value of the Protocol header field in the IPv4 or IPv6 packet
+  ipProtocol: uint8!
+  # Name of the protocol specified by the Protocol header field in the IPv4 or IPv6 packet
+  ipProtocolName: string!
+  # Value of the Source Address header field in the IPv4 or IPv6 packet
+  ipSourceAddress: string!
+  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  ipSourceSubnet: string!
+  # Total length of the IPv4 or IPv6 packet, in bytes
+  ipTotalLength: uint16!
+  # Total length of the IPv4 or IPv6 packet, in bytes, with the last two digits truncated
+  ipTotalLengthBuckets: uint16!
+  # Value of the TTL header field in the IPv4 packet or the Hop Limit header field in the IPv6 packet
+  ipTtl: uint8!
+  # Value of the TTL header field in the IPv4 packet or the Hop Limit header field in the IPv6 packet, with the last digit truncated
+  ipTtlBuckets: uint8!
+  # Value of the Checksum header field in the IPv4 packet
+  ipv4Checksum: uint16!
+  # Value of the Don't Fragment header field in the IPv4 packet
+  ipv4DontFragment: uint8!
+  # Value of the Differentiated Services Code Point header field in the IPv4 packet
+  ipv4Dscp: uint8!
+  # Value of the Explicit Congestion Notification header field in the IPv4 packet
+  ipv4Ecn: uint8!
+  # Value of the Identification header field in the IPv4 packet
+  ipv4Identification: uint16!
+  # List of Options numbers included in the IPv4 packet header
+  ipv4Options: string!
+  # Value of the Differentiated Services Code Point header field in the IPv6 packet
+  ipv6Dscp: uint8!
+  # Value of the Explicit Congestion Notification header field in the IPv6 packet
+  ipv6Ecn: uint8!
+  # List of Extension Header numbers included in the IPv6 packet header
+  ipv6ExtensionHeaders: string!
+  # Value of the Flow Label header field in the IPv6 packet
+  ipv6FlowLabel: uint32!
+  # Value of the Identification extension header field in the IPv6 packet
+  ipv6Identification: uint32!
+  # Reason for applying a mitigation to the packet, if any
+  mitigationReason: string!
+  # Whether the packet matched a local or global mitigation, if any (possible values: local, global)
+  mitigationScope: string!
+  # The action that was taken on the packet (possible values: pass, drop)
+  outcome: string!
+  # IP prefix tag associated with the packet
+  prefixTag: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # ASN associated with the source IP of the packet, or 0 if there was no mapping available
+  sourceAsn: uint32!
+  # Name of ASN associated with the source IP of the packet, if available
+  sourceAsnName: string!
+  # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
+  sourceCountry: string!
+  # Latitude and longitude where the source IP of the packet is located (Geohash encoding)
+  sourceGeohash: string!
+  # Value of the Source Port header field in the TCP or UDP packet
+  sourcePort: uint16!
+  # Value of the Acknowledgement Number header field in the TCP packet
+  tcpAcknowledgementNumber: uint32!
+  # Value of the Checkusm header field in the TCP packet
+  tcpChecksum: uint16!
+  # Value of the Data Offset header field in the TCP packet
+  tcpDataOffset: uint16!
+  # Value of the Flags header field in the TCP packet
+  tcpFlags: uint8!
+  # Human-readable string representation of the Flags header field in the TCP packet
+  tcpFlagsString: string!
+  # Value of the MSS option header field in the TCP packet
+  tcpMss: uint16!
+  # List of Options numbers included in the TCP packet header
+  tcpOptions: string!
+  # Value of the SACK Blocks option header field in the TCP packet
+  tcpSackBlocks: string!
+  # Value of the SACK Permitted option header field in the TCP packet
+  tcpSackPermitted: uint8!
+  # Value of the Sequence Number header field in the TCP packet
+  tcpSequenceNumber: uint32!
+  # Value of the Timestamp Echo Reply option header field in the TCP packet
+  tcpTimestampEcr: uint32!
+  # Value of the Timestamp option header field in the TCP packet
+  tcpTimestampValue: uint32!
+  # Value of the Urgent Pointer header field in the TCP packet
+  tcpUrgentPointer: uint16!
+  # Value of the Window Scale option header field in the TCP packet
+  tcpWindowScale: uint16!
+  # Value of the Window Size header field in the TCP packet
+  tcpWindowSize: uint16!
+  # Value of the Checkusm header field in the UDP packet
+  udpChecksum: uint16!
+  # Value of the Payload Length header field in the UDP packet
+  udpPayloadLength: uint16!
+  # The action that Cloudflare thinks should be taken on the packet (possible values: pass, drop)
+  verdict: string!
+}
+
+input AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
+  coloCity: string
+  coloCity_geq: string
+  coloCity_gt: string
+  coloCity_in: [string!]
+  coloCity_leq: string
+  coloCity_like: string
+  coloCity_lt: string
+  coloCity_neq: string
+  coloCity_notin: [string!]
+  coloCity_notlike: string
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
+  coloCountry: string
+  coloCountry_geq: string
+  coloCountry_gt: string
+  coloCountry_in: [string!]
+  coloCountry_leq: string
+  coloCountry_like: string
+  coloCountry_lt: string
+  coloCountry_neq: string
+  coloCountry_notin: [string!]
+  coloCountry_notlike: string
+  coloGeohash: string
+  coloGeohash_geq: string
+  coloGeohash_gt: string
+  coloGeohash_in: [string!]
+  coloGeohash_leq: string
+  coloGeohash_like: string
+  coloGeohash_lt: string
+  coloGeohash_neq: string
+  coloGeohash_notin: [string!]
+  coloGeohash_notlike: string
+  coloName: string
+  coloName_geq: string
+  coloName_gt: string
+  coloName_in: [string!]
+  coloName_leq: string
+  coloName_like: string
+  coloName_lt: string
+  coloName_neq: string
+  coloName_notin: [string!]
+  coloName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeTenSeconds: Time
+  datetimeTenSeconds_geq: Time
+  datetimeTenSeconds_gt: Time
+  datetimeTenSeconds_in: [Time!]
+  datetimeTenSeconds_leq: Time
+  datetimeTenSeconds_lt: Time
+  datetimeTenSeconds_neq: Time
+  datetimeTenSeconds_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationAsn: uint32
+  destinationAsnName: string
+  destinationAsnName_geq: string
+  destinationAsnName_gt: string
+  destinationAsnName_in: [string!]
+  destinationAsnName_leq: string
+  destinationAsnName_like: string
+  destinationAsnName_lt: string
+  destinationAsnName_neq: string
+  destinationAsnName_notin: [string!]
+  destinationAsnName_notlike: string
+  destinationAsn_geq: uint32
+  destinationAsn_gt: uint32
+  destinationAsn_in: [uint32!]
+  destinationAsn_leq: uint32
+  destinationAsn_lt: uint32
+  destinationAsn_neq: uint32
+  destinationAsn_notin: [uint32!]
+  destinationCountry: string
+  destinationCountry_geq: string
+  destinationCountry_gt: string
+  destinationCountry_in: [string!]
+  destinationCountry_leq: string
+  destinationCountry_like: string
+  destinationCountry_lt: string
+  destinationCountry_neq: string
+  destinationCountry_notin: [string!]
+  destinationCountry_notlike: string
+  destinationGeohash: string
+  destinationGeohash_geq: string
+  destinationGeohash_gt: string
+  destinationGeohash_in: [string!]
+  destinationGeohash_leq: string
+  destinationGeohash_like: string
+  destinationGeohash_lt: string
+  destinationGeohash_neq: string
+  destinationGeohash_notin: [string!]
+  destinationGeohash_notlike: string
+  destinationPort: uint16
+  destinationPort_geq: uint16
+  destinationPort_gt: uint16
+  destinationPort_in: [uint16!]
+  destinationPort_leq: uint16
+  destinationPort_lt: uint16
+  destinationPort_neq: uint16
+  destinationPort_notin: [uint16!]
+  direction: string
+  direction_geq: string
+  direction_gt: string
+  direction_in: [string!]
+  direction_leq: string
+  direction_like: string
+  direction_lt: string
+  direction_neq: string
+  direction_notin: [string!]
+  direction_notlike: string
+  ethertype: uint16
+  ethertype_geq: uint16
+  ethertype_gt: uint16
+  ethertype_in: [uint16!]
+  ethertype_leq: uint16
+  ethertype_lt: uint16
+  ethertype_neq: uint16
+  ethertype_notin: [uint16!]
+  greChecksum: uint16
+  greChecksum_geq: uint16
+  greChecksum_gt: uint16
+  greChecksum_in: [uint16!]
+  greChecksum_leq: uint16
+  greChecksum_lt: uint16
+  greChecksum_neq: uint16
+  greChecksum_notin: [uint16!]
+  greEthertype: uint16
+  greEthertype_geq: uint16
+  greEthertype_gt: uint16
+  greEthertype_in: [uint16!]
+  greEthertype_leq: uint16
+  greEthertype_lt: uint16
+  greEthertype_neq: uint16
+  greEthertype_notin: [uint16!]
+  greHeaderLength: uint16
+  greHeaderLength_geq: uint16
+  greHeaderLength_gt: uint16
+  greHeaderLength_in: [uint16!]
+  greHeaderLength_leq: uint16
+  greHeaderLength_lt: uint16
+  greHeaderLength_neq: uint16
+  greHeaderLength_notin: [uint16!]
+  greKey: uint32
+  greKey_geq: uint32
+  greKey_gt: uint32
+  greKey_in: [uint32!]
+  greKey_leq: uint32
+  greKey_lt: uint32
+  greKey_neq: uint32
+  greKey_notin: [uint32!]
+  greSequenceNumber: uint32
+  greSequenceNumber_geq: uint32
+  greSequenceNumber_gt: uint32
+  greSequenceNumber_in: [uint32!]
+  greSequenceNumber_leq: uint32
+  greSequenceNumber_lt: uint32
+  greSequenceNumber_neq: uint32
+  greSequenceNumber_notin: [uint32!]
+  greVersion: uint8
+  greVersion_geq: uint8
+  greVersion_gt: uint8
+  greVersion_in: bytes
+  greVersion_leq: uint8
+  greVersion_lt: uint8
+  greVersion_neq: uint8
+  greVersion_notin: bytes
+  icmpChecksum: uint16
+  icmpChecksum_geq: uint16
+  icmpChecksum_gt: uint16
+  icmpChecksum_in: [uint16!]
+  icmpChecksum_leq: uint16
+  icmpChecksum_lt: uint16
+  icmpChecksum_neq: uint16
+  icmpChecksum_notin: [uint16!]
+  icmpCode: uint8
+  icmpCode_geq: uint8
+  icmpCode_gt: uint8
+  icmpCode_in: bytes
+  icmpCode_leq: uint8
+  icmpCode_lt: uint8
+  icmpCode_neq: uint8
+  icmpCode_notin: bytes
+  icmpType: uint8
+  icmpType_geq: uint8
+  icmpType_gt: uint8
+  icmpType_in: bytes
+  icmpType_leq: uint8
+  icmpType_lt: uint8
+  icmpType_neq: uint8
+  icmpType_notin: bytes
+  ipDestinationAddress: string
+  ipDestinationAddress_geq: string
+  ipDestinationAddress_gt: string
+  ipDestinationAddress_in: [string!]
+  ipDestinationAddress_leq: string
+  ipDestinationAddress_like: string
+  ipDestinationAddress_lt: string
+  ipDestinationAddress_neq: string
+  ipDestinationAddress_notin: [string!]
+  ipDestinationAddress_notlike: string
+  ipDestinationSubnet: string
+  ipDestinationSubnet_geq: string
+  ipDestinationSubnet_gt: string
+  ipDestinationSubnet_in: [string!]
+  ipDestinationSubnet_leq: string
+  ipDestinationSubnet_like: string
+  ipDestinationSubnet_lt: string
+  ipDestinationSubnet_neq: string
+  ipDestinationSubnet_notin: [string!]
+  ipDestinationSubnet_notlike: string
+  ipFragmentOffset: uint16
+  ipFragmentOffset_geq: uint16
+  ipFragmentOffset_gt: uint16
+  ipFragmentOffset_in: [uint16!]
+  ipFragmentOffset_leq: uint16
+  ipFragmentOffset_lt: uint16
+  ipFragmentOffset_neq: uint16
+  ipFragmentOffset_notin: [uint16!]
+  ipHeaderLength: uint16
+  ipHeaderLength_geq: uint16
+  ipHeaderLength_gt: uint16
+  ipHeaderLength_in: [uint16!]
+  ipHeaderLength_leq: uint16
+  ipHeaderLength_lt: uint16
+  ipHeaderLength_neq: uint16
+  ipHeaderLength_notin: [uint16!]
+  ipMoreFragments: uint8
+  ipMoreFragments_geq: uint8
+  ipMoreFragments_gt: uint8
+  ipMoreFragments_in: bytes
+  ipMoreFragments_leq: uint8
+  ipMoreFragments_lt: uint8
+  ipMoreFragments_neq: uint8
+  ipMoreFragments_notin: bytes
+  ipProtocol: uint8
+  ipProtocolName: string
+  ipProtocolName_geq: string
+  ipProtocolName_gt: string
+  ipProtocolName_in: [string!]
+  ipProtocolName_leq: string
+  ipProtocolName_like: string
+  ipProtocolName_lt: string
+  ipProtocolName_neq: string
+  ipProtocolName_notin: [string!]
+  ipProtocolName_notlike: string
+  ipProtocol_geq: uint8
+  ipProtocol_gt: uint8
+  ipProtocol_in: bytes
+  ipProtocol_leq: uint8
+  ipProtocol_lt: uint8
+  ipProtocol_neq: uint8
+  ipProtocol_notin: bytes
+  ipSourceAddress: string
+  ipSourceAddress_geq: string
+  ipSourceAddress_gt: string
+  ipSourceAddress_in: [string!]
+  ipSourceAddress_leq: string
+  ipSourceAddress_like: string
+  ipSourceAddress_lt: string
+  ipSourceAddress_neq: string
+  ipSourceAddress_notin: [string!]
+  ipSourceAddress_notlike: string
+  ipSourceSubnet: string
+  ipSourceSubnet_geq: string
+  ipSourceSubnet_gt: string
+  ipSourceSubnet_in: [string!]
+  ipSourceSubnet_leq: string
+  ipSourceSubnet_like: string
+  ipSourceSubnet_lt: string
+  ipSourceSubnet_neq: string
+  ipSourceSubnet_notin: [string!]
+  ipSourceSubnet_notlike: string
+  ipTotalLength: uint16
+  ipTotalLengthBuckets: uint16
+  ipTotalLengthBuckets_geq: uint16
+  ipTotalLengthBuckets_gt: uint16
+  ipTotalLengthBuckets_in: [uint16!]
+  ipTotalLengthBuckets_leq: uint16
+  ipTotalLengthBuckets_lt: uint16
+  ipTotalLengthBuckets_neq: uint16
+  ipTotalLengthBuckets_notin: [uint16!]
+  ipTotalLength_geq: uint16
+  ipTotalLength_gt: uint16
+  ipTotalLength_in: [uint16!]
+  ipTotalLength_leq: uint16
+  ipTotalLength_lt: uint16
+  ipTotalLength_neq: uint16
+  ipTotalLength_notin: [uint16!]
+  ipTtl: uint8
+  ipTtlBuckets: uint8
+  ipTtlBuckets_geq: uint8
+  ipTtlBuckets_gt: uint8
+  ipTtlBuckets_in: bytes
+  ipTtlBuckets_leq: uint8
+  ipTtlBuckets_lt: uint8
+  ipTtlBuckets_neq: uint8
+  ipTtlBuckets_notin: bytes
+  ipTtl_geq: uint8
+  ipTtl_gt: uint8
+  ipTtl_in: bytes
+  ipTtl_leq: uint8
+  ipTtl_lt: uint8
+  ipTtl_neq: uint8
+  ipTtl_notin: bytes
+  ipv4Checksum: uint16
+  ipv4Checksum_geq: uint16
+  ipv4Checksum_gt: uint16
+  ipv4Checksum_in: [uint16!]
+  ipv4Checksum_leq: uint16
+  ipv4Checksum_lt: uint16
+  ipv4Checksum_neq: uint16
+  ipv4Checksum_notin: [uint16!]
+  ipv4DontFragment: uint8
+  ipv4DontFragment_geq: uint8
+  ipv4DontFragment_gt: uint8
+  ipv4DontFragment_in: bytes
+  ipv4DontFragment_leq: uint8
+  ipv4DontFragment_lt: uint8
+  ipv4DontFragment_neq: uint8
+  ipv4DontFragment_notin: bytes
+  ipv4Dscp: uint8
+  ipv4Dscp_geq: uint8
+  ipv4Dscp_gt: uint8
+  ipv4Dscp_in: bytes
+  ipv4Dscp_leq: uint8
+  ipv4Dscp_lt: uint8
+  ipv4Dscp_neq: uint8
+  ipv4Dscp_notin: bytes
+  ipv4Ecn: uint8
+  ipv4Ecn_geq: uint8
+  ipv4Ecn_gt: uint8
+  ipv4Ecn_in: bytes
+  ipv4Ecn_leq: uint8
+  ipv4Ecn_lt: uint8
+  ipv4Ecn_neq: uint8
+  ipv4Ecn_notin: bytes
+  ipv4Identification: uint16
+  ipv4Identification_geq: uint16
+  ipv4Identification_gt: uint16
+  ipv4Identification_in: [uint16!]
+  ipv4Identification_leq: uint16
+  ipv4Identification_lt: uint16
+  ipv4Identification_neq: uint16
+  ipv4Identification_notin: [uint16!]
+  ipv4Options: string
+  ipv4Options_geq: string
+  ipv4Options_gt: string
+  ipv4Options_in: [string!]
+  ipv4Options_leq: string
+  ipv4Options_like: string
+  ipv4Options_lt: string
+  ipv4Options_neq: string
+  ipv4Options_notin: [string!]
+  ipv4Options_notlike: string
+  ipv6Dscp: uint8
+  ipv6Dscp_geq: uint8
+  ipv6Dscp_gt: uint8
+  ipv6Dscp_in: bytes
+  ipv6Dscp_leq: uint8
+  ipv6Dscp_lt: uint8
+  ipv6Dscp_neq: uint8
+  ipv6Dscp_notin: bytes
+  ipv6Ecn: uint8
+  ipv6Ecn_geq: uint8
+  ipv6Ecn_gt: uint8
+  ipv6Ecn_in: bytes
+  ipv6Ecn_leq: uint8
+  ipv6Ecn_lt: uint8
+  ipv6Ecn_neq: uint8
+  ipv6Ecn_notin: bytes
+  ipv6ExtensionHeaders: string
+  ipv6ExtensionHeaders_geq: string
+  ipv6ExtensionHeaders_gt: string
+  ipv6ExtensionHeaders_in: [string!]
+  ipv6ExtensionHeaders_leq: string
+  ipv6ExtensionHeaders_like: string
+  ipv6ExtensionHeaders_lt: string
+  ipv6ExtensionHeaders_neq: string
+  ipv6ExtensionHeaders_notin: [string!]
+  ipv6ExtensionHeaders_notlike: string
+  ipv6FlowLabel: uint32
+  ipv6FlowLabel_geq: uint32
+  ipv6FlowLabel_gt: uint32
+  ipv6FlowLabel_in: [uint32!]
+  ipv6FlowLabel_leq: uint32
+  ipv6FlowLabel_lt: uint32
+  ipv6FlowLabel_neq: uint32
+  ipv6FlowLabel_notin: [uint32!]
+  ipv6Identification: uint32
+  ipv6Identification_geq: uint32
+  ipv6Identification_gt: uint32
+  ipv6Identification_in: [uint32!]
+  ipv6Identification_leq: uint32
+  ipv6Identification_lt: uint32
+  ipv6Identification_neq: uint32
+  ipv6Identification_notin: [uint32!]
+  mitigationReason: string
+  mitigationReason_geq: string
+  mitigationReason_gt: string
+  mitigationReason_in: [string!]
+  mitigationReason_leq: string
+  mitigationReason_like: string
+  mitigationReason_lt: string
+  mitigationReason_neq: string
+  mitigationReason_notin: [string!]
+  mitigationReason_notlike: string
+  mitigationScope: string
+  mitigationScope_geq: string
+  mitigationScope_gt: string
+  mitigationScope_in: [string!]
+  mitigationScope_leq: string
+  mitigationScope_like: string
+  mitigationScope_lt: string
+  mitigationScope_neq: string
+  mitigationScope_notin: [string!]
+  mitigationScope_notlike: string
+  outcome: string
+  outcome_geq: string
+  outcome_gt: string
+  outcome_in: [string!]
+  outcome_leq: string
+  outcome_like: string
+  outcome_lt: string
+  outcome_neq: string
+  outcome_notin: [string!]
+  outcome_notlike: string
+  prefixTag: string
+  prefixTag_geq: string
+  prefixTag_gt: string
+  prefixTag_in: [string!]
+  prefixTag_leq: string
+  prefixTag_like: string
+  prefixTag_lt: string
+  prefixTag_neq: string
+  prefixTag_notin: [string!]
+  prefixTag_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  sourceAsn: uint32
+  sourceAsnName: string
+  sourceAsnName_geq: string
+  sourceAsnName_gt: string
+  sourceAsnName_in: [string!]
+  sourceAsnName_leq: string
+  sourceAsnName_like: string
+  sourceAsnName_lt: string
+  sourceAsnName_neq: string
+  sourceAsnName_notin: [string!]
+  sourceAsnName_notlike: string
+  sourceAsn_geq: uint32
+  sourceAsn_gt: uint32
+  sourceAsn_in: [uint32!]
+  sourceAsn_leq: uint32
+  sourceAsn_lt: uint32
+  sourceAsn_neq: uint32
+  sourceAsn_notin: [uint32!]
+  sourceCountry: string
+  sourceCountry_geq: string
+  sourceCountry_gt: string
+  sourceCountry_in: [string!]
+  sourceCountry_leq: string
+  sourceCountry_like: string
+  sourceCountry_lt: string
+  sourceCountry_neq: string
+  sourceCountry_notin: [string!]
+  sourceCountry_notlike: string
+  sourceGeohash: string
+  sourceGeohash_geq: string
+  sourceGeohash_gt: string
+  sourceGeohash_in: [string!]
+  sourceGeohash_leq: string
+  sourceGeohash_like: string
+  sourceGeohash_lt: string
+  sourceGeohash_neq: string
+  sourceGeohash_notin: [string!]
+  sourceGeohash_notlike: string
+  sourcePort: uint16
+  sourcePort_geq: uint16
+  sourcePort_gt: uint16
+  sourcePort_in: [uint16!]
+  sourcePort_leq: uint16
+  sourcePort_lt: uint16
+  sourcePort_neq: uint16
+  sourcePort_notin: [uint16!]
+  tcpAcknowledgementNumber: uint32
+  tcpAcknowledgementNumber_geq: uint32
+  tcpAcknowledgementNumber_gt: uint32
+  tcpAcknowledgementNumber_in: [uint32!]
+  tcpAcknowledgementNumber_leq: uint32
+  tcpAcknowledgementNumber_lt: uint32
+  tcpAcknowledgementNumber_neq: uint32
+  tcpAcknowledgementNumber_notin: [uint32!]
+  tcpChecksum: uint16
+  tcpChecksum_geq: uint16
+  tcpChecksum_gt: uint16
+  tcpChecksum_in: [uint16!]
+  tcpChecksum_leq: uint16
+  tcpChecksum_lt: uint16
+  tcpChecksum_neq: uint16
+  tcpChecksum_notin: [uint16!]
+  tcpDataOffset: uint16
+  tcpDataOffset_geq: uint16
+  tcpDataOffset_gt: uint16
+  tcpDataOffset_in: [uint16!]
+  tcpDataOffset_leq: uint16
+  tcpDataOffset_lt: uint16
+  tcpDataOffset_neq: uint16
+  tcpDataOffset_notin: [uint16!]
+  tcpFlags: uint8
+  tcpFlagsString: string
+  tcpFlagsString_geq: string
+  tcpFlagsString_gt: string
+  tcpFlagsString_in: [string!]
+  tcpFlagsString_leq: string
+  tcpFlagsString_like: string
+  tcpFlagsString_lt: string
+  tcpFlagsString_neq: string
+  tcpFlagsString_notin: [string!]
+  tcpFlagsString_notlike: string
+  tcpFlags_geq: uint8
+  tcpFlags_gt: uint8
+  tcpFlags_in: bytes
+  tcpFlags_leq: uint8
+  tcpFlags_lt: uint8
+  tcpFlags_neq: uint8
+  tcpFlags_notin: bytes
+  tcpMss: uint16
+  tcpMss_geq: uint16
+  tcpMss_gt: uint16
+  tcpMss_in: [uint16!]
+  tcpMss_leq: uint16
+  tcpMss_lt: uint16
+  tcpMss_neq: uint16
+  tcpMss_notin: [uint16!]
+  tcpOptions: string
+  tcpOptions_geq: string
+  tcpOptions_gt: string
+  tcpOptions_in: [string!]
+  tcpOptions_leq: string
+  tcpOptions_like: string
+  tcpOptions_lt: string
+  tcpOptions_neq: string
+  tcpOptions_notin: [string!]
+  tcpOptions_notlike: string
+  tcpSackBlocks: string
+  tcpSackBlocks_geq: string
+  tcpSackBlocks_gt: string
+  tcpSackBlocks_in: [string!]
+  tcpSackBlocks_leq: string
+  tcpSackBlocks_like: string
+  tcpSackBlocks_lt: string
+  tcpSackBlocks_neq: string
+  tcpSackBlocks_notin: [string!]
+  tcpSackBlocks_notlike: string
+  tcpSackPermitted: uint8
+  tcpSackPermitted_geq: uint8
+  tcpSackPermitted_gt: uint8
+  tcpSackPermitted_in: bytes
+  tcpSackPermitted_leq: uint8
+  tcpSackPermitted_lt: uint8
+  tcpSackPermitted_neq: uint8
+  tcpSackPermitted_notin: bytes
+  tcpSequenceNumber: uint32
+  tcpSequenceNumber_geq: uint32
+  tcpSequenceNumber_gt: uint32
+  tcpSequenceNumber_in: [uint32!]
+  tcpSequenceNumber_leq: uint32
+  tcpSequenceNumber_lt: uint32
+  tcpSequenceNumber_neq: uint32
+  tcpSequenceNumber_notin: [uint32!]
+  tcpTimestampEcr: uint32
+  tcpTimestampEcr_geq: uint32
+  tcpTimestampEcr_gt: uint32
+  tcpTimestampEcr_in: [uint32!]
+  tcpTimestampEcr_leq: uint32
+  tcpTimestampEcr_lt: uint32
+  tcpTimestampEcr_neq: uint32
+  tcpTimestampEcr_notin: [uint32!]
+  tcpTimestampValue: uint32
+  tcpTimestampValue_geq: uint32
+  tcpTimestampValue_gt: uint32
+  tcpTimestampValue_in: [uint32!]
+  tcpTimestampValue_leq: uint32
+  tcpTimestampValue_lt: uint32
+  tcpTimestampValue_neq: uint32
+  tcpTimestampValue_notin: [uint32!]
+  tcpUrgentPointer: uint16
+  tcpUrgentPointer_geq: uint16
+  tcpUrgentPointer_gt: uint16
+  tcpUrgentPointer_in: [uint16!]
+  tcpUrgentPointer_leq: uint16
+  tcpUrgentPointer_lt: uint16
+  tcpUrgentPointer_neq: uint16
+  tcpUrgentPointer_notin: [uint16!]
+  tcpWindowScale: uint16
+  tcpWindowScale_geq: uint16
+  tcpWindowScale_gt: uint16
+  tcpWindowScale_in: [uint16!]
+  tcpWindowScale_leq: uint16
+  tcpWindowScale_lt: uint16
+  tcpWindowScale_neq: uint16
+  tcpWindowScale_notin: [uint16!]
+  tcpWindowSize: uint16
+  tcpWindowSize_geq: uint16
+  tcpWindowSize_gt: uint16
+  tcpWindowSize_in: [uint16!]
+  tcpWindowSize_leq: uint16
+  tcpWindowSize_lt: uint16
+  tcpWindowSize_neq: uint16
+  tcpWindowSize_notin: [uint16!]
+  udpChecksum: uint16
+  udpChecksum_geq: uint16
+  udpChecksum_gt: uint16
+  udpChecksum_in: [uint16!]
+  udpChecksum_leq: uint16
+  udpChecksum_lt: uint16
+  udpChecksum_neq: uint16
+  udpChecksum_notin: [uint16!]
+  udpPayloadLength: uint16
+  udpPayloadLength_geq: uint16
+  udpPayloadLength_gt: uint16
+  udpPayloadLength_in: [uint16!]
+  udpPayloadLength_leq: uint16
+  udpPayloadLength_lt: uint16
+  udpPayloadLength_neq: uint16
+  udpPayloadLength_notin: [uint16!]
+  verdict: string
+  verdict_geq: string
+  verdict_gt: string
+  verdict_in: [string!]
+  verdict_leq: string
+  verdict_like: string
+  verdict_lt: string
+  verdict_neq: string
+  verdict_notin: [string!]
+  verdict_notlike: string
+}
+
+enum AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # avg(bitRateDay) ascending
+  avg_bitRateDay_ASC
+  # avg(bitRateDay) descending
+  avg_bitRateDay_DESC
+  # avg(bitRateFifteenMinutes) ascending
+  avg_bitRateFifteenMinutes_ASC
+  # avg(bitRateFifteenMinutes) descending
+  avg_bitRateFifteenMinutes_DESC
+  # avg(bitRateFiveMinutes) ascending
+  avg_bitRateFiveMinutes_ASC
+  # avg(bitRateFiveMinutes) descending
+  avg_bitRateFiveMinutes_DESC
+  # avg(bitRateHour) ascending
+  avg_bitRateHour_ASC
+  # avg(bitRateHour) descending
+  avg_bitRateHour_DESC
+  # avg(bitRateMinute) ascending
+  avg_bitRateMinute_ASC
+  # avg(bitRateMinute) descending
+  avg_bitRateMinute_DESC
+  # avg(bitRateTenSeconds) ascending
+  avg_bitRateTenSeconds_ASC
+  # avg(bitRateTenSeconds) descending
+  avg_bitRateTenSeconds_DESC
+  # avg(bitRate) ascending
+  avg_bitRate_ASC
+  # avg(bitRate) descending
+  avg_bitRate_DESC
+  # avg(packetRateDay) ascending
+  avg_packetRateDay_ASC
+  # avg(packetRateDay) descending
+  avg_packetRateDay_DESC
+  # avg(packetRateFifteenMinutes) ascending
+  avg_packetRateFifteenMinutes_ASC
+  # avg(packetRateFifteenMinutes) descending
+  avg_packetRateFifteenMinutes_DESC
+  # avg(packetRateFiveMinutes) ascending
+  avg_packetRateFiveMinutes_ASC
+  # avg(packetRateFiveMinutes) descending
+  avg_packetRateFiveMinutes_DESC
+  # avg(packetRateHour) ascending
+  avg_packetRateHour_ASC
+  # avg(packetRateHour) descending
+  avg_packetRateHour_DESC
+  # avg(packetRateMinute) ascending
+  avg_packetRateMinute_ASC
+  # avg(packetRateMinute) descending
+  avg_packetRateMinute_DESC
+  # avg(packetRateTenSeconds) ascending
+  avg_packetRateTenSeconds_ASC
+  # avg(packetRateTenSeconds) descending
+  avg_packetRateTenSeconds_DESC
+  # avg(packetRate) ascending
+  avg_packetRate_ASC
+  # avg(packetRate) descending
+  avg_packetRate_DESC
+  # coloCity ascending
+  coloCity_ASC
+  # coloCity descending
+  coloCity_DESC
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
+  # coloCountry ascending
+  coloCountry_ASC
+  # coloCountry descending
+  coloCountry_DESC
+  # coloGeohash ascending
+  coloGeohash_ASC
+  # coloGeohash descending
+  coloGeohash_DESC
+  # coloName ascending
+  coloName_ASC
+  # coloName descending
+  coloName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeTenSeconds ascending
+  datetimeTenSeconds_ASC
+  # datetimeTenSeconds descending
+  datetimeTenSeconds_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationAsnName ascending
+  destinationAsnName_ASC
+  # destinationAsnName descending
+  destinationAsnName_DESC
+  # destinationAsn ascending
+  destinationAsn_ASC
+  # destinationAsn descending
+  destinationAsn_DESC
+  # destinationCountry ascending
+  destinationCountry_ASC
+  # destinationCountry descending
+  destinationCountry_DESC
+  # destinationGeohash ascending
+  destinationGeohash_ASC
+  # destinationGeohash descending
+  destinationGeohash_DESC
+  # destinationPort ascending
+  destinationPort_ASC
+  # destinationPort descending
+  destinationPort_DESC
+  # direction ascending
+  direction_ASC
+  # direction descending
+  direction_DESC
+  # ethertype ascending
+  ethertype_ASC
+  # ethertype descending
+  ethertype_DESC
+  # greChecksum ascending
+  greChecksum_ASC
+  # greChecksum descending
+  greChecksum_DESC
+  # greEthertype ascending
+  greEthertype_ASC
+  # greEthertype descending
+  greEthertype_DESC
+  # greHeaderLength ascending
+  greHeaderLength_ASC
+  # greHeaderLength descending
+  greHeaderLength_DESC
+  # greKey ascending
+  greKey_ASC
+  # greKey descending
+  greKey_DESC
+  # greSequenceNumber ascending
+  greSequenceNumber_ASC
+  # greSequenceNumber descending
+  greSequenceNumber_DESC
+  # greVersion ascending
+  greVersion_ASC
+  # greVersion descending
+  greVersion_DESC
+  # icmpChecksum ascending
+  icmpChecksum_ASC
+  # icmpChecksum descending
+  icmpChecksum_DESC
+  # icmpCode ascending
+  icmpCode_ASC
+  # icmpCode descending
+  icmpCode_DESC
+  # icmpType ascending
+  icmpType_ASC
+  # icmpType descending
+  icmpType_DESC
+  # ipDestinationAddress ascending
+  ipDestinationAddress_ASC
+  # ipDestinationAddress descending
+  ipDestinationAddress_DESC
+  # ipDestinationSubnet ascending
+  ipDestinationSubnet_ASC
+  # ipDestinationSubnet descending
+  ipDestinationSubnet_DESC
+  # ipFragmentOffset ascending
+  ipFragmentOffset_ASC
+  # ipFragmentOffset descending
+  ipFragmentOffset_DESC
+  # ipHeaderLength ascending
+  ipHeaderLength_ASC
+  # ipHeaderLength descending
+  ipHeaderLength_DESC
+  # ipMoreFragments ascending
+  ipMoreFragments_ASC
+  # ipMoreFragments descending
+  ipMoreFragments_DESC
+  # ipProtocolName ascending
+  ipProtocolName_ASC
+  # ipProtocolName descending
+  ipProtocolName_DESC
+  # ipProtocol ascending
+  ipProtocol_ASC
+  # ipProtocol descending
+  ipProtocol_DESC
+  # ipSourceAddress ascending
+  ipSourceAddress_ASC
+  # ipSourceAddress descending
+  ipSourceAddress_DESC
+  # ipSourceSubnet ascending
+  ipSourceSubnet_ASC
+  # ipSourceSubnet descending
+  ipSourceSubnet_DESC
+  # ipTotalLengthBuckets ascending
+  ipTotalLengthBuckets_ASC
+  # ipTotalLengthBuckets descending
+  ipTotalLengthBuckets_DESC
+  # ipTotalLength ascending
+  ipTotalLength_ASC
+  # ipTotalLength descending
+  ipTotalLength_DESC
+  # ipTtlBuckets ascending
+  ipTtlBuckets_ASC
+  # ipTtlBuckets descending
+  ipTtlBuckets_DESC
+  # ipTtl ascending
+  ipTtl_ASC
+  # ipTtl descending
+  ipTtl_DESC
+  # ipv4Checksum ascending
+  ipv4Checksum_ASC
+  # ipv4Checksum descending
+  ipv4Checksum_DESC
+  # ipv4DontFragment ascending
+  ipv4DontFragment_ASC
+  # ipv4DontFragment descending
+  ipv4DontFragment_DESC
+  # ipv4Dscp ascending
+  ipv4Dscp_ASC
+  # ipv4Dscp descending
+  ipv4Dscp_DESC
+  # ipv4Ecn ascending
+  ipv4Ecn_ASC
+  # ipv4Ecn descending
+  ipv4Ecn_DESC
+  # ipv4Identification ascending
+  ipv4Identification_ASC
+  # ipv4Identification descending
+  ipv4Identification_DESC
+  # ipv4Options ascending
+  ipv4Options_ASC
+  # ipv4Options descending
+  ipv4Options_DESC
+  # ipv6Dscp ascending
+  ipv6Dscp_ASC
+  # ipv6Dscp descending
+  ipv6Dscp_DESC
+  # ipv6Ecn ascending
+  ipv6Ecn_ASC
+  # ipv6Ecn descending
+  ipv6Ecn_DESC
+  # ipv6ExtensionHeaders ascending
+  ipv6ExtensionHeaders_ASC
+  # ipv6ExtensionHeaders descending
+  ipv6ExtensionHeaders_DESC
+  # ipv6FlowLabel ascending
+  ipv6FlowLabel_ASC
+  # ipv6FlowLabel descending
+  ipv6FlowLabel_DESC
+  # ipv6Identification ascending
+  ipv6Identification_ASC
+  # ipv6Identification descending
+  ipv6Identification_DESC
+  # mitigationReason ascending
+  mitigationReason_ASC
+  # mitigationReason descending
+  mitigationReason_DESC
+  # mitigationScope ascending
+  mitigationScope_ASC
+  # mitigationScope descending
+  mitigationScope_DESC
+  # outcome ascending
+  outcome_ASC
+  # outcome descending
+  outcome_DESC
+  # prefixTag ascending
+  prefixTag_ASC
+  # prefixTag descending
+  prefixTag_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # sourceAsnName ascending
+  sourceAsnName_ASC
+  # sourceAsnName descending
+  sourceAsnName_DESC
+  # sourceAsn ascending
+  sourceAsn_ASC
+  # sourceAsn descending
+  sourceAsn_DESC
+  # sourceCountry ascending
+  sourceCountry_ASC
+  # sourceCountry descending
+  sourceCountry_DESC
+  # sourceGeohash ascending
+  sourceGeohash_ASC
+  # sourceGeohash descending
+  sourceGeohash_DESC
+  # sourcePort ascending
+  sourcePort_ASC
+  # sourcePort descending
+  sourcePort_DESC
+  # sum(bits) ascending
+  sum_bits_ASC
+  # sum(bits) descending
+  sum_bits_DESC
+  # sum(packets) ascending
+  sum_packets_ASC
+  # sum(packets) descending
+  sum_packets_DESC
+  # system ascending
+  system_ASC
+  # system descending
+  system_DESC
+  # tcpAcknowledgementNumber ascending
+  tcpAcknowledgementNumber_ASC
+  # tcpAcknowledgementNumber descending
+  tcpAcknowledgementNumber_DESC
+  # tcpChecksum ascending
+  tcpChecksum_ASC
+  # tcpChecksum descending
+  tcpChecksum_DESC
+  # tcpDataOffset ascending
+  tcpDataOffset_ASC
+  # tcpDataOffset descending
+  tcpDataOffset_DESC
+  # tcpFlagsString ascending
+  tcpFlagsString_ASC
+  # tcpFlagsString descending
+  tcpFlagsString_DESC
+  # tcpFlags ascending
+  tcpFlags_ASC
+  # tcpFlags descending
+  tcpFlags_DESC
+  # tcpMss ascending
+  tcpMss_ASC
+  # tcpMss descending
+  tcpMss_DESC
+  # tcpOptions ascending
+  tcpOptions_ASC
+  # tcpOptions descending
+  tcpOptions_DESC
+  # tcpSackBlocks ascending
+  tcpSackBlocks_ASC
+  # tcpSackBlocks descending
+  tcpSackBlocks_DESC
+  # tcpSackPermitted ascending
+  tcpSackPermitted_ASC
+  # tcpSackPermitted descending
+  tcpSackPermitted_DESC
+  # tcpSequenceNumber ascending
+  tcpSequenceNumber_ASC
+  # tcpSequenceNumber descending
+  tcpSequenceNumber_DESC
+  # tcpTimestampEcr ascending
+  tcpTimestampEcr_ASC
+  # tcpTimestampEcr descending
+  tcpTimestampEcr_DESC
+  # tcpTimestampValue ascending
+  tcpTimestampValue_ASC
+  # tcpTimestampValue descending
+  tcpTimestampValue_DESC
+  # tcpUrgentPointer ascending
+  tcpUrgentPointer_ASC
+  # tcpUrgentPointer descending
+  tcpUrgentPointer_DESC
+  # tcpWindowScale ascending
+  tcpWindowScale_ASC
+  # tcpWindowScale descending
+  tcpWindowScale_DESC
+  # tcpWindowSize ascending
+  tcpWindowSize_ASC
+  # tcpWindowSize descending
+  tcpWindowSize_DESC
+  # udpChecksum ascending
+  udpChecksum_ASC
+  # udpChecksum descending
+  udpChecksum_DESC
+  # udpPayloadLength ascending
+  udpPayloadLength_ASC
+  # udpPayloadLength descending
+  udpPayloadLength_DESC
+  # verdict ascending
+  verdict_ASC
+  # verdict descending
+  verdict_DESC
+}
+
+type AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsSum {
+  # Sum of bits received
+  bits: uint64!
+  # Sum of packets received
+  packets: uint64!
+}
+
+# Network analytics data for Advanced TCP Protection
+type AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsSum
+}
+
+type AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRate: uint64!
+  # Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date
+  bitRateDay: uint64!
+  # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
+  bitRateFifteenMinutes: uint64!
+  # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
+  bitRateFiveMinutes: uint64!
+  # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
+  bitRateHour: uint64!
+  # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
+  bitRateMinute: uint64!
+  # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
+  bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRate: uint64!
+  # Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date
+  packetRateDay: uint64!
+  # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
+  packetRateFifteenMinutes: uint64!
+  # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
+  packetRateFiveMinutes: uint64!
+  # Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour
+  packetRateHour: uint64!
+  # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
+  packetRateMinute: uint64!
+  # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
+  packetRateTenSeconds: uint64!
+}
+
+type AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsDimensions {
+  # Application tag associated with the packet
+  applicationTag: string!
+  # City where the Cloudflare datacenter that received the packet is located
+  coloCity: string!
+  # Cloudflare datacenter that received the packet (nearest IATA airport code)
+  coloCode: string!
+  # Country where the Cloudflare datacenter that received the packet is located (ISO 3166-1 alpha-2)
+  coloCountry: string!
+  # Latitude and longitude where the Cloudflare datacenter that received the packet is located (Geohash encoding)
+  coloGeohash: string!
+  # Cloudflare datacenter that received the packet (unique site identifier)
+  coloName: string!
+  # Date that the packet was received
+  date: Date!
+  # Date and time that the packet was received
+  datetime: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest five minutes
+  datetimeFiveMinutes: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest hour
+  datetimeHour: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest minute
+  datetimeMinute: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest ten seconds
+  datetimeTenSeconds: Time!
+  # ASN associated with the destination IP of the packet, or 0 if there was no mapping available
+  destinationAsn: uint32!
+  # Name of ASN associated with the destination IP of the packet, if available
+  destinationAsnName: string!
+  # Country where the destination IP of the packet is located (ISO 3166-1 alpha-2)
+  destinationCountry: string!
+  # Latitude and longitude where the destination IP of the packet is located (Geohash encoding)
+  destinationGeohash: string!
+  # Value of the Destination Port header field in the TCP or UDP packet
+  destinationPort: uint16!
+  # Direction of the packet relative to the customer network (possible values: inbound, outbound, lateral)
+  direction: string!
+  # Value of the Ethertype header field in the Ethernet packet (2048 for IPv4; 34525 for IPv6)
+  ethertype: uint16!
+  # Value of the Checkusm header field in the GRE packet
+  greChecksum: uint16!
+  # Value of the Ethertype header field in the GRE packet
+  greEthertype: uint16!
+  # Length of the GRE packet header, in bytes
+  greHeaderLength: uint16!
+  # Value of the Key header field in the GRE packet
+  greKey: uint32!
+  # Value of the Sequence Number header field in the GRE packet
+  greSequenceNumber: uint32!
+  # Value of the Version header field in the GRE packet
+  greVersion: uint8!
+  # Value of the Checkusm header field in the ICMP packet
+  icmpChecksum: uint16!
+  # Value of the Code header field in the ICMP packet
+  icmpCode: uint8!
+  # Value of the Type header field in the ICMP packet
+  icmpType: uint8!
+  # Value of the Destination Address header field in the IPv4 or IPv6 packet
+  ipDestinationAddress: string!
+  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  ipDestinationSubnet: string!
+  # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
+  ipFragmentOffset: uint16!
+  # Length of the IPv4 or IPv6 packet header, in bytes
+  ipHeaderLength: uint16!
+  # Value of the More Fragments header field in the IPv4 or IPv6 packet
+  ipMoreFragments: uint8!
+  # Value of the Protocol header field in the IPv4 or IPv6 packet
+  ipProtocol: uint8!
+  # Name of the protocol specified by the Protocol header field in the IPv4 or IPv6 packet
+  ipProtocolName: string!
+  # Value of the Source Address header field in the IPv4 or IPv6 packet
+  ipSourceAddress: string!
+  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  ipSourceSubnet: string!
+  # Total length of the IPv4 or IPv6 packet, in bytes
+  ipTotalLength: uint16!
+  # Total length of the IPv4 or IPv6 packet, in bytes, with the last two digits truncated
+  ipTotalLengthBuckets: uint16!
+  # Value of the TTL header field in the IPv4 packet or the Hop Limit header field in the IPv6 packet
+  ipTtl: uint8!
+  # Value of the TTL header field in the IPv4 packet or the Hop Limit header field in the IPv6 packet, with the last digit truncated
+  ipTtlBuckets: uint8!
+  # Value of the Checksum header field in the IPv4 packet
+  ipv4Checksum: uint16!
+  # Value of the Don't Fragment header field in the IPv4 packet
+  ipv4DontFragment: uint8!
+  # Value of the Differentiated Services Code Point header field in the IPv4 packet
+  ipv4Dscp: uint8!
+  # Value of the Explicit Congestion Notification header field in the IPv4 packet
+  ipv4Ecn: uint8!
+  # Value of the Identification header field in the IPv4 packet
+  ipv4Identification: uint16!
+  # List of Options numbers included in the IPv4 packet header
+  ipv4Options: string!
+  # Value of the Differentiated Services Code Point header field in the IPv6 packet
+  ipv6Dscp: uint8!
+  # Value of the Explicit Congestion Notification header field in the IPv6 packet
+  ipv6Ecn: uint8!
+  # List of Extension Header numbers included in the IPv6 packet header
+  ipv6ExtensionHeaders: string!
+  # Value of the Flow Label header field in the IPv6 packet
+  ipv6FlowLabel: uint32!
+  # Value of the Identification extension header field in the IPv6 packet
+  ipv6Identification: uint32!
+  # Reason for applying a mitigation to the packet, if any
+  mitigationReason: string!
+  # Whether the packet matched a local or global mitigation, if any (possible values: local, global)
+  mitigationScope: string!
+  # The action that was taken on the packet (possible values: pass, drop)
+  outcome: string!
+  # IP prefix tag associated with the packet
+  prefixTag: string!
+  # State of the packet in the context of the protocol, if available
+  protocolState: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # ASN associated with the source IP of the packet, or 0 if there was no mapping available
+  sourceAsn: uint32!
+  # Name of ASN associated with the source IP of the packet, if available
+  sourceAsnName: string!
+  # Country where the source IP of the packet is located (ISO 3166-1 alpha-2)
+  sourceCountry: string!
+  # Latitude and longitude where the source IP of the packet is located (Geohash encoding)
+  sourceGeohash: string!
+  # Value of the Source Port header field in the TCP or UDP packet
+  sourcePort: uint16!
+  # Value of the Acknowledgement Number header field in the TCP packet
+  tcpAcknowledgementNumber: uint32!
+  # Value of the Checkusm header field in the TCP packet
+  tcpChecksum: uint16!
+  # Value of the Data Offset header field in the TCP packet
+  tcpDataOffset: uint16!
+  # Value of the Flags header field in the TCP packet
+  tcpFlags: uint8!
+  # Human-readable string representation of the Flags header field in the TCP packet
+  tcpFlagsString: string!
+  # Value of the MSS option header field in the TCP packet
+  tcpMss: uint16!
+  # List of Options numbers included in the TCP packet header
+  tcpOptions: string!
+  # Value of the SACK Blocks option header field in the TCP packet
+  tcpSackBlocks: string!
+  # Value of the SACK Permitted option header field in the TCP packet
+  tcpSackPermitted: uint8!
+  # Value of the Sequence Number header field in the TCP packet
+  tcpSequenceNumber: uint32!
+  # Value of the Timestamp Echo Reply option header field in the TCP packet
+  tcpTimestampEcr: uint32!
+  # Value of the Timestamp option header field in the TCP packet
+  tcpTimestampValue: uint32!
+  # Value of the Urgent Pointer header field in the TCP packet
+  tcpUrgentPointer: uint16!
+  # Value of the Window Scale option header field in the TCP packet
+  tcpWindowScale: uint16!
+  # Value of the Window Size header field in the TCP packet
+  tcpWindowSize: uint16!
+  # Value of the Checkusm header field in the UDP packet
+  udpChecksum: uint16!
+  # Value of the Payload Length header field in the UDP packet
+  udpPayloadLength: uint16!
+  # The action that Cloudflare thinks should be taken on the packet (possible values: pass, drop)
+  verdict: string!
+}
+
+input AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
+  applicationTag: string
+  applicationTag_geq: string
+  applicationTag_gt: string
+  applicationTag_in: [string!]
+  applicationTag_leq: string
+  applicationTag_like: string
+  applicationTag_lt: string
+  applicationTag_neq: string
+  applicationTag_notin: [string!]
+  applicationTag_notlike: string
+  coloCity: string
+  coloCity_geq: string
+  coloCity_gt: string
+  coloCity_in: [string!]
+  coloCity_leq: string
+  coloCity_like: string
+  coloCity_lt: string
+  coloCity_neq: string
+  coloCity_notin: [string!]
+  coloCity_notlike: string
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
+  coloCountry: string
+  coloCountry_geq: string
+  coloCountry_gt: string
+  coloCountry_in: [string!]
+  coloCountry_leq: string
+  coloCountry_like: string
+  coloCountry_lt: string
+  coloCountry_neq: string
+  coloCountry_notin: [string!]
+  coloCountry_notlike: string
+  coloGeohash: string
+  coloGeohash_geq: string
+  coloGeohash_gt: string
+  coloGeohash_in: [string!]
+  coloGeohash_leq: string
+  coloGeohash_like: string
+  coloGeohash_lt: string
+  coloGeohash_neq: string
+  coloGeohash_notin: [string!]
+  coloGeohash_notlike: string
+  coloName: string
+  coloName_geq: string
+  coloName_gt: string
+  coloName_in: [string!]
+  coloName_leq: string
+  coloName_like: string
+  coloName_lt: string
+  coloName_neq: string
+  coloName_notin: [string!]
+  coloName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeTenSeconds: Time
+  datetimeTenSeconds_geq: Time
+  datetimeTenSeconds_gt: Time
+  datetimeTenSeconds_in: [Time!]
+  datetimeTenSeconds_leq: Time
+  datetimeTenSeconds_lt: Time
+  datetimeTenSeconds_neq: Time
+  datetimeTenSeconds_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationAsn: uint32
+  destinationAsnName: string
+  destinationAsnName_geq: string
+  destinationAsnName_gt: string
+  destinationAsnName_in: [string!]
+  destinationAsnName_leq: string
+  destinationAsnName_like: string
+  destinationAsnName_lt: string
+  destinationAsnName_neq: string
+  destinationAsnName_notin: [string!]
+  destinationAsnName_notlike: string
+  destinationAsn_geq: uint32
+  destinationAsn_gt: uint32
+  destinationAsn_in: [uint32!]
+  destinationAsn_leq: uint32
+  destinationAsn_lt: uint32
+  destinationAsn_neq: uint32
+  destinationAsn_notin: [uint32!]
+  destinationCountry: string
+  destinationCountry_geq: string
+  destinationCountry_gt: string
+  destinationCountry_in: [string!]
+  destinationCountry_leq: string
+  destinationCountry_like: string
+  destinationCountry_lt: string
+  destinationCountry_neq: string
+  destinationCountry_notin: [string!]
+  destinationCountry_notlike: string
+  destinationGeohash: string
+  destinationGeohash_geq: string
+  destinationGeohash_gt: string
+  destinationGeohash_in: [string!]
+  destinationGeohash_leq: string
+  destinationGeohash_like: string
+  destinationGeohash_lt: string
+  destinationGeohash_neq: string
+  destinationGeohash_notin: [string!]
+  destinationGeohash_notlike: string
+  destinationPort: uint16
+  destinationPort_geq: uint16
+  destinationPort_gt: uint16
+  destinationPort_in: [uint16!]
+  destinationPort_leq: uint16
+  destinationPort_lt: uint16
+  destinationPort_neq: uint16
+  destinationPort_notin: [uint16!]
+  direction: string
+  direction_geq: string
+  direction_gt: string
+  direction_in: [string!]
+  direction_leq: string
+  direction_like: string
+  direction_lt: string
+  direction_neq: string
+  direction_notin: [string!]
+  direction_notlike: string
+  ethertype: uint16
+  ethertype_geq: uint16
+  ethertype_gt: uint16
+  ethertype_in: [uint16!]
+  ethertype_leq: uint16
+  ethertype_lt: uint16
+  ethertype_neq: uint16
+  ethertype_notin: [uint16!]
+  greChecksum: uint16
+  greChecksum_geq: uint16
+  greChecksum_gt: uint16
+  greChecksum_in: [uint16!]
+  greChecksum_leq: uint16
+  greChecksum_lt: uint16
+  greChecksum_neq: uint16
+  greChecksum_notin: [uint16!]
+  greEthertype: uint16
+  greEthertype_geq: uint16
+  greEthertype_gt: uint16
+  greEthertype_in: [uint16!]
+  greEthertype_leq: uint16
+  greEthertype_lt: uint16
+  greEthertype_neq: uint16
+  greEthertype_notin: [uint16!]
+  greHeaderLength: uint16
+  greHeaderLength_geq: uint16
+  greHeaderLength_gt: uint16
+  greHeaderLength_in: [uint16!]
+  greHeaderLength_leq: uint16
+  greHeaderLength_lt: uint16
+  greHeaderLength_neq: uint16
+  greHeaderLength_notin: [uint16!]
+  greKey: uint32
+  greKey_geq: uint32
+  greKey_gt: uint32
+  greKey_in: [uint32!]
+  greKey_leq: uint32
+  greKey_lt: uint32
+  greKey_neq: uint32
+  greKey_notin: [uint32!]
+  greSequenceNumber: uint32
+  greSequenceNumber_geq: uint32
+  greSequenceNumber_gt: uint32
+  greSequenceNumber_in: [uint32!]
+  greSequenceNumber_leq: uint32
+  greSequenceNumber_lt: uint32
+  greSequenceNumber_neq: uint32
+  greSequenceNumber_notin: [uint32!]
+  greVersion: uint8
+  greVersion_geq: uint8
+  greVersion_gt: uint8
+  greVersion_in: bytes
+  greVersion_leq: uint8
+  greVersion_lt: uint8
+  greVersion_neq: uint8
+  greVersion_notin: bytes
+  icmpChecksum: uint16
+  icmpChecksum_geq: uint16
+  icmpChecksum_gt: uint16
+  icmpChecksum_in: [uint16!]
+  icmpChecksum_leq: uint16
+  icmpChecksum_lt: uint16
+  icmpChecksum_neq: uint16
+  icmpChecksum_notin: [uint16!]
+  icmpCode: uint8
+  icmpCode_geq: uint8
+  icmpCode_gt: uint8
+  icmpCode_in: bytes
+  icmpCode_leq: uint8
+  icmpCode_lt: uint8
+  icmpCode_neq: uint8
+  icmpCode_notin: bytes
+  icmpType: uint8
+  icmpType_geq: uint8
+  icmpType_gt: uint8
+  icmpType_in: bytes
+  icmpType_leq: uint8
+  icmpType_lt: uint8
+  icmpType_neq: uint8
+  icmpType_notin: bytes
+  ipDestinationAddress: string
+  ipDestinationAddress_geq: string
+  ipDestinationAddress_gt: string
+  ipDestinationAddress_in: [string!]
+  ipDestinationAddress_leq: string
+  ipDestinationAddress_like: string
+  ipDestinationAddress_lt: string
+  ipDestinationAddress_neq: string
+  ipDestinationAddress_notin: [string!]
+  ipDestinationAddress_notlike: string
+  ipDestinationSubnet: string
+  ipDestinationSubnet_geq: string
+  ipDestinationSubnet_gt: string
+  ipDestinationSubnet_in: [string!]
+  ipDestinationSubnet_leq: string
+  ipDestinationSubnet_like: string
+  ipDestinationSubnet_lt: string
+  ipDestinationSubnet_neq: string
+  ipDestinationSubnet_notin: [string!]
+  ipDestinationSubnet_notlike: string
+  ipFragmentOffset: uint16
+  ipFragmentOffset_geq: uint16
+  ipFragmentOffset_gt: uint16
+  ipFragmentOffset_in: [uint16!]
+  ipFragmentOffset_leq: uint16
+  ipFragmentOffset_lt: uint16
+  ipFragmentOffset_neq: uint16
+  ipFragmentOffset_notin: [uint16!]
+  ipHeaderLength: uint16
+  ipHeaderLength_geq: uint16
+  ipHeaderLength_gt: uint16
+  ipHeaderLength_in: [uint16!]
+  ipHeaderLength_leq: uint16
+  ipHeaderLength_lt: uint16
+  ipHeaderLength_neq: uint16
+  ipHeaderLength_notin: [uint16!]
+  ipMoreFragments: uint8
+  ipMoreFragments_geq: uint8
+  ipMoreFragments_gt: uint8
+  ipMoreFragments_in: bytes
+  ipMoreFragments_leq: uint8
+  ipMoreFragments_lt: uint8
+  ipMoreFragments_neq: uint8
+  ipMoreFragments_notin: bytes
+  ipProtocol: uint8
+  ipProtocolName: string
+  ipProtocolName_geq: string
+  ipProtocolName_gt: string
+  ipProtocolName_in: [string!]
+  ipProtocolName_leq: string
+  ipProtocolName_like: string
+  ipProtocolName_lt: string
+  ipProtocolName_neq: string
+  ipProtocolName_notin: [string!]
+  ipProtocolName_notlike: string
+  ipProtocol_geq: uint8
+  ipProtocol_gt: uint8
+  ipProtocol_in: bytes
+  ipProtocol_leq: uint8
+  ipProtocol_lt: uint8
+  ipProtocol_neq: uint8
+  ipProtocol_notin: bytes
+  ipSourceAddress: string
+  ipSourceAddress_geq: string
+  ipSourceAddress_gt: string
+  ipSourceAddress_in: [string!]
+  ipSourceAddress_leq: string
+  ipSourceAddress_like: string
+  ipSourceAddress_lt: string
+  ipSourceAddress_neq: string
+  ipSourceAddress_notin: [string!]
+  ipSourceAddress_notlike: string
+  ipSourceSubnet: string
+  ipSourceSubnet_geq: string
+  ipSourceSubnet_gt: string
+  ipSourceSubnet_in: [string!]
+  ipSourceSubnet_leq: string
+  ipSourceSubnet_like: string
+  ipSourceSubnet_lt: string
+  ipSourceSubnet_neq: string
+  ipSourceSubnet_notin: [string!]
+  ipSourceSubnet_notlike: string
+  ipTotalLength: uint16
+  ipTotalLengthBuckets: uint16
+  ipTotalLengthBuckets_geq: uint16
+  ipTotalLengthBuckets_gt: uint16
+  ipTotalLengthBuckets_in: [uint16!]
+  ipTotalLengthBuckets_leq: uint16
+  ipTotalLengthBuckets_lt: uint16
+  ipTotalLengthBuckets_neq: uint16
+  ipTotalLengthBuckets_notin: [uint16!]
+  ipTotalLength_geq: uint16
+  ipTotalLength_gt: uint16
+  ipTotalLength_in: [uint16!]
+  ipTotalLength_leq: uint16
+  ipTotalLength_lt: uint16
+  ipTotalLength_neq: uint16
+  ipTotalLength_notin: [uint16!]
+  ipTtl: uint8
+  ipTtlBuckets: uint8
+  ipTtlBuckets_geq: uint8
+  ipTtlBuckets_gt: uint8
+  ipTtlBuckets_in: bytes
+  ipTtlBuckets_leq: uint8
+  ipTtlBuckets_lt: uint8
+  ipTtlBuckets_neq: uint8
+  ipTtlBuckets_notin: bytes
+  ipTtl_geq: uint8
+  ipTtl_gt: uint8
+  ipTtl_in: bytes
+  ipTtl_leq: uint8
+  ipTtl_lt: uint8
+  ipTtl_neq: uint8
+  ipTtl_notin: bytes
+  ipv4Checksum: uint16
+  ipv4Checksum_geq: uint16
+  ipv4Checksum_gt: uint16
+  ipv4Checksum_in: [uint16!]
+  ipv4Checksum_leq: uint16
+  ipv4Checksum_lt: uint16
+  ipv4Checksum_neq: uint16
+  ipv4Checksum_notin: [uint16!]
+  ipv4DontFragment: uint8
+  ipv4DontFragment_geq: uint8
+  ipv4DontFragment_gt: uint8
+  ipv4DontFragment_in: bytes
+  ipv4DontFragment_leq: uint8
+  ipv4DontFragment_lt: uint8
+  ipv4DontFragment_neq: uint8
+  ipv4DontFragment_notin: bytes
+  ipv4Dscp: uint8
+  ipv4Dscp_geq: uint8
+  ipv4Dscp_gt: uint8
+  ipv4Dscp_in: bytes
+  ipv4Dscp_leq: uint8
+  ipv4Dscp_lt: uint8
+  ipv4Dscp_neq: uint8
+  ipv4Dscp_notin: bytes
+  ipv4Ecn: uint8
+  ipv4Ecn_geq: uint8
+  ipv4Ecn_gt: uint8
+  ipv4Ecn_in: bytes
+  ipv4Ecn_leq: uint8
+  ipv4Ecn_lt: uint8
+  ipv4Ecn_neq: uint8
+  ipv4Ecn_notin: bytes
+  ipv4Identification: uint16
+  ipv4Identification_geq: uint16
+  ipv4Identification_gt: uint16
+  ipv4Identification_in: [uint16!]
+  ipv4Identification_leq: uint16
+  ipv4Identification_lt: uint16
+  ipv4Identification_neq: uint16
+  ipv4Identification_notin: [uint16!]
+  ipv4Options: string
+  ipv4Options_geq: string
+  ipv4Options_gt: string
+  ipv4Options_in: [string!]
+  ipv4Options_leq: string
+  ipv4Options_like: string
+  ipv4Options_lt: string
+  ipv4Options_neq: string
+  ipv4Options_notin: [string!]
+  ipv4Options_notlike: string
+  ipv6Dscp: uint8
+  ipv6Dscp_geq: uint8
+  ipv6Dscp_gt: uint8
+  ipv6Dscp_in: bytes
+  ipv6Dscp_leq: uint8
+  ipv6Dscp_lt: uint8
+  ipv6Dscp_neq: uint8
+  ipv6Dscp_notin: bytes
+  ipv6Ecn: uint8
+  ipv6Ecn_geq: uint8
+  ipv6Ecn_gt: uint8
+  ipv6Ecn_in: bytes
+  ipv6Ecn_leq: uint8
+  ipv6Ecn_lt: uint8
+  ipv6Ecn_neq: uint8
+  ipv6Ecn_notin: bytes
+  ipv6ExtensionHeaders: string
+  ipv6ExtensionHeaders_geq: string
+  ipv6ExtensionHeaders_gt: string
+  ipv6ExtensionHeaders_in: [string!]
+  ipv6ExtensionHeaders_leq: string
+  ipv6ExtensionHeaders_like: string
+  ipv6ExtensionHeaders_lt: string
+  ipv6ExtensionHeaders_neq: string
+  ipv6ExtensionHeaders_notin: [string!]
+  ipv6ExtensionHeaders_notlike: string
+  ipv6FlowLabel: uint32
+  ipv6FlowLabel_geq: uint32
+  ipv6FlowLabel_gt: uint32
+  ipv6FlowLabel_in: [uint32!]
+  ipv6FlowLabel_leq: uint32
+  ipv6FlowLabel_lt: uint32
+  ipv6FlowLabel_neq: uint32
+  ipv6FlowLabel_notin: [uint32!]
+  ipv6Identification: uint32
+  ipv6Identification_geq: uint32
+  ipv6Identification_gt: uint32
+  ipv6Identification_in: [uint32!]
+  ipv6Identification_leq: uint32
+  ipv6Identification_lt: uint32
+  ipv6Identification_neq: uint32
+  ipv6Identification_notin: [uint32!]
+  mitigationReason: string
+  mitigationReason_geq: string
+  mitigationReason_gt: string
+  mitigationReason_in: [string!]
+  mitigationReason_leq: string
+  mitigationReason_like: string
+  mitigationReason_lt: string
+  mitigationReason_neq: string
+  mitigationReason_notin: [string!]
+  mitigationReason_notlike: string
+  mitigationScope: string
+  mitigationScope_geq: string
+  mitigationScope_gt: string
+  mitigationScope_in: [string!]
+  mitigationScope_leq: string
+  mitigationScope_like: string
+  mitigationScope_lt: string
+  mitigationScope_neq: string
+  mitigationScope_notin: [string!]
+  mitigationScope_notlike: string
+  outcome: string
+  outcome_geq: string
+  outcome_gt: string
+  outcome_in: [string!]
+  outcome_leq: string
+  outcome_like: string
+  outcome_lt: string
+  outcome_neq: string
+  outcome_notin: [string!]
+  outcome_notlike: string
+  prefixTag: string
+  prefixTag_geq: string
+  prefixTag_gt: string
+  prefixTag_in: [string!]
+  prefixTag_leq: string
+  prefixTag_like: string
+  prefixTag_lt: string
+  prefixTag_neq: string
+  prefixTag_notin: [string!]
+  prefixTag_notlike: string
+  protocolState: string
+  protocolState_geq: string
+  protocolState_gt: string
+  protocolState_in: [string!]
+  protocolState_leq: string
+  protocolState_like: string
+  protocolState_lt: string
+  protocolState_neq: string
+  protocolState_notin: [string!]
+  protocolState_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  sourceAsn: uint32
+  sourceAsnName: string
+  sourceAsnName_geq: string
+  sourceAsnName_gt: string
+  sourceAsnName_in: [string!]
+  sourceAsnName_leq: string
+  sourceAsnName_like: string
+  sourceAsnName_lt: string
+  sourceAsnName_neq: string
+  sourceAsnName_notin: [string!]
+  sourceAsnName_notlike: string
+  sourceAsn_geq: uint32
+  sourceAsn_gt: uint32
+  sourceAsn_in: [uint32!]
+  sourceAsn_leq: uint32
+  sourceAsn_lt: uint32
+  sourceAsn_neq: uint32
+  sourceAsn_notin: [uint32!]
+  sourceCountry: string
+  sourceCountry_geq: string
+  sourceCountry_gt: string
+  sourceCountry_in: [string!]
+  sourceCountry_leq: string
+  sourceCountry_like: string
+  sourceCountry_lt: string
+  sourceCountry_neq: string
+  sourceCountry_notin: [string!]
+  sourceCountry_notlike: string
+  sourceGeohash: string
+  sourceGeohash_geq: string
+  sourceGeohash_gt: string
+  sourceGeohash_in: [string!]
+  sourceGeohash_leq: string
+  sourceGeohash_like: string
+  sourceGeohash_lt: string
+  sourceGeohash_neq: string
+  sourceGeohash_notin: [string!]
+  sourceGeohash_notlike: string
+  sourcePort: uint16
+  sourcePort_geq: uint16
+  sourcePort_gt: uint16
+  sourcePort_in: [uint16!]
+  sourcePort_leq: uint16
+  sourcePort_lt: uint16
+  sourcePort_neq: uint16
+  sourcePort_notin: [uint16!]
+  tcpAcknowledgementNumber: uint32
+  tcpAcknowledgementNumber_geq: uint32
+  tcpAcknowledgementNumber_gt: uint32
+  tcpAcknowledgementNumber_in: [uint32!]
+  tcpAcknowledgementNumber_leq: uint32
+  tcpAcknowledgementNumber_lt: uint32
+  tcpAcknowledgementNumber_neq: uint32
+  tcpAcknowledgementNumber_notin: [uint32!]
+  tcpChecksum: uint16
+  tcpChecksum_geq: uint16
+  tcpChecksum_gt: uint16
+  tcpChecksum_in: [uint16!]
+  tcpChecksum_leq: uint16
+  tcpChecksum_lt: uint16
+  tcpChecksum_neq: uint16
+  tcpChecksum_notin: [uint16!]
+  tcpDataOffset: uint16
+  tcpDataOffset_geq: uint16
+  tcpDataOffset_gt: uint16
+  tcpDataOffset_in: [uint16!]
+  tcpDataOffset_leq: uint16
+  tcpDataOffset_lt: uint16
+  tcpDataOffset_neq: uint16
+  tcpDataOffset_notin: [uint16!]
+  tcpFlags: uint8
+  tcpFlagsString: string
+  tcpFlagsString_geq: string
+  tcpFlagsString_gt: string
+  tcpFlagsString_in: [string!]
+  tcpFlagsString_leq: string
+  tcpFlagsString_like: string
+  tcpFlagsString_lt: string
+  tcpFlagsString_neq: string
+  tcpFlagsString_notin: [string!]
+  tcpFlagsString_notlike: string
+  tcpFlags_geq: uint8
+  tcpFlags_gt: uint8
+  tcpFlags_in: bytes
+  tcpFlags_leq: uint8
+  tcpFlags_lt: uint8
+  tcpFlags_neq: uint8
+  tcpFlags_notin: bytes
+  tcpMss: uint16
+  tcpMss_geq: uint16
+  tcpMss_gt: uint16
+  tcpMss_in: [uint16!]
+  tcpMss_leq: uint16
+  tcpMss_lt: uint16
+  tcpMss_neq: uint16
+  tcpMss_notin: [uint16!]
+  tcpOptions: string
+  tcpOptions_geq: string
+  tcpOptions_gt: string
+  tcpOptions_in: [string!]
+  tcpOptions_leq: string
+  tcpOptions_like: string
+  tcpOptions_lt: string
+  tcpOptions_neq: string
+  tcpOptions_notin: [string!]
+  tcpOptions_notlike: string
+  tcpSackBlocks: string
+  tcpSackBlocks_geq: string
+  tcpSackBlocks_gt: string
+  tcpSackBlocks_in: [string!]
+  tcpSackBlocks_leq: string
+  tcpSackBlocks_like: string
+  tcpSackBlocks_lt: string
+  tcpSackBlocks_neq: string
+  tcpSackBlocks_notin: [string!]
+  tcpSackBlocks_notlike: string
+  tcpSackPermitted: uint8
+  tcpSackPermitted_geq: uint8
+  tcpSackPermitted_gt: uint8
+  tcpSackPermitted_in: bytes
+  tcpSackPermitted_leq: uint8
+  tcpSackPermitted_lt: uint8
+  tcpSackPermitted_neq: uint8
+  tcpSackPermitted_notin: bytes
+  tcpSequenceNumber: uint32
+  tcpSequenceNumber_geq: uint32
+  tcpSequenceNumber_gt: uint32
+  tcpSequenceNumber_in: [uint32!]
+  tcpSequenceNumber_leq: uint32
+  tcpSequenceNumber_lt: uint32
+  tcpSequenceNumber_neq: uint32
+  tcpSequenceNumber_notin: [uint32!]
+  tcpTimestampEcr: uint32
+  tcpTimestampEcr_geq: uint32
+  tcpTimestampEcr_gt: uint32
+  tcpTimestampEcr_in: [uint32!]
+  tcpTimestampEcr_leq: uint32
+  tcpTimestampEcr_lt: uint32
+  tcpTimestampEcr_neq: uint32
+  tcpTimestampEcr_notin: [uint32!]
+  tcpTimestampValue: uint32
+  tcpTimestampValue_geq: uint32
+  tcpTimestampValue_gt: uint32
+  tcpTimestampValue_in: [uint32!]
+  tcpTimestampValue_leq: uint32
+  tcpTimestampValue_lt: uint32
+  tcpTimestampValue_neq: uint32
+  tcpTimestampValue_notin: [uint32!]
+  tcpUrgentPointer: uint16
+  tcpUrgentPointer_geq: uint16
+  tcpUrgentPointer_gt: uint16
+  tcpUrgentPointer_in: [uint16!]
+  tcpUrgentPointer_leq: uint16
+  tcpUrgentPointer_lt: uint16
+  tcpUrgentPointer_neq: uint16
+  tcpUrgentPointer_notin: [uint16!]
+  tcpWindowScale: uint16
+  tcpWindowScale_geq: uint16
+  tcpWindowScale_gt: uint16
+  tcpWindowScale_in: [uint16!]
+  tcpWindowScale_leq: uint16
+  tcpWindowScale_lt: uint16
+  tcpWindowScale_neq: uint16
+  tcpWindowScale_notin: [uint16!]
+  tcpWindowSize: uint16
+  tcpWindowSize_geq: uint16
+  tcpWindowSize_gt: uint16
+  tcpWindowSize_in: [uint16!]
+  tcpWindowSize_leq: uint16
+  tcpWindowSize_lt: uint16
+  tcpWindowSize_neq: uint16
+  tcpWindowSize_notin: [uint16!]
+  udpChecksum: uint16
+  udpChecksum_geq: uint16
+  udpChecksum_gt: uint16
+  udpChecksum_in: [uint16!]
+  udpChecksum_leq: uint16
+  udpChecksum_lt: uint16
+  udpChecksum_neq: uint16
+  udpChecksum_notin: [uint16!]
+  udpPayloadLength: uint16
+  udpPayloadLength_geq: uint16
+  udpPayloadLength_gt: uint16
+  udpPayloadLength_in: [uint16!]
+  udpPayloadLength_leq: uint16
+  udpPayloadLength_lt: uint16
+  udpPayloadLength_neq: uint16
+  udpPayloadLength_notin: [uint16!]
+  verdict: string
+  verdict_geq: string
+  verdict_gt: string
+  verdict_in: [string!]
+  verdict_leq: string
+  verdict_like: string
+  verdict_lt: string
+  verdict_neq: string
+  verdict_notin: [string!]
+  verdict_notlike: string
+}
+
+enum AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # applicationTag ascending
+  applicationTag_ASC
+  # applicationTag descending
+  applicationTag_DESC
+  # avg(bitRateDay) ascending
+  avg_bitRateDay_ASC
+  # avg(bitRateDay) descending
+  avg_bitRateDay_DESC
+  # avg(bitRateFifteenMinutes) ascending
+  avg_bitRateFifteenMinutes_ASC
+  # avg(bitRateFifteenMinutes) descending
+  avg_bitRateFifteenMinutes_DESC
+  # avg(bitRateFiveMinutes) ascending
+  avg_bitRateFiveMinutes_ASC
+  # avg(bitRateFiveMinutes) descending
+  avg_bitRateFiveMinutes_DESC
+  # avg(bitRateHour) ascending
+  avg_bitRateHour_ASC
+  # avg(bitRateHour) descending
+  avg_bitRateHour_DESC
+  # avg(bitRateMinute) ascending
+  avg_bitRateMinute_ASC
+  # avg(bitRateMinute) descending
+  avg_bitRateMinute_DESC
+  # avg(bitRateTenSeconds) ascending
+  avg_bitRateTenSeconds_ASC
+  # avg(bitRateTenSeconds) descending
+  avg_bitRateTenSeconds_DESC
+  # avg(bitRate) ascending
+  avg_bitRate_ASC
+  # avg(bitRate) descending
+  avg_bitRate_DESC
+  # avg(packetRateDay) ascending
+  avg_packetRateDay_ASC
+  # avg(packetRateDay) descending
+  avg_packetRateDay_DESC
+  # avg(packetRateFifteenMinutes) ascending
+  avg_packetRateFifteenMinutes_ASC
+  # avg(packetRateFifteenMinutes) descending
+  avg_packetRateFifteenMinutes_DESC
+  # avg(packetRateFiveMinutes) ascending
+  avg_packetRateFiveMinutes_ASC
+  # avg(packetRateFiveMinutes) descending
+  avg_packetRateFiveMinutes_DESC
+  # avg(packetRateHour) ascending
+  avg_packetRateHour_ASC
+  # avg(packetRateHour) descending
+  avg_packetRateHour_DESC
+  # avg(packetRateMinute) ascending
+  avg_packetRateMinute_ASC
+  # avg(packetRateMinute) descending
+  avg_packetRateMinute_DESC
+  # avg(packetRateTenSeconds) ascending
+  avg_packetRateTenSeconds_ASC
+  # avg(packetRateTenSeconds) descending
+  avg_packetRateTenSeconds_DESC
+  # avg(packetRate) ascending
+  avg_packetRate_ASC
+  # avg(packetRate) descending
+  avg_packetRate_DESC
+  # coloCity ascending
+  coloCity_ASC
+  # coloCity descending
+  coloCity_DESC
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
+  # coloCountry ascending
+  coloCountry_ASC
+  # coloCountry descending
+  coloCountry_DESC
+  # coloGeohash ascending
+  coloGeohash_ASC
+  # coloGeohash descending
+  coloGeohash_DESC
+  # coloName ascending
+  coloName_ASC
+  # coloName descending
+  coloName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeTenSeconds ascending
+  datetimeTenSeconds_ASC
+  # datetimeTenSeconds descending
+  datetimeTenSeconds_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationAsnName ascending
+  destinationAsnName_ASC
+  # destinationAsnName descending
+  destinationAsnName_DESC
+  # destinationAsn ascending
+  destinationAsn_ASC
+  # destinationAsn descending
+  destinationAsn_DESC
+  # destinationCountry ascending
+  destinationCountry_ASC
+  # destinationCountry descending
+  destinationCountry_DESC
+  # destinationGeohash ascending
+  destinationGeohash_ASC
+  # destinationGeohash descending
+  destinationGeohash_DESC
+  # destinationPort ascending
+  destinationPort_ASC
+  # destinationPort descending
+  destinationPort_DESC
+  # direction ascending
+  direction_ASC
+  # direction descending
+  direction_DESC
+  # ethertype ascending
+  ethertype_ASC
+  # ethertype descending
+  ethertype_DESC
+  # greChecksum ascending
+  greChecksum_ASC
+  # greChecksum descending
+  greChecksum_DESC
+  # greEthertype ascending
+  greEthertype_ASC
+  # greEthertype descending
+  greEthertype_DESC
+  # greHeaderLength ascending
+  greHeaderLength_ASC
+  # greHeaderLength descending
+  greHeaderLength_DESC
+  # greKey ascending
+  greKey_ASC
+  # greKey descending
+  greKey_DESC
+  # greSequenceNumber ascending
+  greSequenceNumber_ASC
+  # greSequenceNumber descending
+  greSequenceNumber_DESC
+  # greVersion ascending
+  greVersion_ASC
+  # greVersion descending
+  greVersion_DESC
+  # icmpChecksum ascending
+  icmpChecksum_ASC
+  # icmpChecksum descending
+  icmpChecksum_DESC
+  # icmpCode ascending
+  icmpCode_ASC
+  # icmpCode descending
+  icmpCode_DESC
+  # icmpType ascending
+  icmpType_ASC
+  # icmpType descending
+  icmpType_DESC
+  # ipDestinationAddress ascending
+  ipDestinationAddress_ASC
+  # ipDestinationAddress descending
+  ipDestinationAddress_DESC
+  # ipDestinationSubnet ascending
+  ipDestinationSubnet_ASC
+  # ipDestinationSubnet descending
+  ipDestinationSubnet_DESC
+  # ipFragmentOffset ascending
+  ipFragmentOffset_ASC
+  # ipFragmentOffset descending
+  ipFragmentOffset_DESC
+  # ipHeaderLength ascending
+  ipHeaderLength_ASC
+  # ipHeaderLength descending
+  ipHeaderLength_DESC
+  # ipMoreFragments ascending
+  ipMoreFragments_ASC
+  # ipMoreFragments descending
+  ipMoreFragments_DESC
+  # ipProtocolName ascending
+  ipProtocolName_ASC
+  # ipProtocolName descending
+  ipProtocolName_DESC
+  # ipProtocol ascending
+  ipProtocol_ASC
+  # ipProtocol descending
+  ipProtocol_DESC
+  # ipSourceAddress ascending
+  ipSourceAddress_ASC
+  # ipSourceAddress descending
+  ipSourceAddress_DESC
+  # ipSourceSubnet ascending
+  ipSourceSubnet_ASC
+  # ipSourceSubnet descending
+  ipSourceSubnet_DESC
+  # ipTotalLengthBuckets ascending
+  ipTotalLengthBuckets_ASC
+  # ipTotalLengthBuckets descending
+  ipTotalLengthBuckets_DESC
+  # ipTotalLength ascending
+  ipTotalLength_ASC
+  # ipTotalLength descending
+  ipTotalLength_DESC
+  # ipTtlBuckets ascending
+  ipTtlBuckets_ASC
+  # ipTtlBuckets descending
+  ipTtlBuckets_DESC
+  # ipTtl ascending
+  ipTtl_ASC
+  # ipTtl descending
+  ipTtl_DESC
+  # ipv4Checksum ascending
+  ipv4Checksum_ASC
+  # ipv4Checksum descending
+  ipv4Checksum_DESC
+  # ipv4DontFragment ascending
+  ipv4DontFragment_ASC
+  # ipv4DontFragment descending
+  ipv4DontFragment_DESC
+  # ipv4Dscp ascending
+  ipv4Dscp_ASC
+  # ipv4Dscp descending
+  ipv4Dscp_DESC
+  # ipv4Ecn ascending
+  ipv4Ecn_ASC
+  # ipv4Ecn descending
+  ipv4Ecn_DESC
+  # ipv4Identification ascending
+  ipv4Identification_ASC
+  # ipv4Identification descending
+  ipv4Identification_DESC
+  # ipv4Options ascending
+  ipv4Options_ASC
+  # ipv4Options descending
+  ipv4Options_DESC
+  # ipv6Dscp ascending
+  ipv6Dscp_ASC
+  # ipv6Dscp descending
+  ipv6Dscp_DESC
+  # ipv6Ecn ascending
+  ipv6Ecn_ASC
+  # ipv6Ecn descending
+  ipv6Ecn_DESC
+  # ipv6ExtensionHeaders ascending
+  ipv6ExtensionHeaders_ASC
+  # ipv6ExtensionHeaders descending
+  ipv6ExtensionHeaders_DESC
+  # ipv6FlowLabel ascending
+  ipv6FlowLabel_ASC
+  # ipv6FlowLabel descending
+  ipv6FlowLabel_DESC
+  # ipv6Identification ascending
+  ipv6Identification_ASC
+  # ipv6Identification descending
+  ipv6Identification_DESC
+  # mitigationReason ascending
+  mitigationReason_ASC
+  # mitigationReason descending
+  mitigationReason_DESC
+  # mitigationScope ascending
+  mitigationScope_ASC
+  # mitigationScope descending
+  mitigationScope_DESC
+  # outcome ascending
+  outcome_ASC
+  # outcome descending
+  outcome_DESC
+  # prefixTag ascending
+  prefixTag_ASC
+  # prefixTag descending
+  prefixTag_DESC
+  # protocolState ascending
+  protocolState_ASC
+  # protocolState descending
+  protocolState_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # sourceAsnName ascending
+  sourceAsnName_ASC
+  # sourceAsnName descending
+  sourceAsnName_DESC
+  # sourceAsn ascending
+  sourceAsn_ASC
+  # sourceAsn descending
+  sourceAsn_DESC
+  # sourceCountry ascending
+  sourceCountry_ASC
+  # sourceCountry descending
+  sourceCountry_DESC
+  # sourceGeohash ascending
+  sourceGeohash_ASC
+  # sourceGeohash descending
+  sourceGeohash_DESC
+  # sourcePort ascending
+  sourcePort_ASC
+  # sourcePort descending
+  sourcePort_DESC
+  # sum(bits) ascending
+  sum_bits_ASC
+  # sum(bits) descending
+  sum_bits_DESC
+  # sum(packets) ascending
+  sum_packets_ASC
+  # sum(packets) descending
+  sum_packets_DESC
+  # system ascending
+  system_ASC
+  # system descending
+  system_DESC
+  # tcpAcknowledgementNumber ascending
+  tcpAcknowledgementNumber_ASC
+  # tcpAcknowledgementNumber descending
+  tcpAcknowledgementNumber_DESC
+  # tcpChecksum ascending
+  tcpChecksum_ASC
+  # tcpChecksum descending
+  tcpChecksum_DESC
+  # tcpDataOffset ascending
+  tcpDataOffset_ASC
+  # tcpDataOffset descending
+  tcpDataOffset_DESC
+  # tcpFlagsString ascending
+  tcpFlagsString_ASC
+  # tcpFlagsString descending
+  tcpFlagsString_DESC
+  # tcpFlags ascending
+  tcpFlags_ASC
+  # tcpFlags descending
+  tcpFlags_DESC
+  # tcpMss ascending
+  tcpMss_ASC
+  # tcpMss descending
+  tcpMss_DESC
+  # tcpOptions ascending
+  tcpOptions_ASC
+  # tcpOptions descending
+  tcpOptions_DESC
+  # tcpSackBlocks ascending
+  tcpSackBlocks_ASC
+  # tcpSackBlocks descending
+  tcpSackBlocks_DESC
+  # tcpSackPermitted ascending
+  tcpSackPermitted_ASC
+  # tcpSackPermitted descending
+  tcpSackPermitted_DESC
+  # tcpSequenceNumber ascending
+  tcpSequenceNumber_ASC
+  # tcpSequenceNumber descending
+  tcpSequenceNumber_DESC
+  # tcpTimestampEcr ascending
+  tcpTimestampEcr_ASC
+  # tcpTimestampEcr descending
+  tcpTimestampEcr_DESC
+  # tcpTimestampValue ascending
+  tcpTimestampValue_ASC
+  # tcpTimestampValue descending
+  tcpTimestampValue_DESC
+  # tcpUrgentPointer ascending
+  tcpUrgentPointer_ASC
+  # tcpUrgentPointer descending
+  tcpUrgentPointer_DESC
+  # tcpWindowScale ascending
+  tcpWindowScale_ASC
+  # tcpWindowScale descending
+  tcpWindowScale_DESC
+  # tcpWindowSize ascending
+  tcpWindowSize_ASC
+  # tcpWindowSize descending
+  tcpWindowSize_DESC
+  # udpChecksum ascending
+  udpChecksum_ASC
+  # udpChecksum descending
+  udpChecksum_DESC
+  # udpPayloadLength ascending
+  udpPayloadLength_ASC
+  # udpPayloadLength descending
+  udpPayloadLength_DESC
+  # verdict ascending
+  verdict_ASC
+  # verdict descending
+  verdict_DESC
+}
+
+type AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsSum {
+  # Sum of bits received
+  bits: uint64!
+  # Sum of packets received
+  packets: uint64!
+}
+
 # AI Gateway Cache
 type AccountAiGatewayCacheAdaptiveGroups {
-  # Counts cache hits and misses as well - number of requests for an account with caching enabled
+  # Total number of requests for an account with caching enabled: including hits and misses
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountAiGatewayCacheAdaptiveGroupsDimensions
 }
 
 type AccountAiGatewayCacheAdaptiveGroupsDimensions {
+  # Cache Hit or Miss: 1 = cache hit, 0 = cache miss
+  cacheOp: uint8!
   # The date when trigger was triggerd
   date: Date!
   # The date and time truncated to fifteen minutes
@@ -633,15 +3280,29 @@ type AccountAiGatewayCacheAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time truncated to the minute
   datetimeMinute: Time!
-  # Provider Error
-  hit: uint8!
+  # Gateway name
+  gateway: string!
+  # Which model was the request sent to
+  model: string!
   # Which provider was the request sent to
   provider: string!
+  # Number of tokens in the request
+  tokensIn: uint64!
+  # Number of tokens in the response
+  tokensOut: uint64!
 }
 
 input AccountAiGatewayCacheAdaptiveGroupsFilter_InputObject {
   AND: [AccountAiGatewayCacheAdaptiveGroupsFilter_InputObject!]
   OR: [AccountAiGatewayCacheAdaptiveGroupsFilter_InputObject!]
+  cacheOp: uint8
+  cacheOp_geq: uint8
+  cacheOp_gt: uint8
+  cacheOp_in: bytes
+  cacheOp_leq: uint8
+  cacheOp_lt: uint8
+  cacheOp_neq: uint8
+  cacheOp_notin: bytes
   date: Date
   date_geq: Date
   date_gt: Date
@@ -682,14 +3343,26 @@ input AccountAiGatewayCacheAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
-  hit: uint8
-  hit_geq: uint8
-  hit_gt: uint8
-  hit_in: bytes
-  hit_leq: uint8
-  hit_lt: uint8
-  hit_neq: uint8
-  hit_notin: bytes
+  gateway: string
+  gateway_geq: string
+  gateway_gt: string
+  gateway_in: [string!]
+  gateway_leq: string
+  gateway_like: string
+  gateway_lt: string
+  gateway_neq: string
+  gateway_notin: [string!]
+  gateway_notlike: string
+  model: string
+  model_geq: string
+  model_gt: string
+  model_in: [string!]
+  model_leq: string
+  model_like: string
+  model_lt: string
+  model_neq: string
+  model_notin: [string!]
+  model_notlike: string
   provider: string
   provider_geq: string
   provider_gt: string
@@ -700,9 +3373,29 @@ input AccountAiGatewayCacheAdaptiveGroupsFilter_InputObject {
   provider_neq: string
   provider_notin: [string!]
   provider_notlike: string
+  tokensIn: uint64
+  tokensIn_geq: uint64
+  tokensIn_gt: uint64
+  tokensIn_in: [uint64!]
+  tokensIn_leq: uint64
+  tokensIn_lt: uint64
+  tokensIn_neq: uint64
+  tokensIn_notin: [uint64!]
+  tokensOut: uint64
+  tokensOut_geq: uint64
+  tokensOut_gt: uint64
+  tokensOut_in: [uint64!]
+  tokensOut_leq: uint64
+  tokensOut_lt: uint64
+  tokensOut_neq: uint64
+  tokensOut_notin: [uint64!]
 }
 
 enum AccountAiGatewayCacheAdaptiveGroupsOrderBy {
+  # cacheOp ascending
+  cacheOp_ASC
+  # cacheOp descending
+  cacheOp_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -727,14 +3420,26 @@ enum AccountAiGatewayCacheAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
-  # hit ascending
-  hit_ASC
-  # hit descending
-  hit_DESC
+  # gateway ascending
+  gateway_ASC
+  # gateway descending
+  gateway_DESC
+  # model ascending
+  model_ASC
+  # model descending
+  model_DESC
   # provider ascending
   provider_ASC
   # provider descending
   provider_DESC
+  # tokensIn ascending
+  tokensIn_ASC
+  # tokensIn descending
+  tokensIn_DESC
+  # tokensOut ascending
+  tokensOut_ASC
+  # tokensOut descending
+  tokensOut_DESC
 }
 
 # AI Gateway Errors
@@ -756,8 +3461,8 @@ type AccountAiGatewayErrorsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time truncated to the minute
   datetimeMinute: Time!
-  # Provider Error
-  error: string!
+  # Gateway name
+  gateway: string!
   # Which models was the request sent to
   model: string!
   # Which provider was the request sent to
@@ -807,16 +3512,16 @@ input AccountAiGatewayErrorsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
-  error: string
-  error_geq: string
-  error_gt: string
-  error_in: [string!]
-  error_leq: string
-  error_like: string
-  error_lt: string
-  error_neq: string
-  error_notin: [string!]
-  error_notlike: string
+  gateway: string
+  gateway_geq: string
+  gateway_gt: string
+  gateway_in: [string!]
+  gateway_leq: string
+  gateway_like: string
+  gateway_lt: string
+  gateway_neq: string
+  gateway_notin: [string!]
+  gateway_notlike: string
   model: string
   model_geq: string
   model_gt: string
@@ -864,10 +3569,10 @@ enum AccountAiGatewayErrorsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
-  # error ascending
-  error_ASC
-  # error descending
-  error_DESC
+  # gateway ascending
+  gateway_ASC
+  # gateway descending
+  gateway_DESC
   # model ascending
   model_ASC
   # model descending
@@ -887,7 +3592,9 @@ type AccountAiGatewayRequestsAdaptiveGroups {
 }
 
 type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
-  # The date when trigger was triggerd
+  # Was the response served from cache?: 1 = cache hit, 0 = cache misss
+  cached: uint8!
+  # The date when trigger was triggered
   date: Date!
   # The date and time truncated to fifteen minutes
   datetimeFifteenMinutes: Time!
@@ -897,17 +3604,31 @@ type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time truncated to the minute
   datetimeMinute: Time!
-  # Provider Endpoint
-  endpoint: string!
+  # Gateway name
+  gateway: string!
   # Which models was the request sent to
   model: string!
   # Which provider was the request sent to
   provider: string!
+  # Was the request rate limited?: 1 = rate limit applied, 0 = rate limit not applied
+  rateLimited: uint8!
+  # Number of tokens in the request
+  tokensIn: uint64!
+  # Number of tokens in the response
+  tokensOut: uint64!
 }
 
 input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   AND: [AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject!]
+  cached: uint8
+  cached_geq: uint8
+  cached_gt: uint8
+  cached_in: bytes
+  cached_leq: uint8
+  cached_lt: uint8
+  cached_neq: uint8
+  cached_notin: bytes
   date: Date
   date_geq: Date
   date_gt: Date
@@ -948,16 +3669,16 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
-  endpoint: string
-  endpoint_geq: string
-  endpoint_gt: string
-  endpoint_in: [string!]
-  endpoint_leq: string
-  endpoint_like: string
-  endpoint_lt: string
-  endpoint_neq: string
-  endpoint_notin: [string!]
-  endpoint_notlike: string
+  gateway: string
+  gateway_geq: string
+  gateway_gt: string
+  gateway_in: [string!]
+  gateway_leq: string
+  gateway_like: string
+  gateway_lt: string
+  gateway_neq: string
+  gateway_notin: [string!]
+  gateway_notlike: string
   model: string
   model_geq: string
   model_gt: string
@@ -978,9 +3699,37 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   provider_neq: string
   provider_notin: [string!]
   provider_notlike: string
+  rateLimited: uint8
+  rateLimited_geq: uint8
+  rateLimited_gt: uint8
+  rateLimited_in: bytes
+  rateLimited_leq: uint8
+  rateLimited_lt: uint8
+  rateLimited_neq: uint8
+  rateLimited_notin: bytes
+  tokensIn: uint64
+  tokensIn_geq: uint64
+  tokensIn_gt: uint64
+  tokensIn_in: [uint64!]
+  tokensIn_leq: uint64
+  tokensIn_lt: uint64
+  tokensIn_neq: uint64
+  tokensIn_notin: [uint64!]
+  tokensOut: uint64
+  tokensOut_geq: uint64
+  tokensOut_gt: uint64
+  tokensOut_in: [uint64!]
+  tokensOut_leq: uint64
+  tokensOut_lt: uint64
+  tokensOut_neq: uint64
+  tokensOut_notin: [uint64!]
 }
 
 enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
+  # cached ascending
+  cached_ASC
+  # cached descending
+  cached_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -1005,10 +3754,10 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
-  # endpoint ascending
-  endpoint_ASC
-  # endpoint descending
-  endpoint_DESC
+  # gateway ascending
+  gateway_ASC
+  # gateway descending
+  gateway_DESC
   # model ascending
   model_ASC
   # model descending
@@ -1017,6 +3766,167 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   provider_ASC
   # provider descending
   provider_DESC
+  # rateLimited ascending
+  rateLimited_ASC
+  # rateLimited descending
+  rateLimited_DESC
+  # tokensIn ascending
+  tokensIn_ASC
+  # tokensIn descending
+  tokensIn_DESC
+  # tokensOut ascending
+  tokensOut_ASC
+  # tokensOut descending
+  tokensOut_DESC
+}
+
+# Aggregated AI Inference logs with adaptive sampling
+type AccountAiInferenceAdaptiveGroups {
+  # Total number of inferences for an account
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiInferenceAdaptiveGroupsDimensions
+  sum: AccountAiInferenceAdaptiveGroupsSum
+}
+
+type AccountAiInferenceAdaptiveGroupsDimensions {
+  # The date when starts the inference
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Inference time ms
+  inferenceTimeMs: uint64!
+  # ModelId that was trigger to inference
+  modelId: string!
+  # Source who triggerd (worker binding, pages binding, rest api)
+  requestSource: string!
+}
+
+input AccountAiInferenceAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiInferenceAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiInferenceAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  inferenceTimeMs: uint64
+  inferenceTimeMs_geq: uint64
+  inferenceTimeMs_gt: uint64
+  inferenceTimeMs_in: [uint64!]
+  inferenceTimeMs_leq: uint64
+  inferenceTimeMs_lt: uint64
+  inferenceTimeMs_neq: uint64
+  inferenceTimeMs_notin: [uint64!]
+  modelId: string
+  modelId_geq: string
+  modelId_gt: string
+  modelId_in: [string!]
+  modelId_leq: string
+  modelId_like: string
+  modelId_lt: string
+  modelId_neq: string
+  modelId_notin: [string!]
+  modelId_notlike: string
+  requestSource: string
+  requestSource_geq: string
+  requestSource_gt: string
+  requestSource_in: [string!]
+  requestSource_leq: string
+  requestSource_like: string
+  requestSource_lt: string
+  requestSource_neq: string
+  requestSource_notin: [string!]
+  requestSource_notlike: string
+}
+
+enum AccountAiInferenceAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # inferenceTimeMs ascending
+  inferenceTimeMs_ASC
+  # inferenceTimeMs descending
+  inferenceTimeMs_DESC
+  # modelId ascending
+  modelId_ASC
+  # modelId descending
+  modelId_DESC
+  # requestSource ascending
+  requestSource_ASC
+  # requestSource descending
+  requestSource_DESC
+  # sum(totalInferenceTimeMs) ascending
+  sum_totalInferenceTimeMs_ASC
+  # sum(totalInferenceTimeMs) descending
+  sum_totalInferenceTimeMs_DESC
+}
+
+type AccountAiInferenceAdaptiveGroupsSum {
+  # Total inference time ms
+  totalInferenceTimeMs: uint64!
 }
 
 # Network analytics data for Cloudflare CDN traffic
@@ -1061,6 +3971,8 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsAvg {
 }
 
 type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
+  # Application tag associated with the packet
+  applicationTag: string!
   # City where the Cloudflare datacenter that received the packet is located
   coloCity: string!
   # Cloudflare datacenter that received the packet (nearest IATA airport code)
@@ -1226,6 +4138,16 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
 input AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   AND: [AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
+  applicationTag: string
+  applicationTag_geq: string
+  applicationTag_gt: string
+  applicationTag_in: [string!]
+  applicationTag_leq: string
+  applicationTag_like: string
+  applicationTag_lt: string
+  applicationTag_neq: string
+  applicationTag_notin: [string!]
+  applicationTag_notlike: string
   coloCity: string
   coloCity_geq: string
   coloCity_gt: string
@@ -1923,6 +4845,10 @@ input AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # applicationTag ascending
+  applicationTag_ASC
+  # applicationTag descending
+  applicationTag_DESC
   # avg(bitRateDay) ascending
   avg_bitRateDay_ASC
   # avg(bitRateDay) descending
@@ -2533,7 +5459,10 @@ type AccountDosdAttackAnalyticsGroups {
   # Unique identifier of the mitigation that matched the packet, if any
   attackId: string!
   # Type of attack traffic
+  @Deprecated
   attackType: string!
+  # Description of attack vector
+  attackVector: string!
   # Sum of bits received during the attack
   bits: uint64!
   # Common TCP flags used by attack traffic, if any
@@ -2562,6 +5491,14 @@ type AccountDosdAttackAnalyticsGroups {
   mitigationType: string!
   # Sum of packets received during the attack
   packets: uint64!
+  # Unique identifier of the rule that matched the packet, if any
+  ruleId: string!
+  # Human-readable name of the rule that matched the packet, if any
+  ruleName: string!
+  # Unique identifier of the ruleset containing the rule that matched the packet, if any
+  rulesetId: string!
+  # Unique identifier of the ruleset override containing the rule that matched the packet, if any
+  rulesetOverrideId: string!
   # Fixed source IP used by attack traffic, if any
   sourceIp: string!
   # Fixed source port used by attack traffic, if any
@@ -2597,6 +5534,16 @@ input AccountDosdAttackAnalyticsGroupsFilter_InputObject {
   attackType_neq: string
   attackType_notin: [string!]
   attackType_notlike: string
+  attackVector: string
+  attackVector_geq: string
+  attackVector_gt: string
+  attackVector_in: [string!]
+  attackVector_leq: string
+  attackVector_like: string
+  attackVector_lt: string
+  attackVector_neq: string
+  attackVector_notin: [string!]
+  attackVector_notlike: string
   bits: uint64
   bits_geq: uint64
   bits_gt: uint64
@@ -2721,6 +5668,46 @@ input AccountDosdAttackAnalyticsGroupsFilter_InputObject {
   packets_lt: uint64
   packets_neq: uint64
   packets_notin: [uint64!]
+  ruleId: string
+  ruleId_geq: string
+  ruleId_gt: string
+  ruleId_in: [string!]
+  ruleId_leq: string
+  ruleId_like: string
+  ruleId_lt: string
+  ruleId_neq: string
+  ruleId_notin: [string!]
+  ruleId_notlike: string
+  ruleName: string
+  ruleName_geq: string
+  ruleName_gt: string
+  ruleName_in: [string!]
+  ruleName_leq: string
+  ruleName_like: string
+  ruleName_lt: string
+  ruleName_neq: string
+  ruleName_notin: [string!]
+  ruleName_notlike: string
+  rulesetId: string
+  rulesetId_geq: string
+  rulesetId_gt: string
+  rulesetId_in: [string!]
+  rulesetId_leq: string
+  rulesetId_like: string
+  rulesetId_lt: string
+  rulesetId_neq: string
+  rulesetId_notin: [string!]
+  rulesetId_notlike: string
+  rulesetOverrideId: string
+  rulesetOverrideId_geq: string
+  rulesetOverrideId_gt: string
+  rulesetOverrideId_in: [string!]
+  rulesetOverrideId_leq: string
+  rulesetOverrideId_like: string
+  rulesetOverrideId_lt: string
+  rulesetOverrideId_neq: string
+  rulesetOverrideId_notin: [string!]
+  rulesetOverrideId_notlike: string
   sourceIp: string
   sourceIp_geq: string
   sourceIp_gt: string
@@ -2776,6 +5763,10 @@ enum AccountDosdAttackAnalyticsGroupsOrderBy {
   attackType_ASC
   # attackType descending
   attackType_DESC
+  # attackVector ascending
+  attackVector_ASC
+  # attackVector descending
+  attackVector_DESC
   # bits ascending
   bits_ASC
   # bits descending
@@ -2832,6 +5823,22 @@ enum AccountDosdAttackAnalyticsGroupsOrderBy {
   packets_ASC
   # packets descending
   packets_DESC
+  # ruleId ascending
+  ruleId_ASC
+  # ruleId descending
+  ruleId_DESC
+  # ruleName ascending
+  ruleName_ASC
+  # ruleName descending
+  ruleName_DESC
+  # rulesetId ascending
+  rulesetId_ASC
+  # rulesetId descending
+  rulesetId_DESC
+  # rulesetOverrideId ascending
+  rulesetOverrideId_ASC
+  # rulesetOverrideId descending
+  rulesetOverrideId_DESC
   # sourceIp ascending
   sourceIp_ASC
   # sourceIp descending
@@ -2896,6 +5903,8 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsAvg {
 }
 
 type AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions {
+  # Application tag associated with the packet
+  applicationTag: string!
   # Unique identifier of the mitigation that matched the packet, if any
   attackId: string!
   # Attack vector of the rule that matched the packet, if any
@@ -3075,6 +6084,16 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions {
 input AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   AND: [AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
+  applicationTag: string
+  applicationTag_geq: string
+  applicationTag_gt: string
+  applicationTag_in: [string!]
+  applicationTag_leq: string
+  applicationTag_like: string
+  applicationTag_lt: string
+  applicationTag_neq: string
+  applicationTag_notin: [string!]
+  applicationTag_notlike: string
   attackId: string
   attackId_geq: string
   attackId_gt: string
@@ -3842,6 +6861,10 @@ input AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # applicationTag ascending
+  applicationTag_ASC
+  # applicationTag descending
+  applicationTag_DESC
   # attackId ascending
   attackId_ASC
   # attackId descending
@@ -4958,7 +7981,10 @@ type AccountFbmAttackAnalyticsGroups {
   # Unique identifier of the mitigation that matched the packet, if any
   attackId: string!
   # Type of attack traffic
+  @Deprecated
   attackType: string!
+  # Description of attack vector
+  attackVector: string!
   # Sum of bits received during the attack
   bits: uint64!
   # Common TCP flags used by attack traffic, if any
@@ -4987,6 +8013,14 @@ type AccountFbmAttackAnalyticsGroups {
   mitigationType: string!
   # Sum of packets received during the attack
   packets: uint64!
+  # Unique identifier of the rule that matched the packet, if any
+  ruleId: string!
+  # Human-readable name of the rule that matched the packet, if any
+  ruleName: string!
+  # Unique identifier of the ruleset containing the rule that matched the packet, if any
+  rulesetId: string!
+  # Unique identifier of the ruleset override containing the rule that matched the packet, if any
+  rulesetOverrideId: string!
   # Fixed source IP used by attack traffic, if any
   sourceIp: string!
   # Fixed source port used by attack traffic, if any
@@ -5022,6 +8056,16 @@ input AccountFbmAttackAnalyticsGroupsFilter_InputObject {
   attackType_neq: string
   attackType_notin: [string!]
   attackType_notlike: string
+  attackVector: string
+  attackVector_geq: string
+  attackVector_gt: string
+  attackVector_in: [string!]
+  attackVector_leq: string
+  attackVector_like: string
+  attackVector_lt: string
+  attackVector_neq: string
+  attackVector_notin: [string!]
+  attackVector_notlike: string
   bits: uint64
   bits_geq: uint64
   bits_gt: uint64
@@ -5146,6 +8190,46 @@ input AccountFbmAttackAnalyticsGroupsFilter_InputObject {
   packets_lt: uint64
   packets_neq: uint64
   packets_notin: [uint64!]
+  ruleId: string
+  ruleId_geq: string
+  ruleId_gt: string
+  ruleId_in: [string!]
+  ruleId_leq: string
+  ruleId_like: string
+  ruleId_lt: string
+  ruleId_neq: string
+  ruleId_notin: [string!]
+  ruleId_notlike: string
+  ruleName: string
+  ruleName_geq: string
+  ruleName_gt: string
+  ruleName_in: [string!]
+  ruleName_leq: string
+  ruleName_like: string
+  ruleName_lt: string
+  ruleName_neq: string
+  ruleName_notin: [string!]
+  ruleName_notlike: string
+  rulesetId: string
+  rulesetId_geq: string
+  rulesetId_gt: string
+  rulesetId_in: [string!]
+  rulesetId_leq: string
+  rulesetId_like: string
+  rulesetId_lt: string
+  rulesetId_neq: string
+  rulesetId_notin: [string!]
+  rulesetId_notlike: string
+  rulesetOverrideId: string
+  rulesetOverrideId_geq: string
+  rulesetOverrideId_gt: string
+  rulesetOverrideId_in: [string!]
+  rulesetOverrideId_leq: string
+  rulesetOverrideId_like: string
+  rulesetOverrideId_lt: string
+  rulesetOverrideId_neq: string
+  rulesetOverrideId_notin: [string!]
+  rulesetOverrideId_notlike: string
   sourceIp: string
   sourceIp_geq: string
   sourceIp_gt: string
@@ -5201,6 +8285,10 @@ enum AccountFbmAttackAnalyticsGroupsOrderBy {
   attackType_ASC
   # attackType descending
   attackType_DESC
+  # attackVector ascending
+  attackVector_ASC
+  # attackVector descending
+  attackVector_DESC
   # bits ascending
   bits_ASC
   # bits descending
@@ -5257,6 +8345,22 @@ enum AccountFbmAttackAnalyticsGroupsOrderBy {
   packets_ASC
   # packets descending
   packets_DESC
+  # ruleId ascending
+  ruleId_ASC
+  # ruleId descending
+  ruleId_DESC
+  # ruleName ascending
+  ruleName_ASC
+  # ruleName descending
+  ruleName_DESC
+  # rulesetId ascending
+  rulesetId_ASC
+  # rulesetId descending
+  rulesetId_DESC
+  # rulesetOverrideId ascending
+  rulesetOverrideId_ASC
+  # rulesetOverrideId descending
+  rulesetOverrideId_DESC
   # sourceIp ascending
   sourceIp_ASC
   # sourceIp descending
@@ -7053,6 +10157,8 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsAvg {
 }
 
 type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions {
+  # Application tag associated with the packet
+  applicationTag: string!
   # City where the Cloudflare datacenter that received the packet is located
   coloCity: string!
   # Cloudflare datacenter that received the packet (nearest IATA airport code)
@@ -7220,6 +10326,16 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions {
 input AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   AND: [AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
+  applicationTag: string
+  applicationTag_geq: string
+  applicationTag_gt: string
+  applicationTag_in: [string!]
+  applicationTag_leq: string
+  applicationTag_like: string
+  applicationTag_lt: string
+  applicationTag_neq: string
+  applicationTag_notin: [string!]
+  applicationTag_notlike: string
   coloCity: string
   coloCity_geq: string
   coloCity_gt: string
@@ -7927,6 +11043,10 @@ input AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # applicationTag ascending
+  applicationTag_ASC
+  # applicationTag descending
+  applicationTag_DESC
   # avg(bitRateDay) ascending
   avg_bitRateDay_ASC
   # avg(bitRateDay) descending
@@ -13201,6 +16321,8 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsAvg {
 }
 
 type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions {
+  # Application tag associated with the packet
+  applicationTag: string!
   # City where the Cloudflare datacenter that received the packet is located
   coloCity: string!
   # Cloudflare datacenter that received the packet (nearest IATA airport code)
@@ -13370,6 +16492,16 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions {
 input AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   AND: [AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
+  applicationTag: string
+  applicationTag_geq: string
+  applicationTag_gt: string
+  applicationTag_in: [string!]
+  applicationTag_leq: string
+  applicationTag_like: string
+  applicationTag_lt: string
+  applicationTag_neq: string
+  applicationTag_notin: [string!]
+  applicationTag_notlike: string
   coloCity: string
   coloCity_geq: string
   coloCity_gt: string
@@ -14087,6 +17219,10 @@ input AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # applicationTag ascending
+  applicationTag_ASC
+  # applicationTag descending
+  applicationTag_DESC
   # avg(bitRateDay) ascending
   avg_bitRateDay_ASC
   # avg(bitRateDay) descending
@@ -15901,6 +19037,8 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsAvg {
 }
 
 type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
+  # Application tag associated with the packet
+  applicationTag: string!
   # City where the Cloudflare datacenter that received the packet is located
   coloCity: string!
   # Cloudflare datacenter that received the packet (nearest IATA airport code)
@@ -16070,6 +19208,16 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
 input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   AND: [AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
+  applicationTag: string
+  applicationTag_geq: string
+  applicationTag_gt: string
+  applicationTag_in: [string!]
+  applicationTag_leq: string
+  applicationTag_like: string
+  applicationTag_lt: string
+  applicationTag_neq: string
+  applicationTag_notin: [string!]
+  applicationTag_notlike: string
   coloCity: string
   coloCity_geq: string
   coloCity_gt: string
@@ -16787,6 +19935,10 @@ input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # applicationTag ascending
+  applicationTag_ASC
+  # applicationTag descending
+  applicationTag_DESC
   # avg(bitRateDay) ascending
   avg_bitRateDay_ASC
   # avg(bitRateDay) descending
@@ -21794,9 +24946,12 @@ enum AccountRumWebVitalsEventsAdaptiveOrderBy {
 type AccountSettings {
   MagicWANConnectorMetricsAdaptiveGroups: Settings!
   accessLoginRequestsAdaptiveGroups: Settings!
+  advancedDnsProtectionNetworkAnalyticsAdaptiveGroups: Settings!
+  advancedTcpProtectionNetworkAnalyticsAdaptiveGroups: Settings!
   aiGatewayCacheAdaptiveGroups: Settings!
   aiGatewayErrorsAdaptiveGroups: Settings!
   aiGatewayRequestsAdaptiveGroups: Settings!
+  aiInferenceAdaptiveGroups: Settings!
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
   d1AnalyticsAdaptiveGroups: Settings!
   dosdAttackAnalyticsGroups: Settings!
@@ -22364,6 +25519,8 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsAvg {
 }
 
 type AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions {
+  # Application tag associated with the packet
+  applicationTag: string!
   # City where the Cloudflare datacenter that received the packet is located
   coloCity: string!
   # Cloudflare datacenter that received the packet (nearest IATA airport code)
@@ -22525,6 +25682,16 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions {
 input AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   AND: [AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
+  applicationTag: string
+  applicationTag_geq: string
+  applicationTag_gt: string
+  applicationTag_in: [string!]
+  applicationTag_leq: string
+  applicationTag_like: string
+  applicationTag_lt: string
+  applicationTag_neq: string
+  applicationTag_notin: [string!]
+  applicationTag_notlike: string
   coloCity: string
   coloCity_geq: string
   coloCity_gt: string
@@ -23202,6 +26369,10 @@ input AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # applicationTag ascending
+  applicationTag_ASC
+  # applicationTag descending
+  applicationTag_DESC
   # avg(bitRateDay) ascending
   avg_bitRateDay_ASC
   # avg(bitRateDay) descending
@@ -26767,6 +29938,10 @@ type ZoneApiRequestSequencesGroupsAggArgMax {
   correlation: float64!
   # Estimated number of occurrences of this sequence of endpoint operations
   numOccurrences: float64!
+  # Estimated number of occurrences of this sequence of endpoint operations, disregarding the last operation
+  numOccurrencesPrefix: float64!
+  # Estimated number of occurrences of this sequence of endpoint operations, disregarding the first operation
+  numOccurrencesSuffix: float64!
   # API endpoints comprising the sequence of operations. Individual endpoints are delimited by # symbols
   operationsApiEndpoints: string!
   # HTTP request methods comprising the sequence of operations. Individual request method names are delimited by # symbols
@@ -26840,6 +30015,14 @@ enum ZoneApiRequestSequencesGroupsOrderBy {
   aggArgMax_correlation_ASC
   # aggArgMax(correlation) descending
   aggArgMax_correlation_DESC
+  # aggArgMax(numOccurrencesPrefix) ascending
+  aggArgMax_numOccurrencesPrefix_ASC
+  # aggArgMax(numOccurrencesPrefix) descending
+  aggArgMax_numOccurrencesPrefix_DESC
+  # aggArgMax(numOccurrencesSuffix) ascending
+  aggArgMax_numOccurrencesSuffix_ASC
+  # aggArgMax(numOccurrencesSuffix) descending
+  aggArgMax_numOccurrencesSuffix_DESC
   # aggArgMax(numOccurrences) ascending
   aggArgMax_numOccurrences_ASC
   # aggArgMax(numOccurrences) descending
