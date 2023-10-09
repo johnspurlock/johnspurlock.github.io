@@ -667,6 +667,8 @@ type AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsAvg {
 }
 
 type AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsDimensions {
+  # Application tag associated with the packet
+  applicationTag: string!
   # City where the Cloudflare datacenter that received the packet is located
   coloCity: string!
   # Cloudflare datacenter that received the packet (nearest IATA airport code)
@@ -703,6 +705,10 @@ type AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsDimensions {
   destinationPort: uint16!
   # Direction of the packet relative to the customer network (possible values: inbound, outbound, lateral)
   direction: string!
+  # The requested domain name in the DNS query
+  dnsQueryName: string!
+  # The query type in the DNS query
+  dnsQueryType: string!
   # Value of the Ethertype header field in the Ethernet packet (2048 for IPv4; 34525 for IPv6)
   ethertype: uint16!
   # Value of the Checkusm header field in the GRE packet
@@ -771,6 +777,8 @@ type AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsDimensions {
   ipv6FlowLabel: uint32!
   # Value of the Identification extension header field in the IPv6 packet
   ipv6Identification: uint32!
+  # IP lease tag associated with the packet
+  leaseTag: string!
   # Reason for applying a mitigation to the packet, if any
   mitigationReason: string!
   # Whether the packet matched a local or global mitigation, if any (possible values: local, global)
@@ -832,6 +840,16 @@ type AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsDimensions {
 input AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   AND: [AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]
+  applicationTag: string
+  applicationTag_geq: string
+  applicationTag_gt: string
+  applicationTag_in: [string!]
+  applicationTag_leq: string
+  applicationTag_like: string
+  applicationTag_lt: string
+  applicationTag_neq: string
+  applicationTag_notin: [string!]
+  applicationTag_notlike: string
   coloCity: string
   coloCity_geq: string
   coloCity_gt: string
@@ -994,6 +1012,26 @@ input AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObje
   direction_neq: string
   direction_notin: [string!]
   direction_notlike: string
+  dnsQueryName: string
+  dnsQueryName_geq: string
+  dnsQueryName_gt: string
+  dnsQueryName_in: [string!]
+  dnsQueryName_leq: string
+  dnsQueryName_like: string
+  dnsQueryName_lt: string
+  dnsQueryName_neq: string
+  dnsQueryName_notin: [string!]
+  dnsQueryName_notlike: string
+  dnsQueryType: string
+  dnsQueryType_geq: string
+  dnsQueryType_gt: string
+  dnsQueryType_in: [string!]
+  dnsQueryType_leq: string
+  dnsQueryType_like: string
+  dnsQueryType_lt: string
+  dnsQueryType_neq: string
+  dnsQueryType_notin: [string!]
+  dnsQueryType_notlike: string
   ethertype: uint16
   ethertype_geq: uint16
   ethertype_gt: uint16
@@ -1280,6 +1318,16 @@ input AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObje
   ipv6Identification_lt: uint32
   ipv6Identification_neq: uint32
   ipv6Identification_notin: [uint32!]
+  leaseTag: string
+  leaseTag_geq: string
+  leaseTag_gt: string
+  leaseTag_in: [string!]
+  leaseTag_leq: string
+  leaseTag_like: string
+  leaseTag_lt: string
+  leaseTag_neq: string
+  leaseTag_notin: [string!]
+  leaseTag_notlike: string
   mitigationReason: string
   mitigationReason_geq: string
   mitigationReason_gt: string
@@ -1529,6 +1577,10 @@ input AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObje
 }
 
 enum AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsOrderBy {
+  # applicationTag ascending
+  applicationTag_ASC
+  # applicationTag descending
+  applicationTag_DESC
   # avg(bitRateDay) ascending
   avg_bitRateDay_ASC
   # avg(bitRateDay) descending
@@ -1657,6 +1709,14 @@ enum AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsOrderBy {
   direction_ASC
   # direction descending
   direction_DESC
+  # dnsQueryName ascending
+  dnsQueryName_ASC
+  # dnsQueryName descending
+  dnsQueryName_DESC
+  # dnsQueryType ascending
+  dnsQueryType_ASC
+  # dnsQueryType descending
+  dnsQueryType_DESC
   # ethertype ascending
   ethertype_ASC
   # ethertype descending
@@ -1793,6 +1853,10 @@ enum AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipv6Identification_ASC
   # ipv6Identification descending
   ipv6Identification_DESC
+  # leaseTag ascending
+  leaseTag_ASC
+  # leaseTag descending
+  leaseTag_DESC
   # mitigationReason ascending
   mitigationReason_ASC
   # mitigationReason descending
@@ -2074,6 +2138,8 @@ type AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsDimensions {
   ipv6FlowLabel: uint32!
   # Value of the Identification extension header field in the IPv6 packet
   ipv6Identification: uint32!
+  # IP lease tag associated with the packet
+  leaseTag: string!
   # Reason for applying a mitigation to the packet, if any
   mitigationReason: string!
   # Whether the packet matched a local or global mitigation, if any (possible values: local, global)
@@ -2595,6 +2661,16 @@ input AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObje
   ipv6Identification_lt: uint32
   ipv6Identification_neq: uint32
   ipv6Identification_notin: [uint32!]
+  leaseTag: string
+  leaseTag_geq: string
+  leaseTag_gt: string
+  leaseTag_in: [string!]
+  leaseTag_leq: string
+  leaseTag_like: string
+  leaseTag_lt: string
+  leaseTag_neq: string
+  leaseTag_notin: [string!]
+  leaseTag_notlike: string
   mitigationReason: string
   mitigationReason_geq: string
   mitigationReason_gt: string
@@ -3122,6 +3198,10 @@ enum AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipv6Identification_ASC
   # ipv6Identification descending
   ipv6Identification_DESC
+  # leaseTag ascending
+  leaseTag_ASC
+  # leaseTag descending
+  leaseTag_DESC
   # mitigationReason ascending
   mitigationReason_ASC
   # mitigationReason descending
@@ -4079,6 +4159,8 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
   ipv6FlowLabel: uint32!
   # Value of the Identification extension header field in the IPv6 packet
   ipv6Identification: uint32!
+  # IP lease tag associated with the packet
+  leaseTag: string!
   # Which system dropped the packet (possible values: dosd, flowtrackd, magic-firewall)
   mitigationSystem: string!
   # The action that was taken on the packet (possible values: pass, drop)
@@ -4606,6 +4688,16 @@ input AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipv6Identification_lt: uint32
   ipv6Identification_neq: uint32
   ipv6Identification_notin: [uint32!]
+  leaseTag: string
+  leaseTag_geq: string
+  leaseTag_gt: string
+  leaseTag_in: [string!]
+  leaseTag_leq: string
+  leaseTag_like: string
+  leaseTag_lt: string
+  leaseTag_neq: string
+  leaseTag_notin: [string!]
+  leaseTag_notlike: string
   mitigationSystem: string
   mitigationSystem_geq: string
   mitigationSystem_gt: string
@@ -5121,6 +5213,10 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipv6Identification_ASC
   # ipv6Identification descending
   ipv6Identification_DESC
+  # leaseTag ascending
+  leaseTag_ASC
+  # leaseTag descending
+  leaseTag_DESC
   # mitigationSystem ascending
   mitigationSystem_ASC
   # mitigationSystem descending
@@ -6013,6 +6109,8 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions {
   ipv6FlowLabel: uint32!
   # Value of the Identification extension header field in the IPv6 packet
   ipv6Identification: uint32!
+  # IP lease tag associated with the packet
+  leaseTag: string!
   # Reason for applying a mitigation to the packet, if any
   mitigationReason: string!
   # Whether the packet matched a local or global mitigation, if any (possible values: local, global)
@@ -6562,6 +6660,16 @@ input AccountDosdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipv6Identification_lt: uint32
   ipv6Identification_neq: uint32
   ipv6Identification_notin: [uint32!]
+  leaseTag: string
+  leaseTag_geq: string
+  leaseTag_gt: string
+  leaseTag_in: [string!]
+  leaseTag_leq: string
+  leaseTag_like: string
+  leaseTag_lt: string
+  leaseTag_neq: string
+  leaseTag_notin: [string!]
+  leaseTag_notlike: string
   mitigationReason: string
   mitigationReason_geq: string
   mitigationReason_gt: string
@@ -7137,6 +7245,10 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipv6Identification_ASC
   # ipv6Identification descending
   ipv6Identification_DESC
+  # leaseTag ascending
+  leaseTag_ASC
+  # leaseTag descending
+  leaseTag_DESC
   # mitigationReason ascending
   mitigationReason_ASC
   # mitigationReason descending
@@ -10263,6 +10375,8 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions {
   ipv6FlowLabel: uint32!
   # Value of the Identification extension header field in the IPv6 packet
   ipv6Identification: uint32!
+  # IP lease tag associated with the packet
+  leaseTag: string!
   # Reason for applying a mitigation to the packet, if any
   mitigationReason: string!
   # Whether the packet matched a local or global mitigation, if any (possible values: local, global)
@@ -10784,6 +10898,16 @@ input AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipv6Identification_lt: uint32
   ipv6Identification_neq: uint32
   ipv6Identification_notin: [uint32!]
+  leaseTag: string
+  leaseTag_geq: string
+  leaseTag_gt: string
+  leaseTag_in: [string!]
+  leaseTag_leq: string
+  leaseTag_like: string
+  leaseTag_lt: string
+  leaseTag_neq: string
+  leaseTag_notin: [string!]
+  leaseTag_notlike: string
   mitigationReason: string
   mitigationReason_geq: string
   mitigationReason_gt: string
@@ -11311,6 +11435,10 @@ enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipv6Identification_ASC
   # ipv6Identification descending
   ipv6Identification_DESC
+  # leaseTag ascending
+  leaseTag_ASC
+  # leaseTag descending
+  leaseTag_DESC
   # mitigationReason ascending
   mitigationReason_ASC
   # mitigationReason descending
@@ -15935,8 +16063,8 @@ enum AccountHttpRequestsOverviewAdaptiveGroupsOrderBy {
 }
 
 type AccountHttpRequestsOverviewAdaptiveGroupsRatio {
-  cachedBytes: uint64!
-  cachedRequests: uint64!
+  cachedBytes: float64!
+  cachedRequests: float64!
   encryptedBytes: float64!
   encryptedRequests: float64!
   status4xx: float64!
@@ -16429,6 +16557,8 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions {
   ipv6FlowLabel: uint32!
   # Value of the Identification extension header field in the IPv6 packet
   ipv6Identification: uint32!
+  # IP lease tag associated with the packet
+  leaseTag: string!
   # The action that was taken on the packet (possible values: pass, drop)
   outcome: string!
   # IP prefix tag associated with the packet
@@ -16960,6 +17090,16 @@ input AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipv6Identification_lt: uint32
   ipv6Identification_neq: uint32
   ipv6Identification_notin: [uint32!]
+  leaseTag: string
+  leaseTag_geq: string
+  leaseTag_gt: string
+  leaseTag_in: [string!]
+  leaseTag_leq: string
+  leaseTag_like: string
+  leaseTag_lt: string
+  leaseTag_neq: string
+  leaseTag_notin: [string!]
+  leaseTag_notlike: string
   outcome: string
   outcome_geq: string
   outcome_gt: string
@@ -17491,6 +17631,10 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipv6Identification_ASC
   # ipv6Identification descending
   ipv6Identification_DESC
+  # leaseTag ascending
+  leaseTag_ASC
+  # leaseTag descending
+  leaseTag_DESC
   # outcome ascending
   outcome_ASC
   # outcome descending
@@ -19151,6 +19295,8 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
   ipv6FlowLabel: uint32!
   # Value of the Identification extension header field in the IPv6 packet
   ipv6Identification: uint32!
+  # IP lease tag associated with the packet
+  leaseTag: string!
   # Which system dropped the packet (possible values: dosd, flowtrackd, magic-firewall)
   mitigationSystem: string!
   # The action that was taken on the packet (possible values: pass, drop)
@@ -19706,6 +19852,16 @@ input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipv6Identification_lt: uint32
   ipv6Identification_neq: uint32
   ipv6Identification_notin: [uint32!]
+  leaseTag: string
+  leaseTag_geq: string
+  leaseTag_gt: string
+  leaseTag_in: [string!]
+  leaseTag_leq: string
+  leaseTag_like: string
+  leaseTag_lt: string
+  leaseTag_neq: string
+  leaseTag_notin: [string!]
+  leaseTag_notlike: string
   mitigationSystem: string
   mitigationSystem_geq: string
   mitigationSystem_gt: string
@@ -20223,6 +20379,10 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipv6Identification_ASC
   # ipv6Identification descending
   ipv6Identification_DESC
+  # leaseTag ascending
+  leaseTag_ASC
+  # leaseTag descending
+  leaseTag_DESC
   # mitigationSystem ascending
   mitigationSystem_ASC
   # mitigationSystem descending
@@ -25625,6 +25785,8 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions {
   ipv6FlowLabel: uint32!
   # Value of the Identification extension header field in the IPv6 packet
   ipv6Identification: uint32!
+  # IP lease tag associated with the packet
+  leaseTag: string!
   # Which system dropped the packet (possible values: dosd, flowtrackd, magic-firewall)
   mitigationSystem: string!
   # The action that was taken on the packet (possible values: pass, drop)
@@ -26140,6 +26302,16 @@ input AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   ipv6Identification_lt: uint32
   ipv6Identification_neq: uint32
   ipv6Identification_notin: [uint32!]
+  leaseTag: string
+  leaseTag_geq: string
+  leaseTag_gt: string
+  leaseTag_in: [string!]
+  leaseTag_leq: string
+  leaseTag_like: string
+  leaseTag_lt: string
+  leaseTag_neq: string
+  leaseTag_notin: [string!]
+  leaseTag_notlike: string
   mitigationSystem: string
   mitigationSystem_geq: string
   mitigationSystem_gt: string
@@ -26641,6 +26813,10 @@ enum AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy {
   ipv6Identification_ASC
   # ipv6Identification descending
   ipv6Identification_DESC
+  # leaseTag ascending
+  leaseTag_ASC
+  # leaseTag descending
+  leaseTag_DESC
   # mitigationSystem ascending
   mitigationSystem_ASC
   # mitigationSystem descending
@@ -29525,9 +29701,9 @@ type zone {
   dmarcReportsAdaptive(filter: ZoneDmarcReportsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneDmarcReportsAdaptiveOrderBy!]): [ZoneDmarcReportsAdaptive!]!
   # Aggregated dmarc reports by sources logs with adaptive sampling
   dmarcReportsSourcesAdaptiveGroups(filter: ZoneDmarcReportsSourcesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneDmarcReportsSourcesAdaptiveGroupsOrderBy!]): [ZoneDmarcReportsSourcesAdaptiveGroups!]!
-  # Analytics data for DNS queries
+  # Analytics data for DNS queries (currently, only Foundation DNS zones are supported)
   dnsAnalyticsAdaptive(filter: ZoneDnsAnalyticsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneDnsAnalyticsAdaptiveOrderBy!]): [ZoneDnsAnalyticsAdaptive!]!
-  # Analytics data for DNS queries
+  # Analytics data for DNS queries (currently, only Foundation DNS zones are supported)
   dnsAnalyticsAdaptiveGroups(filter: ZoneDnsAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneDnsAnalyticsAdaptiveGroupsOrderBy!]): [ZoneDnsAnalyticsAdaptiveGroups!]!
   # Beta. Raw email routing logs with adaptive sampling
   emailRoutingAdaptive(filter: ZoneEmailRoutingAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneEmailRoutingAdaptiveOrderBy!]): [ZoneEmailRoutingAdaptive!]!
@@ -31449,7 +31625,7 @@ type ZoneDmarcReportsSourcesAdaptiveGroupsUniq {
   ipCount: uint64!
 }
 
-# Analytics data for DNS queries
+# Analytics data for DNS queries (currently, only Foundation DNS zones are supported)
 type ZoneDnsAnalyticsAdaptive {
   # IATA airport code of the data center that processed the query
   coloName: string!
@@ -31600,7 +31776,7 @@ input ZoneDnsAnalyticsAdaptiveFilter_InputObject {
   upstream_notlike: string
 }
 
-# Analytics data for DNS queries
+# Analytics data for DNS queries (currently, only Foundation DNS zones are supported)
 type ZoneDnsAnalyticsAdaptiveGroups {
   # Average of a metric per dimension
   avg: ZoneDnsAnalyticsAdaptiveGroupsAvg
@@ -38489,8 +38665,8 @@ enum ZoneHttpRequestsOverviewAdaptiveGroupsOrderBy {
 }
 
 type ZoneHttpRequestsOverviewAdaptiveGroupsRatio {
-  cachedBytes: uint64!
-  cachedRequests: uint64!
+  cachedBytes: float64!
+  cachedRequests: float64!
   encryptedBytes: float64!
   encryptedRequests: float64!
   status4xx: float64!

@@ -562,6 +562,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsDimensions" href="#AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsDimensions">AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># Application tag associated with the packet</span><br />
+&nbsp;&nbsp;applicationTag: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># City where the Cloudflare datacenter that received the packet is located</span><br />
 &nbsp;&nbsp;coloCity: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Cloudflare datacenter that received the packet (nearest IATA airport code)</span><br />
@@ -598,6 +600,10 @@
 &nbsp;&nbsp;destinationPort: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># Direction of the packet relative to the customer network (possible values: inbound, outbound, lateral)</span><br />
 &nbsp;&nbsp;direction: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The requested domain name in the DNS query</span><br />
+&nbsp;&nbsp;dnsQueryName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The query type in the DNS query</span><br />
+&nbsp;&nbsp;dnsQueryType: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Ethertype header field in the Ethernet packet (2048 for IPv4; 34525 for IPv6)</span><br />
 &nbsp;&nbsp;ethertype: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Checkusm header field in the GRE packet</span><br />
@@ -666,6 +672,8 @@
 &nbsp;&nbsp;ipv6FlowLabel: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Identification extension header field in the IPv6 packet</span><br />
 &nbsp;&nbsp;ipv6Identification: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;<span class="c"># IP lease tag associated with the packet</span><br />
+&nbsp;&nbsp;leaseTag: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Reason for applying a mitigation to the packet, if any</span><br />
 &nbsp;&nbsp;mitigationReason: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Whether the packet matched a local or global mitigation, if any (possible values: local, global)</span><br />
@@ -727,6 +735,16 @@
 <span class="k">input</span> <a id="AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject" href="#AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject">AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject</a> {<br />
 &nbsp;&nbsp;AND: <a href="#AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject">[AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]</a><br />
 &nbsp;&nbsp;OR: <a href="#AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject">[AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;applicationTag: <a href="#string">string</a><br />
+&nbsp;&nbsp;applicationTag_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;applicationTag_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;applicationTag_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;applicationTag_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;applicationTag_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;applicationTag_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;applicationTag_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;applicationTag_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;applicationTag_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloCity: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloCity_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloCity_gt: <a href="#string">string</a><br />
@@ -889,6 +907,26 @@
 &nbsp;&nbsp;direction_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;direction_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;direction_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;dnsQueryName: <a href="#string">string</a><br />
+&nbsp;&nbsp;dnsQueryName_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dnsQueryName_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;dnsQueryName_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;dnsQueryName_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dnsQueryName_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;dnsQueryName_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;dnsQueryName_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dnsQueryName_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;dnsQueryName_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;dnsQueryType: <a href="#string">string</a><br />
+&nbsp;&nbsp;dnsQueryType_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dnsQueryType_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;dnsQueryType_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;dnsQueryType_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dnsQueryType_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;dnsQueryType_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;dnsQueryType_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dnsQueryType_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;dnsQueryType_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;ethertype: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ethertype_geq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;ethertype_gt: <a href="#uint16">uint16</a><br />
@@ -1175,6 +1213,16 @@
 &nbsp;&nbsp;ipv6Identification_lt: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;ipv6Identification_neq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;ipv6Identification_notin: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;leaseTag: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;leaseTag_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;leaseTag_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationReason: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationReason_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationReason_gt: <a href="#string">string</a><br />
@@ -1424,6 +1472,10 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsOrderBy" href="#AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsOrderBy">AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># applicationTag ascending</span><br />
+&nbsp;&nbsp;applicationTag_ASC<br />
+&nbsp;&nbsp;<span class="c"># applicationTag descending</span><br />
+&nbsp;&nbsp;applicationTag_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateDay) ascending</span><br />
 &nbsp;&nbsp;avg_bitRateDay_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(bitRateDay) descending</span><br />
@@ -1552,6 +1604,14 @@
 &nbsp;&nbsp;direction_ASC<br />
 &nbsp;&nbsp;<span class="c"># direction descending</span><br />
 &nbsp;&nbsp;direction_DESC<br />
+&nbsp;&nbsp;<span class="c"># dnsQueryName ascending</span><br />
+&nbsp;&nbsp;dnsQueryName_ASC<br />
+&nbsp;&nbsp;<span class="c"># dnsQueryName descending</span><br />
+&nbsp;&nbsp;dnsQueryName_DESC<br />
+&nbsp;&nbsp;<span class="c"># dnsQueryType ascending</span><br />
+&nbsp;&nbsp;dnsQueryType_ASC<br />
+&nbsp;&nbsp;<span class="c"># dnsQueryType descending</span><br />
+&nbsp;&nbsp;dnsQueryType_DESC<br />
 &nbsp;&nbsp;<span class="c"># ethertype ascending</span><br />
 &nbsp;&nbsp;ethertype_ASC<br />
 &nbsp;&nbsp;<span class="c"># ethertype descending</span><br />
@@ -1688,6 +1748,10 @@
 &nbsp;&nbsp;ipv6Identification_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv6Identification descending</span><br />
 &nbsp;&nbsp;ipv6Identification_DESC<br />
+&nbsp;&nbsp;<span class="c"># leaseTag ascending</span><br />
+&nbsp;&nbsp;leaseTag_ASC<br />
+&nbsp;&nbsp;<span class="c"># leaseTag descending</span><br />
+&nbsp;&nbsp;leaseTag_DESC<br />
 &nbsp;&nbsp;<span class="c"># mitigationReason ascending</span><br />
 &nbsp;&nbsp;mitigationReason_ASC<br />
 &nbsp;&nbsp;<span class="c"># mitigationReason descending</span><br />
@@ -1969,6 +2033,8 @@
 &nbsp;&nbsp;ipv6FlowLabel: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Identification extension header field in the IPv6 packet</span><br />
 &nbsp;&nbsp;ipv6Identification: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;<span class="c"># IP lease tag associated with the packet</span><br />
+&nbsp;&nbsp;leaseTag: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Reason for applying a mitigation to the packet, if any</span><br />
 &nbsp;&nbsp;mitigationReason: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Whether the packet matched a local or global mitigation, if any (possible values: local, global)</span><br />
@@ -2490,6 +2556,16 @@
 &nbsp;&nbsp;ipv6Identification_lt: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;ipv6Identification_neq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;ipv6Identification_notin: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;leaseTag: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;leaseTag_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;leaseTag_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationReason: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationReason_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationReason_gt: <a href="#string">string</a><br />
@@ -3017,6 +3093,10 @@
 &nbsp;&nbsp;ipv6Identification_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv6Identification descending</span><br />
 &nbsp;&nbsp;ipv6Identification_DESC<br />
+&nbsp;&nbsp;<span class="c"># leaseTag ascending</span><br />
+&nbsp;&nbsp;leaseTag_ASC<br />
+&nbsp;&nbsp;<span class="c"># leaseTag descending</span><br />
+&nbsp;&nbsp;leaseTag_DESC<br />
 &nbsp;&nbsp;<span class="c"># mitigationReason ascending</span><br />
 &nbsp;&nbsp;mitigationReason_ASC<br />
 &nbsp;&nbsp;<span class="c"># mitigationReason descending</span><br />
@@ -3974,6 +4054,8 @@
 &nbsp;&nbsp;ipv6FlowLabel: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Identification extension header field in the IPv6 packet</span><br />
 &nbsp;&nbsp;ipv6Identification: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;<span class="c"># IP lease tag associated with the packet</span><br />
+&nbsp;&nbsp;leaseTag: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Which system dropped the packet (possible values: dosd, flowtrackd, magic-firewall)</span><br />
 &nbsp;&nbsp;mitigationSystem: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The action that was taken on the packet (possible values: pass, drop)</span><br />
@@ -4501,6 +4583,16 @@
 &nbsp;&nbsp;ipv6Identification_lt: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;ipv6Identification_neq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;ipv6Identification_notin: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;leaseTag: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;leaseTag_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;leaseTag_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationSystem: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationSystem_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationSystem_gt: <a href="#string">string</a><br />
@@ -5016,6 +5108,10 @@
 &nbsp;&nbsp;ipv6Identification_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv6Identification descending</span><br />
 &nbsp;&nbsp;ipv6Identification_DESC<br />
+&nbsp;&nbsp;<span class="c"># leaseTag ascending</span><br />
+&nbsp;&nbsp;leaseTag_ASC<br />
+&nbsp;&nbsp;<span class="c"># leaseTag descending</span><br />
+&nbsp;&nbsp;leaseTag_DESC<br />
 &nbsp;&nbsp;<span class="c"># mitigationSystem ascending</span><br />
 &nbsp;&nbsp;mitigationSystem_ASC<br />
 &nbsp;&nbsp;<span class="c"># mitigationSystem descending</span><br />
@@ -5908,6 +6004,8 @@
 &nbsp;&nbsp;ipv6FlowLabel: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Identification extension header field in the IPv6 packet</span><br />
 &nbsp;&nbsp;ipv6Identification: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;<span class="c"># IP lease tag associated with the packet</span><br />
+&nbsp;&nbsp;leaseTag: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Reason for applying a mitigation to the packet, if any</span><br />
 &nbsp;&nbsp;mitigationReason: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Whether the packet matched a local or global mitigation, if any (possible values: local, global)</span><br />
@@ -6457,6 +6555,16 @@
 &nbsp;&nbsp;ipv6Identification_lt: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;ipv6Identification_neq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;ipv6Identification_notin: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;leaseTag: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;leaseTag_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;leaseTag_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationReason: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationReason_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationReason_gt: <a href="#string">string</a><br />
@@ -7032,6 +7140,10 @@
 &nbsp;&nbsp;ipv6Identification_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv6Identification descending</span><br />
 &nbsp;&nbsp;ipv6Identification_DESC<br />
+&nbsp;&nbsp;<span class="c"># leaseTag ascending</span><br />
+&nbsp;&nbsp;leaseTag_ASC<br />
+&nbsp;&nbsp;<span class="c"># leaseTag descending</span><br />
+&nbsp;&nbsp;leaseTag_DESC<br />
 &nbsp;&nbsp;<span class="c"># mitigationReason ascending</span><br />
 &nbsp;&nbsp;mitigationReason_ASC<br />
 &nbsp;&nbsp;<span class="c"># mitigationReason descending</span><br />
@@ -10158,6 +10270,8 @@
 &nbsp;&nbsp;ipv6FlowLabel: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Identification extension header field in the IPv6 packet</span><br />
 &nbsp;&nbsp;ipv6Identification: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;<span class="c"># IP lease tag associated with the packet</span><br />
+&nbsp;&nbsp;leaseTag: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Reason for applying a mitigation to the packet, if any</span><br />
 &nbsp;&nbsp;mitigationReason: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Whether the packet matched a local or global mitigation, if any (possible values: local, global)</span><br />
@@ -10679,6 +10793,16 @@
 &nbsp;&nbsp;ipv6Identification_lt: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;ipv6Identification_neq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;ipv6Identification_notin: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;leaseTag: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;leaseTag_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;leaseTag_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationReason: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationReason_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationReason_gt: <a href="#string">string</a><br />
@@ -11206,6 +11330,10 @@
 &nbsp;&nbsp;ipv6Identification_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv6Identification descending</span><br />
 &nbsp;&nbsp;ipv6Identification_DESC<br />
+&nbsp;&nbsp;<span class="c"># leaseTag ascending</span><br />
+&nbsp;&nbsp;leaseTag_ASC<br />
+&nbsp;&nbsp;<span class="c"># leaseTag descending</span><br />
+&nbsp;&nbsp;leaseTag_DESC<br />
 &nbsp;&nbsp;<span class="c"># mitigationReason ascending</span><br />
 &nbsp;&nbsp;mitigationReason_ASC<br />
 &nbsp;&nbsp;<span class="c"># mitigationReason descending</span><br />
@@ -15830,8 +15958,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountHttpRequestsOverviewAdaptiveGroupsRatio" href="#AccountHttpRequestsOverviewAdaptiveGroupsRatio">AccountHttpRequestsOverviewAdaptiveGroupsRatio</a> {<br />
-&nbsp;&nbsp;cachedBytes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;cachedRequests: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;cachedBytes: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;cachedRequests: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;encryptedBytes: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;encryptedRequests: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;status4xx: <a href="#float64">float64!</a><br />
@@ -16324,6 +16452,8 @@
 &nbsp;&nbsp;ipv6FlowLabel: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Identification extension header field in the IPv6 packet</span><br />
 &nbsp;&nbsp;ipv6Identification: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;<span class="c"># IP lease tag associated with the packet</span><br />
+&nbsp;&nbsp;leaseTag: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The action that was taken on the packet (possible values: pass, drop)</span><br />
 &nbsp;&nbsp;outcome: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># IP prefix tag associated with the packet</span><br />
@@ -16855,6 +16985,16 @@
 &nbsp;&nbsp;ipv6Identification_lt: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;ipv6Identification_neq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;ipv6Identification_notin: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;leaseTag: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;leaseTag_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;leaseTag_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;outcome: <a href="#string">string</a><br />
 &nbsp;&nbsp;outcome_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;outcome_gt: <a href="#string">string</a><br />
@@ -17386,6 +17526,10 @@
 &nbsp;&nbsp;ipv6Identification_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv6Identification descending</span><br />
 &nbsp;&nbsp;ipv6Identification_DESC<br />
+&nbsp;&nbsp;<span class="c"># leaseTag ascending</span><br />
+&nbsp;&nbsp;leaseTag_ASC<br />
+&nbsp;&nbsp;<span class="c"># leaseTag descending</span><br />
+&nbsp;&nbsp;leaseTag_DESC<br />
 &nbsp;&nbsp;<span class="c"># outcome ascending</span><br />
 &nbsp;&nbsp;outcome_ASC<br />
 &nbsp;&nbsp;<span class="c"># outcome descending</span><br />
@@ -19046,6 +19190,8 @@
 &nbsp;&nbsp;ipv6FlowLabel: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Identification extension header field in the IPv6 packet</span><br />
 &nbsp;&nbsp;ipv6Identification: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;<span class="c"># IP lease tag associated with the packet</span><br />
+&nbsp;&nbsp;leaseTag: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Which system dropped the packet (possible values: dosd, flowtrackd, magic-firewall)</span><br />
 &nbsp;&nbsp;mitigationSystem: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The action that was taken on the packet (possible values: pass, drop)</span><br />
@@ -19601,6 +19747,16 @@
 &nbsp;&nbsp;ipv6Identification_lt: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;ipv6Identification_neq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;ipv6Identification_notin: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;leaseTag: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;leaseTag_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;leaseTag_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationSystem: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationSystem_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationSystem_gt: <a href="#string">string</a><br />
@@ -20118,6 +20274,10 @@
 &nbsp;&nbsp;ipv6Identification_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv6Identification descending</span><br />
 &nbsp;&nbsp;ipv6Identification_DESC<br />
+&nbsp;&nbsp;<span class="c"># leaseTag ascending</span><br />
+&nbsp;&nbsp;leaseTag_ASC<br />
+&nbsp;&nbsp;<span class="c"># leaseTag descending</span><br />
+&nbsp;&nbsp;leaseTag_DESC<br />
 &nbsp;&nbsp;<span class="c"># mitigationSystem ascending</span><br />
 &nbsp;&nbsp;mitigationSystem_ASC<br />
 &nbsp;&nbsp;<span class="c"># mitigationSystem descending</span><br />
@@ -25520,6 +25680,8 @@
 &nbsp;&nbsp;ipv6FlowLabel: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Identification extension header field in the IPv6 packet</span><br />
 &nbsp;&nbsp;ipv6Identification: <a href="#uint32">uint32!</a><br />
+&nbsp;&nbsp;<span class="c"># IP lease tag associated with the packet</span><br />
+&nbsp;&nbsp;leaseTag: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Which system dropped the packet (possible values: dosd, flowtrackd, magic-firewall)</span><br />
 &nbsp;&nbsp;mitigationSystem: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The action that was taken on the packet (possible values: pass, drop)</span><br />
@@ -26035,6 +26197,16 @@
 &nbsp;&nbsp;ipv6Identification_lt: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;ipv6Identification_neq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;ipv6Identification_notin: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;leaseTag: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;leaseTag_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;leaseTag_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;leaseTag_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationSystem: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationSystem_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;mitigationSystem_gt: <a href="#string">string</a><br />
@@ -26536,6 +26708,10 @@
 &nbsp;&nbsp;ipv6Identification_ASC<br />
 &nbsp;&nbsp;<span class="c"># ipv6Identification descending</span><br />
 &nbsp;&nbsp;ipv6Identification_DESC<br />
+&nbsp;&nbsp;<span class="c"># leaseTag ascending</span><br />
+&nbsp;&nbsp;leaseTag_ASC<br />
+&nbsp;&nbsp;<span class="c"># leaseTag descending</span><br />
+&nbsp;&nbsp;leaseTag_DESC<br />
 &nbsp;&nbsp;<span class="c"># mitigationSystem ascending</span><br />
 &nbsp;&nbsp;mitigationSystem_ASC<br />
 &nbsp;&nbsp;<span class="c"># mitigationSystem descending</span><br />
@@ -29420,9 +29596,9 @@
 &nbsp;&nbsp;dmarcReportsAdaptive(filter: <a href="#ZoneDmarcReportsAdaptiveFilter_InputObject">ZoneDmarcReportsAdaptiveFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#ZoneDmarcReportsAdaptiveOrderBy">[ZoneDmarcReportsAdaptiveOrderBy!]</a>): <a href="#ZoneDmarcReportsAdaptive">[ZoneDmarcReportsAdaptive!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Aggregated dmarc reports by sources logs with adaptive sampling</span><br />
 &nbsp;&nbsp;dmarcReportsSourcesAdaptiveGroups(filter: <a href="#ZoneDmarcReportsSourcesAdaptiveGroupsFilter_InputObject">ZoneDmarcReportsSourcesAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#ZoneDmarcReportsSourcesAdaptiveGroupsOrderBy">[ZoneDmarcReportsSourcesAdaptiveGroupsOrderBy!]</a>): <a href="#ZoneDmarcReportsSourcesAdaptiveGroups">[ZoneDmarcReportsSourcesAdaptiveGroups!]!</a><br />
-&nbsp;&nbsp;<span class="c"># Analytics data for DNS queries</span><br />
+&nbsp;&nbsp;<span class="c"># Analytics data for DNS queries (currently, only Foundation DNS zones are supported)</span><br />
 &nbsp;&nbsp;dnsAnalyticsAdaptive(filter: <a href="#ZoneDnsAnalyticsAdaptiveFilter_InputObject">ZoneDnsAnalyticsAdaptiveFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#ZoneDnsAnalyticsAdaptiveOrderBy">[ZoneDnsAnalyticsAdaptiveOrderBy!]</a>): <a href="#ZoneDnsAnalyticsAdaptive">[ZoneDnsAnalyticsAdaptive!]!</a><br />
-&nbsp;&nbsp;<span class="c"># Analytics data for DNS queries</span><br />
+&nbsp;&nbsp;<span class="c"># Analytics data for DNS queries (currently, only Foundation DNS zones are supported)</span><br />
 &nbsp;&nbsp;dnsAnalyticsAdaptiveGroups(filter: <a href="#ZoneDnsAnalyticsAdaptiveGroupsFilter_InputObject">ZoneDnsAnalyticsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#ZoneDnsAnalyticsAdaptiveGroupsOrderBy">[ZoneDnsAnalyticsAdaptiveGroupsOrderBy!]</a>): <a href="#ZoneDnsAnalyticsAdaptiveGroups">[ZoneDnsAnalyticsAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. Raw email routing logs with adaptive sampling</span><br />
 &nbsp;&nbsp;emailRoutingAdaptive(filter: <a href="#ZoneEmailRoutingAdaptiveFilter_InputObject">ZoneEmailRoutingAdaptiveFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#ZoneEmailRoutingAdaptiveOrderBy">[ZoneEmailRoutingAdaptiveOrderBy!]</a>): <a href="#ZoneEmailRoutingAdaptive">[ZoneEmailRoutingAdaptive!]!</a><br />
@@ -31344,7 +31520,7 @@
 &nbsp;&nbsp;ipCount: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
-<span class="c"># Analytics data for DNS queries</span><br />
+<span class="c"># Analytics data for DNS queries (currently, only Foundation DNS zones are supported)</span><br />
 <span class="k">type</span> <a id="ZoneDnsAnalyticsAdaptive" href="#ZoneDnsAnalyticsAdaptive">ZoneDnsAnalyticsAdaptive</a> {<br />
 &nbsp;&nbsp;<span class="c"># IATA airport code of the data center that processed the query</span><br />
 &nbsp;&nbsp;coloName: <a href="#string">string!</a><br />
@@ -31495,7 +31671,7 @@
 &nbsp;&nbsp;upstream_notlike: <a href="#string">string</a><br />
 }<br />
 <br />
-<span class="c"># Analytics data for DNS queries</span><br />
+<span class="c"># Analytics data for DNS queries (currently, only Foundation DNS zones are supported)</span><br />
 <span class="k">type</span> <a id="ZoneDnsAnalyticsAdaptiveGroups" href="#ZoneDnsAnalyticsAdaptiveGroups">ZoneDnsAnalyticsAdaptiveGroups</a> {<br />
 &nbsp;&nbsp;<span class="c"># Average of a metric per dimension</span><br />
 &nbsp;&nbsp;avg: <a href="#ZoneDnsAnalyticsAdaptiveGroupsAvg">ZoneDnsAnalyticsAdaptiveGroupsAvg</a><br />
@@ -38384,8 +38560,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneHttpRequestsOverviewAdaptiveGroupsRatio" href="#ZoneHttpRequestsOverviewAdaptiveGroupsRatio">ZoneHttpRequestsOverviewAdaptiveGroupsRatio</a> {<br />
-&nbsp;&nbsp;cachedBytes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;cachedRequests: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;cachedBytes: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;cachedRequests: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;encryptedBytes: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;encryptedRequests: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;status4xx: <a href="#float64">float64!</a><br />
