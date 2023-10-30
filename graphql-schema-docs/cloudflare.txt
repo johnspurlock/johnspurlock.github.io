@@ -6,6 +6,7 @@ Account-level datasets:
 * aiGatewayCacheAdaptiveGroups
 * aiGatewayErrorsAdaptiveGroups
 * aiGatewayRequestsAdaptiveGroups
+* aiInferenceAdaptive
 * aiInferenceAdaptiveGroups
   cdnNetworkAnalyticsAdaptiveGroups
 * d1AnalyticsAdaptiveGroups
@@ -33,6 +34,7 @@ Account-level datasets:
   httpRequestsAdaptiveGroups
 * httpRequestsOverviewAdaptiveGroups
 * imagesRequestsAdaptiveGroups
+* imagesUniqueTransformations
 * logpushHealthAdaptiveGroups
   magicFirewallNetworkAnalyticsAdaptiveGroups
   magicFirewallSamplesAdaptiveGroups
@@ -66,6 +68,8 @@ Account-level datasets:
 * workersAnalyticsEngineAdaptiveGroups
 * workersInvocationsAdaptive
 * workersInvocationsScheduled
+* workersOverviewDataAdaptiveGroups
+* workersOverviewRequestsAdaptiveGroups
 * workersSubrequestsAdaptiveGroups
 * zarazTriggersAdaptiveGroups
 * zeroTrustPrivateNetworkDiscoveryGroups
@@ -171,6 +175,8 @@ type account {
   aiGatewayErrorsAdaptiveGroups(filter: AccountAiGatewayErrorsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayErrorsAdaptiveGroupsOrderBy!]): [AccountAiGatewayErrorsAdaptiveGroups!]!
   # AI Gateway Requests
   aiGatewayRequestsAdaptiveGroups(filter: AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayRequestsAdaptiveGroupsOrderBy!]): [AccountAiGatewayRequestsAdaptiveGroups!]!
+  # AI Inference logs with adaptive sampling
+  aiInferenceAdaptive(filter: AccountAiInferenceAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveOrderBy!]): [AccountAiInferenceAdaptive!]!
   # Aggregated AI Inference logs with adaptive sampling
   aiInferenceAdaptiveGroups(filter: AccountAiInferenceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveGroupsOrderBy!]): [AccountAiInferenceAdaptiveGroups!]!
   # Network analytics data for Cloudflare CDN traffic
@@ -226,6 +232,8 @@ type account {
   httpRequestsOverviewAdaptiveGroups(filter: AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHttpRequestsOverviewAdaptiveGroupsOrderBy!]): [AccountHttpRequestsOverviewAdaptiveGroups!]!
   # A high-level summary of Cloudflare Images served to end users.
   imagesRequestsAdaptiveGroups(filter: AccountImagesRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesRequestsAdaptiveGroupsOrderBy!]): [AccountImagesRequestsAdaptiveGroups!]!
+  # Image unique transfromations per day
+  imagesUniqueTransformations(filter: AccountImagesUniqueTransformationsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesUniqueTransformationsOrderBy!]): [AccountImagesUniqueTransformations!]!
   # Beta. Logpush job health metrics
   logpushHealthAdaptiveGroups(filter: AccountLogpushHealthAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogpushHealthAdaptiveGroupsOrderBy!]): [AccountLogpushHealthAdaptiveGroups!]!
   # Network analytics data for Magic Firewall
@@ -293,6 +301,10 @@ type account {
   workersInvocationsAdaptive(filter: AccountWorkersInvocationsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersInvocationsAdaptiveOrderBy!]): [AccountWorkersInvocationsAdaptive!]!
   # Workers scheduled invocations
   workersInvocationsScheduled(filter: AccountWorkersInvocationsScheduledFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersInvocationsScheduledOrderBy!]): [AccountWorkersInvocationsScheduled!]!
+  # Beta. Workers account overview invocation data with adaptive sampling
+  workersOverviewDataAdaptiveGroups(filter: AccountWorkersOverviewDataAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersOverviewDataAdaptiveGroupsOrderBy!]): [AccountWorkersOverviewDataAdaptiveGroups!]!
+  # Beta. Workers account overview invocation count with adaptive sampling
+  workersOverviewRequestsAdaptiveGroups(filter: AccountWorkersOverviewRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersOverviewRequestsAdaptiveGroupsOrderBy!]): [AccountWorkersOverviewRequestsAdaptiveGroups!]!
   # Beta. Workers subrequests with adaptive sampling
   workersSubrequestsAdaptiveGroups(filter: AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersSubrequestsAdaptiveGroupsOrderBy!]): [AccountWorkersSubrequestsAdaptiveGroups!]!
   # Zaraz Triggers Analytics (a trigger is a set of rules that can trigger a zaraz action)
@@ -3669,6 +3681,8 @@ type AccountAiGatewayRequestsAdaptiveGroups {
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountAiGatewayRequestsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountAiGatewayRequestsAdaptiveGroupsSum
 }
 
 type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
@@ -3850,6 +3864,14 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   rateLimited_ASC
   # rateLimited descending
   rateLimited_DESC
+  # sum(tokensIn) ascending
+  sum_tokensIn_ASC
+  # sum(tokensIn) descending
+  sum_tokensIn_DESC
+  # sum(tokensOut) ascending
+  sum_tokensOut_ASC
+  # sum(tokensOut) descending
+  sum_tokensOut_DESC
   # tokensIn ascending
   tokensIn_ASC
   # tokensIn descending
@@ -3858,6 +3880,116 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   tokensOut_ASC
   # tokensOut descending
   tokensOut_DESC
+}
+
+type AccountAiGatewayRequestsAdaptiveGroupsSum {
+  # Sum of tokens in
+  tokensIn: uint64!
+  # Sum of tokens out
+  tokensOut: uint64!
+}
+
+# AI Inference logs with adaptive sampling
+type AccountAiInferenceAdaptive {
+  # The date when inferance was triggered
+  datetime: Time!
+  # Error code
+  errorCode: uint32!
+  # Inference time ms
+  inferenceTimeMs: uint64!
+  # ModelId that was trigger to inference
+  modelId: string!
+  # Monetization unit
+  neurons: float64!
+  # Request size in bytes
+  requestBytesIn: uint64!
+  # Request size out bytes
+  requestBytesOut: uint64!
+  # Source who triggered (worker binding, pages binding, rest api)
+  requestSource: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+}
+
+input AccountAiInferenceAdaptiveFilter_InputObject {
+  AND: [AccountAiInferenceAdaptiveFilter_InputObject!]
+  OR: [AccountAiInferenceAdaptiveFilter_InputObject!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  errorCode: uint32
+  errorCode_geq: uint32
+  errorCode_gt: uint32
+  errorCode_in: [uint32!]
+  errorCode_leq: uint32
+  errorCode_lt: uint32
+  errorCode_neq: uint32
+  errorCode_notin: [uint32!]
+  inferenceTimeMs: uint64
+  inferenceTimeMs_geq: uint64
+  inferenceTimeMs_gt: uint64
+  inferenceTimeMs_in: [uint64!]
+  inferenceTimeMs_leq: uint64
+  inferenceTimeMs_lt: uint64
+  inferenceTimeMs_neq: uint64
+  inferenceTimeMs_notin: [uint64!]
+  modelId: string
+  modelId_geq: string
+  modelId_gt: string
+  modelId_in: [string!]
+  modelId_leq: string
+  modelId_like: string
+  modelId_lt: string
+  modelId_neq: string
+  modelId_notin: [string!]
+  modelId_notlike: string
+  neurons: float64
+  neurons_geq: float64
+  neurons_gt: float64
+  neurons_in: [float64!]
+  neurons_leq: float64
+  neurons_lt: float64
+  neurons_neq: float64
+  neurons_notin: [float64!]
+  requestBytesIn: uint64
+  requestBytesIn_geq: uint64
+  requestBytesIn_gt: uint64
+  requestBytesIn_in: [uint64!]
+  requestBytesIn_leq: uint64
+  requestBytesIn_lt: uint64
+  requestBytesIn_neq: uint64
+  requestBytesIn_notin: [uint64!]
+  requestBytesOut: uint64
+  requestBytesOut_geq: uint64
+  requestBytesOut_gt: uint64
+  requestBytesOut_in: [uint64!]
+  requestBytesOut_leq: uint64
+  requestBytesOut_lt: uint64
+  requestBytesOut_neq: uint64
+  requestBytesOut_notin: [uint64!]
+  requestSource: string
+  requestSource_geq: string
+  requestSource_gt: string
+  requestSource_in: [string!]
+  requestSource_leq: string
+  requestSource_like: string
+  requestSource_lt: string
+  requestSource_neq: string
+  requestSource_notin: [string!]
+  requestSource_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
 }
 
 # Aggregated AI Inference logs with adaptive sampling
@@ -3880,11 +4012,19 @@ type AccountAiInferenceAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time truncated to the minute
   datetimeMinute: Time!
+  # Error code
+  errorCode: uint32!
   # Inference time ms
   inferenceTimeMs: uint64!
   # ModelId that was trigger to inference
   modelId: string!
-  # Source who triggerd (worker binding, pages binding, rest api)
+  # Monetization unit
+  neurons: float64!
+  # Request size in bytes
+  requestBytesIn: uint64!
+  # Request size out bytes
+  requestBytesOut: uint64!
+  # Source who triggered (worker binding, pages binding, rest api)
   requestSource: string!
 }
 
@@ -3931,6 +4071,14 @@ input AccountAiInferenceAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  errorCode: uint32
+  errorCode_geq: uint32
+  errorCode_gt: uint32
+  errorCode_in: [uint32!]
+  errorCode_leq: uint32
+  errorCode_lt: uint32
+  errorCode_neq: uint32
+  errorCode_notin: [uint32!]
   inferenceTimeMs: uint64
   inferenceTimeMs_geq: uint64
   inferenceTimeMs_gt: uint64
@@ -3949,6 +4097,30 @@ input AccountAiInferenceAdaptiveGroupsFilter_InputObject {
   modelId_neq: string
   modelId_notin: [string!]
   modelId_notlike: string
+  neurons: float64
+  neurons_geq: float64
+  neurons_gt: float64
+  neurons_in: [float64!]
+  neurons_leq: float64
+  neurons_lt: float64
+  neurons_neq: float64
+  neurons_notin: [float64!]
+  requestBytesIn: uint64
+  requestBytesIn_geq: uint64
+  requestBytesIn_gt: uint64
+  requestBytesIn_in: [uint64!]
+  requestBytesIn_leq: uint64
+  requestBytesIn_lt: uint64
+  requestBytesIn_neq: uint64
+  requestBytesIn_notin: [uint64!]
+  requestBytesOut: uint64
+  requestBytesOut_geq: uint64
+  requestBytesOut_gt: uint64
+  requestBytesOut_in: [uint64!]
+  requestBytesOut_leq: uint64
+  requestBytesOut_lt: uint64
+  requestBytesOut_neq: uint64
+  requestBytesOut_notin: [uint64!]
   requestSource: string
   requestSource_geq: string
   requestSource_gt: string
@@ -3986,6 +4158,10 @@ enum AccountAiInferenceAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # errorCode ascending
+  errorCode_ASC
+  # errorCode descending
+  errorCode_DESC
   # inferenceTimeMs ascending
   inferenceTimeMs_ASC
   # inferenceTimeMs descending
@@ -3994,6 +4170,18 @@ enum AccountAiInferenceAdaptiveGroupsOrderBy {
   modelId_ASC
   # modelId descending
   modelId_DESC
+  # neurons ascending
+  neurons_ASC
+  # neurons descending
+  neurons_DESC
+  # requestBytesIn ascending
+  requestBytesIn_ASC
+  # requestBytesIn descending
+  requestBytesIn_DESC
+  # requestBytesOut ascending
+  requestBytesOut_ASC
+  # requestBytesOut descending
+  requestBytesOut_DESC
   # requestSource ascending
   requestSource_ASC
   # requestSource descending
@@ -4002,11 +4190,68 @@ enum AccountAiInferenceAdaptiveGroupsOrderBy {
   sum_totalInferenceTimeMs_ASC
   # sum(totalInferenceTimeMs) descending
   sum_totalInferenceTimeMs_DESC
+  # sum(totalNeurons) ascending
+  sum_totalNeurons_ASC
+  # sum(totalNeurons) descending
+  sum_totalNeurons_DESC
+  # sum(totalRequestBytesIn) ascending
+  sum_totalRequestBytesIn_ASC
+  # sum(totalRequestBytesIn) descending
+  sum_totalRequestBytesIn_DESC
+  # sum(totalRequestBytesOut) ascending
+  sum_totalRequestBytesOut_ASC
+  # sum(totalRequestBytesOut) descending
+  sum_totalRequestBytesOut_DESC
 }
 
 type AccountAiInferenceAdaptiveGroupsSum {
   # Total inference time ms
   totalInferenceTimeMs: uint64!
+  # Total neurons
+  totalNeurons: float64!
+  # Total bytes in per request
+  totalRequestBytesIn: uint64!
+  # Total bytes out per request
+  totalRequestBytesOut: uint64!
+}
+
+enum AccountAiInferenceAdaptiveOrderBy {
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # errorCode ascending
+  errorCode_ASC
+  # errorCode descending
+  errorCode_DESC
+  # inferenceTimeMs ascending
+  inferenceTimeMs_ASC
+  # inferenceTimeMs descending
+  inferenceTimeMs_DESC
+  # modelId ascending
+  modelId_ASC
+  # modelId descending
+  modelId_DESC
+  # neurons ascending
+  neurons_ASC
+  # neurons descending
+  neurons_DESC
+  # requestBytesIn ascending
+  requestBytesIn_ASC
+  # requestBytesIn descending
+  requestBytesIn_DESC
+  # requestBytesOut ascending
+  requestBytesOut_ASC
+  # requestBytesOut descending
+  requestBytesOut_DESC
+  # requestSource ascending
+  requestSource_ASC
+  # requestSource descending
+  requestSource_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
 }
 
 # Network analytics data for Cloudflare CDN traffic
@@ -8576,6 +8821,8 @@ type AccountFirewallEventsAdaptive {
   ja3Hash: string!
   # The kind of event, currently only possible values are: firewall
   kind: string!
+  # The distinct result of checking for leaked credentials
+  leakedCredentialCheckResult: string!
   # Rules match index in the chain
   matchIndex: uint16!
   # Additional product-specific information. Metadata is organized in key:value pairs
@@ -8972,6 +9219,16 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   kind_neq: string
   kind_notin: [string!]
   kind_notlike: string
+  leakedCredentialCheckResult: string
+  leakedCredentialCheckResult_geq: string
+  leakedCredentialCheckResult_gt: string
+  leakedCredentialCheckResult_in: [string!]
+  leakedCredentialCheckResult_leq: string
+  leakedCredentialCheckResult_like: string
+  leakedCredentialCheckResult_lt: string
+  leakedCredentialCheckResult_neq: string
+  leakedCredentialCheckResult_notin: [string!]
+  leakedCredentialCheckResult_notlike: string
   matchIndex: uint16
   matchIndex_geq: uint16
   matchIndex_gt: uint16
@@ -10141,6 +10398,10 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   kind_ASC
   # kind descending
   kind_DESC
+  # leakedCredentialCheckResult ascending
+  leakedCredentialCheckResult_ASC
+  # leakedCredentialCheckResult descending
+  leakedCredentialCheckResult_DESC
   # matchIndex ascending
   matchIndex_ASC
   # matchIndex descending
@@ -13866,6 +14127,8 @@ type AccountHttpRequestsAdaptive {
   isCrossZoneSubrequest: uint8!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
+  # The distinct result of checking for leaked credentials
+  leakedCredentialCheckResult: string!
   originASN: uint32!
   # ASN associated with origin
   originASNDescription: string!
@@ -14262,6 +14525,16 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   ja3Hash_neq: string
   ja3Hash_notin: [string!]
   ja3Hash_notlike: string
+  leakedCredentialCheckResult: string
+  leakedCredentialCheckResult_geq: string
+  leakedCredentialCheckResult_gt: string
+  leakedCredentialCheckResult_in: [string!]
+  leakedCredentialCheckResult_leq: string
+  leakedCredentialCheckResult_like: string
+  leakedCredentialCheckResult_lt: string
+  leakedCredentialCheckResult_neq: string
+  leakedCredentialCheckResult_notin: [string!]
+  leakedCredentialCheckResult_notlike: string
   originASN: uint32
   originASNDescription: string
   originASNDescription_geq: string
@@ -14558,6 +14831,8 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   isCrossZoneSubrequest: uint8!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
+  # The distinct result of checking for leaked credentials
+  leakedCredentialCheckResult: string!
   originASN: uint32!
   # ASN associated with origin
   originASNDescription: string!
@@ -14955,6 +15230,16 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   ja3Hash_neq: string
   ja3Hash_notin: [string!]
   ja3Hash_notlike: string
+  leakedCredentialCheckResult: string
+  leakedCredentialCheckResult_geq: string
+  leakedCredentialCheckResult_gt: string
+  leakedCredentialCheckResult_in: [string!]
+  leakedCredentialCheckResult_leq: string
+  leakedCredentialCheckResult_like: string
+  leakedCredentialCheckResult_lt: string
+  leakedCredentialCheckResult_neq: string
+  leakedCredentialCheckResult_notin: [string!]
+  leakedCredentialCheckResult_notlike: string
   originASN: uint32
   originASNDescription: string
   originASNDescription_geq: string
@@ -15330,6 +15615,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   ja3Hash_ASC
   # ja3Hash descending
   ja3Hash_DESC
+  # leakedCredentialCheckResult ascending
+  leakedCredentialCheckResult_ASC
+  # leakedCredentialCheckResult descending
+  leakedCredentialCheckResult_DESC
   # originASNDescription ascending
   originASNDescription_ASC
   # originASNDescription descending
@@ -15683,6 +15972,10 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   ja3Hash_ASC
   # ja3Hash descending
   ja3Hash_DESC
+  # leakedCredentialCheckResult ascending
+  leakedCredentialCheckResult_ASC
+  # leakedCredentialCheckResult descending
+  leakedCredentialCheckResult_DESC
   # originASNDescription ascending
   originASNDescription_ASC
   # originASNDescription descending
@@ -16207,6 +16500,46 @@ enum AccountImagesRequestsAdaptiveGroupsOrderBy {
 
 type AccountImagesRequestsAdaptiveGroupsSum {
   requests: uint64!
+}
+
+# Image unique transfromations per day
+type AccountImagesUniqueTransformations {
+  # The date uniques are calculated for
+  date: Date!
+  # Number of unique image transformations per day in sliding window
+  transformations: uint64!
+}
+
+input AccountImagesUniqueTransformationsFilter_InputObject {
+  AND: [AccountImagesUniqueTransformationsFilter_InputObject!]
+  OR: [AccountImagesUniqueTransformationsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  transformations: uint64
+  transformations_geq: uint64
+  transformations_gt: uint64
+  transformations_in: [uint64!]
+  transformations_leq: uint64
+  transformations_lt: uint64
+  transformations_neq: uint64
+  transformations_notin: [uint64!]
+}
+
+enum AccountImagesUniqueTransformationsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # transformations ascending
+  transformations_ASC
+  # transformations descending
+  transformations_DESC
 }
 
 # Beta. Logpush job health metrics
@@ -25111,6 +25444,7 @@ type AccountSettings {
   aiGatewayCacheAdaptiveGroups: Settings!
   aiGatewayErrorsAdaptiveGroups: Settings!
   aiGatewayRequestsAdaptiveGroups: Settings!
+  aiInferenceAdaptive: Settings!
   aiInferenceAdaptiveGroups: Settings!
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
   d1AnalyticsAdaptiveGroups: Settings!
@@ -25138,6 +25472,7 @@ type AccountSettings {
   httpRequestsAdaptiveGroups: Settings!
   httpRequestsOverviewAdaptiveGroups: Settings!
   imagesRequestsAdaptiveGroups: Settings!
+  imagesUniqueTransformations: Settings!
   logpushHealthAdaptiveGroups: Settings!
   magicFirewallNetworkAnalyticsAdaptiveGroups: Settings!
   magicFirewallSamplesAdaptiveGroups: Settings!
@@ -25171,6 +25506,8 @@ type AccountSettings {
   workersAnalyticsEngineAdaptiveGroups: Settings!
   workersInvocationsAdaptive: Settings!
   workersInvocationsScheduled: Settings!
+  workersOverviewDataAdaptiveGroups: Settings!
+  workersOverviewRequestsAdaptiveGroups: Settings!
   workersSubrequestsAdaptiveGroups: Settings!
   zarazTriggersAdaptiveGroups: Settings!
   zeroTrustPrivateNetworkDiscoveryGroups: Settings!
@@ -29162,6 +29499,156 @@ enum AccountWorkersInvocationsScheduledOrderBy {
   status_DESC
 }
 
+# Beta. Workers account overview invocation data with adaptive sampling
+type AccountWorkersOverviewDataAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountWorkersOverviewDataAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountWorkersOverviewDataAdaptiveGroupsSum
+}
+
+type AccountWorkersOverviewDataAdaptiveGroupsDimensions {
+  # Request datetime
+  datetime: Time!
+  # Usage model of the worker invocation
+  usageModel: uint8!
+}
+
+input AccountWorkersOverviewDataAdaptiveGroupsFilter_InputObject {
+  AND: [AccountWorkersOverviewDataAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountWorkersOverviewDataAdaptiveGroupsFilter_InputObject!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  usageModel: uint8
+  usageModel_geq: uint8
+  usageModel_gt: uint8
+  usageModel_in: bytes
+  usageModel_leq: uint8
+  usageModel_lt: uint8
+  usageModel_neq: uint8
+  usageModel_notin: bytes
+}
+
+enum AccountWorkersOverviewDataAdaptiveGroupsOrderBy {
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # sum(standardCpuTimeUs) ascending
+  sum_standardCpuTimeUs_ASC
+  # sum(standardCpuTimeUs) descending
+  sum_standardCpuTimeUs_DESC
+  # sum(unboundDurationUs) ascending
+  sum_unboundDurationUs_ASC
+  # sum(unboundDurationUs) descending
+  sum_unboundDurationUs_DESC
+  # usageModel ascending
+  usageModel_ASC
+  # usageModel descending
+  usageModel_DESC
+}
+
+type AccountWorkersOverviewDataAdaptiveGroupsSum {
+  # Standard usage model cpu time in us
+  standardCpuTimeUs: uint32!
+  # Unbound usage model duration in us
+  unboundDurationUs: float64!
+}
+
+# Beta. Workers account overview invocation count with adaptive sampling
+type AccountWorkersOverviewRequestsAdaptiveGroups {
+  # The number of values for a metric per dimension
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountWorkersOverviewRequestsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountWorkersOverviewRequestsAdaptiveGroupsSum
+}
+
+type AccountWorkersOverviewRequestsAdaptiveGroupsDimensions {
+  # Request datetime
+  datetime: Time!
+  # Status of the worker invocation
+  status: uint8!
+  # Usage model of the worker invocation
+  usageModel: uint8!
+}
+
+input AccountWorkersOverviewRequestsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountWorkersOverviewRequestsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountWorkersOverviewRequestsAdaptiveGroupsFilter_InputObject!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  status: uint8
+  status_geq: uint8
+  status_gt: uint8
+  status_in: bytes
+  status_leq: uint8
+  status_lt: uint8
+  status_neq: uint8
+  status_notin: bytes
+  usageModel: uint8
+  usageModel_geq: uint8
+  usageModel_gt: uint8
+  usageModel_in: bytes
+  usageModel_leq: uint8
+  usageModel_lt: uint8
+  usageModel_neq: uint8
+  usageModel_notin: bytes
+}
+
+enum AccountWorkersOverviewRequestsAdaptiveGroupsOrderBy {
+  # actorNamespaceId ascending
+  actorNamespaceId_ASC
+  # actorNamespaceId descending
+  actorNamespaceId_DESC
+  # constantScriptId ascending
+  constantScriptId_ASC
+  # constantScriptId descending
+  constantScriptId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # stableId ascending
+  stableId_ASC
+  # stableId descending
+  stableId_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # sum(cpuTimeUs) ascending
+  sum_cpuTimeUs_ASC
+  # sum(cpuTimeUs) descending
+  sum_cpuTimeUs_DESC
+  # usageModel ascending
+  usageModel_ASC
+  # usageModel descending
+  usageModel_DESC
+}
+
+type AccountWorkersOverviewRequestsAdaptiveGroupsSum {
+  # Cpu time in us
+  cpuTimeUs: float64!
+}
+
 # Beta. Workers subrequests with adaptive sampling
 type AccountWorkersSubrequestsAdaptiveGroups {
   # List of dimensions to group by
@@ -32600,6 +33087,8 @@ type ZoneFirewallEventsAdaptive {
   ja3Hash: string!
   # The kind of event, currently only possible values are: firewall
   kind: string!
+  # The distinct result of checking for leaked credentials
+  leakedCredentialCheckResult: string!
   # Rules match index in the chain
   matchIndex: uint16!
   # Additional product-specific information. Metadata is organized in key:value pairs
@@ -33637,6 +34126,16 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   kind_neq: string
   kind_notin: [string!]
   kind_notlike: string
+  leakedCredentialCheckResult: string
+  leakedCredentialCheckResult_geq: string
+  leakedCredentialCheckResult_gt: string
+  leakedCredentialCheckResult_in: [string!]
+  leakedCredentialCheckResult_leq: string
+  leakedCredentialCheckResult_like: string
+  leakedCredentialCheckResult_lt: string
+  leakedCredentialCheckResult_neq: string
+  leakedCredentialCheckResult_notin: [string!]
+  leakedCredentialCheckResult_notlike: string
   matchIndex: uint16
   matchIndex_geq: uint16
   matchIndex_gt: uint16
@@ -34780,6 +35279,10 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   kind_ASC
   # kind descending
   kind_DESC
+  # leakedCredentialCheckResult ascending
+  leakedCredentialCheckResult_ASC
+  # leakedCredentialCheckResult descending
+  leakedCredentialCheckResult_DESC
   # matchIndex ascending
   matchIndex_ASC
   # matchIndex descending
@@ -36500,6 +37003,8 @@ type ZoneHttpRequestsAdaptive {
   isCrossZoneSubrequest: uint8!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
+  # The distinct result of checking for leaked credentials
+  leakedCredentialCheckResult: string!
   originASN: uint32!
   # ASN associated with origin
   originASNDescription: string!
@@ -36894,6 +37399,16 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   ja3Hash_neq: string
   ja3Hash_notin: [string!]
   ja3Hash_notlike: string
+  leakedCredentialCheckResult: string
+  leakedCredentialCheckResult_geq: string
+  leakedCredentialCheckResult_gt: string
+  leakedCredentialCheckResult_in: [string!]
+  leakedCredentialCheckResult_leq: string
+  leakedCredentialCheckResult_like: string
+  leakedCredentialCheckResult_lt: string
+  leakedCredentialCheckResult_neq: string
+  leakedCredentialCheckResult_notin: [string!]
+  leakedCredentialCheckResult_notlike: string
   originASN: uint32
   originASNDescription: string
   originASNDescription_geq: string
@@ -37180,6 +37695,8 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   isCrossZoneSubrequest: uint8!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
+  # The distinct result of checking for leaked credentials
+  leakedCredentialCheckResult: string!
   originASN: uint32!
   # ASN associated with origin
   originASNDescription: string!
@@ -37575,6 +38092,16 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   ja3Hash_neq: string
   ja3Hash_notin: [string!]
   ja3Hash_notlike: string
+  leakedCredentialCheckResult: string
+  leakedCredentialCheckResult_geq: string
+  leakedCredentialCheckResult_gt: string
+  leakedCredentialCheckResult_in: [string!]
+  leakedCredentialCheckResult_leq: string
+  leakedCredentialCheckResult_like: string
+  leakedCredentialCheckResult_lt: string
+  leakedCredentialCheckResult_neq: string
+  leakedCredentialCheckResult_notin: [string!]
+  leakedCredentialCheckResult_notlike: string
   originASN: uint32
   originASNDescription: string
   originASNDescription_geq: string
@@ -37940,6 +38467,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   ja3Hash_ASC
   # ja3Hash descending
   ja3Hash_DESC
+  # leakedCredentialCheckResult ascending
+  leakedCredentialCheckResult_ASC
+  # leakedCredentialCheckResult descending
+  leakedCredentialCheckResult_DESC
   # originASNDescription ascending
   originASNDescription_ASC
   # originASNDescription descending
@@ -38289,6 +38820,10 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   ja3Hash_ASC
   # ja3Hash descending
   ja3Hash_DESC
+  # leakedCredentialCheckResult ascending
+  leakedCredentialCheckResult_ASC
+  # leakedCredentialCheckResult descending
+  leakedCredentialCheckResult_DESC
   # originASNDescription ascending
   originASNDescription_ASC
   # originASNDescription descending
