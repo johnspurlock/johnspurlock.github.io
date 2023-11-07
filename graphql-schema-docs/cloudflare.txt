@@ -3864,14 +3864,22 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   rateLimited_ASC
   # rateLimited descending
   rateLimited_DESC
-  # sum(tokensIn) ascending
-  sum_tokensIn_ASC
-  # sum(tokensIn) descending
-  sum_tokensIn_DESC
-  # sum(tokensOut) ascending
-  sum_tokensOut_ASC
-  # sum(tokensOut) descending
-  sum_tokensOut_DESC
+  # sum(cachedTokensIn) ascending
+  sum_cachedTokensIn_ASC
+  # sum(cachedTokensIn) descending
+  sum_cachedTokensIn_DESC
+  # sum(cachedTokensOut) ascending
+  sum_cachedTokensOut_ASC
+  # sum(cachedTokensOut) descending
+  sum_cachedTokensOut_DESC
+  # sum(uncachedTokensIn) ascending
+  sum_uncachedTokensIn_ASC
+  # sum(uncachedTokensIn) descending
+  sum_uncachedTokensIn_DESC
+  # sum(uncachedTokensOut) ascending
+  sum_uncachedTokensOut_ASC
+  # sum(uncachedTokensOut) descending
+  sum_uncachedTokensOut_DESC
   # tokensIn ascending
   tokensIn_ASC
   # tokensIn descending
@@ -3883,10 +3891,14 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
 }
 
 type AccountAiGatewayRequestsAdaptiveGroupsSum {
-  # Sum of tokens in
-  tokensIn: uint64!
-  # Sum of tokens out
-  tokensOut: uint64!
+  # Sum of cached tokens in
+  cachedTokensIn: uint64!
+  # Sum of cached tokens out
+  cachedTokensOut: uint64!
+  # Sum of uncached tokens in
+  uncachedTokensIn: uint64!
+  # Sum of uncached tokens out
+  uncachedTokensOut: uint64!
 }
 
 # AI Inference logs with adaptive sampling
