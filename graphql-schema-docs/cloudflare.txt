@@ -33,6 +33,7 @@ Account-level datasets:
   httpRequestsAdaptive
   httpRequestsAdaptiveGroups
 * httpRequestsOverviewAdaptiveGroups
+* hyperdriveQueriesAdaptiveGroups
 * imagesRequestsAdaptiveGroups
 * imagesUniqueTransformations
 * logpushHealthAdaptiveGroups
@@ -230,6 +231,8 @@ type account {
   httpRequestsAdaptiveGroups(filter: AccountHttpRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHttpRequestsAdaptiveGroupsOrderBy!]): [AccountHttpRequestsAdaptiveGroups!]!
   # A high-level summary of HTTP requests made by end users.
   httpRequestsOverviewAdaptiveGroups(filter: AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHttpRequestsOverviewAdaptiveGroupsOrderBy!]): [AccountHttpRequestsOverviewAdaptiveGroups!]!
+  # Beta. Hyperdrive query events with adaptive sampling.
+  hyperdriveQueriesAdaptiveGroups(filter: AccountHyperdriveQueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHyperdriveQueriesAdaptiveGroupsOrderBy!]): [AccountHyperdriveQueriesAdaptiveGroups!]!
   # A high-level summary of Cloudflare Images served to end users.
   imagesRequestsAdaptiveGroups(filter: AccountImagesRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesRequestsAdaptiveGroupsOrderBy!]): [AccountImagesRequestsAdaptiveGroups!]!
   # Image unique transfromations per day
@@ -16389,6 +16392,157 @@ type AccountHttpRequestsOverviewAdaptiveGroupsSum {
   visits: uint64!
 }
 
+# Beta. Hyperdrive query events with adaptive sampling.
+type AccountHyperdriveQueriesAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountHyperdriveQueriesAdaptiveGroupsAvg
+  # Total number of Hyperdrive queries
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountHyperdriveQueriesAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountHyperdriveQueriesAdaptiveGroupsSum
+}
+
+type AccountHyperdriveQueriesAdaptiveGroupsAvg {
+  # Average size (in bytes) of queries handled by Hyperdrive
+  queryBytes: uint64!
+  # Average size (in bytes) of query results served by Hyperdrive
+  resultBytes: uint64!
+  # The average value used for sample interval
+  sampleInterval: float64!
+}
+
+type AccountHyperdriveQueriesAdaptiveGroupsDimensions {
+  # The cache status of the Hyperdrive query events
+  cacheStatus: string!
+  # The ID of the Hyperdrive Config
+  configId: string!
+  # Hyperdrive query event timestamp, truncated to start of a day
+  date: Date!
+  # Hyperdrive query event timestamp
+  datetime: Time!
+  # Hyperdrive query event timestamp, truncated to start of hour
+  datetimeHour: Time!
+  # Hyperdrive query event timestamp, truncated to start of minute
+  datetimeMinute: Time!
+}
+
+input AccountHyperdriveQueriesAdaptiveGroupsFilter_InputObject {
+  AND: [AccountHyperdriveQueriesAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountHyperdriveQueriesAdaptiveGroupsFilter_InputObject!]
+  cacheStatus: string
+  cacheStatus_geq: string
+  cacheStatus_gt: string
+  cacheStatus_in: [string!]
+  cacheStatus_leq: string
+  cacheStatus_like: string
+  cacheStatus_lt: string
+  cacheStatus_neq: string
+  cacheStatus_notin: [string!]
+  cacheStatus_notlike: string
+  configId: string
+  configId_geq: string
+  configId_gt: string
+  configId_in: [string!]
+  configId_leq: string
+  configId_like: string
+  configId_lt: string
+  configId_neq: string
+  configId_notin: [string!]
+  configId_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+}
+
+enum AccountHyperdriveQueriesAdaptiveGroupsOrderBy {
+  # avg(queryBytes) ascending
+  avg_queryBytes_ASC
+  # avg(queryBytes) descending
+  avg_queryBytes_DESC
+  # avg(resultBytes) ascending
+  avg_resultBytes_ASC
+  # avg(resultBytes) descending
+  avg_resultBytes_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # cacheStatus ascending
+  cacheStatus_ASC
+  # cacheStatus descending
+  cacheStatus_DESC
+  # configId ascending
+  configId_ASC
+  # configId descending
+  configId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # sum(queryBytes) ascending
+  sum_queryBytes_ASC
+  # sum(queryBytes) descending
+  sum_queryBytes_DESC
+  # sum(resultBytes) ascending
+  sum_resultBytes_ASC
+  # sum(resultBytes) descending
+  sum_resultBytes_DESC
+}
+
+type AccountHyperdriveQueriesAdaptiveGroupsSum {
+  # Total size (in bytes) of queries handled by Hyperdrive
+  queryBytes: uint64!
+  # Total size (in bytes) of query results served by Hyperdrive
+  resultBytes: uint64!
+}
+
 # A high-level summary of Cloudflare Images served to end users.
 type AccountImagesRequestsAdaptiveGroups {
   # The average value for a metric per dimension
@@ -25483,6 +25637,7 @@ type AccountSettings {
   httpRequestsAdaptive: Settings!
   httpRequestsAdaptiveGroups: Settings!
   httpRequestsOverviewAdaptiveGroups: Settings!
+  hyperdriveQueriesAdaptiveGroups: Settings!
   imagesRequestsAdaptiveGroups: Settings!
   imagesUniqueTransformations: Settings!
   logpushHealthAdaptiveGroups: Settings!
