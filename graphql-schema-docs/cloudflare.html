@@ -7,7 +7,7 @@
   <style> body { font-family: monospace, monospace; background: rgb(13, 17, 23); color: rgb(201, 209, 217); color-scheme: dark; } a { color: rgb(88, 166, 255); text-decoration: none; } a:hover { text-decoration: underline; } .k {color: rgb(255, 123, 114); } .c {color: rgb(139, 148, 158); } .t {color: rgb(121, 192, 255); }</style>
 </head>
 <body><h3>Schema docs for the <a href="https://developers.cloudflare.com/analytics/graphql-api">Cloudflare GraphQL Analytics API</a></h3>
-<a href="#account">Account-level datasets</a>:<br />&nbsp;&nbsp;MagicWANConnectorMetricsAdaptiveGroups<br />*&nbsp;accessLoginRequestsAdaptiveGroups<br />&nbsp;&nbsp;advancedDnsProtectionNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;advancedTcpProtectionNetworkAnalyticsAdaptiveGroups<br />*&nbsp;aiGatewayCacheAdaptiveGroups<br />*&nbsp;aiGatewayErrorsAdaptiveGroups<br />*&nbsp;aiGatewayRequestsAdaptiveGroups<br />*&nbsp;aiInferenceAdaptive<br />*&nbsp;aiInferenceAdaptiveGroups<br />&nbsp;&nbsp;cdnNetworkAnalyticsAdaptiveGroups<br />*&nbsp;d1AnalyticsAdaptiveGroups<br />&nbsp;&nbsp;dosdAttackAnalyticsGroups<br />&nbsp;&nbsp;dosdNetworkAnalyticsAdaptiveGroups<br />*&nbsp;durableObjectsInvocationsAdaptiveGroups<br />*&nbsp;durableObjectsPeriodicGroups<br />*&nbsp;durableObjectsStorageGroups<br />*&nbsp;durableObjectsSubrequestsAdaptiveGroups<br />&nbsp;&nbsp;fbmAttackAnalyticsGroups<br />*&nbsp;firewallEventsAdaptive<br />&nbsp;&nbsp;firewallEventsAdaptiveGroups<br />&nbsp;&nbsp;flowtrackdNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;gatewayL4DownstreamSessionsAdaptiveGroups<br />*&nbsp;gatewayL4SessionsAdaptiveGroups<br />&nbsp;&nbsp;gatewayL4UpstreamSessionsAdaptiveGroups<br />*&nbsp;gatewayL7RequestsAdaptiveGroups<br />*&nbsp;gatewayResolverByCategoryAdaptiveGroups<br />*&nbsp;gatewayResolverByRuleExecutionPerformanceAdaptiveGroups<br />*&nbsp;gatewayResolverQueriesAdaptiveGroups<br />*&nbsp;httpRequests1dGroups<br />*&nbsp;httpRequests1hGroups<br />&nbsp;&nbsp;httpRequests1mGroups<br />&nbsp;&nbsp;httpRequestsAdaptive<br />&nbsp;&nbsp;httpRequestsAdaptiveGroups<br />*&nbsp;httpRequestsOverviewAdaptiveGroups<br />*&nbsp;hyperdriveQueriesAdaptiveGroups<br />*&nbsp;imagesRequestsAdaptiveGroups<br />*&nbsp;imagesUniqueTransformations<br />*&nbsp;logpushHealthAdaptiveGroups<br />&nbsp;&nbsp;magicFirewallNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;magicFirewallSamplesAdaptiveGroups<br />&nbsp;&nbsp;magicIDPSNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;magicTransitNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;magicTransitTunnelHealthChecksAdaptiveGroups<br />&nbsp;&nbsp;magicTransitTunnelTrafficAdaptiveGroups<br />*&nbsp;mnmFlowDataAdaptiveGroups<br />&nbsp;&nbsp;nelReportsAdaptiveGroups<br />*&nbsp;pagesFunctionsInvocationsAdaptiveGroups<br />*&nbsp;queueBacklogAdaptiveGroups<br />*&nbsp;queueConsumerMetricsAdaptiveGroups<br />*&nbsp;queueMessageOperationsAdaptiveGroups<br />*&nbsp;r2OperationsAdaptiveGroups<br />*&nbsp;r2StorageAdaptiveGroups<br />*&nbsp;rumPageloadEventsAdaptiveGroups<br />*&nbsp;rumPerformanceEventsAdaptiveGroups<br />*&nbsp;rumWebVitalsEventsAdaptive<br />*&nbsp;rumWebVitalsEventsAdaptiveGroups<br />&nbsp;&nbsp;sinkholeRequestLogsAdaptive<br />&nbsp;&nbsp;sinkholeRequestLogsAdaptiveGroups<br />&nbsp;&nbsp;spectrumNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;storageTraces<br />*&nbsp;streamMinutesViewedAdaptiveGroups<br />*&nbsp;turnstileAdaptiveGroups<br />*&nbsp;videoBufferEventsAdaptiveGroups<br />*&nbsp;videoPlaybackEventsAdaptiveGroups<br />*&nbsp;videoQualityEventsAdaptiveGroups<br />*&nbsp;warpDeviceAdaptiveGroups<br />*&nbsp;workerPlacementAdaptiveGroups<br />*&nbsp;workersAnalyticsEngineAdaptiveGroups<br />*&nbsp;workersInvocationsAdaptive<br />*&nbsp;workersInvocationsScheduled<br />*&nbsp;workersOverviewDataAdaptiveGroups<br />*&nbsp;workersOverviewRequestsAdaptiveGroups<br />*&nbsp;workersSubrequestsAdaptiveGroups<br />*&nbsp;zarazTriggersAdaptiveGroups<br />*&nbsp;zeroTrustPrivateNetworkDiscoveryGroups<br /><br /><a href="#zone">Zone-level datasets</a>:<br />*&nbsp;apiGatewayGraphqlQueryAnalyticsGroups<br />*&nbsp;apiGatewayMatchedSessionIDsAdaptiveGroups<br />*&nbsp;apiRequestSequencesGroups<br />*&nbsp;cacheReserveOperationsAdaptiveGroups<br />&nbsp;&nbsp;cacheReserveRequestsAdaptiveGroups<br />*&nbsp;cacheReserveStorageAdaptiveGroups<br />*&nbsp;dmarcReportsAdaptive<br />*&nbsp;dmarcReportsSourcesAdaptiveGroups<br />*&nbsp;dnsAnalyticsAdaptive<br />*&nbsp;dnsAnalyticsAdaptiveGroups<br />*&nbsp;emailRoutingAdaptive<br />*&nbsp;emailRoutingAdaptiveGroups<br />*&nbsp;firewallEventsAdaptive<br />*&nbsp;firewallEventsAdaptiveByTimeGroups<br />&nbsp;&nbsp;firewallEventsAdaptiveGroups<br />&nbsp;&nbsp;healthCheckEventsAdaptive<br />&nbsp;&nbsp;healthCheckEventsAdaptiveGroups<br />&nbsp;&nbsp;httpRequests1dByColoGroups<br />*&nbsp;httpRequests1dGroups<br />*&nbsp;httpRequests1hGroups<br />&nbsp;&nbsp;httpRequests1mByColoGroups<br />&nbsp;&nbsp;httpRequests1mGroups<br />&nbsp;&nbsp;httpRequestsAdaptive<br />&nbsp;&nbsp;httpRequestsAdaptiveGroups<br />*&nbsp;httpRequestsOverviewAdaptiveGroups<br />*&nbsp;imageResizingRequests1mGroups<br />&nbsp;&nbsp;loadBalancingRequestsAdaptive<br />&nbsp;&nbsp;loadBalancingRequestsAdaptiveGroups<br />*&nbsp;logpushHealthAdaptiveGroups<br />&nbsp;&nbsp;nelReportsAdaptiveGroups<br />&nbsp;&nbsp;pageShieldReportsAdaptiveGroups<br />&nbsp;&nbsp;waitingRoomAnalyticsAdaptive<br />&nbsp;&nbsp;waitingRoomAnalyticsAdaptiveGroups<br />*&nbsp;workersZoneInvocationsAdaptiveGroups<br />*&nbsp;workersZoneSubrequestsAdaptiveGroups<br />*&nbsp;zarazActionsAdaptiveGroups<br />*&nbsp;zarazTrackAdaptiveGroups<br />*&nbsp;zarazTriggersAdaptiveGroups<br /><br />* = available in all <a href="https://www.cloudflare.com/plans/">Cloudflare plans</a><br /><br /><span class="c"># Scalar type bool</span><br />
+<a href="#account">Account-level datasets</a>:<br />&nbsp;&nbsp;MagicWANConnectorMetricsAdaptiveGroups<br />*&nbsp;accessLoginRequestsAdaptiveGroups<br />&nbsp;&nbsp;advancedDnsProtectionNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;advancedTcpProtectionNetworkAnalyticsAdaptiveGroups<br />*&nbsp;aiGatewayCacheAdaptiveGroups<br />*&nbsp;aiGatewayErrorsAdaptiveGroups<br />*&nbsp;aiGatewayRequestsAdaptiveGroups<br />*&nbsp;aiInferenceAdaptive<br />*&nbsp;aiInferenceAdaptiveGroups<br />&nbsp;&nbsp;cdnNetworkAnalyticsAdaptiveGroups<br />*&nbsp;d1AnalyticsAdaptiveGroups<br />*&nbsp;d1StorageAdaptiveGroups<br />&nbsp;&nbsp;dosdAttackAnalyticsGroups<br />&nbsp;&nbsp;dosdNetworkAnalyticsAdaptiveGroups<br />*&nbsp;durableObjectsInvocationsAdaptiveGroups<br />*&nbsp;durableObjectsPeriodicGroups<br />*&nbsp;durableObjectsStorageGroups<br />*&nbsp;durableObjectsSubrequestsAdaptiveGroups<br />&nbsp;&nbsp;fbmAttackAnalyticsGroups<br />*&nbsp;firewallEventsAdaptive<br />&nbsp;&nbsp;firewallEventsAdaptiveGroups<br />&nbsp;&nbsp;flowtrackdNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;gatewayL4DownstreamSessionsAdaptiveGroups<br />*&nbsp;gatewayL4SessionsAdaptiveGroups<br />&nbsp;&nbsp;gatewayL4UpstreamSessionsAdaptiveGroups<br />*&nbsp;gatewayL7RequestsAdaptiveGroups<br />*&nbsp;gatewayResolverByCategoryAdaptiveGroups<br />*&nbsp;gatewayResolverByRuleExecutionPerformanceAdaptiveGroups<br />*&nbsp;gatewayResolverQueriesAdaptiveGroups<br />*&nbsp;httpRequests1dGroups<br />*&nbsp;httpRequests1hGroups<br />&nbsp;&nbsp;httpRequests1mGroups<br />&nbsp;&nbsp;httpRequestsAdaptive<br />&nbsp;&nbsp;httpRequestsAdaptiveGroups<br />*&nbsp;httpRequestsOverviewAdaptiveGroups<br />*&nbsp;hyperdriveQueriesAdaptiveGroups<br />*&nbsp;imagesRequestsAdaptiveGroups<br />*&nbsp;imagesUniqueTransformations<br />*&nbsp;logpushHealthAdaptiveGroups<br />&nbsp;&nbsp;magicFirewallNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;magicFirewallSamplesAdaptiveGroups<br />&nbsp;&nbsp;magicIDPSNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;magicTransitNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;magicTransitTunnelHealthChecksAdaptiveGroups<br />&nbsp;&nbsp;magicTransitTunnelTrafficAdaptiveGroups<br />*&nbsp;mnmFlowDataAdaptiveGroups<br />&nbsp;&nbsp;nelReportsAdaptiveGroups<br />*&nbsp;pagesFunctionsInvocationsAdaptiveGroups<br />*&nbsp;queueBacklogAdaptiveGroups<br />*&nbsp;queueConsumerMetricsAdaptiveGroups<br />*&nbsp;queueMessageOperationsAdaptiveGroups<br />*&nbsp;r2OperationsAdaptiveGroups<br />*&nbsp;r2StorageAdaptiveGroups<br />*&nbsp;rumPageloadEventsAdaptiveGroups<br />*&nbsp;rumPerformanceEventsAdaptiveGroups<br />*&nbsp;rumWebVitalsEventsAdaptive<br />*&nbsp;rumWebVitalsEventsAdaptiveGroups<br />&nbsp;&nbsp;sinkholeRequestLogsAdaptive<br />&nbsp;&nbsp;sinkholeRequestLogsAdaptiveGroups<br />&nbsp;&nbsp;spectrumNetworkAnalyticsAdaptiveGroups<br />&nbsp;&nbsp;storageTraces<br />*&nbsp;streamMinutesViewedAdaptiveGroups<br />*&nbsp;turnstileAdaptiveGroups<br />*&nbsp;videoBufferEventsAdaptiveGroups<br />*&nbsp;videoPlaybackEventsAdaptiveGroups<br />*&nbsp;videoQualityEventsAdaptiveGroups<br />*&nbsp;warpDeviceAdaptiveGroups<br />*&nbsp;workerPlacementAdaptiveGroups<br />*&nbsp;workersAnalyticsEngineAdaptiveGroups<br />*&nbsp;workersInvocationsAdaptive<br />*&nbsp;workersInvocationsScheduled<br />*&nbsp;workersOverviewDataAdaptiveGroups<br />*&nbsp;workersOverviewRequestsAdaptiveGroups<br />*&nbsp;workersSubrequestsAdaptiveGroups<br />*&nbsp;zarazTriggersAdaptiveGroups<br />*&nbsp;zeroTrustPrivateNetworkDiscoveryGroups<br /><br /><a href="#zone">Zone-level datasets</a>:<br />*&nbsp;apiGatewayGraphqlQueryAnalyticsGroups<br />*&nbsp;apiGatewayMatchedSessionIDsAdaptiveGroups<br />*&nbsp;apiRequestSequencesGroups<br />*&nbsp;cacheReserveOperationsAdaptiveGroups<br />&nbsp;&nbsp;cacheReserveRequestsAdaptiveGroups<br />*&nbsp;cacheReserveStorageAdaptiveGroups<br />*&nbsp;dmarcReportsAdaptive<br />*&nbsp;dmarcReportsSourcesAdaptiveGroups<br />*&nbsp;dnsAnalyticsAdaptive<br />*&nbsp;dnsAnalyticsAdaptiveGroups<br />*&nbsp;emailRoutingAdaptive<br />*&nbsp;emailRoutingAdaptiveGroups<br />*&nbsp;firewallEventsAdaptive<br />*&nbsp;firewallEventsAdaptiveByTimeGroups<br />&nbsp;&nbsp;firewallEventsAdaptiveGroups<br />&nbsp;&nbsp;healthCheckEventsAdaptive<br />&nbsp;&nbsp;healthCheckEventsAdaptiveGroups<br />&nbsp;&nbsp;httpRequests1dByColoGroups<br />*&nbsp;httpRequests1dGroups<br />*&nbsp;httpRequests1hGroups<br />&nbsp;&nbsp;httpRequests1mByColoGroups<br />&nbsp;&nbsp;httpRequests1mGroups<br />&nbsp;&nbsp;httpRequestsAdaptive<br />&nbsp;&nbsp;httpRequestsAdaptiveGroups<br />*&nbsp;httpRequestsOverviewAdaptiveGroups<br />*&nbsp;imageResizingRequests1mGroups<br />&nbsp;&nbsp;loadBalancingRequestsAdaptive<br />&nbsp;&nbsp;loadBalancingRequestsAdaptiveGroups<br />*&nbsp;logpushHealthAdaptiveGroups<br />&nbsp;&nbsp;nelReportsAdaptiveGroups<br />&nbsp;&nbsp;pageShieldReportsAdaptiveGroups<br />&nbsp;&nbsp;waitingRoomAnalyticsAdaptive<br />&nbsp;&nbsp;waitingRoomAnalyticsAdaptiveGroups<br />*&nbsp;workersZoneInvocationsAdaptiveGroups<br />*&nbsp;workersZoneSubrequestsAdaptiveGroups<br />*&nbsp;zarazActionsAdaptiveGroups<br />*&nbsp;zarazTrackAdaptiveGroups<br />*&nbsp;zarazTriggersAdaptiveGroups<br /><br />* = available in all <a href="https://www.cloudflare.com/plans/">Cloudflare plans</a><br /><br /><span class="c"># Scalar type bool</span><br />
 <span class="k">scalar</span> <a id="bool" href="#bool">bool</a><br />
 <br />
 <span class="c"># Scalar type []uint8</span><br />
@@ -74,6 +74,8 @@
 &nbsp;&nbsp;cdnNetworkAnalyticsAdaptiveGroups(filter: <a href="#AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject">AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy">[AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]</a>): <a href="#AccountCdnNetworkAnalyticsAdaptiveGroups">[AccountCdnNetworkAnalyticsAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. Aggregated D1 analytics with adaptive sampling</span><br />
 &nbsp;&nbsp;d1AnalyticsAdaptiveGroups(filter: <a href="#AccountD1AnalyticsAdaptiveGroupsFilter_InputObject">AccountD1AnalyticsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountD1AnalyticsAdaptiveGroupsOrderBy">[AccountD1AnalyticsAdaptiveGroupsOrderBy!]</a>): <a href="#AccountD1AnalyticsAdaptiveGroups">[AccountD1AnalyticsAdaptiveGroups!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Beta. D1 storage with adaptive sampling</span><br />
+&nbsp;&nbsp;d1StorageAdaptiveGroups(filter: <a href="#AccountD1StorageAdaptiveGroupsFilter_InputObject">AccountD1StorageAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountD1StorageAdaptiveGroupsOrderBy">[AccountD1StorageAdaptiveGroupsOrderBy!]</a>): <a href="#AccountD1StorageAdaptiveGroups">[AccountD1StorageAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Attack analytics metadata for attacks detected by dosd</span><br />
 &nbsp;&nbsp;dosdAttackAnalyticsGroups(filter: <a href="#AccountDosdAttackAnalyticsGroupsFilter_InputObject">AccountDosdAttackAnalyticsGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountDosdAttackAnalyticsGroupsOrderBy">[AccountDosdAttackAnalyticsGroupsOrderBy!]</a>): <a href="#AccountDosdAttackAnalyticsGroups">[AccountDosdAttackAnalyticsGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Network analytics data for dosd</span><br />
@@ -5698,6 +5700,120 @@
 &nbsp;&nbsp;rowsWritten: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># The number of write queries.</span><br />
 &nbsp;&nbsp;writeQueries: <a href="#uint64">uint64!</a><br />
+}<br />
+<br />
+<span class="c"># Beta. D1 storage with adaptive sampling</span><br />
+<span class="k">type</span> <a id="AccountD1StorageAdaptiveGroups" href="#AccountD1StorageAdaptiveGroups">AccountD1StorageAdaptiveGroups</a> {<br />
+&nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
+&nbsp;&nbsp;dimensions: <a href="#AccountD1StorageAdaptiveGroupsDimensions">AccountD1StorageAdaptiveGroupsDimensions</a><br />
+&nbsp;&nbsp;<span class="c"># The max of values for a metric per dimension</span><br />
+&nbsp;&nbsp;max: <a href="#AccountD1StorageAdaptiveGroupsMax">AccountD1StorageAdaptiveGroupsMax</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountD1StorageAdaptiveGroupsDimensions" href="#AccountD1StorageAdaptiveGroupsDimensions">AccountD1StorageAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># The UUID of a D1 database</span><br />
+&nbsp;&nbsp;databaseId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># D1 storage sample timestamp</span><br />
+&nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
+&nbsp;&nbsp;<span class="c"># D1 storage sample timestamp, truncated to fifteen minutes</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># D1 storage sample timestamp, truncated to five minutes</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># D1 storage sample timestamp, truncated to the hour</span><br />
+&nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># D1 storage sample timestamp, truncated to the minute</span><br />
+&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
+}<br />
+<br />
+<span class="k">input</span> <a id="AccountD1StorageAdaptiveGroupsFilter_InputObject" href="#AccountD1StorageAdaptiveGroupsFilter_InputObject">AccountD1StorageAdaptiveGroupsFilter_InputObject</a> {<br />
+&nbsp;&nbsp;AND: <a href="#AccountD1StorageAdaptiveGroupsFilter_InputObject">[AccountD1StorageAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;OR: <a href="#AccountD1StorageAdaptiveGroupsFilter_InputObject">[AccountD1StorageAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;databaseId: <a href="#string">string</a><br />
+&nbsp;&nbsp;databaseId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;databaseId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;databaseId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;databaseId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;databaseId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;databaseId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;databaseId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;databaseId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;databaseId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;date: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_in: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;date_leq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
+&nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeHour: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeHour_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHour_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeMinute: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeMinute_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeMinute_notin: <a href="#Time">[Time!]</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountD1StorageAdaptiveGroupsMax" href="#AccountD1StorageAdaptiveGroupsMax">AccountD1StorageAdaptiveGroupsMax</a> {<br />
+&nbsp;&nbsp;<span class="c"># The maximum size of the database (measured in bytes) observed over the queried time period.</span><br />
+&nbsp;&nbsp;databaseSizeBytes: <a href="#uint64">uint64!</a><br />
+}<br />
+<br />
+<span class="k">enum</span> <a id="AccountD1StorageAdaptiveGroupsOrderBy" href="#AccountD1StorageAdaptiveGroupsOrderBy">AccountD1StorageAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># databaseId ascending</span><br />
+&nbsp;&nbsp;databaseId_ASC<br />
+&nbsp;&nbsp;<span class="c"># databaseId descending</span><br />
+&nbsp;&nbsp;databaseId_DESC<br />
+&nbsp;&nbsp;<span class="c"># date ascending</span><br />
+&nbsp;&nbsp;date_ASC<br />
+&nbsp;&nbsp;<span class="c"># date descending</span><br />
+&nbsp;&nbsp;date_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes ascending</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes descending</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFiveMinutes ascending</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFiveMinutes descending</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHour ascending</span><br />
+&nbsp;&nbsp;datetimeHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHour descending</span><br />
+&nbsp;&nbsp;datetimeHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeMinute ascending</span><br />
+&nbsp;&nbsp;datetimeMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeMinute descending</span><br />
+&nbsp;&nbsp;datetimeMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># max(databaseSizeBytes) ascending</span><br />
+&nbsp;&nbsp;max_databaseSizeBytes_ASC<br />
+&nbsp;&nbsp;<span class="c"># max(databaseSizeBytes) descending</span><br />
+&nbsp;&nbsp;max_databaseSizeBytes_DESC<br />
 }<br />
 <br />
 <span class="c"># Attack analytics metadata for attacks detected by dosd</span><br />
@@ -25504,6 +25620,7 @@
 &nbsp;&nbsp;aiInferenceAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;cdnNetworkAnalyticsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;d1AnalyticsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
+&nbsp;&nbsp;d1StorageAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;dosdAttackAnalyticsGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;dosdNetworkAnalyticsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
 &nbsp;&nbsp;durableObjectsInvocationsAdaptiveGroups: <a href="#Settings">Settings!</a><br />
@@ -29040,6 +29157,8 @@
 &nbsp;&nbsp;scriptName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The unique tag of the script</span><br />
 &nbsp;&nbsp;scriptTag: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The version of the Worker</span><br />
+&nbsp;&nbsp;scriptVersion: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Status of the worker invocation</span><br />
 &nbsp;&nbsp;status: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Usage model of the worker invocation</span><br />
@@ -29121,6 +29240,16 @@
 &nbsp;&nbsp;scriptTag_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;scriptTag_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;scriptTag_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;scriptVersion: <a href="#string">string</a><br />
+&nbsp;&nbsp;scriptVersion_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;scriptVersion_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;scriptVersion_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;scriptVersion_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;scriptVersion_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;scriptVersion_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;scriptVersion_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;scriptVersion_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;scriptVersion_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;status: <a href="#string">string</a><br />
 &nbsp;&nbsp;status_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;status_gt: <a href="#string">string</a><br />
@@ -29334,6 +29463,10 @@
 &nbsp;&nbsp;scriptTag_ASC<br />
 &nbsp;&nbsp;<span class="c"># scriptTag descending</span><br />
 &nbsp;&nbsp;scriptTag_DESC<br />
+&nbsp;&nbsp;<span class="c"># scriptVersion ascending</span><br />
+&nbsp;&nbsp;scriptVersion_ASC<br />
+&nbsp;&nbsp;<span class="c"># scriptVersion descending</span><br />
+&nbsp;&nbsp;scriptVersion_DESC<br />
 &nbsp;&nbsp;<span class="c"># stableId ascending</span><br />
 &nbsp;&nbsp;stableId_ASC<br />
 &nbsp;&nbsp;<span class="c"># stableId descending</span><br />
@@ -29729,6 +29862,8 @@
 &nbsp;&nbsp;environmentName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The name of the script</span><br />
 &nbsp;&nbsp;scriptName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The version of the Worker</span><br />
+&nbsp;&nbsp;scriptVersion: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Usage model of the worker invocation</span><br />
 &nbsp;&nbsp;usageModel: <a href="#string">string!</a><br />
 }<br />
@@ -29796,6 +29931,16 @@
 &nbsp;&nbsp;scriptName_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;scriptName_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;scriptName_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;scriptVersion: <a href="#string">string</a><br />
+&nbsp;&nbsp;scriptVersion_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;scriptVersion_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;scriptVersion_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;scriptVersion_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;scriptVersion_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;scriptVersion_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;scriptVersion_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;scriptVersion_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;scriptVersion_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;usageModel: <a href="#string">string</a><br />
 &nbsp;&nbsp;usageModel_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;usageModel_gt: <a href="#string">string</a><br />
@@ -29841,6 +29986,10 @@
 &nbsp;&nbsp;scriptName_ASC<br />
 &nbsp;&nbsp;<span class="c"># scriptName descending</span><br />
 &nbsp;&nbsp;scriptName_DESC<br />
+&nbsp;&nbsp;<span class="c"># scriptVersion ascending</span><br />
+&nbsp;&nbsp;scriptVersion_ASC<br />
+&nbsp;&nbsp;<span class="c"># scriptVersion descending</span><br />
+&nbsp;&nbsp;scriptVersion_DESC<br />
 &nbsp;&nbsp;<span class="c"># stableId ascending</span><br />
 &nbsp;&nbsp;stableId_ASC<br />
 &nbsp;&nbsp;<span class="c"># stableId descending</span><br />
@@ -30816,6 +30965,8 @@
 &nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Request timestamp, truncated to start of an minute</span><br />
 &nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Jurisdiction of the R2 bucket, or 'default' if unrestricted</span><br />
+&nbsp;&nbsp;jurisdiction: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Billable class of storage operation</span><br />
 &nbsp;&nbsp;operationClass: <a href="#string">string!</a><br />
 }<br />
@@ -30891,6 +31042,16 @@
 &nbsp;&nbsp;datetime_lt: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_neq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;jurisdiction: <a href="#string">string</a><br />
+&nbsp;&nbsp;jurisdiction_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;jurisdiction_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;jurisdiction_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;jurisdiction_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;jurisdiction_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;jurisdiction_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;jurisdiction_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;jurisdiction_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;jurisdiction_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;operationClass: <a href="#string">string</a><br />
 &nbsp;&nbsp;operationClass_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;operationClass_gt: <a href="#string">string</a><br />
@@ -30940,6 +31101,10 @@
 &nbsp;&nbsp;datetime_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetime descending</span><br />
 &nbsp;&nbsp;datetime_DESC<br />
+&nbsp;&nbsp;<span class="c"># jurisdiction ascending</span><br />
+&nbsp;&nbsp;jurisdiction_ASC<br />
+&nbsp;&nbsp;<span class="c"># jurisdiction descending</span><br />
+&nbsp;&nbsp;jurisdiction_DESC<br />
 &nbsp;&nbsp;<span class="c"># operationClass ascending</span><br />
 &nbsp;&nbsp;operationClass_ASC<br />
 &nbsp;&nbsp;<span class="c"># operationClass descending</span><br />
@@ -31162,6 +31327,8 @@
 &nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Storage sample timestamp, truncated to start of an minute</span><br />
 &nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Jurisdiction of the R2 bucket, or 'default' if unrestricted</span><br />
+&nbsp;&nbsp;jurisdiction: <a href="#string">string!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="ZoneCacheReserveStorageAdaptiveGroupsFilter_InputObject" href="#ZoneCacheReserveStorageAdaptiveGroupsFilter_InputObject">ZoneCacheReserveStorageAdaptiveGroupsFilter_InputObject</a> {<br />
@@ -31235,6 +31402,16 @@
 &nbsp;&nbsp;datetime_lt: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_neq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;jurisdiction: <a href="#string">string</a><br />
+&nbsp;&nbsp;jurisdiction_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;jurisdiction_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;jurisdiction_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;jurisdiction_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;jurisdiction_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;jurisdiction_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;jurisdiction_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;jurisdiction_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;jurisdiction_notlike: <a href="#string">string</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneCacheReserveStorageAdaptiveGroupsMax" href="#ZoneCacheReserveStorageAdaptiveGroupsMax">ZoneCacheReserveStorageAdaptiveGroupsMax</a> {<br />
@@ -31281,6 +31458,10 @@
 &nbsp;&nbsp;datetime_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetime descending</span><br />
 &nbsp;&nbsp;datetime_DESC<br />
+&nbsp;&nbsp;<span class="c"># jurisdiction ascending</span><br />
+&nbsp;&nbsp;jurisdiction_ASC<br />
+&nbsp;&nbsp;<span class="c"># jurisdiction descending</span><br />
+&nbsp;&nbsp;jurisdiction_DESC<br />
 &nbsp;&nbsp;<span class="c"># max(objectCount) ascending</span><br />
 &nbsp;&nbsp;max_objectCount_ASC<br />
 &nbsp;&nbsp;<span class="c"># max(objectCount) descending</span><br />
@@ -32362,6 +32543,16 @@
 &nbsp;&nbsp;responseStale: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Time at which the query was received</span><br />
 &nbsp;&nbsp;timestamp: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Time at which the query was received, truncated to multiple of 15 minutes</span><br />
+&nbsp;&nbsp;timestampFifteenMinutes: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Time at which the query was received, truncated to multiple of 5 minutes</span><br />
+&nbsp;&nbsp;timestampFiveMinutes: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Time at which the query was received, truncated to multiple of 30 minutes</span><br />
+&nbsp;&nbsp;timestampHalfOfHour: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Time at which the query was received, truncated to the hour</span><br />
+&nbsp;&nbsp;timestampHour: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Time at which the query was received, truncated to the minute</span><br />
+&nbsp;&nbsp;timestampMinute: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Upstream server that the query was forwarded to</span><br />
 &nbsp;&nbsp;upstream: <a href="#string">string!</a><br />
 }<br />
@@ -32464,6 +32655,46 @@
 &nbsp;&nbsp;responseStale_neq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;responseStale_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;timestamp: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampFifteenMinutes: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampFifteenMinutes_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampFifteenMinutes_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampFifteenMinutes_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;timestampFifteenMinutes_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampFifteenMinutes_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampFifteenMinutes_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampFifteenMinutes_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;timestampFiveMinutes: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampFiveMinutes_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampFiveMinutes_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampFiveMinutes_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;timestampFiveMinutes_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampFiveMinutes_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampFiveMinutes_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampFiveMinutes_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;timestampHalfOfHour: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampHalfOfHour_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampHalfOfHour_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampHalfOfHour_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;timestampHalfOfHour_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampHalfOfHour_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampHalfOfHour_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampHalfOfHour_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;timestampHour: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampHour_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampHour_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampHour_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;timestampHour_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampHour_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampHour_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampHour_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;timestampMinute: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampMinute_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampMinute_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampMinute_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;timestampMinute_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampMinute_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampMinute_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;timestampMinute_notin: <a href="#Time">[Time!]</a><br />
 &nbsp;&nbsp;timestamp_geq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;timestamp_gt: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;timestamp_in: <a href="#Time">[Time!]</a><br />
@@ -32552,6 +32783,26 @@
 &nbsp;&nbsp;responseStale_ASC<br />
 &nbsp;&nbsp;<span class="c"># responseStale descending</span><br />
 &nbsp;&nbsp;responseStale_DESC<br />
+&nbsp;&nbsp;<span class="c"># timestampFifteenMinutes ascending</span><br />
+&nbsp;&nbsp;timestampFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># timestampFifteenMinutes descending</span><br />
+&nbsp;&nbsp;timestampFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># timestampFiveMinutes ascending</span><br />
+&nbsp;&nbsp;timestampFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># timestampFiveMinutes descending</span><br />
+&nbsp;&nbsp;timestampFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># timestampHalfOfHour ascending</span><br />
+&nbsp;&nbsp;timestampHalfOfHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># timestampHalfOfHour descending</span><br />
+&nbsp;&nbsp;timestampHalfOfHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># timestampHour ascending</span><br />
+&nbsp;&nbsp;timestampHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># timestampHour descending</span><br />
+&nbsp;&nbsp;timestampHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># timestampMinute ascending</span><br />
+&nbsp;&nbsp;timestampMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># timestampMinute descending</span><br />
+&nbsp;&nbsp;timestampMinute_DESC<br />
 &nbsp;&nbsp;<span class="c"># timestamp ascending</span><br />
 &nbsp;&nbsp;timestamp_ASC<br />
 &nbsp;&nbsp;<span class="c"># timestamp descending</span><br />
