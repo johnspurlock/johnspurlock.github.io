@@ -10,6 +10,7 @@ Account-level datasets:
 * aiInferenceAdaptiveGroups
   cdnNetworkAnalyticsAdaptiveGroups
 * d1AnalyticsAdaptiveGroups
+* d1QueriesAdaptiveGroups
 * d1StorageAdaptiveGroups
   dosdAttackAnalyticsGroups
   dosdNetworkAnalyticsAdaptiveGroups
@@ -185,6 +186,8 @@ type account {
   cdnNetworkAnalyticsAdaptiveGroups(filter: AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountCdnNetworkAnalyticsAdaptiveGroups!]!
   # Beta. Aggregated D1 analytics with adaptive sampling
   d1AnalyticsAdaptiveGroups(filter: AccountD1AnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1AnalyticsAdaptiveGroupsOrderBy!]): [AccountD1AnalyticsAdaptiveGroups!]!
+  # Beta. D1 query metrics with adaptive sampling
+  d1QueriesAdaptiveGroups(filter: AccountD1QueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1QueriesAdaptiveGroupsOrderBy!]): [AccountD1QueriesAdaptiveGroups!]!
   # Beta. D1 storage with adaptive sampling
   d1StorageAdaptiveGroups(filter: AccountD1StorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1StorageAdaptiveGroupsOrderBy!]): [AccountD1StorageAdaptiveGroups!]!
   # Attack analytics metadata for attacks detected by dosd
@@ -5811,6 +5814,154 @@ type AccountD1AnalyticsAdaptiveGroupsSum {
   rowsWritten: uint64!
   # The number of write queries.
   writeQueries: uint64!
+}
+
+# Beta. D1 query metrics with adaptive sampling
+type AccountD1QueriesAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountD1QueriesAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountD1QueriesAdaptiveGroupsDimensions
+}
+
+type AccountD1QueriesAdaptiveGroupsAvg {
+  # The average duration queries in D1 took, observed over the queried time period.
+  queryDurationMs: float64!
+  # The average number of rows scanned, observed over the queried time period.
+  rowsRead: uint64!
+  # The average number of rows written, observed over the queried time period.
+  rowsWritten: uint64!
+  # The average value used for sample interval
+  sampleInterval: float64!
+}
+
+type AccountD1QueriesAdaptiveGroupsDimensions {
+  # The UUID of a D1 database
+  databaseId: string!
+  # D1 query sample timestamp
+  date: Date!
+  # D1 query sample timestamp, truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # D1 query sample timestamp, truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # D1 query sample timestamp, truncated to the hour
+  datetimeHour: Time!
+  # D1 query sample timestamp, truncated to the minute
+  datetimeMinute: Time!
+  # The SQL query that ran on a D1 database, with parameterized values replaced with placeholders.
+  query: string!
+}
+
+input AccountD1QueriesAdaptiveGroupsFilter_InputObject {
+  AND: [AccountD1QueriesAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountD1QueriesAdaptiveGroupsFilter_InputObject!]
+  databaseId: string
+  databaseId_geq: string
+  databaseId_gt: string
+  databaseId_in: [string!]
+  databaseId_leq: string
+  databaseId_like: string
+  databaseId_lt: string
+  databaseId_neq: string
+  databaseId_notin: [string!]
+  databaseId_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  query: string
+  query_geq: string
+  query_gt: string
+  query_in: [string!]
+  query_leq: string
+  query_like: string
+  query_lt: string
+  query_neq: string
+  query_notin: [string!]
+  query_notlike: string
+}
+
+enum AccountD1QueriesAdaptiveGroupsOrderBy {
+  # avg(queryDurationMs) ascending
+  avg_queryDurationMs_ASC
+  # avg(queryDurationMs) descending
+  avg_queryDurationMs_DESC
+  # avg(rowsRead) ascending
+  avg_rowsRead_ASC
+  # avg(rowsRead) descending
+  avg_rowsRead_DESC
+  # avg(rowsWritten) ascending
+  avg_rowsWritten_ASC
+  # avg(rowsWritten) descending
+  avg_rowsWritten_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # databaseId ascending
+  databaseId_ASC
+  # databaseId descending
+  databaseId_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # query ascending
+  query_ASC
+  # query descending
+  query_DESC
 }
 
 # Beta. D1 storage with adaptive sampling
@@ -25731,6 +25882,7 @@ type AccountSettings {
   aiInferenceAdaptiveGroups: Settings!
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
   d1AnalyticsAdaptiveGroups: Settings!
+  d1QueriesAdaptiveGroups: Settings!
   d1StorageAdaptiveGroups: Settings!
   dosdAttackAnalyticsGroups: Settings!
   dosdNetworkAnalyticsAdaptiveGroups: Settings!
