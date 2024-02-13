@@ -5820,8 +5820,12 @@ type AccountD1AnalyticsAdaptiveGroupsSum {
 type AccountD1QueriesAdaptiveGroups {
   # The average value for a metric per dimension
   avg: AccountD1QueriesAdaptiveGroupsAvg
+  # Number of D1 queries processed (approximation when sampleInterval > 1)
+  count: uint64!
   # List of dimensions to group by
   dimensions: AccountD1QueriesAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountD1QueriesAdaptiveGroupsSum
 }
 
 type AccountD1QueriesAdaptiveGroupsAvg {
@@ -5934,6 +5938,10 @@ enum AccountD1QueriesAdaptiveGroupsOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
   # databaseId ascending
   databaseId_ASC
   # databaseId descending
@@ -5962,6 +5970,33 @@ enum AccountD1QueriesAdaptiveGroupsOrderBy {
   query_ASC
   # query descending
   query_DESC
+  # sum(queryDurationMs) ascending
+  sum_queryDurationMs_ASC
+  # sum(queryDurationMs) descending
+  sum_queryDurationMs_DESC
+  # sum(rowsRead) ascending
+  sum_rowsRead_ASC
+  # sum(rowsRead) descending
+  sum_rowsRead_DESC
+  # sum(rowsWritten) ascending
+  sum_rowsWritten_ASC
+  # sum(rowsWritten) descending
+  sum_rowsWritten_DESC
+  # sum(sampleInterval) ascending
+  sum_sampleInterval_ASC
+  # sum(sampleInterval) descending
+  sum_sampleInterval_DESC
+}
+
+type AccountD1QueriesAdaptiveGroupsSum {
+  # The total duration queries in D1 took, observed over the queried time period.
+  queryDurationMs: float64!
+  # The total number of rows scanned, observed over the queried time period.
+  rowsRead: uint64!
+  # The total number of rows written, observed over the queried time period.
+  rowsWritten: uint64!
+  # The number of sample intervals
+  sampleInterval: float64!
 }
 
 # Beta. D1 storage with adaptive sampling

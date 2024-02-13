@@ -5708,8 +5708,12 @@
 <span class="k">type</span> <a id="AccountD1QueriesAdaptiveGroups" href="#AccountD1QueriesAdaptiveGroups">AccountD1QueriesAdaptiveGroups</a> {<br />
 &nbsp;&nbsp;<span class="c"># The average value for a metric per dimension</span><br />
 &nbsp;&nbsp;avg: <a href="#AccountD1QueriesAdaptiveGroupsAvg">AccountD1QueriesAdaptiveGroupsAvg</a><br />
+&nbsp;&nbsp;<span class="c"># Number of D1 queries processed (approximation when sampleInterval > 1)</span><br />
+&nbsp;&nbsp;count: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#AccountD1QueriesAdaptiveGroupsDimensions">AccountD1QueriesAdaptiveGroupsDimensions</a><br />
+&nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
+&nbsp;&nbsp;sum: <a href="#AccountD1QueriesAdaptiveGroupsSum">AccountD1QueriesAdaptiveGroupsSum</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountD1QueriesAdaptiveGroupsAvg" href="#AccountD1QueriesAdaptiveGroupsAvg">AccountD1QueriesAdaptiveGroupsAvg</a> {<br />
@@ -5822,6 +5826,10 @@
 &nbsp;&nbsp;avg_sampleInterval_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(sampleInterval) descending</span><br />
 &nbsp;&nbsp;avg_sampleInterval_DESC<br />
+&nbsp;&nbsp;<span class="c"># count() ascending</span><br />
+&nbsp;&nbsp;count_ASC<br />
+&nbsp;&nbsp;<span class="c"># count() descending</span><br />
+&nbsp;&nbsp;count_DESC<br />
 &nbsp;&nbsp;<span class="c"># databaseId ascending</span><br />
 &nbsp;&nbsp;databaseId_ASC<br />
 &nbsp;&nbsp;<span class="c"># databaseId descending</span><br />
@@ -5850,6 +5858,33 @@
 &nbsp;&nbsp;query_ASC<br />
 &nbsp;&nbsp;<span class="c"># query descending</span><br />
 &nbsp;&nbsp;query_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(queryDurationMs) ascending</span><br />
+&nbsp;&nbsp;sum_queryDurationMs_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(queryDurationMs) descending</span><br />
+&nbsp;&nbsp;sum_queryDurationMs_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(rowsRead) ascending</span><br />
+&nbsp;&nbsp;sum_rowsRead_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(rowsRead) descending</span><br />
+&nbsp;&nbsp;sum_rowsRead_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(rowsWritten) ascending</span><br />
+&nbsp;&nbsp;sum_rowsWritten_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(rowsWritten) descending</span><br />
+&nbsp;&nbsp;sum_rowsWritten_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(sampleInterval) ascending</span><br />
+&nbsp;&nbsp;sum_sampleInterval_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(sampleInterval) descending</span><br />
+&nbsp;&nbsp;sum_sampleInterval_DESC<br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountD1QueriesAdaptiveGroupsSum" href="#AccountD1QueriesAdaptiveGroupsSum">AccountD1QueriesAdaptiveGroupsSum</a> {<br />
+&nbsp;&nbsp;<span class="c"># The total duration queries in D1 took, observed over the queried time period.</span><br />
+&nbsp;&nbsp;queryDurationMs: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;<span class="c"># The total number of rows scanned, observed over the queried time period.</span><br />
+&nbsp;&nbsp;rowsRead: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># The total number of rows written, observed over the queried time period.</span><br />
+&nbsp;&nbsp;rowsWritten: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># The number of sample intervals</span><br />
+&nbsp;&nbsp;sampleInterval: <a href="#float64">float64!</a><br />
 }<br />
 <br />
 <span class="c"># Beta. D1 storage with adaptive sampling</span><br />
