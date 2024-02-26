@@ -5624,7 +5624,7 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsSum {
 type AccountD1AnalyticsAdaptiveGroups {
   # The average value for a metric per dimension
   avg: AccountD1AnalyticsAdaptiveGroupsAvg
-  # Number of requests to D1 processed (approximation when sampleInterval > 1)
+  # Number of requests to D1 processed
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountD1AnalyticsAdaptiveGroupsDimensions
@@ -5820,7 +5820,7 @@ type AccountD1AnalyticsAdaptiveGroupsSum {
 type AccountD1QueriesAdaptiveGroups {
   # The average value for a metric per dimension
   avg: AccountD1QueriesAdaptiveGroupsAvg
-  # Number of D1 queries processed (approximation when sampleInterval > 1)
+  # Number of D1 queries processed
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountD1QueriesAdaptiveGroupsDimensions
@@ -5982,10 +5982,6 @@ enum AccountD1QueriesAdaptiveGroupsOrderBy {
   sum_rowsWritten_ASC
   # sum(rowsWritten) descending
   sum_rowsWritten_DESC
-  # sum(sampleInterval) ascending
-  sum_sampleInterval_ASC
-  # sum(sampleInterval) descending
-  sum_sampleInterval_DESC
 }
 
 type AccountD1QueriesAdaptiveGroupsSum {
@@ -5995,8 +5991,6 @@ type AccountD1QueriesAdaptiveGroupsSum {
   rowsRead: uint64!
   # The total number of rows written, observed over the queried time period.
   rowsWritten: uint64!
-  # The number of sample intervals
-  sampleInterval: float64!
 }
 
 # Beta. D1 storage with adaptive sampling
@@ -26160,7 +26154,7 @@ input AccountSinkholeRequestLogsAdaptiveFilter_InputObject {
 
 # Sinkhole Request Logs
 type AccountSinkholeRequestLogsAdaptiveGroups {
-  # Number of requests logged (approximation when sampleInterval > 1)
+  # Number of requests logged
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountSinkholeRequestLogsAdaptiveGroupsDimensions
@@ -32652,6 +32646,12 @@ type ZoneDmarcReportsSourcesAdaptiveGroupsUniq {
 type ZoneDnsAnalyticsAdaptive {
   # IATA airport code of the data center that processed the query
   coloName: string!
+  # Date on which the query was received
+  date: Date!
+  # Time at which the query was received
+  datetime: Time!
+  # Cloudflare edge IP address that the query was received at
+  destinationIP: string!
   # Internet Protocol version over which the query was received
   ipVersion: uint8!
   # Transport protocol over which the query was received
@@ -32672,10 +32672,10 @@ type ZoneDnsAnalyticsAdaptive {
   responseStale: uint8!
   # ABR sample interval
   sampleInterval: uint32!
-  # Time at which the query was received
-  timestamp: Time!
+  # IP address of the client that sent the query (usually this is the resolver's IP address)
+  sourceIP: string!
   # Upstream server that the query was forwarded to
-  upstream: string!
+  upstreamIP: string!
 }
 
 input ZoneDnsAnalyticsAdaptiveFilter_InputObject {
@@ -32691,6 +32691,32 @@ input ZoneDnsAnalyticsAdaptiveFilter_InputObject {
   coloName_neq: string
   coloName_notin: [string!]
   coloName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationIP: string
+  destinationIP_geq: string
+  destinationIP_gt: string
+  destinationIP_in: [string!]
+  destinationIP_leq: string
+  destinationIP_like: string
+  destinationIP_lt: string
+  destinationIP_neq: string
+  destinationIP_notin: [string!]
+  destinationIP_notlike: string
   ipVersion: uint8
   ipVersion_geq: uint8
   ipVersion_gt: uint8
@@ -32779,24 +32805,26 @@ input ZoneDnsAnalyticsAdaptiveFilter_InputObject {
   sampleInterval_lt: uint32
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
-  timestamp: Time
-  timestamp_geq: Time
-  timestamp_gt: Time
-  timestamp_in: [Time!]
-  timestamp_leq: Time
-  timestamp_lt: Time
-  timestamp_neq: Time
-  timestamp_notin: [Time!]
-  upstream: string
-  upstream_geq: string
-  upstream_gt: string
-  upstream_in: [string!]
-  upstream_leq: string
-  upstream_like: string
-  upstream_lt: string
-  upstream_neq: string
-  upstream_notin: [string!]
-  upstream_notlike: string
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
+  upstreamIP: string
+  upstreamIP_geq: string
+  upstreamIP_gt: string
+  upstreamIP_in: [string!]
+  upstreamIP_leq: string
+  upstreamIP_like: string
+  upstreamIP_lt: string
+  upstreamIP_neq: string
+  upstreamIP_notin: [string!]
+  upstreamIP_notlike: string
 }
 
 # Analytics data for DNS queries (currently, only Foundation DNS zones are supported)
@@ -32821,6 +32849,22 @@ type ZoneDnsAnalyticsAdaptiveGroupsAvg {
 type ZoneDnsAnalyticsAdaptiveGroupsDimensions {
   # IATA airport code of the data center that processed the query
   coloName: string!
+  # Date on which the query was received
+  date: Date!
+  # Time at which the query was received
+  datetime: Time!
+  # Time at which the query was received, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Time at which the query was received, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # Time at which the query was received, truncated to multiple of 30 minutes
+  datetimeHalfOfHour: Time!
+  # Time at which the query was received, truncated to the hour
+  datetimeHour: Time!
+  # Time at which the query was received, truncated to the minute
+  datetimeMinute: Time!
+  # Cloudflare edge IP address that the query was received at
+  destinationIP: string!
   # Internet Protocol version over which the query was received
   ipVersion: uint8!
   # Transport protocol over which the query was received
@@ -32839,20 +32883,10 @@ type ZoneDnsAnalyticsAdaptiveGroupsDimensions {
   responseSizeBucket: string!
   # Whether a stale DNS response was served from cache
   responseStale: uint8!
-  # Time at which the query was received
-  timestamp: Time!
-  # Time at which the query was received, truncated to multiple of 15 minutes
-  timestampFifteenMinutes: Time!
-  # Time at which the query was received, truncated to multiple of 5 minutes
-  timestampFiveMinutes: Time!
-  # Time at which the query was received, truncated to multiple of 30 minutes
-  timestampHalfOfHour: Time!
-  # Time at which the query was received, truncated to the hour
-  timestampHour: Time!
-  # Time at which the query was received, truncated to the minute
-  timestampMinute: Time!
+  # IP address of the client that sent the query (usually this is the resolver's IP address)
+  sourceIP: string!
   # Upstream server that the query was forwarded to
-  upstream: string!
+  upstreamIP: string!
 }
 
 input ZoneDnsAnalyticsAdaptiveGroupsFilter_InputObject {
@@ -32868,6 +32902,72 @@ input ZoneDnsAnalyticsAdaptiveGroupsFilter_InputObject {
   coloName_neq: string
   coloName_notin: [string!]
   coloName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHalfOfHour: Time
+  datetimeHalfOfHour_geq: Time
+  datetimeHalfOfHour_gt: Time
+  datetimeHalfOfHour_in: [Time!]
+  datetimeHalfOfHour_leq: Time
+  datetimeHalfOfHour_lt: Time
+  datetimeHalfOfHour_neq: Time
+  datetimeHalfOfHour_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationIP: string
+  destinationIP_geq: string
+  destinationIP_gt: string
+  destinationIP_in: [string!]
+  destinationIP_leq: string
+  destinationIP_like: string
+  destinationIP_lt: string
+  destinationIP_neq: string
+  destinationIP_notin: [string!]
+  destinationIP_notlike: string
   ipVersion: uint8
   ipVersion_geq: uint8
   ipVersion_gt: uint8
@@ -32952,64 +33052,26 @@ input ZoneDnsAnalyticsAdaptiveGroupsFilter_InputObject {
   responseStale_lt: uint8
   responseStale_neq: uint8
   responseStale_notin: bytes
-  timestamp: Time
-  timestampFifteenMinutes: Time
-  timestampFifteenMinutes_geq: Time
-  timestampFifteenMinutes_gt: Time
-  timestampFifteenMinutes_in: [Time!]
-  timestampFifteenMinutes_leq: Time
-  timestampFifteenMinutes_lt: Time
-  timestampFifteenMinutes_neq: Time
-  timestampFifteenMinutes_notin: [Time!]
-  timestampFiveMinutes: Time
-  timestampFiveMinutes_geq: Time
-  timestampFiveMinutes_gt: Time
-  timestampFiveMinutes_in: [Time!]
-  timestampFiveMinutes_leq: Time
-  timestampFiveMinutes_lt: Time
-  timestampFiveMinutes_neq: Time
-  timestampFiveMinutes_notin: [Time!]
-  timestampHalfOfHour: Time
-  timestampHalfOfHour_geq: Time
-  timestampHalfOfHour_gt: Time
-  timestampHalfOfHour_in: [Time!]
-  timestampHalfOfHour_leq: Time
-  timestampHalfOfHour_lt: Time
-  timestampHalfOfHour_neq: Time
-  timestampHalfOfHour_notin: [Time!]
-  timestampHour: Time
-  timestampHour_geq: Time
-  timestampHour_gt: Time
-  timestampHour_in: [Time!]
-  timestampHour_leq: Time
-  timestampHour_lt: Time
-  timestampHour_neq: Time
-  timestampHour_notin: [Time!]
-  timestampMinute: Time
-  timestampMinute_geq: Time
-  timestampMinute_gt: Time
-  timestampMinute_in: [Time!]
-  timestampMinute_leq: Time
-  timestampMinute_lt: Time
-  timestampMinute_neq: Time
-  timestampMinute_notin: [Time!]
-  timestamp_geq: Time
-  timestamp_gt: Time
-  timestamp_in: [Time!]
-  timestamp_leq: Time
-  timestamp_lt: Time
-  timestamp_neq: Time
-  timestamp_notin: [Time!]
-  upstream: string
-  upstream_geq: string
-  upstream_gt: string
-  upstream_in: [string!]
-  upstream_leq: string
-  upstream_like: string
-  upstream_lt: string
-  upstream_neq: string
-  upstream_notin: [string!]
-  upstream_notlike: string
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
+  upstreamIP: string
+  upstreamIP_geq: string
+  upstreamIP_gt: string
+  upstreamIP_in: [string!]
+  upstreamIP_leq: string
+  upstreamIP_like: string
+  upstreamIP_lt: string
+  upstreamIP_neq: string
+  upstreamIP_notin: [string!]
+  upstreamIP_notlike: string
 }
 
 enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
@@ -33029,6 +33091,38 @@ enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
   count_ASC
   # count() descending
   count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHalfOfHour ascending
+  datetimeHalfOfHour_ASC
+  # datetimeHalfOfHour descending
+  datetimeHalfOfHour_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationIP ascending
+  destinationIP_ASC
+  # destinationIP descending
+  destinationIP_DESC
   # instanceCode ascending
   instanceCode_ASC
   # instanceCode descending
@@ -33081,34 +33175,14 @@ enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
   responseStale_ASC
   # responseStale descending
   responseStale_DESC
-  # timestampFifteenMinutes ascending
-  timestampFifteenMinutes_ASC
-  # timestampFifteenMinutes descending
-  timestampFifteenMinutes_DESC
-  # timestampFiveMinutes ascending
-  timestampFiveMinutes_ASC
-  # timestampFiveMinutes descending
-  timestampFiveMinutes_DESC
-  # timestampHalfOfHour ascending
-  timestampHalfOfHour_ASC
-  # timestampHalfOfHour descending
-  timestampHalfOfHour_DESC
-  # timestampHour ascending
-  timestampHour_ASC
-  # timestampHour descending
-  timestampHour_DESC
-  # timestampMinute ascending
-  timestampMinute_ASC
-  # timestampMinute descending
-  timestampMinute_DESC
-  # timestamp ascending
-  timestamp_ASC
-  # timestamp descending
-  timestamp_DESC
-  # upstream ascending
-  upstream_ASC
-  # upstream descending
-  upstream_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # upstreamIP ascending
+  upstreamIP_ASC
+  # upstreamIP descending
+  upstreamIP_DESC
 }
 
 type ZoneDnsAnalyticsAdaptiveGroupsQuantiles {
@@ -33125,6 +33199,18 @@ enum ZoneDnsAnalyticsAdaptiveOrderBy {
   coloName_ASC
   # coloName descending
   coloName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationIP ascending
+  destinationIP_ASC
+  # destinationIP descending
+  destinationIP_DESC
   # instanceCode ascending
   instanceCode_ASC
   # instanceCode descending
@@ -33169,14 +33255,14 @@ enum ZoneDnsAnalyticsAdaptiveOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
-  # timestamp ascending
-  timestamp_ASC
-  # timestamp descending
-  timestamp_DESC
-  # upstream ascending
-  upstream_ASC
-  # upstream descending
-  upstream_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # upstreamIP ascending
+  upstreamIP_ASC
+  # upstreamIP descending
+  upstreamIP_DESC
 }
 
 # Beta. Raw email routing logs with adaptive sampling
@@ -33352,7 +33438,7 @@ input ZoneEmailRoutingAdaptiveFilter_InputObject {
 
 # Beta. Aggregated email routing logs with adaptive sampling
 type ZoneEmailRoutingAdaptiveGroups {
-  # Number of emails processed (approximation when sampleInterval > 1)
+  # Number of emails processed
   count: uint64!
   # List of dimensions to group by
   dimensions: ZoneEmailRoutingAdaptiveGroupsDimensions
