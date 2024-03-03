@@ -8,6 +8,8 @@ Account-level datasets:
 * aiGatewayRequestsAdaptiveGroups
 * aiInferenceAdaptive
 * aiInferenceAdaptiveGroups
+* callsStatusAdaptive
+* callsUsageAdaptiveGroups
   cdnNetworkAnalyticsAdaptiveGroups
 * d1AnalyticsAdaptiveGroups
 * d1QueriesAdaptiveGroups
@@ -182,6 +184,10 @@ type account {
   aiInferenceAdaptive(filter: AccountAiInferenceAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveOrderBy!]): [AccountAiInferenceAdaptive!]!
   # Aggregated AI Inference logs with adaptive sampling
   aiInferenceAdaptiveGroups(filter: AccountAiInferenceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveGroupsOrderBy!]): [AccountAiInferenceAdaptiveGroups!]!
+  # (TESTING ONLY, NOT FOR PRODUCTION) Raw Calls events with adaptive sampling
+  callsStatusAdaptive(filter: AccountCallsStatusAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountCallsStatusAdaptiveOrderBy!]): [AccountCallsStatusAdaptive!]!
+  # Beta. Aggregated Calls bandwidth usage with adaptive sampling
+  callsUsageAdaptiveGroups(filter: AccountCallsUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCallsUsageAdaptiveGroupsOrderBy!]): [AccountCallsUsageAdaptiveGroups!]!
   # Network analytics data for Cloudflare CDN traffic
   cdnNetworkAnalyticsAdaptiveGroups(filter: AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountCdnNetworkAnalyticsAdaptiveGroups!]!
   # Beta. Aggregated D1 analytics with adaptive sampling
@@ -4273,6 +4279,264 @@ enum AccountAiInferenceAdaptiveOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+}
+
+# (TESTING ONLY, NOT FOR PRODUCTION) Raw Calls events with adaptive sampling
+type AccountCallsStatusAdaptive {
+  # The appId that generated traffic
+  appId: string!
+  # The date and time the event was recorded
+  datetime: Time!
+  # The description of the event related to a session or a track
+  event: string!
+  # The generated string that identifies a PeerConnection
+  sessionId: string!
+  # The track identifier provided to us within a PeerConnection
+  trackId: string!
+}
+
+input AccountCallsStatusAdaptiveFilter_InputObject {
+  AND: [AccountCallsStatusAdaptiveFilter_InputObject!]
+  OR: [AccountCallsStatusAdaptiveFilter_InputObject!]
+  appId: string
+  appId_geq: string
+  appId_gt: string
+  appId_in: [string!]
+  appId_leq: string
+  appId_like: string
+  appId_lt: string
+  appId_neq: string
+  appId_notin: [string!]
+  appId_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  event: string
+  event_geq: string
+  event_gt: string
+  event_in: [string!]
+  event_leq: string
+  event_like: string
+  event_lt: string
+  event_neq: string
+  event_notin: [string!]
+  event_notlike: string
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+  trackId: string
+  trackId_geq: string
+  trackId_gt: string
+  trackId_in: [string!]
+  trackId_leq: string
+  trackId_like: string
+  trackId_lt: string
+  trackId_neq: string
+  trackId_notin: [string!]
+  trackId_notlike: string
+}
+
+enum AccountCallsStatusAdaptiveOrderBy {
+  # appId ascending
+  appId_ASC
+  # appId descending
+  appId_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # event ascending
+  event_ASC
+  # event descending
+  event_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # trackId ascending
+  trackId_ASC
+  # trackId descending
+  trackId_DESC
+}
+
+# Beta. Aggregated Calls bandwidth usage with adaptive sampling
+type AccountCallsUsageAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountCallsUsageAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountCallsUsageAdaptiveGroupsSum
+}
+
+type AccountCallsUsageAdaptiveGroupsDimensions {
+  # The appId that generated traffic
+  appId: string!
+  # Calls bandwidth metrics date
+  date: Date!
+  # Calls bandwidth metrics timestamp, truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Calls bandwidth metrics timestamp, truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Calls bandwidth metrics timestamp, truncated to the hour
+  datetimeHour: Time!
+  # Calls bandwidth metrics timestamp, truncated to the minute
+  datetimeMinute: Time!
+  # The generated string that identifies a PeerConnection
+  sessionId: string!
+  # The track identifier provided to us within a PeerConnection
+  trackId: string!
+  # Describes if the track contains video, audio, or data
+  trackType: string!
+}
+
+input AccountCallsUsageAdaptiveGroupsFilter_InputObject {
+  AND: [AccountCallsUsageAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountCallsUsageAdaptiveGroupsFilter_InputObject!]
+  appId: string
+  appId_geq: string
+  appId_gt: string
+  appId_in: [string!]
+  appId_leq: string
+  appId_like: string
+  appId_lt: string
+  appId_neq: string
+  appId_notin: [string!]
+  appId_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+  trackId: string
+  trackId_geq: string
+  trackId_gt: string
+  trackId_in: [string!]
+  trackId_leq: string
+  trackId_like: string
+  trackId_lt: string
+  trackId_neq: string
+  trackId_notin: [string!]
+  trackId_notlike: string
+  trackType: string
+  trackType_geq: string
+  trackType_gt: string
+  trackType_in: [string!]
+  trackType_leq: string
+  trackType_like: string
+  trackType_lt: string
+  trackType_neq: string
+  trackType_notin: [string!]
+  trackType_notlike: string
+}
+
+enum AccountCallsUsageAdaptiveGroupsOrderBy {
+  # appId ascending
+  appId_ASC
+  # appId descending
+  appId_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # sum(egressBytes) ascending
+  sum_egressBytes_ASC
+  # sum(egressBytes) descending
+  sum_egressBytes_DESC
+  # sum(ingressBytes) ascending
+  sum_ingressBytes_ASC
+  # sum(ingressBytes) descending
+  sum_ingressBytes_DESC
+  # trackId ascending
+  trackId_ASC
+  # trackId descending
+  trackId_DESC
+  # trackType ascending
+  trackType_ASC
+  # trackType descending
+  trackType_DESC
+}
+
+type AccountCallsUsageAdaptiveGroupsSum {
+  # The total bytes sent by Calls, observed over the queried time period
+  egressBytes: int64!
+  # The total bytes received by Calls, observed over the queried time period
+  ingressBytes: int64!
 }
 
 # Network analytics data for Cloudflare CDN traffic
@@ -14448,6 +14712,8 @@ type AccountHttpRequestsAdaptive {
   originResponseDurationMs: uint64!
   # HTTP origin response status code returned to browser
   originResponseStatus: uint16!
+  # The RayId of the request
+  rayName: string!
   requestSource: string!
   # The code of the first-class action the Cloudflare Firewall took on this request
   securityAction: string!
@@ -14891,6 +15157,16 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   originResponseStatus_lt: uint16
   originResponseStatus_neq: uint16
   originResponseStatus_notin: [uint16!]
+  rayName: string
+  rayName_geq: string
+  rayName_gt: string
+  rayName_in: [string!]
+  rayName_leq: string
+  rayName_like: string
+  rayName_lt: string
+  rayName_neq: string
+  rayName_notin: [string!]
+  rayName_notlike: string
   requestSource: string
   requestSource_geq: string
   requestSource_gt: string
@@ -15596,6 +15872,16 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   originResponseStatus_lt: uint16
   originResponseStatus_neq: uint16
   originResponseStatus_notin: [uint16!]
+  rayName: string
+  rayName_geq: string
+  rayName_gt: string
+  rayName_in: [string!]
+  rayName_leq: string
+  rayName_like: string
+  rayName_lt: string
+  rayName_neq: string
+  rayName_notin: [string!]
+  rayName_notlike: string
   requestSource: string
   requestSource_geq: string
   requestSource_gt: string
@@ -16308,6 +16594,10 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   originResponseStatus_ASC
   # originResponseStatus descending
   originResponseStatus_DESC
+  # rayName ascending
+  rayName_ASC
+  # rayName descending
+  rayName_DESC
   # requestSource ascending
   requestSource_ASC
   # requestSource descending
@@ -16528,6 +16818,16 @@ input AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject {
   httpApplicationVersion_lt: uint64
   httpApplicationVersion_neq: uint64
   httpApplicationVersion_notin: [uint64!]
+  rayName: string
+  rayName_geq: string
+  rayName_gt: string
+  rayName_in: [string!]
+  rayName_leq: string
+  rayName_like: string
+  rayName_lt: string
+  rayName_neq: string
+  rayName_notin: [string!]
+  rayName_notlike: string
   userAgentBrowser: string
   userAgentBrowser_geq: string
   userAgentBrowser_gt: string
@@ -25909,6 +26209,8 @@ type AccountSettings {
   aiGatewayRequestsAdaptiveGroups: Settings!
   aiInferenceAdaptive: Settings!
   aiInferenceAdaptiveGroups: Settings!
+  callsStatusAdaptive: Settings!
+  callsUsageAdaptiveGroups: Settings!
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
   d1AnalyticsAdaptiveGroups: Settings!
   d1QueriesAdaptiveGroups: Settings!
@@ -37704,6 +38006,8 @@ type ZoneHttpRequestsAdaptive {
   originResponseDurationMs: uint64!
   # HTTP origin response status code returned to browser
   originResponseStatus: uint16!
+  # The RayId of the request
+  rayName: string!
   requestSource: string!
   # The code of the first-class action the Cloudflare Firewall took on this request
   securityAction: string!
@@ -38145,6 +38449,16 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   originResponseStatus_lt: uint16
   originResponseStatus_neq: uint16
   originResponseStatus_notin: [uint16!]
+  rayName: string
+  rayName_geq: string
+  rayName_gt: string
+  rayName_in: [string!]
+  rayName_leq: string
+  rayName_like: string
+  rayName_lt: string
+  rayName_neq: string
+  rayName_notin: [string!]
+  rayName_notlike: string
   requestSource: string
   requestSource_geq: string
   requestSource_gt: string
@@ -38838,6 +39152,16 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   originResponseStatus_lt: uint16
   originResponseStatus_neq: uint16
   originResponseStatus_notin: [uint16!]
+  rayName: string
+  rayName_geq: string
+  rayName_gt: string
+  rayName_in: [string!]
+  rayName_leq: string
+  rayName_like: string
+  rayName_lt: string
+  rayName_neq: string
+  rayName_notin: [string!]
+  rayName_notlike: string
   requestSource: string
   requestSource_geq: string
   requestSource_gt: string
@@ -39536,6 +39860,10 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   originResponseStatus_ASC
   # originResponseStatus descending
   originResponseStatus_DESC
+  # rayName ascending
+  rayName_ASC
+  # rayName descending
+  rayName_DESC
   # requestSource ascending
   requestSource_ASC
   # requestSource descending
@@ -39752,6 +40080,16 @@ input ZoneHttpRequestsOverviewAdaptiveGroupsFilter_InputObject {
   httpApplicationVersion_lt: uint64
   httpApplicationVersion_neq: uint64
   httpApplicationVersion_notin: [uint64!]
+  rayName: string
+  rayName_geq: string
+  rayName_gt: string
+  rayName_in: [string!]
+  rayName_leq: string
+  rayName_like: string
+  rayName_lt: string
+  rayName_neq: string
+  rayName_notin: [string!]
+  rayName_notlike: string
   userAgentBrowser: string
   userAgentBrowser_geq: string
   userAgentBrowser_gt: string
