@@ -49,6 +49,7 @@ Account-level datasets:
   magicTransitTunnelTrafficAdaptiveGroups
 * mnmFlowDataAdaptiveGroups
   nelReportsAdaptiveGroups
+* ohttpMetricsAdaptive
 * pagesFunctionsInvocationsAdaptiveGroups
 * queueBacklogAdaptiveGroups
 * queueConsumerMetricsAdaptiveGroups
@@ -267,6 +268,8 @@ type account {
   mnmFlowDataAdaptiveGroups(filter: AccountMnmFlowDataAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMnmFlowDataAdaptiveGroupsOrderBy!]): [AccountMnmFlowDataAdaptiveGroups!]!
   # Data to visualize network error logs
   nelReportsAdaptiveGroups(filter: AccountNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountNelReportsAdaptiveGroupsOrderBy!]): [AccountNelReportsAdaptiveGroups!]!
+  # oHTTP request metrics with adaptive sampling
+  ohttpMetricsAdaptive(filter: AccountOhttpMetricsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountOhttpMetricsAdaptiveOrderBy!]): [AccountOhttpMetricsAdaptive!]!
   # Pages Functions invocations with adaptive sampling
   pagesFunctionsInvocationsAdaptiveGroups(filter: AccountPagesFunctionsInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy!]): [AccountPagesFunctionsInvocationsAdaptiveGroups!]!
   # Beta. Queue backlog data with adaptive sampling. Queues that are not being written to, or read from, will not return data, even if they have a backlog.
@@ -6097,6 +6100,8 @@ type AccountD1QueriesAdaptiveGroupsAvg {
   queryDurationMs: float64!
   # The average number of rows scanned, observed over the queried time period.
   rowsRead: uint64!
+  # The average number of rows returned, observed over the queried time period.
+  rowsReturned: uint64!
   # The average number of rows written, observed over the queried time period.
   rowsWritten: uint64!
   # The average value used for sample interval
@@ -6194,6 +6199,10 @@ enum AccountD1QueriesAdaptiveGroupsOrderBy {
   avg_rowsRead_ASC
   # avg(rowsRead) descending
   avg_rowsRead_DESC
+  # avg(rowsReturned) ascending
+  avg_rowsReturned_ASC
+  # avg(rowsReturned) descending
+  avg_rowsReturned_DESC
   # avg(rowsWritten) ascending
   avg_rowsWritten_ASC
   # avg(rowsWritten) descending
@@ -6242,6 +6251,10 @@ enum AccountD1QueriesAdaptiveGroupsOrderBy {
   sum_rowsRead_ASC
   # sum(rowsRead) descending
   sum_rowsRead_DESC
+  # sum(rowsReturned) ascending
+  sum_rowsReturned_ASC
+  # sum(rowsReturned) descending
+  sum_rowsReturned_DESC
   # sum(rowsWritten) ascending
   sum_rowsWritten_ASC
   # sum(rowsWritten) descending
@@ -6253,6 +6266,8 @@ type AccountD1QueriesAdaptiveGroupsSum {
   queryDurationMs: float64!
   # The total number of rows scanned, observed over the queried time period.
   rowsRead: uint64!
+  # The total number of rows returned, observed over the queried time period.
+  rowsReturned: uint64!
   # The total number of rows written, observed over the queried time period.
   rowsWritten: uint64!
 }
@@ -20395,6 +20410,10 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
   leaseTag: string!
   # Which system dropped the packet (possible values: dosd, flowtrackd, magic-firewall)
   mitigationSystem: string!
+  # Offramp method for Magic WAN and Magic Transit traffic - GRE, IPSec, CNI, Warp, Cloudflared
+  offRamp: string!
+  # Onramp method for Magic WAN and Magic Transit traffic - GRE, IPSec, CNI, Warp, Cloudflared
+  onRamp: string!
   # The action that was taken on the packet (possible values: pass, drop)
   outcome: string!
   # IP prefix tag associated with the packet
@@ -20968,6 +20987,26 @@ input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   mitigationSystem_neq: string
   mitigationSystem_notin: [string!]
   mitigationSystem_notlike: string
+  offRamp: string
+  offRamp_geq: string
+  offRamp_gt: string
+  offRamp_in: [string!]
+  offRamp_leq: string
+  offRamp_like: string
+  offRamp_lt: string
+  offRamp_neq: string
+  offRamp_notin: [string!]
+  offRamp_notlike: string
+  onRamp: string
+  onRamp_geq: string
+  onRamp_gt: string
+  onRamp_in: [string!]
+  onRamp_leq: string
+  onRamp_like: string
+  onRamp_lt: string
+  onRamp_neq: string
+  onRamp_notin: [string!]
+  onRamp_notlike: string
   outcome: string
   outcome_geq: string
   outcome_gt: string
@@ -21483,6 +21522,14 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   mitigationSystem_ASC
   # mitigationSystem descending
   mitigationSystem_DESC
+  # offRamp ascending
+  offRamp_ASC
+  # offRamp descending
+  offRamp_DESC
+  # onRamp ascending
+  onRamp_ASC
+  # onRamp descending
+  onRamp_DESC
   # outcome ascending
   outcome_ASC
   # outcome descending
@@ -21869,22 +21916,48 @@ enum AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy {
 
 # Bandwidth usage metric of a Magic Transit tunnel.
 type AccountMagicTransitTunnelTrafficAdaptiveGroups {
-  # Ingress/Egress bandwidth in bits per second for a past duration
+  # The average of values for a metric per dimension
   avg: AccountMagicTransitTunnelTrafficAdaptiveGroupsAvg
   # List of dimensions to group by
   dimensions: AccountMagicTransitTunnelTrafficAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountMagicTransitTunnelTrafficAdaptiveGroupsSum
 }
 
 type AccountMagicTransitTunnelTrafficAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRate: uint64!
+  # Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date
+  bitRateDay: uint64!
   # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
   bitRateFifteenMinutes: uint64!
   # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
   bitRateFiveMinutes: uint64!
   # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
   bitRateHour: uint64!
+  # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
+  bitRateMinute: uint64!
+  # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
+  bitRateTenSeconds: uint64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRate: uint64!
+  # Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date
+  packetRateDay: uint64!
+  # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
+  packetRateFifteenMinutes: uint64!
+  # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
+  packetRateFiveMinutes: uint64!
+  # Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour
+  packetRateHour: uint64!
+  # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
+  packetRateMinute: uint64!
+  # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
+  packetRateTenSeconds: uint64!
 }
 
 type AccountMagicTransitTunnelTrafficAdaptiveGroupsDimensions {
+  # Date that the packet was received
+  date: Date!
   # Date and time that the packet was received
   datetime: Time!
   # Date and time that the packet was received, rounded to the start of the nearest fifteen minutes
@@ -21893,6 +21966,8 @@ type AccountMagicTransitTunnelTrafficAdaptiveGroupsDimensions {
   datetimeFiveMinutes: Time!
   # Date and time that the packet was received, rounded to the start of the nearest hour
   datetimeHour: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest minute
+  datetimeMinute: Time!
   # Direction of the packet relative to the customer network (possible values: inbound, outbound, lateral)
   direction: string!
   # City where the Cloudflare datacenter that received the packet is located
@@ -21912,6 +21987,14 @@ type AccountMagicTransitTunnelTrafficAdaptiveGroupsDimensions {
 input AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject {
   AND: [AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject!]
   OR: [AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
   datetime: Time
   datetimeFifteenMinutes: Time
   datetimeFifteenMinutes_geq: Time
@@ -21937,6 +22020,14 @@ input AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject {
   datetimeHour_lt: Time
   datetimeHour_neq: Time
   datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -22017,6 +22108,10 @@ input AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy {
+  # avg(bitRateDay) ascending
+  avg_bitRateDay_ASC
+  # avg(bitRateDay) descending
+  avg_bitRateDay_DESC
   # avg(bitRateFifteenMinutes) ascending
   avg_bitRateFifteenMinutes_ASC
   # avg(bitRateFifteenMinutes) descending
@@ -22029,6 +22124,50 @@ enum AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy {
   avg_bitRateHour_ASC
   # avg(bitRateHour) descending
   avg_bitRateHour_DESC
+  # avg(bitRateMinute) ascending
+  avg_bitRateMinute_ASC
+  # avg(bitRateMinute) descending
+  avg_bitRateMinute_DESC
+  # avg(bitRateTenSeconds) ascending
+  avg_bitRateTenSeconds_ASC
+  # avg(bitRateTenSeconds) descending
+  avg_bitRateTenSeconds_DESC
+  # avg(bitRate) ascending
+  avg_bitRate_ASC
+  # avg(bitRate) descending
+  avg_bitRate_DESC
+  # avg(packetRateDay) ascending
+  avg_packetRateDay_ASC
+  # avg(packetRateDay) descending
+  avg_packetRateDay_DESC
+  # avg(packetRateFifteenMinutes) ascending
+  avg_packetRateFifteenMinutes_ASC
+  # avg(packetRateFifteenMinutes) descending
+  avg_packetRateFifteenMinutes_DESC
+  # avg(packetRateFiveMinutes) ascending
+  avg_packetRateFiveMinutes_ASC
+  # avg(packetRateFiveMinutes) descending
+  avg_packetRateFiveMinutes_DESC
+  # avg(packetRateHour) ascending
+  avg_packetRateHour_ASC
+  # avg(packetRateHour) descending
+  avg_packetRateHour_DESC
+  # avg(packetRateMinute) ascending
+  avg_packetRateMinute_ASC
+  # avg(packetRateMinute) descending
+  avg_packetRateMinute_DESC
+  # avg(packetRateTenSeconds) ascending
+  avg_packetRateTenSeconds_ASC
+  # avg(packetRateTenSeconds) descending
+  avg_packetRateTenSeconds_DESC
+  # avg(packetRate) ascending
+  avg_packetRate_ASC
+  # avg(packetRate) descending
+  avg_packetRate_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
   # datetimeFifteenMinutes ascending
   datetimeFifteenMinutes_ASC
   # datetimeFifteenMinutes descending
@@ -22041,6 +22180,10 @@ enum AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy {
   datetimeHour_ASC
   # datetimeHour descending
   datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -22069,6 +22212,14 @@ enum AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy {
   edgeColoName_ASC
   # edgeColoName descending
   edgeColoName_DESC
+  # sum(bits) ascending
+  sum_bits_ASC
+  # sum(bits) descending
+  sum_bits_DESC
+  # sum(packets) ascending
+  sum_packets_ASC
+  # sum(packets) descending
+  sum_packets_DESC
   # system ascending
   system_ASC
   # system descending
@@ -22081,6 +22232,13 @@ enum AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy {
   visibility_ASC
   # visibility descending
   visibility_DESC
+}
+
+type AccountMagicTransitTunnelTrafficAdaptiveGroupsSum {
+  # Sum of bits received
+  bits: uint64!
+  # Sum of packets received
+  packets: uint64!
 }
 
 # Beta. Magic WAN Connector Metrics
@@ -22946,6 +23104,104 @@ enum AccountNelReportsAdaptiveGroupsOrderBy {
   type_ASC
   # type descending
   type_DESC
+}
+
+# oHTTP request metrics with adaptive sampling
+type AccountOhttpMetricsAdaptive {
+  # Bytes returned to client
+  bytesToClient: uint64!
+  # Total bytes received from the client
+  bytesToGateway: uint64!
+  # The airport code of the Cloudflare datacenter that served this request
+  colo: string!
+  # The date and time the event was recorded
+  datetime: Time!
+  # The status code returned by the gateway
+  gatewayStatusCode: uint32!
+  # The status code returned by the relay
+  relayStatusCode: uint32!
+}
+
+input AccountOhttpMetricsAdaptiveFilter_InputObject {
+  AND: [AccountOhttpMetricsAdaptiveFilter_InputObject!]
+  OR: [AccountOhttpMetricsAdaptiveFilter_InputObject!]
+  bytesToClient: uint64
+  bytesToClient_geq: uint64
+  bytesToClient_gt: uint64
+  bytesToClient_in: [uint64!]
+  bytesToClient_leq: uint64
+  bytesToClient_lt: uint64
+  bytesToClient_neq: uint64
+  bytesToClient_notin: [uint64!]
+  bytesToGateway: uint64
+  bytesToGateway_geq: uint64
+  bytesToGateway_gt: uint64
+  bytesToGateway_in: [uint64!]
+  bytesToGateway_leq: uint64
+  bytesToGateway_lt: uint64
+  bytesToGateway_neq: uint64
+  bytesToGateway_notin: [uint64!]
+  colo: string
+  colo_geq: string
+  colo_gt: string
+  colo_in: [string!]
+  colo_leq: string
+  colo_like: string
+  colo_lt: string
+  colo_neq: string
+  colo_notin: [string!]
+  colo_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  gatewayStatusCode: uint32
+  gatewayStatusCode_geq: uint32
+  gatewayStatusCode_gt: uint32
+  gatewayStatusCode_in: [uint32!]
+  gatewayStatusCode_leq: uint32
+  gatewayStatusCode_lt: uint32
+  gatewayStatusCode_neq: uint32
+  gatewayStatusCode_notin: [uint32!]
+  relayStatusCode: uint32
+  relayStatusCode_geq: uint32
+  relayStatusCode_gt: uint32
+  relayStatusCode_in: [uint32!]
+  relayStatusCode_leq: uint32
+  relayStatusCode_lt: uint32
+  relayStatusCode_neq: uint32
+  relayStatusCode_notin: [uint32!]
+}
+
+enum AccountOhttpMetricsAdaptiveOrderBy {
+  # bytesToClient ascending
+  bytesToClient_ASC
+  # bytesToClient descending
+  bytesToClient_DESC
+  # bytesToGateway ascending
+  bytesToGateway_ASC
+  # bytesToGateway descending
+  bytesToGateway_DESC
+  # colo ascending
+  colo_ASC
+  # colo descending
+  colo_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # gatewayStatusCode ascending
+  gatewayStatusCode_ASC
+  # gatewayStatusCode descending
+  gatewayStatusCode_DESC
+  # relayStatusCode ascending
+  relayStatusCode_ASC
+  # relayStatusCode descending
+  relayStatusCode_DESC
 }
 
 # Pages Functions invocations with adaptive sampling
@@ -26250,6 +26506,7 @@ type AccountSettings {
   magicTransitTunnelTrafficAdaptiveGroups: Settings!
   mnmFlowDataAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
+  ohttpMetricsAdaptive: Settings!
   pagesFunctionsInvocationsAdaptiveGroups: Settings!
   queueBacklogAdaptiveGroups: Settings!
   queueConsumerMetricsAdaptiveGroups: Settings!
