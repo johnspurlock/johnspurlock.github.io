@@ -8,6 +8,8 @@ Account-level datasets:
 * aiGatewayRequestsAdaptiveGroups
 * aiInferenceAdaptive
 * aiInferenceAdaptiveGroups
+* browserRenderingEventsAdaptive
+* browserRenderingEventsAdaptiveGroups
 * callsStatusAdaptive
 * callsUsageAdaptiveGroups
   cdnNetworkAnalyticsAdaptiveGroups
@@ -50,9 +52,11 @@ Account-level datasets:
 * mnmFlowDataAdaptiveGroups
   nelReportsAdaptiveGroups
 * ohttpMetricsAdaptive
+* ohttpMetricsAdaptiveGroups
 * pagesFunctionsInvocationsAdaptiveGroups
 * queueBacklogAdaptiveGroups
 * queueConsumerMetricsAdaptiveGroups
+* queueDelayedBacklogAdaptiveGroups
 * queueMessageOperationsAdaptiveGroups
 * r2OperationsAdaptiveGroups
 * r2StorageAdaptiveGroups
@@ -185,6 +189,10 @@ type account {
   aiInferenceAdaptive(filter: AccountAiInferenceAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveOrderBy!]): [AccountAiInferenceAdaptive!]!
   # Aggregated AI Inference logs with adaptive sampling
   aiInferenceAdaptiveGroups(filter: AccountAiInferenceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveGroupsOrderBy!]): [AccountAiInferenceAdaptiveGroups!]!
+  # Browser Rendering events with adaptive sampling
+  browserRenderingEventsAdaptive(filter: AccountBrowserRenderingEventsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserRenderingEventsAdaptiveOrderBy!]): [AccountBrowserRenderingEventsAdaptive!]!
+  # Aggregated Browser Rendering events with adaptive sampling
+  browserRenderingEventsAdaptiveGroups(filter: AccountBrowserRenderingEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserRenderingEventsAdaptiveGroupsOrderBy!]): [AccountBrowserRenderingEventsAdaptiveGroups!]!
   # (TESTING ONLY, NOT FOR PRODUCTION) Raw Calls events with adaptive sampling
   callsStatusAdaptive(filter: AccountCallsStatusAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountCallsStatusAdaptiveOrderBy!]): [AccountCallsStatusAdaptive!]!
   # Beta. Aggregated Calls bandwidth usage with adaptive sampling
@@ -270,12 +278,16 @@ type account {
   nelReportsAdaptiveGroups(filter: AccountNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountNelReportsAdaptiveGroupsOrderBy!]): [AccountNelReportsAdaptiveGroups!]!
   # oHTTP request metrics with adaptive sampling
   ohttpMetricsAdaptive(filter: AccountOhttpMetricsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountOhttpMetricsAdaptiveOrderBy!]): [AccountOhttpMetricsAdaptive!]!
+  # Aggregated oHTTP request metrics with adaptive sampling
+  ohttpMetricsAdaptiveGroups(filter: AccountOhttpMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountOhttpMetricsAdaptiveGroupsOrderBy!]): [AccountOhttpMetricsAdaptiveGroups!]!
   # Pages Functions invocations with adaptive sampling
   pagesFunctionsInvocationsAdaptiveGroups(filter: AccountPagesFunctionsInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy!]): [AccountPagesFunctionsInvocationsAdaptiveGroups!]!
   # Beta. Queue backlog data with adaptive sampling. Queues that are not being written to, or read from, will not return data, even if they have a backlog.
   queueBacklogAdaptiveGroups(filter: AccountQueueBacklogAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueBacklogAdaptiveGroupsOrderBy!]): [AccountQueueBacklogAdaptiveGroups!]!
   # Beta. Queue consumer metrics with adaptive sampling. Inactive queues will not return data.
   queueConsumerMetricsAdaptiveGroups(filter: AccountQueueConsumerMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueConsumerMetricsAdaptiveGroupsOrderBy!]): [AccountQueueConsumerMetricsAdaptiveGroups!]!
+  # Beta. Queue delayed backlog data with adaptive sampling. Queues that are not being written to, or read from, will not return data, even if they have a backlog.
+  queueDelayedBacklogAdaptiveGroups(filter: AccountQueueDelayedBacklogAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueDelayedBacklogAdaptiveGroupsOrderBy!]): [AccountQueueDelayedBacklogAdaptiveGroups!]!
   # Beta. Queue message operation data with adaptive sampling
   queueMessageOperationsAdaptiveGroups(filter: AccountQueueMessageOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueMessageOperationsAdaptiveGroupsOrderBy!]): [AccountQueueMessageOperationsAdaptiveGroups!]!
   # Beta. R2 operations with adaptive sampling
@@ -4284,6 +4296,367 @@ enum AccountAiInferenceAdaptiveOrderBy {
   sampleInterval_DESC
 }
 
+# Browser Rendering events with adaptive sampling
+type AccountBrowserRenderingEventsAdaptive {
+  # Browser session close code. Enum (-1, N/A) (0, Unknown) (1, NormalClosure) (2, BrowserIdle) (3, ClientClosedEarly) (4, ChromiumChrashed) (5, ClientAbnormalClosure) (6, ServerAbnormalClosure) (7, ClientError) (8, ServerError) (9, WorkerError) (10, ClientNeverConnected) (11, BrowserSessionEvicted)
+  browserCloseReason: string!
+  # Browser session end time
+  browserEndTime: Time!
+  # Browser session start time
+  browserStartTime: Time!
+  # When worker ended devtools connection to browser session
+  connectionEndTime: Time!
+  # Worker connection ID, when available
+  connectionId: string!
+  # When worker started devtools connection to browser session
+  connectionStartTime: Time!
+  # The time of the event
+  datetime: Time!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # Name of worker who initiated the request
+  scriptName: string!
+  # Browser session ID
+  sessionId: string!
+}
+
+input AccountBrowserRenderingEventsAdaptiveFilter_InputObject {
+  AND: [AccountBrowserRenderingEventsAdaptiveFilter_InputObject!]
+  OR: [AccountBrowserRenderingEventsAdaptiveFilter_InputObject!]
+  browserCloseReason: string
+  browserCloseReason_geq: string
+  browserCloseReason_gt: string
+  browserCloseReason_in: [string!]
+  browserCloseReason_leq: string
+  browserCloseReason_like: string
+  browserCloseReason_lt: string
+  browserCloseReason_neq: string
+  browserCloseReason_notin: [string!]
+  browserCloseReason_notlike: string
+  browserEndTime: Time
+  browserEndTime_geq: Time
+  browserEndTime_gt: Time
+  browserEndTime_in: [Time!]
+  browserEndTime_leq: Time
+  browserEndTime_lt: Time
+  browserEndTime_neq: Time
+  browserEndTime_notin: [Time!]
+  browserStartTime: Time
+  browserStartTime_geq: Time
+  browserStartTime_gt: Time
+  browserStartTime_in: [Time!]
+  browserStartTime_leq: Time
+  browserStartTime_lt: Time
+  browserStartTime_neq: Time
+  browserStartTime_notin: [Time!]
+  connectionEndTime: Time
+  connectionEndTime_geq: Time
+  connectionEndTime_gt: Time
+  connectionEndTime_in: [Time!]
+  connectionEndTime_leq: Time
+  connectionEndTime_lt: Time
+  connectionEndTime_neq: Time
+  connectionEndTime_notin: [Time!]
+  connectionId: string
+  connectionId_geq: string
+  connectionId_gt: string
+  connectionId_in: [string!]
+  connectionId_leq: string
+  connectionId_like: string
+  connectionId_lt: string
+  connectionId_neq: string
+  connectionId_notin: [string!]
+  connectionId_notlike: string
+  connectionStartTime: Time
+  connectionStartTime_geq: Time
+  connectionStartTime_gt: Time
+  connectionStartTime_in: [Time!]
+  connectionStartTime_leq: Time
+  connectionStartTime_lt: Time
+  connectionStartTime_neq: Time
+  connectionStartTime_notin: [Time!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  scriptName: string
+  scriptName_geq: string
+  scriptName_gt: string
+  scriptName_in: [string!]
+  scriptName_leq: string
+  scriptName_like: string
+  scriptName_lt: string
+  scriptName_neq: string
+  scriptName_notin: [string!]
+  scriptName_notlike: string
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+}
+
+# Aggregated Browser Rendering events with adaptive sampling
+type AccountBrowserRenderingEventsAdaptiveGroups {
+  # Total number of events for an account
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountBrowserRenderingEventsAdaptiveGroupsDimensions
+  # The maximum value for a metric per dimension
+  max: AccountBrowserRenderingEventsAdaptiveGroupsMax
+  # The minimum value for a metric per dimension
+  min: AccountBrowserRenderingEventsAdaptiveGroupsMin
+  uniq: AccountBrowserRenderingEventsAdaptiveGroupsUniq
+}
+
+type AccountBrowserRenderingEventsAdaptiveGroupsDimensions {
+  # Browser session close code. Enum (-1, N/A) (0, Unknown) (1, NormalClosure) (2, BrowserIdle) (3, ClientClosedEarly) (4, ChromiumChrashed) (5, ClientAbnormalClosure) (6, ServerAbnormalClosure) (7, ClientError) (8, ServerError) (9, WorkerError) (10, ClientNeverConnected) (11, BrowserSessionEvicted)
+  browserCloseReason: string!
+  # Worker connection ID, when available
+  connectionId: string!
+  # The date of the event
+  date: Date!
+  # The date and time of the event truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time of the event truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time of the event truncated to the hour
+  datetimeHour: Time!
+  # The date and time of the event truncated to the minute
+  datetimeMinute: Time!
+  # Name of worker who initiated the request
+  scriptName: string!
+  # Browser session ID
+  sessionId: string!
+}
+
+input AccountBrowserRenderingEventsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountBrowserRenderingEventsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountBrowserRenderingEventsAdaptiveGroupsFilter_InputObject!]
+  browserCloseReason: string
+  browserCloseReason_geq: string
+  browserCloseReason_gt: string
+  browserCloseReason_in: [string!]
+  browserCloseReason_leq: string
+  browserCloseReason_like: string
+  browserCloseReason_lt: string
+  browserCloseReason_neq: string
+  browserCloseReason_notin: [string!]
+  browserCloseReason_notlike: string
+  connectionId: string
+  connectionId_geq: string
+  connectionId_gt: string
+  connectionId_in: [string!]
+  connectionId_leq: string
+  connectionId_like: string
+  connectionId_lt: string
+  connectionId_neq: string
+  connectionId_notin: [string!]
+  connectionId_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  scriptName: string
+  scriptName_geq: string
+  scriptName_gt: string
+  scriptName_in: [string!]
+  scriptName_leq: string
+  scriptName_like: string
+  scriptName_lt: string
+  scriptName_neq: string
+  scriptName_notin: [string!]
+  scriptName_notlike: string
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+}
+
+type AccountBrowserRenderingEventsAdaptiveGroupsMax {
+  # Browser close reason
+  finalBrowserCloseReason: string!
+  # Browser end time
+  latestBrowserEndTime: Time!
+}
+
+type AccountBrowserRenderingEventsAdaptiveGroupsMin {
+  # Browser start time
+  earliestBrowserStartTime: Time!
+}
+
+enum AccountBrowserRenderingEventsAdaptiveGroupsOrderBy {
+  # browserCloseReason ascending
+  browserCloseReason_ASC
+  # browserCloseReason descending
+  browserCloseReason_DESC
+  # connectionId ascending
+  connectionId_ASC
+  # connectionId descending
+  connectionId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # max(finalBrowserCloseReason) ascending
+  max_finalBrowserCloseReason_ASC
+  # max(finalBrowserCloseReason) descending
+  max_finalBrowserCloseReason_DESC
+  # max(latestBrowserEndTime) ascending
+  max_latestBrowserEndTime_ASC
+  # max(latestBrowserEndTime) descending
+  max_latestBrowserEndTime_DESC
+  # min(earliestBrowserStartTime) ascending
+  min_earliestBrowserStartTime_ASC
+  # min(earliestBrowserStartTime) descending
+  min_earliestBrowserStartTime_DESC
+  # scriptName ascending
+  scriptName_ASC
+  # scriptName descending
+  scriptName_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # uniq(connectionIdCount) ascending
+  uniq_connectionIdCount_ASC
+  # uniq(connectionIdCount) descending
+  uniq_connectionIdCount_DESC
+  # uniq(sessionIdCount) ascending
+  uniq_sessionIdCount_ASC
+  # uniq(sessionIdCount) descending
+  uniq_sessionIdCount_DESC
+}
+
+type AccountBrowserRenderingEventsAdaptiveGroupsUniq {
+  # Unique worker connections
+  connectionIdCount: uint32!
+  # Unique browser sessions
+  sessionIdCount: uint32!
+}
+
+enum AccountBrowserRenderingEventsAdaptiveOrderBy {
+  # browserCloseReason ascending
+  browserCloseReason_ASC
+  # browserCloseReason descending
+  browserCloseReason_DESC
+  # browserEndTime ascending
+  browserEndTime_ASC
+  # browserEndTime descending
+  browserEndTime_DESC
+  # browserStartTime ascending
+  browserStartTime_ASC
+  # browserStartTime descending
+  browserStartTime_DESC
+  # connectionEndTime ascending
+  connectionEndTime_ASC
+  # connectionEndTime descending
+  connectionEndTime_DESC
+  # connectionId ascending
+  connectionId_ASC
+  # connectionId descending
+  connectionId_DESC
+  # connectionStartTime ascending
+  connectionStartTime_ASC
+  # connectionStartTime descending
+  connectionStartTime_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # scriptName ascending
+  scriptName_ASC
+  # scriptName descending
+  scriptName_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+}
+
 # (TESTING ONLY, NOT FOR PRODUCTION) Raw Calls events with adaptive sampling
 type AccountCallsStatusAdaptive {
   # The appId that generated traffic
@@ -4698,6 +5071,8 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
   mitigationSystem: string!
   # The action that was taken on the packet (possible values: pass, drop)
   outcome: string!
+  # Cloudflare PoP that received the packet (unique site identifier)
+  popName: string!
   # IP prefix tag associated with the packet
   prefixTag: string!
   # ABR sample interval
@@ -5251,6 +5626,16 @@ input AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   outcome_neq: string
   outcome_notin: [string!]
   outcome_notlike: string
+  popName: string
+  popName_geq: string
+  popName_gt: string
+  popName_in: [string!]
+  popName_leq: string
+  popName_like: string
+  popName_lt: string
+  popName_neq: string
+  popName_notin: [string!]
+  popName_notlike: string
   prefixTag: string
   prefixTag_geq: string
   prefixTag_gt: string
@@ -5758,6 +6143,10 @@ enum AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy {
   outcome_ASC
   # outcome descending
   outcome_DESC
+  # popName ascending
+  popName_ASC
+  # popName descending
+  popName_DESC
   # prefixTag ascending
   prefixTag_ASC
   # prefixTag descending
@@ -21702,10 +22091,14 @@ type AccountMagicTransitTunnelHealthChecksAdaptiveGroupsDimensions {
   edgeColoName: string!
   # Region of the Cloudflare datacenter from where the healthcheck was run
   edgeColoRegion: string!
+  # The name of the Cloudflare POP from where the healthcheck was run
+  edgePopName: string!
   # IP address of the remote end of the tunnel
   remoteTunnelIPv4: string!
   # The status of the request
   resultStatus: string!
+  # Human friendly site name associated with the tunnel
+  siteName: string!
   # Human friendly tunnel name
   tunnelName: string!
 }
@@ -21811,6 +22204,16 @@ input AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject {
   edgeColoRegion_neq: string
   edgeColoRegion_notin: [string!]
   edgeColoRegion_notlike: string
+  edgePopName: string
+  edgePopName_geq: string
+  edgePopName_gt: string
+  edgePopName_in: [string!]
+  edgePopName_leq: string
+  edgePopName_like: string
+  edgePopName_lt: string
+  edgePopName_neq: string
+  edgePopName_notin: [string!]
+  edgePopName_notlike: string
   remoteTunnelIPv4: string
   remoteTunnelIPv4_geq: string
   remoteTunnelIPv4_gt: string
@@ -21831,6 +22234,16 @@ input AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject {
   resultStatus_neq: string
   resultStatus_notin: [string!]
   resultStatus_notlike: string
+  siteName: string
+  siteName_geq: string
+  siteName_gt: string
+  siteName_in: [string!]
+  siteName_leq: string
+  siteName_like: string
+  siteName_lt: string
+  siteName_neq: string
+  siteName_notin: [string!]
+  siteName_notlike: string
   tunnelName: string
   tunnelName_geq: string
   tunnelName_gt: string
@@ -21900,6 +22313,10 @@ enum AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy {
   edgeColoRegion_ASC
   # edgeColoRegion descending
   edgeColoRegion_DESC
+  # edgePopName ascending
+  edgePopName_ASC
+  # edgePopName descending
+  edgePopName_DESC
   # remoteTunnelIPv4 ascending
   remoteTunnelIPv4_ASC
   # remoteTunnelIPv4 descending
@@ -21908,6 +22325,10 @@ enum AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy {
   resultStatus_ASC
   # resultStatus descending
   resultStatus_DESC
+  # siteName ascending
+  siteName_ASC
+  # siteName descending
+  siteName_DESC
   # tunnelName ascending
   tunnelName_ASC
   # tunnelName descending
@@ -21980,6 +22401,8 @@ type AccountMagicTransitTunnelTrafficAdaptiveGroupsDimensions {
   edgeColoGeohash: string!
   # Cloudflare datacenter that received the packet (unique site identifier)
   edgeColoName: string!
+  # Cloudflare PoP that received the packet (unique site identifier)
+  edgePopName: string!
   # Tunnel device name
   tunnelName: string!
 }
@@ -22095,6 +22518,16 @@ input AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject {
   edgeColoName_neq: string
   edgeColoName_notin: [string!]
   edgeColoName_notlike: string
+  edgePopName: string
+  edgePopName_geq: string
+  edgePopName_gt: string
+  edgePopName_in: [string!]
+  edgePopName_leq: string
+  edgePopName_like: string
+  edgePopName_lt: string
+  edgePopName_neq: string
+  edgePopName_notin: [string!]
+  edgePopName_notlike: string
   tunnelName: string
   tunnelName_geq: string
   tunnelName_gt: string
@@ -22212,6 +22645,10 @@ enum AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy {
   edgeColoName_ASC
   # edgeColoName descending
   edgeColoName_DESC
+  # edgePopName ascending
+  edgePopName_ASC
+  # edgePopName descending
+  edgePopName_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
@@ -23177,6 +23614,189 @@ input AccountOhttpMetricsAdaptiveFilter_InputObject {
   relayStatusCode_notin: [uint32!]
 }
 
+# Aggregated oHTTP request metrics with adaptive sampling
+type AccountOhttpMetricsAdaptiveGroups {
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountOhttpMetricsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountOhttpMetricsAdaptiveGroupsSum
+}
+
+type AccountOhttpMetricsAdaptiveGroupsDimensions {
+  # The airport code of the Cloudflare datacenter that served this request
+  colo: string!
+  # Ohttp requests metrics date
+  date: Date!
+  # Ohttp requests metrics timestamp, truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Ohttp requests metrics timestamp, truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Ohttp requests metrics timestamp, truncated to the hour
+  datetimeHour: Time!
+  # Ohttp requests metrics timestamp, truncated to the minute
+  datetimeMinute: Time!
+  # The appId that generated traffic
+  endpoint: string!
+  # Status code returned by the gateway
+  gatewayStatusCode: string!
+  # Status code returned by the relay
+  relayStatusCode: int64!
+}
+
+input AccountOhttpMetricsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountOhttpMetricsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountOhttpMetricsAdaptiveGroupsFilter_InputObject!]
+  colo: string
+  colo_geq: string
+  colo_gt: string
+  colo_in: [string!]
+  colo_leq: string
+  colo_like: string
+  colo_lt: string
+  colo_neq: string
+  colo_notin: [string!]
+  colo_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  endpoint: string
+  endpoint_geq: string
+  endpoint_gt: string
+  endpoint_in: [string!]
+  endpoint_leq: string
+  endpoint_like: string
+  endpoint_lt: string
+  endpoint_neq: string
+  endpoint_notin: [string!]
+  endpoint_notlike: string
+  gatewayStatusCode: string
+  gatewayStatusCode_geq: string
+  gatewayStatusCode_gt: string
+  gatewayStatusCode_in: [string!]
+  gatewayStatusCode_leq: string
+  gatewayStatusCode_like: string
+  gatewayStatusCode_lt: string
+  gatewayStatusCode_neq: string
+  gatewayStatusCode_notin: [string!]
+  gatewayStatusCode_notlike: string
+  relayStatusCode: int64
+  relayStatusCode_geq: int64
+  relayStatusCode_gt: int64
+  relayStatusCode_in: [int64!]
+  relayStatusCode_leq: int64
+  relayStatusCode_lt: int64
+  relayStatusCode_neq: int64
+  relayStatusCode_notin: [int64!]
+}
+
+enum AccountOhttpMetricsAdaptiveGroupsOrderBy {
+  # colo ascending
+  colo_ASC
+  # colo descending
+  colo_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # endpoint ascending
+  endpoint_ASC
+  # endpoint descending
+  endpoint_DESC
+  # gatewayStatusCode ascending
+  gatewayStatusCode_ASC
+  # gatewayStatusCode descending
+  gatewayStatusCode_DESC
+  # relayStatusCode ascending
+  relayStatusCode_ASC
+  # relayStatusCode descending
+  relayStatusCode_DESC
+  # sum(bytesToClient) ascending
+  sum_bytesToClient_ASC
+  # sum(bytesToClient) descending
+  sum_bytesToClient_DESC
+  # sum(bytesToGateway) ascending
+  sum_bytesToGateway_ASC
+  # sum(bytesToGateway) descending
+  sum_bytesToGateway_DESC
+  # sum(clientRequestErrors) ascending
+  sum_clientRequestErrors_ASC
+  # sum(clientRequestErrors) descending
+  sum_clientRequestErrors_DESC
+  # sum(gatewayResponseErrors) ascending
+  sum_gatewayResponseErrors_ASC
+  # sum(gatewayResponseErrors) descending
+  sum_gatewayResponseErrors_DESC
+}
+
+type AccountOhttpMetricsAdaptiveGroupsSum {
+  # The total bytes sent from gateway to client, observed over the queried time period
+  bytesToClient: int64!
+  # The total bytes from client to gateway, observed over the queried time period
+  bytesToGateway: int64!
+  # The total number of client request errors, observed over the queried time period
+  clientRequestErrors: int64!
+  # The total number of gateway response errors, observed over the queried time period
+  gatewayResponseErrors: int64!
+}
+
 enum AccountOhttpMetricsAdaptiveOrderBy {
   # bytesToClient ascending
   bytesToClient_ASC
@@ -23625,6 +24245,112 @@ enum AccountQueueConsumerMetricsAdaptiveGroupsOrderBy {
   avg_concurrency_ASC
   # avg(concurrency) descending
   avg_concurrency_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # queueId ascending
+  queueId_ASC
+  # queueId descending
+  queueId_DESC
+}
+
+# Beta. Queue delayed backlog data with adaptive sampling. Queues that are not being written to, or read from, will not return data, even if they have a backlog.
+type AccountQueueDelayedBacklogAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountQueueDelayedBacklogAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountQueueDelayedBacklogAdaptiveGroupsDimensions
+}
+
+type AccountQueueDelayedBacklogAdaptiveGroupsAvg {
+  # The average number of messages in the delayed backlog for sample interval
+  messages: uint64!
+  # The average value used for sample interval
+  sampleInterval: float64!
+}
+
+type AccountQueueDelayedBacklogAdaptiveGroupsDimensions {
+  # Message operation timestamp, truncated to start of a day
+  date: Date!
+  # Message operation timestamp
+  datetime: Time!
+  # Message operation timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Message operation timestamp, truncated to start of an minute
+  datetimeMinute: Time!
+  # The ID of the Queue
+  queueId: string!
+}
+
+input AccountQueueDelayedBacklogAdaptiveGroupsFilter_InputObject {
+  AND: [AccountQueueDelayedBacklogAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountQueueDelayedBacklogAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  queueId: string
+  queueId_geq: string
+  queueId_gt: string
+  queueId_in: [string!]
+  queueId_leq: string
+  queueId_like: string
+  queueId_lt: string
+  queueId_neq: string
+  queueId_notin: [string!]
+  queueId_notlike: string
+}
+
+enum AccountQueueDelayedBacklogAdaptiveGroupsOrderBy {
+  # avg(messages) ascending
+  avg_messages_ASC
+  # avg(messages) descending
+  avg_messages_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -26465,6 +27191,8 @@ type AccountSettings {
   aiGatewayRequestsAdaptiveGroups: Settings!
   aiInferenceAdaptive: Settings!
   aiInferenceAdaptiveGroups: Settings!
+  browserRenderingEventsAdaptive: Settings!
+  browserRenderingEventsAdaptiveGroups: Settings!
   callsStatusAdaptive: Settings!
   callsUsageAdaptiveGroups: Settings!
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
@@ -26507,9 +27235,11 @@ type AccountSettings {
   mnmFlowDataAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   ohttpMetricsAdaptive: Settings!
+  ohttpMetricsAdaptiveGroups: Settings!
   pagesFunctionsInvocationsAdaptiveGroups: Settings!
   queueBacklogAdaptiveGroups: Settings!
   queueConsumerMetricsAdaptiveGroups: Settings!
+  queueDelayedBacklogAdaptiveGroups: Settings!
   queueMessageOperationsAdaptiveGroups: Settings!
   r2OperationsAdaptiveGroups: Settings!
   r2StorageAdaptiveGroups: Settings!
@@ -30326,6 +31056,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   status_ASC
   # status descending
   status_DESC
+  # sum(cpuTimeUs) ascending
+  sum_cpuTimeUs_ASC
+  # sum(cpuTimeUs) descending
+  sum_cpuTimeUs_DESC
   # sum(duration) ascending
   sum_duration_ASC
   # sum(duration) descending
@@ -30408,6 +31142,8 @@ type AccountWorkersInvocationsAdaptiveQuantiles {
 }
 
 type AccountWorkersInvocationsAdaptiveSum {
+  # Sum of cpu time in us
+  cpuTimeUs: uint64!
   # Sum of Duration - GB*s
   duration: float64!
   # Sum of Errors
