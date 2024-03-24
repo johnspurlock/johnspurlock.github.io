@@ -30734,6 +30734,8 @@ type AccountWorkersInvocationsAdaptiveDimensions {
   dispatchNamespaceName: string!
   # The name of the script environment
   environmentName: string!
+  # Whether the request is from a Dispatch Worker. Non-zero if true
+  isDispatcher: uint8!
   # The name of the script
   scriptName: string!
   # The unique tag of the script
@@ -30801,6 +30803,14 @@ input AccountWorkersInvocationsAdaptiveFilter_InputObject {
   environmentName_neq: string
   environmentName_notin: [string!]
   environmentName_notlike: string
+  isDispatcher: uint8
+  isDispatcher_geq: uint8
+  isDispatcher_gt: uint8
+  isDispatcher_in: bytes
+  isDispatcher_leq: uint8
+  isDispatcher_lt: uint8
+  isDispatcher_neq: uint8
+  isDispatcher_notin: bytes
   scriptName: string
   scriptName_geq: string
   scriptName_gt: string
@@ -30908,6 +30918,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   environmentName_ASC
   # environmentName descending
   environmentName_DESC
+  # isDispatcher ascending
+  isDispatcher_ASC
+  # isDispatcher descending
+  isDispatcher_DESC
   # max(cpuTime) ascending
   max_cpuTime_ASC
   # max(cpuTime) descending
@@ -32422,7 +32436,7 @@ type ZoneApiRequestSequencesGroupsDimensions {
   # Sequence generation timeslot, truncated to 10 minutes
   datetime: Time!
   # Sequence rank based on ordering sequences by correlation
-  rank: uint16!
+  rank: uint32!
 }
 
 input ZoneApiRequestSequencesGroupsFilter_InputObject {
@@ -32456,14 +32470,14 @@ input ZoneApiRequestSequencesGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
-  rank: uint16
-  rank_geq: uint16
-  rank_gt: uint16
-  rank_in: [uint16!]
-  rank_leq: uint16
-  rank_lt: uint16
-  rank_neq: uint16
-  rank_notin: [uint16!]
+  rank: uint32
+  rank_geq: uint32
+  rank_gt: uint32
+  rank_in: [uint32!]
+  rank_leq: uint32
+  rank_lt: uint32
+  rank_neq: uint32
+  rank_notin: [uint32!]
 }
 
 enum ZoneApiRequestSequencesGroupsOrderBy {
