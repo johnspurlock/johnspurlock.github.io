@@ -31,6 +31,7 @@ Account-level datasets:
   gatewayL4UpstreamSessionsAdaptiveGroups
 * gatewayL7RequestsAdaptiveGroups
 * gatewayResolverByCategoryAdaptiveGroups
+* gatewayResolverByCustomResolverGroups
 * gatewayResolverByRuleExecutionPerformanceAdaptiveGroups
 * gatewayResolverQueriesAdaptiveGroups
 * httpRequests1dGroups
@@ -236,6 +237,8 @@ type account {
   gatewayL7RequestsAdaptiveGroups(filter: AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayL7RequestsAdaptiveGroupsOrderBy!]): [AccountGatewayL7RequestsAdaptiveGroups!]!
   # BETA - Aggregate counts of Gateway Resolver queries by category with adaptive sampling
   gatewayResolverByCategoryAdaptiveGroups(filter: AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayResolverByCategoryAdaptiveGroupsOrderBy!]): [AccountGatewayResolverByCategoryAdaptiveGroups!]!
+  # Stats on dns custom resolvers
+  gatewayResolverByCustomResolverGroups(filter: AccountGatewayResolverByCustomResolverGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayResolverByCustomResolverGroupsOrderBy!]): [AccountGatewayResolverByCustomResolverGroups!]!
   # Total time spent on executing firewall rules at the edge
   gatewayResolverByRuleExecutionPerformanceAdaptiveGroups(filter: AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsOrderBy!]): [AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroups!]!
   # BETA - Aggregate counts of Gateway Resolver queries with adaptive sampling
@@ -252,7 +255,7 @@ type account {
   httpRequestsAdaptiveGroups(filter: AccountHttpRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHttpRequestsAdaptiveGroupsOrderBy!]): [AccountHttpRequestsAdaptiveGroups!]!
   # A high-level summary of HTTP requests made by end users.
   httpRequestsOverviewAdaptiveGroups(filter: AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHttpRequestsOverviewAdaptiveGroupsOrderBy!]): [AccountHttpRequestsOverviewAdaptiveGroups!]!
-  # Beta. Hyperdrive query events with adaptive sampling.
+  # Hyperdrive query events with adaptive sampling.
   hyperdriveQueriesAdaptiveGroups(filter: AccountHyperdriveQueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHyperdriveQueriesAdaptiveGroupsOrderBy!]): [AccountHyperdriveQueriesAdaptiveGroups!]!
   # A high-level summary of Cloudflare Images served to end users.
   imagesRequestsAdaptiveGroups(filter: AccountImagesRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesRequestsAdaptiveGroupsOrderBy!]): [AccountImagesRequestsAdaptiveGroups!]!
@@ -14102,6 +14105,175 @@ enum AccountGatewayResolverByCategoryAdaptiveGroupsOrderBy {
   resolverDecision_DESC
 }
 
+# Stats on dns custom resolvers
+type AccountGatewayResolverByCustomResolverGroups {
+  # The average value for a metric
+  avg: AccountGatewayResolverByCustomResolverGroupsAvg
+  # The number of Gateway Resolver queries
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountGatewayResolverByCustomResolverGroupsDimensions
+  # Maximum response time
+  max: AccountGatewayResolverByCustomResolverGroupsMax
+}
+
+type AccountGatewayResolverByCustomResolverGroupsAvg {
+  # Average latency
+  customResolverTimeInMs: uint64!
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountGatewayResolverByCustomResolverGroupsDimensions {
+  # whether the response was cached or not
+  cacheStatus: uint8!
+  # address at which custom resolver query was resolved at
+  customResolverAddress: string!
+  # Response code recieved from the custom resolver 0 => unknown 27 => dnsFirewallSuccess 29 => dnsFirewallCustomerRatelimit 31 => dnsFirewallUpstreamFailure 32 => dnsFirewallUpstreamServfail
+  customResolverResponseCode: float64!
+  # time took for custom resolver to respond
+  customResolverTimeInMs: float64!
+  # The date and time the DNS query was resolved
+  datetime: Time!
+  # The uuid identifying the customer Location used when resolving
+  locationId: string!
+  # Name of the query, e.g. one.dash.cloudflare.com
+  queryName: string!
+  # Enum identifier for the decision made by gateway-resolver, one of: (0, unknown) (1, allowedByQueryName) (2, blockedByQueryName) (3, blockedByCategory) (4, allowedOnNoLocation) (5, allowedOnNoPolicyMatch) (6, blockedAlwaysCategory) (7, overrideForSafeSearch) (8, overrideApplied) (9, blockedRule) (10, allowedRule)
+  resolverDecision: uint16!
+}
+
+input AccountGatewayResolverByCustomResolverGroupsFilter_InputObject {
+  AND: [AccountGatewayResolverByCustomResolverGroupsFilter_InputObject!]
+  OR: [AccountGatewayResolverByCustomResolverGroupsFilter_InputObject!]
+  cacheStatus: uint8
+  cacheStatus_geq: uint8
+  cacheStatus_gt: uint8
+  cacheStatus_in: bytes
+  cacheStatus_leq: uint8
+  cacheStatus_lt: uint8
+  cacheStatus_neq: uint8
+  cacheStatus_notin: bytes
+  customResolverAddress: string
+  customResolverAddress_geq: string
+  customResolverAddress_gt: string
+  customResolverAddress_in: [string!]
+  customResolverAddress_leq: string
+  customResolverAddress_like: string
+  customResolverAddress_lt: string
+  customResolverAddress_neq: string
+  customResolverAddress_notin: [string!]
+  customResolverAddress_notlike: string
+  customResolverResponseCode: float64
+  customResolverResponseCode_geq: float64
+  customResolverResponseCode_gt: float64
+  customResolverResponseCode_in: [float64!]
+  customResolverResponseCode_leq: float64
+  customResolverResponseCode_lt: float64
+  customResolverResponseCode_neq: float64
+  customResolverResponseCode_notin: [float64!]
+  customResolverTimeInMs: float64
+  customResolverTimeInMs_geq: float64
+  customResolverTimeInMs_gt: float64
+  customResolverTimeInMs_in: [float64!]
+  customResolverTimeInMs_leq: float64
+  customResolverTimeInMs_lt: float64
+  customResolverTimeInMs_neq: float64
+  customResolverTimeInMs_notin: [float64!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  locationId: string
+  locationId_geq: string
+  locationId_gt: string
+  locationId_in: [string!]
+  locationId_leq: string
+  locationId_like: string
+  locationId_lt: string
+  locationId_neq: string
+  locationId_notin: [string!]
+  locationId_notlike: string
+  queryName: string
+  queryName_geq: string
+  queryName_gt: string
+  queryName_in: [string!]
+  queryName_leq: string
+  queryName_like: string
+  queryName_lt: string
+  queryName_neq: string
+  queryName_notin: [string!]
+  queryName_notlike: string
+  resolverDecision: uint16
+  resolverDecision_geq: uint16
+  resolverDecision_gt: uint16
+  resolverDecision_in: [uint16!]
+  resolverDecision_leq: uint16
+  resolverDecision_lt: uint16
+  resolverDecision_neq: uint16
+  resolverDecision_notin: [uint16!]
+}
+
+type AccountGatewayResolverByCustomResolverGroupsMax {
+  # Maximum response time
+  customResolverTimeInMs: float64!
+}
+
+enum AccountGatewayResolverByCustomResolverGroupsOrderBy {
+  # avg(customResolverTimeInMs) ascending
+  avg_customResolverTimeInMs_ASC
+  # avg(customResolverTimeInMs) descending
+  avg_customResolverTimeInMs_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # cacheStatus ascending
+  cacheStatus_ASC
+  # cacheStatus descending
+  cacheStatus_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # customResolverAddress ascending
+  customResolverAddress_ASC
+  # customResolverAddress descending
+  customResolverAddress_DESC
+  # customResolverResponseCode ascending
+  customResolverResponseCode_ASC
+  # customResolverResponseCode descending
+  customResolverResponseCode_DESC
+  # customResolverTimeInMs ascending
+  customResolverTimeInMs_ASC
+  # customResolverTimeInMs descending
+  customResolverTimeInMs_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # locationId ascending
+  locationId_ASC
+  # locationId descending
+  locationId_DESC
+  # max(customResolverTimeInMs) ascending
+  max_customResolverTimeInMs_ASC
+  # max(customResolverTimeInMs) descending
+  max_customResolverTimeInMs_DESC
+  # queryName ascending
+  queryName_ASC
+  # queryName descending
+  queryName_DESC
+  # resolverDecision ascending
+  resolverDecision_ASC
+  # resolverDecision descending
+  resolverDecision_DESC
+}
+
 # Total time spent on executing firewall rules at the edge
 type AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroups {
   # The average value for a metric per dimension
@@ -17393,7 +17565,7 @@ type AccountHttpRequestsOverviewAdaptiveGroupsSum {
   visits: uint64!
 }
 
-# Beta. Hyperdrive query events with adaptive sampling.
+# Hyperdrive query events with adaptive sampling.
 type AccountHyperdriveQueriesAdaptiveGroups {
   # The average value for a metric per dimension
   avg: AccountHyperdriveQueriesAdaptiveGroupsAvg
@@ -17406,8 +17578,12 @@ type AccountHyperdriveQueriesAdaptiveGroups {
 }
 
 type AccountHyperdriveQueriesAdaptiveGroupsAvg {
+  # Average latency (in milliseconds) of retrieving a connection to the origin database
+  connectionLatency: uint64!
   # Average size (in bytes) of queries handled by Hyperdrive
   queryBytes: uint64!
+  # Average latency (in milliseconds) of serving a query using Hyperdrive
+  queryLatency: uint64!
   # Average size (in bytes) of query results served by Hyperdrive
   resultBytes: uint64!
   # The average value used for sample interval
@@ -17415,7 +17591,7 @@ type AccountHyperdriveQueriesAdaptiveGroupsAvg {
 }
 
 type AccountHyperdriveQueriesAdaptiveGroupsDimensions {
-  # The cache status of the Hyperdrive query events
+  # The cache status of the Hyperdrive query event
   cacheStatus: string!
   # The ID of the Hyperdrive Config
   configId: string!
@@ -17427,6 +17603,8 @@ type AccountHyperdriveQueriesAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Hyperdrive query event timestamp, truncated to start of minute
   datetimeMinute: Time!
+  # The result of the Hyperdrive event: 'error' or 'complete'. Error events may not have complete data.
+  eventStatus: string!
 }
 
 input AccountHyperdriveQueriesAdaptiveGroupsFilter_InputObject {
@@ -17484,13 +17662,31 @@ input AccountHyperdriveQueriesAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  eventStatus: string
+  eventStatus_geq: string
+  eventStatus_gt: string
+  eventStatus_in: [string!]
+  eventStatus_leq: string
+  eventStatus_like: string
+  eventStatus_lt: string
+  eventStatus_neq: string
+  eventStatus_notin: [string!]
+  eventStatus_notlike: string
 }
 
 enum AccountHyperdriveQueriesAdaptiveGroupsOrderBy {
+  # avg(connectionLatency) ascending
+  avg_connectionLatency_ASC
+  # avg(connectionLatency) descending
+  avg_connectionLatency_DESC
   # avg(queryBytes) ascending
   avg_queryBytes_ASC
   # avg(queryBytes) descending
   avg_queryBytes_DESC
+  # avg(queryLatency) ascending
+  avg_queryLatency_ASC
+  # avg(queryLatency) descending
+  avg_queryLatency_DESC
   # avg(resultBytes) ascending
   avg_resultBytes_ASC
   # avg(resultBytes) descending
@@ -17527,10 +17723,22 @@ enum AccountHyperdriveQueriesAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # eventStatus ascending
+  eventStatus_ASC
+  # eventStatus descending
+  eventStatus_DESC
+  # sum(connectionLatency) ascending
+  sum_connectionLatency_ASC
+  # sum(connectionLatency) descending
+  sum_connectionLatency_DESC
   # sum(queryBytes) ascending
   sum_queryBytes_ASC
   # sum(queryBytes) descending
   sum_queryBytes_DESC
+  # sum(queryLatency) ascending
+  sum_queryLatency_ASC
+  # sum(queryLatency) descending
+  sum_queryLatency_DESC
   # sum(resultBytes) ascending
   sum_resultBytes_ASC
   # sum(resultBytes) descending
@@ -17538,8 +17746,12 @@ enum AccountHyperdriveQueriesAdaptiveGroupsOrderBy {
 }
 
 type AccountHyperdriveQueriesAdaptiveGroupsSum {
+  # Total latency (in milliseconds) of retrieving a connection to the origin database
+  connectionLatency: uint64!
   # Total size (in bytes) of queries handled by Hyperdrive
   queryBytes: uint64!
+  # Total latency (in milliseconds) of serving a query using Hyperdrive
+  queryLatency: uint64!
   # Total size (in bytes) of query results served by Hyperdrive
   resultBytes: uint64!
 }
@@ -27214,6 +27426,7 @@ type AccountSettings {
   gatewayL4UpstreamSessionsAdaptiveGroups: Settings!
   gatewayL7RequestsAdaptiveGroups: Settings!
   gatewayResolverByCategoryAdaptiveGroups: Settings!
+  gatewayResolverByCustomResolverGroups: Settings!
   gatewayResolverByRuleExecutionPerformanceAdaptiveGroups: Settings!
   gatewayResolverQueriesAdaptiveGroups: Settings!
   httpRequests1dGroups: Settings!
