@@ -59,6 +59,8 @@ Account-level datasets:
 * queueConsumerMetricsAdaptiveGroups
 * queueDelayedBacklogAdaptiveGroups
 * queueMessageOperationsAdaptiveGroups
+* r2IAOperationsAdaptiveGroups
+* r2IAStorageAdaptiveGroups
 * r2OperationsAdaptiveGroups
 * r2StorageAdaptiveGroups
 * rumPageloadEventsAdaptiveGroups
@@ -82,6 +84,7 @@ Account-level datasets:
 * workersOverviewDataAdaptiveGroups
 * workersOverviewRequestsAdaptiveGroups
 * workersSubrequestsAdaptiveGroups
+* zarazTrackAdaptiveGroups
 * zarazTriggersAdaptiveGroups
 * zeroTrustPrivateNetworkDiscoveryGroups
 
@@ -293,6 +296,10 @@ type account {
   queueDelayedBacklogAdaptiveGroups(filter: AccountQueueDelayedBacklogAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueDelayedBacklogAdaptiveGroupsOrderBy!]): [AccountQueueDelayedBacklogAdaptiveGroups!]!
   # Beta. Queue message operation data with adaptive sampling
   queueMessageOperationsAdaptiveGroups(filter: AccountQueueMessageOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueMessageOperationsAdaptiveGroupsOrderBy!]): [AccountQueueMessageOperationsAdaptiveGroups!]!
+  # Beta. R2 infrequent access operations with adaptive sampling
+  r2IAOperationsAdaptiveGroups(filter: AccountR2IAOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2IAOperationsAdaptiveGroupsOrderBy!]): [AccountR2IAOperationsAdaptiveGroups!]!
+  # Beta. R2 infrequent access storage with adaptive sampling
+  r2IAStorageAdaptiveGroups(filter: AccountR2IAStorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2IAStorageAdaptiveGroupsOrderBy!]): [AccountR2IAStorageAdaptiveGroups!]!
   # Beta. R2 operations with adaptive sampling
   r2OperationsAdaptiveGroups(filter: AccountR2OperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2OperationsAdaptiveGroupsOrderBy!]): [AccountR2OperationsAdaptiveGroups!]!
   # Beta. R2 storage with adaptive sampling
@@ -340,6 +347,8 @@ type account {
   workersOverviewRequestsAdaptiveGroups(filter: AccountWorkersOverviewRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersOverviewRequestsAdaptiveGroupsOrderBy!]): [AccountWorkersOverviewRequestsAdaptiveGroups!]!
   # Beta. Workers subrequests with adaptive sampling
   workersSubrequestsAdaptiveGroups(filter: AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersSubrequestsAdaptiveGroupsOrderBy!]): [AccountWorkersSubrequestsAdaptiveGroups!]!
+  # Zaraz Track Analytics - counts zaraz.track calls
+  zarazTrackAdaptiveGroups(filter: AccountZarazTrackAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountZarazTrackAdaptiveGroupsOrderBy!]): [AccountZarazTrackAdaptiveGroups!]!
   # Zaraz Triggers Analytics (a trigger is a set of rules that can trigger a zaraz action)
   zarazTriggersAdaptiveGroups(filter: AccountZarazTriggersAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountZarazTriggersAdaptiveGroupsOrderBy!]): [AccountZarazTriggersAdaptiveGroups!]!
   # Beta - Unique origins, applications, and users discovered for Zero Trust private networks
@@ -24615,6 +24624,8 @@ type AccountQueueMessageOperationsAdaptiveGroupsAvg {
 type AccountQueueMessageOperationsAdaptiveGroupsDimensions {
   # The type of the Queue message operation
   actionType: string!
+  # The queue consumer type for the operation. Only applicable for ReadMessage and DeleteMessge action types.
+  consumerType: string!
   # Message operation timestamp, truncated to start of a day
   date: Date!
   # Message operation timestamp
@@ -24642,6 +24653,16 @@ input AccountQueueMessageOperationsAdaptiveGroupsFilter_InputObject {
   actionType_neq: string
   actionType_notin: [string!]
   actionType_notlike: string
+  consumerType: string
+  consumerType_geq: string
+  consumerType_gt: string
+  consumerType_in: [string!]
+  consumerType_leq: string
+  consumerType_like: string
+  consumerType_lt: string
+  consumerType_neq: string
+  consumerType_notin: [string!]
+  consumerType_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -24718,6 +24739,10 @@ enum AccountQueueMessageOperationsAdaptiveGroupsOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # consumerType ascending
+  consumerType_ASC
+  # consumerType descending
+  consumerType_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -24765,6 +24790,292 @@ type AccountQueueMessageOperationsAdaptiveGroupsSum {
   billableOperations: uint64!
   # Total size (in bytes) of message operations
   bytes: uint64!
+}
+
+# Beta. R2 infrequent access operations with adaptive sampling
+type AccountR2IAOperationsAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountR2IAOperationsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountR2IAOperationsAdaptiveGroupsSum
+}
+
+type AccountR2IAOperationsAdaptiveGroupsDimensions {
+  # Status of the R2 operation
+  actionStatus: string!
+  # The name of the R2 operation
+  actionType: string!
+  # The name of the R2 bucket, if applicable to this request
+  bucketName: string!
+  # Request timestamp, truncated to start of a day
+  date: Date!
+  # Request timestamp
+  datetime: Time!
+  # Request timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Request timestamp, truncated to start of an minute
+  datetimeMinute: Time!
+  # The name of the R2 object, if applicable to this request
+  objectName: string!
+  # HTTP status code returned by R2
+  responseStatusCode: uint16!
+}
+
+input AccountR2IAOperationsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountR2IAOperationsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountR2IAOperationsAdaptiveGroupsFilter_InputObject!]
+  actionStatus: string
+  actionStatus_geq: string
+  actionStatus_gt: string
+  actionStatus_in: [string!]
+  actionStatus_leq: string
+  actionStatus_like: string
+  actionStatus_lt: string
+  actionStatus_neq: string
+  actionStatus_notin: [string!]
+  actionStatus_notlike: string
+  actionType: string
+  actionType_geq: string
+  actionType_gt: string
+  actionType_in: [string!]
+  actionType_leq: string
+  actionType_like: string
+  actionType_lt: string
+  actionType_neq: string
+  actionType_notin: [string!]
+  actionType_notlike: string
+  bucketName: string
+  bucketName_geq: string
+  bucketName_gt: string
+  bucketName_in: [string!]
+  bucketName_leq: string
+  bucketName_like: string
+  bucketName_lt: string
+  bucketName_neq: string
+  bucketName_notin: [string!]
+  bucketName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  objectName: string
+  objectName_geq: string
+  objectName_gt: string
+  objectName_in: [string!]
+  objectName_leq: string
+  objectName_like: string
+  objectName_lt: string
+  objectName_neq: string
+  objectName_notin: [string!]
+  objectName_notlike: string
+  responseStatusCode: uint16
+  responseStatusCode_geq: uint16
+  responseStatusCode_gt: uint16
+  responseStatusCode_in: [uint16!]
+  responseStatusCode_leq: uint16
+  responseStatusCode_lt: uint16
+  responseStatusCode_neq: uint16
+  responseStatusCode_notin: [uint16!]
+}
+
+enum AccountR2IAOperationsAdaptiveGroupsOrderBy {
+  # actionStatus ascending
+  actionStatus_ASC
+  # actionStatus descending
+  actionStatus_DESC
+  # actionType ascending
+  actionType_ASC
+  # actionType descending
+  actionType_DESC
+  # bucketName ascending
+  bucketName_ASC
+  # bucketName descending
+  bucketName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # objectName ascending
+  objectName_ASC
+  # objectName descending
+  objectName_DESC
+  # responseStatusCode ascending
+  responseStatusCode_ASC
+  # responseStatusCode descending
+  responseStatusCode_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # sum(responseBytes) ascending
+  sum_responseBytes_ASC
+  # sum(responseBytes) descending
+  sum_responseBytes_DESC
+}
+
+type AccountR2IAOperationsAdaptiveGroupsSum {
+  # Sum of Requests
+  requests: uint64!
+  # Sum of retrieved bytes
+  responseBytes: uint64!
+}
+
+# Beta. R2 infrequent access storage with adaptive sampling
+type AccountR2IAStorageAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountR2IAStorageAdaptiveGroupsDimensions
+  # The max of values for a metric per dimension
+  max: AccountR2IAStorageAdaptiveGroupsMax
+}
+
+type AccountR2IAStorageAdaptiveGroupsDimensions {
+  # The name of the R2 bucket, if applicable to this request
+  bucketName: string!
+  # Storage sample timestamp, truncated to start of a day
+  date: Date!
+  # Storage sample timestamp
+  datetime: Time!
+  # Storage sample timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Storage sample timestamp, truncated to start of an minute
+  datetimeMinute: Time!
+}
+
+input AccountR2IAStorageAdaptiveGroupsFilter_InputObject {
+  AND: [AccountR2IAStorageAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountR2IAStorageAdaptiveGroupsFilter_InputObject!]
+  bucketName: string
+  bucketName_geq: string
+  bucketName_gt: string
+  bucketName_in: [string!]
+  bucketName_leq: string
+  bucketName_like: string
+  bucketName_lt: string
+  bucketName_neq: string
+  bucketName_notin: [string!]
+  bucketName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+}
+
+type AccountR2IAStorageAdaptiveGroupsMax {
+  # Max of metadata size
+  metadataSize: uint64!
+  # Max of object count
+  objectCount: uint64!
+  # Max of payload size
+  payloadSize: uint64!
+  # Max of upload count
+  uploadCount: uint64!
+}
+
+enum AccountR2IAStorageAdaptiveGroupsOrderBy {
+  # bucketName ascending
+  bucketName_ASC
+  # bucketName descending
+  bucketName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # max(metadataSize) ascending
+  max_metadataSize_ASC
+  # max(metadataSize) descending
+  max_metadataSize_DESC
+  # max(objectCount) ascending
+  max_objectCount_ASC
+  # max(objectCount) descending
+  max_objectCount_DESC
+  # max(payloadSize) ascending
+  max_payloadSize_ASC
+  # max(payloadSize) descending
+  max_payloadSize_DESC
+  # max(uploadCount) ascending
+  max_uploadCount_ASC
+  # max(uploadCount) descending
+  max_uploadCount_DESC
 }
 
 # Beta. R2 operations with adaptive sampling
@@ -27454,6 +27765,8 @@ type AccountSettings {
   queueConsumerMetricsAdaptiveGroups: Settings!
   queueDelayedBacklogAdaptiveGroups: Settings!
   queueMessageOperationsAdaptiveGroups: Settings!
+  r2IAOperationsAdaptiveGroups: Settings!
+  r2IAStorageAdaptiveGroups: Settings!
   r2OperationsAdaptiveGroups: Settings!
   r2StorageAdaptiveGroups: Settings!
   rumPageloadEventsAdaptiveGroups: Settings!
@@ -27477,6 +27790,7 @@ type AccountSettings {
   workersOverviewDataAdaptiveGroups: Settings!
   workersOverviewRequestsAdaptiveGroups: Settings!
   workersSubrequestsAdaptiveGroups: Settings!
+  zarazTrackAdaptiveGroups: Settings!
   zarazTriggersAdaptiveGroups: Settings!
   zeroTrustPrivateNetworkDiscoveryGroups: Settings!
 }
@@ -31829,6 +32143,131 @@ type AccountWorkersSubrequestsAdaptiveGroupsSum {
   subrequests: uint64!
 }
 
+# Zaraz Track Analytics - counts zaraz.track calls
+type AccountZarazTrackAdaptiveGroups {
+  # Number of processed Zaraz Track requests
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountZarazTrackAdaptiveGroupsDimensions
+}
+
+type AccountZarazTrackAdaptiveGroupsDimensions {
+  # Date when track was called
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Track Name
+  trackName: string!
+  # The URL from where Track was called
+  urlPath: string!
+}
+
+input AccountZarazTrackAdaptiveGroupsFilter_InputObject {
+  AND: [AccountZarazTrackAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountZarazTrackAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  trackName: string
+  trackName_geq: string
+  trackName_gt: string
+  trackName_in: [string!]
+  trackName_leq: string
+  trackName_like: string
+  trackName_lt: string
+  trackName_neq: string
+  trackName_notin: [string!]
+  trackName_notlike: string
+  urlPath: string
+  urlPath_geq: string
+  urlPath_gt: string
+  urlPath_in: [string!]
+  urlPath_leq: string
+  urlPath_like: string
+  urlPath_lt: string
+  urlPath_neq: string
+  urlPath_notin: [string!]
+  urlPath_notlike: string
+}
+
+enum AccountZarazTrackAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # trackName ascending
+  trackName_ASC
+  # trackName descending
+  trackName_DESC
+  # urlPath ascending
+  urlPath_ASC
+  # urlPath descending
+  urlPath_DESC
+}
+
 # Zaraz Triggers Analytics (a trigger is a set of rules that can trigger a zaraz action)
 type AccountZarazTriggersAdaptiveGroups {
   # Number of processed Zaraz Triggers
@@ -34362,8 +34801,8 @@ type ZoneDnsAnalyticsAdaptiveGroups {
 }
 
 type ZoneDnsAnalyticsAdaptiveGroupsAvg {
-  # Average response time in microseconds
-  responseTimeUs: float64!
+  # Average processing time in microseconds
+  processingTimeUs: float64!
   # Average sample interval
   sampleInterval: float64!
 }
@@ -34597,10 +35036,10 @@ input ZoneDnsAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
-  # avg(responseTimeUs) ascending
-  avg_responseTimeUs_ASC
-  # avg(responseTimeUs) descending
-  avg_responseTimeUs_DESC
+  # avg(processingTimeUs) ascending
+  avg_processingTimeUs_ASC
+  # avg(processingTimeUs) descending
+  avg_processingTimeUs_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -34657,18 +35096,18 @@ enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
   protocol_ASC
   # protocol descending
   protocol_DESC
-  # quantiles(responseTimeUsP50) ascending
-  quantiles_responseTimeUsP50_ASC
-  # quantiles(responseTimeUsP50) descending
-  quantiles_responseTimeUsP50_DESC
-  # quantiles(responseTimeUsP90) ascending
-  quantiles_responseTimeUsP90_ASC
-  # quantiles(responseTimeUsP90) descending
-  quantiles_responseTimeUsP90_DESC
-  # quantiles(responseTimeUsP99) ascending
-  quantiles_responseTimeUsP99_ASC
-  # quantiles(responseTimeUsP99) descending
-  quantiles_responseTimeUsP99_DESC
+  # quantiles(processingTimeUsP50) ascending
+  quantiles_processingTimeUsP50_ASC
+  # quantiles(processingTimeUsP50) descending
+  quantiles_processingTimeUsP50_DESC
+  # quantiles(processingTimeUsP90) ascending
+  quantiles_processingTimeUsP90_ASC
+  # quantiles(processingTimeUsP90) descending
+  quantiles_processingTimeUsP90_DESC
+  # quantiles(processingTimeUsP99) ascending
+  quantiles_processingTimeUsP99_ASC
+  # quantiles(processingTimeUsP99) descending
+  quantiles_processingTimeUsP99_DESC
   # queryName ascending
   queryName_ASC
   # queryName descending
@@ -34708,12 +35147,12 @@ enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
 }
 
 type ZoneDnsAnalyticsAdaptiveGroupsQuantiles {
-  # 50th percentile response time in microseconds (median)
-  responseTimeUsP50: float64!
-  # 90th percentile response time in microseconds
-  responseTimeUsP90: float64!
-  # 99th percentile response time in microseconds
-  responseTimeUsP99: float64!
+  # 50th percentile processing time in microseconds (median)
+  processingTimeUsP50: float64!
+  # 90th percentile processing time in microseconds
+  processingTimeUsP90: float64!
+  # 99th percentile processing time in microseconds
+  processingTimeUsP99: float64!
 }
 
 enum ZoneDnsAnalyticsAdaptiveOrderBy {
