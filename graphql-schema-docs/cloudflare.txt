@@ -31413,6 +31413,10 @@ type AccountWorkersInvocationsAdaptiveMin {
 }
 
 enum AccountWorkersInvocationsAdaptiveOrderBy {
+  # actorNamespaceId ascending
+  actorNamespaceId_ASC
+  # actorNamespaceId descending
+  actorNamespaceId_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -32635,7 +32639,7 @@ type zone {
   apiGatewayGraphqlQueryAnalyticsGroups(filter: ZoneApiGatewayGraphqlQueryAnalyticsGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneApiGatewayGraphqlQueryAnalyticsGroupsOrderBy!]): [ZoneApiGatewayGraphqlQueryAnalyticsGroups!]!
   # Beta. Aggregated count of Session Identifier matches
   apiGatewayMatchedSessionIDsAdaptiveGroups(filter: ZoneApiGatewayMatchedSessionIDsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneApiGatewayMatchedSessionIDsAdaptiveGroupsOrderBy!]): [ZoneApiGatewayMatchedSessionIDsAdaptiveGroups!]!
-  # Sequences of API endpoint operations. Sequences are grouped by AuthID and currently ranked by correlation score. Correlation scores are estimated over a 24 hour window and are current to within 10 minutes
+  # Sequences of API endpoint operations. Sequences are learned by grouping requests by AuthID. Correlation scores are estimated over a 24 hour window and are current to within 10 minutes
   apiRequestSequencesGroups(filter: ZoneApiRequestSequencesGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneApiRequestSequencesGroupsOrderBy!]): [ZoneApiRequestSequencesGroups!]!
   # Beta. Cache Reserve operations with adaptive sampling
   cacheReserveOperationsAdaptiveGroups(filter: ZoneCacheReserveOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneCacheReserveOperationsAdaptiveGroupsOrderBy!]): [ZoneCacheReserveOperationsAdaptiveGroups!]!
@@ -33047,26 +33051,30 @@ enum ZoneApiGatewayMatchedSessionIDsAdaptiveGroupsOrderBy {
   datetime_DESC
 }
 
-# Sequences of API endpoint operations. Sequences are grouped by AuthID and currently ranked by correlation score. Correlation scores are estimated over a 24 hour window and are current to within 10 minutes
+# Sequences of API endpoint operations. Sequences are learned by grouping requests by AuthID. Correlation scores are estimated over a 24 hour window and are current to within 10 minutes
 type ZoneApiRequestSequencesGroups {
   aggArgMax: ZoneApiRequestSequencesGroupsAggArgMax
   aggMax: ZoneApiRequestSequencesGroupsAggMax
   # List of dimensions to group by
   dimensions: ZoneApiRequestSequencesGroupsDimensions
+  uniq: ZoneApiRequestSequencesGroupsUniq
 }
 
 type ZoneApiRequestSequencesGroupsAggArgMax {
-  # Correlation score estimated over a 24 hour window (higher scores mean more correlation between requests in the sequence of endpoint operations)
+  # Correlation score estimated over a 24 hour window. The correlation score is the probability that the last operation in the sequence is preceded by the remaining operations in the sequence, assuming that the last operation in the sequence occurred
   correlation: float64!
   # Estimated number of occurrences of this sequence of endpoint operations
   numOccurrences: float64!
+  # Estimated number of occurrences of the last operation in this sequence of endpoint operations
+  numOccurrencesLast: float64!
   # Estimated number of occurrences of this sequence of endpoint operations, disregarding the last operation
   numOccurrencesPrefix: float64!
   # Estimated number of occurrences of this sequence of endpoint operations, disregarding the first operation
+  @Deprecated
   numOccurrencesSuffix: float64!
-  # API endpoints comprising the sequence of operations. Individual endpoints are delimited by # symbols
+  # API endpoints in the sequence of operations. Individual endpoints are delimited by # symbols
   operationsApiEndpoints: string!
-  # HTTP request methods comprising the sequence of operations. Individual request method names are delimited by # symbols
+  # HTTP request methods in the sequence of operations. Individual request method names are delimited by # symbols
   operationsClientRequestHTTPMethods: string!
   # Fraction of requests sampled
   samplingFraction: float64!
@@ -33087,8 +33095,25 @@ type ZoneApiRequestSequencesGroupsDimensions {
   clientRequestHTTPHost: string!
   # Sequence generation timeslot, truncated to 10 minutes
   datetime: Time!
+  # First API endpoint in the sequence of operations
+  operationsFirstApiEndpoint: string!
+  # First HTTP request method in the sequence of operations
+  operationsFirstClientRequestHTTPMethod: string!
+  # Last API endpoint in the sequence of operations
+  operationsLastApiEndpoint: string!
+  # Last HTTP request method in the sequence of operations
+  operationsLastClientRequestHTTPMethod: string!
+  # Length of the sequence of operations
+  operationsLength: uint8!
+  # API endpoints in the sequence of operations, disregarding the last operation. Individual endpoints are delimited by # symbols
+  operationsPrefixApiEndpoints: string!
+  # HTTP request methods in the sequence of operations, disregarding the last operation. Individual request method names are delimited by # symbols
+  operationsPrefixClientRequestHTTPMethods: string!
   # Sequence rank based on ordering sequences by correlation
+  @Deprecated
   rank: uint32!
+  # Unique sequence identifier obtained by hashing <code>operationsApiEndpoints</code> and <code>operationsClientRequestHTTPMethods</code>
+  sequenceHash: string!
 }
 
 input ZoneApiRequestSequencesGroupsFilter_InputObject {
@@ -33122,6 +33147,74 @@ input ZoneApiRequestSequencesGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  operationsFirstApiEndpoint: string
+  operationsFirstApiEndpoint_geq: string
+  operationsFirstApiEndpoint_gt: string
+  operationsFirstApiEndpoint_in: [string!]
+  operationsFirstApiEndpoint_leq: string
+  operationsFirstApiEndpoint_like: string
+  operationsFirstApiEndpoint_lt: string
+  operationsFirstApiEndpoint_neq: string
+  operationsFirstApiEndpoint_notin: [string!]
+  operationsFirstApiEndpoint_notlike: string
+  operationsFirstClientRequestHTTPMethod: string
+  operationsFirstClientRequestHTTPMethod_geq: string
+  operationsFirstClientRequestHTTPMethod_gt: string
+  operationsFirstClientRequestHTTPMethod_in: [string!]
+  operationsFirstClientRequestHTTPMethod_leq: string
+  operationsFirstClientRequestHTTPMethod_like: string
+  operationsFirstClientRequestHTTPMethod_lt: string
+  operationsFirstClientRequestHTTPMethod_neq: string
+  operationsFirstClientRequestHTTPMethod_notin: [string!]
+  operationsFirstClientRequestHTTPMethod_notlike: string
+  operationsLastApiEndpoint: string
+  operationsLastApiEndpoint_geq: string
+  operationsLastApiEndpoint_gt: string
+  operationsLastApiEndpoint_in: [string!]
+  operationsLastApiEndpoint_leq: string
+  operationsLastApiEndpoint_like: string
+  operationsLastApiEndpoint_lt: string
+  operationsLastApiEndpoint_neq: string
+  operationsLastApiEndpoint_notin: [string!]
+  operationsLastApiEndpoint_notlike: string
+  operationsLastClientRequestHTTPMethod: string
+  operationsLastClientRequestHTTPMethod_geq: string
+  operationsLastClientRequestHTTPMethod_gt: string
+  operationsLastClientRequestHTTPMethod_in: [string!]
+  operationsLastClientRequestHTTPMethod_leq: string
+  operationsLastClientRequestHTTPMethod_like: string
+  operationsLastClientRequestHTTPMethod_lt: string
+  operationsLastClientRequestHTTPMethod_neq: string
+  operationsLastClientRequestHTTPMethod_notin: [string!]
+  operationsLastClientRequestHTTPMethod_notlike: string
+  operationsLength: uint8
+  operationsLength_geq: uint8
+  operationsLength_gt: uint8
+  operationsLength_in: bytes
+  operationsLength_leq: uint8
+  operationsLength_lt: uint8
+  operationsLength_neq: uint8
+  operationsLength_notin: bytes
+  operationsPrefixApiEndpoints: string
+  operationsPrefixApiEndpoints_geq: string
+  operationsPrefixApiEndpoints_gt: string
+  operationsPrefixApiEndpoints_in: [string!]
+  operationsPrefixApiEndpoints_leq: string
+  operationsPrefixApiEndpoints_like: string
+  operationsPrefixApiEndpoints_lt: string
+  operationsPrefixApiEndpoints_neq: string
+  operationsPrefixApiEndpoints_notin: [string!]
+  operationsPrefixApiEndpoints_notlike: string
+  operationsPrefixClientRequestHTTPMethods: string
+  operationsPrefixClientRequestHTTPMethods_geq: string
+  operationsPrefixClientRequestHTTPMethods_gt: string
+  operationsPrefixClientRequestHTTPMethods_in: [string!]
+  operationsPrefixClientRequestHTTPMethods_leq: string
+  operationsPrefixClientRequestHTTPMethods_like: string
+  operationsPrefixClientRequestHTTPMethods_lt: string
+  operationsPrefixClientRequestHTTPMethods_neq: string
+  operationsPrefixClientRequestHTTPMethods_notin: [string!]
+  operationsPrefixClientRequestHTTPMethods_notlike: string
   rank: uint32
   rank_geq: uint32
   rank_gt: uint32
@@ -33130,6 +33223,16 @@ input ZoneApiRequestSequencesGroupsFilter_InputObject {
   rank_lt: uint32
   rank_neq: uint32
   rank_notin: [uint32!]
+  sequenceHash: string
+  sequenceHash_geq: string
+  sequenceHash_gt: string
+  sequenceHash_in: [string!]
+  sequenceHash_leq: string
+  sequenceHash_like: string
+  sequenceHash_lt: string
+  sequenceHash_neq: string
+  sequenceHash_notin: [string!]
+  sequenceHash_notlike: string
 }
 
 enum ZoneApiRequestSequencesGroupsOrderBy {
@@ -33137,6 +33240,10 @@ enum ZoneApiRequestSequencesGroupsOrderBy {
   aggArgMax_correlation_ASC
   # aggArgMax(correlation) descending
   aggArgMax_correlation_DESC
+  # aggArgMax(numOccurrencesLast) ascending
+  aggArgMax_numOccurrencesLast_ASC
+  # aggArgMax(numOccurrencesLast) descending
+  aggArgMax_numOccurrencesLast_DESC
   # aggArgMax(numOccurrencesPrefix) ascending
   aggArgMax_numOccurrencesPrefix_ASC
   # aggArgMax(numOccurrencesPrefix) descending
@@ -33181,10 +33288,51 @@ enum ZoneApiRequestSequencesGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # operationsFirstApiEndpoint ascending
+  operationsFirstApiEndpoint_ASC
+  # operationsFirstApiEndpoint descending
+  operationsFirstApiEndpoint_DESC
+  # operationsFirstClientRequestHTTPMethod ascending
+  operationsFirstClientRequestHTTPMethod_ASC
+  # operationsFirstClientRequestHTTPMethod descending
+  operationsFirstClientRequestHTTPMethod_DESC
+  # operationsLastApiEndpoint ascending
+  operationsLastApiEndpoint_ASC
+  # operationsLastApiEndpoint descending
+  operationsLastApiEndpoint_DESC
+  # operationsLastClientRequestHTTPMethod ascending
+  operationsLastClientRequestHTTPMethod_ASC
+  # operationsLastClientRequestHTTPMethod descending
+  operationsLastClientRequestHTTPMethod_DESC
+  # operationsLength ascending
+  operationsLength_ASC
+  # operationsLength descending
+  operationsLength_DESC
+  # operationsPrefixApiEndpoints ascending
+  operationsPrefixApiEndpoints_ASC
+  # operationsPrefixApiEndpoints descending
+  operationsPrefixApiEndpoints_DESC
+  # operationsPrefixClientRequestHTTPMethods ascending
+  operationsPrefixClientRequestHTTPMethods_ASC
+  # operationsPrefixClientRequestHTTPMethods descending
+  operationsPrefixClientRequestHTTPMethods_DESC
   # rank ascending
   rank_ASC
   # rank descending
   rank_DESC
+  # sequenceHash ascending
+  sequenceHash_ASC
+  # sequenceHash descending
+  sequenceHash_DESC
+  # uniq(sequenceHashCount) ascending
+  uniq_sequenceHashCount_ASC
+  # uniq(sequenceHashCount) descending
+  uniq_sequenceHashCount_DESC
+}
+
+type ZoneApiRequestSequencesGroupsUniq {
+  # Number of unique sequenceHash values
+  sequenceHashCount: uint32!
 }
 
 # Beta. Cache Reserve operations with adaptive sampling
