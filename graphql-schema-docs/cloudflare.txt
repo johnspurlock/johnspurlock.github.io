@@ -33324,6 +33324,10 @@ enum ZoneApiRequestSequencesGroupsOrderBy {
   sequenceHash_ASC
   # sequenceHash descending
   sequenceHash_DESC
+  # uniq(rankCount) ascending
+  uniq_rankCount_ASC
+  # uniq(rankCount) descending
+  uniq_rankCount_DESC
   # uniq(sequenceHashCount) ascending
   uniq_sequenceHashCount_ASC
   # uniq(sequenceHashCount) descending
@@ -33331,6 +33335,8 @@ enum ZoneApiRequestSequencesGroupsOrderBy {
 }
 
 type ZoneApiRequestSequencesGroupsUniq {
+  # Number of unique rank values
+  rankCount: uint32!
   # Number of unique sequenceHash values
   sequenceHashCount: uint32!
 }
