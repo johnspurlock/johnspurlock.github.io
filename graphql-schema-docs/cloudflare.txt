@@ -73,6 +73,8 @@ Account-level datasets:
   storageTraces
 * streamMinutesViewedAdaptiveGroups
 * turnstileAdaptiveGroups
+* vectorizeQueriesAdaptiveGroups
+* vectorizeStorageAdaptiveGroups
 * videoBufferEventsAdaptiveGroups
 * videoPlaybackEventsAdaptiveGroups
 * videoQualityEventsAdaptiveGroups
@@ -325,6 +327,10 @@ type account {
   streamMinutesViewedAdaptiveGroups(filter: AccountStreamMinutesViewedAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountStreamMinutesViewedAdaptiveGroupsOrderBy!]): [AccountStreamMinutesViewedAdaptiveGroups!]!
   # Beta. Cloudflare Turnstile aggregated events with adaptive sampling
   turnstileAdaptiveGroups(filter: AccountTurnstileAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountTurnstileAdaptiveGroupsOrderBy!]): [AccountTurnstileAdaptiveGroups!]!
+  # Beta. Vectorize usage with adaptive sampling
+  vectorizeQueriesAdaptiveGroups(filter: AccountVectorizeQueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVectorizeQueriesAdaptiveGroupsOrderBy!]): [AccountVectorizeQueriesAdaptiveGroups!]!
+  # Beta. Vectorize storage with adaptive sampling
+  vectorizeStorageAdaptiveGroups(filter: AccountVectorizeStorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVectorizeStorageAdaptiveGroupsOrderBy!]): [AccountVectorizeStorageAdaptiveGroups!]!
   # Beta. Aggregated video streaming buffer event metrics with adaptive sampling
   videoBufferEventsAdaptiveGroups(filter: AccountVideoBufferEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVideoBufferEventsAdaptiveGroupsOrderBy!]): [AccountVideoBufferEventsAdaptiveGroups!]!
   # Beta. Aggregated video streaming playback event metrics with adaptive sampling
@@ -3953,6 +3959,8 @@ type AccountAiInferenceAdaptive {
   inferenceTimeMs: uint64!
   # ModelId that was trigger to inference
   modelId: string!
+  # Model that was trigger to inference is Beta
+  modelIsBeta: uint8!
   # Monetization unit
   neurons: float64!
   # Request size in bytes
@@ -4002,6 +4010,14 @@ input AccountAiInferenceAdaptiveFilter_InputObject {
   modelId_neq: string
   modelId_notin: [string!]
   modelId_notlike: string
+  modelIsBeta: uint8
+  modelIsBeta_geq: uint8
+  modelIsBeta_gt: uint8
+  modelIsBeta_in: bytes
+  modelIsBeta_leq: uint8
+  modelIsBeta_lt: uint8
+  modelIsBeta_neq: uint8
+  modelIsBeta_notin: bytes
   neurons: float64
   neurons_geq: float64
   neurons_gt: float64
@@ -4072,6 +4088,8 @@ type AccountAiInferenceAdaptiveGroupsDimensions {
   inferenceTimeMs: uint64!
   # ModelId that was trigger to inference
   modelId: string!
+  # Model that was trigger to inference is Beta
+  modelIsBeta: uint8!
   # Monetization unit
   neurons: float64!
   # Request size in bytes
@@ -4151,6 +4169,14 @@ input AccountAiInferenceAdaptiveGroupsFilter_InputObject {
   modelId_neq: string
   modelId_notin: [string!]
   modelId_notlike: string
+  modelIsBeta: uint8
+  modelIsBeta_geq: uint8
+  modelIsBeta_gt: uint8
+  modelIsBeta_in: bytes
+  modelIsBeta_leq: uint8
+  modelIsBeta_lt: uint8
+  modelIsBeta_neq: uint8
+  modelIsBeta_notin: bytes
   neurons: float64
   neurons_geq: float64
   neurons_gt: float64
@@ -4224,6 +4250,10 @@ enum AccountAiInferenceAdaptiveGroupsOrderBy {
   modelId_ASC
   # modelId descending
   modelId_DESC
+  # modelIsBeta ascending
+  modelIsBeta_ASC
+  # modelIsBeta descending
+  modelIsBeta_DESC
   # neurons ascending
   neurons_ASC
   # neurons descending
@@ -4286,6 +4316,10 @@ enum AccountAiInferenceAdaptiveOrderBy {
   modelId_ASC
   # modelId descending
   modelId_DESC
+  # modelIsBeta ascending
+  modelIsBeta_ASC
+  # modelIsBeta descending
+  modelIsBeta_DESC
   # neurons ascending
   neurons_ASC
   # neurons descending
@@ -25105,6 +25139,8 @@ type AccountR2OperationsAdaptiveGroupsDimensions {
   objectName: string!
   # HTTP status code returned by R2
   responseStatusCode: uint16!
+  # The storage class that applies to this request
+  storageClass: string!
 }
 
 input AccountR2OperationsAdaptiveGroupsFilter_InputObject {
@@ -25190,6 +25226,16 @@ input AccountR2OperationsAdaptiveGroupsFilter_InputObject {
   responseStatusCode_lt: uint16
   responseStatusCode_neq: uint16
   responseStatusCode_notin: [uint16!]
+  storageClass: string
+  storageClass_geq: string
+  storageClass_gt: string
+  storageClass_in: [string!]
+  storageClass_leq: string
+  storageClass_like: string
+  storageClass_lt: string
+  storageClass_neq: string
+  storageClass_notin: [string!]
+  storageClass_notlike: string
 }
 
 enum AccountR2OperationsAdaptiveGroupsOrderBy {
@@ -25229,10 +25275,18 @@ enum AccountR2OperationsAdaptiveGroupsOrderBy {
   responseStatusCode_ASC
   # responseStatusCode descending
   responseStatusCode_DESC
+  # storageClass ascending
+  storageClass_ASC
+  # storageClass descending
+  storageClass_DESC
   # sum(requests) ascending
   sum_requests_ASC
   # sum(requests) descending
   sum_requests_DESC
+  # sum(responseBytes) ascending
+  sum_responseBytes_ASC
+  # sum(responseBytes) descending
+  sum_responseBytes_DESC
   # sum(responseObjectSize) ascending
   sum_responseObjectSize_ASC
   # sum(responseObjectSize) descending
@@ -25242,6 +25296,8 @@ enum AccountR2OperationsAdaptiveGroupsOrderBy {
 type AccountR2OperationsAdaptiveGroupsSum {
   # Sum of Requests
   requests: uint64!
+  # Sum of retrieved bytes
+  responseBytes: uint64!
   # Sum of Response Object Sizes
   responseObjectSize: uint64!
 }
@@ -25265,6 +25321,8 @@ type AccountR2StorageAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Storage sample timestamp, truncated to start of an minute
   datetimeMinute: Time!
+  # The storage class that applies to this request
+  storageClass: string!
 }
 
 input AccountR2StorageAdaptiveGroupsFilter_InputObject {
@@ -25312,6 +25370,16 @@ input AccountR2StorageAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  storageClass: string
+  storageClass_geq: string
+  storageClass_gt: string
+  storageClass_in: [string!]
+  storageClass_leq: string
+  storageClass_like: string
+  storageClass_lt: string
+  storageClass_neq: string
+  storageClass_notin: [string!]
+  storageClass_notlike: string
 }
 
 type AccountR2StorageAdaptiveGroupsMax {
@@ -25362,6 +25430,10 @@ enum AccountR2StorageAdaptiveGroupsOrderBy {
   max_uploadCount_ASC
   # max(uploadCount) descending
   max_uploadCount_DESC
+  # storageClass ascending
+  storageClass_ASC
+  # storageClass descending
+  storageClass_DESC
 }
 
 # Beta. Aggregated RUM pageload event metrics with adaptive sampling
@@ -27779,6 +27851,8 @@ type AccountSettings {
   storageTraces: Settings!
   streamMinutesViewedAdaptiveGroups: Settings!
   turnstileAdaptiveGroups: Settings!
+  vectorizeQueriesAdaptiveGroups: Settings!
+  vectorizeStorageAdaptiveGroups: Settings!
   videoBufferEventsAdaptiveGroups: Settings!
   videoPlaybackEventsAdaptiveGroups: Settings!
   videoQualityEventsAdaptiveGroups: Settings!
@@ -30047,6 +30121,150 @@ enum AccountTurnstileAdaptiveGroupsOrderBy {
   siteKey_ASC
   # siteKey descending
   siteKey_DESC
+}
+
+# Beta. Vectorize usage with adaptive sampling
+type AccountVectorizeQueriesAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountVectorizeQueriesAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountVectorizeQueriesAdaptiveGroupsSum
+}
+
+type AccountVectorizeQueriesAdaptiveGroupsDimensions {
+  # Vectorize storage sample timestamp
+  date: Date!
+  # Vectorize storage sample timestamp, truncated to the hour
+  datetimeHour: Time!
+  # Identifier for a Vectorize index
+  vectorizeIndexId: string!
+}
+
+input AccountVectorizeQueriesAdaptiveGroupsFilter_InputObject {
+  AND: [AccountVectorizeQueriesAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountVectorizeQueriesAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  vectorizeIndexId: string
+  vectorizeIndexId_geq: string
+  vectorizeIndexId_gt: string
+  vectorizeIndexId_in: [string!]
+  vectorizeIndexId_leq: string
+  vectorizeIndexId_like: string
+  vectorizeIndexId_lt: string
+  vectorizeIndexId_neq: string
+  vectorizeIndexId_notin: [string!]
+  vectorizeIndexId_notlike: string
+}
+
+enum AccountVectorizeQueriesAdaptiveGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # sum(queriedVectorDimensions) ascending
+  sum_queriedVectorDimensions_ASC
+  # sum(queriedVectorDimensions) descending
+  sum_queriedVectorDimensions_DESC
+  # vectorizeIndexId ascending
+  vectorizeIndexId_ASC
+  # vectorizeIndexId descending
+  vectorizeIndexId_DESC
+}
+
+type AccountVectorizeQueriesAdaptiveGroupsSum {
+  # The number of queried vector dimensions in Vectorize over the queried time period.
+  queriedVectorDimensions: uint64!
+}
+
+# Beta. Vectorize storage with adaptive sampling
+type AccountVectorizeStorageAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountVectorizeStorageAdaptiveGroupsDimensions
+  # The max of values for a metric per dimension
+  max: AccountVectorizeStorageAdaptiveGroupsMax
+}
+
+type AccountVectorizeStorageAdaptiveGroupsDimensions {
+  # Vectorize storage sample timestamp
+  date: Date!
+  # Vectorize storage sample timestamp, truncated to the hour
+  datetimeHour: Time!
+  # Identifier for a Vectorize index
+  vectorizeIndexId: string!
+}
+
+input AccountVectorizeStorageAdaptiveGroupsFilter_InputObject {
+  AND: [AccountVectorizeStorageAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountVectorizeStorageAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  vectorizeIndexId: string
+  vectorizeIndexId_geq: string
+  vectorizeIndexId_gt: string
+  vectorizeIndexId_in: [string!]
+  vectorizeIndexId_leq: string
+  vectorizeIndexId_like: string
+  vectorizeIndexId_lt: string
+  vectorizeIndexId_neq: string
+  vectorizeIndexId_notin: [string!]
+  vectorizeIndexId_notlike: string
+}
+
+type AccountVectorizeStorageAdaptiveGroupsMax {
+  # The maximum number of stored vector dimensions in Vectorize over the queried time period.
+  storedVectorDimensions: uint64!
+}
+
+enum AccountVectorizeStorageAdaptiveGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # max(storedVectorDimensions) ascending
+  max_storedVectorDimensions_ASC
+  # max(storedVectorDimensions) descending
+  max_storedVectorDimensions_DESC
+  # vectorizeIndexId ascending
+  vectorizeIndexId_ASC
+  # vectorizeIndexId descending
+  vectorizeIndexId_DESC
 }
 
 # Beta. Aggregated video streaming buffer event metrics with adaptive sampling
