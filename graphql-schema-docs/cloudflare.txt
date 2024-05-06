@@ -9845,6 +9845,10 @@ type AccountFirewallEventsAdaptive {
   httpApplicationVersion: uint64!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
+  # JA4 TLS fingerprint
+  ja4: string!
+  # Inter-request statistics computed for this JA4 across Cloudflare's entire global edge network
+  ja4Signals: [AccountFirewallEventsAdaptiveJa4SignalsElem!]!
   # The kind of event, currently only possible values are: firewall
   kind: string!
   # The distinct result of checking for leaked credentials
@@ -10235,6 +10239,16 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   ja3Hash_neq: string
   ja3Hash_notin: [string!]
   ja3Hash_notlike: string
+  ja4: string
+  ja4_geq: string
+  ja4_gt: string
+  ja4_in: [string!]
+  ja4_leq: string
+  ja4_like: string
+  ja4_lt: string
+  ja4_neq: string
+  ja4_notin: [string!]
+  ja4_notlike: string
   kind: string
   kind_geq: string
   kind_gt: string
@@ -10513,6 +10527,8 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   httpApplicationVersion: uint64!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
+  # JA4 TLS fingerprint
+  ja4: string!
   # The kind of event, currently only possible values are: firewall
   kind: string!
   # Rules match index in the chain
@@ -10855,6 +10871,16 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   ja3Hash_neq: string
   ja3Hash_notin: [string!]
   ja3Hash_notlike: string
+  ja4: string
+  ja4_geq: string
+  ja4_gt: string
+  ja4_in: [string!]
+  ja4_leq: string
+  ja4_like: string
+  ja4_lt: string
+  ja4_neq: string
+  ja4_notin: [string!]
+  ja4_notlike: string
   kind: string
   kind_geq: string
   kind_gt: string
@@ -11178,6 +11204,10 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   ja3Hash_ASC
   # ja3Hash descending
   ja3Hash_DESC
+  # ja4 ascending
+  ja4_ASC
+  # ja4 descending
+  ja4_DESC
   # kind ascending
   kind_ASC
   # kind descending
@@ -11266,6 +11296,13 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   zoneVersion_ASC
   # zoneVersion descending
   zoneVersion_DESC
+}
+
+type AccountFirewallEventsAdaptiveJa4SignalsElem {
+  # Signal name
+  signalName: string!
+  # Signal value
+  signalValue: float32!
 }
 
 type AccountFirewallEventsAdaptiveMetadataElem {
@@ -11420,6 +11457,10 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   ja3Hash_ASC
   # ja3Hash descending
   ja3Hash_DESC
+  # ja4 ascending
+  ja4_ASC
+  # ja4 descending
+  ja4_DESC
   # kind ascending
   kind_ASC
   # kind descending
@@ -15322,6 +15363,10 @@ type AccountHttpRequestsAdaptive {
   isCrossZoneSubrequest: uint8!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
+  # JA4 TLS fingerprint
+  ja4: string!
+  # Inter-request statistics computed for this JA4 across Cloudflare's entire global edge network
+  ja4Signals: [AccountHttpRequestsAdaptiveJa4SignalsElem!]!
   # The distinct result of checking for leaked credentials
   leakedCredentialCheckResult: string!
   originASN: uint32!
@@ -15722,6 +15767,16 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   ja3Hash_neq: string
   ja3Hash_notin: [string!]
   ja3Hash_notlike: string
+  ja4: string
+  ja4_geq: string
+  ja4_gt: string
+  ja4_in: [string!]
+  ja4_leq: string
+  ja4_like: string
+  ja4_lt: string
+  ja4_neq: string
+  ja4_notin: [string!]
+  ja4_notlike: string
   leakedCredentialCheckResult: string
   leakedCredentialCheckResult_geq: string
   leakedCredentialCheckResult_gt: string
@@ -16038,6 +16093,8 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   isCrossZoneSubrequest: uint8!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
+  # JA4 TLS fingerprint
+  ja4: string!
   # The distinct result of checking for leaked credentials
   leakedCredentialCheckResult: string!
   originASN: uint32!
@@ -16437,6 +16494,16 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   ja3Hash_neq: string
   ja3Hash_notin: [string!]
   ja3Hash_notlike: string
+  ja4: string
+  ja4_geq: string
+  ja4_gt: string
+  ja4_in: [string!]
+  ja4_leq: string
+  ja4_like: string
+  ja4_lt: string
+  ja4_neq: string
+  ja4_notin: [string!]
+  ja4_notlike: string
   leakedCredentialCheckResult: string
   leakedCredentialCheckResult_geq: string
   leakedCredentialCheckResult_gt: string
@@ -16832,6 +16899,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   ja3Hash_ASC
   # ja3Hash descending
   ja3Hash_DESC
+  # ja4 ascending
+  ja4_ASC
+  # ja4 descending
+  ja4_DESC
   # leakedCredentialCheckResult ascending
   leakedCredentialCheckResult_ASC
   # leakedCredentialCheckResult descending
@@ -17032,6 +17103,13 @@ type AccountHttpRequestsAdaptiveGroupsSumConfidence {
   edgeResponseBytes: Confidence!
 }
 
+type AccountHttpRequestsAdaptiveJa4SignalsElem {
+  # Signal name
+  signalName: string!
+  # Signal value
+  signalValue: float32!
+}
+
 enum AccountHttpRequestsAdaptiveOrderBy {
   # apiGatewayMatchedEndpoint ascending
   apiGatewayMatchedEndpoint_ASC
@@ -17189,6 +17267,10 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   ja3Hash_ASC
   # ja3Hash descending
   ja3Hash_DESC
+  # ja4 ascending
+  ja4_ASC
+  # ja4 descending
+  ja4_DESC
   # leakedCredentialCheckResult ascending
   leakedCredentialCheckResult_ASC
   # leakedCredentialCheckResult descending
@@ -36110,6 +36192,10 @@ type ZoneFirewallEventsAdaptive {
   httpApplicationVersion: uint64!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
+  # JA4 TLS fingerprint
+  ja4: string!
+  # Inter-request statistics computed for this JA4 across Cloudflare's entire global edge network
+  ja4Signals: [ZoneFirewallEventsAdaptiveJa4SignalsElem!]!
   # The kind of event, currently only possible values are: firewall
   kind: string!
   # The distinct result of checking for leaked credentials
@@ -36201,6 +36287,8 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   httpApplicationVersion: uint64!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
+  # JA4 TLS fingerprint
+  ja4: string!
   # Beta. Overall request score generated by the WAF detection module
   wafAttackScore: uint8!
   # Beta. Overall request score class generated by the WAF detection module
@@ -36519,6 +36607,16 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   ja3Hash_neq: string
   ja3Hash_notin: [string!]
   ja3Hash_notlike: string
+  ja4: string
+  ja4_geq: string
+  ja4_gt: string
+  ja4_in: [string!]
+  ja4_leq: string
+  ja4_like: string
+  ja4_lt: string
+  ja4_neq: string
+  ja4_notin: [string!]
+  ja4_notlike: string
   kind: string
   kind_geq: string
   kind_gt: string
@@ -36760,6 +36858,10 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   ja3Hash_ASC
   # ja3Hash descending
   ja3Hash_DESC
+  # ja4 ascending
+  ja4_ASC
+  # ja4 descending
+  ja4_DESC
   # visibility ascending
   visibility_ASC
   # visibility descending
@@ -37141,6 +37243,16 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   ja3Hash_neq: string
   ja3Hash_notin: [string!]
   ja3Hash_notlike: string
+  ja4: string
+  ja4_geq: string
+  ja4_gt: string
+  ja4_in: [string!]
+  ja4_leq: string
+  ja4_like: string
+  ja4_lt: string
+  ja4_neq: string
+  ja4_notin: [string!]
+  ja4_notlike: string
   kind: string
   kind_geq: string
   kind_gt: string
@@ -37409,6 +37521,8 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   httpApplicationVersion: uint64!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
+  # JA4 TLS fingerprint
+  ja4: string!
   # The kind of event, currently only possible values are: firewall
   kind: string!
   # Rules match index in the chain
@@ -37749,6 +37863,16 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   ja3Hash_neq: string
   ja3Hash_notin: [string!]
   ja3Hash_notlike: string
+  ja4: string
+  ja4_geq: string
+  ja4_gt: string
+  ja4_in: [string!]
+  ja4_leq: string
+  ja4_like: string
+  ja4_lt: string
+  ja4_neq: string
+  ja4_notin: [string!]
+  ja4_notlike: string
   kind: string
   kind_geq: string
   kind_gt: string
@@ -38062,6 +38186,10 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   ja3Hash_ASC
   # ja3Hash descending
   ja3Hash_DESC
+  # ja4 ascending
+  ja4_ASC
+  # ja4 descending
+  ja4_DESC
   # kind ascending
   kind_ASC
   # kind descending
@@ -38146,6 +38274,13 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   zoneVersion_ASC
   # zoneVersion descending
   zoneVersion_DESC
+}
+
+type ZoneFirewallEventsAdaptiveJa4SignalsElem {
+  # Signal name
+  signalName: string!
+  # Signal value
+  signalValue: float32!
 }
 
 type ZoneFirewallEventsAdaptiveMetadataElem {
@@ -38300,6 +38435,10 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   ja3Hash_ASC
   # ja3Hash descending
   ja3Hash_DESC
+  # ja4 ascending
+  ja4_ASC
+  # ja4 descending
+  ja4_DESC
   # kind ascending
   kind_ASC
   # kind descending
@@ -40028,6 +40167,10 @@ type ZoneHttpRequestsAdaptive {
   isCrossZoneSubrequest: uint8!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
+  # JA4 TLS fingerprint
+  ja4: string!
+  # Inter-request statistics computed for this JA4 across Cloudflare's entire global edge network
+  ja4Signals: [ZoneHttpRequestsAdaptiveJa4SignalsElem!]!
   # The distinct result of checking for leaked credentials
   leakedCredentialCheckResult: string!
   originASN: uint32!
@@ -40426,6 +40569,16 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   ja3Hash_neq: string
   ja3Hash_notin: [string!]
   ja3Hash_notlike: string
+  ja4: string
+  ja4_geq: string
+  ja4_gt: string
+  ja4_in: [string!]
+  ja4_leq: string
+  ja4_like: string
+  ja4_lt: string
+  ja4_neq: string
+  ja4_notin: [string!]
+  ja4_notlike: string
   leakedCredentialCheckResult: string
   leakedCredentialCheckResult_geq: string
   leakedCredentialCheckResult_gt: string
@@ -40732,6 +40885,8 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   isCrossZoneSubrequest: uint8!
   # MD5 hash of the JA3 TLS fingerprint
   ja3Hash: string!
+  # JA4 TLS fingerprint
+  ja4: string!
   # The distinct result of checking for leaked credentials
   leakedCredentialCheckResult: string!
   originASN: uint32!
@@ -41129,6 +41284,16 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   ja3Hash_neq: string
   ja3Hash_notin: [string!]
   ja3Hash_notlike: string
+  ja4: string
+  ja4_geq: string
+  ja4_gt: string
+  ja4_in: [string!]
+  ja4_leq: string
+  ja4_like: string
+  ja4_lt: string
+  ja4_neq: string
+  ja4_notin: [string!]
+  ja4_notlike: string
   leakedCredentialCheckResult: string
   leakedCredentialCheckResult_geq: string
   leakedCredentialCheckResult_gt: string
@@ -41514,6 +41679,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   ja3Hash_ASC
   # ja3Hash descending
   ja3Hash_DESC
+  # ja4 ascending
+  ja4_ASC
+  # ja4 descending
+  ja4_DESC
   # leakedCredentialCheckResult ascending
   leakedCredentialCheckResult_ASC
   # leakedCredentialCheckResult descending
@@ -41710,6 +41879,13 @@ type ZoneHttpRequestsAdaptiveGroupsSumConfidence {
   edgeResponseBytes: Confidence!
 }
 
+type ZoneHttpRequestsAdaptiveJa4SignalsElem {
+  # Signal name
+  signalName: string!
+  # Signal value
+  signalValue: float32!
+}
+
 enum ZoneHttpRequestsAdaptiveOrderBy {
   # apiGatewayMatchedEndpoint ascending
   apiGatewayMatchedEndpoint_ASC
@@ -41867,6 +42043,10 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   ja3Hash_ASC
   # ja3Hash descending
   ja3Hash_DESC
+  # ja4 ascending
+  ja4_ASC
+  # ja4 descending
+  ja4_DESC
   # leakedCredentialCheckResult ascending
   leakedCredentialCheckResult_ASC
   # leakedCredentialCheckResult descending

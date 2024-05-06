@@ -9720,6 +9720,10 @@
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># MD5 hash of the JA3 TLS fingerprint</span><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># JA4 TLS fingerprint</span><br />
+&nbsp;&nbsp;ja4: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Inter-request statistics computed for this JA4 across Cloudflare's entire global edge network</span><br />
+&nbsp;&nbsp;ja4Signals: <a href="#AccountFirewallEventsAdaptiveJa4SignalsElem">[AccountFirewallEventsAdaptiveJa4SignalsElem!]!</a><br />
 &nbsp;&nbsp;<span class="c"># The kind of event, currently only possible values are: firewall</span><br />
 &nbsp;&nbsp;kind: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The distinct result of checking for leaked credentials</span><br />
@@ -10110,6 +10114,16 @@
 &nbsp;&nbsp;ja3Hash_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ja3Hash_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;kind: <a href="#string">string</a><br />
 &nbsp;&nbsp;kind_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;kind_gt: <a href="#string">string</a><br />
@@ -10388,6 +10402,8 @@
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># MD5 hash of the JA3 TLS fingerprint</span><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># JA4 TLS fingerprint</span><br />
+&nbsp;&nbsp;ja4: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The kind of event, currently only possible values are: firewall</span><br />
 &nbsp;&nbsp;kind: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Rules match index in the chain</span><br />
@@ -10730,6 +10746,16 @@
 &nbsp;&nbsp;ja3Hash_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ja3Hash_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;kind: <a href="#string">string</a><br />
 &nbsp;&nbsp;kind_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;kind_gt: <a href="#string">string</a><br />
@@ -11053,6 +11079,10 @@
 &nbsp;&nbsp;ja3Hash_ASC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash descending</span><br />
 &nbsp;&nbsp;ja3Hash_DESC<br />
+&nbsp;&nbsp;<span class="c"># ja4 ascending</span><br />
+&nbsp;&nbsp;ja4_ASC<br />
+&nbsp;&nbsp;<span class="c"># ja4 descending</span><br />
+&nbsp;&nbsp;ja4_DESC<br />
 &nbsp;&nbsp;<span class="c"># kind ascending</span><br />
 &nbsp;&nbsp;kind_ASC<br />
 &nbsp;&nbsp;<span class="c"># kind descending</span><br />
@@ -11141,6 +11171,13 @@
 &nbsp;&nbsp;zoneVersion_ASC<br />
 &nbsp;&nbsp;<span class="c"># zoneVersion descending</span><br />
 &nbsp;&nbsp;zoneVersion_DESC<br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountFirewallEventsAdaptiveJa4SignalsElem" href="#AccountFirewallEventsAdaptiveJa4SignalsElem">AccountFirewallEventsAdaptiveJa4SignalsElem</a> {<br />
+&nbsp;&nbsp;<span class="c"># Signal name</span><br />
+&nbsp;&nbsp;signalName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Signal value</span><br />
+&nbsp;&nbsp;signalValue: <a href="#float32">float32!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountFirewallEventsAdaptiveMetadataElem" href="#AccountFirewallEventsAdaptiveMetadataElem">AccountFirewallEventsAdaptiveMetadataElem</a> {<br />
@@ -11295,6 +11332,10 @@
 &nbsp;&nbsp;ja3Hash_ASC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash descending</span><br />
 &nbsp;&nbsp;ja3Hash_DESC<br />
+&nbsp;&nbsp;<span class="c"># ja4 ascending</span><br />
+&nbsp;&nbsp;ja4_ASC<br />
+&nbsp;&nbsp;<span class="c"># ja4 descending</span><br />
+&nbsp;&nbsp;ja4_DESC<br />
 &nbsp;&nbsp;<span class="c"># kind ascending</span><br />
 &nbsp;&nbsp;kind_ASC<br />
 &nbsp;&nbsp;<span class="c"># kind descending</span><br />
@@ -15197,6 +15238,10 @@
 &nbsp;&nbsp;isCrossZoneSubrequest: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># MD5 hash of the JA3 TLS fingerprint</span><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># JA4 TLS fingerprint</span><br />
+&nbsp;&nbsp;ja4: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Inter-request statistics computed for this JA4 across Cloudflare's entire global edge network</span><br />
+&nbsp;&nbsp;ja4Signals: <a href="#AccountHttpRequestsAdaptiveJa4SignalsElem">[AccountHttpRequestsAdaptiveJa4SignalsElem!]!</a><br />
 &nbsp;&nbsp;<span class="c"># The distinct result of checking for leaked credentials</span><br />
 &nbsp;&nbsp;leakedCredentialCheckResult: <a href="#string">string!</a><br />
 &nbsp;&nbsp;originASN: <a href="#uint32">uint32!</a><br />
@@ -15597,6 +15642,16 @@
 &nbsp;&nbsp;ja3Hash_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ja3Hash_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;leakedCredentialCheckResult: <a href="#string">string</a><br />
 &nbsp;&nbsp;leakedCredentialCheckResult_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;leakedCredentialCheckResult_gt: <a href="#string">string</a><br />
@@ -15913,6 +15968,8 @@
 &nbsp;&nbsp;isCrossZoneSubrequest: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># MD5 hash of the JA3 TLS fingerprint</span><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># JA4 TLS fingerprint</span><br />
+&nbsp;&nbsp;ja4: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The distinct result of checking for leaked credentials</span><br />
 &nbsp;&nbsp;leakedCredentialCheckResult: <a href="#string">string!</a><br />
 &nbsp;&nbsp;originASN: <a href="#uint32">uint32!</a><br />
@@ -16312,6 +16369,16 @@
 &nbsp;&nbsp;ja3Hash_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ja3Hash_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;leakedCredentialCheckResult: <a href="#string">string</a><br />
 &nbsp;&nbsp;leakedCredentialCheckResult_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;leakedCredentialCheckResult_gt: <a href="#string">string</a><br />
@@ -16707,6 +16774,10 @@
 &nbsp;&nbsp;ja3Hash_ASC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash descending</span><br />
 &nbsp;&nbsp;ja3Hash_DESC<br />
+&nbsp;&nbsp;<span class="c"># ja4 ascending</span><br />
+&nbsp;&nbsp;ja4_ASC<br />
+&nbsp;&nbsp;<span class="c"># ja4 descending</span><br />
+&nbsp;&nbsp;ja4_DESC<br />
 &nbsp;&nbsp;<span class="c"># leakedCredentialCheckResult ascending</span><br />
 &nbsp;&nbsp;leakedCredentialCheckResult_ASC<br />
 &nbsp;&nbsp;<span class="c"># leakedCredentialCheckResult descending</span><br />
@@ -16907,6 +16978,13 @@
 &nbsp;&nbsp;edgeResponseBytes: <a href="#Confidence">Confidence!</a><br />
 }<br />
 <br />
+<span class="k">type</span> <a id="AccountHttpRequestsAdaptiveJa4SignalsElem" href="#AccountHttpRequestsAdaptiveJa4SignalsElem">AccountHttpRequestsAdaptiveJa4SignalsElem</a> {<br />
+&nbsp;&nbsp;<span class="c"># Signal name</span><br />
+&nbsp;&nbsp;signalName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Signal value</span><br />
+&nbsp;&nbsp;signalValue: <a href="#float32">float32!</a><br />
+}<br />
+<br />
 <span class="k">enum</span> <a id="AccountHttpRequestsAdaptiveOrderBy" href="#AccountHttpRequestsAdaptiveOrderBy">AccountHttpRequestsAdaptiveOrderBy</a> {<br />
 &nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint ascending</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_ASC<br />
@@ -17064,6 +17142,10 @@
 &nbsp;&nbsp;ja3Hash_ASC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash descending</span><br />
 &nbsp;&nbsp;ja3Hash_DESC<br />
+&nbsp;&nbsp;<span class="c"># ja4 ascending</span><br />
+&nbsp;&nbsp;ja4_ASC<br />
+&nbsp;&nbsp;<span class="c"># ja4 descending</span><br />
+&nbsp;&nbsp;ja4_DESC<br />
 &nbsp;&nbsp;<span class="c"># leakedCredentialCheckResult ascending</span><br />
 &nbsp;&nbsp;leakedCredentialCheckResult_ASC<br />
 &nbsp;&nbsp;<span class="c"># leakedCredentialCheckResult descending</span><br />
@@ -35985,6 +36067,10 @@
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># MD5 hash of the JA3 TLS fingerprint</span><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># JA4 TLS fingerprint</span><br />
+&nbsp;&nbsp;ja4: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Inter-request statistics computed for this JA4 across Cloudflare's entire global edge network</span><br />
+&nbsp;&nbsp;ja4Signals: <a href="#ZoneFirewallEventsAdaptiveJa4SignalsElem">[ZoneFirewallEventsAdaptiveJa4SignalsElem!]!</a><br />
 &nbsp;&nbsp;<span class="c"># The kind of event, currently only possible values are: firewall</span><br />
 &nbsp;&nbsp;kind: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The distinct result of checking for leaked credentials</span><br />
@@ -36076,6 +36162,8 @@
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># MD5 hash of the JA3 TLS fingerprint</span><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># JA4 TLS fingerprint</span><br />
+&nbsp;&nbsp;ja4: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. Overall request score generated by the WAF detection module</span><br />
 &nbsp;&nbsp;wafAttackScore: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. Overall request score class generated by the WAF detection module</span><br />
@@ -36394,6 +36482,16 @@
 &nbsp;&nbsp;ja3Hash_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ja3Hash_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;kind: <a href="#string">string</a><br />
 &nbsp;&nbsp;kind_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;kind_gt: <a href="#string">string</a><br />
@@ -36635,6 +36733,10 @@
 &nbsp;&nbsp;ja3Hash_ASC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash descending</span><br />
 &nbsp;&nbsp;ja3Hash_DESC<br />
+&nbsp;&nbsp;<span class="c"># ja4 ascending</span><br />
+&nbsp;&nbsp;ja4_ASC<br />
+&nbsp;&nbsp;<span class="c"># ja4 descending</span><br />
+&nbsp;&nbsp;ja4_DESC<br />
 &nbsp;&nbsp;<span class="c"># visibility ascending</span><br />
 &nbsp;&nbsp;visibility_ASC<br />
 &nbsp;&nbsp;<span class="c"># visibility descending</span><br />
@@ -37016,6 +37118,16 @@
 &nbsp;&nbsp;ja3Hash_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ja3Hash_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;kind: <a href="#string">string</a><br />
 &nbsp;&nbsp;kind_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;kind_gt: <a href="#string">string</a><br />
@@ -37284,6 +37396,8 @@
 &nbsp;&nbsp;httpApplicationVersion: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># MD5 hash of the JA3 TLS fingerprint</span><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># JA4 TLS fingerprint</span><br />
+&nbsp;&nbsp;ja4: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The kind of event, currently only possible values are: firewall</span><br />
 &nbsp;&nbsp;kind: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Rules match index in the chain</span><br />
@@ -37624,6 +37738,16 @@
 &nbsp;&nbsp;ja3Hash_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ja3Hash_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;kind: <a href="#string">string</a><br />
 &nbsp;&nbsp;kind_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;kind_gt: <a href="#string">string</a><br />
@@ -37937,6 +38061,10 @@
 &nbsp;&nbsp;ja3Hash_ASC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash descending</span><br />
 &nbsp;&nbsp;ja3Hash_DESC<br />
+&nbsp;&nbsp;<span class="c"># ja4 ascending</span><br />
+&nbsp;&nbsp;ja4_ASC<br />
+&nbsp;&nbsp;<span class="c"># ja4 descending</span><br />
+&nbsp;&nbsp;ja4_DESC<br />
 &nbsp;&nbsp;<span class="c"># kind ascending</span><br />
 &nbsp;&nbsp;kind_ASC<br />
 &nbsp;&nbsp;<span class="c"># kind descending</span><br />
@@ -38021,6 +38149,13 @@
 &nbsp;&nbsp;zoneVersion_ASC<br />
 &nbsp;&nbsp;<span class="c"># zoneVersion descending</span><br />
 &nbsp;&nbsp;zoneVersion_DESC<br />
+}<br />
+<br />
+<span class="k">type</span> <a id="ZoneFirewallEventsAdaptiveJa4SignalsElem" href="#ZoneFirewallEventsAdaptiveJa4SignalsElem">ZoneFirewallEventsAdaptiveJa4SignalsElem</a> {<br />
+&nbsp;&nbsp;<span class="c"># Signal name</span><br />
+&nbsp;&nbsp;signalName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Signal value</span><br />
+&nbsp;&nbsp;signalValue: <a href="#float32">float32!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneFirewallEventsAdaptiveMetadataElem" href="#ZoneFirewallEventsAdaptiveMetadataElem">ZoneFirewallEventsAdaptiveMetadataElem</a> {<br />
@@ -38175,6 +38310,10 @@
 &nbsp;&nbsp;ja3Hash_ASC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash descending</span><br />
 &nbsp;&nbsp;ja3Hash_DESC<br />
+&nbsp;&nbsp;<span class="c"># ja4 ascending</span><br />
+&nbsp;&nbsp;ja4_ASC<br />
+&nbsp;&nbsp;<span class="c"># ja4 descending</span><br />
+&nbsp;&nbsp;ja4_DESC<br />
 &nbsp;&nbsp;<span class="c"># kind ascending</span><br />
 &nbsp;&nbsp;kind_ASC<br />
 &nbsp;&nbsp;<span class="c"># kind descending</span><br />
@@ -39903,6 +40042,10 @@
 &nbsp;&nbsp;isCrossZoneSubrequest: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># MD5 hash of the JA3 TLS fingerprint</span><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># JA4 TLS fingerprint</span><br />
+&nbsp;&nbsp;ja4: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Inter-request statistics computed for this JA4 across Cloudflare's entire global edge network</span><br />
+&nbsp;&nbsp;ja4Signals: <a href="#ZoneHttpRequestsAdaptiveJa4SignalsElem">[ZoneHttpRequestsAdaptiveJa4SignalsElem!]!</a><br />
 &nbsp;&nbsp;<span class="c"># The distinct result of checking for leaked credentials</span><br />
 &nbsp;&nbsp;leakedCredentialCheckResult: <a href="#string">string!</a><br />
 &nbsp;&nbsp;originASN: <a href="#uint32">uint32!</a><br />
@@ -40301,6 +40444,16 @@
 &nbsp;&nbsp;ja3Hash_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ja3Hash_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;leakedCredentialCheckResult: <a href="#string">string</a><br />
 &nbsp;&nbsp;leakedCredentialCheckResult_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;leakedCredentialCheckResult_gt: <a href="#string">string</a><br />
@@ -40607,6 +40760,8 @@
 &nbsp;&nbsp;isCrossZoneSubrequest: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># MD5 hash of the JA3 TLS fingerprint</span><br />
 &nbsp;&nbsp;ja3Hash: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># JA4 TLS fingerprint</span><br />
+&nbsp;&nbsp;ja4: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The distinct result of checking for leaked credentials</span><br />
 &nbsp;&nbsp;leakedCredentialCheckResult: <a href="#string">string!</a><br />
 &nbsp;&nbsp;originASN: <a href="#uint32">uint32!</a><br />
@@ -41004,6 +41159,16 @@
 &nbsp;&nbsp;ja3Hash_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ja3Hash_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ja3Hash_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ja4_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ja4_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;leakedCredentialCheckResult: <a href="#string">string</a><br />
 &nbsp;&nbsp;leakedCredentialCheckResult_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;leakedCredentialCheckResult_gt: <a href="#string">string</a><br />
@@ -41389,6 +41554,10 @@
 &nbsp;&nbsp;ja3Hash_ASC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash descending</span><br />
 &nbsp;&nbsp;ja3Hash_DESC<br />
+&nbsp;&nbsp;<span class="c"># ja4 ascending</span><br />
+&nbsp;&nbsp;ja4_ASC<br />
+&nbsp;&nbsp;<span class="c"># ja4 descending</span><br />
+&nbsp;&nbsp;ja4_DESC<br />
 &nbsp;&nbsp;<span class="c"># leakedCredentialCheckResult ascending</span><br />
 &nbsp;&nbsp;leakedCredentialCheckResult_ASC<br />
 &nbsp;&nbsp;<span class="c"># leakedCredentialCheckResult descending</span><br />
@@ -41585,6 +41754,13 @@
 &nbsp;&nbsp;edgeResponseBytes: <a href="#Confidence">Confidence!</a><br />
 }<br />
 <br />
+<span class="k">type</span> <a id="ZoneHttpRequestsAdaptiveJa4SignalsElem" href="#ZoneHttpRequestsAdaptiveJa4SignalsElem">ZoneHttpRequestsAdaptiveJa4SignalsElem</a> {<br />
+&nbsp;&nbsp;<span class="c"># Signal name</span><br />
+&nbsp;&nbsp;signalName: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Signal value</span><br />
+&nbsp;&nbsp;signalValue: <a href="#float32">float32!</a><br />
+}<br />
+<br />
 <span class="k">enum</span> <a id="ZoneHttpRequestsAdaptiveOrderBy" href="#ZoneHttpRequestsAdaptiveOrderBy">ZoneHttpRequestsAdaptiveOrderBy</a> {<br />
 &nbsp;&nbsp;<span class="c"># apiGatewayMatchedEndpoint ascending</span><br />
 &nbsp;&nbsp;apiGatewayMatchedEndpoint_ASC<br />
@@ -41742,6 +41918,10 @@
 &nbsp;&nbsp;ja3Hash_ASC<br />
 &nbsp;&nbsp;<span class="c"># ja3Hash descending</span><br />
 &nbsp;&nbsp;ja3Hash_DESC<br />
+&nbsp;&nbsp;<span class="c"># ja4 ascending</span><br />
+&nbsp;&nbsp;ja4_ASC<br />
+&nbsp;&nbsp;<span class="c"># ja4 descending</span><br />
+&nbsp;&nbsp;ja4_DESC<br />
 &nbsp;&nbsp;<span class="c"># leakedCredentialCheckResult ascending</span><br />
 &nbsp;&nbsp;leakedCredentialCheckResult_ASC<br />
 &nbsp;&nbsp;<span class="c"># leakedCredentialCheckResult descending</span><br />
