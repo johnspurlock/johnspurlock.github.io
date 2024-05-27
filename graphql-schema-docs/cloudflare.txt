@@ -59,8 +59,6 @@ Account-level datasets:
 * queueConsumerMetricsAdaptiveGroups
 * queueDelayedBacklogAdaptiveGroups
 * queueMessageOperationsAdaptiveGroups
-* r2IAOperationsAdaptiveGroups
-* r2IAStorageAdaptiveGroups
 * r2OperationsAdaptiveGroups
 * r2StorageAdaptiveGroups
 * rumPageloadEventsAdaptiveGroups
@@ -298,10 +296,6 @@ type account {
   queueDelayedBacklogAdaptiveGroups(filter: AccountQueueDelayedBacklogAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueDelayedBacklogAdaptiveGroupsOrderBy!]): [AccountQueueDelayedBacklogAdaptiveGroups!]!
   # Beta. Queue message operation data with adaptive sampling
   queueMessageOperationsAdaptiveGroups(filter: AccountQueueMessageOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueMessageOperationsAdaptiveGroupsOrderBy!]): [AccountQueueMessageOperationsAdaptiveGroups!]!
-  # Beta. R2 infrequent access operations with adaptive sampling
-  r2IAOperationsAdaptiveGroups(filter: AccountR2IAOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2IAOperationsAdaptiveGroupsOrderBy!]): [AccountR2IAOperationsAdaptiveGroups!]!
-  # Beta. R2 infrequent access storage with adaptive sampling
-  r2IAStorageAdaptiveGroups(filter: AccountR2IAStorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2IAStorageAdaptiveGroupsOrderBy!]): [AccountR2IAStorageAdaptiveGroups!]!
   # Beta. R2 operations with adaptive sampling
   r2OperationsAdaptiveGroups(filter: AccountR2OperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2OperationsAdaptiveGroupsOrderBy!]): [AccountR2OperationsAdaptiveGroups!]!
   # Beta. R2 storage with adaptive sampling
@@ -9819,9 +9813,11 @@ type AccountFirewallEventsAdaptive {
   # Number of scannable content objects
   contentScanNumObj: uint8!
   # Array of scan results in order of detection
-  contentScanObjResults: string!
+  contentScanObjResults: [string!]!
+  # Array of scan sizes in order of detection
+  contentScanObjSizes: [uint32!]!
   # Array of content types in order of detection
-  contentScanObjTypes: string!
+  contentScanObjTypes: [string!]!
   # The date the event occurred at the edge
   date: Date!
   # The date and time the event occurred at the edge
@@ -10125,26 +10121,18 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   contentScanNumObj_lt: uint8
   contentScanNumObj_neq: uint8
   contentScanNumObj_notin: bytes
-  contentScanObjResults: string
-  contentScanObjResults_geq: string
-  contentScanObjResults_gt: string
-  contentScanObjResults_in: [string!]
-  contentScanObjResults_leq: string
-  contentScanObjResults_like: string
-  contentScanObjResults_lt: string
-  contentScanObjResults_neq: string
-  contentScanObjResults_notin: [string!]
-  contentScanObjResults_notlike: string
-  contentScanObjTypes: string
-  contentScanObjTypes_geq: string
-  contentScanObjTypes_gt: string
-  contentScanObjTypes_in: [string!]
-  contentScanObjTypes_leq: string
-  contentScanObjTypes_like: string
-  contentScanObjTypes_lt: string
-  contentScanObjTypes_neq: string
-  contentScanObjTypes_notin: [string!]
-  contentScanObjTypes_notlike: string
+  contentScanObjResults_has: string
+  contentScanObjResults_hasall: [string!]
+  contentScanObjResults_hasany: [string!]
+  contentScanObjResults_nothas: string
+  contentScanObjSizes_has: uint32
+  contentScanObjSizes_hasall: [uint32!]
+  contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_nothas: uint32
+  contentScanObjTypes_has: string
+  contentScanObjTypes_hasall: [string!]
+  contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -11409,6 +11397,10 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   contentScanObjResults_ASC
   # contentScanObjResults descending
   contentScanObjResults_DESC
+  # contentScanObjSizes ascending
+  contentScanObjSizes_ASC
+  # contentScanObjSizes descending
+  contentScanObjSizes_DESC
   # contentScanObjTypes ascending
   contentScanObjTypes_ASC
   # contentScanObjTypes descending
@@ -15337,6 +15329,12 @@ type AccountHttpRequestsAdaptive {
   contentScanNumMaliciousObj: uint8!
   # Number of scannable content objects
   contentScanNumObj: uint8!
+  # Array of scan results in order of detection
+  contentScanObjResults: [string!]!
+  # Array of scan sizes in order of detection
+  contentScanObjSizes: [uint32!]!
+  # Array of content types in order of detection
+  contentScanObjTypes: [string!]!
   # The date the event occurred at the edge
   date: Date!
   # The date and time the event occurred at the edge
@@ -15659,6 +15657,18 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   contentScanNumObj_lt: uint8
   contentScanNumObj_neq: uint8
   contentScanNumObj_notin: bytes
+  contentScanObjResults_has: string
+  contentScanObjResults_hasall: [string!]
+  contentScanObjResults_hasany: [string!]
+  contentScanObjResults_nothas: string
+  contentScanObjSizes_has: uint32
+  contentScanObjSizes_hasall: [uint32!]
+  contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_nothas: uint32
+  contentScanObjTypes_has: string
+  contentScanObjTypes_hasall: [string!]
+  contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -16068,6 +16078,12 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   contentScanNumMaliciousObj: uint8!
   # Number of scannable content objects
   contentScanNumObj: uint8!
+  # Array of scan results in order of detection
+  contentScanObjResults: [string!]!
+  # Array of scan sizes in order of detection
+  contentScanObjSizes: [uint32!]!
+  # Array of content types in order of detection
+  contentScanObjTypes: [string!]!
   # The date the event occurred at the edge
   date: Date!
   # The date and time the event occurred at the edge
@@ -16386,6 +16402,18 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   contentScanNumObj_lt: uint8
   contentScanNumObj_neq: uint8
   contentScanNumObj_notin: bytes
+  contentScanObjResults_has: string
+  contentScanObjResults_hasall: [string!]
+  contentScanObjResults_hasany: [string!]
+  contentScanObjResults_nothas: string
+  contentScanObjSizes_has: uint32
+  contentScanObjSizes_hasall: [uint32!]
+  contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_nothas: uint32
+  contentScanObjTypes_has: string
+  contentScanObjTypes_hasall: [string!]
+  contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -16843,6 +16871,18 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   contentScanNumObj_ASC
   # contentScanNumObj descending
   contentScanNumObj_DESC
+  # contentScanObjResults ascending
+  contentScanObjResults_ASC
+  # contentScanObjResults descending
+  contentScanObjResults_DESC
+  # contentScanObjSizes ascending
+  contentScanObjSizes_ASC
+  # contentScanObjSizes descending
+  contentScanObjSizes_DESC
+  # contentScanObjTypes ascending
+  contentScanObjTypes_ASC
+  # contentScanObjTypes descending
+  contentScanObjTypes_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -17215,6 +17255,18 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   contentScanNumObj_ASC
   # contentScanNumObj descending
   contentScanNumObj_DESC
+  # contentScanObjResults ascending
+  contentScanObjResults_ASC
+  # contentScanObjResults descending
+  contentScanObjResults_DESC
+  # contentScanObjSizes ascending
+  contentScanObjSizes_ASC
+  # contentScanObjSizes descending
+  contentScanObjSizes_DESC
+  # contentScanObjTypes ascending
+  contentScanObjTypes_ASC
+  # contentScanObjTypes descending
+  contentScanObjTypes_DESC
   # date ascending
   date_ASC
   # date descending
@@ -22602,6 +22654,10 @@ enum AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy {
   avg_tunnelState_ASC
   # avg(tunnelState) descending
   avg_tunnelState_DESC
+  # coloStatus ascending
+  coloStatus_ASC
+  # coloStatus descending
+  coloStatus_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -22654,6 +22710,10 @@ enum AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy {
   edgePopName_ASC
   # edgePopName descending
   edgePopName_DESC
+  # metalStatus ascending
+  metalStatus_ASC
+  # metalStatus descending
+  metalStatus_DESC
   # remoteTunnelIPv4 ascending
   remoteTunnelIPv4_ASC
   # remoteTunnelIPv4 descending
@@ -22740,6 +22800,14 @@ type AccountMagicTransitTunnelTrafficAdaptiveGroupsDimensions {
   edgeColoName: string!
   # Cloudflare PoP that received the packet (unique site identifier)
   edgePopName: string!
+  # GRE, IPSec or CNI Egress Tunnel ID for Magic WAN and Magic Transit traffic
+  egressTunnelID: string!
+  # GRE, IPSec or CNIec Egress Tunnel name for Magic WAN and Magic Transit traffic
+  egressTunnelName: string!
+  # GRE, IPSec or CNI Ingress Tunnel ID for Magic WAN and Magic Transit traffic
+  ingressTunnelID: string!
+  # GRE, IPSec or CNI Ingress Tunnel name for Magic WAN and Magic Transit traffic
+  ingressTunnelName: string!
   # Tunnel device name
   tunnelName: string!
 }
@@ -22865,6 +22933,46 @@ input AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject {
   edgePopName_neq: string
   edgePopName_notin: [string!]
   edgePopName_notlike: string
+  egressTunnelID: string
+  egressTunnelID_geq: string
+  egressTunnelID_gt: string
+  egressTunnelID_in: [string!]
+  egressTunnelID_leq: string
+  egressTunnelID_like: string
+  egressTunnelID_lt: string
+  egressTunnelID_neq: string
+  egressTunnelID_notin: [string!]
+  egressTunnelID_notlike: string
+  egressTunnelName: string
+  egressTunnelName_geq: string
+  egressTunnelName_gt: string
+  egressTunnelName_in: [string!]
+  egressTunnelName_leq: string
+  egressTunnelName_like: string
+  egressTunnelName_lt: string
+  egressTunnelName_neq: string
+  egressTunnelName_notin: [string!]
+  egressTunnelName_notlike: string
+  ingressTunnelID: string
+  ingressTunnelID_geq: string
+  ingressTunnelID_gt: string
+  ingressTunnelID_in: [string!]
+  ingressTunnelID_leq: string
+  ingressTunnelID_like: string
+  ingressTunnelID_lt: string
+  ingressTunnelID_neq: string
+  ingressTunnelID_notin: [string!]
+  ingressTunnelID_notlike: string
+  ingressTunnelName: string
+  ingressTunnelName_geq: string
+  ingressTunnelName_gt: string
+  ingressTunnelName_in: [string!]
+  ingressTunnelName_leq: string
+  ingressTunnelName_like: string
+  ingressTunnelName_lt: string
+  ingressTunnelName_neq: string
+  ingressTunnelName_notin: [string!]
+  ingressTunnelName_notlike: string
   tunnelName: string
   tunnelName_geq: string
   tunnelName_gt: string
@@ -22986,6 +23094,22 @@ enum AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy {
   edgePopName_ASC
   # edgePopName descending
   edgePopName_DESC
+  # egressTunnelID ascending
+  egressTunnelID_ASC
+  # egressTunnelID descending
+  egressTunnelID_DESC
+  # egressTunnelName ascending
+  egressTunnelName_ASC
+  # egressTunnelName descending
+  egressTunnelName_DESC
+  # ingressTunnelID ascending
+  ingressTunnelID_ASC
+  # ingressTunnelID descending
+  ingressTunnelID_DESC
+  # ingressTunnelName ascending
+  ingressTunnelName_ASC
+  # ingressTunnelName descending
+  ingressTunnelName_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
@@ -24906,292 +25030,6 @@ type AccountQueueMessageOperationsAdaptiveGroupsSum {
   billableOperations: uint64!
   # Total size (in bytes) of message operations
   bytes: uint64!
-}
-
-# Beta. R2 infrequent access operations with adaptive sampling
-type AccountR2IAOperationsAdaptiveGroups {
-  # List of dimensions to group by
-  dimensions: AccountR2IAOperationsAdaptiveGroupsDimensions
-  # The sum of values for a metric per dimension
-  sum: AccountR2IAOperationsAdaptiveGroupsSum
-}
-
-type AccountR2IAOperationsAdaptiveGroupsDimensions {
-  # Status of the R2 operation
-  actionStatus: string!
-  # The name of the R2 operation
-  actionType: string!
-  # The name of the R2 bucket, if applicable to this request
-  bucketName: string!
-  # Request timestamp, truncated to start of a day
-  date: Date!
-  # Request timestamp
-  datetime: Time!
-  # Request timestamp, truncated to start of an hour
-  datetimeHour: Time!
-  # Request timestamp, truncated to start of an minute
-  datetimeMinute: Time!
-  # The name of the R2 object, if applicable to this request
-  objectName: string!
-  # HTTP status code returned by R2
-  responseStatusCode: uint16!
-}
-
-input AccountR2IAOperationsAdaptiveGroupsFilter_InputObject {
-  AND: [AccountR2IAOperationsAdaptiveGroupsFilter_InputObject!]
-  OR: [AccountR2IAOperationsAdaptiveGroupsFilter_InputObject!]
-  actionStatus: string
-  actionStatus_geq: string
-  actionStatus_gt: string
-  actionStatus_in: [string!]
-  actionStatus_leq: string
-  actionStatus_like: string
-  actionStatus_lt: string
-  actionStatus_neq: string
-  actionStatus_notin: [string!]
-  actionStatus_notlike: string
-  actionType: string
-  actionType_geq: string
-  actionType_gt: string
-  actionType_in: [string!]
-  actionType_leq: string
-  actionType_like: string
-  actionType_lt: string
-  actionType_neq: string
-  actionType_notin: [string!]
-  actionType_notlike: string
-  bucketName: string
-  bucketName_geq: string
-  bucketName_gt: string
-  bucketName_in: [string!]
-  bucketName_leq: string
-  bucketName_like: string
-  bucketName_lt: string
-  bucketName_neq: string
-  bucketName_notin: [string!]
-  bucketName_notlike: string
-  date: Date
-  date_geq: Date
-  date_gt: Date
-  date_in: [Date!]
-  date_leq: Date
-  date_lt: Date
-  date_neq: Date
-  date_notin: [Date!]
-  datetime: Time
-  datetimeHour: Time
-  datetimeHour_geq: Time
-  datetimeHour_gt: Time
-  datetimeHour_in: [Time!]
-  datetimeHour_leq: Time
-  datetimeHour_lt: Time
-  datetimeHour_neq: Time
-  datetimeHour_notin: [Time!]
-  datetimeMinute: Time
-  datetimeMinute_geq: Time
-  datetimeMinute_gt: Time
-  datetimeMinute_in: [Time!]
-  datetimeMinute_leq: Time
-  datetimeMinute_lt: Time
-  datetimeMinute_neq: Time
-  datetimeMinute_notin: [Time!]
-  datetime_geq: Time
-  datetime_gt: Time
-  datetime_in: [Time!]
-  datetime_leq: Time
-  datetime_lt: Time
-  datetime_neq: Time
-  datetime_notin: [Time!]
-  objectName: string
-  objectName_geq: string
-  objectName_gt: string
-  objectName_in: [string!]
-  objectName_leq: string
-  objectName_like: string
-  objectName_lt: string
-  objectName_neq: string
-  objectName_notin: [string!]
-  objectName_notlike: string
-  responseStatusCode: uint16
-  responseStatusCode_geq: uint16
-  responseStatusCode_gt: uint16
-  responseStatusCode_in: [uint16!]
-  responseStatusCode_leq: uint16
-  responseStatusCode_lt: uint16
-  responseStatusCode_neq: uint16
-  responseStatusCode_notin: [uint16!]
-}
-
-enum AccountR2IAOperationsAdaptiveGroupsOrderBy {
-  # actionStatus ascending
-  actionStatus_ASC
-  # actionStatus descending
-  actionStatus_DESC
-  # actionType ascending
-  actionType_ASC
-  # actionType descending
-  actionType_DESC
-  # bucketName ascending
-  bucketName_ASC
-  # bucketName descending
-  bucketName_DESC
-  # date ascending
-  date_ASC
-  # date descending
-  date_DESC
-  # datetimeHour ascending
-  datetimeHour_ASC
-  # datetimeHour descending
-  datetimeHour_DESC
-  # datetimeMinute ascending
-  datetimeMinute_ASC
-  # datetimeMinute descending
-  datetimeMinute_DESC
-  # datetime ascending
-  datetime_ASC
-  # datetime descending
-  datetime_DESC
-  # objectName ascending
-  objectName_ASC
-  # objectName descending
-  objectName_DESC
-  # responseStatusCode ascending
-  responseStatusCode_ASC
-  # responseStatusCode descending
-  responseStatusCode_DESC
-  # sum(requests) ascending
-  sum_requests_ASC
-  # sum(requests) descending
-  sum_requests_DESC
-  # sum(responseBytes) ascending
-  sum_responseBytes_ASC
-  # sum(responseBytes) descending
-  sum_responseBytes_DESC
-}
-
-type AccountR2IAOperationsAdaptiveGroupsSum {
-  # Sum of Requests
-  requests: uint64!
-  # Sum of retrieved bytes
-  responseBytes: uint64!
-}
-
-# Beta. R2 infrequent access storage with adaptive sampling
-type AccountR2IAStorageAdaptiveGroups {
-  # List of dimensions to group by
-  dimensions: AccountR2IAStorageAdaptiveGroupsDimensions
-  # The max of values for a metric per dimension
-  max: AccountR2IAStorageAdaptiveGroupsMax
-}
-
-type AccountR2IAStorageAdaptiveGroupsDimensions {
-  # The name of the R2 bucket, if applicable to this request
-  bucketName: string!
-  # Storage sample timestamp, truncated to start of a day
-  date: Date!
-  # Storage sample timestamp
-  datetime: Time!
-  # Storage sample timestamp, truncated to start of an hour
-  datetimeHour: Time!
-  # Storage sample timestamp, truncated to start of an minute
-  datetimeMinute: Time!
-}
-
-input AccountR2IAStorageAdaptiveGroupsFilter_InputObject {
-  AND: [AccountR2IAStorageAdaptiveGroupsFilter_InputObject!]
-  OR: [AccountR2IAStorageAdaptiveGroupsFilter_InputObject!]
-  bucketName: string
-  bucketName_geq: string
-  bucketName_gt: string
-  bucketName_in: [string!]
-  bucketName_leq: string
-  bucketName_like: string
-  bucketName_lt: string
-  bucketName_neq: string
-  bucketName_notin: [string!]
-  bucketName_notlike: string
-  date: Date
-  date_geq: Date
-  date_gt: Date
-  date_in: [Date!]
-  date_leq: Date
-  date_lt: Date
-  date_neq: Date
-  date_notin: [Date!]
-  datetime: Time
-  datetimeHour: Time
-  datetimeHour_geq: Time
-  datetimeHour_gt: Time
-  datetimeHour_in: [Time!]
-  datetimeHour_leq: Time
-  datetimeHour_lt: Time
-  datetimeHour_neq: Time
-  datetimeHour_notin: [Time!]
-  datetimeMinute: Time
-  datetimeMinute_geq: Time
-  datetimeMinute_gt: Time
-  datetimeMinute_in: [Time!]
-  datetimeMinute_leq: Time
-  datetimeMinute_lt: Time
-  datetimeMinute_neq: Time
-  datetimeMinute_notin: [Time!]
-  datetime_geq: Time
-  datetime_gt: Time
-  datetime_in: [Time!]
-  datetime_leq: Time
-  datetime_lt: Time
-  datetime_neq: Time
-  datetime_notin: [Time!]
-}
-
-type AccountR2IAStorageAdaptiveGroupsMax {
-  # Max of metadata size
-  metadataSize: uint64!
-  # Max of object count
-  objectCount: uint64!
-  # Max of payload size
-  payloadSize: uint64!
-  # Max of upload count
-  uploadCount: uint64!
-}
-
-enum AccountR2IAStorageAdaptiveGroupsOrderBy {
-  # bucketName ascending
-  bucketName_ASC
-  # bucketName descending
-  bucketName_DESC
-  # date ascending
-  date_ASC
-  # date descending
-  date_DESC
-  # datetimeHour ascending
-  datetimeHour_ASC
-  # datetimeHour descending
-  datetimeHour_DESC
-  # datetimeMinute ascending
-  datetimeMinute_ASC
-  # datetimeMinute descending
-  datetimeMinute_DESC
-  # datetime ascending
-  datetime_ASC
-  # datetime descending
-  datetime_DESC
-  # max(metadataSize) ascending
-  max_metadataSize_ASC
-  # max(metadataSize) descending
-  max_metadataSize_DESC
-  # max(objectCount) ascending
-  max_objectCount_ASC
-  # max(objectCount) descending
-  max_objectCount_DESC
-  # max(payloadSize) ascending
-  max_payloadSize_ASC
-  # max(payloadSize) descending
-  max_payloadSize_DESC
-  # max(uploadCount) ascending
-  max_uploadCount_ASC
-  # max(uploadCount) descending
-  max_uploadCount_DESC
 }
 
 # Beta. R2 operations with adaptive sampling
@@ -27919,8 +27757,6 @@ type AccountSettings {
   queueConsumerMetricsAdaptiveGroups: Settings!
   queueDelayedBacklogAdaptiveGroups: Settings!
   queueMessageOperationsAdaptiveGroups: Settings!
-  r2IAOperationsAdaptiveGroups: Settings!
-  r2IAStorageAdaptiveGroups: Settings!
   r2OperationsAdaptiveGroups: Settings!
   r2StorageAdaptiveGroups: Settings!
   rumPageloadEventsAdaptiveGroups: Settings!
@@ -36166,9 +36002,11 @@ type ZoneFirewallEventsAdaptive {
   # Number of scannable content objects
   contentScanNumObj: uint8!
   # Array of scan results in order of detection
-  contentScanObjResults: string!
+  contentScanObjResults: [string!]!
+  # Array of scan sizes in order of detection
+  contentScanObjSizes: [uint32!]!
   # Array of content types in order of detection
-  contentScanObjTypes: string!
+  contentScanObjTypes: [string!]!
   # The date the event occurred at the edge
   date: Date!
   # The date and time the event occurred at the edge
@@ -37129,26 +36967,18 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   contentScanNumObj_lt: uint8
   contentScanNumObj_neq: uint8
   contentScanNumObj_notin: bytes
-  contentScanObjResults: string
-  contentScanObjResults_geq: string
-  contentScanObjResults_gt: string
-  contentScanObjResults_in: [string!]
-  contentScanObjResults_leq: string
-  contentScanObjResults_like: string
-  contentScanObjResults_lt: string
-  contentScanObjResults_neq: string
-  contentScanObjResults_notin: [string!]
-  contentScanObjResults_notlike: string
-  contentScanObjTypes: string
-  contentScanObjTypes_geq: string
-  contentScanObjTypes_gt: string
-  contentScanObjTypes_in: [string!]
-  contentScanObjTypes_leq: string
-  contentScanObjTypes_like: string
-  contentScanObjTypes_lt: string
-  contentScanObjTypes_neq: string
-  contentScanObjTypes_notin: [string!]
-  contentScanObjTypes_notlike: string
+  contentScanObjResults_has: string
+  contentScanObjResults_hasall: [string!]
+  contentScanObjResults_hasany: [string!]
+  contentScanObjResults_nothas: string
+  contentScanObjSizes_has: uint32
+  contentScanObjSizes_hasall: [uint32!]
+  contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_nothas: uint32
+  contentScanObjTypes_has: string
+  contentScanObjTypes_hasall: [string!]
+  contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -38387,6 +38217,10 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   contentScanObjResults_ASC
   # contentScanObjResults descending
   contentScanObjResults_DESC
+  # contentScanObjSizes ascending
+  contentScanObjSizes_ASC
+  # contentScanObjSizes descending
+  contentScanObjSizes_DESC
   # contentScanObjTypes ascending
   contentScanObjTypes_ASC
   # contentScanObjTypes descending
@@ -40141,6 +39975,12 @@ type ZoneHttpRequestsAdaptive {
   contentScanNumMaliciousObj: uint8!
   # Number of scannable content objects
   contentScanNumObj: uint8!
+  # Array of scan results in order of detection
+  contentScanObjResults: [string!]!
+  # Array of scan sizes in order of detection
+  contentScanObjSizes: [uint32!]!
+  # Array of content types in order of detection
+  contentScanObjTypes: [string!]!
   # The date the event occurred at the edge
   date: Date!
   # The date and time the event occurred at the edge
@@ -40461,6 +40301,18 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   contentScanNumObj_lt: uint8
   contentScanNumObj_neq: uint8
   contentScanNumObj_notin: bytes
+  contentScanObjResults_has: string
+  contentScanObjResults_hasall: [string!]
+  contentScanObjResults_hasany: [string!]
+  contentScanObjResults_nothas: string
+  contentScanObjSizes_has: uint32
+  contentScanObjSizes_hasall: [uint32!]
+  contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_nothas: uint32
+  contentScanObjTypes_has: string
+  contentScanObjTypes_hasall: [string!]
+  contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -40860,6 +40712,12 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   contentScanNumMaliciousObj: uint8!
   # Number of scannable content objects
   contentScanNumObj: uint8!
+  # Array of scan results in order of detection
+  contentScanObjResults: [string!]!
+  # Array of scan sizes in order of detection
+  contentScanObjSizes: [uint32!]!
+  # Array of content types in order of detection
+  contentScanObjTypes: [string!]!
   # The date the event occurred at the edge
   date: Date!
   # The date and time the event occurred at the edge
@@ -41176,6 +41034,18 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   contentScanNumObj_lt: uint8
   contentScanNumObj_neq: uint8
   contentScanNumObj_notin: bytes
+  contentScanObjResults_has: string
+  contentScanObjResults_hasall: [string!]
+  contentScanObjResults_hasany: [string!]
+  contentScanObjResults_nothas: string
+  contentScanObjSizes_has: uint32
+  contentScanObjSizes_hasall: [uint32!]
+  contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_nothas: uint32
+  contentScanObjTypes_has: string
+  contentScanObjTypes_hasall: [string!]
+  contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -41623,6 +41493,18 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   contentScanNumObj_ASC
   # contentScanNumObj descending
   contentScanNumObj_DESC
+  # contentScanObjResults ascending
+  contentScanObjResults_ASC
+  # contentScanObjResults descending
+  contentScanObjResults_DESC
+  # contentScanObjSizes ascending
+  contentScanObjSizes_ASC
+  # contentScanObjSizes descending
+  contentScanObjSizes_DESC
+  # contentScanObjTypes ascending
+  contentScanObjTypes_ASC
+  # contentScanObjTypes descending
+  contentScanObjTypes_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -41991,6 +41873,18 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   contentScanNumObj_ASC
   # contentScanNumObj descending
   contentScanNumObj_DESC
+  # contentScanObjResults ascending
+  contentScanObjResults_ASC
+  # contentScanObjResults descending
+  contentScanObjResults_DESC
+  # contentScanObjSizes ascending
+  contentScanObjSizes_ASC
+  # contentScanObjSizes descending
+  contentScanObjSizes_DESC
+  # contentScanObjTypes ascending
+  contentScanObjTypes_ASC
+  # contentScanObjTypes descending
+  contentScanObjTypes_DESC
   # date ascending
   date_ASC
   # date descending
