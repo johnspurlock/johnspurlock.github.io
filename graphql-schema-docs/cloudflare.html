@@ -22335,6 +22335,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountMagicTransitTunnelHealthChecksAdaptiveGroupsDimensions" href="#AccountMagicTransitTunnelHealthChecksAdaptiveGroupsDimensions">AccountMagicTransitTunnelHealthChecksAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># Returns 1 if the colo had traffic for this tunnel in the last 6 hours, otherwise 0</span><br />
+&nbsp;&nbsp;active: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># The time the healthcheck request was sent</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># The time the healthcheck request was sent, truncated to multiple of 15 minutes</span><br />
@@ -22372,6 +22374,14 @@
 <span class="k">input</span> <a id="AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject" href="#AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject">AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject</a> {<br />
 &nbsp;&nbsp;AND: <a href="#AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject">[AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject!]</a><br />
 &nbsp;&nbsp;OR: <a href="#AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject">[AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;active: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;active_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;active_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;active_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;active_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;active_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;active_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;active_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeFifteenMinutes_geq: <a href="#Time">Time</a><br />
@@ -22523,6 +22533,10 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy" href="#AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy">AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># active ascending</span><br />
+&nbsp;&nbsp;active_ASC<br />
+&nbsp;&nbsp;<span class="c"># active descending</span><br />
+&nbsp;&nbsp;active_DESC<br />
 &nbsp;&nbsp;<span class="c"># avg(sampleInterval) ascending</span><br />
 &nbsp;&nbsp;avg_sampleInterval_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(sampleInterval) descending</span><br />

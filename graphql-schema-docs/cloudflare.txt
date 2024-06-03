@@ -22458,6 +22458,8 @@ type AccountMagicTransitTunnelHealthChecksAdaptiveGroupsAvg {
 }
 
 type AccountMagicTransitTunnelHealthChecksAdaptiveGroupsDimensions {
+  # Returns 1 if the colo had traffic for this tunnel in the last 6 hours, otherwise 0
+  active: uint8!
   # The time the healthcheck request was sent
   datetime: Time!
   # The time the healthcheck request was sent, truncated to multiple of 15 minutes
@@ -22495,6 +22497,14 @@ type AccountMagicTransitTunnelHealthChecksAdaptiveGroupsDimensions {
 input AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject {
   AND: [AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject!]
   OR: [AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject!]
+  active: uint8
+  active_geq: uint8
+  active_gt: uint8
+  active_in: bytes
+  active_leq: uint8
+  active_lt: uint8
+  active_neq: uint8
+  active_notin: bytes
   datetime: Time
   datetimeFifteenMinutes: Time
   datetimeFifteenMinutes_geq: Time
@@ -22646,6 +22656,10 @@ input AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy {
+  # active ascending
+  active_ASC
+  # active descending
+  active_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
