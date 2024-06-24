@@ -9775,6 +9775,10 @@ type AccountFirewallEventsAdaptive {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # Array of detections ids that matched this request
+  botDetectionIds: [uint32!]!
+  # Array of detections tags that matched this request
+  botDetectionTags: [string!]!
   # The final score originated from bot management detections.
   botScore: uint8!
   # Name of the source detection which generated the bot management score.
@@ -9932,6 +9936,14 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  botDetectionIds_has: uint32
+  botDetectionIds_hasall: [uint32!]
+  botDetectionIds_hasany: [uint32!]
+  botDetectionIds_nothas: uint32
+  botDetectionTags_has: string
+  botDetectionTags_hasall: [string!]
+  botDetectionTags_hasany: [string!]
+  botDetectionTags_nothas: string
   botScore: uint8
   botScoreSrcName: string
   botScoreSrcName_geq: string
@@ -11316,6 +11328,14 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # botDetectionIds ascending
+  botDetectionIds_ASC
+  # botDetectionIds descending
+  botDetectionIds_DESC
+  # botDetectionTags ascending
+  botDetectionTags_ASC
+  # botDetectionTags descending
+  botDetectionTags_DESC
   # botScoreSrcName ascending
   botScoreSrcName_ASC
   # botScoreSrcName descending
@@ -15286,6 +15306,10 @@ type AccountHttpRequestsAdaptive {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # Array of detections ids that matched this request
+  botDetectionIds: [uint32!]!
+  # Array of detections tags that matched this request
+  botDetectionTags: [string!]!
   # Judgement of the bot management system
   botManagementDecision: string!
   # The final score originated from bot management detections.
@@ -15432,6 +15456,14 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  botDetectionIds_has: uint32
+  botDetectionIds_hasall: [uint32!]
+  botDetectionIds_hasany: [uint32!]
+  botDetectionIds_nothas: uint32
+  botDetectionTags_has: string
+  botDetectionTags_hasall: [string!]
+  botDetectionTags_hasany: [string!]
+  botDetectionTags_nothas: string
   botManagementDecision: string
   botManagementDecision_geq: string
   botManagementDecision_gt: string
@@ -17162,6 +17194,14 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # botDetectionIds ascending
+  botDetectionIds_ASC
+  # botDetectionIds descending
+  botDetectionIds_DESC
+  # botDetectionTags ascending
+  botDetectionTags_ASC
+  # botDetectionTags descending
+  botDetectionTags_DESC
   # botManagementDecision ascending
   botManagementDecision_ASC
   # botManagementDecision descending
@@ -36002,6 +36042,10 @@ type ZoneFirewallEventsAdaptive {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # Array of detections ids that matched this request
+  botDetectionIds: [uint32!]!
+  # Array of detections tags that matched this request
+  botDetectionTags: [string!]!
   # The final score originated from bot management detections.
   botScore: uint8!
   # Name of the source detection which generated the bot management score.
@@ -36816,6 +36860,14 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  botDetectionIds_has: uint32
+  botDetectionIds_hasall: [uint32!]
+  botDetectionIds_hasany: [uint32!]
+  botDetectionIds_nothas: uint32
+  botDetectionTags_has: string
+  botDetectionTags_hasall: [string!]
+  botDetectionTags_hasany: [string!]
+  botDetectionTags_nothas: string
   botScore: uint8
   botScoreSrcName: string
   botScoreSrcName_geq: string
@@ -38174,6 +38226,14 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # botDetectionIds ascending
+  botDetectionIds_ASC
+  # botDetectionIds descending
+  botDetectionIds_DESC
+  # botDetectionTags ascending
+  botDetectionTags_ASC
+  # botDetectionTags descending
+  botDetectionTags_DESC
   # botScoreSrcName ascending
   botScoreSrcName_ASC
   # botScoreSrcName descending
@@ -39970,6 +40030,10 @@ type ZoneHttpRequestsAdaptive {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # Array of detections ids that matched this request
+  botDetectionIds: [uint32!]!
+  # Array of detections tags that matched this request
+  botDetectionTags: [string!]!
   # Judgement of the bot management system
   botManagementDecision: string!
   # The final score originated from bot management detections.
@@ -40114,6 +40178,14 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  botDetectionIds_has: uint32
+  botDetectionIds_hasall: [uint32!]
+  botDetectionIds_hasany: [uint32!]
+  botDetectionIds_nothas: uint32
+  botDetectionTags_has: string
+  botDetectionTags_hasall: [string!]
+  botDetectionTags_hasany: [string!]
+  botDetectionTags_nothas: string
   botManagementDecision: string
   botManagementDecision_geq: string
   botManagementDecision_gt: string
@@ -41818,6 +41890,14 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # botDetectionIds ascending
+  botDetectionIds_ASC
+  # botDetectionIds descending
+  botDetectionIds_DESC
+  # botDetectionTags ascending
+  botDetectionTags_ASC
+  # botDetectionTags descending
+  botDetectionTags_DESC
   # botManagementDecision ascending
   botManagementDecision_ASC
   # botManagementDecision descending
