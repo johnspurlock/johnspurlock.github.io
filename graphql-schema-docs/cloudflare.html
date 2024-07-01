@@ -18012,14 +18012,6 @@
 &nbsp;&nbsp;date_lt: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
-&nbsp;&nbsp;transformations: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;transformations_geq: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;transformations_gt: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;transformations_in: <a href="#uint64">[uint64!]</a><br />
-&nbsp;&nbsp;transformations_leq: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;transformations_lt: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;transformations_neq: <a href="#uint64">uint64</a><br />
-&nbsp;&nbsp;transformations_notin: <a href="#uint64">[uint64!]</a><br />
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountImagesUniqueTransformationsOrderBy" href="#AccountImagesUniqueTransformationsOrderBy">AccountImagesUniqueTransformationsOrderBy</a> {<br />
@@ -18027,10 +18019,6 @@
 &nbsp;&nbsp;date_ASC<br />
 &nbsp;&nbsp;<span class="c"># date descending</span><br />
 &nbsp;&nbsp;date_DESC<br />
-&nbsp;&nbsp;<span class="c"># transformations ascending</span><br />
-&nbsp;&nbsp;transformations_ASC<br />
-&nbsp;&nbsp;<span class="c"># transformations descending</span><br />
-&nbsp;&nbsp;transformations_DESC<br />
 }<br />
 <br />
 <span class="c"># Beta. Logpush job health metrics</span><br />
@@ -21173,6 +21161,8 @@
 &nbsp;&nbsp;tcpWindowScale: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Window Size header field in the TCP packet</span><br />
 &nbsp;&nbsp;tcpWindowSize: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># Custom protocol or traffic type for Magic Wan and Magic Transit traffic - Unidirectional and Bidirectional Tunnel Health Check</span><br />
+&nbsp;&nbsp;trafficType: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Checkusm header field in the UDP packet</span><br />
 &nbsp;&nbsp;udpChecksum: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># Value of the Payload Length header field in the UDP packet</span><br />
@@ -21920,6 +21910,16 @@
 &nbsp;&nbsp;tcpWindowSize_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;tcpWindowSize_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;tcpWindowSize_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;trafficType: <a href="#string">string</a><br />
+&nbsp;&nbsp;trafficType_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;trafficType_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;trafficType_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;trafficType_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;trafficType_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;trafficType_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;trafficType_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;trafficType_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;trafficType_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;udpChecksum: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;udpChecksum_geq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;udpChecksum_gt: <a href="#uint16">uint16</a><br />
@@ -22351,6 +22351,10 @@
 &nbsp;&nbsp;tcpWindowSize_ASC<br />
 &nbsp;&nbsp;<span class="c"># tcpWindowSize descending</span><br />
 &nbsp;&nbsp;tcpWindowSize_DESC<br />
+&nbsp;&nbsp;<span class="c"># trafficType ascending</span><br />
+&nbsp;&nbsp;trafficType_ASC<br />
+&nbsp;&nbsp;<span class="c"># trafficType descending</span><br />
+&nbsp;&nbsp;trafficType_DESC<br />
 &nbsp;&nbsp;<span class="c"># udpChecksum ascending</span><br />
 &nbsp;&nbsp;udpChecksum_ASC<br />
 &nbsp;&nbsp;<span class="c"># udpChecksum descending</span><br />
@@ -45245,7 +45249,7 @@
 <br />
 <span class="c"># Zaraz Analytics Identities - zaraz.identify calls</span><br />
 <span class="k">type</span> <a id="ZoneZarazAnalyticsIdentitiesAdaptiveGroups" href="#ZoneZarazAnalyticsIdentitiesAdaptiveGroups">ZoneZarazAnalyticsIdentitiesAdaptiveGroups</a> {<br />
-&nbsp;&nbsp;<span class="c"># Number of processed Zaraz Track requests</span><br />
+&nbsp;&nbsp;<span class="c"># Number of processed Zaraz identify requests</span><br />
 &nbsp;&nbsp;count: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#ZoneZarazAnalyticsIdentitiesAdaptiveGroupsDimensions">ZoneZarazAnalyticsIdentitiesAdaptiveGroupsDimensions</a><br />
@@ -45404,6 +45408,8 @@
 &nbsp;&nbsp;referrer: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Screen Resolution</span><br />
 &nbsp;&nbsp;resolution: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Session ID</span><br />
+&nbsp;&nbsp;sessionId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Timezone Offset</span><br />
 &nbsp;&nbsp;timezoneOffset: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Track Data</span><br />
@@ -45541,6 +45547,16 @@
 &nbsp;&nbsp;resolution_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;resolution_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;resolution_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sessionId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sessionId_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;timezoneOffset: <a href="#string">string</a><br />
 &nbsp;&nbsp;timezoneOffset_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;timezoneOffset_gt: <a href="#string">string</a><br />
@@ -45660,6 +45676,10 @@
 &nbsp;&nbsp;resolution_ASC<br />
 &nbsp;&nbsp;<span class="c"># resolution descending</span><br />
 &nbsp;&nbsp;resolution_DESC<br />
+&nbsp;&nbsp;<span class="c"># sessionId ascending</span><br />
+&nbsp;&nbsp;sessionId_ASC<br />
+&nbsp;&nbsp;<span class="c"># sessionId descending</span><br />
+&nbsp;&nbsp;sessionId_DESC<br />
 &nbsp;&nbsp;<span class="c"># timezoneOffset ascending</span><br />
 &nbsp;&nbsp;timezoneOffset_ASC<br />
 &nbsp;&nbsp;<span class="c"># timezoneOffset descending</span><br />
@@ -45680,6 +45700,10 @@
 &nbsp;&nbsp;uniq_clientIdCount_ASC<br />
 &nbsp;&nbsp;<span class="c"># uniq(clientIdCount) descending</span><br />
 &nbsp;&nbsp;uniq_clientIdCount_DESC<br />
+&nbsp;&nbsp;<span class="c"># uniq(sessionIdCount) ascending</span><br />
+&nbsp;&nbsp;uniq_sessionIdCount_ASC<br />
+&nbsp;&nbsp;<span class="c"># uniq(sessionIdCount) descending</span><br />
+&nbsp;&nbsp;uniq_sessionIdCount_DESC<br />
 &nbsp;&nbsp;<span class="c"># urlPath ascending</span><br />
 &nbsp;&nbsp;urlPath_ASC<br />
 &nbsp;&nbsp;<span class="c"># urlPath descending</span><br />
@@ -45693,6 +45717,8 @@
 <span class="k">type</span> <a id="ZoneZarazAnalyticsTrackAdaptiveGroupsUniq" href="#ZoneZarazAnalyticsTrackAdaptiveGroupsUniq">ZoneZarazAnalyticsTrackAdaptiveGroupsUniq</a> {<br />
 &nbsp;&nbsp;<span class="c"># Number of distinct client IDs</span><br />
 &nbsp;&nbsp;clientIdCount: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Number of distinct session IDs</span><br />
+&nbsp;&nbsp;sessionIdCount: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="c"># Zaraz Analytics Triggers (a trigger is a set of rules that can trigger a zaraz action)</span><br />
@@ -45731,6 +45757,8 @@
 &nbsp;&nbsp;referrer: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Screen Resolution</span><br />
 &nbsp;&nbsp;resolution: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Session ID</span><br />
+&nbsp;&nbsp;sessionId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Timezone Offset</span><br />
 &nbsp;&nbsp;timezoneOffset: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Trigger Name</span><br />
@@ -45866,6 +45894,16 @@
 &nbsp;&nbsp;resolution_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;resolution_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;resolution_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sessionId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sessionId_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;timezoneOffset: <a href="#string">string</a><br />
 &nbsp;&nbsp;timezoneOffset_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;timezoneOffset_gt: <a href="#string">string</a><br />
@@ -45975,6 +46013,10 @@
 &nbsp;&nbsp;resolution_ASC<br />
 &nbsp;&nbsp;<span class="c"># resolution descending</span><br />
 &nbsp;&nbsp;resolution_DESC<br />
+&nbsp;&nbsp;<span class="c"># sessionId ascending</span><br />
+&nbsp;&nbsp;sessionId_ASC<br />
+&nbsp;&nbsp;<span class="c"># sessionId descending</span><br />
+&nbsp;&nbsp;sessionId_DESC<br />
 &nbsp;&nbsp;<span class="c"># timezoneOffset ascending</span><br />
 &nbsp;&nbsp;timezoneOffset_ASC<br />
 &nbsp;&nbsp;<span class="c"># timezoneOffset descending</span><br />
@@ -45991,6 +46033,10 @@
 &nbsp;&nbsp;uniq_clientIdCount_ASC<br />
 &nbsp;&nbsp;<span class="c"># uniq(clientIdCount) descending</span><br />
 &nbsp;&nbsp;uniq_clientIdCount_DESC<br />
+&nbsp;&nbsp;<span class="c"># uniq(sessionIdCount) ascending</span><br />
+&nbsp;&nbsp;uniq_sessionIdCount_ASC<br />
+&nbsp;&nbsp;<span class="c"># uniq(sessionIdCount) descending</span><br />
+&nbsp;&nbsp;uniq_sessionIdCount_DESC<br />
 &nbsp;&nbsp;<span class="c"># urlPath ascending</span><br />
 &nbsp;&nbsp;urlPath_ASC<br />
 &nbsp;&nbsp;<span class="c"># urlPath descending</span><br />
@@ -46004,6 +46050,8 @@
 <span class="k">type</span> <a id="ZoneZarazAnalyticsTriggersAdaptiveGroupsUniq" href="#ZoneZarazAnalyticsTriggersAdaptiveGroupsUniq">ZoneZarazAnalyticsTriggersAdaptiveGroupsUniq</a> {<br />
 &nbsp;&nbsp;<span class="c"># Number of distinct client IDs</span><br />
 &nbsp;&nbsp;clientIdCount: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Number of distinct session IDs</span><br />
+&nbsp;&nbsp;sessionIdCount: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="c"># Zaraz Track Analytics - counts zaraz.track calls</span><br />

@@ -18138,14 +18138,6 @@ input AccountImagesUniqueTransformationsFilter_InputObject {
   date_lt: Date
   date_neq: Date
   date_notin: [Date!]
-  transformations: uint64
-  transformations_geq: uint64
-  transformations_gt: uint64
-  transformations_in: [uint64!]
-  transformations_leq: uint64
-  transformations_lt: uint64
-  transformations_neq: uint64
-  transformations_notin: [uint64!]
 }
 
 enum AccountImagesUniqueTransformationsOrderBy {
@@ -18153,10 +18145,6 @@ enum AccountImagesUniqueTransformationsOrderBy {
   date_ASC
   # date descending
   date_DESC
-  # transformations ascending
-  transformations_ASC
-  # transformations descending
-  transformations_DESC
 }
 
 # Beta. Logpush job health metrics
@@ -21299,6 +21287,8 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
   tcpWindowScale: uint16!
   # Value of the Window Size header field in the TCP packet
   tcpWindowSize: uint16!
+  # Custom protocol or traffic type for Magic Wan and Magic Transit traffic - Unidirectional and Bidirectional Tunnel Health Check
+  trafficType: string!
   # Value of the Checkusm header field in the UDP packet
   udpChecksum: uint16!
   # Value of the Payload Length header field in the UDP packet
@@ -22046,6 +22036,16 @@ input AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject {
   tcpWindowSize_lt: uint16
   tcpWindowSize_neq: uint16
   tcpWindowSize_notin: [uint16!]
+  trafficType: string
+  trafficType_geq: string
+  trafficType_gt: string
+  trafficType_in: [string!]
+  trafficType_leq: string
+  trafficType_like: string
+  trafficType_lt: string
+  trafficType_neq: string
+  trafficType_notin: [string!]
+  trafficType_notlike: string
   udpChecksum: uint16
   udpChecksum_geq: uint16
   udpChecksum_gt: uint16
@@ -22477,6 +22477,10 @@ enum AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy {
   tcpWindowSize_ASC
   # tcpWindowSize descending
   tcpWindowSize_DESC
+  # trafficType ascending
+  trafficType_ASC
+  # trafficType descending
+  trafficType_DESC
   # udpChecksum ascending
   udpChecksum_ASC
   # udpChecksum descending
@@ -45371,7 +45375,7 @@ enum ZoneZarazActionsAdaptiveGroupsOrderBy {
 
 # Zaraz Analytics Identities - zaraz.identify calls
 type ZoneZarazAnalyticsIdentitiesAdaptiveGroups {
-  # Number of processed Zaraz Track requests
+  # Number of processed Zaraz identify requests
   count: uint64!
   # List of dimensions to group by
   dimensions: ZoneZarazAnalyticsIdentitiesAdaptiveGroupsDimensions
@@ -45530,6 +45534,8 @@ type ZoneZarazAnalyticsTrackAdaptiveGroupsDimensions {
   referrer: string!
   # Screen Resolution
   resolution: string!
+  # Session ID
+  sessionId: string!
   # Timezone Offset
   timezoneOffset: string!
   # Track Data
@@ -45667,6 +45673,16 @@ input ZoneZarazAnalyticsTrackAdaptiveGroupsFilter_InputObject {
   resolution_neq: string
   resolution_notin: [string!]
   resolution_notlike: string
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
   timezoneOffset: string
   timezoneOffset_geq: string
   timezoneOffset_gt: string
@@ -45786,6 +45802,10 @@ enum ZoneZarazAnalyticsTrackAdaptiveGroupsOrderBy {
   resolution_ASC
   # resolution descending
   resolution_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
   # timezoneOffset ascending
   timezoneOffset_ASC
   # timezoneOffset descending
@@ -45806,6 +45826,10 @@ enum ZoneZarazAnalyticsTrackAdaptiveGroupsOrderBy {
   uniq_clientIdCount_ASC
   # uniq(clientIdCount) descending
   uniq_clientIdCount_DESC
+  # uniq(sessionIdCount) ascending
+  uniq_sessionIdCount_ASC
+  # uniq(sessionIdCount) descending
+  uniq_sessionIdCount_DESC
   # urlPath ascending
   urlPath_ASC
   # urlPath descending
@@ -45819,6 +45843,8 @@ enum ZoneZarazAnalyticsTrackAdaptiveGroupsOrderBy {
 type ZoneZarazAnalyticsTrackAdaptiveGroupsUniq {
   # Number of distinct client IDs
   clientIdCount: uint64!
+  # Number of distinct session IDs
+  sessionIdCount: uint64!
 }
 
 # Zaraz Analytics Triggers (a trigger is a set of rules that can trigger a zaraz action)
@@ -45857,6 +45883,8 @@ type ZoneZarazAnalyticsTriggersAdaptiveGroupsDimensions {
   referrer: string!
   # Screen Resolution
   resolution: string!
+  # Session ID
+  sessionId: string!
   # Timezone Offset
   timezoneOffset: string!
   # Trigger Name
@@ -45992,6 +46020,16 @@ input ZoneZarazAnalyticsTriggersAdaptiveGroupsFilter_InputObject {
   resolution_neq: string
   resolution_notin: [string!]
   resolution_notlike: string
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
   timezoneOffset: string
   timezoneOffset_geq: string
   timezoneOffset_gt: string
@@ -46101,6 +46139,10 @@ enum ZoneZarazAnalyticsTriggersAdaptiveGroupsOrderBy {
   resolution_ASC
   # resolution descending
   resolution_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
   # timezoneOffset ascending
   timezoneOffset_ASC
   # timezoneOffset descending
@@ -46117,6 +46159,10 @@ enum ZoneZarazAnalyticsTriggersAdaptiveGroupsOrderBy {
   uniq_clientIdCount_ASC
   # uniq(clientIdCount) descending
   uniq_clientIdCount_DESC
+  # uniq(sessionIdCount) ascending
+  uniq_sessionIdCount_ASC
+  # uniq(sessionIdCount) descending
+  uniq_sessionIdCount_DESC
   # urlPath ascending
   urlPath_ASC
   # urlPath descending
@@ -46130,6 +46176,8 @@ enum ZoneZarazAnalyticsTriggersAdaptiveGroupsOrderBy {
 type ZoneZarazAnalyticsTriggersAdaptiveGroupsUniq {
   # Number of distinct client IDs
   clientIdCount: uint64!
+  # Number of distinct session IDs
+  sessionIdCount: uint64!
 }
 
 # Zaraz Track Analytics - counts zaraz.track calls
