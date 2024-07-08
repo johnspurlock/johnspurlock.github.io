@@ -126,8 +126,11 @@ Zone-level datasets:
 * workersZoneSubrequestsAdaptiveGroups
 * zarazActionsAdaptiveGroups
 * zarazAnalyticsIdentitiesAdaptiveGroups
+* zarazAnalyticsOrderedTrackAdaptiveGroups
 * zarazAnalyticsTrackAdaptiveGroups
+* zarazAnalyticsTrackTrafficSourcesAdaptiveGroups
 * zarazAnalyticsTriggersAdaptiveGroups
+* zarazAnalyticsTriggersTrafficSourcesAdaptiveGroups
 * zarazTrackAdaptiveGroups
 * zarazTriggersAdaptiveGroups
 
@@ -32823,6 +32826,1156 @@ type Mutation {
   do(nothing: bool!): string!
 }
 
+type organization {
+  # Aggregated HTTP requests data with adaptive sampling
+  httpRequestsAdaptiveGroups(filter: OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [OrganizationHttpRequestsAdaptiveGroupsOrderBy!]): [OrganizationHttpRequestsAdaptiveGroups!]!
+  organizationTag: string!
+  settings: OrganizationSettings
+}
+
+input OrganizationFilter_InputObject {
+  organizationTag: string!
+}
+
+# Aggregated HTTP requests data with adaptive sampling
+type OrganizationHttpRequestsAdaptiveGroups {
+  # The average value used for sample interval
+  avg: OrganizationHttpRequestsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): OrganizationHttpRequestsAdaptiveGroupsConfidence!
+  # The number of values for a metric per dimension
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: OrganizationHttpRequestsAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: OrganizationHttpRequestsAdaptiveGroupsQuantiles
+  # The ratio of a range of status codes, between 0 and 1
+  ratio: OrganizationHttpRequestsAdaptiveGroupsRatio
+  # The sum of values for a metric per dimension
+  sum: OrganizationHttpRequestsAdaptiveGroupsSum
+}
+
+type OrganizationHttpRequestsAdaptiveGroupsAvg {
+  # The proportion of requests that were inititiated by a Cloudflare Worker on another zone
+  crossZoneSubrequests: float64!
+  edgeDnsResponseTimeMs: float64!
+  edgeTimeToFirstByteMs: float64!
+  # The average originResponseDuration, in milliseconds, excluding 0 values (i.e. cached ones)
+  originResponseDurationMs: float64!
+  sampleInterval: float64!
+}
+
+type OrganizationHttpRequestsAdaptiveGroupsConfidence {
+  # The number of values for a metric per dimension, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: OrganizationHttpRequestsAdaptiveGroupsSumConfidence
+}
+
+type OrganizationHttpRequestsAdaptiveGroupsDimensions {
+  # API Gateway endpoint matched at the edge
+  apiGatewayMatchedEndpoint: string!
+  # API Gateway host matched at the edge
+  apiGatewayMatchedHost: string!
+  # Judgement of the bot management system
+  botManagementDecision: string!
+  # The final score originated from bot management detections.
+  botScore: uint8!
+  # Range of the bot management score
+  botScoreBucketBy10: uint8!
+  # Name of the source detection which generated the bot management score.
+  botScoreSrcName: string!
+  # Used Cache Reserve to serve the response
+  cacheReserveUsed: uint8!
+  cacheStatus: string!
+  # The ASN of the visitor as string
+  clientASNDescription: string!
+  clientAsn: string!
+  # Country from which request originated
+  clientCountryName: string!
+  clientDeviceType: string!
+  clientIP: string!
+  # The referrer host
+  clientRefererHost: string!
+  # Host requested by the client
+  clientRequestHTTPHost: string!
+  # HTTP method of client request
+  clientRequestHTTPMethodName: string!
+  # HTTP protocol version
+  clientRequestHTTPProtocol: string!
+  # Path of client request
+  clientRequestPath: string!
+  # Query parameters of client request
+  clientRequestQuery: string!
+  # HTTP request referrer
+  clientRequestReferer: string!
+  # HTTP request URI scheme (http/https)
+  clientRequestScheme: string!
+  # SSL protocol version
+  clientSSLProtocol: string!
+  coloCode: string!
+  # 1 if not all contents for this request where successfully scanned, else 0
+  contentScanHasFailed: uint8!
+  # Number of scannable content objects that are malicious
+  contentScanNumMaliciousObj: uint8!
+  # Number of scannable content objects
+  contentScanNumObj: uint8!
+  # Array of scan results in order of detection
+  contentScanObjResults: [string!]!
+  # Array of scan sizes in order of detection
+  contentScanObjSizes: [uint32!]!
+  # Array of content types in order of detection
+  contentScanObjTypes: [string!]!
+  # The date the event occurred at the edge
+  date: Date!
+  # The date and time the event occurred at the edge
+  datetime: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the event occurred at the edge truncated to hours
+  datetimeHour: Time!
+  # The date and time the event occurred at the edge truncated to the minute
+  datetimeMinute: Time!
+  # The time elapsed resolving a CNAME if it was required to reach your origin
+  edgeDnsResponseTimeMs: uint16!
+  edgeResponseContentTypeName: string!
+  edgeResponseStatus: uint16!
+  # The time elapsed between processing the first byte of the request until when we started sending a response
+  edgeTimeToFirstByteMs: uint16!
+  # Version associated with HTTP Application
+  @Deprecated
+  httpApplicationVersion: uint64!
+  # '1' if a request was inititiated by a Cloudflare Worker on another zone; '0' otherwise.
+  isCrossZoneSubrequest: uint8!
+  # MD5 hash of the JA3 TLS fingerprint
+  ja3Hash: string!
+  # JA4 TLS fingerprint
+  ja4: string!
+  # The distinct result of checking for leaked credentials
+  leakedCredentialCheckResult: string!
+  originASN: uint32!
+  # ASN associated with origin
+  originASNDescription: string!
+  originIP: string!
+  originResponseDurationMs: uint64!
+  # HTTP response status code returned by the origin
+  originResponseStatus: uint16!
+  requestSource: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # The code of the first-class action the Cloudflare Firewall took on this request
+  securityAction: string!
+  # The Cloudflare security product triggered by this request
+  securitySource: string!
+  upperTierColoName: string!
+  userAgent: string!
+  # Browser parsed from the user agent
+  userAgentBrowser: string!
+  # OS parsed from the user agent
+  userAgentOS: string!
+  # Beta. Overall request score generated by the WAF detection module
+  wafAttackScore: uint8!
+  # Beta. Overall request score class generated by the WAF detection module
+  wafAttackScoreClass: string!
+  # Beta. WAF score for a RCE attack
+  wafRceAttackScore: uint8!
+  # Beta. WAF score for a SQLi attack
+  wafSqliAttackScore: uint8!
+  # Beta. WAF score for a XSS attack
+  wafXssAttackScore: uint8!
+  # The X-Requested-With header of the client request
+  xRequestedWith: string!
+  # The version of a zone
+  zoneVersion: uint64!
+}
+
+input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
+  AND: [OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject!]
+  OR: [OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject!]
+  apiGatewayMatchedEndpoint: string
+  apiGatewayMatchedEndpoint_geq: string
+  apiGatewayMatchedEndpoint_gt: string
+  apiGatewayMatchedEndpoint_in: [string!]
+  apiGatewayMatchedEndpoint_leq: string
+  apiGatewayMatchedEndpoint_like: string
+  apiGatewayMatchedEndpoint_lt: string
+  apiGatewayMatchedEndpoint_neq: string
+  apiGatewayMatchedEndpoint_notin: [string!]
+  apiGatewayMatchedEndpoint_notlike: string
+  apiGatewayMatchedHost: string
+  apiGatewayMatchedHost_geq: string
+  apiGatewayMatchedHost_gt: string
+  apiGatewayMatchedHost_in: [string!]
+  apiGatewayMatchedHost_leq: string
+  apiGatewayMatchedHost_like: string
+  apiGatewayMatchedHost_lt: string
+  apiGatewayMatchedHost_neq: string
+  apiGatewayMatchedHost_notin: [string!]
+  apiGatewayMatchedHost_notlike: string
+  botManagementDecision: string
+  botManagementDecision_geq: string
+  botManagementDecision_gt: string
+  botManagementDecision_in: [string!]
+  botManagementDecision_leq: string
+  botManagementDecision_like: string
+  botManagementDecision_lt: string
+  botManagementDecision_neq: string
+  botManagementDecision_notin: [string!]
+  botManagementDecision_notlike: string
+  botScore: uint8
+  botScoreBucketBy10: uint8
+  botScoreBucketBy10_geq: uint8
+  botScoreBucketBy10_gt: uint8
+  botScoreBucketBy10_in: bytes
+  botScoreBucketBy10_leq: uint8
+  botScoreBucketBy10_lt: uint8
+  botScoreBucketBy10_neq: uint8
+  botScoreBucketBy10_notin: bytes
+  botScoreSrcName: string
+  botScoreSrcName_geq: string
+  botScoreSrcName_gt: string
+  botScoreSrcName_in: [string!]
+  botScoreSrcName_leq: string
+  botScoreSrcName_like: string
+  botScoreSrcName_lt: string
+  botScoreSrcName_neq: string
+  botScoreSrcName_notin: [string!]
+  botScoreSrcName_notlike: string
+  botScore_geq: uint8
+  botScore_gt: uint8
+  botScore_in: bytes
+  botScore_leq: uint8
+  botScore_lt: uint8
+  botScore_neq: uint8
+  botScore_notin: bytes
+  cacheReserveUsed: uint8
+  cacheReserveUsed_geq: uint8
+  cacheReserveUsed_gt: uint8
+  cacheReserveUsed_in: bytes
+  cacheReserveUsed_leq: uint8
+  cacheReserveUsed_lt: uint8
+  cacheReserveUsed_neq: uint8
+  cacheReserveUsed_notin: bytes
+  cacheStatus: string
+  cacheStatus_geq: string
+  cacheStatus_gt: string
+  cacheStatus_in: [string!]
+  cacheStatus_leq: string
+  cacheStatus_like: string
+  cacheStatus_lt: string
+  cacheStatus_neq: string
+  cacheStatus_notin: [string!]
+  cacheStatus_notlike: string
+  clientASNDescription: string
+  clientASNDescription_geq: string
+  clientASNDescription_gt: string
+  clientASNDescription_in: [string!]
+  clientASNDescription_leq: string
+  clientASNDescription_like: string
+  clientASNDescription_lt: string
+  clientASNDescription_neq: string
+  clientASNDescription_notin: [string!]
+  clientASNDescription_notlike: string
+  clientAsn: string
+  clientAsn_geq: string
+  clientAsn_gt: string
+  clientAsn_in: [string!]
+  clientAsn_leq: string
+  clientAsn_like: string
+  clientAsn_lt: string
+  clientAsn_neq: string
+  clientAsn_notin: [string!]
+  clientAsn_notlike: string
+  clientCountryName: string
+  clientCountryName_geq: string
+  clientCountryName_gt: string
+  clientCountryName_in: [string!]
+  clientCountryName_leq: string
+  clientCountryName_like: string
+  clientCountryName_lt: string
+  clientCountryName_neq: string
+  clientCountryName_notin: [string!]
+  clientCountryName_notlike: string
+  clientDeviceType: string
+  clientDeviceType_geq: string
+  clientDeviceType_gt: string
+  clientDeviceType_in: [string!]
+  clientDeviceType_leq: string
+  clientDeviceType_like: string
+  clientDeviceType_lt: string
+  clientDeviceType_neq: string
+  clientDeviceType_notin: [string!]
+  clientDeviceType_notlike: string
+  clientIP: string
+  clientIP_geq: string
+  clientIP_gt: string
+  clientIP_in: [string!]
+  clientIP_leq: string
+  clientIP_like: string
+  clientIP_lt: string
+  clientIP_neq: string
+  clientIP_notin: [string!]
+  clientIP_notlike: string
+  clientRefererHost: string
+  clientRefererHost_geq: string
+  clientRefererHost_gt: string
+  clientRefererHost_in: [string!]
+  clientRefererHost_leq: string
+  clientRefererHost_like: string
+  clientRefererHost_lt: string
+  clientRefererHost_neq: string
+  clientRefererHost_notin: [string!]
+  clientRefererHost_notlike: string
+  clientRequestHTTPHost: string
+  clientRequestHTTPHost_geq: string
+  clientRequestHTTPHost_gt: string
+  clientRequestHTTPHost_in: [string!]
+  clientRequestHTTPHost_leq: string
+  clientRequestHTTPHost_like: string
+  clientRequestHTTPHost_lt: string
+  clientRequestHTTPHost_neq: string
+  clientRequestHTTPHost_notin: [string!]
+  clientRequestHTTPHost_notlike: string
+  clientRequestHTTPMethodName: string
+  clientRequestHTTPMethodName_geq: string
+  clientRequestHTTPMethodName_gt: string
+  clientRequestHTTPMethodName_in: [string!]
+  clientRequestHTTPMethodName_leq: string
+  clientRequestHTTPMethodName_like: string
+  clientRequestHTTPMethodName_lt: string
+  clientRequestHTTPMethodName_neq: string
+  clientRequestHTTPMethodName_notin: [string!]
+  clientRequestHTTPMethodName_notlike: string
+  clientRequestHTTPProtocol: string
+  clientRequestHTTPProtocol_geq: string
+  clientRequestHTTPProtocol_gt: string
+  clientRequestHTTPProtocol_in: [string!]
+  clientRequestHTTPProtocol_leq: string
+  clientRequestHTTPProtocol_like: string
+  clientRequestHTTPProtocol_lt: string
+  clientRequestHTTPProtocol_neq: string
+  clientRequestHTTPProtocol_notin: [string!]
+  clientRequestHTTPProtocol_notlike: string
+  clientRequestPath: string
+  clientRequestPath_geq: string
+  clientRequestPath_gt: string
+  clientRequestPath_in: [string!]
+  clientRequestPath_leq: string
+  clientRequestPath_like: string
+  clientRequestPath_lt: string
+  clientRequestPath_neq: string
+  clientRequestPath_notin: [string!]
+  clientRequestPath_notlike: string
+  clientRequestQuery: string
+  clientRequestQuery_geq: string
+  clientRequestQuery_gt: string
+  clientRequestQuery_in: [string!]
+  clientRequestQuery_leq: string
+  clientRequestQuery_like: string
+  clientRequestQuery_lt: string
+  clientRequestQuery_neq: string
+  clientRequestQuery_notin: [string!]
+  clientRequestQuery_notlike: string
+  clientRequestReferer: string
+  clientRequestReferer_geq: string
+  clientRequestReferer_gt: string
+  clientRequestReferer_in: [string!]
+  clientRequestReferer_leq: string
+  clientRequestReferer_like: string
+  clientRequestReferer_lt: string
+  clientRequestReferer_neq: string
+  clientRequestReferer_notin: [string!]
+  clientRequestReferer_notlike: string
+  clientRequestScheme: string
+  clientRequestScheme_geq: string
+  clientRequestScheme_gt: string
+  clientRequestScheme_in: [string!]
+  clientRequestScheme_leq: string
+  clientRequestScheme_like: string
+  clientRequestScheme_lt: string
+  clientRequestScheme_neq: string
+  clientRequestScheme_notin: [string!]
+  clientRequestScheme_notlike: string
+  clientSSLProtocol: string
+  clientSSLProtocol_geq: string
+  clientSSLProtocol_gt: string
+  clientSSLProtocol_in: [string!]
+  clientSSLProtocol_leq: string
+  clientSSLProtocol_like: string
+  clientSSLProtocol_lt: string
+  clientSSLProtocol_neq: string
+  clientSSLProtocol_notin: [string!]
+  clientSSLProtocol_notlike: string
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
+  contentScanHasFailed: uint8
+  contentScanHasFailed_geq: uint8
+  contentScanHasFailed_gt: uint8
+  contentScanHasFailed_in: bytes
+  contentScanHasFailed_leq: uint8
+  contentScanHasFailed_lt: uint8
+  contentScanHasFailed_neq: uint8
+  contentScanHasFailed_notin: bytes
+  contentScanNumMaliciousObj: uint8
+  contentScanNumMaliciousObj_geq: uint8
+  contentScanNumMaliciousObj_gt: uint8
+  contentScanNumMaliciousObj_in: bytes
+  contentScanNumMaliciousObj_leq: uint8
+  contentScanNumMaliciousObj_lt: uint8
+  contentScanNumMaliciousObj_neq: uint8
+  contentScanNumMaliciousObj_notin: bytes
+  contentScanNumObj: uint8
+  contentScanNumObj_geq: uint8
+  contentScanNumObj_gt: uint8
+  contentScanNumObj_in: bytes
+  contentScanNumObj_leq: uint8
+  contentScanNumObj_lt: uint8
+  contentScanNumObj_neq: uint8
+  contentScanNumObj_notin: bytes
+  contentScanObjResults_has: string
+  contentScanObjResults_hasall: [string!]
+  contentScanObjResults_hasany: [string!]
+  contentScanObjResults_nothas: string
+  contentScanObjSizes_has: uint32
+  contentScanObjSizes_hasall: [uint32!]
+  contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_nothas: uint32
+  contentScanObjTypes_has: string
+  contentScanObjTypes_hasall: [string!]
+  contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_nothas: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  edgeDnsResponseTimeMs: uint16
+  edgeDnsResponseTimeMs_geq: uint16
+  edgeDnsResponseTimeMs_gt: uint16
+  edgeDnsResponseTimeMs_in: [uint16!]
+  edgeDnsResponseTimeMs_leq: uint16
+  edgeDnsResponseTimeMs_lt: uint16
+  edgeDnsResponseTimeMs_neq: uint16
+  edgeDnsResponseTimeMs_notin: [uint16!]
+  edgeResponseContentTypeName: string
+  edgeResponseContentTypeName_geq: string
+  edgeResponseContentTypeName_gt: string
+  edgeResponseContentTypeName_in: [string!]
+  edgeResponseContentTypeName_leq: string
+  edgeResponseContentTypeName_like: string
+  edgeResponseContentTypeName_lt: string
+  edgeResponseContentTypeName_neq: string
+  edgeResponseContentTypeName_notin: [string!]
+  edgeResponseContentTypeName_notlike: string
+  edgeResponseStatus: uint16
+  edgeResponseStatus_geq: uint16
+  edgeResponseStatus_gt: uint16
+  edgeResponseStatus_in: [uint16!]
+  edgeResponseStatus_leq: uint16
+  edgeResponseStatus_lt: uint16
+  edgeResponseStatus_neq: uint16
+  edgeResponseStatus_notin: [uint16!]
+  edgeTimeToFirstByteMs: uint16
+  edgeTimeToFirstByteMs_geq: uint16
+  edgeTimeToFirstByteMs_gt: uint16
+  edgeTimeToFirstByteMs_in: [uint16!]
+  edgeTimeToFirstByteMs_leq: uint16
+  edgeTimeToFirstByteMs_lt: uint16
+  edgeTimeToFirstByteMs_neq: uint16
+  edgeTimeToFirstByteMs_notin: [uint16!]
+  httpApplicationVersion: uint64
+  httpApplicationVersion_geq: uint64
+  httpApplicationVersion_gt: uint64
+  httpApplicationVersion_in: [uint64!]
+  httpApplicationVersion_leq: uint64
+  httpApplicationVersion_lt: uint64
+  httpApplicationVersion_neq: uint64
+  httpApplicationVersion_notin: [uint64!]
+  isCrossZoneSubrequest: uint8
+  isCrossZoneSubrequest_geq: uint8
+  isCrossZoneSubrequest_gt: uint8
+  isCrossZoneSubrequest_in: bytes
+  isCrossZoneSubrequest_leq: uint8
+  isCrossZoneSubrequest_lt: uint8
+  isCrossZoneSubrequest_neq: uint8
+  isCrossZoneSubrequest_notin: bytes
+  ja3Hash: string
+  ja3Hash_geq: string
+  ja3Hash_gt: string
+  ja3Hash_in: [string!]
+  ja3Hash_leq: string
+  ja3Hash_like: string
+  ja3Hash_lt: string
+  ja3Hash_neq: string
+  ja3Hash_notin: [string!]
+  ja3Hash_notlike: string
+  ja4: string
+  ja4_geq: string
+  ja4_gt: string
+  ja4_in: [string!]
+  ja4_leq: string
+  ja4_like: string
+  ja4_lt: string
+  ja4_neq: string
+  ja4_notin: [string!]
+  ja4_notlike: string
+  leakedCredentialCheckResult: string
+  leakedCredentialCheckResult_geq: string
+  leakedCredentialCheckResult_gt: string
+  leakedCredentialCheckResult_in: [string!]
+  leakedCredentialCheckResult_leq: string
+  leakedCredentialCheckResult_like: string
+  leakedCredentialCheckResult_lt: string
+  leakedCredentialCheckResult_neq: string
+  leakedCredentialCheckResult_notin: [string!]
+  leakedCredentialCheckResult_notlike: string
+  originASN: uint32
+  originASNDescription: string
+  originASNDescription_geq: string
+  originASNDescription_gt: string
+  originASNDescription_in: [string!]
+  originASNDescription_leq: string
+  originASNDescription_like: string
+  originASNDescription_lt: string
+  originASNDescription_neq: string
+  originASNDescription_notin: [string!]
+  originASNDescription_notlike: string
+  originASN_geq: uint32
+  originASN_gt: uint32
+  originASN_in: [uint32!]
+  originASN_leq: uint32
+  originASN_lt: uint32
+  originASN_neq: uint32
+  originASN_notin: [uint32!]
+  originIP: string
+  originIP_geq: string
+  originIP_gt: string
+  originIP_in: [string!]
+  originIP_leq: string
+  originIP_like: string
+  originIP_lt: string
+  originIP_neq: string
+  originIP_notin: [string!]
+  originIP_notlike: string
+  originResponseDurationMs: uint64
+  originResponseDurationMs_geq: uint64
+  originResponseDurationMs_gt: uint64
+  originResponseDurationMs_in: [uint64!]
+  originResponseDurationMs_leq: uint64
+  originResponseDurationMs_lt: uint64
+  originResponseDurationMs_neq: uint64
+  originResponseDurationMs_notin: [uint64!]
+  originResponseStatus: uint16
+  originResponseStatus_geq: uint16
+  originResponseStatus_gt: uint16
+  originResponseStatus_in: [uint16!]
+  originResponseStatus_leq: uint16
+  originResponseStatus_lt: uint16
+  originResponseStatus_neq: uint16
+  originResponseStatus_notin: [uint16!]
+  rayName: string
+  rayName_geq: string
+  rayName_gt: string
+  rayName_in: [string!]
+  rayName_leq: string
+  rayName_like: string
+  rayName_lt: string
+  rayName_neq: string
+  rayName_notin: [string!]
+  rayName_notlike: string
+  requestSource: string
+  requestSource_geq: string
+  requestSource_gt: string
+  requestSource_in: [string!]
+  requestSource_leq: string
+  requestSource_like: string
+  requestSource_lt: string
+  requestSource_neq: string
+  requestSource_notin: [string!]
+  requestSource_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  securityAction: string
+  securityAction_geq: string
+  securityAction_gt: string
+  securityAction_in: [string!]
+  securityAction_leq: string
+  securityAction_like: string
+  securityAction_lt: string
+  securityAction_neq: string
+  securityAction_notin: [string!]
+  securityAction_notlike: string
+  securitySource: string
+  securitySource_geq: string
+  securitySource_gt: string
+  securitySource_in: [string!]
+  securitySource_leq: string
+  securitySource_like: string
+  securitySource_lt: string
+  securitySource_neq: string
+  securitySource_notin: [string!]
+  securitySource_notlike: string
+  upperTierColoName: string
+  upperTierColoName_geq: string
+  upperTierColoName_gt: string
+  upperTierColoName_in: [string!]
+  upperTierColoName_leq: string
+  upperTierColoName_like: string
+  upperTierColoName_lt: string
+  upperTierColoName_neq: string
+  upperTierColoName_notin: [string!]
+  upperTierColoName_notlike: string
+  userAgent: string
+  userAgentBrowser: string
+  userAgentBrowser_geq: string
+  userAgentBrowser_gt: string
+  userAgentBrowser_in: [string!]
+  userAgentBrowser_leq: string
+  userAgentBrowser_like: string
+  userAgentBrowser_lt: string
+  userAgentBrowser_neq: string
+  userAgentBrowser_notin: [string!]
+  userAgentBrowser_notlike: string
+  userAgentOS: string
+  userAgentOS_geq: string
+  userAgentOS_gt: string
+  userAgentOS_in: [string!]
+  userAgentOS_leq: string
+  userAgentOS_like: string
+  userAgentOS_lt: string
+  userAgentOS_neq: string
+  userAgentOS_notin: [string!]
+  userAgentOS_notlike: string
+  userAgent_geq: string
+  userAgent_gt: string
+  userAgent_in: [string!]
+  userAgent_leq: string
+  userAgent_like: string
+  userAgent_lt: string
+  userAgent_neq: string
+  userAgent_notin: [string!]
+  userAgent_notlike: string
+  wafAttackScore: uint8
+  wafAttackScoreClass: string
+  wafAttackScoreClass_geq: string
+  wafAttackScoreClass_gt: string
+  wafAttackScoreClass_in: [string!]
+  wafAttackScoreClass_leq: string
+  wafAttackScoreClass_like: string
+  wafAttackScoreClass_lt: string
+  wafAttackScoreClass_neq: string
+  wafAttackScoreClass_notin: [string!]
+  wafAttackScoreClass_notlike: string
+  wafAttackScore_geq: uint8
+  wafAttackScore_gt: uint8
+  wafAttackScore_in: bytes
+  wafAttackScore_leq: uint8
+  wafAttackScore_lt: uint8
+  wafAttackScore_neq: uint8
+  wafAttackScore_notin: bytes
+  wafRceAttackScore: uint8
+  wafRceAttackScore_geq: uint8
+  wafRceAttackScore_gt: uint8
+  wafRceAttackScore_in: bytes
+  wafRceAttackScore_leq: uint8
+  wafRceAttackScore_lt: uint8
+  wafRceAttackScore_neq: uint8
+  wafRceAttackScore_notin: bytes
+  wafSqliAttackScore: uint8
+  wafSqliAttackScore_geq: uint8
+  wafSqliAttackScore_gt: uint8
+  wafSqliAttackScore_in: bytes
+  wafSqliAttackScore_leq: uint8
+  wafSqliAttackScore_lt: uint8
+  wafSqliAttackScore_neq: uint8
+  wafSqliAttackScore_notin: bytes
+  wafXssAttackScore: uint8
+  wafXssAttackScore_geq: uint8
+  wafXssAttackScore_gt: uint8
+  wafXssAttackScore_in: bytes
+  wafXssAttackScore_leq: uint8
+  wafXssAttackScore_lt: uint8
+  wafXssAttackScore_neq: uint8
+  wafXssAttackScore_notin: bytes
+  xRequestedWith: string
+  xRequestedWith_geq: string
+  xRequestedWith_gt: string
+  xRequestedWith_in: [string!]
+  xRequestedWith_leq: string
+  xRequestedWith_like: string
+  xRequestedWith_lt: string
+  xRequestedWith_neq: string
+  xRequestedWith_notin: [string!]
+  xRequestedWith_notlike: string
+  zoneVersion: uint64
+  zoneVersion_geq: uint64
+  zoneVersion_gt: uint64
+  zoneVersion_in: [uint64!]
+  zoneVersion_leq: uint64
+  zoneVersion_lt: uint64
+  zoneVersion_neq: uint64
+  zoneVersion_notin: [uint64!]
+}
+
+enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
+  # apiGatewayMatchedEndpoint ascending
+  apiGatewayMatchedEndpoint_ASC
+  # apiGatewayMatchedEndpoint descending
+  apiGatewayMatchedEndpoint_DESC
+  # apiGatewayMatchedHost ascending
+  apiGatewayMatchedHost_ASC
+  # apiGatewayMatchedHost descending
+  apiGatewayMatchedHost_DESC
+  # avg(crossZoneSubrequests) ascending
+  avg_crossZoneSubrequests_ASC
+  # avg(crossZoneSubrequests) descending
+  avg_crossZoneSubrequests_DESC
+  # avg(edgeDnsResponseTimeMs) ascending
+  avg_edgeDnsResponseTimeMs_ASC
+  # avg(edgeDnsResponseTimeMs) descending
+  avg_edgeDnsResponseTimeMs_DESC
+  # avg(edgeTimeToFirstByteMs) ascending
+  avg_edgeTimeToFirstByteMs_ASC
+  # avg(edgeTimeToFirstByteMs) descending
+  avg_edgeTimeToFirstByteMs_DESC
+  # avg(originResponseDurationMs) ascending
+  avg_originResponseDurationMs_ASC
+  # avg(originResponseDurationMs) descending
+  avg_originResponseDurationMs_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # botManagementDecision ascending
+  botManagementDecision_ASC
+  # botManagementDecision descending
+  botManagementDecision_DESC
+  # botScoreBucketBy10 ascending
+  botScoreBucketBy10_ASC
+  # botScoreBucketBy10 descending
+  botScoreBucketBy10_DESC
+  # botScoreSrcName ascending
+  botScoreSrcName_ASC
+  # botScoreSrcName descending
+  botScoreSrcName_DESC
+  # botScore ascending
+  botScore_ASC
+  # botScore descending
+  botScore_DESC
+  # cacheReserveUsed ascending
+  cacheReserveUsed_ASC
+  # cacheReserveUsed descending
+  cacheReserveUsed_DESC
+  # cacheStatus ascending
+  cacheStatus_ASC
+  # cacheStatus descending
+  cacheStatus_DESC
+  # clientASNDescription ascending
+  clientASNDescription_ASC
+  # clientASNDescription descending
+  clientASNDescription_DESC
+  # clientAsn ascending
+  clientAsn_ASC
+  # clientAsn descending
+  clientAsn_DESC
+  # clientCountryName ascending
+  clientCountryName_ASC
+  # clientCountryName descending
+  clientCountryName_DESC
+  # clientDeviceType ascending
+  clientDeviceType_ASC
+  # clientDeviceType descending
+  clientDeviceType_DESC
+  # clientIP ascending
+  clientIP_ASC
+  # clientIP descending
+  clientIP_DESC
+  # clientRefererHost ascending
+  clientRefererHost_ASC
+  # clientRefererHost descending
+  clientRefererHost_DESC
+  # clientRequestHTTPHost ascending
+  clientRequestHTTPHost_ASC
+  # clientRequestHTTPHost descending
+  clientRequestHTTPHost_DESC
+  # clientRequestHTTPMethodName ascending
+  clientRequestHTTPMethodName_ASC
+  # clientRequestHTTPMethodName descending
+  clientRequestHTTPMethodName_DESC
+  # clientRequestHTTPProtocol ascending
+  clientRequestHTTPProtocol_ASC
+  # clientRequestHTTPProtocol descending
+  clientRequestHTTPProtocol_DESC
+  # clientRequestPath ascending
+  clientRequestPath_ASC
+  # clientRequestPath descending
+  clientRequestPath_DESC
+  # clientRequestQuery ascending
+  clientRequestQuery_ASC
+  # clientRequestQuery descending
+  clientRequestQuery_DESC
+  # clientRequestReferer ascending
+  clientRequestReferer_ASC
+  # clientRequestReferer descending
+  clientRequestReferer_DESC
+  # clientRequestScheme ascending
+  clientRequestScheme_ASC
+  # clientRequestScheme descending
+  clientRequestScheme_DESC
+  # clientSSLProtocol ascending
+  clientSSLProtocol_ASC
+  # clientSSLProtocol descending
+  clientSSLProtocol_DESC
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
+  # contentScanHasFailed ascending
+  contentScanHasFailed_ASC
+  # contentScanHasFailed descending
+  contentScanHasFailed_DESC
+  # contentScanNumMaliciousObj ascending
+  contentScanNumMaliciousObj_ASC
+  # contentScanNumMaliciousObj descending
+  contentScanNumMaliciousObj_DESC
+  # contentScanNumObj ascending
+  contentScanNumObj_ASC
+  # contentScanNumObj descending
+  contentScanNumObj_DESC
+  # contentScanObjResults ascending
+  contentScanObjResults_ASC
+  # contentScanObjResults descending
+  contentScanObjResults_DESC
+  # contentScanObjSizes ascending
+  contentScanObjSizes_ASC
+  # contentScanObjSizes descending
+  contentScanObjSizes_DESC
+  # contentScanObjTypes ascending
+  contentScanObjTypes_ASC
+  # contentScanObjTypes descending
+  contentScanObjTypes_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # edgeDnsResponseTimeMs ascending
+  edgeDnsResponseTimeMs_ASC
+  # edgeDnsResponseTimeMs descending
+  edgeDnsResponseTimeMs_DESC
+  # edgeResponseContentTypeName ascending
+  edgeResponseContentTypeName_ASC
+  # edgeResponseContentTypeName descending
+  edgeResponseContentTypeName_DESC
+  # edgeResponseStatus ascending
+  edgeResponseStatus_ASC
+  # edgeResponseStatus descending
+  edgeResponseStatus_DESC
+  # edgeTimeToFirstByteMs ascending
+  edgeTimeToFirstByteMs_ASC
+  # edgeTimeToFirstByteMs descending
+  edgeTimeToFirstByteMs_DESC
+  # httpApplicationVersion ascending
+  httpApplicationVersion_ASC
+  # httpApplicationVersion descending
+  httpApplicationVersion_DESC
+  # isCrossZoneSubrequest ascending
+  isCrossZoneSubrequest_ASC
+  # isCrossZoneSubrequest descending
+  isCrossZoneSubrequest_DESC
+  # ja3Hash ascending
+  ja3Hash_ASC
+  # ja3Hash descending
+  ja3Hash_DESC
+  # ja4 ascending
+  ja4_ASC
+  # ja4 descending
+  ja4_DESC
+  # leakedCredentialCheckResult ascending
+  leakedCredentialCheckResult_ASC
+  # leakedCredentialCheckResult descending
+  leakedCredentialCheckResult_DESC
+  # originASNDescription ascending
+  originASNDescription_ASC
+  # originASNDescription descending
+  originASNDescription_DESC
+  # originASN ascending
+  originASN_ASC
+  # originASN descending
+  originASN_DESC
+  # originIP ascending
+  originIP_ASC
+  # originIP descending
+  originIP_DESC
+  # originResponseDurationMs ascending
+  originResponseDurationMs_ASC
+  # originResponseDurationMs descending
+  originResponseDurationMs_DESC
+  # originResponseStatus ascending
+  originResponseStatus_ASC
+  # originResponseStatus descending
+  originResponseStatus_DESC
+  # quantiles(edgeDnsResponseTimeMsP50) ascending
+  quantiles_edgeDnsResponseTimeMsP50_ASC
+  # quantiles(edgeDnsResponseTimeMsP50) descending
+  quantiles_edgeDnsResponseTimeMsP50_DESC
+  # quantiles(edgeDnsResponseTimeMsP95) ascending
+  quantiles_edgeDnsResponseTimeMsP95_ASC
+  # quantiles(edgeDnsResponseTimeMsP95) descending
+  quantiles_edgeDnsResponseTimeMsP95_DESC
+  # quantiles(edgeDnsResponseTimeMsP99) ascending
+  quantiles_edgeDnsResponseTimeMsP99_ASC
+  # quantiles(edgeDnsResponseTimeMsP99) descending
+  quantiles_edgeDnsResponseTimeMsP99_DESC
+  # quantiles(edgeTimeToFirstByteMsP50) ascending
+  quantiles_edgeTimeToFirstByteMsP50_ASC
+  # quantiles(edgeTimeToFirstByteMsP50) descending
+  quantiles_edgeTimeToFirstByteMsP50_DESC
+  # quantiles(edgeTimeToFirstByteMsP95) ascending
+  quantiles_edgeTimeToFirstByteMsP95_ASC
+  # quantiles(edgeTimeToFirstByteMsP95) descending
+  quantiles_edgeTimeToFirstByteMsP95_DESC
+  # quantiles(edgeTimeToFirstByteMsP99) ascending
+  quantiles_edgeTimeToFirstByteMsP99_ASC
+  # quantiles(edgeTimeToFirstByteMsP99) descending
+  quantiles_edgeTimeToFirstByteMsP99_DESC
+  # quantiles(originResponseDurationMsP50) ascending
+  quantiles_originResponseDurationMsP50_ASC
+  # quantiles(originResponseDurationMsP50) descending
+  quantiles_originResponseDurationMsP50_DESC
+  # quantiles(originResponseDurationMsP95) ascending
+  quantiles_originResponseDurationMsP95_ASC
+  # quantiles(originResponseDurationMsP95) descending
+  quantiles_originResponseDurationMsP95_DESC
+  # quantiles(originResponseDurationMsP99) ascending
+  quantiles_originResponseDurationMsP99_ASC
+  # quantiles(originResponseDurationMsP99) descending
+  quantiles_originResponseDurationMsP99_DESC
+  # ratio(status4xx) ascending
+  ratio_status4xx_ASC
+  # ratio(status4xx) descending
+  ratio_status4xx_DESC
+  # ratio(status5xx) ascending
+  ratio_status5xx_ASC
+  # ratio(status5xx) descending
+  ratio_status5xx_DESC
+  # requestSource ascending
+  requestSource_ASC
+  # requestSource descending
+  requestSource_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # securityAction ascending
+  securityAction_ASC
+  # securityAction descending
+  securityAction_DESC
+  # securitySource ascending
+  securitySource_ASC
+  # securitySource descending
+  securitySource_DESC
+  # sum(crossZoneSubrequests) ascending
+  sum_crossZoneSubrequests_ASC
+  # sum(crossZoneSubrequests) descending
+  sum_crossZoneSubrequests_DESC
+  # sum(edgeDnsResponseTimeMs) ascending
+  sum_edgeDnsResponseTimeMs_ASC
+  # sum(edgeDnsResponseTimeMs) descending
+  sum_edgeDnsResponseTimeMs_DESC
+  # sum(edgeResponseBytes) ascending
+  sum_edgeResponseBytes_ASC
+  # sum(edgeResponseBytes) descending
+  sum_edgeResponseBytes_DESC
+  # sum(edgeTimeToFirstByteMs) ascending
+  sum_edgeTimeToFirstByteMs_ASC
+  # sum(edgeTimeToFirstByteMs) descending
+  sum_edgeTimeToFirstByteMs_DESC
+  # sum(originResponseDurationMs) ascending
+  sum_originResponseDurationMs_ASC
+  # sum(originResponseDurationMs) descending
+  sum_originResponseDurationMs_DESC
+  # sum(visits) ascending
+  sum_visits_ASC
+  # sum(visits) descending
+  sum_visits_DESC
+  # upperTierColoName ascending
+  upperTierColoName_ASC
+  # upperTierColoName descending
+  upperTierColoName_DESC
+  # userAgentBrowser ascending
+  userAgentBrowser_ASC
+  # userAgentBrowser descending
+  userAgentBrowser_DESC
+  # userAgentOS ascending
+  userAgentOS_ASC
+  # userAgentOS descending
+  userAgentOS_DESC
+  # userAgent ascending
+  userAgent_ASC
+  # userAgent descending
+  userAgent_DESC
+  # wafAttackScoreClass ascending
+  wafAttackScoreClass_ASC
+  # wafAttackScoreClass descending
+  wafAttackScoreClass_DESC
+  # wafAttackScore ascending
+  wafAttackScore_ASC
+  # wafAttackScore descending
+  wafAttackScore_DESC
+  # wafRceAttackScore ascending
+  wafRceAttackScore_ASC
+  # wafRceAttackScore descending
+  wafRceAttackScore_DESC
+  # wafSqliAttackScore ascending
+  wafSqliAttackScore_ASC
+  # wafSqliAttackScore descending
+  wafSqliAttackScore_DESC
+  # wafXssAttackScore ascending
+  wafXssAttackScore_ASC
+  # wafXssAttackScore descending
+  wafXssAttackScore_DESC
+  # xRequestedWith ascending
+  xRequestedWith_ASC
+  # xRequestedWith descending
+  xRequestedWith_DESC
+  # zoneVersion ascending
+  zoneVersion_ASC
+  # zoneVersion descending
+  zoneVersion_DESC
+}
+
+type OrganizationHttpRequestsAdaptiveGroupsQuantiles {
+  # 50th percentile DNS Response Time (milliseconds)
+  edgeDnsResponseTimeMsP50: float64!
+  # 95th percentile DNS Response Time (milliseconds)
+  edgeDnsResponseTimeMsP95: float64!
+  # 99th percentile DNS Response Time (milliseconds)
+  edgeDnsResponseTimeMsP99: float64!
+  # 50th percentile Time To First Byte (milliseconds)
+  edgeTimeToFirstByteMsP50: float64!
+  # 95th percentile Time To First Byte (milliseconds)
+  edgeTimeToFirstByteMsP95: float64!
+  # 99th percentile Time To First Byte (milliseconds)
+  edgeTimeToFirstByteMsP99: float64!
+  # 50th percentile Origin Response Duration (milliseconds)
+  originResponseDurationMsP50: float64!
+  # 95th percentile Origin Response Duration (milliseconds)
+  originResponseDurationMsP95: float64!
+  # 99th percentile Origin Response Duration (milliseconds)
+  originResponseDurationMsP99: float64!
+}
+
+type OrganizationHttpRequestsAdaptiveGroupsRatio {
+  status4xx: float64!
+  status5xx: float64!
+}
+
+type OrganizationHttpRequestsAdaptiveGroupsSum {
+  # The number of requests that were inititiated by a Cloudflare Worker on another zone
+  crossZoneSubrequests: uint64!
+  edgeDnsResponseTimeMs: uint64!
+  edgeResponseBytes: uint64!
+  edgeTimeToFirstByteMs: uint64!
+  originResponseDurationMs: uint64!
+  # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
+  visits: uint64!
+}
+
+type OrganizationHttpRequestsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  edgeResponseBytes: Confidence!
+}
+
+# Access and limitations for an organization
+type OrganizationSettings {
+  httpRequestsAdaptiveGroups: Settings!
+}
+
 type Query {
   cost: uint64!
   viewer: viewer
@@ -32846,6 +33999,7 @@ type Settings {
 type viewer {
   accounts(filter: AccountFilter_InputObject!): [account!]!
   budget: uint64!
+  organizations(filter: OrganizationFilter_InputObject!): [organization!]!
   zones(filter: ZoneFilter_InputObject, limit: uint64): [zone!]!
 }
 
@@ -32927,10 +34081,16 @@ type zone {
   zarazActionsAdaptiveGroups(filter: ZoneZarazActionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazActionsAdaptiveGroupsOrderBy!]): [ZoneZarazActionsAdaptiveGroups!]!
   # Zaraz Analytics Identities - zaraz.identify calls
   zarazAnalyticsIdentitiesAdaptiveGroups(filter: ZoneZarazAnalyticsIdentitiesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazAnalyticsIdentitiesAdaptiveGroupsOrderBy!]): [ZoneZarazAnalyticsIdentitiesAdaptiveGroups!]!
+  # Zaraz Analytics Tracks ordered per session
+  zarazAnalyticsOrderedTrackAdaptiveGroups(filter: ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsOrderBy!]): [ZoneZarazAnalyticsOrderedTrackAdaptiveGroups!]!
   # Zaraz Analytics Track - counts zaraz.track calls
   zarazAnalyticsTrackAdaptiveGroups(filter: ZoneZarazAnalyticsTrackAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazAnalyticsTrackAdaptiveGroupsOrderBy!]): [ZoneZarazAnalyticsTrackAdaptiveGroups!]!
+  # Zaraz Analytics Track Traffic Sources
+  zarazAnalyticsTrackTrafficSourcesAdaptiveGroups(filter: ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsOrderBy!]): [ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroups!]!
   # Zaraz Analytics Triggers (a trigger is a set of rules that can trigger a zaraz action)
   zarazAnalyticsTriggersAdaptiveGroups(filter: ZoneZarazAnalyticsTriggersAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazAnalyticsTriggersAdaptiveGroupsOrderBy!]): [ZoneZarazAnalyticsTriggersAdaptiveGroups!]!
+  # Zaraz Analytics Triggers Traffic Sources
+  zarazAnalyticsTriggersTrafficSourcesAdaptiveGroups(filter: ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsOrderBy!]): [ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroups!]!
   # Zaraz Track Analytics - counts zaraz.track calls
   zarazTrackAdaptiveGroups(filter: ZoneZarazTrackAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazTrackAdaptiveGroupsOrderBy!]): [ZoneZarazTrackAdaptiveGroups!]!
   # Zaraz Triggers Analytics (a trigger is a set of rules that can trigger a zaraz action)
@@ -44151,8 +45311,11 @@ type ZoneSettings {
   workersZoneSubrequestsAdaptiveGroups: Settings!
   zarazActionsAdaptiveGroups: Settings!
   zarazAnalyticsIdentitiesAdaptiveGroups: Settings!
+  zarazAnalyticsOrderedTrackAdaptiveGroups: Settings!
   zarazAnalyticsTrackAdaptiveGroups: Settings!
+  zarazAnalyticsTrackTrafficSourcesAdaptiveGroups: Settings!
   zarazAnalyticsTriggersAdaptiveGroups: Settings!
+  zarazAnalyticsTriggersTrafficSourcesAdaptiveGroups: Settings!
   zarazTrackAdaptiveGroups: Settings!
   zarazTriggersAdaptiveGroups: Settings!
 }
@@ -45498,6 +46661,353 @@ enum ZoneZarazAnalyticsIdentitiesAdaptiveGroupsOrderBy {
   identity_DESC
 }
 
+# Zaraz Analytics Tracks ordered per session
+type ZoneZarazAnalyticsOrderedTrackAdaptiveGroups {
+  # Number of processed Zaraz Track requests
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsDimensions
+}
+
+type ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsDimensions {
+  # Client ID
+  clientId: string!
+  # Colors
+  colors: string!
+  # Country
+  country: string!
+  # Date when track was called
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # IP
+  ip: string!
+  # Language
+  language: string!
+  # Track reverse order number within its session (last track having orderInSession 1)
+  orderInSession: uint64!
+  # Page Title
+  pageTitle: string!
+  # Screen Resolution
+  resolution: string!
+  # Session ID
+  sessionId: string!
+  # Timezone Offset
+  timezoneOffset: string!
+  # Track Data
+  trackData: string!
+  # Track Name
+  trackName: string!
+  # Traffic source
+  trafficSrc: string!
+  # User Agent
+  ua: string!
+  # URL Path
+  urlPath: string!
+  # Viewport
+  viewport: string!
+}
+
+input ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject!]
+  clientId: string
+  clientId_geq: string
+  clientId_gt: string
+  clientId_in: [string!]
+  clientId_leq: string
+  clientId_like: string
+  clientId_lt: string
+  clientId_neq: string
+  clientId_notin: [string!]
+  clientId_notlike: string
+  colors: string
+  colors_geq: string
+  colors_gt: string
+  colors_in: [string!]
+  colors_leq: string
+  colors_like: string
+  colors_lt: string
+  colors_neq: string
+  colors_notin: [string!]
+  colors_notlike: string
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  ip: string
+  ip_geq: string
+  ip_gt: string
+  ip_in: [string!]
+  ip_leq: string
+  ip_like: string
+  ip_lt: string
+  ip_neq: string
+  ip_notin: [string!]
+  ip_notlike: string
+  language: string
+  language_geq: string
+  language_gt: string
+  language_in: [string!]
+  language_leq: string
+  language_like: string
+  language_lt: string
+  language_neq: string
+  language_notin: [string!]
+  language_notlike: string
+  orderInSession: uint64
+  orderInSession_geq: uint64
+  orderInSession_gt: uint64
+  orderInSession_in: [uint64!]
+  orderInSession_leq: uint64
+  orderInSession_lt: uint64
+  orderInSession_neq: uint64
+  orderInSession_notin: [uint64!]
+  pageTitle: string
+  pageTitle_geq: string
+  pageTitle_gt: string
+  pageTitle_in: [string!]
+  pageTitle_leq: string
+  pageTitle_like: string
+  pageTitle_lt: string
+  pageTitle_neq: string
+  pageTitle_notin: [string!]
+  pageTitle_notlike: string
+  resolution: string
+  resolution_geq: string
+  resolution_gt: string
+  resolution_in: [string!]
+  resolution_leq: string
+  resolution_like: string
+  resolution_lt: string
+  resolution_neq: string
+  resolution_notin: [string!]
+  resolution_notlike: string
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+  timezoneOffset: string
+  timezoneOffset_geq: string
+  timezoneOffset_gt: string
+  timezoneOffset_in: [string!]
+  timezoneOffset_leq: string
+  timezoneOffset_like: string
+  timezoneOffset_lt: string
+  timezoneOffset_neq: string
+  timezoneOffset_notin: [string!]
+  timezoneOffset_notlike: string
+  trackData: string
+  trackData_geq: string
+  trackData_gt: string
+  trackData_in: [string!]
+  trackData_leq: string
+  trackData_like: string
+  trackData_lt: string
+  trackData_neq: string
+  trackData_notin: [string!]
+  trackData_notlike: string
+  trackName: string
+  trackName_geq: string
+  trackName_gt: string
+  trackName_in: [string!]
+  trackName_leq: string
+  trackName_like: string
+  trackName_lt: string
+  trackName_neq: string
+  trackName_notin: [string!]
+  trackName_notlike: string
+  trafficSrc: string
+  trafficSrc_geq: string
+  trafficSrc_gt: string
+  trafficSrc_in: [string!]
+  trafficSrc_leq: string
+  trafficSrc_like: string
+  trafficSrc_lt: string
+  trafficSrc_neq: string
+  trafficSrc_notin: [string!]
+  trafficSrc_notlike: string
+  ua: string
+  ua_geq: string
+  ua_gt: string
+  ua_in: [string!]
+  ua_leq: string
+  ua_like: string
+  ua_lt: string
+  ua_neq: string
+  ua_notin: [string!]
+  ua_notlike: string
+  urlPath: string
+  urlPath_geq: string
+  urlPath_gt: string
+  urlPath_in: [string!]
+  urlPath_leq: string
+  urlPath_like: string
+  urlPath_lt: string
+  urlPath_neq: string
+  urlPath_notin: [string!]
+  urlPath_notlike: string
+  viewport: string
+  viewport_geq: string
+  viewport_gt: string
+  viewport_in: [string!]
+  viewport_leq: string
+  viewport_like: string
+  viewport_lt: string
+  viewport_neq: string
+  viewport_notin: [string!]
+  viewport_notlike: string
+}
+
+enum ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsOrderBy {
+  # clientId ascending
+  clientId_ASC
+  # clientId descending
+  clientId_DESC
+  # colors ascending
+  colors_ASC
+  # colors descending
+  colors_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # ip ascending
+  ip_ASC
+  # ip descending
+  ip_DESC
+  # language ascending
+  language_ASC
+  # language descending
+  language_DESC
+  # orderInSession ascending
+  orderInSession_ASC
+  # orderInSession descending
+  orderInSession_DESC
+  # pageTitle ascending
+  pageTitle_ASC
+  # pageTitle descending
+  pageTitle_DESC
+  # resolution ascending
+  resolution_ASC
+  # resolution descending
+  resolution_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # timezoneOffset ascending
+  timezoneOffset_ASC
+  # timezoneOffset descending
+  timezoneOffset_DESC
+  # trackData ascending
+  trackData_ASC
+  # trackData descending
+  trackData_DESC
+  # trackName ascending
+  trackName_ASC
+  # trackName descending
+  trackName_DESC
+  # trafficSrc ascending
+  trafficSrc_ASC
+  # trafficSrc descending
+  trafficSrc_DESC
+  # ua ascending
+  ua_ASC
+  # ua descending
+  ua_DESC
+  # urlPath ascending
+  urlPath_ASC
+  # urlPath descending
+  urlPath_DESC
+  # viewport ascending
+  viewport_ASC
+  # viewport descending
+  viewport_DESC
+}
+
 # Zaraz Analytics Track - counts zaraz.track calls
 type ZoneZarazAnalyticsTrackAdaptiveGroups {
   # Number of processed Zaraz Track requests
@@ -45530,8 +47040,6 @@ type ZoneZarazAnalyticsTrackAdaptiveGroupsDimensions {
   language: string!
   # Page Title
   pageTitle: string!
-  # Referrer
-  referrer: string!
   # Screen Resolution
   resolution: string!
   # Session ID
@@ -45542,6 +47050,8 @@ type ZoneZarazAnalyticsTrackAdaptiveGroupsDimensions {
   trackData: string!
   # Track Name
   trackName: string!
+  # Traffic source
+  trafficSrc: string!
   # User Agent
   ua: string!
   # URL Path
@@ -45653,16 +47163,6 @@ input ZoneZarazAnalyticsTrackAdaptiveGroupsFilter_InputObject {
   pageTitle_neq: string
   pageTitle_notin: [string!]
   pageTitle_notlike: string
-  referrer: string
-  referrer_geq: string
-  referrer_gt: string
-  referrer_in: [string!]
-  referrer_leq: string
-  referrer_like: string
-  referrer_lt: string
-  referrer_neq: string
-  referrer_notin: [string!]
-  referrer_notlike: string
   resolution: string
   resolution_geq: string
   resolution_gt: string
@@ -45713,6 +47213,16 @@ input ZoneZarazAnalyticsTrackAdaptiveGroupsFilter_InputObject {
   trackName_neq: string
   trackName_notin: [string!]
   trackName_notlike: string
+  trafficSrc: string
+  trafficSrc_geq: string
+  trafficSrc_gt: string
+  trafficSrc_in: [string!]
+  trafficSrc_leq: string
+  trafficSrc_like: string
+  trafficSrc_lt: string
+  trafficSrc_neq: string
+  trafficSrc_notin: [string!]
+  trafficSrc_notlike: string
   ua: string
   ua_geq: string
   ua_gt: string
@@ -45794,10 +47304,6 @@ enum ZoneZarazAnalyticsTrackAdaptiveGroupsOrderBy {
   pageTitle_ASC
   # pageTitle descending
   pageTitle_DESC
-  # referrer ascending
-  referrer_ASC
-  # referrer descending
-  referrer_DESC
   # resolution ascending
   resolution_ASC
   # resolution descending
@@ -45818,6 +47324,10 @@ enum ZoneZarazAnalyticsTrackAdaptiveGroupsOrderBy {
   trackName_ASC
   # trackName descending
   trackName_DESC
+  # trafficSrc ascending
+  trafficSrc_ASC
+  # trafficSrc descending
+  trafficSrc_DESC
   # ua ascending
   ua_ASC
   # ua descending
@@ -45845,6 +47355,269 @@ type ZoneZarazAnalyticsTrackAdaptiveGroupsUniq {
   clientIdCount: uint64!
   # Number of distinct session IDs
   sessionIdCount: uint64!
+}
+
+# Zaraz Analytics Track Traffic Sources
+type ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroups {
+  # Number of unique sessions
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsDimensions
+  uniq: ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsUniq
+}
+
+type ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsDimensions {
+  # Client ID
+  clientId: string!
+  # URL Path at session end
+  exitPage: string!
+  # Referrer at session start
+  firstTrafficSrc: string!
+  # URL Path at session start
+  landingPage: string!
+  # Date when the session ended
+  sessionEnd: Date!
+  # The date and time truncated to fifteen minutes
+  sessionEndFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  sessionEndFiveMinutes: Time!
+  # The date and time truncated to the hour
+  sessionEndHour: Time!
+  # The date and time truncated to the minute
+  sessionEndMinute: Time!
+  # Session ID
+  sessionId: string!
+  # Date when the session started
+  sessionStart: Date!
+  # The date and time truncated to fifteen minutes
+  sessionStartFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  sessionStartFiveMinutes: Time!
+  # The date and time truncated to the hour
+  sessionStartHour: Time!
+  # The date and time truncated to the minute
+  sessionStartMinute: Time!
+  # Unique track names within a session
+  tracks: [string!]!
+}
+
+input ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject!]
+  clientId: string
+  clientId_geq: string
+  clientId_gt: string
+  clientId_in: [string!]
+  clientId_leq: string
+  clientId_like: string
+  clientId_lt: string
+  clientId_neq: string
+  clientId_notin: [string!]
+  clientId_notlike: string
+  exitPage: string
+  exitPage_geq: string
+  exitPage_gt: string
+  exitPage_in: [string!]
+  exitPage_leq: string
+  exitPage_like: string
+  exitPage_lt: string
+  exitPage_neq: string
+  exitPage_notin: [string!]
+  exitPage_notlike: string
+  firstTrafficSrc: string
+  firstTrafficSrc_geq: string
+  firstTrafficSrc_gt: string
+  firstTrafficSrc_in: [string!]
+  firstTrafficSrc_leq: string
+  firstTrafficSrc_like: string
+  firstTrafficSrc_lt: string
+  firstTrafficSrc_neq: string
+  firstTrafficSrc_notin: [string!]
+  firstTrafficSrc_notlike: string
+  landingPage: string
+  landingPage_geq: string
+  landingPage_gt: string
+  landingPage_in: [string!]
+  landingPage_leq: string
+  landingPage_like: string
+  landingPage_lt: string
+  landingPage_neq: string
+  landingPage_notin: [string!]
+  landingPage_notlike: string
+  sessionEnd: Date
+  sessionEndFifteenMinutes: Time
+  sessionEndFifteenMinutes_geq: Time
+  sessionEndFifteenMinutes_gt: Time
+  sessionEndFifteenMinutes_in: [Time!]
+  sessionEndFifteenMinutes_leq: Time
+  sessionEndFifteenMinutes_lt: Time
+  sessionEndFifteenMinutes_neq: Time
+  sessionEndFifteenMinutes_notin: [Time!]
+  sessionEndFiveMinutes: Time
+  sessionEndFiveMinutes_geq: Time
+  sessionEndFiveMinutes_gt: Time
+  sessionEndFiveMinutes_in: [Time!]
+  sessionEndFiveMinutes_leq: Time
+  sessionEndFiveMinutes_lt: Time
+  sessionEndFiveMinutes_neq: Time
+  sessionEndFiveMinutes_notin: [Time!]
+  sessionEndHour: Time
+  sessionEndHour_geq: Time
+  sessionEndHour_gt: Time
+  sessionEndHour_in: [Time!]
+  sessionEndHour_leq: Time
+  sessionEndHour_lt: Time
+  sessionEndHour_neq: Time
+  sessionEndHour_notin: [Time!]
+  sessionEndMinute: Time
+  sessionEndMinute_geq: Time
+  sessionEndMinute_gt: Time
+  sessionEndMinute_in: [Time!]
+  sessionEndMinute_leq: Time
+  sessionEndMinute_lt: Time
+  sessionEndMinute_neq: Time
+  sessionEndMinute_notin: [Time!]
+  sessionEnd_geq: Date
+  sessionEnd_gt: Date
+  sessionEnd_in: [Date!]
+  sessionEnd_leq: Date
+  sessionEnd_lt: Date
+  sessionEnd_neq: Date
+  sessionEnd_notin: [Date!]
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+  sessionStart: Date
+  sessionStartFifteenMinutes: Time
+  sessionStartFifteenMinutes_geq: Time
+  sessionStartFifteenMinutes_gt: Time
+  sessionStartFifteenMinutes_in: [Time!]
+  sessionStartFifteenMinutes_leq: Time
+  sessionStartFifteenMinutes_lt: Time
+  sessionStartFifteenMinutes_neq: Time
+  sessionStartFifteenMinutes_notin: [Time!]
+  sessionStartFiveMinutes: Time
+  sessionStartFiveMinutes_geq: Time
+  sessionStartFiveMinutes_gt: Time
+  sessionStartFiveMinutes_in: [Time!]
+  sessionStartFiveMinutes_leq: Time
+  sessionStartFiveMinutes_lt: Time
+  sessionStartFiveMinutes_neq: Time
+  sessionStartFiveMinutes_notin: [Time!]
+  sessionStartHour: Time
+  sessionStartHour_geq: Time
+  sessionStartHour_gt: Time
+  sessionStartHour_in: [Time!]
+  sessionStartHour_leq: Time
+  sessionStartHour_lt: Time
+  sessionStartHour_neq: Time
+  sessionStartHour_notin: [Time!]
+  sessionStartMinute: Time
+  sessionStartMinute_geq: Time
+  sessionStartMinute_gt: Time
+  sessionStartMinute_in: [Time!]
+  sessionStartMinute_leq: Time
+  sessionStartMinute_lt: Time
+  sessionStartMinute_neq: Time
+  sessionStartMinute_notin: [Time!]
+  sessionStart_geq: Date
+  sessionStart_gt: Date
+  sessionStart_in: [Date!]
+  sessionStart_leq: Date
+  sessionStart_lt: Date
+  sessionStart_neq: Date
+  sessionStart_notin: [Date!]
+  tracks_has: string
+  tracks_hasall: [string!]
+  tracks_hasany: [string!]
+  tracks_nothas: string
+}
+
+enum ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsOrderBy {
+  # clientId ascending
+  clientId_ASC
+  # clientId descending
+  clientId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # exitPage ascending
+  exitPage_ASC
+  # exitPage descending
+  exitPage_DESC
+  # firstTrafficSrc ascending
+  firstTrafficSrc_ASC
+  # firstTrafficSrc descending
+  firstTrafficSrc_DESC
+  # landingPage ascending
+  landingPage_ASC
+  # landingPage descending
+  landingPage_DESC
+  # sessionEndFifteenMinutes ascending
+  sessionEndFifteenMinutes_ASC
+  # sessionEndFifteenMinutes descending
+  sessionEndFifteenMinutes_DESC
+  # sessionEndFiveMinutes ascending
+  sessionEndFiveMinutes_ASC
+  # sessionEndFiveMinutes descending
+  sessionEndFiveMinutes_DESC
+  # sessionEndHour ascending
+  sessionEndHour_ASC
+  # sessionEndHour descending
+  sessionEndHour_DESC
+  # sessionEndMinute ascending
+  sessionEndMinute_ASC
+  # sessionEndMinute descending
+  sessionEndMinute_DESC
+  # sessionEnd ascending
+  sessionEnd_ASC
+  # sessionEnd descending
+  sessionEnd_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # sessionStartFifteenMinutes ascending
+  sessionStartFifteenMinutes_ASC
+  # sessionStartFifteenMinutes descending
+  sessionStartFifteenMinutes_DESC
+  # sessionStartFiveMinutes ascending
+  sessionStartFiveMinutes_ASC
+  # sessionStartFiveMinutes descending
+  sessionStartFiveMinutes_DESC
+  # sessionStartHour ascending
+  sessionStartHour_ASC
+  # sessionStartHour descending
+  sessionStartHour_DESC
+  # sessionStartMinute ascending
+  sessionStartMinute_ASC
+  # sessionStartMinute descending
+  sessionStartMinute_DESC
+  # sessionStart ascending
+  sessionStart_ASC
+  # sessionStart descending
+  sessionStart_DESC
+  # tracks ascending
+  tracks_ASC
+  # tracks descending
+  tracks_DESC
+  # uniq(clientIdCount) ascending
+  uniq_clientIdCount_ASC
+  # uniq(clientIdCount) descending
+  uniq_clientIdCount_DESC
+}
+
+type ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsUniq {
+  # Number of distinct client IDs
+  clientIdCount: uint64!
 }
 
 # Zaraz Analytics Triggers (a trigger is a set of rules that can trigger a zaraz action)
@@ -45879,14 +47652,14 @@ type ZoneZarazAnalyticsTriggersAdaptiveGroupsDimensions {
   language: string!
   # Page Title
   pageTitle: string!
-  # Referrer
-  referrer: string!
   # Screen Resolution
   resolution: string!
   # Session ID
   sessionId: string!
   # Timezone Offset
   timezoneOffset: string!
+  # Traffic Source
+  trafficSrc: string!
   # Trigger Name
   triggerName: string!
   # User Agent
@@ -46000,16 +47773,6 @@ input ZoneZarazAnalyticsTriggersAdaptiveGroupsFilter_InputObject {
   pageTitle_neq: string
   pageTitle_notin: [string!]
   pageTitle_notlike: string
-  referrer: string
-  referrer_geq: string
-  referrer_gt: string
-  referrer_in: [string!]
-  referrer_leq: string
-  referrer_like: string
-  referrer_lt: string
-  referrer_neq: string
-  referrer_notin: [string!]
-  referrer_notlike: string
   resolution: string
   resolution_geq: string
   resolution_gt: string
@@ -46040,6 +47803,16 @@ input ZoneZarazAnalyticsTriggersAdaptiveGroupsFilter_InputObject {
   timezoneOffset_neq: string
   timezoneOffset_notin: [string!]
   timezoneOffset_notlike: string
+  trafficSrc: string
+  trafficSrc_geq: string
+  trafficSrc_gt: string
+  trafficSrc_in: [string!]
+  trafficSrc_leq: string
+  trafficSrc_like: string
+  trafficSrc_lt: string
+  trafficSrc_neq: string
+  trafficSrc_notin: [string!]
+  trafficSrc_notlike: string
   triggerName: string
   triggerName_geq: string
   triggerName_gt: string
@@ -46131,10 +47904,6 @@ enum ZoneZarazAnalyticsTriggersAdaptiveGroupsOrderBy {
   pageTitle_ASC
   # pageTitle descending
   pageTitle_DESC
-  # referrer ascending
-  referrer_ASC
-  # referrer descending
-  referrer_DESC
   # resolution ascending
   resolution_ASC
   # resolution descending
@@ -46147,6 +47916,10 @@ enum ZoneZarazAnalyticsTriggersAdaptiveGroupsOrderBy {
   timezoneOffset_ASC
   # timezoneOffset descending
   timezoneOffset_DESC
+  # trafficSrc ascending
+  trafficSrc_ASC
+  # trafficSrc descending
+  trafficSrc_DESC
   # triggerName ascending
   triggerName_ASC
   # triggerName descending
@@ -46178,6 +47951,237 @@ type ZoneZarazAnalyticsTriggersAdaptiveGroupsUniq {
   clientIdCount: uint64!
   # Number of distinct session IDs
   sessionIdCount: uint64!
+}
+
+# Zaraz Analytics Triggers Traffic Sources
+type ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroups {
+  # Number of unique sessions
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsDimensions
+  uniq: ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsUniq
+}
+
+type ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsDimensions {
+  # Client ID
+  clientId: string!
+  # Referrer at session start
+  firstTrafficSrc: string!
+  # Date when the session ended
+  sessionEnd: Date!
+  # The date and time truncated to fifteen minutes
+  sessionEndFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  sessionEndFiveMinutes: Time!
+  # The date and time truncated to the hour
+  sessionEndHour: Time!
+  # The date and time truncated to the minute
+  sessionEndMinute: Time!
+  # Session ID
+  sessionId: string!
+  # Date when the session started
+  sessionStart: Date!
+  # The date and time truncated to fifteen minutes
+  sessionStartFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  sessionStartFiveMinutes: Time!
+  # The date and time truncated to the hour
+  sessionStartHour: Time!
+  # The date and time truncated to the minute
+  sessionStartMinute: Time!
+  # Unique trigger names within a session
+  triggers: [string!]!
+}
+
+input ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject!]
+  clientId: string
+  clientId_geq: string
+  clientId_gt: string
+  clientId_in: [string!]
+  clientId_leq: string
+  clientId_like: string
+  clientId_lt: string
+  clientId_neq: string
+  clientId_notin: [string!]
+  clientId_notlike: string
+  firstTrafficSrc: string
+  firstTrafficSrc_geq: string
+  firstTrafficSrc_gt: string
+  firstTrafficSrc_in: [string!]
+  firstTrafficSrc_leq: string
+  firstTrafficSrc_like: string
+  firstTrafficSrc_lt: string
+  firstTrafficSrc_neq: string
+  firstTrafficSrc_notin: [string!]
+  firstTrafficSrc_notlike: string
+  sessionEnd: Date
+  sessionEndFifteenMinutes: Time
+  sessionEndFifteenMinutes_geq: Time
+  sessionEndFifteenMinutes_gt: Time
+  sessionEndFifteenMinutes_in: [Time!]
+  sessionEndFifteenMinutes_leq: Time
+  sessionEndFifteenMinutes_lt: Time
+  sessionEndFifteenMinutes_neq: Time
+  sessionEndFifteenMinutes_notin: [Time!]
+  sessionEndFiveMinutes: Time
+  sessionEndFiveMinutes_geq: Time
+  sessionEndFiveMinutes_gt: Time
+  sessionEndFiveMinutes_in: [Time!]
+  sessionEndFiveMinutes_leq: Time
+  sessionEndFiveMinutes_lt: Time
+  sessionEndFiveMinutes_neq: Time
+  sessionEndFiveMinutes_notin: [Time!]
+  sessionEndHour: Time
+  sessionEndHour_geq: Time
+  sessionEndHour_gt: Time
+  sessionEndHour_in: [Time!]
+  sessionEndHour_leq: Time
+  sessionEndHour_lt: Time
+  sessionEndHour_neq: Time
+  sessionEndHour_notin: [Time!]
+  sessionEndMinute: Time
+  sessionEndMinute_geq: Time
+  sessionEndMinute_gt: Time
+  sessionEndMinute_in: [Time!]
+  sessionEndMinute_leq: Time
+  sessionEndMinute_lt: Time
+  sessionEndMinute_neq: Time
+  sessionEndMinute_notin: [Time!]
+  sessionEnd_geq: Date
+  sessionEnd_gt: Date
+  sessionEnd_in: [Date!]
+  sessionEnd_leq: Date
+  sessionEnd_lt: Date
+  sessionEnd_neq: Date
+  sessionEnd_notin: [Date!]
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+  sessionStart: Date
+  sessionStartFifteenMinutes: Time
+  sessionStartFifteenMinutes_geq: Time
+  sessionStartFifteenMinutes_gt: Time
+  sessionStartFifteenMinutes_in: [Time!]
+  sessionStartFifteenMinutes_leq: Time
+  sessionStartFifteenMinutes_lt: Time
+  sessionStartFifteenMinutes_neq: Time
+  sessionStartFifteenMinutes_notin: [Time!]
+  sessionStartFiveMinutes: Time
+  sessionStartFiveMinutes_geq: Time
+  sessionStartFiveMinutes_gt: Time
+  sessionStartFiveMinutes_in: [Time!]
+  sessionStartFiveMinutes_leq: Time
+  sessionStartFiveMinutes_lt: Time
+  sessionStartFiveMinutes_neq: Time
+  sessionStartFiveMinutes_notin: [Time!]
+  sessionStartHour: Time
+  sessionStartHour_geq: Time
+  sessionStartHour_gt: Time
+  sessionStartHour_in: [Time!]
+  sessionStartHour_leq: Time
+  sessionStartHour_lt: Time
+  sessionStartHour_neq: Time
+  sessionStartHour_notin: [Time!]
+  sessionStartMinute: Time
+  sessionStartMinute_geq: Time
+  sessionStartMinute_gt: Time
+  sessionStartMinute_in: [Time!]
+  sessionStartMinute_leq: Time
+  sessionStartMinute_lt: Time
+  sessionStartMinute_neq: Time
+  sessionStartMinute_notin: [Time!]
+  sessionStart_geq: Date
+  sessionStart_gt: Date
+  sessionStart_in: [Date!]
+  sessionStart_leq: Date
+  sessionStart_lt: Date
+  sessionStart_neq: Date
+  sessionStart_notin: [Date!]
+  triggers_has: string
+  triggers_hasall: [string!]
+  triggers_hasany: [string!]
+  triggers_nothas: string
+}
+
+enum ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsOrderBy {
+  # clientId ascending
+  clientId_ASC
+  # clientId descending
+  clientId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # firstTrafficSrc ascending
+  firstTrafficSrc_ASC
+  # firstTrafficSrc descending
+  firstTrafficSrc_DESC
+  # sessionEndFifteenMinutes ascending
+  sessionEndFifteenMinutes_ASC
+  # sessionEndFifteenMinutes descending
+  sessionEndFifteenMinutes_DESC
+  # sessionEndFiveMinutes ascending
+  sessionEndFiveMinutes_ASC
+  # sessionEndFiveMinutes descending
+  sessionEndFiveMinutes_DESC
+  # sessionEndHour ascending
+  sessionEndHour_ASC
+  # sessionEndHour descending
+  sessionEndHour_DESC
+  # sessionEndMinute ascending
+  sessionEndMinute_ASC
+  # sessionEndMinute descending
+  sessionEndMinute_DESC
+  # sessionEnd ascending
+  sessionEnd_ASC
+  # sessionEnd descending
+  sessionEnd_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # sessionStartFifteenMinutes ascending
+  sessionStartFifteenMinutes_ASC
+  # sessionStartFifteenMinutes descending
+  sessionStartFifteenMinutes_DESC
+  # sessionStartFiveMinutes ascending
+  sessionStartFiveMinutes_ASC
+  # sessionStartFiveMinutes descending
+  sessionStartFiveMinutes_DESC
+  # sessionStartHour ascending
+  sessionStartHour_ASC
+  # sessionStartHour descending
+  sessionStartHour_DESC
+  # sessionStartMinute ascending
+  sessionStartMinute_ASC
+  # sessionStartMinute descending
+  sessionStartMinute_DESC
+  # sessionStart ascending
+  sessionStart_ASC
+  # sessionStart descending
+  sessionStart_DESC
+  # triggers ascending
+  triggers_ASC
+  # triggers descending
+  triggers_DESC
+  # uniq(clientIdCount) ascending
+  uniq_clientIdCount_ASC
+  # uniq(clientIdCount) descending
+  uniq_clientIdCount_DESC
+}
+
+type ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsUniq {
+  # Number of distinct client IDs
+  clientIdCount: uint64!
 }
 
 # Zaraz Track Analytics - counts zaraz.track calls
