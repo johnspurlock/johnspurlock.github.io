@@ -10510,6 +10510,18 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   clientRequestQuery: string!
   # The url scheme requested by the visitor
   clientRequestScheme: string!
+  # 1 if not all contents for this request where successfully scanned, else 0
+  contentScanHasFailed: uint8!
+  # Number of scannable content objects that are malicious
+  contentScanNumMaliciousObj: uint8!
+  # Number of scannable content objects
+  contentScanNumObj: uint8!
+  # Array of scan results in order of detection
+  contentScanObjResults: [string!]!
+  # Array of scan sizes in order of detection
+  contentScanObjSizes: [uint32!]!
+  # Array of content types in order of detection
+  contentScanObjTypes: [string!]!
   # The date the event occurred at the edge
   date: Date!
   # The date and time the event occurred at the edge
@@ -10783,6 +10795,42 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   clientRequestScheme_neq: string
   clientRequestScheme_notin: [string!]
   clientRequestScheme_notlike: string
+  contentScanHasFailed: uint8
+  contentScanHasFailed_geq: uint8
+  contentScanHasFailed_gt: uint8
+  contentScanHasFailed_in: bytes
+  contentScanHasFailed_leq: uint8
+  contentScanHasFailed_lt: uint8
+  contentScanHasFailed_neq: uint8
+  contentScanHasFailed_notin: bytes
+  contentScanNumMaliciousObj: uint8
+  contentScanNumMaliciousObj_geq: uint8
+  contentScanNumMaliciousObj_gt: uint8
+  contentScanNumMaliciousObj_in: bytes
+  contentScanNumMaliciousObj_leq: uint8
+  contentScanNumMaliciousObj_lt: uint8
+  contentScanNumMaliciousObj_neq: uint8
+  contentScanNumMaliciousObj_notin: bytes
+  contentScanNumObj: uint8
+  contentScanNumObj_geq: uint8
+  contentScanNumObj_gt: uint8
+  contentScanNumObj_in: bytes
+  contentScanNumObj_leq: uint8
+  contentScanNumObj_lt: uint8
+  contentScanNumObj_neq: uint8
+  contentScanNumObj_notin: bytes
+  contentScanObjResults_has: string
+  contentScanObjResults_hasall: [string!]
+  contentScanObjResults_hasany: [string!]
+  contentScanObjResults_nothas: string
+  contentScanObjSizes_has: uint32
+  contentScanObjSizes_hasall: [uint32!]
+  contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_nothas: uint32
+  contentScanObjTypes_has: string
+  contentScanObjTypes_hasall: [string!]
+  contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -11162,6 +11210,30 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   clientRequestScheme_ASC
   # clientRequestScheme descending
   clientRequestScheme_DESC
+  # contentScanHasFailed ascending
+  contentScanHasFailed_ASC
+  # contentScanHasFailed descending
+  contentScanHasFailed_DESC
+  # contentScanNumMaliciousObj ascending
+  contentScanNumMaliciousObj_ASC
+  # contentScanNumMaliciousObj descending
+  contentScanNumMaliciousObj_DESC
+  # contentScanNumObj ascending
+  contentScanNumObj_ASC
+  # contentScanNumObj descending
+  contentScanNumObj_DESC
+  # contentScanObjResults ascending
+  contentScanObjResults_ASC
+  # contentScanObjResults descending
+  contentScanObjResults_DESC
+  # contentScanObjSizes ascending
+  contentScanObjSizes_ASC
+  # contentScanObjSizes descending
+  contentScanObjSizes_DESC
+  # contentScanObjTypes ascending
+  contentScanObjTypes_ASC
+  # contentScanObjTypes descending
+  contentScanObjTypes_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -37600,6 +37672,42 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   clientRequestScheme_neq: string
   clientRequestScheme_notin: [string!]
   clientRequestScheme_notlike: string
+  contentScanHasFailed: uint8
+  contentScanHasFailed_geq: uint8
+  contentScanHasFailed_gt: uint8
+  contentScanHasFailed_in: bytes
+  contentScanHasFailed_leq: uint8
+  contentScanHasFailed_lt: uint8
+  contentScanHasFailed_neq: uint8
+  contentScanHasFailed_notin: bytes
+  contentScanNumMaliciousObj: uint8
+  contentScanNumMaliciousObj_geq: uint8
+  contentScanNumMaliciousObj_gt: uint8
+  contentScanNumMaliciousObj_in: bytes
+  contentScanNumMaliciousObj_leq: uint8
+  contentScanNumMaliciousObj_lt: uint8
+  contentScanNumMaliciousObj_neq: uint8
+  contentScanNumMaliciousObj_notin: bytes
+  contentScanNumObj: uint8
+  contentScanNumObj_geq: uint8
+  contentScanNumObj_gt: uint8
+  contentScanNumObj_in: bytes
+  contentScanNumObj_leq: uint8
+  contentScanNumObj_lt: uint8
+  contentScanNumObj_neq: uint8
+  contentScanNumObj_notin: bytes
+  contentScanObjResults_has: string
+  contentScanObjResults_hasall: [string!]
+  contentScanObjResults_hasany: [string!]
+  contentScanObjResults_nothas: string
+  contentScanObjSizes_has: uint32
+  contentScanObjSizes_hasall: [uint32!]
+  contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_nothas: uint32
+  contentScanObjTypes_has: string
+  contentScanObjTypes_hasall: [string!]
+  contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -38585,6 +38693,18 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   clientRequestQuery: string!
   # The url scheme requested by the visitor
   clientRequestScheme: string!
+  # 1 if not all contents for this request where successfully scanned, else 0
+  contentScanHasFailed: uint8!
+  # Number of scannable content objects that are malicious
+  contentScanNumMaliciousObj: uint8!
+  # Number of scannable content objects
+  contentScanNumObj: uint8!
+  # Array of scan results in order of detection
+  contentScanObjResults: [string!]!
+  # Array of scan sizes in order of detection
+  contentScanObjSizes: [uint32!]!
+  # Array of content types in order of detection
+  contentScanObjTypes: [string!]!
   # The date the event occurred at the edge
   date: Date!
   # The date and time the event occurred at the edge
@@ -38856,6 +38976,42 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   clientRequestScheme_neq: string
   clientRequestScheme_notin: [string!]
   clientRequestScheme_notlike: string
+  contentScanHasFailed: uint8
+  contentScanHasFailed_geq: uint8
+  contentScanHasFailed_gt: uint8
+  contentScanHasFailed_in: bytes
+  contentScanHasFailed_leq: uint8
+  contentScanHasFailed_lt: uint8
+  contentScanHasFailed_neq: uint8
+  contentScanHasFailed_notin: bytes
+  contentScanNumMaliciousObj: uint8
+  contentScanNumMaliciousObj_geq: uint8
+  contentScanNumMaliciousObj_gt: uint8
+  contentScanNumMaliciousObj_in: bytes
+  contentScanNumMaliciousObj_leq: uint8
+  contentScanNumMaliciousObj_lt: uint8
+  contentScanNumMaliciousObj_neq: uint8
+  contentScanNumMaliciousObj_notin: bytes
+  contentScanNumObj: uint8
+  contentScanNumObj_geq: uint8
+  contentScanNumObj_gt: uint8
+  contentScanNumObj_in: bytes
+  contentScanNumObj_leq: uint8
+  contentScanNumObj_lt: uint8
+  contentScanNumObj_neq: uint8
+  contentScanNumObj_notin: bytes
+  contentScanObjResults_has: string
+  contentScanObjResults_hasall: [string!]
+  contentScanObjResults_hasany: [string!]
+  contentScanObjResults_nothas: string
+  contentScanObjSizes_has: uint32
+  contentScanObjSizes_hasall: [uint32!]
+  contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_nothas: uint32
+  contentScanObjTypes_has: string
+  contentScanObjTypes_hasall: [string!]
+  contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -39225,6 +39381,30 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   clientRequestScheme_ASC
   # clientRequestScheme descending
   clientRequestScheme_DESC
+  # contentScanHasFailed ascending
+  contentScanHasFailed_ASC
+  # contentScanHasFailed descending
+  contentScanHasFailed_DESC
+  # contentScanNumMaliciousObj ascending
+  contentScanNumMaliciousObj_ASC
+  # contentScanNumMaliciousObj descending
+  contentScanNumMaliciousObj_DESC
+  # contentScanNumObj ascending
+  contentScanNumObj_ASC
+  # contentScanNumObj descending
+  contentScanNumObj_DESC
+  # contentScanObjResults ascending
+  contentScanObjResults_ASC
+  # contentScanObjResults descending
+  contentScanObjResults_DESC
+  # contentScanObjSizes ascending
+  contentScanObjSizes_ASC
+  # contentScanObjSizes descending
+  contentScanObjSizes_DESC
+  # contentScanObjTypes ascending
+  contentScanObjTypes_ASC
+  # contentScanObjTypes descending
+  contentScanObjTypes_DESC
   # count() ascending
   count_ASC
   # count() descending

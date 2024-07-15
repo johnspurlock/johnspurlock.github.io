@@ -10381,6 +10381,18 @@
 &nbsp;&nbsp;clientRequestQuery: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The url scheme requested by the visitor</span><br />
 &nbsp;&nbsp;clientRequestScheme: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># 1 if not all contents for this request where successfully scanned, else 0</span><br />
+&nbsp;&nbsp;contentScanHasFailed: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Number of scannable content objects that are malicious</span><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Number of scannable content objects</span><br />
+&nbsp;&nbsp;contentScanNumObj: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Array of scan results in order of detection</span><br />
+&nbsp;&nbsp;contentScanObjResults: <a href="#string">[string!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Array of scan sizes in order of detection</span><br />
+&nbsp;&nbsp;contentScanObjSizes: <a href="#uint32">[uint32!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Array of content types in order of detection</span><br />
+&nbsp;&nbsp;contentScanObjTypes: <a href="#string">[string!]!</a><br />
 &nbsp;&nbsp;<span class="c"># The date the event occurred at the edge</span><br />
 &nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># The date and time the event occurred at the edge</span><br />
@@ -10654,6 +10666,42 @@
 &nbsp;&nbsp;clientRequestScheme_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientRequestScheme_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;clientRequestScheme_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanHasFailed: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanHasFailed_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumObj: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumObj_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanObjResults_has: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjResults_hasall: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;contentScanObjResults_hasany: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;contentScanObjResults_nothas: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjSizes_has: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;contentScanObjSizes_hasall: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;contentScanObjSizes_hasany: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;contentScanObjSizes_nothas: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;contentScanObjTypes_has: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjTypes_hasall: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;contentScanObjTypes_hasany: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;contentScanObjTypes_nothas: <a href="#string">string</a><br />
 &nbsp;&nbsp;date: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
@@ -11033,6 +11081,30 @@
 &nbsp;&nbsp;clientRequestScheme_ASC<br />
 &nbsp;&nbsp;<span class="c"># clientRequestScheme descending</span><br />
 &nbsp;&nbsp;clientRequestScheme_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanHasFailed ascending</span><br />
+&nbsp;&nbsp;contentScanHasFailed_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanHasFailed descending</span><br />
+&nbsp;&nbsp;contentScanHasFailed_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanNumMaliciousObj ascending</span><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanNumMaliciousObj descending</span><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanNumObj ascending</span><br />
+&nbsp;&nbsp;contentScanNumObj_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanNumObj descending</span><br />
+&nbsp;&nbsp;contentScanNumObj_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanObjResults ascending</span><br />
+&nbsp;&nbsp;contentScanObjResults_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanObjResults descending</span><br />
+&nbsp;&nbsp;contentScanObjResults_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanObjSizes ascending</span><br />
+&nbsp;&nbsp;contentScanObjSizes_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanObjSizes descending</span><br />
+&nbsp;&nbsp;contentScanObjSizes_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanObjTypes ascending</span><br />
+&nbsp;&nbsp;contentScanObjTypes_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanObjTypes descending</span><br />
+&nbsp;&nbsp;contentScanObjTypes_DESC<br />
 &nbsp;&nbsp;<span class="c"># count() ascending</span><br />
 &nbsp;&nbsp;count_ASC<br />
 &nbsp;&nbsp;<span class="c"># count() descending</span><br />
@@ -37471,6 +37543,42 @@
 &nbsp;&nbsp;clientRequestScheme_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientRequestScheme_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;clientRequestScheme_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanHasFailed: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanHasFailed_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumObj: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumObj_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanObjResults_has: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjResults_hasall: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;contentScanObjResults_hasany: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;contentScanObjResults_nothas: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjSizes_has: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;contentScanObjSizes_hasall: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;contentScanObjSizes_hasany: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;contentScanObjSizes_nothas: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;contentScanObjTypes_has: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjTypes_hasall: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;contentScanObjTypes_hasany: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;contentScanObjTypes_nothas: <a href="#string">string</a><br />
 &nbsp;&nbsp;date: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
@@ -38456,6 +38564,18 @@
 &nbsp;&nbsp;clientRequestQuery: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The url scheme requested by the visitor</span><br />
 &nbsp;&nbsp;clientRequestScheme: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># 1 if not all contents for this request where successfully scanned, else 0</span><br />
+&nbsp;&nbsp;contentScanHasFailed: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Number of scannable content objects that are malicious</span><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Number of scannable content objects</span><br />
+&nbsp;&nbsp;contentScanNumObj: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Array of scan results in order of detection</span><br />
+&nbsp;&nbsp;contentScanObjResults: <a href="#string">[string!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Array of scan sizes in order of detection</span><br />
+&nbsp;&nbsp;contentScanObjSizes: <a href="#uint32">[uint32!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Array of content types in order of detection</span><br />
+&nbsp;&nbsp;contentScanObjTypes: <a href="#string">[string!]!</a><br />
 &nbsp;&nbsp;<span class="c"># The date the event occurred at the edge</span><br />
 &nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># The date and time the event occurred at the edge</span><br />
@@ -38727,6 +38847,42 @@
 &nbsp;&nbsp;clientRequestScheme_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientRequestScheme_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;clientRequestScheme_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanHasFailed: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanHasFailed_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanHasFailed_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumObj: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanNumObj_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;contentScanNumObj_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;contentScanObjResults_has: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjResults_hasall: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;contentScanObjResults_hasany: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;contentScanObjResults_nothas: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjSizes_has: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;contentScanObjSizes_hasall: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;contentScanObjSizes_hasany: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;contentScanObjSizes_nothas: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;contentScanObjTypes_has: <a href="#string">string</a><br />
+&nbsp;&nbsp;contentScanObjTypes_hasall: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;contentScanObjTypes_hasany: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;contentScanObjTypes_nothas: <a href="#string">string</a><br />
 &nbsp;&nbsp;date: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
@@ -39096,6 +39252,30 @@
 &nbsp;&nbsp;clientRequestScheme_ASC<br />
 &nbsp;&nbsp;<span class="c"># clientRequestScheme descending</span><br />
 &nbsp;&nbsp;clientRequestScheme_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanHasFailed ascending</span><br />
+&nbsp;&nbsp;contentScanHasFailed_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanHasFailed descending</span><br />
+&nbsp;&nbsp;contentScanHasFailed_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanNumMaliciousObj ascending</span><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanNumMaliciousObj descending</span><br />
+&nbsp;&nbsp;contentScanNumMaliciousObj_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanNumObj ascending</span><br />
+&nbsp;&nbsp;contentScanNumObj_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanNumObj descending</span><br />
+&nbsp;&nbsp;contentScanNumObj_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanObjResults ascending</span><br />
+&nbsp;&nbsp;contentScanObjResults_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanObjResults descending</span><br />
+&nbsp;&nbsp;contentScanObjResults_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanObjSizes ascending</span><br />
+&nbsp;&nbsp;contentScanObjSizes_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanObjSizes descending</span><br />
+&nbsp;&nbsp;contentScanObjSizes_DESC<br />
+&nbsp;&nbsp;<span class="c"># contentScanObjTypes ascending</span><br />
+&nbsp;&nbsp;contentScanObjTypes_ASC<br />
+&nbsp;&nbsp;<span class="c"># contentScanObjTypes descending</span><br />
+&nbsp;&nbsp;contentScanObjTypes_DESC<br />
 &nbsp;&nbsp;<span class="c"># count() ascending</span><br />
 &nbsp;&nbsp;count_ASC<br />
 &nbsp;&nbsp;<span class="c"># count() descending</span><br />
