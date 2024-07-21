@@ -31791,6 +31791,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   quantiles_cpuTimeP90_ASC
   # quantiles(cpuTimeP90) descending
   quantiles_cpuTimeP90_DESC
+  # quantiles(cpuTimeP95) ascending
+  quantiles_cpuTimeP95_ASC
+  # quantiles(cpuTimeP95) descending
+  quantiles_cpuTimeP95_DESC
   # quantiles(cpuTimeP999) ascending
   quantiles_cpuTimeP999_ASC
   # quantiles(cpuTimeP999) descending
@@ -31815,6 +31819,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   quantiles_durationP90_ASC
   # quantiles(durationP90) descending
   quantiles_durationP90_DESC
+  # quantiles(durationP95) ascending
+  quantiles_durationP95_ASC
+  # quantiles(durationP95) descending
+  quantiles_durationP95_DESC
   # quantiles(durationP999) ascending
   quantiles_durationP999_ASC
   # quantiles(durationP999) descending
@@ -31839,6 +31847,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   quantiles_responseBodySizeP90_ASC
   # quantiles(responseBodySizeP90) descending
   quantiles_responseBodySizeP90_DESC
+  # quantiles(responseBodySizeP95) ascending
+  quantiles_responseBodySizeP95_ASC
+  # quantiles(responseBodySizeP95) descending
+  quantiles_responseBodySizeP95_DESC
   # quantiles(responseBodySizeP999) ascending
   quantiles_responseBodySizeP999_ASC
   # quantiles(responseBodySizeP999) descending
@@ -31863,6 +31875,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   quantiles_wallTimeP90_ASC
   # quantiles(wallTimeP90) descending
   quantiles_wallTimeP90_DESC
+  # quantiles(wallTimeP95) ascending
+  quantiles_wallTimeP95_ASC
+  # quantiles(wallTimeP95) descending
+  quantiles_wallTimeP95_DESC
   # quantiles(wallTimeP999) ascending
   quantiles_wallTimeP999_ASC
   # quantiles(wallTimeP999) descending
@@ -31934,6 +31950,8 @@ type AccountWorkersInvocationsAdaptiveQuantiles {
   cpuTimeP75: float32!
   # CPU time 90th percentile - microseconds
   cpuTimeP90: float32!
+  # CPU time 95th percentile - microseconds
+  cpuTimeP95: float32!
   # CPU time 99th percentile - microseconds
   cpuTimeP99: float32!
   # CPU time 99.9th percentile - microseconds
@@ -31946,6 +31964,8 @@ type AccountWorkersInvocationsAdaptiveQuantiles {
   durationP75: float32!
   # Duration 90th percentile - GB*s
   durationP90: float32!
+  # Duration 95th percentile - GB*s
+  durationP95: float32!
   # Duration 99th percentile - GB*s
   durationP99: float32!
   # Duration 99.9th percentile - GB*s
@@ -31958,6 +31978,8 @@ type AccountWorkersInvocationsAdaptiveQuantiles {
   responseBodySizeP75: float32!
   # Response body size 90th percentile - bytes
   responseBodySizeP90: float32!
+  # Response body size 95th percentile - bytes
+  responseBodySizeP95: float32!
   # Response body size 99th percentile - bytes
   responseBodySizeP99: float32!
   # Response body size 99.9th percentile - bytes
@@ -31970,6 +31992,8 @@ type AccountWorkersInvocationsAdaptiveQuantiles {
   wallTimeP75: float32!
   # Wall time 90th percentile - microseconds
   wallTimeP90: float32!
+  # Wall time 95th percentile - microseconds
+  wallTimeP95: float32!
   # Wall time 99th percentile - microseconds
   wallTimeP99: float32!
   # Wall time 99.9th percentile - microseconds
@@ -46870,6 +46894,8 @@ type ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsDimensions {
   ip: string!
   # Language
   language: string!
+  # Track order number for its clientId
+  orderInClient: uint64!
   # Track reverse order number within its session (last track having orderInSession 1)
   orderInSession: uint64!
   # Page Title
@@ -46987,6 +47013,14 @@ input ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject {
   language_neq: string
   language_notin: [string!]
   language_notlike: string
+  orderInClient: uint64
+  orderInClient_geq: uint64
+  orderInClient_gt: uint64
+  orderInClient_in: [uint64!]
+  orderInClient_leq: uint64
+  orderInClient_lt: uint64
+  orderInClient_neq: uint64
+  orderInClient_notin: [uint64!]
   orderInSession: uint64
   orderInSession_geq: uint64
   orderInSession_gt: uint64
@@ -47142,6 +47176,10 @@ enum ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsOrderBy {
   language_ASC
   # language descending
   language_DESC
+  # orderInClient ascending
+  orderInClient_ASC
+  # orderInClient descending
+  orderInClient_DESC
   # orderInSession ascending
   orderInSession_ASC
   # orderInSession descending
