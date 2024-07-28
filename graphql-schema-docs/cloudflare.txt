@@ -43,6 +43,8 @@ Account-level datasets:
 * hyperdriveQueriesAdaptiveGroups
 * imagesRequestsAdaptiveGroups
 * imagesUniqueTransformations
+* kvOperationsAdaptiveGroups
+* kvStorageAdaptiveGroups
 * logpushHealthAdaptiveGroups
   magicFirewallNetworkAnalyticsAdaptiveGroups
   magicFirewallSamplesAdaptiveGroups
@@ -270,6 +272,10 @@ type account {
   imagesRequestsAdaptiveGroups(filter: AccountImagesRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesRequestsAdaptiveGroupsOrderBy!]): [AccountImagesRequestsAdaptiveGroups!]!
   # Image unique transfromations per day
   imagesUniqueTransformations(filter: AccountImagesUniqueTransformationsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesUniqueTransformationsOrderBy!]): [AccountImagesUniqueTransformations!]!
+  # KV operations data with adaptive sampling
+  kvOperationsAdaptiveGroups(filter: AccountKvOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountKvOperationsAdaptiveGroupsOrderBy!]): [AccountKvOperationsAdaptiveGroups!]!
+  # KV stored data with adaptive sampling
+  kvStorageAdaptiveGroups(filter: AccountKvStorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountKvStorageAdaptiveGroupsOrderBy!]): [AccountKvStorageAdaptiveGroups!]!
   # Beta. Logpush job health metrics
   logpushHealthAdaptiveGroups(filter: AccountLogpushHealthAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogpushHealthAdaptiveGroupsOrderBy!]): [AccountLogpushHealthAdaptiveGroups!]!
   # Network analytics data for Magic Firewall
@@ -18222,6 +18228,356 @@ enum AccountImagesUniqueTransformationsOrderBy {
   date_DESC
 }
 
+# KV operations data with adaptive sampling
+type AccountKvOperationsAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountKvOperationsAdaptiveGroupsAvg
+  # Number of requests
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountKvOperationsAdaptiveGroupsDimensions
+  # The max of values for a metric per dimension
+  max: AccountKvOperationsAdaptiveGroupsMax
+  # The min of values for a metric per dimension
+  min: AccountKvOperationsAdaptiveGroupsMin
+  # Quantiles of a metric per dimension
+  quantiles: AccountKvOperationsAdaptiveGroupsQuantiles
+  # The sum of values for a metric per dimension
+  sum: AccountKvOperationsAdaptiveGroupsSum
+}
+
+type AccountKvOperationsAdaptiveGroupsAvg {
+  # The average value used for sample interval
+  sampleInterval: float64!
+}
+
+type AccountKvOperationsAdaptiveGroupsDimensions {
+  # The type of the action (GET,PUT,DELETE,LIST,CREATE_NAMESPACE)
+  action: string!
+  # Message operation timestamp, truncated to start of a day
+  date: Date!
+  # Message operation timestamp
+  datetime: Time!
+  # Message operation timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Message operation timestamp, truncated to start of an minute
+  datetimeMinute: Time!
+  # The hexa-encoded namespace id
+  namespaceId: string!
+  # The http status code of the response.
+  responseStatusCode: uint16!
+  # The result of the action (HIT,MISS,READ_FROM_STORAGE,DELETED,UPLOADED,NAMESPACE_CREATED,ERROR,NOT_FOUND,UNDEFINED,UNKNOWN)
+  result: string!
+}
+
+input AccountKvOperationsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountKvOperationsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountKvOperationsAdaptiveGroupsFilter_InputObject!]
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  namespaceId: string
+  namespaceId_geq: string
+  namespaceId_gt: string
+  namespaceId_in: [string!]
+  namespaceId_leq: string
+  namespaceId_like: string
+  namespaceId_lt: string
+  namespaceId_neq: string
+  namespaceId_notin: [string!]
+  namespaceId_notlike: string
+  responseStatusCode: uint16
+  responseStatusCode_geq: uint16
+  responseStatusCode_gt: uint16
+  responseStatusCode_in: [uint16!]
+  responseStatusCode_leq: uint16
+  responseStatusCode_lt: uint16
+  responseStatusCode_neq: uint16
+  responseStatusCode_notin: [uint16!]
+  result: string
+  result_geq: string
+  result_gt: string
+  result_in: [string!]
+  result_leq: string
+  result_like: string
+  result_lt: string
+  result_neq: string
+  result_notin: [string!]
+  result_notlike: string
+}
+
+type AccountKvOperationsAdaptiveGroupsMax {
+  # Max latency
+  latencyMs: uint32!
+  # Max object bytes
+  objectBytes: uint32!
+}
+
+type AccountKvOperationsAdaptiveGroupsMin {
+  # Min latency
+  latencyMs: uint32!
+  # Min object bytes
+  objectBytes: uint32!
+}
+
+enum AccountKvOperationsAdaptiveGroupsOrderBy {
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # max(latencyMs) ascending
+  max_latencyMs_ASC
+  # max(latencyMs) descending
+  max_latencyMs_DESC
+  # max(objectBytes) ascending
+  max_objectBytes_ASC
+  # max(objectBytes) descending
+  max_objectBytes_DESC
+  # min(latencyMs) ascending
+  min_latencyMs_ASC
+  # min(latencyMs) descending
+  min_latencyMs_DESC
+  # min(objectBytes) ascending
+  min_objectBytes_ASC
+  # min(objectBytes) descending
+  min_objectBytes_DESC
+  # namespaceId ascending
+  namespaceId_ASC
+  # namespaceId descending
+  namespaceId_DESC
+  # quantiles(latencyMsP25) ascending
+  quantiles_latencyMsP25_ASC
+  # quantiles(latencyMsP25) descending
+  quantiles_latencyMsP25_DESC
+  # quantiles(latencyMsP50) ascending
+  quantiles_latencyMsP50_ASC
+  # quantiles(latencyMsP50) descending
+  quantiles_latencyMsP50_DESC
+  # quantiles(latencyMsP75) ascending
+  quantiles_latencyMsP75_ASC
+  # quantiles(latencyMsP75) descending
+  quantiles_latencyMsP75_DESC
+  # quantiles(latencyMsP90) ascending
+  quantiles_latencyMsP90_ASC
+  # quantiles(latencyMsP90) descending
+  quantiles_latencyMsP90_DESC
+  # quantiles(latencyMsP999) ascending
+  quantiles_latencyMsP999_ASC
+  # quantiles(latencyMsP999) descending
+  quantiles_latencyMsP999_DESC
+  # quantiles(latencyMsP99) ascending
+  quantiles_latencyMsP99_ASC
+  # quantiles(latencyMsP99) descending
+  quantiles_latencyMsP99_DESC
+  # responseStatusCode ascending
+  responseStatusCode_ASC
+  # responseStatusCode descending
+  responseStatusCode_DESC
+  # result ascending
+  result_ASC
+  # result descending
+  result_DESC
+  # sum(objectBytes) ascending
+  sum_objectBytes_ASC
+  # sum(objectBytes) descending
+  sum_objectBytes_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+}
+
+type AccountKvOperationsAdaptiveGroupsQuantiles {
+  # 25th percentile latency (milliseconds)
+  latencyMsP25: float32!
+  # 50th percentile latency (milliseconds)
+  latencyMsP50: float32!
+  # 75th percentile latency (milliseconds)
+  latencyMsP75: float32!
+  # 90th percentile latency (milliseconds)
+  latencyMsP90: float32!
+  # 99th percentile latency (milliseconds)
+  latencyMsP99: float32!
+  # 99.9th percentile latency (milliseconds)
+  latencyMsP999: float32!
+}
+
+type AccountKvOperationsAdaptiveGroupsSum {
+  # Total bytes of all objects
+  objectBytes: uint64!
+  # Total number of requests
+  requests: uint64!
+}
+
+# KV stored data with adaptive sampling
+type AccountKvStorageAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountKvStorageAdaptiveGroupsDimensions
+  # The max of values for a metric per dimension
+  max: AccountKvStorageAdaptiveGroupsMax
+}
+
+type AccountKvStorageAdaptiveGroupsDimensions {
+  # Message operation timestamp, truncated to start of a day
+  date: Date!
+  # Message operation timestamp
+  datetime: Time!
+  # Message operation timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Message operation timestamp, truncated to start of an minute
+  datetimeMinute: Time!
+  # The hexa-encoded namespace id
+  namespaceId: string!
+}
+
+input AccountKvStorageAdaptiveGroupsFilter_InputObject {
+  AND: [AccountKvStorageAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountKvStorageAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  namespaceId: string
+  namespaceId_geq: string
+  namespaceId_gt: string
+  namespaceId_in: [string!]
+  namespaceId_leq: string
+  namespaceId_like: string
+  namespaceId_lt: string
+  namespaceId_neq: string
+  namespaceId_notin: [string!]
+  namespaceId_notlike: string
+}
+
+type AccountKvStorageAdaptiveGroupsMax {
+  # Max number of bytes
+  byteCount: uint64!
+  # Max number of keys
+  keyCount: uint64!
+}
+
+enum AccountKvStorageAdaptiveGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # max(byteCount) ascending
+  max_byteCount_ASC
+  # max(byteCount) descending
+  max_byteCount_DESC
+  # max(keyCount) ascending
+  max_keyCount_ASC
+  # max(keyCount) descending
+  max_keyCount_DESC
+  # namespaceId ascending
+  namespaceId_ASC
+  # namespaceId descending
+  namespaceId_DESC
+}
+
 # Beta. Logpush job health metrics
 type AccountLogpushHealthAdaptiveGroups {
   avg: AccountLogpushHealthAdaptiveGroupsAvg
@@ -27895,6 +28251,8 @@ type AccountSettings {
   hyperdriveQueriesAdaptiveGroups: Settings!
   imagesRequestsAdaptiveGroups: Settings!
   imagesUniqueTransformations: Settings!
+  kvOperationsAdaptiveGroups: Settings!
+  kvStorageAdaptiveGroups: Settings!
   logpushHealthAdaptiveGroups: Settings!
   magicFirewallNetworkAnalyticsAdaptiveGroups: Settings!
   magicFirewallSamplesAdaptiveGroups: Settings!
@@ -31543,6 +31901,10 @@ type AccountWorkersInvocationsAdaptiveDimensions {
   date: Date!
   # Request datetime
   datetime: Time!
+  # The date and time of the event truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time of the event truncated to five minutes
+  datetimeFiveMinutes: Time!
   # Request datetime, truncated to start of an hour
   datetimeHour: Time!
   # Request datetime, truncated to start of an minute
@@ -31577,6 +31939,22 @@ input AccountWorkersInvocationsAdaptiveFilter_InputObject {
   date_neq: Date
   date_notin: [Date!]
   datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
   datetimeHour: Time
   datetimeHour_geq: Time
   datetimeHour_gt: Time
@@ -31719,6 +32097,14 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   date_ASC
   # date descending
   date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
   # datetimeHour ascending
   datetimeHour_ASC
   # datetimeHour descending
@@ -32971,6 +33357,8 @@ type OrganizationHttpRequestsAdaptiveGroupsConfidence {
 }
 
 type OrganizationHttpRequestsAdaptiveGroupsDimensions {
+  # Associated account
+  accountTag: string!
   # API Gateway endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
@@ -33085,6 +33473,8 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   wafXssAttackScore: uint8!
   # The X-Requested-With header of the client request
   xRequestedWith: string!
+  # Associated zone
+  zoneTag: string!
   # The version of a zone
   zoneVersion: uint64!
 }
