@@ -11,6 +11,7 @@ Account-level datasets:
 * browserRenderingEventsAdaptive
 * browserRenderingEventsAdaptiveGroups
 * callsStatusAdaptive
+* callsTurnUsageAdaptiveGroups
 * callsUsageAdaptiveGroups
   cdnNetworkAnalyticsAdaptiveGroups
 * d1AnalyticsAdaptiveGroups
@@ -93,6 +94,7 @@ Account-level datasets:
 Zone-level datasets:
 * apiGatewayGraphqlQueryAnalyticsGroups
 * apiGatewayMatchedSessionIDsAdaptiveGroups
+* apiGatewayMatchedSessionIDsPerEndpointAdaptiveGroups
 * apiRequestSequencesGroups
 * cacheReserveOperationsAdaptiveGroups
   cacheReserveRequestsAdaptiveGroups
@@ -207,7 +209,9 @@ type account {
   browserRenderingEventsAdaptiveGroups(filter: AccountBrowserRenderingEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserRenderingEventsAdaptiveGroupsOrderBy!]): [AccountBrowserRenderingEventsAdaptiveGroups!]!
   # (TESTING ONLY, NOT FOR PRODUCTION) Raw Calls events with adaptive sampling
   callsStatusAdaptive(filter: AccountCallsStatusAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountCallsStatusAdaptiveOrderBy!]): [AccountCallsStatusAdaptive!]!
-  # Beta. Aggregated Calls bandwidth usage with adaptive sampling
+  # Beta. Aggregated Calls TURN bandwidth usage with adaptive sampling
+  callsTurnUsageAdaptiveGroups(filter: AccountCallsTurnUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCallsTurnUsageAdaptiveGroupsOrderBy!]): [AccountCallsTurnUsageAdaptiveGroups!]!
+  # Beta. Aggregated Calls SFU bandwidth usage with adaptive sampling
   callsUsageAdaptiveGroups(filter: AccountCallsUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCallsUsageAdaptiveGroupsOrderBy!]): [AccountCallsUsageAdaptiveGroups!]!
   # Network analytics data for Cloudflare CDN traffic
   cdnNetworkAnalyticsAdaptiveGroups(filter: AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountCdnNetworkAnalyticsAdaptiveGroups!]!
@@ -4799,7 +4803,159 @@ enum AccountCallsStatusAdaptiveOrderBy {
   trackId_DESC
 }
 
-# Beta. Aggregated Calls bandwidth usage with adaptive sampling
+# Beta. Aggregated Calls TURN bandwidth usage with adaptive sampling
+type AccountCallsTurnUsageAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountCallsTurnUsageAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountCallsTurnUsageAdaptiveGroupsSum
+}
+
+type AccountCallsTurnUsageAdaptiveGroupsDimensions {
+  # The customIdentifier (provided when credential was generated) that generated traffic
+  customIdentifier: string!
+  # Calls TURN bandwidth metrics date
+  date: Date!
+  # Calls TURN bandwidth metrics timestamp, truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Calls TURN bandwidth metrics timestamp, truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Calls TURN bandwidth metrics timestamp, truncated to the hour
+  datetimeHour: Time!
+  # Calls TURN bandwidth metrics timestamp, truncated to the minute
+  datetimeMinute: Time!
+  # The credentials created by this keyId that generated traffic
+  keyId: string!
+  # The username from credential that generated traffic
+  username: string!
+}
+
+input AccountCallsTurnUsageAdaptiveGroupsFilter_InputObject {
+  AND: [AccountCallsTurnUsageAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountCallsTurnUsageAdaptiveGroupsFilter_InputObject!]
+  customIdentifier: string
+  customIdentifier_geq: string
+  customIdentifier_gt: string
+  customIdentifier_in: [string!]
+  customIdentifier_leq: string
+  customIdentifier_like: string
+  customIdentifier_lt: string
+  customIdentifier_neq: string
+  customIdentifier_notin: [string!]
+  customIdentifier_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  keyId: string
+  keyId_geq: string
+  keyId_gt: string
+  keyId_in: [string!]
+  keyId_leq: string
+  keyId_like: string
+  keyId_lt: string
+  keyId_neq: string
+  keyId_notin: [string!]
+  keyId_notlike: string
+  username: string
+  username_geq: string
+  username_gt: string
+  username_in: [string!]
+  username_leq: string
+  username_like: string
+  username_lt: string
+  username_neq: string
+  username_notin: [string!]
+  username_notlike: string
+}
+
+enum AccountCallsTurnUsageAdaptiveGroupsOrderBy {
+  # customIdentifier ascending
+  customIdentifier_ASC
+  # customIdentifier descending
+  customIdentifier_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # keyId ascending
+  keyId_ASC
+  # keyId descending
+  keyId_DESC
+  # sum(egressBytes) ascending
+  sum_egressBytes_ASC
+  # sum(egressBytes) descending
+  sum_egressBytes_DESC
+  # sum(ingressBytes) ascending
+  sum_ingressBytes_ASC
+  # sum(ingressBytes) descending
+  sum_ingressBytes_DESC
+  # username ascending
+  username_ASC
+  # username descending
+  username_DESC
+}
+
+type AccountCallsTurnUsageAdaptiveGroupsSum {
+  # The total bytes sent by Calls TURN, observed over the queried time period
+  egressBytes: int64!
+  # The total bytes received by Calls TURN, observed over the queried time period
+  ingressBytes: int64!
+}
+
+# Beta. Aggregated Calls SFU bandwidth usage with adaptive sampling
 type AccountCallsUsageAdaptiveGroups {
   # List of dimensions to group by
   dimensions: AccountCallsUsageAdaptiveGroupsDimensions
@@ -10469,6 +10625,7 @@ type AccountFirewallEventsAdaptiveGroups {
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountFirewallEventsAdaptiveGroupsDimensions
+  sum: AccountFirewallEventsAdaptiveGroupsSum
 }
 
 type AccountFirewallEventsAdaptiveGroupsAvg {
@@ -11332,6 +11489,22 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   source_ASC
   # source descending
   source_DESC
+  # sum(botDetectionIdArray) ascending
+  sum_botDetectionIdArray_ASC
+  # sum(botDetectionIdArray) descending
+  sum_botDetectionIdArray_DESC
+  # sum(botDetectionIdCountArray) ascending
+  sum_botDetectionIdCountArray_ASC
+  # sum(botDetectionIdCountArray) descending
+  sum_botDetectionIdCountArray_DESC
+  # sum(botDetectionTagArray) ascending
+  sum_botDetectionTagArray_ASC
+  # sum(botDetectionTagArray) descending
+  sum_botDetectionTagArray_DESC
+  # sum(botDetectionTagCountArray) ascending
+  sum_botDetectionTagCountArray_ASC
+  # sum(botDetectionTagCountArray) descending
+  sum_botDetectionTagCountArray_DESC
   # userAgent ascending
   userAgent_ASC
   # userAgent descending
@@ -11380,6 +11553,17 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   zoneVersion_ASC
   # zoneVersion descending
   zoneVersion_DESC
+}
+
+type AccountFirewallEventsAdaptiveGroupsSum {
+  # Array of bot management detection ids
+  botDetectionIdArray: [uint32!]!
+  # Count array of bot management detection ids. Elements in this array correspond to elements in botDetectionIdArray by index.
+  botDetectionIdCountArray: [uint32!]!
+  # Array of bot management detection tags
+  botDetectionTagArray: [string!]!
+  # Count array of bot management detection tags. Elements in this array correspond to elements in botDetectionTagArray by index.
+  botDetectionTagCountArray: [uint32!]!
 }
 
 type AccountFirewallEventsAdaptiveJa4SignalsElem {
@@ -17143,6 +17327,22 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   securitySource_ASC
   # securitySource descending
   securitySource_DESC
+  # sum(botDetectionIdArray) ascending
+  sum_botDetectionIdArray_ASC
+  # sum(botDetectionIdArray) descending
+  sum_botDetectionIdArray_DESC
+  # sum(botDetectionIdCountArray) ascending
+  sum_botDetectionIdCountArray_ASC
+  # sum(botDetectionIdCountArray) descending
+  sum_botDetectionIdCountArray_DESC
+  # sum(botDetectionTagArray) ascending
+  sum_botDetectionTagArray_ASC
+  # sum(botDetectionTagArray) descending
+  sum_botDetectionTagArray_DESC
+  # sum(botDetectionTagCountArray) ascending
+  sum_botDetectionTagCountArray_ASC
+  # sum(botDetectionTagCountArray) descending
+  sum_botDetectionTagCountArray_DESC
   # sum(crossZoneSubrequests) ascending
   sum_crossZoneSubrequests_ASC
   # sum(crossZoneSubrequests) descending
@@ -17244,6 +17444,14 @@ type AccountHttpRequestsAdaptiveGroupsRatio {
 }
 
 type AccountHttpRequestsAdaptiveGroupsSum {
+  # Array of bot management detection ids
+  botDetectionIdArray: [uint32!]!
+  # Count array of bot management detection ids. Elements in this array correspond to elements in botDetectionIdArray by index.
+  botDetectionIdCountArray: [uint32!]!
+  # Array of bot management detection tags
+  botDetectionTagArray: [string!]!
+  # Count array of bot management detection tags. Elements in this array correspond to elements in botDetectionTagArray by index.
+  botDetectionTagCountArray: [uint32!]!
   # The number of requests that were inititiated by a Cloudflare Worker on another zone
   crossZoneSubrequests: uint64!
   edgeDnsResponseTimeMs: uint64!
@@ -23900,6 +24108,8 @@ type AccountMnmFlowDataAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # Date and time that the packet was received, rounded to the start of the nearest ten seconds
   datetimeTenSeconds: Time!
+  # Autonomous System to which the data is directed. Corresponds to DstAS field in the packet
+  destinationAS: uint32!
   # IP to which the data was sent
   destinationAddress: string!
   # Value of the Destination Port header field in the packet
@@ -23914,6 +24124,8 @@ type AccountMnmFlowDataAdaptiveGroupsDimensions {
   routerAddress: string!
   # List of flow matching rules
   ruleIDs: [string!]!
+  # Autonomous System from which the data was sent. Corresponds to SrcAS field in the packet
+  sourceAS: uint32!
   # IP from which the data was sent
   sourceAddress: string!
   # Value of the Source Port header field in the packet
@@ -23985,6 +24197,14 @@ input AccountMnmFlowDataAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  destinationAS: uint32
+  destinationAS_geq: uint32
+  destinationAS_gt: uint32
+  destinationAS_in: [uint32!]
+  destinationAS_leq: uint32
+  destinationAS_lt: uint32
+  destinationAS_neq: uint32
+  destinationAS_notin: [uint32!]
   destinationAddress: string
   destinationAddress_geq: string
   destinationAddress_gt: string
@@ -24043,6 +24263,14 @@ input AccountMnmFlowDataAdaptiveGroupsFilter_InputObject {
   ruleIDs_hasall: [string!]
   ruleIDs_hasany: [string!]
   ruleIDs_nothas: string
+  sourceAS: uint32
+  sourceAS_geq: uint32
+  sourceAS_gt: uint32
+  sourceAS_in: [uint32!]
+  sourceAS_leq: uint32
+  sourceAS_lt: uint32
+  sourceAS_neq: uint32
+  sourceAS_notin: [uint32!]
   sourceAddress: string
   sourceAddress_geq: string
   sourceAddress_gt: string
@@ -24178,6 +24406,10 @@ enum AccountMnmFlowDataAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # destinationAS ascending
+  destinationAS_ASC
+  # destinationAS descending
+  destinationAS_DESC
   # destinationAddress ascending
   destinationAddress_ASC
   # destinationAddress descending
@@ -24206,6 +24438,10 @@ enum AccountMnmFlowDataAdaptiveGroupsOrderBy {
   ruleIDs_ASC
   # ruleIDs descending
   ruleIDs_DESC
+  # sourceAS ascending
+  sourceAS_ASC
+  # sourceAS descending
+  sourceAS_DESC
   # sourceAddress ascending
   sourceAddress_ASC
   # sourceAddress descending
@@ -28219,6 +28455,7 @@ type AccountSettings {
   browserRenderingEventsAdaptive: Settings!
   browserRenderingEventsAdaptiveGroups: Settings!
   callsStatusAdaptive: Settings!
+  callsTurnUsageAdaptiveGroups: Settings!
   callsUsageAdaptiveGroups: Settings!
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
   d1AnalyticsAdaptiveGroups: Settings!
@@ -32686,6 +32923,10 @@ type AccountWorkersSubrequestsAdaptiveGroupsDimensions {
   date: Date!
   # Request datetime
   datetime: Time!
+  # The date and time of the event truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time of the event truncated to five minutes
+  datetimeFiveMinutes: Time!
   # Request datetime, truncated to start of an hour
   datetimeHour: Time!
   # Request datetime, truncated to start of an minute
@@ -32720,6 +32961,22 @@ input AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject {
   date_neq: Date
   date_notin: [Date!]
   datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
   datetimeHour: Time
   datetimeHour_geq: Time
   datetimeHour_gt: Time
@@ -32798,6 +33055,14 @@ enum AccountWorkersSubrequestsAdaptiveGroupsOrderBy {
   date_ASC
   # date descending
   date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
   # datetimeHour ascending
   datetimeHour_ASC
   # datetimeHour descending
@@ -34494,6 +34759,8 @@ type zone {
   apiGatewayGraphqlQueryAnalyticsGroups(filter: ZoneApiGatewayGraphqlQueryAnalyticsGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneApiGatewayGraphqlQueryAnalyticsGroupsOrderBy!]): [ZoneApiGatewayGraphqlQueryAnalyticsGroups!]!
   # Beta. Aggregated count of Session Identifier matches
   apiGatewayMatchedSessionIDsAdaptiveGroups(filter: ZoneApiGatewayMatchedSessionIDsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneApiGatewayMatchedSessionIDsAdaptiveGroupsOrderBy!]): [ZoneApiGatewayMatchedSessionIDsAdaptiveGroups!]!
+  # Beta. Aggregated count of Session Identifier matches per endpoint
+  apiGatewayMatchedSessionIDsPerEndpointAdaptiveGroups(filter: ZoneApiGatewayMatchedSessionIDsPerEndpointAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneApiGatewayMatchedSessionIDsPerEndpointAdaptiveGroupsOrderBy!]): [ZoneApiGatewayMatchedSessionIDsPerEndpointAdaptiveGroups!]!
   # Sequences of API endpoint operations. Sequences are learned by grouping requests by AuthID. Correlation scores are estimated over a 24 hour window and are current to within 10 minutes
   apiRequestSequencesGroups(filter: ZoneApiRequestSequencesGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneApiRequestSequencesGroupsOrderBy!]): [ZoneApiRequestSequencesGroups!]!
   # Beta. Cache Reserve operations with adaptive sampling
@@ -34916,6 +35183,183 @@ enum ZoneApiGatewayMatchedSessionIDsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+}
+
+# Beta. Aggregated count of Session Identifier matches per endpoint
+type ZoneApiGatewayMatchedSessionIDsPerEndpointAdaptiveGroups {
+  avg: ZoneApiGatewayMatchedSessionIDsPerEndpointAdaptiveGroupsAvg
+  # Number of events per dimension
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneApiGatewayMatchedSessionIDsPerEndpointAdaptiveGroupsDimensions
+}
+
+type ZoneApiGatewayMatchedSessionIDsPerEndpointAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type ZoneApiGatewayMatchedSessionIDsPerEndpointAdaptiveGroupsDimensions {
+  # Id of the matched API endpoint
+  apiGatewayMatchedEndpoint: string!
+  # Array of observed tuples consisting of session identifier types and names. Possible types are header | cookie | jwt
+  apiGatewayMatchedSessionIdentifier: [string!]!
+  date: Date!
+  datetime: Time!
+  datetimeDay: Time!
+  datetimeFifteenMinutes: Time!
+  datetimeFiveMinutes: Time!
+  datetimeHalfOfHour: Time!
+  datetimeHour: Time!
+  datetimeMinute: Time!
+  # HTTP status code returned by edge
+  responseStatusCode: uint16!
+}
+
+input ZoneApiGatewayMatchedSessionIDsPerEndpointAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneApiGatewayMatchedSessionIDsPerEndpointAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneApiGatewayMatchedSessionIDsPerEndpointAdaptiveGroupsFilter_InputObject!]
+  apiGatewayMatchedEndpoint: string
+  apiGatewayMatchedEndpoint_geq: string
+  apiGatewayMatchedEndpoint_gt: string
+  apiGatewayMatchedEndpoint_in: [string!]
+  apiGatewayMatchedEndpoint_leq: string
+  apiGatewayMatchedEndpoint_like: string
+  apiGatewayMatchedEndpoint_lt: string
+  apiGatewayMatchedEndpoint_neq: string
+  apiGatewayMatchedEndpoint_notin: [string!]
+  apiGatewayMatchedEndpoint_notlike: string
+  apiGatewayMatchedSessionIdentifier_has: string
+  apiGatewayMatchedSessionIdentifier_hasall: [string!]
+  apiGatewayMatchedSessionIdentifier_hasany: [string!]
+  apiGatewayMatchedSessionIdentifier_nothas: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeDay: Time
+  datetimeDay_geq: Time
+  datetimeDay_gt: Time
+  datetimeDay_in: [Time!]
+  datetimeDay_leq: Time
+  datetimeDay_lt: Time
+  datetimeDay_neq: Time
+  datetimeDay_notin: [Time!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHalfOfHour: Time
+  datetimeHalfOfHour_geq: Time
+  datetimeHalfOfHour_gt: Time
+  datetimeHalfOfHour_in: [Time!]
+  datetimeHalfOfHour_leq: Time
+  datetimeHalfOfHour_lt: Time
+  datetimeHalfOfHour_neq: Time
+  datetimeHalfOfHour_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  responseStatusCode: uint16
+  responseStatusCode_geq: uint16
+  responseStatusCode_gt: uint16
+  responseStatusCode_in: [uint16!]
+  responseStatusCode_leq: uint16
+  responseStatusCode_lt: uint16
+  responseStatusCode_neq: uint16
+  responseStatusCode_notin: [uint16!]
+}
+
+enum ZoneApiGatewayMatchedSessionIDsPerEndpointAdaptiveGroupsOrderBy {
+  # apiGatewayMatchedEndpoint ascending
+  apiGatewayMatchedEndpoint_ASC
+  # apiGatewayMatchedEndpoint descending
+  apiGatewayMatchedEndpoint_DESC
+  # apiGatewayMatchedSessionIdentifier ascending
+  apiGatewayMatchedSessionIdentifier_ASC
+  # apiGatewayMatchedSessionIdentifier descending
+  apiGatewayMatchedSessionIdentifier_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeDay ascending
+  datetimeDay_ASC
+  # datetimeDay descending
+  datetimeDay_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHalfOfHour ascending
+  datetimeHalfOfHour_ASC
+  # datetimeHalfOfHour descending
+  datetimeHalfOfHour_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # responseStatusCode ascending
+  responseStatusCode_ASC
+  # responseStatusCode descending
+  responseStatusCode_DESC
 }
 
 # Sequences of API endpoint operations. Sequences are learned by grouping requests by AuthID. Correlation scores are estimated over a 24 hour window and are current to within 10 minutes
@@ -37826,6 +38270,7 @@ type ZoneFirewallEventsAdaptiveByTimeGroups {
   count: uint64!
   # List of dimensions to group by
   dimensions: ZoneFirewallEventsAdaptiveByTimeGroupsDimensions
+  sum: ZoneFirewallEventsAdaptiveByTimeGroupsSum
 }
 
 type ZoneFirewallEventsAdaptiveByTimeGroupsAvg {
@@ -38471,6 +38916,22 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   ja4_ASC
   # ja4 descending
   ja4_DESC
+  # sum(botDetectionIdArray) ascending
+  sum_botDetectionIdArray_ASC
+  # sum(botDetectionIdArray) descending
+  sum_botDetectionIdArray_DESC
+  # sum(botDetectionIdCountArray) ascending
+  sum_botDetectionIdCountArray_ASC
+  # sum(botDetectionIdCountArray) descending
+  sum_botDetectionIdCountArray_DESC
+  # sum(botDetectionTagArray) ascending
+  sum_botDetectionTagArray_ASC
+  # sum(botDetectionTagArray) descending
+  sum_botDetectionTagArray_DESC
+  # sum(botDetectionTagCountArray) ascending
+  sum_botDetectionTagCountArray_ASC
+  # sum(botDetectionTagCountArray) descending
+  sum_botDetectionTagCountArray_DESC
   # visibility ascending
   visibility_ASC
   # visibility descending
@@ -38511,6 +38972,17 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   zoneVersion_ASC
   # zoneVersion descending
   zoneVersion_DESC
+}
+
+type ZoneFirewallEventsAdaptiveByTimeGroupsSum {
+  # Array of bot management detection ids
+  botDetectionIdArray: [uint32!]!
+  # Count array of bot management detection ids. Elements in this array correspond to elements in botDetectionIdArray by index.
+  botDetectionIdCountArray: [uint32!]!
+  # Array of bot management detection tags
+  botDetectionTagArray: [string!]!
+  # Count array of bot management detection tags. Elements in this array correspond to elements in botDetectionTagArray by index.
+  botDetectionTagCountArray: [uint32!]!
 }
 
 input ZoneFirewallEventsAdaptiveFilter_InputObject {
@@ -39060,6 +39532,7 @@ type ZoneFirewallEventsAdaptiveGroups {
   count: uint64!
   # List of dimensions to group by
   dimensions: ZoneFirewallEventsAdaptiveGroupsDimensions
+  sum: ZoneFirewallEventsAdaptiveGroupsSum
 }
 
 type ZoneFirewallEventsAdaptiveGroupsAvg {
@@ -39911,6 +40384,22 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   source_ASC
   # source descending
   source_DESC
+  # sum(botDetectionIdArray) ascending
+  sum_botDetectionIdArray_ASC
+  # sum(botDetectionIdArray) descending
+  sum_botDetectionIdArray_DESC
+  # sum(botDetectionIdCountArray) ascending
+  sum_botDetectionIdCountArray_ASC
+  # sum(botDetectionIdCountArray) descending
+  sum_botDetectionIdCountArray_DESC
+  # sum(botDetectionTagArray) ascending
+  sum_botDetectionTagArray_ASC
+  # sum(botDetectionTagArray) descending
+  sum_botDetectionTagArray_DESC
+  # sum(botDetectionTagCountArray) ascending
+  sum_botDetectionTagCountArray_ASC
+  # sum(botDetectionTagCountArray) descending
+  sum_botDetectionTagCountArray_DESC
   # userAgent ascending
   userAgent_ASC
   # userAgent descending
@@ -39955,6 +40444,17 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   zoneVersion_ASC
   # zoneVersion descending
   zoneVersion_DESC
+}
+
+type ZoneFirewallEventsAdaptiveGroupsSum {
+  # Array of bot management detection ids
+  botDetectionIdArray: [uint32!]!
+  # Count array of bot management detection ids. Elements in this array correspond to elements in botDetectionIdArray by index.
+  botDetectionIdCountArray: [uint32!]!
+  # Array of bot management detection tags
+  botDetectionTagArray: [string!]!
+  # Count array of bot management detection tags. Elements in this array correspond to elements in botDetectionTagArray by index.
+  botDetectionTagCountArray: [uint32!]!
 }
 
 type ZoneFirewallEventsAdaptiveJa4SignalsElem {
@@ -43520,6 +44020,22 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   securitySource_ASC
   # securitySource descending
   securitySource_DESC
+  # sum(botDetectionIdArray) ascending
+  sum_botDetectionIdArray_ASC
+  # sum(botDetectionIdArray) descending
+  sum_botDetectionIdArray_DESC
+  # sum(botDetectionIdCountArray) ascending
+  sum_botDetectionIdCountArray_ASC
+  # sum(botDetectionIdCountArray) descending
+  sum_botDetectionIdCountArray_DESC
+  # sum(botDetectionTagArray) ascending
+  sum_botDetectionTagArray_ASC
+  # sum(botDetectionTagArray) descending
+  sum_botDetectionTagArray_DESC
+  # sum(botDetectionTagCountArray) ascending
+  sum_botDetectionTagCountArray_ASC
+  # sum(botDetectionTagCountArray) descending
+  sum_botDetectionTagCountArray_DESC
   # sum(crossZoneSubrequests) ascending
   sum_crossZoneSubrequests_ASC
   # sum(crossZoneSubrequests) descending
@@ -43617,6 +44133,14 @@ type ZoneHttpRequestsAdaptiveGroupsRatio {
 }
 
 type ZoneHttpRequestsAdaptiveGroupsSum {
+  # Array of bot management detection ids
+  botDetectionIdArray: [uint32!]!
+  # Count array of bot management detection ids. Elements in this array correspond to elements in botDetectionIdArray by index.
+  botDetectionIdCountArray: [uint32!]!
+  # Array of bot management detection tags
+  botDetectionTagArray: [string!]!
+  # Count array of bot management detection tags. Elements in this array correspond to elements in botDetectionTagArray by index.
+  botDetectionTagCountArray: [uint32!]!
   # The number of requests that were inititiated by a Cloudflare Worker on another zone
   crossZoneSubrequests: uint64!
   edgeDnsResponseTimeMs: uint64!
@@ -45870,6 +46394,7 @@ enum ZonePageShieldReportsAdaptiveGroupsOrderBy {
 type ZoneSettings {
   apiGatewayGraphqlQueryAnalyticsGroups: Settings!
   apiGatewayMatchedSessionIDsAdaptiveGroups: Settings!
+  apiGatewayMatchedSessionIDsPerEndpointAdaptiveGroups: Settings!
   apiRequestSequencesGroups: Settings!
   cacheReserveOperationsAdaptiveGroups: Settings!
   cacheReserveRequestsAdaptiveGroups: Settings!
