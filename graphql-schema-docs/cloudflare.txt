@@ -70,6 +70,7 @@ Account-level datasets:
 * rumWebVitalsEventsAdaptiveGroups
   sinkholeRequestLogsAdaptive
   sinkholeRequestLogsAdaptiveGroups
+* sippyOperationsAdaptiveGroups
   spectrumNetworkAnalyticsAdaptiveGroups
   storageTraces
 * streamMinutesViewedAdaptiveGroups
@@ -329,6 +330,8 @@ type account {
   sinkholeRequestLogsAdaptive(filter: AccountSinkholeRequestLogsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountSinkholeRequestLogsAdaptiveOrderBy!]): [AccountSinkholeRequestLogsAdaptive!]!
   # Sinkhole Request Logs
   sinkholeRequestLogsAdaptiveGroups(filter: AccountSinkholeRequestLogsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountSinkholeRequestLogsAdaptiveGroupsOrderBy!]): [AccountSinkholeRequestLogsAdaptiveGroups!]!
+  # Sippy operations with adaptive sampling
+  sippyOperationsAdaptiveGroups(filter: AccountSippyOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountSippyOperationsAdaptiveGroupsOrderBy!]): [AccountSippyOperationsAdaptiveGroups!]!
   # Network analytics data for Spectrum traffic
   spectrumNetworkAnalyticsAdaptiveGroups(filter: AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountSpectrumNetworkAnalyticsAdaptiveGroups!]!
   # Storage Tracing Information
@@ -10639,6 +10642,10 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # Array of detections ids that matched this request
+  botDetectionIds: [uint32!]!
+  # Array of detections tags that matched this request
+  botDetectionTags: [string!]!
   # The final score originated from bot management detections.
   botScore: uint8!
   # Name of the source detection which generated the bot management score.
@@ -10790,6 +10797,14 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  botDetectionIds_has: uint32
+  botDetectionIds_hasall: [uint32!]
+  botDetectionIds_hasany: [uint32!]
+  botDetectionIds_nothas: uint32
+  botDetectionTags_has: string
+  botDetectionTags_hasall: [string!]
+  botDetectionTags_hasany: [string!]
+  botDetectionTags_nothas: string
   botScore: uint8
   botScoreSrcName: string
   botScoreSrcName_geq: string
@@ -11305,6 +11320,14 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # botDetectionIds ascending
+  botDetectionIds_ASC
+  # botDetectionIds descending
+  botDetectionIds_DESC
+  # botDetectionTags ascending
+  botDetectionTags_ASC
+  # botDetectionTags descending
+  botDetectionTags_DESC
   # botScoreSrcName ascending
   botScoreSrcName_ASC
   # botScoreSrcName descending
@@ -16335,6 +16358,10 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # Array of detections ids that matched this request
+  botDetectionIds: [uint32!]!
+  # Array of detections tags that matched this request
+  botDetectionTags: [string!]!
   # Judgement of the bot management system
   botManagementDecision: string!
   # The final score originated from bot management detections.
@@ -16474,6 +16501,14 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  botDetectionIds_has: uint32
+  botDetectionIds_hasall: [uint32!]
+  botDetectionIds_hasany: [uint32!]
+  botDetectionIds_nothas: uint32
+  botDetectionTags_has: string
+  botDetectionTags_hasall: [string!]
+  botDetectionTags_hasany: [string!]
+  botDetectionTags_nothas: string
   botManagementDecision: string
   botManagementDecision_geq: string
   botManagementDecision_gt: string
@@ -17075,6 +17110,14 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # botDetectionIds ascending
+  botDetectionIds_ASC
+  # botDetectionIds descending
+  botDetectionIds_DESC
+  # botDetectionTags ascending
+  botDetectionTags_ASC
+  # botDetectionTags descending
+  botDetectionTags_DESC
   # botManagementDecision ascending
   botManagementDecision_ASC
   # botManagementDecision descending
@@ -28514,6 +28557,7 @@ type AccountSettings {
   rumWebVitalsEventsAdaptiveGroups: Settings!
   sinkholeRequestLogsAdaptive: Settings!
   sinkholeRequestLogsAdaptiveGroups: Settings!
+  sippyOperationsAdaptiveGroups: Settings!
   spectrumNetworkAnalyticsAdaptiveGroups: Settings!
   storageTraces: Settings!
   streamMinutesViewedAdaptiveGroups: Settings!
@@ -28995,6 +29039,204 @@ enum AccountSinkholeRequestLogsAdaptiveOrderBy {
   userAgent_ASC
   # userAgent descending
   userAgent_DESC
+}
+
+# Sippy operations with adaptive sampling
+type AccountSippyOperationsAdaptiveGroups {
+  # Total number of Sippy operations
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountSippyOperationsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountSippyOperationsAdaptiveGroupsSum
+}
+
+type AccountSippyOperationsAdaptiveGroupsDimensions {
+  # Operation's name
+  action: string!
+  # Name of the R2 bucket
+  bucket: string!
+  # Operation timestamp, truncated to start of a day
+  date: Date!
+  # Operation timestamp
+  datetime: Time!
+  # Operation timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Operation timestamp, truncated to start of an minute
+  datetimeMinute: Time!
+  # Operation's initiator (eyeball / Sippy)
+  initiator: string!
+  # Object key the operation was made for
+  object: string!
+  # Number of bytes transferred as part of the operation
+  size: uint64!
+  # Operation's response HTTP code
+  status: uint16!
+  # Operation's target (upstream / R2)
+  target: string!
+}
+
+input AccountSippyOperationsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountSippyOperationsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountSippyOperationsAdaptiveGroupsFilter_InputObject!]
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
+  bucket: string
+  bucket_geq: string
+  bucket_gt: string
+  bucket_in: [string!]
+  bucket_leq: string
+  bucket_like: string
+  bucket_lt: string
+  bucket_neq: string
+  bucket_notin: [string!]
+  bucket_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  initiator: string
+  initiator_geq: string
+  initiator_gt: string
+  initiator_in: [string!]
+  initiator_leq: string
+  initiator_like: string
+  initiator_lt: string
+  initiator_neq: string
+  initiator_notin: [string!]
+  initiator_notlike: string
+  object: string
+  object_geq: string
+  object_gt: string
+  object_in: [string!]
+  object_leq: string
+  object_like: string
+  object_lt: string
+  object_neq: string
+  object_notin: [string!]
+  object_notlike: string
+  size: uint64
+  size_geq: uint64
+  size_gt: uint64
+  size_in: [uint64!]
+  size_leq: uint64
+  size_lt: uint64
+  size_neq: uint64
+  size_notin: [uint64!]
+  status: uint16
+  status_geq: uint16
+  status_gt: uint16
+  status_in: [uint16!]
+  status_leq: uint16
+  status_lt: uint16
+  status_neq: uint16
+  status_notin: [uint16!]
+  target: string
+  target_geq: string
+  target_gt: string
+  target_in: [string!]
+  target_leq: string
+  target_like: string
+  target_lt: string
+  target_neq: string
+  target_notin: [string!]
+  target_notlike: string
+}
+
+enum AccountSippyOperationsAdaptiveGroupsOrderBy {
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # bucket ascending
+  bucket_ASC
+  # bucket descending
+  bucket_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # initiator ascending
+  initiator_ASC
+  # initiator descending
+  initiator_DESC
+  # object ascending
+  object_ASC
+  # object descending
+  object_DESC
+  # size ascending
+  size_ASC
+  # size descending
+  size_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # sum(size) ascending
+  sum_size_ASC
+  # sum(size) descending
+  sum_size_DESC
+  # target ascending
+  target_ASC
+  # target descending
+  target_DESC
+}
+
+type AccountSippyOperationsAdaptiveGroupsSum {
+  # Total bytes transferred
+  size: uint64!
 }
 
 # Network analytics data for Spectrum traffic
@@ -31829,6 +32071,8 @@ type AccountWorkerPlacementAdaptiveGroupsDimensions {
   scriptName: string!
   # The unique tag of the script
   scriptTag: string!
+  # The script version
+  scriptVersion: string!
 }
 
 input AccountWorkerPlacementAdaptiveGroupsFilter_InputObject {
@@ -31926,6 +32170,16 @@ input AccountWorkerPlacementAdaptiveGroupsFilter_InputObject {
   scriptTag_neq: string
   scriptTag_notin: [string!]
   scriptTag_notlike: string
+  scriptVersion: string
+  scriptVersion_geq: string
+  scriptVersion_gt: string
+  scriptVersion_in: [string!]
+  scriptVersion_leq: string
+  scriptVersion_like: string
+  scriptVersion_lt: string
+  scriptVersion_neq: string
+  scriptVersion_notin: [string!]
+  scriptVersion_notlike: string
 }
 
 enum AccountWorkerPlacementAdaptiveGroupsOrderBy {
@@ -31973,6 +32227,10 @@ enum AccountWorkerPlacementAdaptiveGroupsOrderBy {
   scriptTag_ASC
   # scriptTag descending
   scriptTag_DESC
+  # scriptVersion ascending
+  scriptVersion_ASC
+  # scriptVersion descending
+  scriptVersion_DESC
   # sum(requestDuration) ascending
   sum_requestDuration_ASC
   # sum(requestDuration) descending
@@ -38282,6 +38540,10 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # Array of detections ids that matched this request
+  botDetectionIds: [uint32!]!
+  # Array of detections tags that matched this request
+  botDetectionTags: [string!]!
   # The final score originated from bot management detections.
   botScore: uint8!
   # Name of the source detection which generated the bot management score.
@@ -38363,6 +38625,14 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  botDetectionIds_has: uint32
+  botDetectionIds_hasall: [uint32!]
+  botDetectionIds_hasany: [uint32!]
+  botDetectionIds_nothas: uint32
+  botDetectionTags_has: string
+  botDetectionTags_hasall: [string!]
+  botDetectionTags_hasany: [string!]
+  botDetectionTags_nothas: string
   botScore: uint8
   botScoreSrcName: string
   botScoreSrcName_geq: string
@@ -38864,6 +39134,14 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # botDetectionIds ascending
+  botDetectionIds_ASC
+  # botDetectionIds descending
+  botDetectionIds_DESC
+  # botDetectionTags ascending
+  botDetectionTags_ASC
+  # botDetectionTags descending
+  botDetectionTags_DESC
   # botScoreSrcName ascending
   botScoreSrcName_ASC
   # botScoreSrcName descending
@@ -39546,6 +39824,10 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # Array of detections ids that matched this request
+  botDetectionIds: [uint32!]!
+  # Array of detections tags that matched this request
+  botDetectionTags: [string!]!
   # The final score originated from bot management detections.
   botScore: uint8!
   # Name of the source detection which generated the bot management score.
@@ -39695,6 +39977,14 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  botDetectionIds_has: uint32
+  botDetectionIds_hasall: [uint32!]
+  botDetectionIds_hasany: [uint32!]
+  botDetectionIds_nothas: uint32
+  botDetectionTags_has: string
+  botDetectionTags_hasall: [string!]
+  botDetectionTags_hasany: [string!]
+  botDetectionTags_nothas: string
   botScore: uint8
   botScoreSrcName: string
   botScoreSrcName_geq: string
@@ -40200,6 +40490,14 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # botDetectionIds ascending
+  botDetectionIds_ASC
+  # botDetectionIds descending
+  botDetectionIds_DESC
+  # botDetectionTags ascending
+  botDetectionTags_ASC
+  # botDetectionTags descending
+  botDetectionTags_DESC
   # botScoreSrcName ascending
   botScoreSrcName_ASC
   # botScoreSrcName descending
@@ -43040,6 +43338,10 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # Array of detections ids that matched this request
+  botDetectionIds: [uint32!]!
+  # Array of detections tags that matched this request
+  botDetectionTags: [string!]!
   # Judgement of the bot management system
   botManagementDecision: string!
   # The final score originated from bot management detections.
@@ -43177,6 +43479,14 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  botDetectionIds_has: uint32
+  botDetectionIds_hasall: [uint32!]
+  botDetectionIds_hasany: [uint32!]
+  botDetectionIds_nothas: uint32
+  botDetectionTags_has: string
+  botDetectionTags_hasall: [string!]
+  botDetectionTags_hasany: [string!]
+  botDetectionTags_nothas: string
   botManagementDecision: string
   botManagementDecision_geq: string
   botManagementDecision_gt: string
@@ -43768,6 +44078,14 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # botDetectionIds ascending
+  botDetectionIds_ASC
+  # botDetectionIds descending
+  botDetectionIds_DESC
+  # botDetectionTags ascending
+  botDetectionTags_ASC
+  # botDetectionTags descending
+  botDetectionTags_DESC
   # botManagementDecision ascending
   botManagementDecision_ASC
   # botManagementDecision descending
@@ -47786,9 +48104,14 @@ type ZoneZarazAnalyticsOrderedTrackAdaptiveGroups {
   count: uint64!
   # List of dimensions to group by
   dimensions: ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsDimensions
+  uniq: ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsUniq
 }
 
 type ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsDimensions {
+  # User Agent browser name
+  browserName: string!
+  # City and region
+  cityRegion: string!
   # Client ID
   clientId: string!
   # Colors
@@ -47805,30 +48128,46 @@ type ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time truncated to the minute
   datetimeMinute: Time!
+  # User Agent device model
+  deviceModel: string!
+  # User Agent device type
+  deviceType: string!
+  # User Agent device vendor
+  deviceVendor: string!
   # IP
   ip: string!
   # Language
   language: string!
-  # Track order number for its clientId
+  # Track's order number for its clientId
   orderInClient: uint64!
-  # Track reverse order number within its session (last track having orderInSession 1)
+  # Track's reverse order number within its session (last track having orderInSession 1)
   orderInSession: uint64!
+  # User Agent OS name
+  osName: string!
+  # User Agent OS version
+  osVersion: string!
+  # Other data in the JSON format: language code, color depth, device viewport, timezone offset
+  other: string!
   # Page Title
   pageTitle: string!
   # Screen Resolution
   resolution: string!
+  # Track's reverse order number for its clientId
+  reverseOrderInClient: uint64!
   # Session ID
   sessionId: string!
   # Timezone Offset
-  timezoneOffset: string!
+  timezoneOffset: uint64!
   # Track Data
   trackData: string!
   # Track Name
   trackName: string!
   # Traffic source
   trafficSrc: string!
-  # User Agent
+  # User Agent string
   ua: string!
+  # User Agent stringified object
+  uaObj: string!
   # URL Path
   urlPath: string!
   # Viewport
@@ -47838,6 +48177,26 @@ type ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsDimensions {
 input ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject {
   AND: [ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject!]
   OR: [ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject!]
+  browserName: string
+  browserName_geq: string
+  browserName_gt: string
+  browserName_in: [string!]
+  browserName_leq: string
+  browserName_like: string
+  browserName_lt: string
+  browserName_neq: string
+  browserName_notin: [string!]
+  browserName_notlike: string
+  cityRegion: string
+  cityRegion_geq: string
+  cityRegion_gt: string
+  cityRegion_in: [string!]
+  cityRegion_leq: string
+  cityRegion_like: string
+  cityRegion_lt: string
+  cityRegion_neq: string
+  cityRegion_notin: [string!]
+  cityRegion_notlike: string
   clientId: string
   clientId_geq: string
   clientId_gt: string
@@ -47908,6 +48267,36 @@ input ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  deviceModel: string
+  deviceModel_geq: string
+  deviceModel_gt: string
+  deviceModel_in: [string!]
+  deviceModel_leq: string
+  deviceModel_like: string
+  deviceModel_lt: string
+  deviceModel_neq: string
+  deviceModel_notin: [string!]
+  deviceModel_notlike: string
+  deviceType: string
+  deviceType_geq: string
+  deviceType_gt: string
+  deviceType_in: [string!]
+  deviceType_leq: string
+  deviceType_like: string
+  deviceType_lt: string
+  deviceType_neq: string
+  deviceType_notin: [string!]
+  deviceType_notlike: string
+  deviceVendor: string
+  deviceVendor_geq: string
+  deviceVendor_gt: string
+  deviceVendor_in: [string!]
+  deviceVendor_leq: string
+  deviceVendor_like: string
+  deviceVendor_lt: string
+  deviceVendor_neq: string
+  deviceVendor_notin: [string!]
+  deviceVendor_notlike: string
   ip: string
   ip_geq: string
   ip_gt: string
@@ -47944,6 +48333,36 @@ input ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject {
   orderInSession_lt: uint64
   orderInSession_neq: uint64
   orderInSession_notin: [uint64!]
+  osName: string
+  osName_geq: string
+  osName_gt: string
+  osName_in: [string!]
+  osName_leq: string
+  osName_like: string
+  osName_lt: string
+  osName_neq: string
+  osName_notin: [string!]
+  osName_notlike: string
+  osVersion: string
+  osVersion_geq: string
+  osVersion_gt: string
+  osVersion_in: [string!]
+  osVersion_leq: string
+  osVersion_like: string
+  osVersion_lt: string
+  osVersion_neq: string
+  osVersion_notin: [string!]
+  osVersion_notlike: string
+  other: string
+  other_geq: string
+  other_gt: string
+  other_in: [string!]
+  other_leq: string
+  other_like: string
+  other_lt: string
+  other_neq: string
+  other_notin: [string!]
+  other_notlike: string
   pageTitle: string
   pageTitle_geq: string
   pageTitle_gt: string
@@ -47964,6 +48383,14 @@ input ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject {
   resolution_neq: string
   resolution_notin: [string!]
   resolution_notlike: string
+  reverseOrderInClient: uint64
+  reverseOrderInClient_geq: uint64
+  reverseOrderInClient_gt: uint64
+  reverseOrderInClient_in: [uint64!]
+  reverseOrderInClient_leq: uint64
+  reverseOrderInClient_lt: uint64
+  reverseOrderInClient_neq: uint64
+  reverseOrderInClient_notin: [uint64!]
   sessionId: string
   sessionId_geq: string
   sessionId_gt: string
@@ -47974,16 +48401,14 @@ input ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject {
   sessionId_neq: string
   sessionId_notin: [string!]
   sessionId_notlike: string
-  timezoneOffset: string
-  timezoneOffset_geq: string
-  timezoneOffset_gt: string
-  timezoneOffset_in: [string!]
-  timezoneOffset_leq: string
-  timezoneOffset_like: string
-  timezoneOffset_lt: string
-  timezoneOffset_neq: string
-  timezoneOffset_notin: [string!]
-  timezoneOffset_notlike: string
+  timezoneOffset: uint64
+  timezoneOffset_geq: uint64
+  timezoneOffset_gt: uint64
+  timezoneOffset_in: [uint64!]
+  timezoneOffset_leq: uint64
+  timezoneOffset_lt: uint64
+  timezoneOffset_neq: uint64
+  timezoneOffset_notin: [uint64!]
   trackData: string
   trackData_geq: string
   trackData_gt: string
@@ -48015,6 +48440,16 @@ input ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject {
   trafficSrc_notin: [string!]
   trafficSrc_notlike: string
   ua: string
+  uaObj: string
+  uaObj_geq: string
+  uaObj_gt: string
+  uaObj_in: [string!]
+  uaObj_leq: string
+  uaObj_like: string
+  uaObj_lt: string
+  uaObj_neq: string
+  uaObj_notin: [string!]
+  uaObj_notlike: string
   ua_geq: string
   ua_gt: string
   ua_in: [string!]
@@ -48047,6 +48482,14 @@ input ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject {
 }
 
 enum ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsOrderBy {
+  # browserName ascending
+  browserName_ASC
+  # browserName descending
+  browserName_DESC
+  # cityRegion ascending
+  cityRegion_ASC
+  # cityRegion descending
+  cityRegion_DESC
   # clientId ascending
   clientId_ASC
   # clientId descending
@@ -48083,6 +48526,18 @@ enum ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # deviceModel ascending
+  deviceModel_ASC
+  # deviceModel descending
+  deviceModel_DESC
+  # deviceType ascending
+  deviceType_ASC
+  # deviceType descending
+  deviceType_DESC
+  # deviceVendor ascending
+  deviceVendor_ASC
+  # deviceVendor descending
+  deviceVendor_DESC
   # ip ascending
   ip_ASC
   # ip descending
@@ -48099,6 +48554,18 @@ enum ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsOrderBy {
   orderInSession_ASC
   # orderInSession descending
   orderInSession_DESC
+  # osName ascending
+  osName_ASC
+  # osName descending
+  osName_DESC
+  # osVersion ascending
+  osVersion_ASC
+  # osVersion descending
+  osVersion_DESC
+  # other ascending
+  other_ASC
+  # other descending
+  other_DESC
   # pageTitle ascending
   pageTitle_ASC
   # pageTitle descending
@@ -48107,6 +48574,10 @@ enum ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsOrderBy {
   resolution_ASC
   # resolution descending
   resolution_DESC
+  # reverseOrderInClient ascending
+  reverseOrderInClient_ASC
+  # reverseOrderInClient descending
+  reverseOrderInClient_DESC
   # sessionId ascending
   sessionId_ASC
   # sessionId descending
@@ -48127,10 +48598,22 @@ enum ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsOrderBy {
   trafficSrc_ASC
   # trafficSrc descending
   trafficSrc_DESC
+  # uaObj ascending
+  uaObj_ASC
+  # uaObj descending
+  uaObj_DESC
   # ua ascending
   ua_ASC
   # ua descending
   ua_DESC
+  # uniq(clientIdCount) ascending
+  uniq_clientIdCount_ASC
+  # uniq(clientIdCount) descending
+  uniq_clientIdCount_DESC
+  # uniq(sessionIdCount) ascending
+  uniq_sessionIdCount_ASC
+  # uniq(sessionIdCount) descending
+  uniq_sessionIdCount_DESC
   # urlPath ascending
   urlPath_ASC
   # urlPath descending
@@ -48139,6 +48622,13 @@ enum ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsOrderBy {
   viewport_ASC
   # viewport descending
   viewport_DESC
+}
+
+type ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsUniq {
+  # Minimum number of distinct client IDs
+  clientIdCount: uint64!
+  # Minimum number of distinct session IDs
+  sessionIdCount: uint64!
 }
 
 # Zaraz Analytics Track - counts zaraz.track calls
@@ -48151,6 +48641,10 @@ type ZoneZarazAnalyticsTrackAdaptiveGroups {
 }
 
 type ZoneZarazAnalyticsTrackAdaptiveGroupsDimensions {
+  # User Agent browser name
+  browserName: string!
+  # City and region
+  cityRegion: string!
   # Client ID
   clientId: string!
   # Colors
@@ -48167,10 +48661,22 @@ type ZoneZarazAnalyticsTrackAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time truncated to the minute
   datetimeMinute: Time!
+  # User Agent device model
+  deviceModel: string!
+  # User Agent device type
+  deviceType: string!
+  # User Agent device vendor
+  deviceVendor: string!
   # IP
   ip: string!
   # Language
   language: string!
+  # User Agent OS name
+  osName: string!
+  # User Agent OS version
+  osVersion: string!
+  # Other data in the JSON format: language code, color depth, device viewport, timezone offset
+  other: string!
   # Page Title
   pageTitle: string!
   # Screen Resolution
@@ -48178,15 +48684,17 @@ type ZoneZarazAnalyticsTrackAdaptiveGroupsDimensions {
   # Session ID
   sessionId: string!
   # Timezone Offset
-  timezoneOffset: string!
+  timezoneOffset: uint64!
   # Track Data
   trackData: string!
   # Track Name
   trackName: string!
   # Traffic source
   trafficSrc: string!
-  # User Agent
+  # User Agent string
   ua: string!
+  # User Agent stringified object
+  uaObj: string!
   # URL Path
   urlPath: string!
   # Viewport
@@ -48196,6 +48704,26 @@ type ZoneZarazAnalyticsTrackAdaptiveGroupsDimensions {
 input ZoneZarazAnalyticsTrackAdaptiveGroupsFilter_InputObject {
   AND: [ZoneZarazAnalyticsTrackAdaptiveGroupsFilter_InputObject!]
   OR: [ZoneZarazAnalyticsTrackAdaptiveGroupsFilter_InputObject!]
+  browserName: string
+  browserName_geq: string
+  browserName_gt: string
+  browserName_in: [string!]
+  browserName_leq: string
+  browserName_like: string
+  browserName_lt: string
+  browserName_neq: string
+  browserName_notin: [string!]
+  browserName_notlike: string
+  cityRegion: string
+  cityRegion_geq: string
+  cityRegion_gt: string
+  cityRegion_in: [string!]
+  cityRegion_leq: string
+  cityRegion_like: string
+  cityRegion_lt: string
+  cityRegion_neq: string
+  cityRegion_notin: [string!]
+  cityRegion_notlike: string
   clientId: string
   clientId_geq: string
   clientId_gt: string
@@ -48266,6 +48794,36 @@ input ZoneZarazAnalyticsTrackAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  deviceModel: string
+  deviceModel_geq: string
+  deviceModel_gt: string
+  deviceModel_in: [string!]
+  deviceModel_leq: string
+  deviceModel_like: string
+  deviceModel_lt: string
+  deviceModel_neq: string
+  deviceModel_notin: [string!]
+  deviceModel_notlike: string
+  deviceType: string
+  deviceType_geq: string
+  deviceType_gt: string
+  deviceType_in: [string!]
+  deviceType_leq: string
+  deviceType_like: string
+  deviceType_lt: string
+  deviceType_neq: string
+  deviceType_notin: [string!]
+  deviceType_notlike: string
+  deviceVendor: string
+  deviceVendor_geq: string
+  deviceVendor_gt: string
+  deviceVendor_in: [string!]
+  deviceVendor_leq: string
+  deviceVendor_like: string
+  deviceVendor_lt: string
+  deviceVendor_neq: string
+  deviceVendor_notin: [string!]
+  deviceVendor_notlike: string
   ip: string
   ip_geq: string
   ip_gt: string
@@ -48286,6 +48844,36 @@ input ZoneZarazAnalyticsTrackAdaptiveGroupsFilter_InputObject {
   language_neq: string
   language_notin: [string!]
   language_notlike: string
+  osName: string
+  osName_geq: string
+  osName_gt: string
+  osName_in: [string!]
+  osName_leq: string
+  osName_like: string
+  osName_lt: string
+  osName_neq: string
+  osName_notin: [string!]
+  osName_notlike: string
+  osVersion: string
+  osVersion_geq: string
+  osVersion_gt: string
+  osVersion_in: [string!]
+  osVersion_leq: string
+  osVersion_like: string
+  osVersion_lt: string
+  osVersion_neq: string
+  osVersion_notin: [string!]
+  osVersion_notlike: string
+  other: string
+  other_geq: string
+  other_gt: string
+  other_in: [string!]
+  other_leq: string
+  other_like: string
+  other_lt: string
+  other_neq: string
+  other_notin: [string!]
+  other_notlike: string
   pageTitle: string
   pageTitle_geq: string
   pageTitle_gt: string
@@ -48316,16 +48904,14 @@ input ZoneZarazAnalyticsTrackAdaptiveGroupsFilter_InputObject {
   sessionId_neq: string
   sessionId_notin: [string!]
   sessionId_notlike: string
-  timezoneOffset: string
-  timezoneOffset_geq: string
-  timezoneOffset_gt: string
-  timezoneOffset_in: [string!]
-  timezoneOffset_leq: string
-  timezoneOffset_like: string
-  timezoneOffset_lt: string
-  timezoneOffset_neq: string
-  timezoneOffset_notin: [string!]
-  timezoneOffset_notlike: string
+  timezoneOffset: uint64
+  timezoneOffset_geq: uint64
+  timezoneOffset_gt: uint64
+  timezoneOffset_in: [uint64!]
+  timezoneOffset_leq: uint64
+  timezoneOffset_lt: uint64
+  timezoneOffset_neq: uint64
+  timezoneOffset_notin: [uint64!]
   trackData: string
   trackData_geq: string
   trackData_gt: string
@@ -48357,6 +48943,16 @@ input ZoneZarazAnalyticsTrackAdaptiveGroupsFilter_InputObject {
   trafficSrc_notin: [string!]
   trafficSrc_notlike: string
   ua: string
+  uaObj: string
+  uaObj_geq: string
+  uaObj_gt: string
+  uaObj_in: [string!]
+  uaObj_leq: string
+  uaObj_like: string
+  uaObj_lt: string
+  uaObj_neq: string
+  uaObj_notin: [string!]
+  uaObj_notlike: string
   ua_geq: string
   ua_gt: string
   ua_in: [string!]
@@ -48389,6 +48985,14 @@ input ZoneZarazAnalyticsTrackAdaptiveGroupsFilter_InputObject {
 }
 
 enum ZoneZarazAnalyticsTrackAdaptiveGroupsOrderBy {
+  # browserName ascending
+  browserName_ASC
+  # browserName descending
+  browserName_DESC
+  # cityRegion ascending
+  cityRegion_ASC
+  # cityRegion descending
+  cityRegion_DESC
   # clientId ascending
   clientId_ASC
   # clientId descending
@@ -48425,6 +49029,18 @@ enum ZoneZarazAnalyticsTrackAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # deviceModel ascending
+  deviceModel_ASC
+  # deviceModel descending
+  deviceModel_DESC
+  # deviceType ascending
+  deviceType_ASC
+  # deviceType descending
+  deviceType_DESC
+  # deviceVendor ascending
+  deviceVendor_ASC
+  # deviceVendor descending
+  deviceVendor_DESC
   # ip ascending
   ip_ASC
   # ip descending
@@ -48433,6 +49049,18 @@ enum ZoneZarazAnalyticsTrackAdaptiveGroupsOrderBy {
   language_ASC
   # language descending
   language_DESC
+  # osName ascending
+  osName_ASC
+  # osName descending
+  osName_DESC
+  # osVersion ascending
+  osVersion_ASC
+  # osVersion descending
+  osVersion_DESC
+  # other ascending
+  other_ASC
+  # other descending
+  other_DESC
   # pageTitle ascending
   pageTitle_ASC
   # pageTitle descending
@@ -48461,6 +49089,10 @@ enum ZoneZarazAnalyticsTrackAdaptiveGroupsOrderBy {
   trafficSrc_ASC
   # trafficSrc descending
   trafficSrc_DESC
+  # uaObj ascending
+  uaObj_ASC
+  # uaObj descending
+  uaObj_DESC
   # ua ascending
   ua_ASC
   # ua descending
@@ -48484,14 +49116,15 @@ enum ZoneZarazAnalyticsTrackAdaptiveGroupsOrderBy {
 }
 
 type ZoneZarazAnalyticsTrackAdaptiveGroupsUniq {
-  # Number of distinct client IDs
+  # Minimum number of distinct client IDs
   clientIdCount: uint64!
-  # Number of distinct session IDs
+  # Minimum number of distinct session IDs
   sessionIdCount: uint64!
 }
 
 # Zaraz Analytics Track Traffic Sources
 type ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroups {
+  avg: ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsAvg
   # Number of unique sessions
   count: uint64!
   # List of dimensions to group by
@@ -48499,9 +49132,16 @@ type ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroups {
   uniq: ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsUniq
 }
 
+type ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsAvg {
+  # Average session duration
+  sessionDuration: float64!
+}
+
 type ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsDimensions {
   # Client ID
   clientId: string!
+  # Session duration (seconds)
+  duration: uint64!
   # URL Path at session end
   exitPage: string!
   # Referrer at session start
@@ -48547,6 +49187,14 @@ input ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject {
   clientId_neq: string
   clientId_notin: [string!]
   clientId_notlike: string
+  duration: uint64
+  duration_geq: uint64
+  duration_gt: uint64
+  duration_in: [uint64!]
+  duration_leq: uint64
+  duration_lt: uint64
+  duration_neq: uint64
+  duration_notin: [uint64!]
   exitPage: string
   exitPage_geq: string
   exitPage_gt: string
@@ -48674,6 +49322,10 @@ input ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject {
 }
 
 enum ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsOrderBy {
+  # avg(sessionDuration) ascending
+  avg_sessionDuration_ASC
+  # avg(sessionDuration) descending
+  avg_sessionDuration_DESC
   # clientId ascending
   clientId_ASC
   # clientId descending
@@ -48682,6 +49334,10 @@ enum ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsOrderBy {
   count_ASC
   # count() descending
   count_DESC
+  # duration ascending
+  duration_ASC
+  # duration descending
+  duration_DESC
   # exitPage ascending
   exitPage_ASC
   # exitPage descending
@@ -48763,6 +49419,10 @@ type ZoneZarazAnalyticsTriggersAdaptiveGroups {
 }
 
 type ZoneZarazAnalyticsTriggersAdaptiveGroupsDimensions {
+  # User Agent browser name
+  browserName: string!
+  # City and region
+  cityRegion: string!
   # Client ID
   clientId: string!
   # Colors
@@ -48779,10 +49439,22 @@ type ZoneZarazAnalyticsTriggersAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time truncated to the minute
   datetimeMinute: Time!
+  # User Agent device model
+  deviceModel: string!
+  # User Agent device type
+  deviceType: string!
+  # User Agent device vendor
+  deviceVendor: string!
   # IP
   ip: string!
   # Language
   language: string!
+  # User Agent OS name
+  osName: string!
+  # User Agent OS version
+  osVersion: string!
+  # Other data in the JSON format: language code, color depth, device viewport, timezone offset
+  other: string!
   # Page Title
   pageTitle: string!
   # Screen Resolution
@@ -48790,13 +49462,15 @@ type ZoneZarazAnalyticsTriggersAdaptiveGroupsDimensions {
   # Session ID
   sessionId: string!
   # Timezone Offset
-  timezoneOffset: string!
+  timezoneOffset: uint64!
   # Traffic Source
   trafficSrc: string!
   # Trigger Name
   triggerName: string!
-  # User Agent
+  # User Agent string
   ua: string!
+  # User Agent stringified object
+  uaObj: string!
   # URL Path
   urlPath: string!
   # Viewport
@@ -48806,6 +49480,26 @@ type ZoneZarazAnalyticsTriggersAdaptiveGroupsDimensions {
 input ZoneZarazAnalyticsTriggersAdaptiveGroupsFilter_InputObject {
   AND: [ZoneZarazAnalyticsTriggersAdaptiveGroupsFilter_InputObject!]
   OR: [ZoneZarazAnalyticsTriggersAdaptiveGroupsFilter_InputObject!]
+  browserName: string
+  browserName_geq: string
+  browserName_gt: string
+  browserName_in: [string!]
+  browserName_leq: string
+  browserName_like: string
+  browserName_lt: string
+  browserName_neq: string
+  browserName_notin: [string!]
+  browserName_notlike: string
+  cityRegion: string
+  cityRegion_geq: string
+  cityRegion_gt: string
+  cityRegion_in: [string!]
+  cityRegion_leq: string
+  cityRegion_like: string
+  cityRegion_lt: string
+  cityRegion_neq: string
+  cityRegion_notin: [string!]
+  cityRegion_notlike: string
   clientId: string
   clientId_geq: string
   clientId_gt: string
@@ -48876,6 +49570,36 @@ input ZoneZarazAnalyticsTriggersAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  deviceModel: string
+  deviceModel_geq: string
+  deviceModel_gt: string
+  deviceModel_in: [string!]
+  deviceModel_leq: string
+  deviceModel_like: string
+  deviceModel_lt: string
+  deviceModel_neq: string
+  deviceModel_notin: [string!]
+  deviceModel_notlike: string
+  deviceType: string
+  deviceType_geq: string
+  deviceType_gt: string
+  deviceType_in: [string!]
+  deviceType_leq: string
+  deviceType_like: string
+  deviceType_lt: string
+  deviceType_neq: string
+  deviceType_notin: [string!]
+  deviceType_notlike: string
+  deviceVendor: string
+  deviceVendor_geq: string
+  deviceVendor_gt: string
+  deviceVendor_in: [string!]
+  deviceVendor_leq: string
+  deviceVendor_like: string
+  deviceVendor_lt: string
+  deviceVendor_neq: string
+  deviceVendor_notin: [string!]
+  deviceVendor_notlike: string
   ip: string
   ip_geq: string
   ip_gt: string
@@ -48896,6 +49620,36 @@ input ZoneZarazAnalyticsTriggersAdaptiveGroupsFilter_InputObject {
   language_neq: string
   language_notin: [string!]
   language_notlike: string
+  osName: string
+  osName_geq: string
+  osName_gt: string
+  osName_in: [string!]
+  osName_leq: string
+  osName_like: string
+  osName_lt: string
+  osName_neq: string
+  osName_notin: [string!]
+  osName_notlike: string
+  osVersion: string
+  osVersion_geq: string
+  osVersion_gt: string
+  osVersion_in: [string!]
+  osVersion_leq: string
+  osVersion_like: string
+  osVersion_lt: string
+  osVersion_neq: string
+  osVersion_notin: [string!]
+  osVersion_notlike: string
+  other: string
+  other_geq: string
+  other_gt: string
+  other_in: [string!]
+  other_leq: string
+  other_like: string
+  other_lt: string
+  other_neq: string
+  other_notin: [string!]
+  other_notlike: string
   pageTitle: string
   pageTitle_geq: string
   pageTitle_gt: string
@@ -48926,16 +49680,14 @@ input ZoneZarazAnalyticsTriggersAdaptiveGroupsFilter_InputObject {
   sessionId_neq: string
   sessionId_notin: [string!]
   sessionId_notlike: string
-  timezoneOffset: string
-  timezoneOffset_geq: string
-  timezoneOffset_gt: string
-  timezoneOffset_in: [string!]
-  timezoneOffset_leq: string
-  timezoneOffset_like: string
-  timezoneOffset_lt: string
-  timezoneOffset_neq: string
-  timezoneOffset_notin: [string!]
-  timezoneOffset_notlike: string
+  timezoneOffset: uint64
+  timezoneOffset_geq: uint64
+  timezoneOffset_gt: uint64
+  timezoneOffset_in: [uint64!]
+  timezoneOffset_leq: uint64
+  timezoneOffset_lt: uint64
+  timezoneOffset_neq: uint64
+  timezoneOffset_notin: [uint64!]
   trafficSrc: string
   trafficSrc_geq: string
   trafficSrc_gt: string
@@ -48957,6 +49709,16 @@ input ZoneZarazAnalyticsTriggersAdaptiveGroupsFilter_InputObject {
   triggerName_notin: [string!]
   triggerName_notlike: string
   ua: string
+  uaObj: string
+  uaObj_geq: string
+  uaObj_gt: string
+  uaObj_in: [string!]
+  uaObj_leq: string
+  uaObj_like: string
+  uaObj_lt: string
+  uaObj_neq: string
+  uaObj_notin: [string!]
+  uaObj_notlike: string
   ua_geq: string
   ua_gt: string
   ua_in: [string!]
@@ -48989,6 +49751,14 @@ input ZoneZarazAnalyticsTriggersAdaptiveGroupsFilter_InputObject {
 }
 
 enum ZoneZarazAnalyticsTriggersAdaptiveGroupsOrderBy {
+  # browserName ascending
+  browserName_ASC
+  # browserName descending
+  browserName_DESC
+  # cityRegion ascending
+  cityRegion_ASC
+  # cityRegion descending
+  cityRegion_DESC
   # clientId ascending
   clientId_ASC
   # clientId descending
@@ -49025,6 +49795,18 @@ enum ZoneZarazAnalyticsTriggersAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # deviceModel ascending
+  deviceModel_ASC
+  # deviceModel descending
+  deviceModel_DESC
+  # deviceType ascending
+  deviceType_ASC
+  # deviceType descending
+  deviceType_DESC
+  # deviceVendor ascending
+  deviceVendor_ASC
+  # deviceVendor descending
+  deviceVendor_DESC
   # ip ascending
   ip_ASC
   # ip descending
@@ -49033,6 +49815,18 @@ enum ZoneZarazAnalyticsTriggersAdaptiveGroupsOrderBy {
   language_ASC
   # language descending
   language_DESC
+  # osName ascending
+  osName_ASC
+  # osName descending
+  osName_DESC
+  # osVersion ascending
+  osVersion_ASC
+  # osVersion descending
+  osVersion_DESC
+  # other ascending
+  other_ASC
+  # other descending
+  other_DESC
   # pageTitle ascending
   pageTitle_ASC
   # pageTitle descending
@@ -49057,6 +49851,10 @@ enum ZoneZarazAnalyticsTriggersAdaptiveGroupsOrderBy {
   triggerName_ASC
   # triggerName descending
   triggerName_DESC
+  # uaObj ascending
+  uaObj_ASC
+  # uaObj descending
+  uaObj_DESC
   # ua ascending
   ua_ASC
   # ua descending
@@ -49080,9 +49878,9 @@ enum ZoneZarazAnalyticsTriggersAdaptiveGroupsOrderBy {
 }
 
 type ZoneZarazAnalyticsTriggersAdaptiveGroupsUniq {
-  # Number of distinct client IDs
+  # Minimum number of distinct client IDs
   clientIdCount: uint64!
-  # Number of distinct session IDs
+  # Minimum number of distinct session IDs
   sessionIdCount: uint64!
 }
 
