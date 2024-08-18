@@ -131,6 +131,7 @@ Zone-level datasets:
 * workersZoneSubrequestsAdaptiveGroups
 * zarazActionsAdaptiveGroups
 * zarazAnalyticsIdentitiesAdaptiveGroups
+* zarazAnalyticsOrderedTrackAdaptive
 * zarazAnalyticsOrderedTrackAdaptiveGroups
 * zarazAnalyticsTrackAdaptiveGroups
 * zarazAnalyticsTrackTrafficSourcesAdaptiveGroups
@@ -18503,8 +18504,8 @@ type AccountKvOperationsAdaptiveGroupsAvg {
 }
 
 type AccountKvOperationsAdaptiveGroupsDimensions {
-  # The type of the action (GET,PUT,DELETE,LIST,CREATE_NAMESPACE)
-  action: string!
+  # The type of the action (read, write, delete, list)
+  actionType: string!
   # Message operation timestamp, truncated to start of a day
   date: Date!
   # Message operation timestamp
@@ -18517,23 +18518,23 @@ type AccountKvOperationsAdaptiveGroupsDimensions {
   namespaceId: string!
   # The http status code of the response.
   responseStatusCode: uint16!
-  # The result of the action (HIT,MISS,READ_FROM_STORAGE,DELETED,UPLOADED,NAMESPACE_CREATED,ERROR,NOT_FOUND,UNDEFINED,UNKNOWN)
+  # The result of the action (hot_read, cold_read, deleted, uploaded, error, not_found)
   result: string!
 }
 
 input AccountKvOperationsAdaptiveGroupsFilter_InputObject {
   AND: [AccountKvOperationsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountKvOperationsAdaptiveGroupsFilter_InputObject!]
-  action: string
-  action_geq: string
-  action_gt: string
-  action_in: [string!]
-  action_leq: string
-  action_like: string
-  action_lt: string
-  action_neq: string
-  action_notin: [string!]
-  action_notlike: string
+  actionType: string
+  actionType_geq: string
+  actionType_gt: string
+  actionType_in: [string!]
+  actionType_leq: string
+  actionType_like: string
+  actionType_lt: string
+  actionType_neq: string
+  actionType_notin: [string!]
+  actionType_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -18611,10 +18612,10 @@ type AccountKvOperationsAdaptiveGroupsMin {
 }
 
 enum AccountKvOperationsAdaptiveGroupsOrderBy {
-  # action ascending
-  action_ASC
-  # action descending
-  action_DESC
+  # actionType ascending
+  actionType_ASC
+  # actionType descending
+  actionType_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -24118,6 +24119,34 @@ type AccountMnmFlowDataAdaptiveGroupsAvg {
   bitRateMinute: float64!
   # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
   bitRateTenSeconds: float64!
+  # Sum of egress bits received, divided by 1 second, providing a per-second egress bit rate when grouped by datetime
+  egressBitRate: float64!
+  # Sum of egress bits received, divided by 86400 seconds, providing a per-second egress bit rate when grouped by date
+  egressBitRateDay: float64!
+  # Sum of egress bits received, divided by 900 seconds, providing a per-second egress bit rate when grouped by datetimeFifteenMinutes
+  egressBitRateFifteenMinutes: float64!
+  # Sum of egress bits received, divided by 300 seconds, providing a per-second egress bit rate when grouped by datetimeFiveMinutes
+  egressBitRateFiveMinutes: float64!
+  # Sum of egress bits received, divided by 3600 seconds, providing a per-second egress bit rate when grouped by datetimeHour
+  egressBitRateHour: float64!
+  # Sum of egress bits received, divided by 60 seconds, providing a per-second egress bit rate when grouped by datetimeMinute
+  egressBitRateMinute: float64!
+  # Sum of egress bits received, divided by 10 seconds, providing a per-second egress bit rate when grouped by datetimeTenSeconds
+  egressBitRateTenSeconds: float64!
+  # Sum of egress packets received, divided by 1 second, providing a per-second egress packet rate when grouped by datetime
+  egressPacketRate: float64!
+  # Sum of egress packets received, divided by 86400 seconds, providing a per-second egress packet rate when grouped by date
+  egressPacketRateDay: float64!
+  # Sum of egress packets received, divided by 900 seconds, providing a per-second egress packet rate when grouped by datetimeFifteenMinutes
+  egressPacketRateFifteenMinutes: float64!
+  # Sum of egress packets received, divided by 300 seconds, providing a per-second egress packet rate when grouped by datetimeFiveMinutes
+  egressPacketRateFiveMinutes: float64!
+  # Sum of egress packets received, divided by 3600 seconds, providing a per-second egress packet rate when grouped by datetimeHour
+  egressPacketRateHour: float64!
+  # Sum of egress packets received, divided by 60 seconds, providing a per-second egress packet rate when grouped by datetimeMinute
+  egressPacketRateMinute: float64!
+  # Sum of egress packets received, divided by 10 seconds, providing a per-second egress packet rate when grouped by datetimeTenSeconds
+  egressPacketRateTenSeconds: float64!
   # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
   packetRate: float64!
   # Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date
@@ -24389,6 +24418,62 @@ enum AccountMnmFlowDataAdaptiveGroupsOrderBy {
   avg_bitRate_ASC
   # avg(bitRate) descending
   avg_bitRate_DESC
+  # avg(egressBitRateDay) ascending
+  avg_egressBitRateDay_ASC
+  # avg(egressBitRateDay) descending
+  avg_egressBitRateDay_DESC
+  # avg(egressBitRateFifteenMinutes) ascending
+  avg_egressBitRateFifteenMinutes_ASC
+  # avg(egressBitRateFifteenMinutes) descending
+  avg_egressBitRateFifteenMinutes_DESC
+  # avg(egressBitRateFiveMinutes) ascending
+  avg_egressBitRateFiveMinutes_ASC
+  # avg(egressBitRateFiveMinutes) descending
+  avg_egressBitRateFiveMinutes_DESC
+  # avg(egressBitRateHour) ascending
+  avg_egressBitRateHour_ASC
+  # avg(egressBitRateHour) descending
+  avg_egressBitRateHour_DESC
+  # avg(egressBitRateMinute) ascending
+  avg_egressBitRateMinute_ASC
+  # avg(egressBitRateMinute) descending
+  avg_egressBitRateMinute_DESC
+  # avg(egressBitRateTenSeconds) ascending
+  avg_egressBitRateTenSeconds_ASC
+  # avg(egressBitRateTenSeconds) descending
+  avg_egressBitRateTenSeconds_DESC
+  # avg(egressBitRate) ascending
+  avg_egressBitRate_ASC
+  # avg(egressBitRate) descending
+  avg_egressBitRate_DESC
+  # avg(egressPacketRateDay) ascending
+  avg_egressPacketRateDay_ASC
+  # avg(egressPacketRateDay) descending
+  avg_egressPacketRateDay_DESC
+  # avg(egressPacketRateFifteenMinutes) ascending
+  avg_egressPacketRateFifteenMinutes_ASC
+  # avg(egressPacketRateFifteenMinutes) descending
+  avg_egressPacketRateFifteenMinutes_DESC
+  # avg(egressPacketRateFiveMinutes) ascending
+  avg_egressPacketRateFiveMinutes_ASC
+  # avg(egressPacketRateFiveMinutes) descending
+  avg_egressPacketRateFiveMinutes_DESC
+  # avg(egressPacketRateHour) ascending
+  avg_egressPacketRateHour_ASC
+  # avg(egressPacketRateHour) descending
+  avg_egressPacketRateHour_DESC
+  # avg(egressPacketRateMinute) ascending
+  avg_egressPacketRateMinute_ASC
+  # avg(egressPacketRateMinute) descending
+  avg_egressPacketRateMinute_DESC
+  # avg(egressPacketRateTenSeconds) ascending
+  avg_egressPacketRateTenSeconds_ASC
+  # avg(egressPacketRateTenSeconds) descending
+  avg_egressPacketRateTenSeconds_DESC
+  # avg(egressPacketRate) ascending
+  avg_egressPacketRate_ASC
+  # avg(egressPacketRate) descending
+  avg_egressPacketRate_DESC
   # avg(packetRateDay) ascending
   avg_packetRateDay_ASC
   # avg(packetRateDay) descending
@@ -24497,6 +24582,14 @@ enum AccountMnmFlowDataAdaptiveGroupsOrderBy {
   sum_bits_ASC
   # sum(bits) descending
   sum_bits_DESC
+  # sum(egressBits) ascending
+  sum_egressBits_ASC
+  # sum(egressBits) descending
+  sum_egressBits_DESC
+  # sum(egressPackets) ascending
+  sum_egressPackets_ASC
+  # sum(egressPackets) descending
+  sum_egressPackets_DESC
   # sum(packets) ascending
   sum_packets_ASC
   # sum(packets) descending
@@ -24518,6 +24611,10 @@ enum AccountMnmFlowDataAdaptiveGroupsOrderBy {
 type AccountMnmFlowDataAdaptiveGroupsSum {
   # Sum of bits
   bits: uint64!
+  # Sum of egress bits
+  egressBits: uint64!
+  # Sum of egress packets
+  egressPackets: uint64!
   # Sum of packets
   packets: uint64!
 }
@@ -32053,6 +32150,10 @@ type AccountWorkerPlacementAdaptiveGroupsDimensions {
   date: Date!
   # Request timestamp
   datetime: Time!
+  # Request timestamp, truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Request timestamp, truncated to five minutes
+  datetimeFiveMinutes: Time!
   # Request timestamp, truncated to start of an hour
   datetimeHour: Time!
   # Request timestamp, truncated to start of an minute
@@ -32087,6 +32188,22 @@ input AccountWorkerPlacementAdaptiveGroupsFilter_InputObject {
   date_neq: Date
   date_notin: [Date!]
   datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
   datetimeHour: Time
   datetimeHour_geq: Time
   datetimeHour_gt: Time
@@ -32187,6 +32304,14 @@ enum AccountWorkerPlacementAdaptiveGroupsOrderBy {
   date_ASC
   # date descending
   date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
   # datetimeHour ascending
   datetimeHour_ASC
   # datetimeHour descending
@@ -32788,6 +32913,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   status_ASC
   # status descending
   status_DESC
+  # sum(clientDisconnects) ascending
+  sum_clientDisconnects_ASC
+  # sum(clientDisconnects) descending
+  sum_clientDisconnects_DESC
   # sum(cpuTimeUs) ascending
   sum_cpuTimeUs_ASC
   # sum(cpuTimeUs) descending
@@ -32882,6 +33011,8 @@ type AccountWorkersInvocationsAdaptiveQuantiles {
 }
 
 type AccountWorkersInvocationsAdaptiveSum {
+  # Sum of client disconnects
+  clientDisconnects: uint64!
   # Sum of cpu time in us
   cpuTimeUs: uint64!
   # Sum of Duration - GB*s
@@ -35092,6 +35223,8 @@ type zone {
   zarazActionsAdaptiveGroups(filter: ZoneZarazActionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazActionsAdaptiveGroupsOrderBy!]): [ZoneZarazActionsAdaptiveGroups!]!
   # Zaraz Analytics Identities - zaraz.identify calls
   zarazAnalyticsIdentitiesAdaptiveGroups(filter: ZoneZarazAnalyticsIdentitiesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazAnalyticsIdentitiesAdaptiveGroupsOrderBy!]): [ZoneZarazAnalyticsIdentitiesAdaptiveGroups!]!
+  # Zaraz Analytics Tracks ordered per session
+  zarazAnalyticsOrderedTrackAdaptive(filter: ZoneZarazAnalyticsOrderedTrackAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazAnalyticsOrderedTrackAdaptiveOrderBy!]): [ZoneZarazAnalyticsOrderedTrackAdaptive!]!
   # Zaraz Analytics Tracks ordered per session
   zarazAnalyticsOrderedTrackAdaptiveGroups(filter: ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsOrderBy!]): [ZoneZarazAnalyticsOrderedTrackAdaptiveGroups!]!
   # Zaraz Analytics Track - counts zaraz.track calls
@@ -46748,6 +46881,7 @@ type ZoneSettings {
   workersZoneSubrequestsAdaptiveGroups: Settings!
   zarazActionsAdaptiveGroups: Settings!
   zarazAnalyticsIdentitiesAdaptiveGroups: Settings!
+  zarazAnalyticsOrderedTrackAdaptive: Settings!
   zarazAnalyticsOrderedTrackAdaptiveGroups: Settings!
   zarazAnalyticsTrackAdaptiveGroups: Settings!
   zarazAnalyticsTrackTrafficSourcesAdaptiveGroups: Settings!
@@ -46771,6 +46905,8 @@ type ZoneWaitingRoomAnalyticsAdaptive {
   sampleInterval: uint32!
   # Configured value of session duration
   sessionDuration: int64!
+  # Actual value of sessions revoked
+  sessionsRevoked: int64!
   # 50th percentile of the time between session refreshes in seconds
   timeBetweenRefreshesP50: int64!
   # 75th percentile of the time between session refreshes in seconds
@@ -46866,6 +47002,14 @@ input ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject {
   sessionDuration_lt: int64
   sessionDuration_neq: int64
   sessionDuration_notin: [int64!]
+  sessionsRevoked: int64
+  sessionsRevoked_geq: int64
+  sessionsRevoked_gt: int64
+  sessionsRevoked_in: [int64!]
+  sessionsRevoked_leq: int64
+  sessionsRevoked_lt: int64
+  sessionsRevoked_neq: int64
+  sessionsRevoked_notin: [int64!]
   timeBetweenRefreshesP50: int64
   timeBetweenRefreshesP50_geq: int64
   timeBetweenRefreshesP50_gt: int64
@@ -47067,6 +47211,8 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroupsAvg {
   sampleInterval: float64!
   # Configured value of session duration. A negative number means no data
   sessionDuration: int64!
+  # Average rate of sessions revoked. A negative number means no data
+  sessionsRevoked: int64!
   # Average rate of total active users. A negative number means no data
   totalActiveUsers: int64!
   # Configured value of total active users. A negative number means no data
@@ -47209,6 +47355,8 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroupsMax {
   newUsersPerMinuteConfig: int64!
   # The maximum value of the configured session duration configuration. A negative number means no data
   sessionDuration: int64!
+  # The maximum value of the actual sessions revoked. A negative number means no data
+  sessionsRevoked: int64!
   # The maximum value of the actual total active users. A negative number means no data
   totalActiveUsers: int64!
   # The maximum value of the configured total active users. A negative number means no data
@@ -47226,6 +47374,8 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroupsMin {
   newUsersPerMinuteConfig: int64!
   # The minimum value of the configured session duration configuration. A negative number means no data
   sessionDuration: int64!
+  # The minimum value of the actual sessions revoked. A negative number means no data
+  sessionsRevoked: int64!
   # The minimum value of the actual total active users. A negative number means no data
   totalActiveUsers: int64!
   # The minimum value of the configured total active users. A negative number means either Waiting Room is in passthrough or no data
@@ -47323,6 +47473,10 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   avg_sessionDuration_ASC
   # avg(sessionDuration) descending
   avg_sessionDuration_DESC
+  # avg(sessionsRevoked) ascending
+  avg_sessionsRevoked_ASC
+  # avg(sessionsRevoked) descending
+  avg_sessionsRevoked_DESC
   # avg(totalActiveUsersConfig) ascending
   avg_totalActiveUsersConfig_ASC
   # avg(totalActiveUsersConfig) descending
@@ -47379,6 +47533,10 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   max_sessionDuration_ASC
   # max(sessionDuration) descending
   max_sessionDuration_DESC
+  # max(sessionsRevoked) ascending
+  max_sessionsRevoked_ASC
+  # max(sessionsRevoked) descending
+  max_sessionsRevoked_DESC
   # max(totalActiveUsersConfig) ascending
   max_totalActiveUsersConfig_ASC
   # max(totalActiveUsersConfig) descending
@@ -47407,6 +47565,10 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   min_sessionDuration_ASC
   # min(sessionDuration) descending
   min_sessionDuration_DESC
+  # min(sessionsRevoked) ascending
+  min_sessionsRevoked_ASC
+  # min(sessionsRevoked) descending
+  min_sessionsRevoked_DESC
   # min(totalActiveUsersConfig) ascending
   min_totalActiveUsersConfig_ASC
   # min(totalActiveUsersConfig) descending
@@ -47427,6 +47589,10 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   sum_newUsersPerMinute_ASC
   # sum(newUsersPerMinute) descending
   sum_newUsersPerMinute_DESC
+  # sum(sessionsRevoked) ascending
+  sum_sessionsRevoked_ASC
+  # sum(sessionsRevoked) descending
+  sum_sessionsRevoked_DESC
   # waitingRoomId ascending
   waitingRoomId_ASC
   # waitingRoomId descending
@@ -47436,6 +47602,8 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
 type ZoneWaitingRoomAnalyticsAdaptiveGroupsSum {
   # Sum of new users per minute. A negative number means no data
   newUsersPerMinute: int64!
+  # Sum of sessions revoked. A negative number means no data
+  sessionsRevoked: int64!
 }
 
 enum ZoneWaitingRoomAnalyticsAdaptiveOrderBy {
@@ -47467,6 +47635,10 @@ enum ZoneWaitingRoomAnalyticsAdaptiveOrderBy {
   sessionDuration_ASC
   # sessionDuration descending
   sessionDuration_DESC
+  # sessionsRevoked ascending
+  sessionsRevoked_ASC
+  # sessionsRevoked descending
+  sessionsRevoked_DESC
   # timeBetweenRefreshesP50 ascending
   timeBetweenRefreshesP50_ASC
   # timeBetweenRefreshesP50 descending
@@ -48099,6 +48271,401 @@ enum ZoneZarazAnalyticsIdentitiesAdaptiveGroupsOrderBy {
 }
 
 # Zaraz Analytics Tracks ordered per session
+type ZoneZarazAnalyticsOrderedTrackAdaptive {
+  # User Agent browser name
+  browserName: string!
+  # City and region
+  cityRegion: string!
+  # Client ID
+  clientId: string!
+  # Colors
+  colors: string!
+  # Country
+  country: string!
+  # Date when track was called
+  date: Date!
+  # Date & time when track was called
+  datetime: Time!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # User Agent device model
+  deviceModel: string!
+  # User Agent device type
+  deviceType: string!
+  # User Agent device vendor
+  deviceVendor: string!
+  # IP
+  ip: string!
+  # Language
+  language: string!
+  # Track's order number for its clientId
+  orderInClient: uint64!
+  # Track's reverse order number within its session (last track having orderInSession 1)
+  orderInSession: uint64!
+  # User Agent OS name
+  osName: string!
+  # User Agent OS version
+  osVersion: string!
+  # Other data in the JSON format: language code, color depth, device viewport, timezone offset
+  other: string!
+  # Page Title
+  pageTitle: string!
+  # Screen Resolution
+  resolution: string!
+  # Track's reverse order number for its clientId
+  reverseOrderInClient: uint64!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # Session ID
+  sessionId: string!
+  # Timezone Offset
+  timezoneOffset: uint64!
+  # Track Data
+  trackData: string!
+  # Track Name
+  trackName: string!
+  # Traffic source
+  trafficSrc: string!
+  # User Agent string
+  ua: string!
+  # User Agent stringified object
+  uaObj: string!
+  # URL Path
+  urlPath: string!
+  # Viewport
+  viewport: string!
+}
+
+input ZoneZarazAnalyticsOrderedTrackAdaptiveFilter_InputObject {
+  AND: [ZoneZarazAnalyticsOrderedTrackAdaptiveFilter_InputObject!]
+  OR: [ZoneZarazAnalyticsOrderedTrackAdaptiveFilter_InputObject!]
+  browserName: string
+  browserName_geq: string
+  browserName_gt: string
+  browserName_in: [string!]
+  browserName_leq: string
+  browserName_like: string
+  browserName_lt: string
+  browserName_neq: string
+  browserName_notin: [string!]
+  browserName_notlike: string
+  cityRegion: string
+  cityRegion_geq: string
+  cityRegion_gt: string
+  cityRegion_in: [string!]
+  cityRegion_leq: string
+  cityRegion_like: string
+  cityRegion_lt: string
+  cityRegion_neq: string
+  cityRegion_notin: [string!]
+  cityRegion_notlike: string
+  clientId: string
+  clientId_geq: string
+  clientId_gt: string
+  clientId_in: [string!]
+  clientId_leq: string
+  clientId_like: string
+  clientId_lt: string
+  clientId_neq: string
+  clientId_notin: [string!]
+  clientId_notlike: string
+  colors: string
+  colors_geq: string
+  colors_gt: string
+  colors_in: [string!]
+  colors_leq: string
+  colors_like: string
+  colors_lt: string
+  colors_neq: string
+  colors_notin: [string!]
+  colors_notlike: string
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  deviceModel: string
+  deviceModel_geq: string
+  deviceModel_gt: string
+  deviceModel_in: [string!]
+  deviceModel_leq: string
+  deviceModel_like: string
+  deviceModel_lt: string
+  deviceModel_neq: string
+  deviceModel_notin: [string!]
+  deviceModel_notlike: string
+  deviceType: string
+  deviceType_geq: string
+  deviceType_gt: string
+  deviceType_in: [string!]
+  deviceType_leq: string
+  deviceType_like: string
+  deviceType_lt: string
+  deviceType_neq: string
+  deviceType_notin: [string!]
+  deviceType_notlike: string
+  deviceVendor: string
+  deviceVendor_geq: string
+  deviceVendor_gt: string
+  deviceVendor_in: [string!]
+  deviceVendor_leq: string
+  deviceVendor_like: string
+  deviceVendor_lt: string
+  deviceVendor_neq: string
+  deviceVendor_notin: [string!]
+  deviceVendor_notlike: string
+  ip: string
+  ip_geq: string
+  ip_gt: string
+  ip_in: [string!]
+  ip_leq: string
+  ip_like: string
+  ip_lt: string
+  ip_neq: string
+  ip_notin: [string!]
+  ip_notlike: string
+  language: string
+  language_geq: string
+  language_gt: string
+  language_in: [string!]
+  language_leq: string
+  language_like: string
+  language_lt: string
+  language_neq: string
+  language_notin: [string!]
+  language_notlike: string
+  orderInClient: uint64
+  orderInClient_geq: uint64
+  orderInClient_gt: uint64
+  orderInClient_in: [uint64!]
+  orderInClient_leq: uint64
+  orderInClient_lt: uint64
+  orderInClient_neq: uint64
+  orderInClient_notin: [uint64!]
+  orderInSession: uint64
+  orderInSession_geq: uint64
+  orderInSession_gt: uint64
+  orderInSession_in: [uint64!]
+  orderInSession_leq: uint64
+  orderInSession_lt: uint64
+  orderInSession_neq: uint64
+  orderInSession_notin: [uint64!]
+  osName: string
+  osName_geq: string
+  osName_gt: string
+  osName_in: [string!]
+  osName_leq: string
+  osName_like: string
+  osName_lt: string
+  osName_neq: string
+  osName_notin: [string!]
+  osName_notlike: string
+  osVersion: string
+  osVersion_geq: string
+  osVersion_gt: string
+  osVersion_in: [string!]
+  osVersion_leq: string
+  osVersion_like: string
+  osVersion_lt: string
+  osVersion_neq: string
+  osVersion_notin: [string!]
+  osVersion_notlike: string
+  other: string
+  other_geq: string
+  other_gt: string
+  other_in: [string!]
+  other_leq: string
+  other_like: string
+  other_lt: string
+  other_neq: string
+  other_notin: [string!]
+  other_notlike: string
+  pageTitle: string
+  pageTitle_geq: string
+  pageTitle_gt: string
+  pageTitle_in: [string!]
+  pageTitle_leq: string
+  pageTitle_like: string
+  pageTitle_lt: string
+  pageTitle_neq: string
+  pageTitle_notin: [string!]
+  pageTitle_notlike: string
+  resolution: string
+  resolution_geq: string
+  resolution_gt: string
+  resolution_in: [string!]
+  resolution_leq: string
+  resolution_like: string
+  resolution_lt: string
+  resolution_neq: string
+  resolution_notin: [string!]
+  resolution_notlike: string
+  reverseOrderInClient: uint64
+  reverseOrderInClient_geq: uint64
+  reverseOrderInClient_gt: uint64
+  reverseOrderInClient_in: [uint64!]
+  reverseOrderInClient_leq: uint64
+  reverseOrderInClient_lt: uint64
+  reverseOrderInClient_neq: uint64
+  reverseOrderInClient_notin: [uint64!]
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+  timezoneOffset: uint64
+  timezoneOffset_geq: uint64
+  timezoneOffset_gt: uint64
+  timezoneOffset_in: [uint64!]
+  timezoneOffset_leq: uint64
+  timezoneOffset_lt: uint64
+  timezoneOffset_neq: uint64
+  timezoneOffset_notin: [uint64!]
+  trackData: string
+  trackData_geq: string
+  trackData_gt: string
+  trackData_in: [string!]
+  trackData_leq: string
+  trackData_like: string
+  trackData_lt: string
+  trackData_neq: string
+  trackData_notin: [string!]
+  trackData_notlike: string
+  trackName: string
+  trackName_geq: string
+  trackName_gt: string
+  trackName_in: [string!]
+  trackName_leq: string
+  trackName_like: string
+  trackName_lt: string
+  trackName_neq: string
+  trackName_notin: [string!]
+  trackName_notlike: string
+  trafficSrc: string
+  trafficSrc_geq: string
+  trafficSrc_gt: string
+  trafficSrc_in: [string!]
+  trafficSrc_leq: string
+  trafficSrc_like: string
+  trafficSrc_lt: string
+  trafficSrc_neq: string
+  trafficSrc_notin: [string!]
+  trafficSrc_notlike: string
+  ua: string
+  uaObj: string
+  uaObj_geq: string
+  uaObj_gt: string
+  uaObj_in: [string!]
+  uaObj_leq: string
+  uaObj_like: string
+  uaObj_lt: string
+  uaObj_neq: string
+  uaObj_notin: [string!]
+  uaObj_notlike: string
+  ua_geq: string
+  ua_gt: string
+  ua_in: [string!]
+  ua_leq: string
+  ua_like: string
+  ua_lt: string
+  ua_neq: string
+  ua_notin: [string!]
+  ua_notlike: string
+  urlPath: string
+  urlPath_geq: string
+  urlPath_gt: string
+  urlPath_in: [string!]
+  urlPath_leq: string
+  urlPath_like: string
+  urlPath_lt: string
+  urlPath_neq: string
+  urlPath_notin: [string!]
+  urlPath_notlike: string
+  viewport: string
+  viewport_geq: string
+  viewport_gt: string
+  viewport_in: [string!]
+  viewport_leq: string
+  viewport_like: string
+  viewport_lt: string
+  viewport_neq: string
+  viewport_notin: [string!]
+  viewport_notlike: string
+}
+
+# Zaraz Analytics Tracks ordered per session
 type ZoneZarazAnalyticsOrderedTrackAdaptiveGroups {
   # Number of processed Zaraz Track requests
   count: uint64!
@@ -48629,6 +49196,145 @@ type ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsUniq {
   clientIdCount: uint64!
   # Minimum number of distinct session IDs
   sessionIdCount: uint64!
+}
+
+enum ZoneZarazAnalyticsOrderedTrackAdaptiveOrderBy {
+  # browserName ascending
+  browserName_ASC
+  # browserName descending
+  browserName_DESC
+  # cityRegion ascending
+  cityRegion_ASC
+  # cityRegion descending
+  cityRegion_DESC
+  # clientId ascending
+  clientId_ASC
+  # clientId descending
+  clientId_DESC
+  # colors ascending
+  colors_ASC
+  # colors descending
+  colors_DESC
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # deviceModel ascending
+  deviceModel_ASC
+  # deviceModel descending
+  deviceModel_DESC
+  # deviceType ascending
+  deviceType_ASC
+  # deviceType descending
+  deviceType_DESC
+  # deviceVendor ascending
+  deviceVendor_ASC
+  # deviceVendor descending
+  deviceVendor_DESC
+  # ip ascending
+  ip_ASC
+  # ip descending
+  ip_DESC
+  # language ascending
+  language_ASC
+  # language descending
+  language_DESC
+  # orderInClient ascending
+  orderInClient_ASC
+  # orderInClient descending
+  orderInClient_DESC
+  # orderInSession ascending
+  orderInSession_ASC
+  # orderInSession descending
+  orderInSession_DESC
+  # osName ascending
+  osName_ASC
+  # osName descending
+  osName_DESC
+  # osVersion ascending
+  osVersion_ASC
+  # osVersion descending
+  osVersion_DESC
+  # other ascending
+  other_ASC
+  # other descending
+  other_DESC
+  # pageTitle ascending
+  pageTitle_ASC
+  # pageTitle descending
+  pageTitle_DESC
+  # resolution ascending
+  resolution_ASC
+  # resolution descending
+  resolution_DESC
+  # reverseOrderInClient ascending
+  reverseOrderInClient_ASC
+  # reverseOrderInClient descending
+  reverseOrderInClient_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # timezoneOffset ascending
+  timezoneOffset_ASC
+  # timezoneOffset descending
+  timezoneOffset_DESC
+  # trackData ascending
+  trackData_ASC
+  # trackData descending
+  trackData_DESC
+  # trackName ascending
+  trackName_ASC
+  # trackName descending
+  trackName_DESC
+  # trafficSrc ascending
+  trafficSrc_ASC
+  # trafficSrc descending
+  trafficSrc_DESC
+  # uaObj ascending
+  uaObj_ASC
+  # uaObj descending
+  uaObj_DESC
+  # ua ascending
+  ua_ASC
+  # ua descending
+  ua_DESC
+  # urlPath ascending
+  urlPath_ASC
+  # urlPath descending
+  urlPath_DESC
+  # viewport ascending
+  viewport_ASC
+  # viewport descending
+  viewport_DESC
 }
 
 # Zaraz Analytics Track - counts zaraz.track calls
