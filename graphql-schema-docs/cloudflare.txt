@@ -78,6 +78,10 @@ Account-level datasets:
 * turnstileAdaptiveGroups
 * vectorizeQueriesAdaptiveGroups
 * vectorizeStorageAdaptiveGroups
+* vectorizeV2OperationsAdaptiveGroups
+* vectorizeV2QueriesAdaptiveGroups
+* vectorizeV2StorageAdaptiveGroups
+* vectorizeV2WritesAdaptiveGroups
 * videoBufferEventsAdaptiveGroups
 * videoPlaybackEventsAdaptiveGroups
 * videoQualityEventsAdaptiveGroups
@@ -351,6 +355,14 @@ type account {
   vectorizeQueriesAdaptiveGroups(filter: AccountVectorizeQueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVectorizeQueriesAdaptiveGroupsOrderBy!]): [AccountVectorizeQueriesAdaptiveGroups!]!
   # Beta. Vectorize storage with adaptive sampling
   vectorizeStorageAdaptiveGroups(filter: AccountVectorizeStorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVectorizeStorageAdaptiveGroupsOrderBy!]): [AccountVectorizeStorageAdaptiveGroups!]!
+  # Vectorize operations with adaptive sampling
+  vectorizeV2OperationsAdaptiveGroups(filter: AccountVectorizeV2OperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVectorizeV2OperationsAdaptiveGroupsOrderBy!]): [AccountVectorizeV2OperationsAdaptiveGroups!]!
+  # Vectorize queries with adaptive sampling
+  vectorizeV2QueriesAdaptiveGroups(filter: AccountVectorizeV2QueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVectorizeV2QueriesAdaptiveGroupsOrderBy!]): [AccountVectorizeV2QueriesAdaptiveGroups!]!
+  # Vectorize storage with adaptive sampling
+  vectorizeV2StorageAdaptiveGroups(filter: AccountVectorizeV2StorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVectorizeV2StorageAdaptiveGroupsOrderBy!]): [AccountVectorizeV2StorageAdaptiveGroups!]!
+  # Vectorize writes with adaptive sampling
+  vectorizeV2WritesAdaptiveGroups(filter: AccountVectorizeV2WritesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVectorizeV2WritesAdaptiveGroupsOrderBy!]): [AccountVectorizeV2WritesAdaptiveGroups!]!
   # Beta. Aggregated video streaming buffer event metrics with adaptive sampling
   videoBufferEventsAdaptiveGroups(filter: AccountVideoBufferEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVideoBufferEventsAdaptiveGroupsOrderBy!]): [AccountVideoBufferEventsAdaptiveGroups!]!
   # Beta. Aggregated video streaming playback event metrics with adaptive sampling
@@ -14198,6 +14210,8 @@ type AccountGatewayL7RequestsAdaptiveGroupsDimensions {
   httpStatusCode: float64!
   # Indicates whether this request was made through an isolated link
   isIsolated: uint16!
+  # Access private app AUD
+  privateAppAUD: string!
   # Indicates if the request content was quarantined
   quarantined: uint8!
   # Local LAN IP of the device. Only available when connected via a GRE/IPsec tunnel on-ramp
@@ -14301,6 +14315,16 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   isIsolated_lt: uint16
   isIsolated_neq: uint16
   isIsolated_notin: [uint16!]
+  privateAppAUD: string
+  privateAppAUD_geq: string
+  privateAppAUD_gt: string
+  privateAppAUD_in: [string!]
+  privateAppAUD_leq: string
+  privateAppAUD_like: string
+  privateAppAUD_lt: string
+  privateAppAUD_neq: string
+  privateAppAUD_notin: [string!]
+  privateAppAUD_notlike: string
   quarantined: uint8
   quarantined_geq: uint8
   quarantined_gt: uint8
@@ -14386,6 +14410,10 @@ enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
   isIsolated_ASC
   # isIsolated descending
   isIsolated_DESC
+  # privateAppAUD ascending
+  privateAppAUD_ASC
+  # privateAppAUD descending
+  privateAppAUD_DESC
   # quarantined ascending
   quarantined_ASC
   # quarantined descending
@@ -14413,23 +14441,65 @@ type AccountGatewayResolverByCategoryAdaptiveGroups {
 }
 
 type AccountGatewayResolverByCategoryAdaptiveGroupsDimensions {
+  # List of IPs of the authoritative nameservers that provided the answers, if any
+  authoritativeNameserverIps: [string!]!
   # ID of the category that was assigned to the domain
   categoryId: uint16!
+  # List of resolved intermediate cname domains
+  cnames: [string!]!
   # The date and time the DNS query was resolved
   datetime: Time!
   # The date and time the event occurred at the edge truncated to hours
   datetimeHour: Time!
   # The date and time the event occurred at the edge truncated to minutes
   datetimeMinute: Time!
+  # The destination DoH subdomain the DNS query was made to
+  dohSubdomain: string!
+  # The destination DoT subdomain the DNS query was made to
+  dotSubdomain: string!
+  # List of returned Extended DNS Error Codes
+  edeErrors: [uint16!]!
   # The uuid identifying the customer Location used when resolving
   locationId: string!
+  # ID of the application the domain belongs to
+  matchedApplicationId: uint16!
+  # Name of the application the domain belongs to
+  matchedApplicationName: string!
+  # ID of the policy/rule that was applied, if any
+  policyId: string!
+  # Name of the policy that was applied, if any
+  policyName: string!
+  # Continent code of each resolved IP, if any
+  resolvedIpContinents: [string!]!
+  # Country code of each resolved IP, if any
+  resolvedIpCountries: [string!]!
+  # List of resolved IPs in the response, if any
+  resolvedIps: [string!]!
   # Enum identifier for the decision made by gateway-resolver, one of: (0, unknown) (1, allowedByQueryName) (2, blockedByQueryName) (3, blockedByCategory) (4, allowedOnNoLocation) (5, allowedOnNoPolicyMatch) (6, blockedAlwaysCategory) (7, overrideForSafeSearch) (8, overrideApplied) (9, blockedRule) (10, allowedRule)
   resolverDecision: uint16!
+  # Resource records' classes
+  resourceRecordClasses: [string!]!
+  # Resource records' names
+  resourceRecordNames: [string!]!
+  # Resource records' rdata values
+  resourceRecordRDatas: [string!]!
+  # Resource records' TTL values
+  resourceRecordTTLs: [uint32!]!
+  # Resource records' types
+  resourceRecordTypes: [string!]!
+  # Continent code of the source IP address making the DNS query
+  srcIpContinent: string!
+  # Country code of the source IP address making the DNS query
+  srcIpCountry: string!
 }
 
 input AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject {
   AND: [AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject!]
   OR: [AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject!]
+  authoritativeNameserverIps_has: string
+  authoritativeNameserverIps_hasall: [string!]
+  authoritativeNameserverIps_hasany: [string!]
+  authoritativeNameserverIps_nothas: string
   categoryId: uint16
   categoryId_geq: uint16
   categoryId_gt: uint16
@@ -14438,6 +14508,10 @@ input AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject {
   categoryId_lt: uint16
   categoryId_neq: uint16
   categoryId_notin: [uint16!]
+  cnames_has: string
+  cnames_hasall: [string!]
+  cnames_hasany: [string!]
+  cnames_nothas: string
   datetime: Time
   datetimeHour: Time
   datetimeHour_geq: Time
@@ -14462,6 +14536,30 @@ input AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  dohSubdomain: string
+  dohSubdomain_geq: string
+  dohSubdomain_gt: string
+  dohSubdomain_in: [string!]
+  dohSubdomain_leq: string
+  dohSubdomain_like: string
+  dohSubdomain_lt: string
+  dohSubdomain_neq: string
+  dohSubdomain_notin: [string!]
+  dohSubdomain_notlike: string
+  dotSubdomain: string
+  dotSubdomain_geq: string
+  dotSubdomain_gt: string
+  dotSubdomain_in: [string!]
+  dotSubdomain_leq: string
+  dotSubdomain_like: string
+  dotSubdomain_lt: string
+  dotSubdomain_neq: string
+  dotSubdomain_notin: [string!]
+  dotSubdomain_notlike: string
+  edeErrors_has: uint16
+  edeErrors_hasall: [uint16!]
+  edeErrors_hasany: [uint16!]
+  edeErrors_nothas: uint16
   locationId: string
   locationId_geq: string
   locationId_gt: string
@@ -14472,6 +14570,56 @@ input AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject {
   locationId_neq: string
   locationId_notin: [string!]
   locationId_notlike: string
+  matchedApplicationId: uint16
+  matchedApplicationId_geq: uint16
+  matchedApplicationId_gt: uint16
+  matchedApplicationId_in: [uint16!]
+  matchedApplicationId_leq: uint16
+  matchedApplicationId_lt: uint16
+  matchedApplicationId_neq: uint16
+  matchedApplicationId_notin: [uint16!]
+  matchedApplicationName: string
+  matchedApplicationName_geq: string
+  matchedApplicationName_gt: string
+  matchedApplicationName_in: [string!]
+  matchedApplicationName_leq: string
+  matchedApplicationName_like: string
+  matchedApplicationName_lt: string
+  matchedApplicationName_neq: string
+  matchedApplicationName_notin: [string!]
+  matchedApplicationName_notlike: string
+  policyId: string
+  policyId_geq: string
+  policyId_gt: string
+  policyId_in: [string!]
+  policyId_leq: string
+  policyId_like: string
+  policyId_lt: string
+  policyId_neq: string
+  policyId_notin: [string!]
+  policyId_notlike: string
+  policyName: string
+  policyName_geq: string
+  policyName_gt: string
+  policyName_in: [string!]
+  policyName_leq: string
+  policyName_like: string
+  policyName_lt: string
+  policyName_neq: string
+  policyName_notin: [string!]
+  policyName_notlike: string
+  resolvedIpContinents_has: string
+  resolvedIpContinents_hasall: [string!]
+  resolvedIpContinents_hasany: [string!]
+  resolvedIpContinents_nothas: string
+  resolvedIpCountries_has: string
+  resolvedIpCountries_hasall: [string!]
+  resolvedIpCountries_hasany: [string!]
+  resolvedIpCountries_nothas: string
+  resolvedIps_has: string
+  resolvedIps_hasall: [string!]
+  resolvedIps_hasany: [string!]
+  resolvedIps_nothas: string
   resolverDecision: uint16
   resolverDecision_geq: uint16
   resolverDecision_gt: uint16
@@ -14480,13 +14628,61 @@ input AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject {
   resolverDecision_lt: uint16
   resolverDecision_neq: uint16
   resolverDecision_notin: [uint16!]
+  resourceRecordClasses_has: string
+  resourceRecordClasses_hasall: [string!]
+  resourceRecordClasses_hasany: [string!]
+  resourceRecordClasses_nothas: string
+  resourceRecordNames_has: string
+  resourceRecordNames_hasall: [string!]
+  resourceRecordNames_hasany: [string!]
+  resourceRecordNames_nothas: string
+  resourceRecordRDatas_has: string
+  resourceRecordRDatas_hasall: [string!]
+  resourceRecordRDatas_hasany: [string!]
+  resourceRecordRDatas_nothas: string
+  resourceRecordTTLs_has: uint32
+  resourceRecordTTLs_hasall: [uint32!]
+  resourceRecordTTLs_hasany: [uint32!]
+  resourceRecordTTLs_nothas: uint32
+  resourceRecordTypes_has: string
+  resourceRecordTypes_hasall: [string!]
+  resourceRecordTypes_hasany: [string!]
+  resourceRecordTypes_nothas: string
+  srcIpContinent: string
+  srcIpContinent_geq: string
+  srcIpContinent_gt: string
+  srcIpContinent_in: [string!]
+  srcIpContinent_leq: string
+  srcIpContinent_like: string
+  srcIpContinent_lt: string
+  srcIpContinent_neq: string
+  srcIpContinent_notin: [string!]
+  srcIpContinent_notlike: string
+  srcIpCountry: string
+  srcIpCountry_geq: string
+  srcIpCountry_gt: string
+  srcIpCountry_in: [string!]
+  srcIpCountry_leq: string
+  srcIpCountry_like: string
+  srcIpCountry_lt: string
+  srcIpCountry_neq: string
+  srcIpCountry_notin: [string!]
+  srcIpCountry_notlike: string
 }
 
 enum AccountGatewayResolverByCategoryAdaptiveGroupsOrderBy {
+  # authoritativeNameserverIps ascending
+  authoritativeNameserverIps_ASC
+  # authoritativeNameserverIps descending
+  authoritativeNameserverIps_DESC
   # categoryId ascending
   categoryId_ASC
   # categoryId descending
   categoryId_DESC
+  # cnames ascending
+  cnames_ASC
+  # cnames descending
+  cnames_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -14503,14 +14699,82 @@ enum AccountGatewayResolverByCategoryAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # dohSubdomain ascending
+  dohSubdomain_ASC
+  # dohSubdomain descending
+  dohSubdomain_DESC
+  # dotSubdomain ascending
+  dotSubdomain_ASC
+  # dotSubdomain descending
+  dotSubdomain_DESC
+  # edeErrors ascending
+  edeErrors_ASC
+  # edeErrors descending
+  edeErrors_DESC
   # locationId ascending
   locationId_ASC
   # locationId descending
   locationId_DESC
+  # matchedApplicationId ascending
+  matchedApplicationId_ASC
+  # matchedApplicationId descending
+  matchedApplicationId_DESC
+  # matchedApplicationName ascending
+  matchedApplicationName_ASC
+  # matchedApplicationName descending
+  matchedApplicationName_DESC
+  # policyId ascending
+  policyId_ASC
+  # policyId descending
+  policyId_DESC
+  # policyName ascending
+  policyName_ASC
+  # policyName descending
+  policyName_DESC
+  # resolvedIpContinents ascending
+  resolvedIpContinents_ASC
+  # resolvedIpContinents descending
+  resolvedIpContinents_DESC
+  # resolvedIpCountries ascending
+  resolvedIpCountries_ASC
+  # resolvedIpCountries descending
+  resolvedIpCountries_DESC
+  # resolvedIps ascending
+  resolvedIps_ASC
+  # resolvedIps descending
+  resolvedIps_DESC
   # resolverDecision ascending
   resolverDecision_ASC
   # resolverDecision descending
   resolverDecision_DESC
+  # resourceRecordClasses ascending
+  resourceRecordClasses_ASC
+  # resourceRecordClasses descending
+  resourceRecordClasses_DESC
+  # resourceRecordNames ascending
+  resourceRecordNames_ASC
+  # resourceRecordNames descending
+  resourceRecordNames_DESC
+  # resourceRecordRDatas ascending
+  resourceRecordRDatas_ASC
+  # resourceRecordRDatas descending
+  resourceRecordRDatas_DESC
+  # resourceRecordTTLs ascending
+  resourceRecordTTLs_ASC
+  # resourceRecordTTLs descending
+  resourceRecordTTLs_DESC
+  # resourceRecordTypes ascending
+  resourceRecordTypes_ASC
+  # resourceRecordTypes descending
+  resourceRecordTypes_DESC
+  # srcIpContinent ascending
+  srcIpContinent_ASC
+  # srcIpContinent descending
+  srcIpContinent_DESC
+  # srcIpCountry ascending
+  srcIpCountry_ASC
+  # srcIpCountry descending
+  srcIpCountry_DESC
 }
 
 # Stats on dns custom resolvers
@@ -14811,31 +15075,79 @@ type AccountGatewayResolverQueriesAdaptiveGroups {
 }
 
 type AccountGatewayResolverQueriesAdaptiveGroupsDimensions {
+  # List of IPs of the authoritative nameservers that provided the answers, if any
+  authoritativeNameserverIps: [string!]!
   # Json array of categories for this query
   categoryIds: string!
+  # List of matching categories names for this query
+  categoryNames: [string!]!
+  # List of resolved intermediate cname domains
+  cnames: [string!]!
   # The date and time the DNS query was resolved
   datetime: Time!
   # The date and time the event occurred at the edge truncated to hours
   datetimeHour: Time!
   # The date and time the event occurred at the edge truncated to minutes
   datetimeMinute: Time!
+  # The destination DoH subdomain the DNS query was made to
+  dohSubdomain: string!
+  # The destination DoT subdomain the DNS query was made to
+  dotSubdomain: string!
+  # List of returned Extended DNS Error Codes
+  edeErrors: [uint16!]!
   # The uuid identifying the customer Location used when resolving
   locationId: string!
+  # The name identifying the customer Location used when resolving
+  locationName: string!
+  # ID of the application the domain belongs to
+  matchedApplicationId: uint16!
+  # Name of the application the domain belongs to
+  matchedApplicationName: string!
   # Json array of indicator feed IDs for this query that matched rule
   matchedIndicatorFeedIds: string!
+  # List of indicator feed names for this query
+  matchedIndicatorFeedNames: [string!]!
+  # ID of the policy/rule that was applied, if any
+  policyId: string!
+  # Name of the policy that was applied, if any
+  policyName: string!
   # Name of the query, e.g. one.dash.cloudflare.com
   queryName: string!
   # Name of the query in reverse order, e.g. com.cloudflare.dash.one
   queryNameReversed: string!
+  # Continent code of each resolved IP, if any
+  resolvedIpContinents: [string!]!
+  # Country code of each resolved IP, if any
+  resolvedIpCountries: [string!]!
+  # List of resolved IPs in the response, if any
+  resolvedIps: [string!]!
   # Enum identifier for the decision made by gateway-resolver, one of: (0, unknown) (1, allowedByQueryName) (2, blockedByQueryName) (3, blockedByCategory) (4, allowedOnNoLocation) (5, allowedOnNoPolicyMatch) (6, blockedAlwaysCategory) (7, overrideForSafeSearch) (8, overrideApplied) (9, blockedRule) (10, allowedRule)
   resolverDecision: uint16!
+  # Resource records' classes
+  resourceRecordClasses: [string!]!
+  # Resource records' names
+  resourceRecordNames: [string!]!
+  # Resource records' rdata values
+  resourceRecordRDatas: [string!]!
+  # Resource records' TTL values
+  resourceRecordTTLs: [uint32!]!
+  # Resource records' types
+  resourceRecordTypes: [string!]!
   # Json object of schedule releated information
   scheduleInfo: string!
+  # Continent code of the source IP address making the DNS query
+  srcIpContinent: string!
+  # Country code of the source IP address making the DNS query
+  srcIpCountry: string!
 }
 
 input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   AND: [AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject!]
   OR: [AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject!]
+  authoritativeNameserverIps_has: string
+  authoritativeNameserverIps_hasall: [string!]
+  authoritativeNameserverIps_hasany: [string!]
+  authoritativeNameserverIps_nothas: string
   categoryIds: string
   categoryIds_geq: string
   categoryIds_gt: string
@@ -14846,6 +15158,14 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   categoryIds_neq: string
   categoryIds_notin: [string!]
   categoryIds_notlike: string
+  categoryNames_has: string
+  categoryNames_hasall: [string!]
+  categoryNames_hasany: [string!]
+  categoryNames_nothas: string
+  cnames_has: string
+  cnames_hasall: [string!]
+  cnames_hasany: [string!]
+  cnames_nothas: string
   datetime: Time
   datetimeHour: Time
   datetimeHour_geq: Time
@@ -14870,6 +15190,30 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  dohSubdomain: string
+  dohSubdomain_geq: string
+  dohSubdomain_gt: string
+  dohSubdomain_in: [string!]
+  dohSubdomain_leq: string
+  dohSubdomain_like: string
+  dohSubdomain_lt: string
+  dohSubdomain_neq: string
+  dohSubdomain_notin: [string!]
+  dohSubdomain_notlike: string
+  dotSubdomain: string
+  dotSubdomain_geq: string
+  dotSubdomain_gt: string
+  dotSubdomain_in: [string!]
+  dotSubdomain_leq: string
+  dotSubdomain_like: string
+  dotSubdomain_lt: string
+  dotSubdomain_neq: string
+  dotSubdomain_notin: [string!]
+  dotSubdomain_notlike: string
+  edeErrors_has: uint16
+  edeErrors_hasall: [uint16!]
+  edeErrors_hasany: [uint16!]
+  edeErrors_nothas: uint16
   locationId: string
   locationId_geq: string
   locationId_gt: string
@@ -14880,6 +15224,34 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   locationId_neq: string
   locationId_notin: [string!]
   locationId_notlike: string
+  locationName: string
+  locationName_geq: string
+  locationName_gt: string
+  locationName_in: [string!]
+  locationName_leq: string
+  locationName_like: string
+  locationName_lt: string
+  locationName_neq: string
+  locationName_notin: [string!]
+  locationName_notlike: string
+  matchedApplicationId: uint16
+  matchedApplicationId_geq: uint16
+  matchedApplicationId_gt: uint16
+  matchedApplicationId_in: [uint16!]
+  matchedApplicationId_leq: uint16
+  matchedApplicationId_lt: uint16
+  matchedApplicationId_neq: uint16
+  matchedApplicationId_notin: [uint16!]
+  matchedApplicationName: string
+  matchedApplicationName_geq: string
+  matchedApplicationName_gt: string
+  matchedApplicationName_in: [string!]
+  matchedApplicationName_leq: string
+  matchedApplicationName_like: string
+  matchedApplicationName_lt: string
+  matchedApplicationName_neq: string
+  matchedApplicationName_notin: [string!]
+  matchedApplicationName_notlike: string
   matchedIndicatorFeedIds: string
   matchedIndicatorFeedIds_geq: string
   matchedIndicatorFeedIds_gt: string
@@ -14890,6 +15262,30 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   matchedIndicatorFeedIds_neq: string
   matchedIndicatorFeedIds_notin: [string!]
   matchedIndicatorFeedIds_notlike: string
+  matchedIndicatorFeedNames_has: string
+  matchedIndicatorFeedNames_hasall: [string!]
+  matchedIndicatorFeedNames_hasany: [string!]
+  matchedIndicatorFeedNames_nothas: string
+  policyId: string
+  policyId_geq: string
+  policyId_gt: string
+  policyId_in: [string!]
+  policyId_leq: string
+  policyId_like: string
+  policyId_lt: string
+  policyId_neq: string
+  policyId_notin: [string!]
+  policyId_notlike: string
+  policyName: string
+  policyName_geq: string
+  policyName_gt: string
+  policyName_in: [string!]
+  policyName_leq: string
+  policyName_like: string
+  policyName_lt: string
+  policyName_neq: string
+  policyName_notin: [string!]
+  policyName_notlike: string
   queryName: string
   queryNameReversed: string
   queryNameReversed_geq: string
@@ -14910,6 +15306,18 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   queryName_neq: string
   queryName_notin: [string!]
   queryName_notlike: string
+  resolvedIpContinents_has: string
+  resolvedIpContinents_hasall: [string!]
+  resolvedIpContinents_hasany: [string!]
+  resolvedIpContinents_nothas: string
+  resolvedIpCountries_has: string
+  resolvedIpCountries_hasall: [string!]
+  resolvedIpCountries_hasany: [string!]
+  resolvedIpCountries_nothas: string
+  resolvedIps_has: string
+  resolvedIps_hasall: [string!]
+  resolvedIps_hasany: [string!]
+  resolvedIps_nothas: string
   resolverDecision: uint16
   resolverDecision_geq: uint16
   resolverDecision_gt: uint16
@@ -14918,6 +15326,26 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   resolverDecision_lt: uint16
   resolverDecision_neq: uint16
   resolverDecision_notin: [uint16!]
+  resourceRecordClasses_has: string
+  resourceRecordClasses_hasall: [string!]
+  resourceRecordClasses_hasany: [string!]
+  resourceRecordClasses_nothas: string
+  resourceRecordNames_has: string
+  resourceRecordNames_hasall: [string!]
+  resourceRecordNames_hasany: [string!]
+  resourceRecordNames_nothas: string
+  resourceRecordRDatas_has: string
+  resourceRecordRDatas_hasall: [string!]
+  resourceRecordRDatas_hasany: [string!]
+  resourceRecordRDatas_nothas: string
+  resourceRecordTTLs_has: uint32
+  resourceRecordTTLs_hasall: [uint32!]
+  resourceRecordTTLs_hasany: [uint32!]
+  resourceRecordTTLs_nothas: uint32
+  resourceRecordTypes_has: string
+  resourceRecordTypes_hasall: [string!]
+  resourceRecordTypes_hasany: [string!]
+  resourceRecordTypes_nothas: string
   scheduleInfo: string
   scheduleInfo_geq: string
   scheduleInfo_gt: string
@@ -14928,13 +15356,45 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   scheduleInfo_neq: string
   scheduleInfo_notin: [string!]
   scheduleInfo_notlike: string
+  srcIpContinent: string
+  srcIpContinent_geq: string
+  srcIpContinent_gt: string
+  srcIpContinent_in: [string!]
+  srcIpContinent_leq: string
+  srcIpContinent_like: string
+  srcIpContinent_lt: string
+  srcIpContinent_neq: string
+  srcIpContinent_notin: [string!]
+  srcIpContinent_notlike: string
+  srcIpCountry: string
+  srcIpCountry_geq: string
+  srcIpCountry_gt: string
+  srcIpCountry_in: [string!]
+  srcIpCountry_leq: string
+  srcIpCountry_like: string
+  srcIpCountry_lt: string
+  srcIpCountry_neq: string
+  srcIpCountry_notin: [string!]
+  srcIpCountry_notlike: string
 }
 
 enum AccountGatewayResolverQueriesAdaptiveGroupsOrderBy {
+  # authoritativeNameserverIps ascending
+  authoritativeNameserverIps_ASC
+  # authoritativeNameserverIps descending
+  authoritativeNameserverIps_DESC
   # categoryIds ascending
   categoryIds_ASC
   # categoryIds descending
   categoryIds_DESC
+  # categoryNames ascending
+  categoryNames_ASC
+  # categoryNames descending
+  categoryNames_DESC
+  # cnames ascending
+  cnames_ASC
+  # cnames descending
+  cnames_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -14951,14 +15411,50 @@ enum AccountGatewayResolverQueriesAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # dohSubdomain ascending
+  dohSubdomain_ASC
+  # dohSubdomain descending
+  dohSubdomain_DESC
+  # dotSubdomain ascending
+  dotSubdomain_ASC
+  # dotSubdomain descending
+  dotSubdomain_DESC
+  # edeErrors ascending
+  edeErrors_ASC
+  # edeErrors descending
+  edeErrors_DESC
   # locationId ascending
   locationId_ASC
   # locationId descending
   locationId_DESC
+  # locationName ascending
+  locationName_ASC
+  # locationName descending
+  locationName_DESC
+  # matchedApplicationId ascending
+  matchedApplicationId_ASC
+  # matchedApplicationId descending
+  matchedApplicationId_DESC
+  # matchedApplicationName ascending
+  matchedApplicationName_ASC
+  # matchedApplicationName descending
+  matchedApplicationName_DESC
   # matchedIndicatorFeedIds ascending
   matchedIndicatorFeedIds_ASC
   # matchedIndicatorFeedIds descending
   matchedIndicatorFeedIds_DESC
+  # matchedIndicatorFeedNames ascending
+  matchedIndicatorFeedNames_ASC
+  # matchedIndicatorFeedNames descending
+  matchedIndicatorFeedNames_DESC
+  # policyId ascending
+  policyId_ASC
+  # policyId descending
+  policyId_DESC
+  # policyName ascending
+  policyName_ASC
+  # policyName descending
+  policyName_DESC
   # queryNameReversed ascending
   queryNameReversed_ASC
   # queryNameReversed descending
@@ -14967,14 +15463,54 @@ enum AccountGatewayResolverQueriesAdaptiveGroupsOrderBy {
   queryName_ASC
   # queryName descending
   queryName_DESC
+  # resolvedIpContinents ascending
+  resolvedIpContinents_ASC
+  # resolvedIpContinents descending
+  resolvedIpContinents_DESC
+  # resolvedIpCountries ascending
+  resolvedIpCountries_ASC
+  # resolvedIpCountries descending
+  resolvedIpCountries_DESC
+  # resolvedIps ascending
+  resolvedIps_ASC
+  # resolvedIps descending
+  resolvedIps_DESC
   # resolverDecision ascending
   resolverDecision_ASC
   # resolverDecision descending
   resolverDecision_DESC
+  # resourceRecordClasses ascending
+  resourceRecordClasses_ASC
+  # resourceRecordClasses descending
+  resourceRecordClasses_DESC
+  # resourceRecordNames ascending
+  resourceRecordNames_ASC
+  # resourceRecordNames descending
+  resourceRecordNames_DESC
+  # resourceRecordRDatas ascending
+  resourceRecordRDatas_ASC
+  # resourceRecordRDatas descending
+  resourceRecordRDatas_DESC
+  # resourceRecordTTLs ascending
+  resourceRecordTTLs_ASC
+  # resourceRecordTTLs descending
+  resourceRecordTTLs_DESC
+  # resourceRecordTypes ascending
+  resourceRecordTypes_ASC
+  # resourceRecordTypes descending
+  resourceRecordTypes_DESC
   # scheduleInfo ascending
   scheduleInfo_ASC
   # scheduleInfo descending
   scheduleInfo_DESC
+  # srcIpContinent ascending
+  srcIpContinent_ASC
+  # srcIpContinent descending
+  srcIpContinent_DESC
+  # srcIpCountry ascending
+  srcIpCountry_ASC
+  # srcIpCountry descending
+  srcIpCountry_DESC
 }
 
 # Daily rollups of request data
@@ -18640,6 +19176,10 @@ enum AccountKvOperationsAdaptiveGroupsOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # clientType ascending
+  clientType_ASC
+  # clientType descending
+  clientType_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -30057,6 +30597,10 @@ type AccountSettings {
   turnstileAdaptiveGroups: Settings!
   vectorizeQueriesAdaptiveGroups: Settings!
   vectorizeStorageAdaptiveGroups: Settings!
+  vectorizeV2OperationsAdaptiveGroups: Settings!
+  vectorizeV2QueriesAdaptiveGroups: Settings!
+  vectorizeV2StorageAdaptiveGroups: Settings!
+  vectorizeV2WritesAdaptiveGroups: Settings!
   videoBufferEventsAdaptiveGroups: Settings!
   videoPlaybackEventsAdaptiveGroups: Settings!
   videoQualityEventsAdaptiveGroups: Settings!
@@ -32667,6 +33211,625 @@ enum AccountVectorizeStorageAdaptiveGroupsOrderBy {
   vectorizeIndexId_ASC
   # vectorizeIndexId descending
   vectorizeIndexId_DESC
+}
+
+# Vectorize operations with adaptive sampling
+type AccountVectorizeV2OperationsAdaptiveGroups {
+  # Total number of Vectorize operations
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountVectorizeV2OperationsAdaptiveGroupsDimensions
+}
+
+type AccountVectorizeV2OperationsAdaptiveGroupsDimensions {
+  # Vectorize operation event timestamp, truncated to start of a day
+  date: Date!
+  # Vectorize operation event timestamp
+  datetime: Time!
+  # Vectorize operation event timestamp, truncated to start of hour
+  datetimeHour: Time!
+  # Vectorize operation event timestamp, truncated to start of minute
+  datetimeMinute: Time!
+  # Name of a Vectorize index
+  indexName: string!
+  # The type of Vectorize operation
+  operation: uint64!
+  # Request status. One of [2xx, 4xx, 5xx, unknown]
+  requestStatus: string!
+}
+
+input AccountVectorizeV2OperationsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountVectorizeV2OperationsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountVectorizeV2OperationsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  indexName: string
+  indexName_geq: string
+  indexName_gt: string
+  indexName_in: [string!]
+  indexName_leq: string
+  indexName_like: string
+  indexName_lt: string
+  indexName_neq: string
+  indexName_notin: [string!]
+  indexName_notlike: string
+  operation: uint64
+  operation_geq: uint64
+  operation_gt: uint64
+  operation_in: [uint64!]
+  operation_leq: uint64
+  operation_lt: uint64
+  operation_neq: uint64
+  operation_notin: [uint64!]
+  requestStatus: string
+  requestStatus_geq: string
+  requestStatus_gt: string
+  requestStatus_in: [string!]
+  requestStatus_leq: string
+  requestStatus_like: string
+  requestStatus_lt: string
+  requestStatus_neq: string
+  requestStatus_notin: [string!]
+  requestStatus_notlike: string
+}
+
+enum AccountVectorizeV2OperationsAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # indexName ascending
+  indexName_ASC
+  # indexName descending
+  indexName_DESC
+  # operation ascending
+  operation_ASC
+  # operation descending
+  operation_DESC
+  # requestStatus ascending
+  requestStatus_ASC
+  # requestStatus descending
+  requestStatus_DESC
+}
+
+# Vectorize queries with adaptive sampling
+type AccountVectorizeV2QueriesAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountVectorizeV2QueriesAdaptiveGroupsAvg
+  # Total number of Vectorize queries
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountVectorizeV2QueriesAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: AccountVectorizeV2QueriesAdaptiveGroupsQuantiles
+  # The sum of values for a metric per dimension
+  sum: AccountVectorizeV2QueriesAdaptiveGroupsSum
+}
+
+type AccountVectorizeV2QueriesAdaptiveGroupsAvg {
+  # Average latency (in milliseconds) of serving a Vectorize query
+  requestDurationMs: uint64!
+}
+
+type AccountVectorizeV2QueriesAdaptiveGroupsDimensions {
+  # Vectorize queries event timestamp, truncated to start of a day
+  date: Date!
+  # Vectorize queries event timestamp
+  datetime: Time!
+  # Vectorize queries event timestamp, truncated to start of hour
+  datetimeHour: Time!
+  # Vectorize queries event timestamp, truncated to start of minute
+  datetimeMinute: Time!
+  # Name of a Vectorize index
+  indexName: string!
+  # The type of Vectorize operation
+  operation: uint64!
+  # Request status. One of [2xx, 4xx, 5xx, unknown]
+  requestStatus: string!
+}
+
+input AccountVectorizeV2QueriesAdaptiveGroupsFilter_InputObject {
+  AND: [AccountVectorizeV2QueriesAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountVectorizeV2QueriesAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  indexName: string
+  indexName_geq: string
+  indexName_gt: string
+  indexName_in: [string!]
+  indexName_leq: string
+  indexName_like: string
+  indexName_lt: string
+  indexName_neq: string
+  indexName_notin: [string!]
+  indexName_notlike: string
+  operation: uint64
+  operation_geq: uint64
+  operation_gt: uint64
+  operation_in: [uint64!]
+  operation_leq: uint64
+  operation_lt: uint64
+  operation_neq: uint64
+  operation_notin: [uint64!]
+  requestStatus: string
+  requestStatus_geq: string
+  requestStatus_gt: string
+  requestStatus_in: [string!]
+  requestStatus_leq: string
+  requestStatus_like: string
+  requestStatus_lt: string
+  requestStatus_neq: string
+  requestStatus_notin: [string!]
+  requestStatus_notlike: string
+}
+
+enum AccountVectorizeV2QueriesAdaptiveGroupsOrderBy {
+  # avg(requestDurationMs) ascending
+  avg_requestDurationMs_ASC
+  # avg(requestDurationMs) descending
+  avg_requestDurationMs_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # indexName ascending
+  indexName_ASC
+  # indexName descending
+  indexName_DESC
+  # operation ascending
+  operation_ASC
+  # operation descending
+  operation_DESC
+  # quantiles(requestDurationMsP25) ascending
+  quantiles_requestDurationMsP25_ASC
+  # quantiles(requestDurationMsP25) descending
+  quantiles_requestDurationMsP25_DESC
+  # quantiles(requestDurationMsP50) ascending
+  quantiles_requestDurationMsP50_ASC
+  # quantiles(requestDurationMsP50) descending
+  quantiles_requestDurationMsP50_DESC
+  # quantiles(requestDurationMsP75) ascending
+  quantiles_requestDurationMsP75_ASC
+  # quantiles(requestDurationMsP75) descending
+  quantiles_requestDurationMsP75_DESC
+  # quantiles(requestDurationMsP95) ascending
+  quantiles_requestDurationMsP95_ASC
+  # quantiles(requestDurationMsP95) descending
+  quantiles_requestDurationMsP95_DESC
+  # quantiles(requestDurationMsP99) ascending
+  quantiles_requestDurationMsP99_ASC
+  # quantiles(requestDurationMsP99) descending
+  quantiles_requestDurationMsP99_DESC
+  # requestStatus ascending
+  requestStatus_ASC
+  # requestStatus descending
+  requestStatus_DESC
+  # sum(queriedVectorDimensions) ascending
+  sum_queriedVectorDimensions_ASC
+  # sum(queriedVectorDimensions) descending
+  sum_queriedVectorDimensions_DESC
+  # sum(requestDurationMs) ascending
+  sum_requestDurationMs_ASC
+  # sum(requestDurationMs) descending
+  sum_requestDurationMs_DESC
+  # sum(servedVectorCount) ascending
+  sum_servedVectorCount_ASC
+  # sum(servedVectorCount) descending
+  sum_servedVectorCount_DESC
+}
+
+type AccountVectorizeV2QueriesAdaptiveGroupsQuantiles {
+  # 25th percentile latency (milliseconds)
+  requestDurationMsP25: float32!
+  # 50th percentile latency (milliseconds)
+  requestDurationMsP50: float32!
+  # 75th percentile latency (milliseconds)
+  requestDurationMsP75: float32!
+  # 95th percentile latency (milliseconds)
+  requestDurationMsP95: float32!
+  # 99th percentile latency (milliseconds)
+  requestDurationMsP99: float32!
+}
+
+type AccountVectorizeV2QueriesAdaptiveGroupsSum {
+  # The number of queried vector dimensions in Vectorize over the queried time period.
+  queriedVectorDimensions: uint64!
+  # Total latency (in milliseconds) of serving Vectorize queries over the queried time period
+  requestDurationMs: uint64!
+  # The number of vectors served in Vectorize queries over the queried time period.
+  servedVectorCount: uint64!
+}
+
+# Vectorize storage with adaptive sampling
+type AccountVectorizeV2StorageAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountVectorizeV2StorageAdaptiveGroupsDimensions
+  # The max of values for a metric per dimension
+  max: AccountVectorizeV2StorageAdaptiveGroupsMax
+}
+
+type AccountVectorizeV2StorageAdaptiveGroupsDimensions {
+  # Vectorize storage event timestamp, truncated to start of a day
+  date: Date!
+  # Vectorize storage event timestamp
+  datetime: Time!
+  # Vectorize storage event timestamp, truncated to start of hour
+  datetimeHour: Time!
+  # Vectorize storage event timestamp, truncated to start of minute
+  datetimeMinute: Time!
+  # Name of a Vectorize index
+  indexName: string!
+}
+
+input AccountVectorizeV2StorageAdaptiveGroupsFilter_InputObject {
+  AND: [AccountVectorizeV2StorageAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountVectorizeV2StorageAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  indexName: string
+  indexName_geq: string
+  indexName_gt: string
+  indexName_in: [string!]
+  indexName_leq: string
+  indexName_like: string
+  indexName_lt: string
+  indexName_neq: string
+  indexName_notin: [string!]
+  indexName_notlike: string
+}
+
+type AccountVectorizeV2StorageAdaptiveGroupsMax {
+  # The maximum number of stored vector dimensions in Vectorize over the queried time period.
+  storedVectorDimensions: uint64!
+  # The maximum number of stored vectors in Vectorize over the queried time period.
+  vectorCount: uint64!
+}
+
+enum AccountVectorizeV2StorageAdaptiveGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # indexName ascending
+  indexName_ASC
+  # indexName descending
+  indexName_DESC
+  # max(storedVectorDimensions) ascending
+  max_storedVectorDimensions_ASC
+  # max(storedVectorDimensions) descending
+  max_storedVectorDimensions_DESC
+  # max(vectorCount) ascending
+  max_vectorCount_ASC
+  # max(vectorCount) descending
+  max_vectorCount_DESC
+}
+
+# Vectorize writes with adaptive sampling
+type AccountVectorizeV2WritesAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountVectorizeV2WritesAdaptiveGroupsAvg
+  # Total number of Vectorize writes
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountVectorizeV2WritesAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: AccountVectorizeV2WritesAdaptiveGroupsQuantiles
+  # The sum of values for a metric per dimension
+  sum: AccountVectorizeV2WritesAdaptiveGroupsSum
+}
+
+type AccountVectorizeV2WritesAdaptiveGroupsAvg {
+  # Average latency (in milliseconds) of serving a Vectorize write
+  requestDurationMs: uint64!
+}
+
+type AccountVectorizeV2WritesAdaptiveGroupsDimensions {
+  # Vectorize write event timestamp, truncated to start of a day
+  date: Date!
+  # Vectorize write event timestamp
+  datetime: Time!
+  # Vectorize write event timestamp, truncated to start of hour
+  datetimeHour: Time!
+  # Vectorize write event timestamp, truncated to start of minute
+  datetimeMinute: Time!
+  # Name of a Vectorize index
+  indexName: string!
+  # The type of Vectorize operation
+  operation: uint64!
+  # Request status. One of [2xx, 4xx, 5xx, unknown]
+  requestStatus: string!
+}
+
+input AccountVectorizeV2WritesAdaptiveGroupsFilter_InputObject {
+  AND: [AccountVectorizeV2WritesAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountVectorizeV2WritesAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  indexName: string
+  indexName_geq: string
+  indexName_gt: string
+  indexName_in: [string!]
+  indexName_leq: string
+  indexName_like: string
+  indexName_lt: string
+  indexName_neq: string
+  indexName_notin: [string!]
+  indexName_notlike: string
+  operation: uint64
+  operation_geq: uint64
+  operation_gt: uint64
+  operation_in: [uint64!]
+  operation_leq: uint64
+  operation_lt: uint64
+  operation_neq: uint64
+  operation_notin: [uint64!]
+  requestStatus: string
+  requestStatus_geq: string
+  requestStatus_gt: string
+  requestStatus_in: [string!]
+  requestStatus_leq: string
+  requestStatus_like: string
+  requestStatus_lt: string
+  requestStatus_neq: string
+  requestStatus_notin: [string!]
+  requestStatus_notlike: string
+}
+
+enum AccountVectorizeV2WritesAdaptiveGroupsOrderBy {
+  # avg(requestDurationMs) ascending
+  avg_requestDurationMs_ASC
+  # avg(requestDurationMs) descending
+  avg_requestDurationMs_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # indexName ascending
+  indexName_ASC
+  # indexName descending
+  indexName_DESC
+  # operation ascending
+  operation_ASC
+  # operation descending
+  operation_DESC
+  # quantiles(requestDurationMsP25) ascending
+  quantiles_requestDurationMsP25_ASC
+  # quantiles(requestDurationMsP25) descending
+  quantiles_requestDurationMsP25_DESC
+  # quantiles(requestDurationMsP50) ascending
+  quantiles_requestDurationMsP50_ASC
+  # quantiles(requestDurationMsP50) descending
+  quantiles_requestDurationMsP50_DESC
+  # quantiles(requestDurationMsP75) ascending
+  quantiles_requestDurationMsP75_ASC
+  # quantiles(requestDurationMsP75) descending
+  quantiles_requestDurationMsP75_DESC
+  # quantiles(requestDurationMsP95) ascending
+  quantiles_requestDurationMsP95_ASC
+  # quantiles(requestDurationMsP95) descending
+  quantiles_requestDurationMsP95_DESC
+  # quantiles(requestDurationMsP99) ascending
+  quantiles_requestDurationMsP99_ASC
+  # quantiles(requestDurationMsP99) descending
+  quantiles_requestDurationMsP99_DESC
+  # requestStatus ascending
+  requestStatus_ASC
+  # requestStatus descending
+  requestStatus_DESC
+  # sum(addedVectorCount) ascending
+  sum_addedVectorCount_ASC
+  # sum(addedVectorCount) descending
+  sum_addedVectorCount_DESC
+  # sum(deletedVectorCount) ascending
+  sum_deletedVectorCount_ASC
+  # sum(deletedVectorCount) descending
+  sum_deletedVectorCount_DESC
+  # sum(requestDurationMs) ascending
+  sum_requestDurationMs_ASC
+  # sum(requestDurationMs) descending
+  sum_requestDurationMs_DESC
+}
+
+type AccountVectorizeV2WritesAdaptiveGroupsQuantiles {
+  # 25th percentile latency (milliseconds)
+  requestDurationMsP25: float32!
+  # 50th percentile latency (milliseconds)
+  requestDurationMsP50: float32!
+  # 75th percentile latency (milliseconds)
+  requestDurationMsP75: float32!
+  # 95th percentile latency (milliseconds)
+  requestDurationMsP95: float32!
+  # 99th percentile latency (milliseconds)
+  requestDurationMsP99: float32!
+}
+
+type AccountVectorizeV2WritesAdaptiveGroupsSum {
+  # The number of vectors added in Vectorize writes over the queried time period.
+  addedVectorCount: uint64!
+  # The number of vectors deleted in Vectorize writes over the queried time period.
+  deletedVectorCount: uint64!
+  # Total latency (in milliseconds) of serving Vectorize writes over the queried time period
+  requestDurationMs: uint64!
 }
 
 # Beta. Aggregated video streaming buffer event metrics with adaptive sampling
