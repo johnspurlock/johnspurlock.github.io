@@ -121,8 +121,8 @@ Zone-level datasets:
 * httpRequests1hGroups
   httpRequests1mByColoGroups
   httpRequests1mGroups
-  httpRequestsAdaptive
-  httpRequestsAdaptiveGroups
+* httpRequestsAdaptive
+* httpRequestsAdaptiveGroups
 * httpRequestsOverviewAdaptiveGroups
 * imageResizingRequests1mGroups
   loadBalancingRequestsAdaptive
@@ -25499,6 +25499,10 @@ type AccountMagicTransitTunnelTrafficAdaptiveGroupsDimensions {
   ingressTunnelID: string!
   # GRE, IPSec or CNI Ingress Tunnel name for Magic WAN and Magic Transit traffic
   ingressTunnelName: string!
+  # Offramp method for Magic WAN and Magic Transit traffic - GRE, IPSec, CNI, Warp, Cloudflared
+  offRamp: string!
+  # Onramp method for Magic WAN and Magic Transit traffic - GRE, IPSec, CNI, Warp, Cloudflared
+  onRamp: string!
   # Tunnel device name
   tunnelName: string!
 }
@@ -25664,6 +25668,26 @@ input AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject {
   ingressTunnelName_neq: string
   ingressTunnelName_notin: [string!]
   ingressTunnelName_notlike: string
+  offRamp: string
+  offRamp_geq: string
+  offRamp_gt: string
+  offRamp_in: [string!]
+  offRamp_leq: string
+  offRamp_like: string
+  offRamp_lt: string
+  offRamp_neq: string
+  offRamp_notin: [string!]
+  offRamp_notlike: string
+  onRamp: string
+  onRamp_geq: string
+  onRamp_gt: string
+  onRamp_in: [string!]
+  onRamp_leq: string
+  onRamp_like: string
+  onRamp_lt: string
+  onRamp_neq: string
+  onRamp_notin: [string!]
+  onRamp_notlike: string
   tunnelName: string
   tunnelName_geq: string
   tunnelName_gt: string
@@ -25801,6 +25825,14 @@ enum AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy {
   ingressTunnelName_ASC
   # ingressTunnelName descending
   ingressTunnelName_DESC
+  # offRamp ascending
+  offRamp_ASC
+  # offRamp descending
+  offRamp_DESC
+  # onRamp ascending
+  onRamp_ASC
+  # onRamp descending
+  onRamp_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
@@ -32891,8 +32923,16 @@ type AccountTurnstileAdaptiveGroupsAvg {
 }
 
 type AccountTurnstileAdaptiveGroupsDimensions {
-  # The action tag of the challenge event
+  # The action tag tied to that challenge event
   action: string!
+  # ASN tied to that Turnstile event
+  asn: uint32!
+  # Major version of the browser tied to that Turnstile event
+  browserMajor: float64!
+  # Browser name tied to that Turnstile event
+  browserName: string!
+  # 2 character country code tied to that Turnstile event
+  countryCode: string!
   # The date the challenge event was emitted
   date: Date!
   # The date and time the challenge event was emitted
@@ -32911,8 +32951,20 @@ type AccountTurnstileAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # The type of the Cloudflare Turnstile event
   eventType: string!
+  # Hostname tied to that Turnstile event
+  hostname: string!
+  # IPv4 tied to that Turnstile event
+  ipv4: string!
+  # IPv6 tied to that Turnstile event
+  ipv6: string!
+  # Major version of the OS tied to that Turnstile event
+  osMajor: float64!
+  # OS name tied to that Turnstile event
+  osName: string!
   # The sitekey of the widget associated with the event
   siteKey: string!
+  # User agent tied to that Turnstile event
+  userAgent: string!
 }
 
 input AccountTurnstileAdaptiveGroupsFilter_InputObject {
@@ -32928,6 +32980,42 @@ input AccountTurnstileAdaptiveGroupsFilter_InputObject {
   action_neq: string
   action_notin: [string!]
   action_notlike: string
+  asn: uint32
+  asn_geq: uint32
+  asn_gt: uint32
+  asn_in: [uint32!]
+  asn_leq: uint32
+  asn_lt: uint32
+  asn_neq: uint32
+  asn_notin: [uint32!]
+  browserMajor: float64
+  browserMajor_geq: float64
+  browserMajor_gt: float64
+  browserMajor_in: [float64!]
+  browserMajor_leq: float64
+  browserMajor_lt: float64
+  browserMajor_neq: float64
+  browserMajor_notin: [float64!]
+  browserName: string
+  browserName_geq: string
+  browserName_gt: string
+  browserName_in: [string!]
+  browserName_leq: string
+  browserName_like: string
+  browserName_lt: string
+  browserName_neq: string
+  browserName_notin: [string!]
+  browserName_notlike: string
+  countryCode: string
+  countryCode_geq: string
+  countryCode_gt: string
+  countryCode_in: [string!]
+  countryCode_leq: string
+  countryCode_like: string
+  countryCode_lt: string
+  countryCode_neq: string
+  countryCode_notin: [string!]
+  countryCode_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -33002,6 +33090,54 @@ input AccountTurnstileAdaptiveGroupsFilter_InputObject {
   eventType_neq: string
   eventType_notin: [string!]
   eventType_notlike: string
+  hostname: string
+  hostname_geq: string
+  hostname_gt: string
+  hostname_in: [string!]
+  hostname_leq: string
+  hostname_like: string
+  hostname_lt: string
+  hostname_neq: string
+  hostname_notin: [string!]
+  hostname_notlike: string
+  ipv4: string
+  ipv4_geq: string
+  ipv4_gt: string
+  ipv4_in: [string!]
+  ipv4_leq: string
+  ipv4_like: string
+  ipv4_lt: string
+  ipv4_neq: string
+  ipv4_notin: [string!]
+  ipv4_notlike: string
+  ipv6: string
+  ipv6_geq: string
+  ipv6_gt: string
+  ipv6_in: [string!]
+  ipv6_leq: string
+  ipv6_like: string
+  ipv6_lt: string
+  ipv6_neq: string
+  ipv6_notin: [string!]
+  ipv6_notlike: string
+  osMajor: float64
+  osMajor_geq: float64
+  osMajor_gt: float64
+  osMajor_in: [float64!]
+  osMajor_leq: float64
+  osMajor_lt: float64
+  osMajor_neq: float64
+  osMajor_notin: [float64!]
+  osName: string
+  osName_geq: string
+  osName_gt: string
+  osName_in: [string!]
+  osName_leq: string
+  osName_like: string
+  osName_lt: string
+  osName_neq: string
+  osName_notin: [string!]
+  osName_notlike: string
   siteKey: string
   siteKey_geq: string
   siteKey_gt: string
@@ -33012,6 +33148,16 @@ input AccountTurnstileAdaptiveGroupsFilter_InputObject {
   siteKey_neq: string
   siteKey_notin: [string!]
   siteKey_notlike: string
+  userAgent: string
+  userAgent_geq: string
+  userAgent_gt: string
+  userAgent_in: [string!]
+  userAgent_leq: string
+  userAgent_like: string
+  userAgent_lt: string
+  userAgent_neq: string
+  userAgent_notin: [string!]
+  userAgent_notlike: string
 }
 
 enum AccountTurnstileAdaptiveGroupsOrderBy {
@@ -33019,14 +33165,30 @@ enum AccountTurnstileAdaptiveGroupsOrderBy {
   action_ASC
   # action descending
   action_DESC
+  # asn ascending
+  asn_ASC
+  # asn descending
+  asn_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # browserMajor ascending
+  browserMajor_ASC
+  # browserMajor descending
+  browserMajor_DESC
+  # browserName ascending
+  browserName_ASC
+  # browserName descending
+  browserName_DESC
   # count() ascending
   count_ASC
   # count() descending
   count_DESC
+  # countryCode ascending
+  countryCode_ASC
+  # countryCode descending
+  countryCode_DESC
   # date ascending
   date_ASC
   # date descending
@@ -33063,10 +33225,34 @@ enum AccountTurnstileAdaptiveGroupsOrderBy {
   eventType_ASC
   # eventType descending
   eventType_DESC
+  # hostname ascending
+  hostname_ASC
+  # hostname descending
+  hostname_DESC
+  # ipv4 ascending
+  ipv4_ASC
+  # ipv4 descending
+  ipv4_DESC
+  # ipv6 ascending
+  ipv6_ASC
+  # ipv6 descending
+  ipv6_DESC
+  # osMajor ascending
+  osMajor_ASC
+  # osMajor descending
+  osMajor_DESC
+  # osName ascending
+  osName_ASC
+  # osName descending
+  osName_DESC
   # siteKey ascending
   siteKey_ASC
   # siteKey descending
   siteKey_DESC
+  # userAgent ascending
+  userAgent_ASC
+  # userAgent descending
+  userAgent_DESC
 }
 
 # Beta. Vectorize usage with adaptive sampling
@@ -37721,9 +37907,9 @@ type zone {
   dmarcReportsAdaptive(filter: ZoneDmarcReportsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneDmarcReportsAdaptiveOrderBy!]): [ZoneDmarcReportsAdaptive!]!
   # Aggregated dmarc reports by sources logs with adaptive sampling
   dmarcReportsSourcesAdaptiveGroups(filter: ZoneDmarcReportsSourcesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneDmarcReportsSourcesAdaptiveGroupsOrderBy!]): [ZoneDmarcReportsSourcesAdaptiveGroups!]!
-  # Analytics data for DNS queries (currently, only Foundation DNS zones are supported)
+  # Analytics data for DNS queries
   dnsAnalyticsAdaptive(filter: ZoneDnsAnalyticsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneDnsAnalyticsAdaptiveOrderBy!]): [ZoneDnsAnalyticsAdaptive!]!
-  # Analytics data for DNS queries (currently, only Foundation DNS zones are supported)
+  # Analytics data for DNS queries
   dnsAnalyticsAdaptiveGroups(filter: ZoneDnsAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneDnsAnalyticsAdaptiveGroupsOrderBy!]): [ZoneDnsAnalyticsAdaptiveGroups!]!
   # Beta. Raw email routing logs with adaptive sampling
   emailRoutingAdaptive(filter: ZoneEmailRoutingAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneEmailRoutingAdaptiveOrderBy!]): [ZoneEmailRoutingAdaptive!]!
@@ -40018,7 +40204,7 @@ type ZoneDmarcReportsSourcesAdaptiveGroupsUniq {
   ipCount: uint64!
 }
 
-# Analytics data for DNS queries (currently, only Foundation DNS zones are supported)
+# Analytics data for DNS queries
 type ZoneDnsAnalyticsAdaptive {
   # IATA airport code of the data center that processed the query
   coloName: string!
@@ -40203,7 +40389,7 @@ input ZoneDnsAnalyticsAdaptiveFilter_InputObject {
   upstreamIP_notlike: string
 }
 
-# Analytics data for DNS queries (currently, only Foundation DNS zones are supported)
+# Analytics data for DNS queries
 type ZoneDnsAnalyticsAdaptiveGroups {
   # Average of a metric per dimension
   avg: ZoneDnsAnalyticsAdaptiveGroupsAvg
