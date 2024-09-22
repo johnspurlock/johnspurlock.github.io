@@ -93,6 +93,8 @@ Account-level datasets:
 * workersOverviewDataAdaptiveGroups
 * workersOverviewRequestsAdaptiveGroups
 * workersSubrequestsAdaptiveGroups
+* workflowsAdaptive
+* workflowsAdaptiveGroups
 * zarazTrackAdaptiveGroups
 * zarazTriggersAdaptiveGroups
 * zeroTrustPrivateNetworkDiscoveryGroups
@@ -385,6 +387,10 @@ type account {
   workersOverviewRequestsAdaptiveGroups(filter: AccountWorkersOverviewRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersOverviewRequestsAdaptiveGroupsOrderBy!]): [AccountWorkersOverviewRequestsAdaptiveGroups!]!
   # Beta. Workers subrequests with adaptive sampling
   workersSubrequestsAdaptiveGroups(filter: AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersSubrequestsAdaptiveGroupsOrderBy!]): [AccountWorkersSubrequestsAdaptiveGroups!]!
+  # Workflows analytics
+  workflowsAdaptive(filter: AccountWorkflowsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkflowsAdaptiveOrderBy!]): [AccountWorkflowsAdaptive!]!
+  # Workflows analytics
+  workflowsAdaptiveGroups(filter: AccountWorkflowsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkflowsAdaptiveGroupsOrderBy!]): [AccountWorkflowsAdaptiveGroups!]!
   # Zaraz Track Analytics - counts zaraz.track calls
   zarazTrackAdaptiveGroups(filter: AccountZarazTrackAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountZarazTrackAdaptiveGroupsOrderBy!]): [AccountZarazTrackAdaptiveGroups!]!
   # Zaraz Triggers Analytics (a trigger is a set of rules that can trigger a zaraz action)
@@ -6710,6 +6716,8 @@ type AccountD1QueriesAdaptiveGroups {
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountD1QueriesAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: AccountD1QueriesAdaptiveGroupsQuantiles
   # The sum of values for a metric per dimension
   sum: AccountD1QueriesAdaptiveGroupsSum
 }
@@ -6858,6 +6866,18 @@ enum AccountD1QueriesAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # quantiles(queryDurationMsP50) ascending
+  quantiles_queryDurationMsP50_ASC
+  # quantiles(queryDurationMsP50) descending
+  quantiles_queryDurationMsP50_DESC
+  # quantiles(queryDurationMsP95) ascending
+  quantiles_queryDurationMsP95_ASC
+  # quantiles(queryDurationMsP95) descending
+  quantiles_queryDurationMsP95_DESC
+  # quantiles(queryDurationMsP99) ascending
+  quantiles_queryDurationMsP99_ASC
+  # quantiles(queryDurationMsP99) descending
+  quantiles_queryDurationMsP99_DESC
   # query ascending
   query_ASC
   # query descending
@@ -6878,6 +6898,15 @@ enum AccountD1QueriesAdaptiveGroupsOrderBy {
   sum_rowsWritten_ASC
   # sum(rowsWritten) descending
   sum_rowsWritten_DESC
+}
+
+type AccountD1QueriesAdaptiveGroupsQuantiles {
+  # 50th percentile Query Duration (milliseconds)
+  queryDurationMsP50: float64!
+  # 95th percentile Query Duration (milliseconds)
+  queryDurationMsP95: float64!
+  # 99th percentile Query Duration (milliseconds)
+  queryDurationMsP99: float64!
 }
 
 type AccountD1QueriesAdaptiveGroupsSum {
@@ -26147,6 +26176,8 @@ type AccountMnmFlowDataAdaptiveGroupsDimensions {
   destinationAddress: string!
   # Value of the Destination Port header field in the packet
   destinationPort: uint16!
+  # Device ID of the warp client exporting MNM flows
+  deviceID: string!
   # Value of the Ethertype header field in the Ethernet packet (2048 for IPv4; 34525 for IPv6)
   ethertype: uint16!
   # Layer 4 protocol
@@ -26256,6 +26287,16 @@ input AccountMnmFlowDataAdaptiveGroupsFilter_InputObject {
   destinationPort_lt: uint16
   destinationPort_neq: uint16
   destinationPort_notin: [uint16!]
+  deviceID: string
+  deviceID_geq: string
+  deviceID_gt: string
+  deviceID_in: [string!]
+  deviceID_leq: string
+  deviceID_like: string
+  deviceID_lt: string
+  deviceID_neq: string
+  deviceID_notin: [string!]
+  deviceID_notlike: string
   ethertype: uint16
   ethertype_geq: uint16
   ethertype_gt: uint16
@@ -26507,6 +26548,10 @@ enum AccountMnmFlowDataAdaptiveGroupsOrderBy {
   destinationPort_ASC
   # destinationPort descending
   destinationPort_DESC
+  # deviceID ascending
+  deviceID_ASC
+  # deviceID descending
+  deviceID_DESC
   # ethertype ascending
   ethertype_ASC
   # ethertype descending
@@ -30644,6 +30689,8 @@ type AccountSettings {
   workersOverviewDataAdaptiveGroups: Settings!
   workersOverviewRequestsAdaptiveGroups: Settings!
   workersSubrequestsAdaptiveGroups: Settings!
+  workflowsAdaptive: Settings!
+  workflowsAdaptiveGroups: Settings!
   zarazTrackAdaptiveGroups: Settings!
   zarazTriggersAdaptiveGroups: Settings!
   zeroTrustPrivateNetworkDiscoveryGroups: Settings!
@@ -33710,7 +33757,7 @@ type AccountVectorizeV2QueriesAdaptiveGroupsQuantiles {
 }
 
 type AccountVectorizeV2QueriesAdaptiveGroupsSum {
-  # The number of queried vector dimensions in Vectorize over the queried time period.
+  # The number of queried vector dimensions in Vectorize over the queried time period. This metric must always be fetched along with the 'indexName' and 'datetime' dimensions, as well as a 'requestStatus:2xx' filter to estimate billable usage.
   queriedVectorDimensions: uint64!
   # Total latency (in milliseconds) of serving Vectorize queries over the queried time period
   requestDurationMs: uint64!
@@ -36244,6 +36291,347 @@ type AccountWorkersSubrequestsAdaptiveGroupsSum {
   requestBodySizeUncached: uint64!
   # Number of subrequests
   subrequests: uint64!
+}
+
+# Workflows analytics
+type AccountWorkflowsAdaptive {
+  # The date when trigger was triggered
+  datetime: Time!
+  # Instance end timestamp(seconds)
+  endTimestamp: uint64!
+  # Event type
+  eventType: string!
+  # Instance Id
+  instanceId: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # Instance start timestamp(seconds)
+  startTimestamp: uint64!
+  # Step number
+  stepCount: uint32!
+  # Step name
+  stepName: string!
+  # Wall time in seconds
+  wallTime: uint32!
+  # Workflow name
+  workflowName: string!
+}
+
+input AccountWorkflowsAdaptiveFilter_InputObject {
+  AND: [AccountWorkflowsAdaptiveFilter_InputObject!]
+  OR: [AccountWorkflowsAdaptiveFilter_InputObject!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  endTimestamp: uint64
+  endTimestamp_geq: uint64
+  endTimestamp_gt: uint64
+  endTimestamp_in: [uint64!]
+  endTimestamp_leq: uint64
+  endTimestamp_lt: uint64
+  endTimestamp_neq: uint64
+  endTimestamp_notin: [uint64!]
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
+  instanceId: string
+  instanceId_geq: string
+  instanceId_gt: string
+  instanceId_in: [string!]
+  instanceId_leq: string
+  instanceId_like: string
+  instanceId_lt: string
+  instanceId_neq: string
+  instanceId_notin: [string!]
+  instanceId_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  startTimestamp: uint64
+  startTimestamp_geq: uint64
+  startTimestamp_gt: uint64
+  startTimestamp_in: [uint64!]
+  startTimestamp_leq: uint64
+  startTimestamp_lt: uint64
+  startTimestamp_neq: uint64
+  startTimestamp_notin: [uint64!]
+  stepCount: uint32
+  stepCount_geq: uint32
+  stepCount_gt: uint32
+  stepCount_in: [uint32!]
+  stepCount_leq: uint32
+  stepCount_lt: uint32
+  stepCount_neq: uint32
+  stepCount_notin: [uint32!]
+  stepName: string
+  stepName_geq: string
+  stepName_gt: string
+  stepName_in: [string!]
+  stepName_leq: string
+  stepName_like: string
+  stepName_lt: string
+  stepName_neq: string
+  stepName_notin: [string!]
+  stepName_notlike: string
+  wallTime: uint32
+  wallTime_geq: uint32
+  wallTime_gt: uint32
+  wallTime_in: [uint32!]
+  wallTime_leq: uint32
+  wallTime_lt: uint32
+  wallTime_neq: uint32
+  wallTime_notin: [uint32!]
+  workflowName: string
+  workflowName_geq: string
+  workflowName_gt: string
+  workflowName_in: [string!]
+  workflowName_leq: string
+  workflowName_like: string
+  workflowName_lt: string
+  workflowName_neq: string
+  workflowName_notin: [string!]
+  workflowName_notlike: string
+}
+
+# Workflows analytics
+type AccountWorkflowsAdaptiveGroups {
+  # Number of events(workflow invocations) per dimension
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountWorkflowsAdaptiveGroupsDimensions
+  sum: AccountWorkflowsAdaptiveGroupsSum
+}
+
+type AccountWorkflowsAdaptiveGroupsDimensions {
+  # The date when trigger was triggered
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Event type
+  eventType: string!
+  # Instance Id
+  instanceId: string!
+  # Step number
+  stepCount: uint32!
+  # Step name
+  stepName: string!
+  # Workflow name
+  workflowName: string!
+}
+
+input AccountWorkflowsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountWorkflowsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountWorkflowsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
+  instanceId: string
+  instanceId_geq: string
+  instanceId_gt: string
+  instanceId_in: [string!]
+  instanceId_leq: string
+  instanceId_like: string
+  instanceId_lt: string
+  instanceId_neq: string
+  instanceId_notin: [string!]
+  instanceId_notlike: string
+  stepCount: uint32
+  stepCount_geq: uint32
+  stepCount_gt: uint32
+  stepCount_in: [uint32!]
+  stepCount_leq: uint32
+  stepCount_lt: uint32
+  stepCount_neq: uint32
+  stepCount_notin: [uint32!]
+  stepName: string
+  stepName_geq: string
+  stepName_gt: string
+  stepName_in: [string!]
+  stepName_leq: string
+  stepName_like: string
+  stepName_lt: string
+  stepName_neq: string
+  stepName_notin: [string!]
+  stepName_notlike: string
+  workflowName: string
+  workflowName_geq: string
+  workflowName_gt: string
+  workflowName_in: [string!]
+  workflowName_leq: string
+  workflowName_like: string
+  workflowName_lt: string
+  workflowName_neq: string
+  workflowName_notin: [string!]
+  workflowName_notlike: string
+}
+
+enum AccountWorkflowsAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
+  # instanceId ascending
+  instanceId_ASC
+  # instanceId descending
+  instanceId_DESC
+  # stepCount ascending
+  stepCount_ASC
+  # stepCount descending
+  stepCount_DESC
+  # stepName ascending
+  stepName_ASC
+  # stepName descending
+  stepName_DESC
+  # sum(wallTime) ascending
+  sum_wallTime_ASC
+  # sum(wallTime) descending
+  sum_wallTime_DESC
+  # workflowName ascending
+  workflowName_ASC
+  # workflowName descending
+  workflowName_DESC
+}
+
+type AccountWorkflowsAdaptiveGroupsSum {
+  # Total wall time per dimension
+  wallTime: uint64!
+}
+
+enum AccountWorkflowsAdaptiveOrderBy {
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # endTimestamp ascending
+  endTimestamp_ASC
+  # endTimestamp descending
+  endTimestamp_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
+  # instanceId ascending
+  instanceId_ASC
+  # instanceId descending
+  instanceId_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # startTimestamp ascending
+  startTimestamp_ASC
+  # startTimestamp descending
+  startTimestamp_DESC
+  # stepCount ascending
+  stepCount_ASC
+  # stepCount descending
+  stepCount_DESC
+  # stepName ascending
+  stepName_ASC
+  # stepName descending
+  stepName_DESC
+  # wallTime ascending
+  wallTime_ASC
+  # wallTime descending
+  wallTime_DESC
+  # workflowName ascending
+  workflowName_ASC
+  # workflowName descending
+  workflowName_DESC
 }
 
 # Zaraz Track Analytics - counts zaraz.track calls
