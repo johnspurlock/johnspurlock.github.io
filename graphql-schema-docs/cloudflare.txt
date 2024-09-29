@@ -9323,6 +9323,14 @@ enum AccountDurableObjectsPeriodicGroupsOrderBy {
   sum_outboundWebsocketMsgCount_ASC
   # sum(outboundWebsocketMsgCount) descending
   sum_outboundWebsocketMsgCount_DESC
+  # sum(rowsRead) ascending
+  sum_rowsRead_ASC
+  # sum(rowsRead) descending
+  sum_rowsRead_DESC
+  # sum(rowsWritten) ascending
+  sum_rowsWritten_ASC
+  # sum(rowsWritten) descending
+  sum_rowsWritten_DESC
   # sum(storageDeletes) ascending
   sum_storageDeletes_ASC
   # sum(storageDeletes) descending
@@ -9358,11 +9366,15 @@ type AccountDurableObjectsPeriodicGroupsSum {
   inboundWebsocketMsgCount: uint64!
   # Sum of outbound websocket messages
   outboundWebsocketMsgCount: uint64!
-  # Sum of storage deletes
+  # Sum of rows read (by sqlite backed DOs)
+  rowsRead: uint64!
+  # Sum of rows written (by sqlite backed DOs)
+  rowsWritten: uint64!
+  # Sum of storage deletes (by non-sqlite backed DOs)
   storageDeletes: uint64!
-  # Sum of storage reads - in 4KB units
+  # Sum of storage reads - in 4KB units (by non-sqlite backed DOs)
   storageReadUnits: uint64!
-  # Sum of storage writes - in 4KB units
+  # Sum of storage writes - in 4KB units (by non-sqlite backed DOs)
   storageWriteUnits: uint64!
   # Sum of subrequests
   subrequests: uint64!

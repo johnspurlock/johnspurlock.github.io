@@ -9181,6 +9181,14 @@
 &nbsp;&nbsp;sum_outboundWebsocketMsgCount_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(outboundWebsocketMsgCount) descending</span><br />
 &nbsp;&nbsp;sum_outboundWebsocketMsgCount_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(rowsRead) ascending</span><br />
+&nbsp;&nbsp;sum_rowsRead_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(rowsRead) descending</span><br />
+&nbsp;&nbsp;sum_rowsRead_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(rowsWritten) ascending</span><br />
+&nbsp;&nbsp;sum_rowsWritten_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(rowsWritten) descending</span><br />
+&nbsp;&nbsp;sum_rowsWritten_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(storageDeletes) ascending</span><br />
 &nbsp;&nbsp;sum_storageDeletes_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(storageDeletes) descending</span><br />
@@ -9216,11 +9224,15 @@
 &nbsp;&nbsp;inboundWebsocketMsgCount: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of outbound websocket messages</span><br />
 &nbsp;&nbsp;outboundWebsocketMsgCount: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of storage deletes</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of rows read (by sqlite backed DOs)</span><br />
+&nbsp;&nbsp;rowsRead: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of rows written (by sqlite backed DOs)</span><br />
+&nbsp;&nbsp;rowsWritten: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of storage deletes (by non-sqlite backed DOs)</span><br />
 &nbsp;&nbsp;storageDeletes: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of storage reads - in 4KB units</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of storage reads - in 4KB units (by non-sqlite backed DOs)</span><br />
 &nbsp;&nbsp;storageReadUnits: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Sum of storage writes - in 4KB units</span><br />
+&nbsp;&nbsp;<span class="c"># Sum of storage writes - in 4KB units (by non-sqlite backed DOs)</span><br />
 &nbsp;&nbsp;storageWriteUnits: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of subrequests</span><br />
 &nbsp;&nbsp;subrequests: <a href="#uint64">uint64!</a><br />
