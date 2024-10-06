@@ -3784,6 +3784,8 @@ type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time truncated to the minute
   datetimeMinute: Time!
+  # Was the response an error: 1 , 0 for no error
+  error: uint8!
   # Gateway name
   gateway: string!
   # Which models was the request sent to
@@ -3849,6 +3851,14 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  error: uint8
+  error_geq: uint8
+  error_gt: uint8
+  error_in: bytes
+  error_leq: uint8
+  error_lt: uint8
+  error_neq: uint8
+  error_notin: bytes
   gateway: string
   gateway_geq: string
   gateway_gt: string
@@ -3934,6 +3944,10 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # error ascending
+  error_ASC
+  # error descending
+  error_DESC
   # gateway ascending
   gateway_ASC
   # gateway descending
@@ -26013,6 +26027,8 @@ input AccountMagicWANConnectorMetricsAdaptiveGroupsFilter_InputObject {
 }
 
 type AccountMagicWANConnectorMetricsAdaptiveGroupsMax {
+  # current connector ha state
+  haState: uint32!
   # Number of interfaces of a given Type
   interfaceCount: uint32!
 }
@@ -26078,6 +26094,10 @@ enum AccountMagicWANConnectorMetricsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # max(haState) ascending
+  max_haState_ASC
+  # max(haState) descending
+  max_haState_DESC
   # max(interfaceCount) ascending
   max_interfaceCount_ASC
   # max(interfaceCount) descending
@@ -34945,6 +34965,8 @@ type AccountWarpDeviceAdaptiveGroupsUniq {
 type AccountWorkerPlacementAdaptiveGroups {
   # List of dimensions to group by
   dimensions: AccountWorkerPlacementAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: AccountWorkerPlacementAdaptiveGroupsQuantiles
   # The sum of values for a metric per dimension
   sum: AccountWorkerPlacementAdaptiveGroupsSum
 }
@@ -34964,7 +34986,7 @@ type AccountWorkerPlacementAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # Response status of worker
   httpStatus: uint16!
-  # 1 if the request was sampled to bypass Smart Placement, 0 otherwise
+  # 1 if the request was sampled to bypass Smart Placement, 0 if it was processed using Smart Placement
   isSample: uint8!
   # 1 if the request was processed using Smart Placement, 0 if it was processed in default mode
   placementUsed: uint8!
@@ -35140,6 +35162,34 @@ enum AccountWorkerPlacementAdaptiveGroupsOrderBy {
   placementUsed_ASC
   # placementUsed descending
   placementUsed_DESC
+  # quantiles(requestDurationP25) ascending
+  quantiles_requestDurationP25_ASC
+  # quantiles(requestDurationP25) descending
+  quantiles_requestDurationP25_DESC
+  # quantiles(requestDurationP50) ascending
+  quantiles_requestDurationP50_ASC
+  # quantiles(requestDurationP50) descending
+  quantiles_requestDurationP50_DESC
+  # quantiles(requestDurationP75) ascending
+  quantiles_requestDurationP75_ASC
+  # quantiles(requestDurationP75) descending
+  quantiles_requestDurationP75_DESC
+  # quantiles(requestDurationP90) ascending
+  quantiles_requestDurationP90_ASC
+  # quantiles(requestDurationP90) descending
+  quantiles_requestDurationP90_DESC
+  # quantiles(requestDurationP95) ascending
+  quantiles_requestDurationP95_ASC
+  # quantiles(requestDurationP95) descending
+  quantiles_requestDurationP95_DESC
+  # quantiles(requestDurationP999) ascending
+  quantiles_requestDurationP999_ASC
+  # quantiles(requestDurationP999) descending
+  quantiles_requestDurationP999_DESC
+  # quantiles(requestDurationP99) ascending
+  quantiles_requestDurationP99_ASC
+  # quantiles(requestDurationP99) descending
+  quantiles_requestDurationP99_DESC
   # requestDurationBucketMin100ms ascending
   requestDurationBucketMin100ms_ASC
   # requestDurationBucketMin100ms descending
@@ -35168,6 +35218,23 @@ enum AccountWorkerPlacementAdaptiveGroupsOrderBy {
   sum_requests_ASC
   # sum(requests) descending
   sum_requests_DESC
+}
+
+type AccountWorkerPlacementAdaptiveGroupsQuantiles {
+  # Request duration 25th percentile - milliseconds
+  requestDurationP25: float32!
+  # Request duration 50th percentile - milliseconds
+  requestDurationP50: float32!
+  # Request duration 75th percentile - milliseconds
+  requestDurationP75: float32!
+  # Request duration 90th percentile - milliseconds
+  requestDurationP90: float32!
+  # Request duration 95th percentile - milliseconds
+  requestDurationP95: float32!
+  # Request duration 99th percentile - milliseconds
+  requestDurationP99: float32!
+  # Request duration 99.9th percentile - milliseconds
+  requestDurationP999: float32!
 }
 
 type AccountWorkerPlacementAdaptiveGroupsSum {
@@ -51451,7 +51518,7 @@ type ZoneZarazAnalyticsOrderedTrackAdaptive {
   language: string!
   # Track's order number for its clientId
   orderInClient: uint64!
-  # Track's reverse order number within its session (last track having orderInSession 1)
+  # Track's order number within its session (first track having orderInSession 1)
   orderInSession: uint64!
   # User Agent OS name
   osName: string!
@@ -51463,6 +51530,8 @@ type ZoneZarazAnalyticsOrderedTrackAdaptive {
   resolution: uint64!
   # Track's reverse order number for its clientId
   reverseOrderInClient: uint64!
+  # Track's reverse order number within its session (last track having reverseOrderInSession 1)
+  reverseOrderInSession: uint64!
   # ABR sample interval
   sampleInterval: uint32!
   # Session ID
@@ -51479,6 +51548,8 @@ type ZoneZarazAnalyticsOrderedTrackAdaptive {
   ua: string!
   # User Agent stringified object
   uaObj: string!
+  # URL query parameters
+  urlParams: string!
   # URL Path
   urlPath: string!
   # Viewport, cantor paired width & heigh
@@ -51696,6 +51767,14 @@ input ZoneZarazAnalyticsOrderedTrackAdaptiveFilter_InputObject {
   reverseOrderInClient_lt: uint64
   reverseOrderInClient_neq: uint64
   reverseOrderInClient_notin: [uint64!]
+  reverseOrderInSession: uint64
+  reverseOrderInSession_geq: uint64
+  reverseOrderInSession_gt: uint64
+  reverseOrderInSession_in: [uint64!]
+  reverseOrderInSession_leq: uint64
+  reverseOrderInSession_lt: uint64
+  reverseOrderInSession_neq: uint64
+  reverseOrderInSession_notin: [uint64!]
   sampleInterval: uint32
   sampleInterval_geq: uint32
   sampleInterval_gt: uint32
@@ -51772,6 +51851,16 @@ input ZoneZarazAnalyticsOrderedTrackAdaptiveFilter_InputObject {
   ua_neq: string
   ua_notin: [string!]
   ua_notlike: string
+  urlParams: string
+  urlParams_geq: string
+  urlParams_gt: string
+  urlParams_in: [string!]
+  urlParams_leq: string
+  urlParams_like: string
+  urlParams_lt: string
+  urlParams_neq: string
+  urlParams_notin: [string!]
+  urlParams_notlike: string
   urlPath: string
   urlPath_geq: string
   urlPath_gt: string
@@ -51834,7 +51923,7 @@ type ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsDimensions {
   language: string!
   # Track's order number for its clientId
   orderInClient: uint64!
-  # Track's reverse order number within its session (last track having orderInSession 1)
+  # Track's order number within its session (first track having orderInSession 1)
   orderInSession: uint64!
   # User Agent OS name
   osName: string!
@@ -51846,6 +51935,8 @@ type ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsDimensions {
   resolution: uint64!
   # Track's reverse order number for its clientId
   reverseOrderInClient: uint64!
+  # Track's reverse order number within its session (last track having reverseOrderInSession 1)
+  reverseOrderInSession: uint64!
   # Session ID
   sessionId: string!
   # Timezone Offset
@@ -51860,6 +51951,8 @@ type ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsDimensions {
   ua: string!
   # User Agent stringified object
   uaObj: string!
+  # URL query parameters
+  urlParams: string!
   # URL Path
   urlPath: string!
   # Viewport, cantor paired width & heigh
@@ -52069,6 +52162,14 @@ input ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject {
   reverseOrderInClient_lt: uint64
   reverseOrderInClient_neq: uint64
   reverseOrderInClient_notin: [uint64!]
+  reverseOrderInSession: uint64
+  reverseOrderInSession_geq: uint64
+  reverseOrderInSession_gt: uint64
+  reverseOrderInSession_in: [uint64!]
+  reverseOrderInSession_leq: uint64
+  reverseOrderInSession_lt: uint64
+  reverseOrderInSession_neq: uint64
+  reverseOrderInSession_notin: [uint64!]
   sessionId: string
   sessionId_geq: string
   sessionId_gt: string
@@ -52137,6 +52238,16 @@ input ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsFilter_InputObject {
   ua_neq: string
   ua_notin: [string!]
   ua_notlike: string
+  urlParams: string
+  urlParams_geq: string
+  urlParams_gt: string
+  urlParams_in: [string!]
+  urlParams_leq: string
+  urlParams_like: string
+  urlParams_lt: string
+  urlParams_neq: string
+  urlParams_notin: [string!]
+  urlParams_notlike: string
   urlPath: string
   urlPath_geq: string
   urlPath_gt: string
@@ -52250,6 +52361,10 @@ enum ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsOrderBy {
   reverseOrderInClient_ASC
   # reverseOrderInClient descending
   reverseOrderInClient_DESC
+  # reverseOrderInSession ascending
+  reverseOrderInSession_ASC
+  # reverseOrderInSession descending
+  reverseOrderInSession_DESC
   # sessionId ascending
   sessionId_ASC
   # sessionId descending
@@ -52286,6 +52401,10 @@ enum ZoneZarazAnalyticsOrderedTrackAdaptiveGroupsOrderBy {
   uniq_sessionIdCount_ASC
   # uniq(sessionIdCount) descending
   uniq_sessionIdCount_DESC
+  # urlParams ascending
+  urlParams_ASC
+  # urlParams descending
+  urlParams_DESC
   # urlPath ascending
   urlPath_ASC
   # urlPath descending
@@ -52396,6 +52515,10 @@ enum ZoneZarazAnalyticsOrderedTrackAdaptiveOrderBy {
   reverseOrderInClient_ASC
   # reverseOrderInClient descending
   reverseOrderInClient_DESC
+  # reverseOrderInSession ascending
+  reverseOrderInSession_ASC
+  # reverseOrderInSession descending
+  reverseOrderInSession_DESC
   # sampleInterval ascending
   sampleInterval_ASC
   # sampleInterval descending
@@ -52428,6 +52551,10 @@ enum ZoneZarazAnalyticsOrderedTrackAdaptiveOrderBy {
   ua_ASC
   # ua descending
   ua_DESC
+  # urlParams ascending
+  urlParams_ASC
+  # urlParams descending
+  urlParams_DESC
   # urlPath ascending
   urlPath_ASC
   # urlPath descending
@@ -52500,6 +52627,8 @@ type ZoneZarazAnalyticsTrackAdaptiveGroupsDimensions {
   ua: string!
   # User Agent stringified object
   uaObj: string!
+  # URL query parameters
+  urlParams: string!
   # URL Path
   urlPath: string!
   # Viewport, cantor paired width & heigh
@@ -52753,6 +52882,16 @@ input ZoneZarazAnalyticsTrackAdaptiveGroupsFilter_InputObject {
   ua_neq: string
   ua_notin: [string!]
   ua_notlike: string
+  urlParams: string
+  urlParams_geq: string
+  urlParams_gt: string
+  urlParams_in: [string!]
+  urlParams_leq: string
+  urlParams_like: string
+  urlParams_lt: string
+  urlParams_neq: string
+  urlParams_notin: [string!]
+  urlParams_notlike: string
   urlPath: string
   urlPath_geq: string
   urlPath_gt: string
@@ -52890,6 +53029,10 @@ enum ZoneZarazAnalyticsTrackAdaptiveGroupsOrderBy {
   uniq_sessionIdCount_ASC
   # uniq(sessionIdCount) descending
   uniq_sessionIdCount_DESC
+  # urlParams ascending
+  urlParams_ASC
+  # urlParams descending
+  urlParams_DESC
   # urlPath ascending
   urlPath_ASC
   # urlPath descending
@@ -52923,8 +53066,12 @@ type ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsAvg {
 }
 
 type ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsDimensions {
+  # City, region
+  cityRegion: string!
   # Client ID
   clientId: string!
+  # Country
+  country: string!
   # Session duration (seconds)
   duration: uint64!
   # URL Path at session end
@@ -52962,6 +53109,16 @@ type ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsDimensions {
 input ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject {
   AND: [ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject!]
   OR: [ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject!]
+  cityRegion: string
+  cityRegion_geq: string
+  cityRegion_gt: string
+  cityRegion_in: [string!]
+  cityRegion_leq: string
+  cityRegion_like: string
+  cityRegion_lt: string
+  cityRegion_neq: string
+  cityRegion_notin: [string!]
+  cityRegion_notlike: string
   clientId: string
   clientId_geq: string
   clientId_gt: string
@@ -52972,6 +53129,16 @@ input ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject {
   clientId_neq: string
   clientId_notin: [string!]
   clientId_notlike: string
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
   duration: uint64
   duration_geq: uint64
   duration_gt: uint64
@@ -53111,6 +53278,10 @@ enum ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsOrderBy {
   avg_sessionDuration_ASC
   # avg(sessionDuration) descending
   avg_sessionDuration_DESC
+  # cityRegion ascending
+  cityRegion_ASC
+  # cityRegion descending
+  cityRegion_DESC
   # clientId ascending
   clientId_ASC
   # clientId descending
@@ -53119,6 +53290,10 @@ enum ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsOrderBy {
   count_ASC
   # count() descending
   count_DESC
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
   # duration ascending
   duration_ASC
   # duration descending
@@ -53260,6 +53435,8 @@ type ZoneZarazAnalyticsTriggersAdaptiveGroupsDimensions {
   ua: string!
   # User Agent stringified object
   uaObj: string!
+  # URL query parameters
+  urlParams: string!
   # URL Path
   urlPath: string!
   # Viewport, cantor paired width & heigh
@@ -53503,6 +53680,16 @@ input ZoneZarazAnalyticsTriggersAdaptiveGroupsFilter_InputObject {
   ua_neq: string
   ua_notin: [string!]
   ua_notlike: string
+  urlParams: string
+  urlParams_geq: string
+  urlParams_gt: string
+  urlParams_in: [string!]
+  urlParams_leq: string
+  urlParams_like: string
+  urlParams_lt: string
+  urlParams_neq: string
+  urlParams_notin: [string!]
+  urlParams_notlike: string
   urlPath: string
   urlPath_geq: string
   urlPath_gt: string
@@ -53636,6 +53823,10 @@ enum ZoneZarazAnalyticsTriggersAdaptiveGroupsOrderBy {
   uniq_sessionIdCount_ASC
   # uniq(sessionIdCount) descending
   uniq_sessionIdCount_DESC
+  # urlParams ascending
+  urlParams_ASC
+  # urlParams descending
+  urlParams_DESC
   # urlPath ascending
   urlPath_ASC
   # urlPath descending
@@ -53663,8 +53854,12 @@ type ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroups {
 }
 
 type ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsDimensions {
+  # City, region
+  cityRegion: string!
   # Client ID
   clientId: string!
+  # Country
+  country: string!
   # Traffic source at session start
   firstTrafficSrc: string!
   # Date when the session ended
@@ -53696,6 +53891,16 @@ type ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsDimensions {
 input ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject {
   AND: [ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject!]
   OR: [ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject!]
+  cityRegion: string
+  cityRegion_geq: string
+  cityRegion_gt: string
+  cityRegion_in: [string!]
+  cityRegion_leq: string
+  cityRegion_like: string
+  cityRegion_lt: string
+  cityRegion_neq: string
+  cityRegion_notin: [string!]
+  cityRegion_notlike: string
   clientId: string
   clientId_geq: string
   clientId_gt: string
@@ -53706,6 +53911,16 @@ input ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject {
   clientId_neq: string
   clientId_notin: [string!]
   clientId_notlike: string
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
   firstTrafficSrc: string
   firstTrafficSrc_geq: string
   firstTrafficSrc_gt: string
@@ -53813,6 +54028,10 @@ input ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject {
 }
 
 enum ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsOrderBy {
+  # cityRegion ascending
+  cityRegion_ASC
+  # cityRegion descending
+  cityRegion_DESC
   # clientId ascending
   clientId_ASC
   # clientId descending
@@ -53821,6 +54040,10 @@ enum ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsOrderBy {
   count_ASC
   # count() descending
   count_DESC
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
   # firstTrafficSrc ascending
   firstTrafficSrc_ASC
   # firstTrafficSrc descending

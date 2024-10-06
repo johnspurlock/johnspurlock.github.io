@@ -3642,6 +3642,8 @@
 &nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># The date and time truncated to the minute</span><br />
 &nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># Was the response an error: 1 , 0 for no error</span><br />
+&nbsp;&nbsp;error: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Gateway name</span><br />
 &nbsp;&nbsp;gateway: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Which models was the request sent to</span><br />
@@ -3707,6 +3709,14 @@
 &nbsp;&nbsp;datetimeMinute_lt: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeMinute_neq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeMinute_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;error: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;error_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;error_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;error_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;error_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;error_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;error_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;error_notin: <a href="#bytes">bytes</a><br />
 &nbsp;&nbsp;gateway: <a href="#string">string</a><br />
 &nbsp;&nbsp;gateway_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;gateway_gt: <a href="#string">string</a><br />
@@ -3792,6 +3802,10 @@
 &nbsp;&nbsp;datetimeMinute_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetimeMinute descending</span><br />
 &nbsp;&nbsp;datetimeMinute_DESC<br />
+&nbsp;&nbsp;<span class="c"># error ascending</span><br />
+&nbsp;&nbsp;error_ASC<br />
+&nbsp;&nbsp;<span class="c"># error descending</span><br />
+&nbsp;&nbsp;error_DESC<br />
 &nbsp;&nbsp;<span class="c"># gateway ascending</span><br />
 &nbsp;&nbsp;gateway_ASC<br />
 &nbsp;&nbsp;<span class="c"># gateway descending</span><br />
@@ -25871,6 +25885,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountMagicWANConnectorMetricsAdaptiveGroupsMax" href="#AccountMagicWANConnectorMetricsAdaptiveGroupsMax">AccountMagicWANConnectorMetricsAdaptiveGroupsMax</a> {<br />
+&nbsp;&nbsp;<span class="c"># current connector ha state</span><br />
+&nbsp;&nbsp;haState: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Number of interfaces of a given Type</span><br />
 &nbsp;&nbsp;interfaceCount: <a href="#uint32">uint32!</a><br />
 }<br />
@@ -25936,6 +25952,10 @@
 &nbsp;&nbsp;datetime_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetime descending</span><br />
 &nbsp;&nbsp;datetime_DESC<br />
+&nbsp;&nbsp;<span class="c"># max(haState) ascending</span><br />
+&nbsp;&nbsp;max_haState_ASC<br />
+&nbsp;&nbsp;<span class="c"># max(haState) descending</span><br />
+&nbsp;&nbsp;max_haState_DESC<br />
 &nbsp;&nbsp;<span class="c"># max(interfaceCount) ascending</span><br />
 &nbsp;&nbsp;max_interfaceCount_ASC<br />
 &nbsp;&nbsp;<span class="c"># max(interfaceCount) descending</span><br />
@@ -34803,6 +34823,8 @@
 <span class="k">type</span> <a id="AccountWorkerPlacementAdaptiveGroups" href="#AccountWorkerPlacementAdaptiveGroups">AccountWorkerPlacementAdaptiveGroups</a> {<br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#AccountWorkerPlacementAdaptiveGroupsDimensions">AccountWorkerPlacementAdaptiveGroupsDimensions</a><br />
+&nbsp;&nbsp;<span class="c"># Quantiles of a metric per dimension</span><br />
+&nbsp;&nbsp;quantiles: <a href="#AccountWorkerPlacementAdaptiveGroupsQuantiles">AccountWorkerPlacementAdaptiveGroupsQuantiles</a><br />
 &nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
 &nbsp;&nbsp;sum: <a href="#AccountWorkerPlacementAdaptiveGroupsSum">AccountWorkerPlacementAdaptiveGroupsSum</a><br />
 }<br />
@@ -34822,7 +34844,7 @@
 &nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Response status of worker</span><br />
 &nbsp;&nbsp;httpStatus: <a href="#uint16">uint16!</a><br />
-&nbsp;&nbsp;<span class="c"># 1 if the request was sampled to bypass Smart Placement, 0 otherwise</span><br />
+&nbsp;&nbsp;<span class="c"># 1 if the request was sampled to bypass Smart Placement, 0 if it was processed using Smart Placement</span><br />
 &nbsp;&nbsp;isSample: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># 1 if the request was processed using Smart Placement, 0 if it was processed in default mode</span><br />
 &nbsp;&nbsp;placementUsed: <a href="#uint8">uint8!</a><br />
@@ -34998,6 +35020,34 @@
 &nbsp;&nbsp;placementUsed_ASC<br />
 &nbsp;&nbsp;<span class="c"># placementUsed descending</span><br />
 &nbsp;&nbsp;placementUsed_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP25) ascending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP25_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP25) descending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP25_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP50) ascending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP50_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP50) descending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP50_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP75) ascending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP75_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP75) descending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP75_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP90) ascending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP90_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP90) descending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP90_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP95) ascending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP95_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP95) descending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP95_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP999) ascending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP999_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP999) descending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP999_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP99) ascending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP99_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP99) descending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP99_DESC<br />
 &nbsp;&nbsp;<span class="c"># requestDurationBucketMin100ms ascending</span><br />
 &nbsp;&nbsp;requestDurationBucketMin100ms_ASC<br />
 &nbsp;&nbsp;<span class="c"># requestDurationBucketMin100ms descending</span><br />
@@ -35026,6 +35076,23 @@
 &nbsp;&nbsp;sum_requests_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(requests) descending</span><br />
 &nbsp;&nbsp;sum_requests_DESC<br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountWorkerPlacementAdaptiveGroupsQuantiles" href="#AccountWorkerPlacementAdaptiveGroupsQuantiles">AccountWorkerPlacementAdaptiveGroupsQuantiles</a> {<br />
+&nbsp;&nbsp;<span class="c"># Request duration 25th percentile - milliseconds</span><br />
+&nbsp;&nbsp;requestDurationP25: <a href="#float32">float32!</a><br />
+&nbsp;&nbsp;<span class="c"># Request duration 50th percentile - milliseconds</span><br />
+&nbsp;&nbsp;requestDurationP50: <a href="#float32">float32!</a><br />
+&nbsp;&nbsp;<span class="c"># Request duration 75th percentile - milliseconds</span><br />
+&nbsp;&nbsp;requestDurationP75: <a href="#float32">float32!</a><br />
+&nbsp;&nbsp;<span class="c"># Request duration 90th percentile - milliseconds</span><br />
+&nbsp;&nbsp;requestDurationP90: <a href="#float32">float32!</a><br />
+&nbsp;&nbsp;<span class="c"># Request duration 95th percentile - milliseconds</span><br />
+&nbsp;&nbsp;requestDurationP95: <a href="#float32">float32!</a><br />
+&nbsp;&nbsp;<span class="c"># Request duration 99th percentile - milliseconds</span><br />
+&nbsp;&nbsp;requestDurationP99: <a href="#float32">float32!</a><br />
+&nbsp;&nbsp;<span class="c"># Request duration 99.9th percentile - milliseconds</span><br />
+&nbsp;&nbsp;requestDurationP999: <a href="#float32">float32!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountWorkerPlacementAdaptiveGroupsSum" href="#AccountWorkerPlacementAdaptiveGroupsSum">AccountWorkerPlacementAdaptiveGroupsSum</a> {<br />
@@ -51309,7 +51376,7 @@
 &nbsp;&nbsp;language: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Track's order number for its clientId</span><br />
 &nbsp;&nbsp;orderInClient: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Track's reverse order number within its session (last track having orderInSession 1)</span><br />
+&nbsp;&nbsp;<span class="c"># Track's order number within its session (first track having orderInSession 1)</span><br />
 &nbsp;&nbsp;orderInSession: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># User Agent OS name</span><br />
 &nbsp;&nbsp;osName: <a href="#string">string!</a><br />
@@ -51321,6 +51388,8 @@
 &nbsp;&nbsp;resolution: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Track's reverse order number for its clientId</span><br />
 &nbsp;&nbsp;reverseOrderInClient: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Track's reverse order number within its session (last track having reverseOrderInSession 1)</span><br />
+&nbsp;&nbsp;reverseOrderInSession: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># ABR sample interval</span><br />
 &nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32!</a><br />
 &nbsp;&nbsp;<span class="c"># Session ID</span><br />
@@ -51337,6 +51406,8 @@
 &nbsp;&nbsp;ua: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># User Agent stringified object</span><br />
 &nbsp;&nbsp;uaObj: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># URL query parameters</span><br />
+&nbsp;&nbsp;urlParams: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># URL Path</span><br />
 &nbsp;&nbsp;urlPath: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Viewport, cantor paired width & heigh</span><br />
@@ -51554,6 +51625,14 @@
 &nbsp;&nbsp;reverseOrderInClient_lt: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;reverseOrderInClient_neq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;reverseOrderInClient_notin: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;reverseOrderInSession: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;reverseOrderInSession_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;reverseOrderInSession_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;reverseOrderInSession_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;reverseOrderInSession_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;reverseOrderInSession_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;reverseOrderInSession_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;reverseOrderInSession_notin: <a href="#uint64">[uint64!]</a><br />
 &nbsp;&nbsp;sampleInterval: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sampleInterval_geq: <a href="#uint32">uint32</a><br />
 &nbsp;&nbsp;sampleInterval_gt: <a href="#uint32">uint32</a><br />
@@ -51630,6 +51709,16 @@
 &nbsp;&nbsp;ua_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ua_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ua_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;urlParams_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;urlParams_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;urlPath: <a href="#string">string</a><br />
 &nbsp;&nbsp;urlPath_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;urlPath_gt: <a href="#string">string</a><br />
@@ -51692,7 +51781,7 @@
 &nbsp;&nbsp;language: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Track's order number for its clientId</span><br />
 &nbsp;&nbsp;orderInClient: <a href="#uint64">uint64!</a><br />
-&nbsp;&nbsp;<span class="c"># Track's reverse order number within its session (last track having orderInSession 1)</span><br />
+&nbsp;&nbsp;<span class="c"># Track's order number within its session (first track having orderInSession 1)</span><br />
 &nbsp;&nbsp;orderInSession: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># User Agent OS name</span><br />
 &nbsp;&nbsp;osName: <a href="#string">string!</a><br />
@@ -51704,6 +51793,8 @@
 &nbsp;&nbsp;resolution: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Track's reverse order number for its clientId</span><br />
 &nbsp;&nbsp;reverseOrderInClient: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Track's reverse order number within its session (last track having reverseOrderInSession 1)</span><br />
+&nbsp;&nbsp;reverseOrderInSession: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Session ID</span><br />
 &nbsp;&nbsp;sessionId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Timezone Offset</span><br />
@@ -51718,6 +51809,8 @@
 &nbsp;&nbsp;ua: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># User Agent stringified object</span><br />
 &nbsp;&nbsp;uaObj: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># URL query parameters</span><br />
+&nbsp;&nbsp;urlParams: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># URL Path</span><br />
 &nbsp;&nbsp;urlPath: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Viewport, cantor paired width & heigh</span><br />
@@ -51927,6 +52020,14 @@
 &nbsp;&nbsp;reverseOrderInClient_lt: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;reverseOrderInClient_neq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;reverseOrderInClient_notin: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;reverseOrderInSession: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;reverseOrderInSession_geq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;reverseOrderInSession_gt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;reverseOrderInSession_in: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;reverseOrderInSession_leq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;reverseOrderInSession_lt: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;reverseOrderInSession_neq: <a href="#uint64">uint64</a><br />
+&nbsp;&nbsp;reverseOrderInSession_notin: <a href="#uint64">[uint64!]</a><br />
 &nbsp;&nbsp;sessionId: <a href="#string">string</a><br />
 &nbsp;&nbsp;sessionId_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;sessionId_gt: <a href="#string">string</a><br />
@@ -51995,6 +52096,16 @@
 &nbsp;&nbsp;ua_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ua_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ua_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;urlParams_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;urlParams_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;urlPath: <a href="#string">string</a><br />
 &nbsp;&nbsp;urlPath_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;urlPath_gt: <a href="#string">string</a><br />
@@ -52108,6 +52219,10 @@
 &nbsp;&nbsp;reverseOrderInClient_ASC<br />
 &nbsp;&nbsp;<span class="c"># reverseOrderInClient descending</span><br />
 &nbsp;&nbsp;reverseOrderInClient_DESC<br />
+&nbsp;&nbsp;<span class="c"># reverseOrderInSession ascending</span><br />
+&nbsp;&nbsp;reverseOrderInSession_ASC<br />
+&nbsp;&nbsp;<span class="c"># reverseOrderInSession descending</span><br />
+&nbsp;&nbsp;reverseOrderInSession_DESC<br />
 &nbsp;&nbsp;<span class="c"># sessionId ascending</span><br />
 &nbsp;&nbsp;sessionId_ASC<br />
 &nbsp;&nbsp;<span class="c"># sessionId descending</span><br />
@@ -52144,6 +52259,10 @@
 &nbsp;&nbsp;uniq_sessionIdCount_ASC<br />
 &nbsp;&nbsp;<span class="c"># uniq(sessionIdCount) descending</span><br />
 &nbsp;&nbsp;uniq_sessionIdCount_DESC<br />
+&nbsp;&nbsp;<span class="c"># urlParams ascending</span><br />
+&nbsp;&nbsp;urlParams_ASC<br />
+&nbsp;&nbsp;<span class="c"># urlParams descending</span><br />
+&nbsp;&nbsp;urlParams_DESC<br />
 &nbsp;&nbsp;<span class="c"># urlPath ascending</span><br />
 &nbsp;&nbsp;urlPath_ASC<br />
 &nbsp;&nbsp;<span class="c"># urlPath descending</span><br />
@@ -52254,6 +52373,10 @@
 &nbsp;&nbsp;reverseOrderInClient_ASC<br />
 &nbsp;&nbsp;<span class="c"># reverseOrderInClient descending</span><br />
 &nbsp;&nbsp;reverseOrderInClient_DESC<br />
+&nbsp;&nbsp;<span class="c"># reverseOrderInSession ascending</span><br />
+&nbsp;&nbsp;reverseOrderInSession_ASC<br />
+&nbsp;&nbsp;<span class="c"># reverseOrderInSession descending</span><br />
+&nbsp;&nbsp;reverseOrderInSession_DESC<br />
 &nbsp;&nbsp;<span class="c"># sampleInterval ascending</span><br />
 &nbsp;&nbsp;sampleInterval_ASC<br />
 &nbsp;&nbsp;<span class="c"># sampleInterval descending</span><br />
@@ -52286,6 +52409,10 @@
 &nbsp;&nbsp;ua_ASC<br />
 &nbsp;&nbsp;<span class="c"># ua descending</span><br />
 &nbsp;&nbsp;ua_DESC<br />
+&nbsp;&nbsp;<span class="c"># urlParams ascending</span><br />
+&nbsp;&nbsp;urlParams_ASC<br />
+&nbsp;&nbsp;<span class="c"># urlParams descending</span><br />
+&nbsp;&nbsp;urlParams_DESC<br />
 &nbsp;&nbsp;<span class="c"># urlPath ascending</span><br />
 &nbsp;&nbsp;urlPath_ASC<br />
 &nbsp;&nbsp;<span class="c"># urlPath descending</span><br />
@@ -52358,6 +52485,8 @@
 &nbsp;&nbsp;ua: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># User Agent stringified object</span><br />
 &nbsp;&nbsp;uaObj: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># URL query parameters</span><br />
+&nbsp;&nbsp;urlParams: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># URL Path</span><br />
 &nbsp;&nbsp;urlPath: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Viewport, cantor paired width & heigh</span><br />
@@ -52611,6 +52740,16 @@
 &nbsp;&nbsp;ua_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ua_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ua_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;urlParams_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;urlParams_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;urlPath: <a href="#string">string</a><br />
 &nbsp;&nbsp;urlPath_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;urlPath_gt: <a href="#string">string</a><br />
@@ -52748,6 +52887,10 @@
 &nbsp;&nbsp;uniq_sessionIdCount_ASC<br />
 &nbsp;&nbsp;<span class="c"># uniq(sessionIdCount) descending</span><br />
 &nbsp;&nbsp;uniq_sessionIdCount_DESC<br />
+&nbsp;&nbsp;<span class="c"># urlParams ascending</span><br />
+&nbsp;&nbsp;urlParams_ASC<br />
+&nbsp;&nbsp;<span class="c"># urlParams descending</span><br />
+&nbsp;&nbsp;urlParams_DESC<br />
 &nbsp;&nbsp;<span class="c"># urlPath ascending</span><br />
 &nbsp;&nbsp;urlPath_ASC<br />
 &nbsp;&nbsp;<span class="c"># urlPath descending</span><br />
@@ -52781,8 +52924,12 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsDimensions" href="#ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsDimensions">ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># City, region</span><br />
+&nbsp;&nbsp;cityRegion: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Client ID</span><br />
 &nbsp;&nbsp;clientId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Country</span><br />
+&nbsp;&nbsp;country: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Session duration (seconds)</span><br />
 &nbsp;&nbsp;duration: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># URL Path at session end</span><br />
@@ -52820,6 +52967,16 @@
 <span class="k">input</span> <a id="ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject" href="#ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject">ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject</a> {<br />
 &nbsp;&nbsp;AND: <a href="#ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject">[ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject!]</a><br />
 &nbsp;&nbsp;OR: <a href="#ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject">[ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;cityRegion: <a href="#string">string</a><br />
+&nbsp;&nbsp;cityRegion_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cityRegion_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;cityRegion_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;cityRegion_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cityRegion_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;cityRegion_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;cityRegion_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cityRegion_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;cityRegion_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientId: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientId_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientId_gt: <a href="#string">string</a><br />
@@ -52830,6 +52987,16 @@
 &nbsp;&nbsp;clientId_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientId_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;clientId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;country: <a href="#string">string</a><br />
+&nbsp;&nbsp;country_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;country_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;country_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;country_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;country_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;country_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;country_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;country_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;country_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;duration: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;duration_geq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;duration_gt: <a href="#uint64">uint64</a><br />
@@ -52969,6 +53136,10 @@
 &nbsp;&nbsp;avg_sessionDuration_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(sessionDuration) descending</span><br />
 &nbsp;&nbsp;avg_sessionDuration_DESC<br />
+&nbsp;&nbsp;<span class="c"># cityRegion ascending</span><br />
+&nbsp;&nbsp;cityRegion_ASC<br />
+&nbsp;&nbsp;<span class="c"># cityRegion descending</span><br />
+&nbsp;&nbsp;cityRegion_DESC<br />
 &nbsp;&nbsp;<span class="c"># clientId ascending</span><br />
 &nbsp;&nbsp;clientId_ASC<br />
 &nbsp;&nbsp;<span class="c"># clientId descending</span><br />
@@ -52977,6 +53148,10 @@
 &nbsp;&nbsp;count_ASC<br />
 &nbsp;&nbsp;<span class="c"># count() descending</span><br />
 &nbsp;&nbsp;count_DESC<br />
+&nbsp;&nbsp;<span class="c"># country ascending</span><br />
+&nbsp;&nbsp;country_ASC<br />
+&nbsp;&nbsp;<span class="c"># country descending</span><br />
+&nbsp;&nbsp;country_DESC<br />
 &nbsp;&nbsp;<span class="c"># duration ascending</span><br />
 &nbsp;&nbsp;duration_ASC<br />
 &nbsp;&nbsp;<span class="c"># duration descending</span><br />
@@ -53118,6 +53293,8 @@
 &nbsp;&nbsp;ua: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># User Agent stringified object</span><br />
 &nbsp;&nbsp;uaObj: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># URL query parameters</span><br />
+&nbsp;&nbsp;urlParams: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># URL Path</span><br />
 &nbsp;&nbsp;urlPath: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Viewport, cantor paired width & heigh</span><br />
@@ -53361,6 +53538,16 @@
 &nbsp;&nbsp;ua_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;ua_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;ua_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;urlParams_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;urlParams_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;urlParams_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;urlPath: <a href="#string">string</a><br />
 &nbsp;&nbsp;urlPath_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;urlPath_gt: <a href="#string">string</a><br />
@@ -53494,6 +53681,10 @@
 &nbsp;&nbsp;uniq_sessionIdCount_ASC<br />
 &nbsp;&nbsp;<span class="c"># uniq(sessionIdCount) descending</span><br />
 &nbsp;&nbsp;uniq_sessionIdCount_DESC<br />
+&nbsp;&nbsp;<span class="c"># urlParams ascending</span><br />
+&nbsp;&nbsp;urlParams_ASC<br />
+&nbsp;&nbsp;<span class="c"># urlParams descending</span><br />
+&nbsp;&nbsp;urlParams_DESC<br />
 &nbsp;&nbsp;<span class="c"># urlPath ascending</span><br />
 &nbsp;&nbsp;urlPath_ASC<br />
 &nbsp;&nbsp;<span class="c"># urlPath descending</span><br />
@@ -53521,8 +53712,12 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsDimensions" href="#ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsDimensions">ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># City, region</span><br />
+&nbsp;&nbsp;cityRegion: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Client ID</span><br />
 &nbsp;&nbsp;clientId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Country</span><br />
+&nbsp;&nbsp;country: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Traffic source at session start</span><br />
 &nbsp;&nbsp;firstTrafficSrc: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Date when the session ended</span><br />
@@ -53554,6 +53749,16 @@
 <span class="k">input</span> <a id="ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject" href="#ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject">ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject</a> {<br />
 &nbsp;&nbsp;AND: <a href="#ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject">[ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject!]</a><br />
 &nbsp;&nbsp;OR: <a href="#ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject">[ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;cityRegion: <a href="#string">string</a><br />
+&nbsp;&nbsp;cityRegion_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cityRegion_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;cityRegion_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;cityRegion_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cityRegion_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;cityRegion_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;cityRegion_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;cityRegion_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;cityRegion_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientId: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientId_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientId_gt: <a href="#string">string</a><br />
@@ -53564,6 +53769,16 @@
 &nbsp;&nbsp;clientId_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;clientId_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;clientId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;country: <a href="#string">string</a><br />
+&nbsp;&nbsp;country_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;country_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;country_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;country_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;country_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;country_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;country_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;country_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;country_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;firstTrafficSrc: <a href="#string">string</a><br />
 &nbsp;&nbsp;firstTrafficSrc_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;firstTrafficSrc_gt: <a href="#string">string</a><br />
@@ -53671,6 +53886,10 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsOrderBy" href="#ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsOrderBy">ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># cityRegion ascending</span><br />
+&nbsp;&nbsp;cityRegion_ASC<br />
+&nbsp;&nbsp;<span class="c"># cityRegion descending</span><br />
+&nbsp;&nbsp;cityRegion_DESC<br />
 &nbsp;&nbsp;<span class="c"># clientId ascending</span><br />
 &nbsp;&nbsp;clientId_ASC<br />
 &nbsp;&nbsp;<span class="c"># clientId descending</span><br />
@@ -53679,6 +53898,10 @@
 &nbsp;&nbsp;count_ASC<br />
 &nbsp;&nbsp;<span class="c"># count() descending</span><br />
 &nbsp;&nbsp;count_DESC<br />
+&nbsp;&nbsp;<span class="c"># country ascending</span><br />
+&nbsp;&nbsp;country_ASC<br />
+&nbsp;&nbsp;<span class="c"># country descending</span><br />
+&nbsp;&nbsp;country_DESC<br />
 &nbsp;&nbsp;<span class="c"># firstTrafficSrc ascending</span><br />
 &nbsp;&nbsp;firstTrafficSrc_ASC<br />
 &nbsp;&nbsp;<span class="c"># firstTrafficSrc descending</span><br />
