@@ -13477,6 +13477,10 @@
 <span class="k">type</span> <a id="AccountGatewayL4SessionsAdaptiveGroupsDimensions" href="#AccountGatewayL4SessionsAdaptiveGroupsDimensions">AccountGatewayL4SessionsAdaptiveGroupsDimensions</a> {<br />
 &nbsp;&nbsp;<span class="c"># action taken by gateway</span><br />
 &nbsp;&nbsp;action: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># IDs of the applications that matched the session parameters</span><br />
+&nbsp;&nbsp;applicationIds: <a href="#uint32">[uint32!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Names of the applications that matched the session parameters</span><br />
+&nbsp;&nbsp;applicationNames: <a href="#string">[string!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Colo Code of edge server</span><br />
 &nbsp;&nbsp;coloCode: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Datetime that the session was started</span><br />
@@ -13493,8 +13497,16 @@
 &nbsp;&nbsp;detectedProtocol: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The device ID of the gateway user who initiated the session</span><br />
 &nbsp;&nbsp;deviceId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Continent code of the session destination IP address</span><br />
+&nbsp;&nbsp;dstIpContinent: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Country code of the session destination IP address</span><br />
+&nbsp;&nbsp;dstIpCountry: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The email address of the gateway user who initiated the session</span><br />
 &nbsp;&nbsp;email: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The proxy endpoint used on this session</span><br />
+&nbsp;&nbsp;proxyEndpoint: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The network session unique identifier</span><br />
+&nbsp;&nbsp;sessionId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The SNI pulled from the session tls handshake, if present</span><br />
 &nbsp;&nbsp;sni: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Local LAN IP of the device. Only available when connected via a GRE/IPsec tunnel on-ramp</span><br />
@@ -13503,10 +13515,21 @@
 &nbsp;&nbsp;sourceIp: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The source port for the session</span><br />
 &nbsp;&nbsp;sourcePort: <a href="#uint16">uint16!</a><br />
-&nbsp;&nbsp;<span class="c"># The transport protocol used in the session, one of (0, tcp) (1, quic) (2, udp)</span><br />
+&nbsp;&nbsp;<span class="c"># Continent code of the session source IP address</span><br />
+&nbsp;&nbsp;srcIpContinent: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Country code of the session source IP address</span><br />
+&nbsp;&nbsp;srcIpCountry: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The transport protocol used in the session, one of (0, tcp) (1, quic) (2, udp). Deprecated, please use transportProtocol</span><br />
+&nbsp;&nbsp;@Deprecated<br />
 &nbsp;&nbsp;transport: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># The transport protocol used in the session, one of (0, tcp) (1, quic) (2, udp)</span><br />
+&nbsp;&nbsp;transportProtocol: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># The ID of the gateway user who initiated the session</span><br />
 &nbsp;&nbsp;userId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The ID of the virtual nework the device was connected to</span><br />
+&nbsp;&nbsp;virtualNetworkId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The name of the virtual nework the device was connected to</span><br />
+&nbsp;&nbsp;virtualNetworkName: <a href="#string">string!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject" href="#AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject">AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject</a> {<br />
@@ -13522,6 +13545,14 @@
 &nbsp;&nbsp;action_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;action_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;action_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;applicationIds_has: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;applicationIds_hasall: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;applicationIds_hasany: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;applicationIds_nothas: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;applicationNames_has: <a href="#string">string</a><br />
+&nbsp;&nbsp;applicationNames_hasall: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;applicationNames_hasany: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;applicationNames_nothas: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloCode: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloCode_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloCode_gt: <a href="#string">string</a><br />
@@ -13594,6 +13625,26 @@
 &nbsp;&nbsp;deviceId_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;deviceId_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;deviceId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpContinent: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpContinent_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpContinent_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpContinent_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;dstIpContinent_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpContinent_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpContinent_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpContinent_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpContinent_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;dstIpContinent_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpCountry: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpCountry_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpCountry_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpCountry_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;dstIpCountry_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpCountry_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpCountry_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpCountry_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpCountry_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;dstIpCountry_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;email: <a href="#string">string</a><br />
 &nbsp;&nbsp;email_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;email_gt: <a href="#string">string</a><br />
@@ -13604,6 +13655,26 @@
 &nbsp;&nbsp;email_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;email_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;email_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;proxyEndpoint: <a href="#string">string</a><br />
+&nbsp;&nbsp;proxyEndpoint_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;proxyEndpoint_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;proxyEndpoint_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;proxyEndpoint_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;proxyEndpoint_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;proxyEndpoint_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;proxyEndpoint_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;proxyEndpoint_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;proxyEndpoint_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sessionId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;sessionId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;sessionId_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;sni: <a href="#string">string</a><br />
 &nbsp;&nbsp;sni_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;sni_gt: <a href="#string">string</a><br />
@@ -13642,7 +13713,35 @@
 &nbsp;&nbsp;sourcePort_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;sourcePort_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;sourcePort_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;srcIpContinent: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpContinent_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpContinent_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpContinent_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;srcIpContinent_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpContinent_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpContinent_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpContinent_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpContinent_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;srcIpContinent_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpCountry: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpCountry_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpCountry_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpCountry_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;srcIpCountry_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpCountry_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpCountry_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpCountry_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpCountry_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;srcIpCountry_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;transport: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;transportProtocol: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;transportProtocol_geq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;transportProtocol_gt: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;transportProtocol_in: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;transportProtocol_leq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;transportProtocol_lt: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;transportProtocol_neq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;transportProtocol_notin: <a href="#uint16">[uint16!]</a><br />
 &nbsp;&nbsp;transport_geq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;transport_gt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;transport_in: <a href="#uint16">[uint16!]</a><br />
@@ -13660,6 +13759,26 @@
 &nbsp;&nbsp;userId_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;userId_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;userId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkId: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;virtualNetworkId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;virtualNetworkId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkName: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkName_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkName_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkName_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;virtualNetworkName_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkName_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkName_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkName_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkName_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;virtualNetworkName_notlike: <a href="#string">string</a><br />
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountGatewayL4SessionsAdaptiveGroupsOrderBy" href="#AccountGatewayL4SessionsAdaptiveGroupsOrderBy">AccountGatewayL4SessionsAdaptiveGroupsOrderBy</a> {<br />
@@ -13667,6 +13786,14 @@
 &nbsp;&nbsp;action_ASC<br />
 &nbsp;&nbsp;<span class="c"># action descending</span><br />
 &nbsp;&nbsp;action_DESC<br />
+&nbsp;&nbsp;<span class="c"># applicationIds ascending</span><br />
+&nbsp;&nbsp;applicationIds_ASC<br />
+&nbsp;&nbsp;<span class="c"># applicationIds descending</span><br />
+&nbsp;&nbsp;applicationIds_DESC<br />
+&nbsp;&nbsp;<span class="c"># applicationNames ascending</span><br />
+&nbsp;&nbsp;applicationNames_ASC<br />
+&nbsp;&nbsp;<span class="c"># applicationNames descending</span><br />
+&nbsp;&nbsp;applicationNames_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCode ascending</span><br />
 &nbsp;&nbsp;coloCode_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCode descending</span><br />
@@ -13703,10 +13830,26 @@
 &nbsp;&nbsp;deviceId_ASC<br />
 &nbsp;&nbsp;<span class="c"># deviceId descending</span><br />
 &nbsp;&nbsp;deviceId_DESC<br />
+&nbsp;&nbsp;<span class="c"># dstIpContinent ascending</span><br />
+&nbsp;&nbsp;dstIpContinent_ASC<br />
+&nbsp;&nbsp;<span class="c"># dstIpContinent descending</span><br />
+&nbsp;&nbsp;dstIpContinent_DESC<br />
+&nbsp;&nbsp;<span class="c"># dstIpCountry ascending</span><br />
+&nbsp;&nbsp;dstIpCountry_ASC<br />
+&nbsp;&nbsp;<span class="c"># dstIpCountry descending</span><br />
+&nbsp;&nbsp;dstIpCountry_DESC<br />
 &nbsp;&nbsp;<span class="c"># email ascending</span><br />
 &nbsp;&nbsp;email_ASC<br />
 &nbsp;&nbsp;<span class="c"># email descending</span><br />
 &nbsp;&nbsp;email_DESC<br />
+&nbsp;&nbsp;<span class="c"># proxyEndpoint ascending</span><br />
+&nbsp;&nbsp;proxyEndpoint_ASC<br />
+&nbsp;&nbsp;<span class="c"># proxyEndpoint descending</span><br />
+&nbsp;&nbsp;proxyEndpoint_DESC<br />
+&nbsp;&nbsp;<span class="c"># sessionId ascending</span><br />
+&nbsp;&nbsp;sessionId_ASC<br />
+&nbsp;&nbsp;<span class="c"># sessionId descending</span><br />
+&nbsp;&nbsp;sessionId_DESC<br />
 &nbsp;&nbsp;<span class="c"># sni ascending</span><br />
 &nbsp;&nbsp;sni_ASC<br />
 &nbsp;&nbsp;<span class="c"># sni descending</span><br />
@@ -13723,6 +13866,18 @@
 &nbsp;&nbsp;sourcePort_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourcePort descending</span><br />
 &nbsp;&nbsp;sourcePort_DESC<br />
+&nbsp;&nbsp;<span class="c"># srcIpContinent ascending</span><br />
+&nbsp;&nbsp;srcIpContinent_ASC<br />
+&nbsp;&nbsp;<span class="c"># srcIpContinent descending</span><br />
+&nbsp;&nbsp;srcIpContinent_DESC<br />
+&nbsp;&nbsp;<span class="c"># srcIpCountry ascending</span><br />
+&nbsp;&nbsp;srcIpCountry_ASC<br />
+&nbsp;&nbsp;<span class="c"># srcIpCountry descending</span><br />
+&nbsp;&nbsp;srcIpCountry_DESC<br />
+&nbsp;&nbsp;<span class="c"># transportProtocol ascending</span><br />
+&nbsp;&nbsp;transportProtocol_ASC<br />
+&nbsp;&nbsp;<span class="c"># transportProtocol descending</span><br />
+&nbsp;&nbsp;transportProtocol_DESC<br />
 &nbsp;&nbsp;<span class="c"># transport ascending</span><br />
 &nbsp;&nbsp;transport_ASC<br />
 &nbsp;&nbsp;<span class="c"># transport descending</span><br />
@@ -13731,6 +13886,14 @@
 &nbsp;&nbsp;userId_ASC<br />
 &nbsp;&nbsp;<span class="c"># userId descending</span><br />
 &nbsp;&nbsp;userId_DESC<br />
+&nbsp;&nbsp;<span class="c"># virtualNetworkId ascending</span><br />
+&nbsp;&nbsp;virtualNetworkId_ASC<br />
+&nbsp;&nbsp;<span class="c"># virtualNetworkId descending</span><br />
+&nbsp;&nbsp;virtualNetworkId_DESC<br />
+&nbsp;&nbsp;<span class="c"># virtualNetworkName ascending</span><br />
+&nbsp;&nbsp;virtualNetworkName_ASC<br />
+&nbsp;&nbsp;<span class="c"># virtualNetworkName descending</span><br />
+&nbsp;&nbsp;virtualNetworkName_DESC<br />
 }<br />
 <br />
 <span class="c"># Aggregated metrics about upstream (edge to client) L4 Gateway Sessions. Metrics are reported on TCP, QUIC or UDP session close</span><br />
@@ -14105,6 +14268,14 @@
 <span class="k">type</span> <a id="AccountGatewayL7RequestsAdaptiveGroupsDimensions" href="#AccountGatewayL7RequestsAdaptiveGroupsDimensions">AccountGatewayL7RequestsAdaptiveGroupsDimensions</a> {<br />
 &nbsp;&nbsp;<span class="c"># action taken by gateway</span><br />
 &nbsp;&nbsp;action: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># IDs of the applications that matched the request parameters</span><br />
+&nbsp;&nbsp;applicationIds: <a href="#uint32">[uint32!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Names of the applications that matched the request parameters</span><br />
+&nbsp;&nbsp;applicationNames: <a href="#string">[string!]!</a><br />
+&nbsp;&nbsp;<span class="c"># IDs of the categories that matched the request parameters</span><br />
+&nbsp;&nbsp;categoryIds: <a href="#uint32">[uint32!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Names of the categories that matched the request parameters</span><br />
+&nbsp;&nbsp;categoryNames: <a href="#string">[string!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Colo Code of edge server</span><br />
 &nbsp;&nbsp;coloCode: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Datetime that the request happened</span><br />
@@ -14115,6 +14286,10 @@
 &nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># The device ID of the gateway user who made the request</span><br />
 &nbsp;&nbsp;deviceId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Continent code of the request destination IP address</span><br />
+&nbsp;&nbsp;dstIpContinent: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Country code of the request destination IP address</span><br />
+&nbsp;&nbsp;dstIpCountry: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The email address of the gateway user who made the request</span><br />
 &nbsp;&nbsp;email: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The destination host for the request</span><br />
@@ -14125,14 +14300,28 @@
 &nbsp;&nbsp;isIsolated: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># Access private app AUD</span><br />
 &nbsp;&nbsp;privateAppAUD: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The proxy endpoint used on this request</span><br />
+&nbsp;&nbsp;proxyEndpoint: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Indicates if the request content was quarantined</span><br />
 &nbsp;&nbsp;quarantined: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># The request unique identifier</span><br />
+&nbsp;&nbsp;requestId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Local LAN IP of the device. Only available when connected via a GRE/IPsec tunnel on-ramp</span><br />
 &nbsp;&nbsp;sourceInternalIp: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Continent code of the request source IP address</span><br />
+&nbsp;&nbsp;srcIpContinent: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Country code of the request source IP address</span><br />
+&nbsp;&nbsp;srcIpCountry: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Action taken when an untrusted origin certificate error occurs</span><br />
 &nbsp;&nbsp;untrustedCertificateAction: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The request URL</span><br />
+&nbsp;&nbsp;url: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The ID of the gateway user who made the request</span><br />
 &nbsp;&nbsp;userId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The ID of the virtual nework the device was connected to</span><br />
+&nbsp;&nbsp;virtualNetworkId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The name of the virtual nework the device was connected to</span><br />
+&nbsp;&nbsp;virtualNetworkName: <a href="#string">string!</a><br />
 }<br />
 <br />
 <span class="k">input</span> <a id="AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject" href="#AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject">AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject</a> {<br />
@@ -14148,6 +14337,22 @@
 &nbsp;&nbsp;action_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;action_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;action_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;applicationIds_has: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;applicationIds_hasall: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;applicationIds_hasany: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;applicationIds_nothas: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;applicationNames_has: <a href="#string">string</a><br />
+&nbsp;&nbsp;applicationNames_hasall: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;applicationNames_hasany: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;applicationNames_nothas: <a href="#string">string</a><br />
+&nbsp;&nbsp;categoryIds_has: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;categoryIds_hasall: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;categoryIds_hasany: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;categoryIds_nothas: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;categoryNames_has: <a href="#string">string</a><br />
+&nbsp;&nbsp;categoryNames_hasall: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;categoryNames_hasany: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;categoryNames_nothas: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloCode: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloCode_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloCode_gt: <a href="#string">string</a><br />
@@ -14192,6 +14397,26 @@
 &nbsp;&nbsp;deviceId_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;deviceId_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;deviceId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpContinent: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpContinent_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpContinent_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpContinent_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;dstIpContinent_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpContinent_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpContinent_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpContinent_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpContinent_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;dstIpContinent_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpCountry: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpCountry_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpCountry_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpCountry_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;dstIpCountry_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpCountry_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpCountry_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpCountry_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;dstIpCountry_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;dstIpCountry_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;email: <a href="#string">string</a><br />
 &nbsp;&nbsp;email_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;email_gt: <a href="#string">string</a><br />
@@ -14238,6 +14463,16 @@
 &nbsp;&nbsp;privateAppAUD_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;privateAppAUD_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;privateAppAUD_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;proxyEndpoint: <a href="#string">string</a><br />
+&nbsp;&nbsp;proxyEndpoint_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;proxyEndpoint_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;proxyEndpoint_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;proxyEndpoint_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;proxyEndpoint_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;proxyEndpoint_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;proxyEndpoint_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;proxyEndpoint_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;proxyEndpoint_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;quarantined: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;quarantined_geq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;quarantined_gt: <a href="#uint8">uint8</a><br />
@@ -14246,6 +14481,16 @@
 &nbsp;&nbsp;quarantined_lt: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;quarantined_neq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;quarantined_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;requestId: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;requestId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;requestId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;requestId_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;sourceInternalIp: <a href="#string">string</a><br />
 &nbsp;&nbsp;sourceInternalIp_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;sourceInternalIp_gt: <a href="#string">string</a><br />
@@ -14256,6 +14501,26 @@
 &nbsp;&nbsp;sourceInternalIp_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;sourceInternalIp_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;sourceInternalIp_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpContinent: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpContinent_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpContinent_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpContinent_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;srcIpContinent_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpContinent_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpContinent_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpContinent_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpContinent_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;srcIpContinent_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpCountry: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpCountry_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpCountry_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpCountry_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;srcIpCountry_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpCountry_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpCountry_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpCountry_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;srcIpCountry_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;srcIpCountry_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;untrustedCertificateAction: <a href="#string">string</a><br />
 &nbsp;&nbsp;untrustedCertificateAction_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;untrustedCertificateAction_gt: <a href="#string">string</a><br />
@@ -14266,6 +14531,16 @@
 &nbsp;&nbsp;untrustedCertificateAction_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;untrustedCertificateAction_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;untrustedCertificateAction_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;url: <a href="#string">string</a><br />
+&nbsp;&nbsp;url_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;url_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;url_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;url_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;url_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;url_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;url_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;url_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;url_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;userId: <a href="#string">string</a><br />
 &nbsp;&nbsp;userId_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;userId_gt: <a href="#string">string</a><br />
@@ -14276,6 +14551,26 @@
 &nbsp;&nbsp;userId_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;userId_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;userId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkId: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;virtualNetworkId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;virtualNetworkId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkName: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkName_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkName_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkName_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;virtualNetworkName_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkName_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkName_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkName_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;virtualNetworkName_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;virtualNetworkName_notlike: <a href="#string">string</a><br />
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountGatewayL7RequestsAdaptiveGroupsOrderBy" href="#AccountGatewayL7RequestsAdaptiveGroupsOrderBy">AccountGatewayL7RequestsAdaptiveGroupsOrderBy</a> {<br />
@@ -14283,6 +14578,22 @@
 &nbsp;&nbsp;action_ASC<br />
 &nbsp;&nbsp;<span class="c"># action descending</span><br />
 &nbsp;&nbsp;action_DESC<br />
+&nbsp;&nbsp;<span class="c"># applicationIds ascending</span><br />
+&nbsp;&nbsp;applicationIds_ASC<br />
+&nbsp;&nbsp;<span class="c"># applicationIds descending</span><br />
+&nbsp;&nbsp;applicationIds_DESC<br />
+&nbsp;&nbsp;<span class="c"># applicationNames ascending</span><br />
+&nbsp;&nbsp;applicationNames_ASC<br />
+&nbsp;&nbsp;<span class="c"># applicationNames descending</span><br />
+&nbsp;&nbsp;applicationNames_DESC<br />
+&nbsp;&nbsp;<span class="c"># categoryIds ascending</span><br />
+&nbsp;&nbsp;categoryIds_ASC<br />
+&nbsp;&nbsp;<span class="c"># categoryIds descending</span><br />
+&nbsp;&nbsp;categoryIds_DESC<br />
+&nbsp;&nbsp;<span class="c"># categoryNames ascending</span><br />
+&nbsp;&nbsp;categoryNames_ASC<br />
+&nbsp;&nbsp;<span class="c"># categoryNames descending</span><br />
+&nbsp;&nbsp;categoryNames_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCode ascending</span><br />
 &nbsp;&nbsp;coloCode_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCode descending</span><br />
@@ -14307,6 +14618,14 @@
 &nbsp;&nbsp;deviceId_ASC<br />
 &nbsp;&nbsp;<span class="c"># deviceId descending</span><br />
 &nbsp;&nbsp;deviceId_DESC<br />
+&nbsp;&nbsp;<span class="c"># dstIpContinent ascending</span><br />
+&nbsp;&nbsp;dstIpContinent_ASC<br />
+&nbsp;&nbsp;<span class="c"># dstIpContinent descending</span><br />
+&nbsp;&nbsp;dstIpContinent_DESC<br />
+&nbsp;&nbsp;<span class="c"># dstIpCountry ascending</span><br />
+&nbsp;&nbsp;dstIpCountry_ASC<br />
+&nbsp;&nbsp;<span class="c"># dstIpCountry descending</span><br />
+&nbsp;&nbsp;dstIpCountry_DESC<br />
 &nbsp;&nbsp;<span class="c"># email ascending</span><br />
 &nbsp;&nbsp;email_ASC<br />
 &nbsp;&nbsp;<span class="c"># email descending</span><br />
@@ -14327,22 +14646,50 @@
 &nbsp;&nbsp;privateAppAUD_ASC<br />
 &nbsp;&nbsp;<span class="c"># privateAppAUD descending</span><br />
 &nbsp;&nbsp;privateAppAUD_DESC<br />
+&nbsp;&nbsp;<span class="c"># proxyEndpoint ascending</span><br />
+&nbsp;&nbsp;proxyEndpoint_ASC<br />
+&nbsp;&nbsp;<span class="c"># proxyEndpoint descending</span><br />
+&nbsp;&nbsp;proxyEndpoint_DESC<br />
 &nbsp;&nbsp;<span class="c"># quarantined ascending</span><br />
 &nbsp;&nbsp;quarantined_ASC<br />
 &nbsp;&nbsp;<span class="c"># quarantined descending</span><br />
 &nbsp;&nbsp;quarantined_DESC<br />
+&nbsp;&nbsp;<span class="c"># requestId ascending</span><br />
+&nbsp;&nbsp;requestId_ASC<br />
+&nbsp;&nbsp;<span class="c"># requestId descending</span><br />
+&nbsp;&nbsp;requestId_DESC<br />
 &nbsp;&nbsp;<span class="c"># sourceInternalIp ascending</span><br />
 &nbsp;&nbsp;sourceInternalIp_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourceInternalIp descending</span><br />
 &nbsp;&nbsp;sourceInternalIp_DESC<br />
+&nbsp;&nbsp;<span class="c"># srcIpContinent ascending</span><br />
+&nbsp;&nbsp;srcIpContinent_ASC<br />
+&nbsp;&nbsp;<span class="c"># srcIpContinent descending</span><br />
+&nbsp;&nbsp;srcIpContinent_DESC<br />
+&nbsp;&nbsp;<span class="c"># srcIpCountry ascending</span><br />
+&nbsp;&nbsp;srcIpCountry_ASC<br />
+&nbsp;&nbsp;<span class="c"># srcIpCountry descending</span><br />
+&nbsp;&nbsp;srcIpCountry_DESC<br />
 &nbsp;&nbsp;<span class="c"># untrustedCertificateAction ascending</span><br />
 &nbsp;&nbsp;untrustedCertificateAction_ASC<br />
 &nbsp;&nbsp;<span class="c"># untrustedCertificateAction descending</span><br />
 &nbsp;&nbsp;untrustedCertificateAction_DESC<br />
+&nbsp;&nbsp;<span class="c"># url ascending</span><br />
+&nbsp;&nbsp;url_ASC<br />
+&nbsp;&nbsp;<span class="c"># url descending</span><br />
+&nbsp;&nbsp;url_DESC<br />
 &nbsp;&nbsp;<span class="c"># userId ascending</span><br />
 &nbsp;&nbsp;userId_ASC<br />
 &nbsp;&nbsp;<span class="c"># userId descending</span><br />
 &nbsp;&nbsp;userId_DESC<br />
+&nbsp;&nbsp;<span class="c"># virtualNetworkId ascending</span><br />
+&nbsp;&nbsp;virtualNetworkId_ASC<br />
+&nbsp;&nbsp;<span class="c"># virtualNetworkId descending</span><br />
+&nbsp;&nbsp;virtualNetworkId_DESC<br />
+&nbsp;&nbsp;<span class="c"># virtualNetworkName ascending</span><br />
+&nbsp;&nbsp;virtualNetworkName_ASC<br />
+&nbsp;&nbsp;<span class="c"># virtualNetworkName descending</span><br />
+&nbsp;&nbsp;virtualNetworkName_DESC<br />
 }<br />
 <br />
 <span class="c"># BETA - Aggregate counts of Gateway Resolver queries by category with adaptive sampling</span><br />
@@ -18907,6 +19254,10 @@
 &nbsp;&nbsp;datetime_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetime descending</span><br />
 &nbsp;&nbsp;datetime_DESC<br />
+&nbsp;&nbsp;<span class="c"># edgeResponseBytes ascending</span><br />
+&nbsp;&nbsp;edgeResponseBytes_ASC<br />
+&nbsp;&nbsp;<span class="c"># edgeResponseBytes descending</span><br />
+&nbsp;&nbsp;edgeResponseBytes_DESC<br />
 &nbsp;&nbsp;<span class="c"># edgeResponseStatus ascending</span><br />
 &nbsp;&nbsp;edgeResponseStatus_ASC<br />
 &nbsp;&nbsp;<span class="c"># edgeResponseStatus descending</span><br />

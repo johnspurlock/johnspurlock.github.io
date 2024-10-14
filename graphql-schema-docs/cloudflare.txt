@@ -13619,6 +13619,10 @@ type AccountGatewayL4SessionsAdaptiveGroups {
 type AccountGatewayL4SessionsAdaptiveGroupsDimensions {
   # action taken by gateway
   action: string!
+  # IDs of the applications that matched the session parameters
+  applicationIds: [uint32!]!
+  # Names of the applications that matched the session parameters
+  applicationNames: [string!]!
   # Colo Code of edge server
   coloCode: string!
   # Datetime that the session was started
@@ -13635,8 +13639,16 @@ type AccountGatewayL4SessionsAdaptiveGroupsDimensions {
   detectedProtocol: string!
   # The device ID of the gateway user who initiated the session
   deviceId: string!
+  # Continent code of the session destination IP address
+  dstIpContinent: string!
+  # Country code of the session destination IP address
+  dstIpCountry: string!
   # The email address of the gateway user who initiated the session
   email: string!
+  # The proxy endpoint used on this session
+  proxyEndpoint: string!
+  # The network session unique identifier
+  sessionId: string!
   # The SNI pulled from the session tls handshake, if present
   sni: string!
   # Local LAN IP of the device. Only available when connected via a GRE/IPsec tunnel on-ramp
@@ -13645,10 +13657,21 @@ type AccountGatewayL4SessionsAdaptiveGroupsDimensions {
   sourceIp: string!
   # The source port for the session
   sourcePort: uint16!
-  # The transport protocol used in the session, one of (0, tcp) (1, quic) (2, udp)
+  # Continent code of the session source IP address
+  srcIpContinent: string!
+  # Country code of the session source IP address
+  srcIpCountry: string!
+  # The transport protocol used in the session, one of (0, tcp) (1, quic) (2, udp). Deprecated, please use transportProtocol
+  @Deprecated
   transport: uint16!
+  # The transport protocol used in the session, one of (0, tcp) (1, quic) (2, udp)
+  transportProtocol: uint16!
   # The ID of the gateway user who initiated the session
   userId: string!
+  # The ID of the virtual nework the device was connected to
+  virtualNetworkId: string!
+  # The name of the virtual nework the device was connected to
+  virtualNetworkName: string!
 }
 
 input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
@@ -13664,6 +13687,14 @@ input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
   action_neq: string
   action_notin: [string!]
   action_notlike: string
+  applicationIds_has: uint32
+  applicationIds_hasall: [uint32!]
+  applicationIds_hasany: [uint32!]
+  applicationIds_nothas: uint32
+  applicationNames_has: string
+  applicationNames_hasall: [string!]
+  applicationNames_hasany: [string!]
+  applicationNames_nothas: string
   coloCode: string
   coloCode_geq: string
   coloCode_gt: string
@@ -13736,6 +13767,26 @@ input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
   deviceId_neq: string
   deviceId_notin: [string!]
   deviceId_notlike: string
+  dstIpContinent: string
+  dstIpContinent_geq: string
+  dstIpContinent_gt: string
+  dstIpContinent_in: [string!]
+  dstIpContinent_leq: string
+  dstIpContinent_like: string
+  dstIpContinent_lt: string
+  dstIpContinent_neq: string
+  dstIpContinent_notin: [string!]
+  dstIpContinent_notlike: string
+  dstIpCountry: string
+  dstIpCountry_geq: string
+  dstIpCountry_gt: string
+  dstIpCountry_in: [string!]
+  dstIpCountry_leq: string
+  dstIpCountry_like: string
+  dstIpCountry_lt: string
+  dstIpCountry_neq: string
+  dstIpCountry_notin: [string!]
+  dstIpCountry_notlike: string
   email: string
   email_geq: string
   email_gt: string
@@ -13746,6 +13797,26 @@ input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
   email_neq: string
   email_notin: [string!]
   email_notlike: string
+  proxyEndpoint: string
+  proxyEndpoint_geq: string
+  proxyEndpoint_gt: string
+  proxyEndpoint_in: [string!]
+  proxyEndpoint_leq: string
+  proxyEndpoint_like: string
+  proxyEndpoint_lt: string
+  proxyEndpoint_neq: string
+  proxyEndpoint_notin: [string!]
+  proxyEndpoint_notlike: string
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
   sni: string
   sni_geq: string
   sni_gt: string
@@ -13784,7 +13855,35 @@ input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
   sourcePort_lt: uint16
   sourcePort_neq: uint16
   sourcePort_notin: [uint16!]
+  srcIpContinent: string
+  srcIpContinent_geq: string
+  srcIpContinent_gt: string
+  srcIpContinent_in: [string!]
+  srcIpContinent_leq: string
+  srcIpContinent_like: string
+  srcIpContinent_lt: string
+  srcIpContinent_neq: string
+  srcIpContinent_notin: [string!]
+  srcIpContinent_notlike: string
+  srcIpCountry: string
+  srcIpCountry_geq: string
+  srcIpCountry_gt: string
+  srcIpCountry_in: [string!]
+  srcIpCountry_leq: string
+  srcIpCountry_like: string
+  srcIpCountry_lt: string
+  srcIpCountry_neq: string
+  srcIpCountry_notin: [string!]
+  srcIpCountry_notlike: string
   transport: uint16
+  transportProtocol: uint16
+  transportProtocol_geq: uint16
+  transportProtocol_gt: uint16
+  transportProtocol_in: [uint16!]
+  transportProtocol_leq: uint16
+  transportProtocol_lt: uint16
+  transportProtocol_neq: uint16
+  transportProtocol_notin: [uint16!]
   transport_geq: uint16
   transport_gt: uint16
   transport_in: [uint16!]
@@ -13802,6 +13901,26 @@ input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
   userId_neq: string
   userId_notin: [string!]
   userId_notlike: string
+  virtualNetworkId: string
+  virtualNetworkId_geq: string
+  virtualNetworkId_gt: string
+  virtualNetworkId_in: [string!]
+  virtualNetworkId_leq: string
+  virtualNetworkId_like: string
+  virtualNetworkId_lt: string
+  virtualNetworkId_neq: string
+  virtualNetworkId_notin: [string!]
+  virtualNetworkId_notlike: string
+  virtualNetworkName: string
+  virtualNetworkName_geq: string
+  virtualNetworkName_gt: string
+  virtualNetworkName_in: [string!]
+  virtualNetworkName_leq: string
+  virtualNetworkName_like: string
+  virtualNetworkName_lt: string
+  virtualNetworkName_neq: string
+  virtualNetworkName_notin: [string!]
+  virtualNetworkName_notlike: string
 }
 
 enum AccountGatewayL4SessionsAdaptiveGroupsOrderBy {
@@ -13809,6 +13928,14 @@ enum AccountGatewayL4SessionsAdaptiveGroupsOrderBy {
   action_ASC
   # action descending
   action_DESC
+  # applicationIds ascending
+  applicationIds_ASC
+  # applicationIds descending
+  applicationIds_DESC
+  # applicationNames ascending
+  applicationNames_ASC
+  # applicationNames descending
+  applicationNames_DESC
   # coloCode ascending
   coloCode_ASC
   # coloCode descending
@@ -13845,10 +13972,26 @@ enum AccountGatewayL4SessionsAdaptiveGroupsOrderBy {
   deviceId_ASC
   # deviceId descending
   deviceId_DESC
+  # dstIpContinent ascending
+  dstIpContinent_ASC
+  # dstIpContinent descending
+  dstIpContinent_DESC
+  # dstIpCountry ascending
+  dstIpCountry_ASC
+  # dstIpCountry descending
+  dstIpCountry_DESC
   # email ascending
   email_ASC
   # email descending
   email_DESC
+  # proxyEndpoint ascending
+  proxyEndpoint_ASC
+  # proxyEndpoint descending
+  proxyEndpoint_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
   # sni ascending
   sni_ASC
   # sni descending
@@ -13865,6 +14008,18 @@ enum AccountGatewayL4SessionsAdaptiveGroupsOrderBy {
   sourcePort_ASC
   # sourcePort descending
   sourcePort_DESC
+  # srcIpContinent ascending
+  srcIpContinent_ASC
+  # srcIpContinent descending
+  srcIpContinent_DESC
+  # srcIpCountry ascending
+  srcIpCountry_ASC
+  # srcIpCountry descending
+  srcIpCountry_DESC
+  # transportProtocol ascending
+  transportProtocol_ASC
+  # transportProtocol descending
+  transportProtocol_DESC
   # transport ascending
   transport_ASC
   # transport descending
@@ -13873,6 +14028,14 @@ enum AccountGatewayL4SessionsAdaptiveGroupsOrderBy {
   userId_ASC
   # userId descending
   userId_DESC
+  # virtualNetworkId ascending
+  virtualNetworkId_ASC
+  # virtualNetworkId descending
+  virtualNetworkId_DESC
+  # virtualNetworkName ascending
+  virtualNetworkName_ASC
+  # virtualNetworkName descending
+  virtualNetworkName_DESC
 }
 
 # Aggregated metrics about upstream (edge to client) L4 Gateway Sessions. Metrics are reported on TCP, QUIC or UDP session close
@@ -14247,6 +14410,14 @@ type AccountGatewayL7RequestsAdaptiveGroups {
 type AccountGatewayL7RequestsAdaptiveGroupsDimensions {
   # action taken by gateway
   action: string!
+  # IDs of the applications that matched the request parameters
+  applicationIds: [uint32!]!
+  # Names of the applications that matched the request parameters
+  applicationNames: [string!]!
+  # IDs of the categories that matched the request parameters
+  categoryIds: [uint32!]!
+  # Names of the categories that matched the request parameters
+  categoryNames: [string!]!
   # Colo Code of edge server
   coloCode: string!
   # Datetime that the request happened
@@ -14257,6 +14428,10 @@ type AccountGatewayL7RequestsAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # The device ID of the gateway user who made the request
   deviceId: string!
+  # Continent code of the request destination IP address
+  dstIpContinent: string!
+  # Country code of the request destination IP address
+  dstIpCountry: string!
   # The email address of the gateway user who made the request
   email: string!
   # The destination host for the request
@@ -14267,14 +14442,28 @@ type AccountGatewayL7RequestsAdaptiveGroupsDimensions {
   isIsolated: uint16!
   # Access private app AUD
   privateAppAUD: string!
+  # The proxy endpoint used on this request
+  proxyEndpoint: string!
   # Indicates if the request content was quarantined
   quarantined: uint8!
+  # The request unique identifier
+  requestId: string!
   # Local LAN IP of the device. Only available when connected via a GRE/IPsec tunnel on-ramp
   sourceInternalIp: string!
+  # Continent code of the request source IP address
+  srcIpContinent: string!
+  # Country code of the request source IP address
+  srcIpCountry: string!
   # Action taken when an untrusted origin certificate error occurs
   untrustedCertificateAction: string!
+  # The request URL
+  url: string!
   # The ID of the gateway user who made the request
   userId: string!
+  # The ID of the virtual nework the device was connected to
+  virtualNetworkId: string!
+  # The name of the virtual nework the device was connected to
+  virtualNetworkName: string!
 }
 
 input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
@@ -14290,6 +14479,22 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   action_neq: string
   action_notin: [string!]
   action_notlike: string
+  applicationIds_has: uint32
+  applicationIds_hasall: [uint32!]
+  applicationIds_hasany: [uint32!]
+  applicationIds_nothas: uint32
+  applicationNames_has: string
+  applicationNames_hasall: [string!]
+  applicationNames_hasany: [string!]
+  applicationNames_nothas: string
+  categoryIds_has: uint32
+  categoryIds_hasall: [uint32!]
+  categoryIds_hasany: [uint32!]
+  categoryIds_nothas: uint32
+  categoryNames_has: string
+  categoryNames_hasall: [string!]
+  categoryNames_hasany: [string!]
+  categoryNames_nothas: string
   coloCode: string
   coloCode_geq: string
   coloCode_gt: string
@@ -14334,6 +14539,26 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   deviceId_neq: string
   deviceId_notin: [string!]
   deviceId_notlike: string
+  dstIpContinent: string
+  dstIpContinent_geq: string
+  dstIpContinent_gt: string
+  dstIpContinent_in: [string!]
+  dstIpContinent_leq: string
+  dstIpContinent_like: string
+  dstIpContinent_lt: string
+  dstIpContinent_neq: string
+  dstIpContinent_notin: [string!]
+  dstIpContinent_notlike: string
+  dstIpCountry: string
+  dstIpCountry_geq: string
+  dstIpCountry_gt: string
+  dstIpCountry_in: [string!]
+  dstIpCountry_leq: string
+  dstIpCountry_like: string
+  dstIpCountry_lt: string
+  dstIpCountry_neq: string
+  dstIpCountry_notin: [string!]
+  dstIpCountry_notlike: string
   email: string
   email_geq: string
   email_gt: string
@@ -14380,6 +14605,16 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   privateAppAUD_neq: string
   privateAppAUD_notin: [string!]
   privateAppAUD_notlike: string
+  proxyEndpoint: string
+  proxyEndpoint_geq: string
+  proxyEndpoint_gt: string
+  proxyEndpoint_in: [string!]
+  proxyEndpoint_leq: string
+  proxyEndpoint_like: string
+  proxyEndpoint_lt: string
+  proxyEndpoint_neq: string
+  proxyEndpoint_notin: [string!]
+  proxyEndpoint_notlike: string
   quarantined: uint8
   quarantined_geq: uint8
   quarantined_gt: uint8
@@ -14388,6 +14623,16 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   quarantined_lt: uint8
   quarantined_neq: uint8
   quarantined_notin: bytes
+  requestId: string
+  requestId_geq: string
+  requestId_gt: string
+  requestId_in: [string!]
+  requestId_leq: string
+  requestId_like: string
+  requestId_lt: string
+  requestId_neq: string
+  requestId_notin: [string!]
+  requestId_notlike: string
   sourceInternalIp: string
   sourceInternalIp_geq: string
   sourceInternalIp_gt: string
@@ -14398,6 +14643,26 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   sourceInternalIp_neq: string
   sourceInternalIp_notin: [string!]
   sourceInternalIp_notlike: string
+  srcIpContinent: string
+  srcIpContinent_geq: string
+  srcIpContinent_gt: string
+  srcIpContinent_in: [string!]
+  srcIpContinent_leq: string
+  srcIpContinent_like: string
+  srcIpContinent_lt: string
+  srcIpContinent_neq: string
+  srcIpContinent_notin: [string!]
+  srcIpContinent_notlike: string
+  srcIpCountry: string
+  srcIpCountry_geq: string
+  srcIpCountry_gt: string
+  srcIpCountry_in: [string!]
+  srcIpCountry_leq: string
+  srcIpCountry_like: string
+  srcIpCountry_lt: string
+  srcIpCountry_neq: string
+  srcIpCountry_notin: [string!]
+  srcIpCountry_notlike: string
   untrustedCertificateAction: string
   untrustedCertificateAction_geq: string
   untrustedCertificateAction_gt: string
@@ -14408,6 +14673,16 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   untrustedCertificateAction_neq: string
   untrustedCertificateAction_notin: [string!]
   untrustedCertificateAction_notlike: string
+  url: string
+  url_geq: string
+  url_gt: string
+  url_in: [string!]
+  url_leq: string
+  url_like: string
+  url_lt: string
+  url_neq: string
+  url_notin: [string!]
+  url_notlike: string
   userId: string
   userId_geq: string
   userId_gt: string
@@ -14418,6 +14693,26 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   userId_neq: string
   userId_notin: [string!]
   userId_notlike: string
+  virtualNetworkId: string
+  virtualNetworkId_geq: string
+  virtualNetworkId_gt: string
+  virtualNetworkId_in: [string!]
+  virtualNetworkId_leq: string
+  virtualNetworkId_like: string
+  virtualNetworkId_lt: string
+  virtualNetworkId_neq: string
+  virtualNetworkId_notin: [string!]
+  virtualNetworkId_notlike: string
+  virtualNetworkName: string
+  virtualNetworkName_geq: string
+  virtualNetworkName_gt: string
+  virtualNetworkName_in: [string!]
+  virtualNetworkName_leq: string
+  virtualNetworkName_like: string
+  virtualNetworkName_lt: string
+  virtualNetworkName_neq: string
+  virtualNetworkName_notin: [string!]
+  virtualNetworkName_notlike: string
 }
 
 enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
@@ -14425,6 +14720,22 @@ enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
   action_ASC
   # action descending
   action_DESC
+  # applicationIds ascending
+  applicationIds_ASC
+  # applicationIds descending
+  applicationIds_DESC
+  # applicationNames ascending
+  applicationNames_ASC
+  # applicationNames descending
+  applicationNames_DESC
+  # categoryIds ascending
+  categoryIds_ASC
+  # categoryIds descending
+  categoryIds_DESC
+  # categoryNames ascending
+  categoryNames_ASC
+  # categoryNames descending
+  categoryNames_DESC
   # coloCode ascending
   coloCode_ASC
   # coloCode descending
@@ -14449,6 +14760,14 @@ enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
   deviceId_ASC
   # deviceId descending
   deviceId_DESC
+  # dstIpContinent ascending
+  dstIpContinent_ASC
+  # dstIpContinent descending
+  dstIpContinent_DESC
+  # dstIpCountry ascending
+  dstIpCountry_ASC
+  # dstIpCountry descending
+  dstIpCountry_DESC
   # email ascending
   email_ASC
   # email descending
@@ -14469,22 +14788,50 @@ enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
   privateAppAUD_ASC
   # privateAppAUD descending
   privateAppAUD_DESC
+  # proxyEndpoint ascending
+  proxyEndpoint_ASC
+  # proxyEndpoint descending
+  proxyEndpoint_DESC
   # quarantined ascending
   quarantined_ASC
   # quarantined descending
   quarantined_DESC
+  # requestId ascending
+  requestId_ASC
+  # requestId descending
+  requestId_DESC
   # sourceInternalIp ascending
   sourceInternalIp_ASC
   # sourceInternalIp descending
   sourceInternalIp_DESC
+  # srcIpContinent ascending
+  srcIpContinent_ASC
+  # srcIpContinent descending
+  srcIpContinent_DESC
+  # srcIpCountry ascending
+  srcIpCountry_ASC
+  # srcIpCountry descending
+  srcIpCountry_DESC
   # untrustedCertificateAction ascending
   untrustedCertificateAction_ASC
   # untrustedCertificateAction descending
   untrustedCertificateAction_DESC
+  # url ascending
+  url_ASC
+  # url descending
+  url_DESC
   # userId ascending
   userId_ASC
   # userId descending
   userId_DESC
+  # virtualNetworkId ascending
+  virtualNetworkId_ASC
+  # virtualNetworkId descending
+  virtualNetworkId_DESC
+  # virtualNetworkName ascending
+  virtualNetworkName_ASC
+  # virtualNetworkName descending
+  virtualNetworkName_DESC
 }
 
 # BETA - Aggregate counts of Gateway Resolver queries by category with adaptive sampling
@@ -19049,6 +19396,10 @@ enum AccountImagesRequestsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # edgeResponseBytes ascending
+  edgeResponseBytes_ASC
+  # edgeResponseBytes descending
+  edgeResponseBytes_DESC
   # edgeResponseStatus ascending
   edgeResponseStatus_ASC
   # edgeResponseStatus descending
