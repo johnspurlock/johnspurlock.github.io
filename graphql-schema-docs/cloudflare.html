@@ -79,7 +79,7 @@
 &nbsp;&nbsp;browserRenderingEventsAdaptiveGroups(filter: <a href="#AccountBrowserRenderingEventsAdaptiveGroupsFilter_InputObject">AccountBrowserRenderingEventsAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountBrowserRenderingEventsAdaptiveGroupsOrderBy">[AccountBrowserRenderingEventsAdaptiveGroupsOrderBy!]</a>): <a href="#AccountBrowserRenderingEventsAdaptiveGroups">[AccountBrowserRenderingEventsAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># (TESTING ONLY, NOT FOR PRODUCTION) Raw Calls events with adaptive sampling</span><br />
 &nbsp;&nbsp;callsStatusAdaptive(filter: <a href="#AccountCallsStatusAdaptiveFilter_InputObject">AccountCallsStatusAdaptiveFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountCallsStatusAdaptiveOrderBy">[AccountCallsStatusAdaptiveOrderBy!]</a>): <a href="#AccountCallsStatusAdaptive">[AccountCallsStatusAdaptive!]!</a><br />
-&nbsp;&nbsp;<span class="c"># Beta. Aggregated Calls TURN bandwidth usage with adaptive sampling</span><br />
+&nbsp;&nbsp;<span class="c"># Aggregated Calls TURN bandwidth usage with adaptive sampling"</span><br />
 &nbsp;&nbsp;callsTurnUsageAdaptiveGroups(filter: <a href="#AccountCallsTurnUsageAdaptiveGroupsFilter_InputObject">AccountCallsTurnUsageAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountCallsTurnUsageAdaptiveGroupsOrderBy">[AccountCallsTurnUsageAdaptiveGroupsOrderBy!]</a>): <a href="#AccountCallsTurnUsageAdaptiveGroups">[AccountCallsTurnUsageAdaptiveGroups!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Beta. Aggregated Calls SFU bandwidth usage with adaptive sampling</span><br />
 &nbsp;&nbsp;callsUsageAdaptiveGroups(filter: <a href="#AccountCallsUsageAdaptiveGroupsFilter_InputObject">AccountCallsUsageAdaptiveGroupsFilter_InputObject!</a>, limit: <a href="#uint64">uint64!</a>, orderBy: <a href="#AccountCallsUsageAdaptiveGroupsOrderBy">[AccountCallsUsageAdaptiveGroupsOrderBy!]</a>): <a href="#AccountCallsUsageAdaptiveGroups">[AccountCallsUsageAdaptiveGroups!]!</a><br />
@@ -3861,6 +3861,14 @@
 <br />
 <span class="c"># AI Inference logs with adaptive sampling</span><br />
 <span class="k">type</span> <a id="AccountAiInferenceAdaptive" href="#AccountAiInferenceAdaptive">AccountAiInferenceAdaptive</a> {<br />
+&nbsp;&nbsp;<span class="c"># Name for cost metric 1</span><br />
+&nbsp;&nbsp;costMetricName1: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Name for cost metric 2</span><br />
+&nbsp;&nbsp;costMetricName2: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Value for cost metric 1</span><br />
+&nbsp;&nbsp;costMetricValue1: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;<span class="c"># Value for cost metric 2</span><br />
+&nbsp;&nbsp;costMetricValue2: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># The date when inferance was triggered</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># Error code</span><br />
@@ -3886,6 +3894,42 @@
 <span class="k">input</span> <a id="AccountAiInferenceAdaptiveFilter_InputObject" href="#AccountAiInferenceAdaptiveFilter_InputObject">AccountAiInferenceAdaptiveFilter_InputObject</a> {<br />
 &nbsp;&nbsp;AND: <a href="#AccountAiInferenceAdaptiveFilter_InputObject">[AccountAiInferenceAdaptiveFilter_InputObject!]</a><br />
 &nbsp;&nbsp;OR: <a href="#AccountAiInferenceAdaptiveFilter_InputObject">[AccountAiInferenceAdaptiveFilter_InputObject!]</a><br />
+&nbsp;&nbsp;costMetricName1: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName1_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName1_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName1_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;costMetricName1_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName1_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName1_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName1_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName1_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;costMetricName1_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName2: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName2_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName2_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName2_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;costMetricName2_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName2_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName2_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName2_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName2_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;costMetricName2_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricValue1: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue1_geq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue1_gt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue1_in: <a href="#float64">[float64!]</a><br />
+&nbsp;&nbsp;costMetricValue1_leq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue1_lt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue1_neq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue1_notin: <a href="#float64">[float64!]</a><br />
+&nbsp;&nbsp;costMetricValue2: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue2_geq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue2_gt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue2_in: <a href="#float64">[float64!]</a><br />
+&nbsp;&nbsp;costMetricValue2_leq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue2_lt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue2_neq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue2_notin: <a href="#float64">[float64!]</a><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_geq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_gt: <a href="#Time">Time</a><br />
@@ -3982,6 +4026,14 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountAiInferenceAdaptiveGroupsDimensions" href="#AccountAiInferenceAdaptiveGroupsDimensions">AccountAiInferenceAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># Name for cost metric 1</span><br />
+&nbsp;&nbsp;costMetricName1: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Name for cost metric 2</span><br />
+&nbsp;&nbsp;costMetricName2: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Value for cost metric 1</span><br />
+&nbsp;&nbsp;costMetricValue1: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;<span class="c"># Value for cost metric 2</span><br />
+&nbsp;&nbsp;costMetricValue2: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># The date when starts the inference</span><br />
 &nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># The date and time truncated to fifteen minutes</span><br />
@@ -4013,6 +4065,42 @@
 <span class="k">input</span> <a id="AccountAiInferenceAdaptiveGroupsFilter_InputObject" href="#AccountAiInferenceAdaptiveGroupsFilter_InputObject">AccountAiInferenceAdaptiveGroupsFilter_InputObject</a> {<br />
 &nbsp;&nbsp;AND: <a href="#AccountAiInferenceAdaptiveGroupsFilter_InputObject">[AccountAiInferenceAdaptiveGroupsFilter_InputObject!]</a><br />
 &nbsp;&nbsp;OR: <a href="#AccountAiInferenceAdaptiveGroupsFilter_InputObject">[AccountAiInferenceAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;costMetricName1: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName1_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName1_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName1_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;costMetricName1_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName1_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName1_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName1_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName1_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;costMetricName1_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName2: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName2_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName2_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName2_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;costMetricName2_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName2_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName2_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName2_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricName2_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;costMetricName2_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;costMetricValue1: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue1_geq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue1_gt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue1_in: <a href="#float64">[float64!]</a><br />
+&nbsp;&nbsp;costMetricValue1_leq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue1_lt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue1_neq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue1_notin: <a href="#float64">[float64!]</a><br />
+&nbsp;&nbsp;costMetricValue2: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue2_geq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue2_gt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue2_in: <a href="#float64">[float64!]</a><br />
+&nbsp;&nbsp;costMetricValue2_leq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue2_lt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue2_neq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;costMetricValue2_notin: <a href="#float64">[float64!]</a><br />
 &nbsp;&nbsp;date: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
@@ -4124,6 +4212,22 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountAiInferenceAdaptiveGroupsOrderBy" href="#AccountAiInferenceAdaptiveGroupsOrderBy">AccountAiInferenceAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># costMetricName1 ascending</span><br />
+&nbsp;&nbsp;costMetricName1_ASC<br />
+&nbsp;&nbsp;<span class="c"># costMetricName1 descending</span><br />
+&nbsp;&nbsp;costMetricName1_DESC<br />
+&nbsp;&nbsp;<span class="c"># costMetricName2 ascending</span><br />
+&nbsp;&nbsp;costMetricName2_ASC<br />
+&nbsp;&nbsp;<span class="c"># costMetricName2 descending</span><br />
+&nbsp;&nbsp;costMetricName2_DESC<br />
+&nbsp;&nbsp;<span class="c"># costMetricValue1 ascending</span><br />
+&nbsp;&nbsp;costMetricValue1_ASC<br />
+&nbsp;&nbsp;<span class="c"># costMetricValue1 descending</span><br />
+&nbsp;&nbsp;costMetricValue1_DESC<br />
+&nbsp;&nbsp;<span class="c"># costMetricValue2 ascending</span><br />
+&nbsp;&nbsp;costMetricValue2_ASC<br />
+&nbsp;&nbsp;<span class="c"># costMetricValue2 descending</span><br />
+&nbsp;&nbsp;costMetricValue2_DESC<br />
 &nbsp;&nbsp;<span class="c"># count() ascending</span><br />
 &nbsp;&nbsp;count_ASC<br />
 &nbsp;&nbsp;<span class="c"># count() descending</span><br />
@@ -4180,6 +4284,14 @@
 &nbsp;&nbsp;requestSource_ASC<br />
 &nbsp;&nbsp;<span class="c"># requestSource descending</span><br />
 &nbsp;&nbsp;requestSource_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(totalCostMetricValue1) ascending</span><br />
+&nbsp;&nbsp;sum_totalCostMetricValue1_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(totalCostMetricValue1) descending</span><br />
+&nbsp;&nbsp;sum_totalCostMetricValue1_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(totalCostMetricValue2) ascending</span><br />
+&nbsp;&nbsp;sum_totalCostMetricValue2_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(totalCostMetricValue2) descending</span><br />
+&nbsp;&nbsp;sum_totalCostMetricValue2_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(totalInferenceTimeMs) ascending</span><br />
 &nbsp;&nbsp;sum_totalInferenceTimeMs_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(totalInferenceTimeMs) descending</span><br />
@@ -4199,6 +4311,10 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountAiInferenceAdaptiveGroupsSum" href="#AccountAiInferenceAdaptiveGroupsSum">AccountAiInferenceAdaptiveGroupsSum</a> {<br />
+&nbsp;&nbsp;<span class="c"># Total value for cost metric 1</span><br />
+&nbsp;&nbsp;totalCostMetricValue1: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;<span class="c"># Total value for cost metric 2</span><br />
+&nbsp;&nbsp;totalCostMetricValue2: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># Total inference time ms</span><br />
 &nbsp;&nbsp;totalInferenceTimeMs: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Total neurons</span><br />
@@ -4210,6 +4326,22 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountAiInferenceAdaptiveOrderBy" href="#AccountAiInferenceAdaptiveOrderBy">AccountAiInferenceAdaptiveOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># costMetricName1 ascending</span><br />
+&nbsp;&nbsp;costMetricName1_ASC<br />
+&nbsp;&nbsp;<span class="c"># costMetricName1 descending</span><br />
+&nbsp;&nbsp;costMetricName1_DESC<br />
+&nbsp;&nbsp;<span class="c"># costMetricName2 ascending</span><br />
+&nbsp;&nbsp;costMetricName2_ASC<br />
+&nbsp;&nbsp;<span class="c"># costMetricName2 descending</span><br />
+&nbsp;&nbsp;costMetricName2_DESC<br />
+&nbsp;&nbsp;<span class="c"># costMetricValue1 ascending</span><br />
+&nbsp;&nbsp;costMetricValue1_ASC<br />
+&nbsp;&nbsp;<span class="c"># costMetricValue1 descending</span><br />
+&nbsp;&nbsp;costMetricValue1_DESC<br />
+&nbsp;&nbsp;<span class="c"># costMetricValue2 ascending</span><br />
+&nbsp;&nbsp;costMetricValue2_ASC<br />
+&nbsp;&nbsp;<span class="c"># costMetricValue2 descending</span><br />
+&nbsp;&nbsp;costMetricValue2_DESC<br />
 &nbsp;&nbsp;<span class="c"># datetime ascending</span><br />
 &nbsp;&nbsp;datetime_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetime descending</span><br />
@@ -4703,12 +4835,24 @@
 &nbsp;&nbsp;trackId_DESC<br />
 }<br />
 <br />
-<span class="c"># Beta. Aggregated Calls TURN bandwidth usage with adaptive sampling</span><br />
+<span class="c"># Aggregated Calls TURN bandwidth usage with adaptive sampling"</span><br />
 <span class="k">type</span> <a id="AccountCallsTurnUsageAdaptiveGroups" href="#AccountCallsTurnUsageAdaptiveGroups">AccountCallsTurnUsageAdaptiveGroups</a> {<br />
+&nbsp;&nbsp;avg: <a href="#AccountCallsTurnUsageAdaptiveGroupsAvg">AccountCallsTurnUsageAdaptiveGroupsAvg</a><br />
 &nbsp;&nbsp;<span class="c"># List of dimensions to group by</span><br />
 &nbsp;&nbsp;dimensions: <a href="#AccountCallsTurnUsageAdaptiveGroupsDimensions">AccountCallsTurnUsageAdaptiveGroupsDimensions</a><br />
 &nbsp;&nbsp;<span class="c"># The sum of values for a metric per dimension</span><br />
 &nbsp;&nbsp;sum: <a href="#AccountCallsTurnUsageAdaptiveGroupsSum">AccountCallsTurnUsageAdaptiveGroupsSum</a><br />
+}<br />
+<br />
+<span class="k">type</span> <a id="AccountCallsTurnUsageAdaptiveGroupsAvg" href="#AccountCallsTurnUsageAdaptiveGroupsAvg">AccountCallsTurnUsageAdaptiveGroupsAvg</a> {<br />
+&nbsp;&nbsp;<span class="c"># Average concurrent connections when grouped by datetimeFifteenMinutes</span><br />
+&nbsp;&nbsp;concurrentConnectionsFifteenMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Average concurrent connections when grouped by datetimeFiveMinutes</span><br />
+&nbsp;&nbsp;concurrentConnectionsFiveMinutes: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Average concurrent connections when grouped by datetimeHour</span><br />
+&nbsp;&nbsp;concurrentConnectionsHour: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Average concurrent connections when grouped by datetimeMinute</span><br />
+&nbsp;&nbsp;concurrentConnectionsMinute: <a href="#uint64">uint64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountCallsTurnUsageAdaptiveGroupsDimensions" href="#AccountCallsTurnUsageAdaptiveGroupsDimensions">AccountCallsTurnUsageAdaptiveGroupsDimensions</a> {<br />
@@ -4806,6 +4950,22 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="AccountCallsTurnUsageAdaptiveGroupsOrderBy" href="#AccountCallsTurnUsageAdaptiveGroupsOrderBy">AccountCallsTurnUsageAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># avg(concurrentConnectionsFifteenMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_concurrentConnectionsFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(concurrentConnectionsFifteenMinutes) descending</span><br />
+&nbsp;&nbsp;avg_concurrentConnectionsFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(concurrentConnectionsFiveMinutes) ascending</span><br />
+&nbsp;&nbsp;avg_concurrentConnectionsFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(concurrentConnectionsFiveMinutes) descending</span><br />
+&nbsp;&nbsp;avg_concurrentConnectionsFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(concurrentConnectionsHour) ascending</span><br />
+&nbsp;&nbsp;avg_concurrentConnectionsHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(concurrentConnectionsHour) descending</span><br />
+&nbsp;&nbsp;avg_concurrentConnectionsHour_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(concurrentConnectionsMinute) ascending</span><br />
+&nbsp;&nbsp;avg_concurrentConnectionsMinute_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(concurrentConnectionsMinute) descending</span><br />
+&nbsp;&nbsp;avg_concurrentConnectionsMinute_DESC<br />
 &nbsp;&nbsp;<span class="c"># customIdentifier ascending</span><br />
 &nbsp;&nbsp;customIdentifier_ASC<br />
 &nbsp;&nbsp;<span class="c"># customIdentifier descending</span><br />

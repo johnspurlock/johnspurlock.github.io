@@ -221,7 +221,7 @@ type account {
   browserRenderingEventsAdaptiveGroups(filter: AccountBrowserRenderingEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserRenderingEventsAdaptiveGroupsOrderBy!]): [AccountBrowserRenderingEventsAdaptiveGroups!]!
   # (TESTING ONLY, NOT FOR PRODUCTION) Raw Calls events with adaptive sampling
   callsStatusAdaptive(filter: AccountCallsStatusAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountCallsStatusAdaptiveOrderBy!]): [AccountCallsStatusAdaptive!]!
-  # Beta. Aggregated Calls TURN bandwidth usage with adaptive sampling
+  # Aggregated Calls TURN bandwidth usage with adaptive sampling"
   callsTurnUsageAdaptiveGroups(filter: AccountCallsTurnUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCallsTurnUsageAdaptiveGroupsOrderBy!]): [AccountCallsTurnUsageAdaptiveGroups!]!
   # Beta. Aggregated Calls SFU bandwidth usage with adaptive sampling
   callsUsageAdaptiveGroups(filter: AccountCallsUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCallsUsageAdaptiveGroupsOrderBy!]): [AccountCallsUsageAdaptiveGroups!]!
@@ -4003,6 +4003,14 @@ type AccountAiGatewayRequestsAdaptiveGroupsSum {
 
 # AI Inference logs with adaptive sampling
 type AccountAiInferenceAdaptive {
+  # Name for cost metric 1
+  costMetricName1: string!
+  # Name for cost metric 2
+  costMetricName2: string!
+  # Value for cost metric 1
+  costMetricValue1: float64!
+  # Value for cost metric 2
+  costMetricValue2: float64!
   # The date when inferance was triggered
   datetime: Time!
   # Error code
@@ -4028,6 +4036,42 @@ type AccountAiInferenceAdaptive {
 input AccountAiInferenceAdaptiveFilter_InputObject {
   AND: [AccountAiInferenceAdaptiveFilter_InputObject!]
   OR: [AccountAiInferenceAdaptiveFilter_InputObject!]
+  costMetricName1: string
+  costMetricName1_geq: string
+  costMetricName1_gt: string
+  costMetricName1_in: [string!]
+  costMetricName1_leq: string
+  costMetricName1_like: string
+  costMetricName1_lt: string
+  costMetricName1_neq: string
+  costMetricName1_notin: [string!]
+  costMetricName1_notlike: string
+  costMetricName2: string
+  costMetricName2_geq: string
+  costMetricName2_gt: string
+  costMetricName2_in: [string!]
+  costMetricName2_leq: string
+  costMetricName2_like: string
+  costMetricName2_lt: string
+  costMetricName2_neq: string
+  costMetricName2_notin: [string!]
+  costMetricName2_notlike: string
+  costMetricValue1: float64
+  costMetricValue1_geq: float64
+  costMetricValue1_gt: float64
+  costMetricValue1_in: [float64!]
+  costMetricValue1_leq: float64
+  costMetricValue1_lt: float64
+  costMetricValue1_neq: float64
+  costMetricValue1_notin: [float64!]
+  costMetricValue2: float64
+  costMetricValue2_geq: float64
+  costMetricValue2_gt: float64
+  costMetricValue2_in: [float64!]
+  costMetricValue2_leq: float64
+  costMetricValue2_lt: float64
+  costMetricValue2_neq: float64
+  costMetricValue2_notin: [float64!]
   datetime: Time
   datetime_geq: Time
   datetime_gt: Time
@@ -4124,6 +4168,14 @@ type AccountAiInferenceAdaptiveGroups {
 }
 
 type AccountAiInferenceAdaptiveGroupsDimensions {
+  # Name for cost metric 1
+  costMetricName1: string!
+  # Name for cost metric 2
+  costMetricName2: string!
+  # Value for cost metric 1
+  costMetricValue1: float64!
+  # Value for cost metric 2
+  costMetricValue2: float64!
   # The date when starts the inference
   date: Date!
   # The date and time truncated to fifteen minutes
@@ -4155,6 +4207,42 @@ type AccountAiInferenceAdaptiveGroupsDimensions {
 input AccountAiInferenceAdaptiveGroupsFilter_InputObject {
   AND: [AccountAiInferenceAdaptiveGroupsFilter_InputObject!]
   OR: [AccountAiInferenceAdaptiveGroupsFilter_InputObject!]
+  costMetricName1: string
+  costMetricName1_geq: string
+  costMetricName1_gt: string
+  costMetricName1_in: [string!]
+  costMetricName1_leq: string
+  costMetricName1_like: string
+  costMetricName1_lt: string
+  costMetricName1_neq: string
+  costMetricName1_notin: [string!]
+  costMetricName1_notlike: string
+  costMetricName2: string
+  costMetricName2_geq: string
+  costMetricName2_gt: string
+  costMetricName2_in: [string!]
+  costMetricName2_leq: string
+  costMetricName2_like: string
+  costMetricName2_lt: string
+  costMetricName2_neq: string
+  costMetricName2_notin: [string!]
+  costMetricName2_notlike: string
+  costMetricValue1: float64
+  costMetricValue1_geq: float64
+  costMetricValue1_gt: float64
+  costMetricValue1_in: [float64!]
+  costMetricValue1_leq: float64
+  costMetricValue1_lt: float64
+  costMetricValue1_neq: float64
+  costMetricValue1_notin: [float64!]
+  costMetricValue2: float64
+  costMetricValue2_geq: float64
+  costMetricValue2_gt: float64
+  costMetricValue2_in: [float64!]
+  costMetricValue2_leq: float64
+  costMetricValue2_lt: float64
+  costMetricValue2_neq: float64
+  costMetricValue2_notin: [float64!]
   date: Date
   date_geq: Date
   date_gt: Date
@@ -4266,6 +4354,22 @@ input AccountAiInferenceAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountAiInferenceAdaptiveGroupsOrderBy {
+  # costMetricName1 ascending
+  costMetricName1_ASC
+  # costMetricName1 descending
+  costMetricName1_DESC
+  # costMetricName2 ascending
+  costMetricName2_ASC
+  # costMetricName2 descending
+  costMetricName2_DESC
+  # costMetricValue1 ascending
+  costMetricValue1_ASC
+  # costMetricValue1 descending
+  costMetricValue1_DESC
+  # costMetricValue2 ascending
+  costMetricValue2_ASC
+  # costMetricValue2 descending
+  costMetricValue2_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -4322,6 +4426,14 @@ enum AccountAiInferenceAdaptiveGroupsOrderBy {
   requestSource_ASC
   # requestSource descending
   requestSource_DESC
+  # sum(totalCostMetricValue1) ascending
+  sum_totalCostMetricValue1_ASC
+  # sum(totalCostMetricValue1) descending
+  sum_totalCostMetricValue1_DESC
+  # sum(totalCostMetricValue2) ascending
+  sum_totalCostMetricValue2_ASC
+  # sum(totalCostMetricValue2) descending
+  sum_totalCostMetricValue2_DESC
   # sum(totalInferenceTimeMs) ascending
   sum_totalInferenceTimeMs_ASC
   # sum(totalInferenceTimeMs) descending
@@ -4341,6 +4453,10 @@ enum AccountAiInferenceAdaptiveGroupsOrderBy {
 }
 
 type AccountAiInferenceAdaptiveGroupsSum {
+  # Total value for cost metric 1
+  totalCostMetricValue1: float64!
+  # Total value for cost metric 2
+  totalCostMetricValue2: float64!
   # Total inference time ms
   totalInferenceTimeMs: uint64!
   # Total neurons
@@ -4352,6 +4468,22 @@ type AccountAiInferenceAdaptiveGroupsSum {
 }
 
 enum AccountAiInferenceAdaptiveOrderBy {
+  # costMetricName1 ascending
+  costMetricName1_ASC
+  # costMetricName1 descending
+  costMetricName1_DESC
+  # costMetricName2 ascending
+  costMetricName2_ASC
+  # costMetricName2 descending
+  costMetricName2_DESC
+  # costMetricValue1 ascending
+  costMetricValue1_ASC
+  # costMetricValue1 descending
+  costMetricValue1_DESC
+  # costMetricValue2 ascending
+  costMetricValue2_ASC
+  # costMetricValue2 descending
+  costMetricValue2_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -4845,12 +4977,24 @@ enum AccountCallsStatusAdaptiveOrderBy {
   trackId_DESC
 }
 
-# Beta. Aggregated Calls TURN bandwidth usage with adaptive sampling
+# Aggregated Calls TURN bandwidth usage with adaptive sampling"
 type AccountCallsTurnUsageAdaptiveGroups {
+  avg: AccountCallsTurnUsageAdaptiveGroupsAvg
   # List of dimensions to group by
   dimensions: AccountCallsTurnUsageAdaptiveGroupsDimensions
   # The sum of values for a metric per dimension
   sum: AccountCallsTurnUsageAdaptiveGroupsSum
+}
+
+type AccountCallsTurnUsageAdaptiveGroupsAvg {
+  # Average concurrent connections when grouped by datetimeFifteenMinutes
+  concurrentConnectionsFifteenMinutes: uint64!
+  # Average concurrent connections when grouped by datetimeFiveMinutes
+  concurrentConnectionsFiveMinutes: uint64!
+  # Average concurrent connections when grouped by datetimeHour
+  concurrentConnectionsHour: uint64!
+  # Average concurrent connections when grouped by datetimeMinute
+  concurrentConnectionsMinute: uint64!
 }
 
 type AccountCallsTurnUsageAdaptiveGroupsDimensions {
@@ -4948,6 +5092,22 @@ input AccountCallsTurnUsageAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountCallsTurnUsageAdaptiveGroupsOrderBy {
+  # avg(concurrentConnectionsFifteenMinutes) ascending
+  avg_concurrentConnectionsFifteenMinutes_ASC
+  # avg(concurrentConnectionsFifteenMinutes) descending
+  avg_concurrentConnectionsFifteenMinutes_DESC
+  # avg(concurrentConnectionsFiveMinutes) ascending
+  avg_concurrentConnectionsFiveMinutes_ASC
+  # avg(concurrentConnectionsFiveMinutes) descending
+  avg_concurrentConnectionsFiveMinutes_DESC
+  # avg(concurrentConnectionsHour) ascending
+  avg_concurrentConnectionsHour_ASC
+  # avg(concurrentConnectionsHour) descending
+  avg_concurrentConnectionsHour_DESC
+  # avg(concurrentConnectionsMinute) ascending
+  avg_concurrentConnectionsMinute_ASC
+  # avg(concurrentConnectionsMinute) descending
+  avg_concurrentConnectionsMinute_DESC
   # customIdentifier ascending
   customIdentifier_ASC
   # customIdentifier descending
