@@ -59,6 +59,8 @@ Account-level datasets:
 * ohttpMetricsAdaptive
 * ohttpMetricsAdaptiveGroups
 * pagesFunctionsInvocationsAdaptiveGroups
+* pipelinesDeliveryAdaptiveGroups
+* pipelinesIngestionAdaptiveGroups
 * queueBacklogAdaptiveGroups
 * queueConsumerMetricsAdaptiveGroups
 * queueDelayedBacklogAdaptiveGroups
@@ -144,6 +146,7 @@ Zone-level datasets:
 * zarazAnalyticsTrackTrafficSourcesAdaptiveGroups
 * zarazAnalyticsTriggersAdaptiveGroups
 * zarazAnalyticsTriggersTrafficSourcesAdaptiveGroups
+* zarazFetchAdaptiveGroups
 * zarazTrackAdaptiveGroups
 * zarazTriggersAdaptiveGroups
 
@@ -318,6 +321,10 @@ type account {
   ohttpMetricsAdaptiveGroups(filter: AccountOhttpMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountOhttpMetricsAdaptiveGroupsOrderBy!]): [AccountOhttpMetricsAdaptiveGroups!]!
   # Pages Functions invocations with adaptive sampling
   pagesFunctionsInvocationsAdaptiveGroups(filter: AccountPagesFunctionsInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy!]): [AccountPagesFunctionsInvocationsAdaptiveGroups!]!
+  # Beta. Data delivered via Workers Pipelines
+  pipelinesDeliveryAdaptiveGroups(filter: AccountPipelinesDeliveryAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesDeliveryAdaptiveGroupsOrderBy!]): [AccountPipelinesDeliveryAdaptiveGroups!]!
+  # Beta. Data ingested via Workers Pipelines
+  pipelinesIngestionAdaptiveGroups(filter: AccountPipelinesIngestionAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesIngestionAdaptiveGroupsOrderBy!]): [AccountPipelinesIngestionAdaptiveGroups!]!
   # Beta. Queue backlog data with adaptive sampling. Queues that are not being written to, or read from, will not return data, even if they have a backlog.
   queueBacklogAdaptiveGroups(filter: AccountQueueBacklogAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueBacklogAdaptiveGroupsOrderBy!]): [AccountQueueBacklogAdaptiveGroups!]!
   # Beta. Queue consumer metrics with adaptive sampling. Inactive queues will not return data.
@@ -18441,6 +18448,18 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   quantiles_edgeDnsResponseTimeMsP99_ASC
   # quantiles(edgeDnsResponseTimeMsP99) descending
   quantiles_edgeDnsResponseTimeMsP99_DESC
+  # quantiles(edgeResponseBytesP50) ascending
+  quantiles_edgeResponseBytesP50_ASC
+  # quantiles(edgeResponseBytesP50) descending
+  quantiles_edgeResponseBytesP50_DESC
+  # quantiles(edgeResponseBytesP95) ascending
+  quantiles_edgeResponseBytesP95_ASC
+  # quantiles(edgeResponseBytesP95) descending
+  quantiles_edgeResponseBytesP95_DESC
+  # quantiles(edgeResponseBytesP99) ascending
+  quantiles_edgeResponseBytesP99_ASC
+  # quantiles(edgeResponseBytesP99) descending
+  quantiles_edgeResponseBytesP99_DESC
   # quantiles(edgeTimeToFirstByteMsP50) ascending
   quantiles_edgeTimeToFirstByteMsP50_ASC
   # quantiles(edgeTimeToFirstByteMsP50) descending
@@ -18586,6 +18605,12 @@ type AccountHttpRequestsAdaptiveGroupsQuantiles {
   edgeDnsResponseTimeMsP95: float64!
   # 99th percentile DNS Response Time (milliseconds)
   edgeDnsResponseTimeMsP99: float64!
+  # 50th percentile Bytes returned to client
+  edgeResponseBytesP50: float64!
+  # 95th percentile Bytes returned to client
+  edgeResponseBytesP95: float64!
+  # 99th percentile Bytes returned to client
+  edgeResponseBytesP99: float64!
   # 50th percentile Time To First Byte (milliseconds)
   edgeTimeToFirstByteMsP50: float64!
   # 95th percentile Time To First Byte (milliseconds)
@@ -26470,6 +26495,8 @@ type AccountMagicWANConnectorMetricsAdaptiveGroupsDimensions {
   datetimeFiveMinutes: Time!
   # The date and time the event occurred at the edge truncated to the minute
   datetimeMinute: Time!
+  # Customer connector identifier
+  mconnConnectorID: string!
   # Name of connector interface
   mconnInterfaceName: string!
   # Interface type LAN, WAN or IPSEC
@@ -26505,6 +26532,16 @@ input AccountMagicWANConnectorMetricsAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  mconnConnectorID: string
+  mconnConnectorID_geq: string
+  mconnConnectorID_gt: string
+  mconnConnectorID_in: [string!]
+  mconnConnectorID_leq: string
+  mconnConnectorID_like: string
+  mconnConnectorID_lt: string
+  mconnConnectorID_neq: string
+  mconnConnectorID_notin: [string!]
+  mconnConnectorID_notlike: string
   mconnInterfaceName: string
   mconnInterfaceName_geq: string
   mconnInterfaceName_gt: string
@@ -26613,6 +26650,10 @@ enum AccountMagicWANConnectorMetricsAdaptiveGroupsOrderBy {
   max_interfaceCount_ASC
   # max(interfaceCount) descending
   max_interfaceCount_DESC
+  # mconnConnectorID ascending
+  mconnConnectorID_ASC
+  # mconnConnectorID descending
+  mconnConnectorID_DESC
   # mconnInterfaceName ascending
   mconnInterfaceName_ASC
   # mconnInterfaceName descending
@@ -27953,6 +27994,224 @@ type AccountPagesFunctionsInvocationsAdaptiveGroupsSum {
   subrequests: uint64!
   # Sum of Wall Time
   wallTime: uint64!
+}
+
+# Beta. Data delivered via Workers Pipelines
+type AccountPipelinesDeliveryAdaptiveGroups {
+  # Number of delivery events
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountPipelinesDeliveryAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountPipelinesDeliveryAdaptiveGroupsSum
+}
+
+type AccountPipelinesDeliveryAdaptiveGroupsDimensions {
+  # Delivery operation timestamp, truncated to start of a day
+  date: Date!
+  # Delivery operation timestamp
+  datetime: Time!
+  # Delivery operation timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Delivery operation timestamp, truncated to start of an minute
+  datetimeMinute: Time!
+  # The pipeline ID
+  pipelineId: string!
+}
+
+input AccountPipelinesDeliveryAdaptiveGroupsFilter_InputObject {
+  AND: [AccountPipelinesDeliveryAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountPipelinesDeliveryAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  pipelineId: string
+  pipelineId_geq: string
+  pipelineId_gt: string
+  pipelineId_in: [string!]
+  pipelineId_leq: string
+  pipelineId_like: string
+  pipelineId_lt: string
+  pipelineId_neq: string
+  pipelineId_notin: [string!]
+  pipelineId_notlike: string
+}
+
+enum AccountPipelinesDeliveryAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # pipelineId ascending
+  pipelineId_ASC
+  # pipelineId descending
+  pipelineId_DESC
+  # sum(deliveredBytes) ascending
+  sum_deliveredBytes_ASC
+  # sum(deliveredBytes) descending
+  sum_deliveredBytes_DESC
+}
+
+type AccountPipelinesDeliveryAdaptiveGroupsSum {
+  # Total amount of bytes delivered
+  deliveredBytes: uint64!
+}
+
+# Beta. Data ingested via Workers Pipelines
+type AccountPipelinesIngestionAdaptiveGroups {
+  # Number of ingestion events
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountPipelinesIngestionAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountPipelinesIngestionAdaptiveGroupsSum
+}
+
+type AccountPipelinesIngestionAdaptiveGroupsDimensions {
+  # Ingestion operation timestamp, truncated to start of a day
+  date: Date!
+  # Ingestion operation timestamp
+  datetime: Time!
+  # Ingestion operation timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Ingestion operation timestamp, truncated to start of an minute
+  datetimeMinute: Time!
+  # The pipeline ID
+  pipelineId: string!
+}
+
+input AccountPipelinesIngestionAdaptiveGroupsFilter_InputObject {
+  AND: [AccountPipelinesIngestionAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountPipelinesIngestionAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  pipelineId: string
+  pipelineId_geq: string
+  pipelineId_gt: string
+  pipelineId_in: [string!]
+  pipelineId_leq: string
+  pipelineId_like: string
+  pipelineId_lt: string
+  pipelineId_neq: string
+  pipelineId_notin: [string!]
+  pipelineId_notlike: string
+}
+
+enum AccountPipelinesIngestionAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # pipelineId ascending
+  pipelineId_ASC
+  # pipelineId descending
+  pipelineId_DESC
+  # sum(ingestedBytes) ascending
+  sum_ingestedBytes_ASC
+  # sum(ingestedBytes) descending
+  sum_ingestedBytes_DESC
+  # sum(ingestedRecords) ascending
+  sum_ingestedRecords_ASC
+  # sum(ingestedRecords) descending
+  sum_ingestedRecords_DESC
+}
+
+type AccountPipelinesIngestionAdaptiveGroupsSum {
+  # Total amount of bytes ingested
+  ingestedBytes: uint64!
+  # Total number of records ingested
+  ingestedRecords: uint64!
 }
 
 # Beta. Queue backlog data with adaptive sampling. Queues that are not being written to, or read from, will not return data, even if they have a backlog.
@@ -31198,6 +31457,8 @@ type AccountSettings {
   ohttpMetricsAdaptive: Settings!
   ohttpMetricsAdaptiveGroups: Settings!
   pagesFunctionsInvocationsAdaptiveGroups: Settings!
+  pipelinesDeliveryAdaptiveGroups: Settings!
+  pipelinesIngestionAdaptiveGroups: Settings!
   queueBacklogAdaptiveGroups: Settings!
   queueConsumerMetricsAdaptiveGroups: Settings!
   queueDelayedBacklogAdaptiveGroups: Settings!
@@ -38958,6 +39219,8 @@ type zone {
   zarazAnalyticsTriggersAdaptiveGroups(filter: ZoneZarazAnalyticsTriggersAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazAnalyticsTriggersAdaptiveGroupsOrderBy!]): [ZoneZarazAnalyticsTriggersAdaptiveGroups!]!
   # Zaraz Analytics Triggers Traffic Sources
   zarazAnalyticsTriggersTrafficSourcesAdaptiveGroups(filter: ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsOrderBy!]): [ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroups!]!
+  # Aggregated Zaraz External Fetch Logs
+  zarazFetchAdaptiveGroups(filter: ZoneZarazFetchAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazFetchAdaptiveGroupsOrderBy!]): [ZoneZarazFetchAdaptiveGroups!]!
   # Zaraz Track Analytics - counts zaraz.track calls
   zarazTrackAdaptiveGroups(filter: ZoneZarazTrackAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazTrackAdaptiveGroupsOrderBy!]): [ZoneZarazTrackAdaptiveGroups!]!
   # Zaraz Triggers Analytics (a trigger is a set of rules that can trigger a zaraz action)
@@ -48146,6 +48409,18 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   quantiles_edgeDnsResponseTimeMsP99_ASC
   # quantiles(edgeDnsResponseTimeMsP99) descending
   quantiles_edgeDnsResponseTimeMsP99_DESC
+  # quantiles(edgeResponseBytesP50) ascending
+  quantiles_edgeResponseBytesP50_ASC
+  # quantiles(edgeResponseBytesP50) descending
+  quantiles_edgeResponseBytesP50_DESC
+  # quantiles(edgeResponseBytesP95) ascending
+  quantiles_edgeResponseBytesP95_ASC
+  # quantiles(edgeResponseBytesP95) descending
+  quantiles_edgeResponseBytesP95_DESC
+  # quantiles(edgeResponseBytesP99) ascending
+  quantiles_edgeResponseBytesP99_ASC
+  # quantiles(edgeResponseBytesP99) descending
+  quantiles_edgeResponseBytesP99_DESC
   # quantiles(edgeTimeToFirstByteMsP50) ascending
   quantiles_edgeTimeToFirstByteMsP50_ASC
   # quantiles(edgeTimeToFirstByteMsP50) descending
@@ -48287,6 +48562,12 @@ type ZoneHttpRequestsAdaptiveGroupsQuantiles {
   edgeDnsResponseTimeMsP95: float64!
   # 99th percentile DNS Response Time (milliseconds)
   edgeDnsResponseTimeMsP99: float64!
+  # 50th percentile Bytes returned to client
+  edgeResponseBytesP50: float64!
+  # 95th percentile Bytes returned to client
+  edgeResponseBytesP95: float64!
+  # 99th percentile Bytes returned to client
+  edgeResponseBytesP99: float64!
   # 50th percentile Time To First Byte (milliseconds)
   edgeTimeToFirstByteMsP50: float64!
   # 95th percentile Time To First Byte (milliseconds)
@@ -50610,6 +50891,7 @@ type ZoneSettings {
   zarazAnalyticsTrackTrafficSourcesAdaptiveGroups: Settings!
   zarazAnalyticsTriggersAdaptiveGroups: Settings!
   zarazAnalyticsTriggersTrafficSourcesAdaptiveGroups: Settings!
+  zarazFetchAdaptiveGroups: Settings!
   zarazTrackAdaptiveGroups: Settings!
   zarazTriggersAdaptiveGroups: Settings!
 }
@@ -54622,6 +54904,129 @@ type ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsUniq {
   clientIdCount: uint64!
   # Minimum number of distinct session IDs
   sessionIdCount: uint64!
+}
+
+# Aggregated Zaraz External Fetch Logs
+type ZoneZarazFetchAdaptiveGroups {
+  # Number of processed external fetch requests
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneZarazFetchAdaptiveGroupsDimensions
+}
+
+type ZoneZarazFetchAdaptiveGroupsDimensions {
+  # Date when fetch was called
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Fetch HTTP status code
+  status: uint32!
+  # Fetch URL
+  url: string!
+}
+
+input ZoneZarazFetchAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneZarazFetchAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneZarazFetchAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  status: uint32
+  status_geq: uint32
+  status_gt: uint32
+  status_in: [uint32!]
+  status_leq: uint32
+  status_lt: uint32
+  status_neq: uint32
+  status_notin: [uint32!]
+  url: string
+  url_geq: string
+  url_gt: string
+  url_in: [string!]
+  url_leq: string
+  url_like: string
+  url_lt: string
+  url_neq: string
+  url_notin: [string!]
+  url_notlike: string
+}
+
+enum ZoneZarazFetchAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # url ascending
+  url_ASC
+  # url descending
+  url_DESC
 }
 
 # Zaraz Track Analytics - counts zaraz.track calls
