@@ -5153,6 +5153,14 @@ type AccountCallsTurnUsageAdaptiveGroupsAvg {
 type AccountCallsTurnUsageAdaptiveGroupsDimensions {
   # The customIdentifier (provided when credential was generated) that generated traffic
   customIdentifier: string!
+  # City of the Cloudflare datacenter
+  datacenterCity: string!
+  # IATA airport code of the Cloudflare datacenter
+  datacenterCode: string!
+  # Country of the Cloudflare datacenter
+  datacenterCountry: string!
+  # Region of the Cloudflare datacenter
+  datacenterRegion: string!
   # Calls TURN bandwidth metrics date
   date: Date!
   # Calls TURN bandwidth metrics timestamp, truncated to fifteen minutes
@@ -5182,6 +5190,46 @@ input AccountCallsTurnUsageAdaptiveGroupsFilter_InputObject {
   customIdentifier_neq: string
   customIdentifier_notin: [string!]
   customIdentifier_notlike: string
+  datacenterCity: string
+  datacenterCity_geq: string
+  datacenterCity_gt: string
+  datacenterCity_in: [string!]
+  datacenterCity_leq: string
+  datacenterCity_like: string
+  datacenterCity_lt: string
+  datacenterCity_neq: string
+  datacenterCity_notin: [string!]
+  datacenterCity_notlike: string
+  datacenterCode: string
+  datacenterCode_geq: string
+  datacenterCode_gt: string
+  datacenterCode_in: [string!]
+  datacenterCode_leq: string
+  datacenterCode_like: string
+  datacenterCode_lt: string
+  datacenterCode_neq: string
+  datacenterCode_notin: [string!]
+  datacenterCode_notlike: string
+  datacenterCountry: string
+  datacenterCountry_geq: string
+  datacenterCountry_gt: string
+  datacenterCountry_in: [string!]
+  datacenterCountry_leq: string
+  datacenterCountry_like: string
+  datacenterCountry_lt: string
+  datacenterCountry_neq: string
+  datacenterCountry_notin: [string!]
+  datacenterCountry_notlike: string
+  datacenterRegion: string
+  datacenterRegion_geq: string
+  datacenterRegion_gt: string
+  datacenterRegion_in: [string!]
+  datacenterRegion_leq: string
+  datacenterRegion_like: string
+  datacenterRegion_lt: string
+  datacenterRegion_neq: string
+  datacenterRegion_notin: [string!]
+  datacenterRegion_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -5265,6 +5313,22 @@ enum AccountCallsTurnUsageAdaptiveGroupsOrderBy {
   customIdentifier_ASC
   # customIdentifier descending
   customIdentifier_DESC
+  # datacenterCity ascending
+  datacenterCity_ASC
+  # datacenterCity descending
+  datacenterCity_DESC
+  # datacenterCode ascending
+  datacenterCode_ASC
+  # datacenterCode descending
+  datacenterCode_DESC
+  # datacenterCountry ascending
+  datacenterCountry_ASC
+  # datacenterCountry descending
+  datacenterCountry_DESC
+  # datacenterRegion ascending
+  datacenterRegion_ASC
+  # datacenterRegion descending
+  datacenterRegion_DESC
   # date ascending
   date_ASC
   # date descending
