@@ -3785,6 +3785,8 @@ type AccountAiGatewayRequestsAdaptiveGroups {
 type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
   # Was the response served from cache?: 1 = cache hit, 0 = cache misss
   cached: uint8!
+  # Cost per request
+  cost: float64!
   # The date when trigger was triggered
   date: Date!
   # The date and time truncated to fifteen minutes
@@ -3805,6 +3807,8 @@ type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
   provider: string!
   # Was the request rate limited?: 1 = rate limit applied, 0 = rate limit not applied
   rateLimited: uint8!
+  # HTTP Status Code of provider response
+  statusCode: uint16!
   # Number of tokens in the request
   tokensIn: uint64!
   # Number of tokens in the response
@@ -3822,6 +3826,14 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   cached_lt: uint8
   cached_neq: uint8
   cached_notin: bytes
+  cost: float64
+  cost_geq: float64
+  cost_gt: float64
+  cost_in: [float64!]
+  cost_leq: float64
+  cost_lt: float64
+  cost_neq: float64
+  cost_notin: [float64!]
   date: Date
   date_geq: Date
   date_gt: Date
@@ -3908,6 +3920,14 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   rateLimited_lt: uint8
   rateLimited_neq: uint8
   rateLimited_notin: bytes
+  statusCode: uint16
+  statusCode_geq: uint16
+  statusCode_gt: uint16
+  statusCode_in: [uint16!]
+  statusCode_leq: uint16
+  statusCode_lt: uint16
+  statusCode_neq: uint16
+  statusCode_notin: [uint16!]
   tokensIn: uint64
   tokensIn_geq: uint64
   tokensIn_gt: uint64
@@ -3931,6 +3951,10 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   cached_ASC
   # cached descending
   cached_DESC
+  # cost ascending
+  cost_ASC
+  # cost descending
+  cost_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -3975,6 +3999,14 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   rateLimited_ASC
   # rateLimited descending
   rateLimited_DESC
+  # statusCode ascending
+  statusCode_ASC
+  # statusCode descending
+  statusCode_DESC
+  # sum(cachedRequests) ascending
+  sum_cachedRequests_ASC
+  # sum(cachedRequests) descending
+  sum_cachedRequests_DESC
   # sum(cachedTokensIn) ascending
   sum_cachedTokensIn_ASC
   # sum(cachedTokensIn) descending
@@ -3983,6 +4015,14 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   sum_cachedTokensOut_ASC
   # sum(cachedTokensOut) descending
   sum_cachedTokensOut_DESC
+  # sum(cost) ascending
+  sum_cost_ASC
+  # sum(cost) descending
+  sum_cost_DESC
+  # sum(erroredRequests) ascending
+  sum_erroredRequests_ASC
+  # sum(erroredRequests) descending
+  sum_erroredRequests_DESC
   # sum(uncachedTokensIn) ascending
   sum_uncachedTokensIn_ASC
   # sum(uncachedTokensIn) descending
@@ -4002,10 +4042,16 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
 }
 
 type AccountAiGatewayRequestsAdaptiveGroupsSum {
+  # Sum of cached requests
+  cachedRequests: uint64!
   # Sum of cached tokens in
   cachedTokensIn: uint64!
   # Sum of cached tokens out
   cachedTokensOut: uint64!
+  # Total cost"
+  cost: float64!
+  # Sum of errored requests
+  erroredRequests: uint64!
   # Sum of uncached tokens in
   uncachedTokensIn: uint64!
   # Sum of uncached tokens out
@@ -42510,6 +42556,8 @@ enum ZoneDnsAnalyticsAdaptiveOrderBy {
 
 # Beta. Raw email routing logs with adaptive sampling
 type ZoneEmailRoutingAdaptive {
+  # ARC check status of the source email
+  arc: string!
   # The date and time the source email was received
   datetime: Time!
   # DKIM check status of the source email
@@ -42518,6 +42566,8 @@ type ZoneEmailRoutingAdaptive {
   dmarc: string!
   # Detailed error message (if any)
   errorDetail: string!
+  # Origin of email (incoming|forward|reply|newEmail)
+  eventType: string!
   # The sender email address of the source email
   from: string!
   # Is this event related to a NDR (bounce) email?
@@ -42543,6 +42593,16 @@ type ZoneEmailRoutingAdaptive {
 input ZoneEmailRoutingAdaptiveFilter_InputObject {
   AND: [ZoneEmailRoutingAdaptiveFilter_InputObject!]
   OR: [ZoneEmailRoutingAdaptiveFilter_InputObject!]
+  arc: string
+  arc_geq: string
+  arc_gt: string
+  arc_in: [string!]
+  arc_leq: string
+  arc_like: string
+  arc_lt: string
+  arc_neq: string
+  arc_notin: [string!]
+  arc_notlike: string
   datetime: Time
   datetime_geq: Time
   datetime_gt: Time
@@ -42581,6 +42641,16 @@ input ZoneEmailRoutingAdaptiveFilter_InputObject {
   errorDetail_neq: string
   errorDetail_notin: [string!]
   errorDetail_notlike: string
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
   from: string
   from_geq: string
   from_gt: string
@@ -42688,6 +42758,8 @@ type ZoneEmailRoutingAdaptiveGroups {
 }
 
 type ZoneEmailRoutingAdaptiveGroupsDimensions {
+  # ARC check status of the source email
+  arc: string!
   # The date the source email was received
   date: Date!
   # The date and time the source email was received truncated to fifteen minutes
@@ -42702,6 +42774,8 @@ type ZoneEmailRoutingAdaptiveGroupsDimensions {
   dkim: string!
   # DMARC check status of the source email
   dmarc: string!
+  # Origin of email (incoming|forward|reply|newEmail)
+  eventType: string!
   # Is this event related to a NDR (bounce) email?
   isNDR: uint8!
   # The UUID of the routing rule matched by the source email
@@ -42717,6 +42791,16 @@ type ZoneEmailRoutingAdaptiveGroupsDimensions {
 input ZoneEmailRoutingAdaptiveGroupsFilter_InputObject {
   AND: [ZoneEmailRoutingAdaptiveGroupsFilter_InputObject!]
   OR: [ZoneEmailRoutingAdaptiveGroupsFilter_InputObject!]
+  arc: string
+  arc_geq: string
+  arc_gt: string
+  arc_in: [string!]
+  arc_leq: string
+  arc_like: string
+  arc_lt: string
+  arc_neq: string
+  arc_notin: [string!]
+  arc_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -42777,6 +42861,16 @@ input ZoneEmailRoutingAdaptiveGroupsFilter_InputObject {
   dmarc_neq: string
   dmarc_notin: [string!]
   dmarc_notlike: string
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
   isNDR: uint8
   isNDR_geq: uint8
   isNDR_gt: uint8
@@ -42826,6 +42920,10 @@ input ZoneEmailRoutingAdaptiveGroupsFilter_InputObject {
 }
 
 enum ZoneEmailRoutingAdaptiveGroupsOrderBy {
+  # arc ascending
+  arc_ASC
+  # arc descending
+  arc_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -42858,6 +42956,10 @@ enum ZoneEmailRoutingAdaptiveGroupsOrderBy {
   dmarc_ASC
   # dmarc descending
   dmarc_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
   # isNDR ascending
   isNDR_ASC
   # isNDR descending
@@ -42881,6 +42983,10 @@ enum ZoneEmailRoutingAdaptiveGroupsOrderBy {
 }
 
 enum ZoneEmailRoutingAdaptiveOrderBy {
+  # arc ascending
+  arc_ASC
+  # arc descending
+  arc_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -42897,6 +43003,10 @@ enum ZoneEmailRoutingAdaptiveOrderBy {
   errorDetail_ASC
   # errorDetail descending
   errorDetail_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
   # from ascending
   from_ASC
   # from descending

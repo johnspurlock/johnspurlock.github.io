@@ -3638,6 +3638,8 @@
 <span class="k">type</span> <a id="AccountAiGatewayRequestsAdaptiveGroupsDimensions" href="#AccountAiGatewayRequestsAdaptiveGroupsDimensions">AccountAiGatewayRequestsAdaptiveGroupsDimensions</a> {<br />
 &nbsp;&nbsp;<span class="c"># Was the response served from cache?: 1 = cache hit, 0 = cache misss</span><br />
 &nbsp;&nbsp;cached: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Cost per request</span><br />
+&nbsp;&nbsp;cost: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># The date when trigger was triggered</span><br />
 &nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># The date and time truncated to fifteen minutes</span><br />
@@ -3658,6 +3660,8 @@
 &nbsp;&nbsp;provider: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Was the request rate limited?: 1 = rate limit applied, 0 = rate limit not applied</span><br />
 &nbsp;&nbsp;rateLimited: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># HTTP Status Code of provider response</span><br />
+&nbsp;&nbsp;statusCode: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># Number of tokens in the request</span><br />
 &nbsp;&nbsp;tokensIn: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Number of tokens in the response</span><br />
@@ -3675,6 +3679,14 @@
 &nbsp;&nbsp;cached_lt: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;cached_neq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;cached_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;cost: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cost_geq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cost_gt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cost_in: <a href="#float64">[float64!]</a><br />
+&nbsp;&nbsp;cost_leq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cost_lt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cost_neq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;cost_notin: <a href="#float64">[float64!]</a><br />
 &nbsp;&nbsp;date: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
@@ -3761,6 +3773,14 @@
 &nbsp;&nbsp;rateLimited_lt: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;rateLimited_neq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;rateLimited_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;statusCode: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;statusCode_geq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;statusCode_gt: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;statusCode_in: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;statusCode_leq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;statusCode_lt: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;statusCode_neq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;statusCode_notin: <a href="#uint16">[uint16!]</a><br />
 &nbsp;&nbsp;tokensIn: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;tokensIn_geq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;tokensIn_gt: <a href="#uint64">uint64</a><br />
@@ -3784,6 +3804,10 @@
 &nbsp;&nbsp;cached_ASC<br />
 &nbsp;&nbsp;<span class="c"># cached descending</span><br />
 &nbsp;&nbsp;cached_DESC<br />
+&nbsp;&nbsp;<span class="c"># cost ascending</span><br />
+&nbsp;&nbsp;cost_ASC<br />
+&nbsp;&nbsp;<span class="c"># cost descending</span><br />
+&nbsp;&nbsp;cost_DESC<br />
 &nbsp;&nbsp;<span class="c"># count() ascending</span><br />
 &nbsp;&nbsp;count_ASC<br />
 &nbsp;&nbsp;<span class="c"># count() descending</span><br />
@@ -3828,6 +3852,14 @@
 &nbsp;&nbsp;rateLimited_ASC<br />
 &nbsp;&nbsp;<span class="c"># rateLimited descending</span><br />
 &nbsp;&nbsp;rateLimited_DESC<br />
+&nbsp;&nbsp;<span class="c"># statusCode ascending</span><br />
+&nbsp;&nbsp;statusCode_ASC<br />
+&nbsp;&nbsp;<span class="c"># statusCode descending</span><br />
+&nbsp;&nbsp;statusCode_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(cachedRequests) ascending</span><br />
+&nbsp;&nbsp;sum_cachedRequests_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(cachedRequests) descending</span><br />
+&nbsp;&nbsp;sum_cachedRequests_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(cachedTokensIn) ascending</span><br />
 &nbsp;&nbsp;sum_cachedTokensIn_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(cachedTokensIn) descending</span><br />
@@ -3836,6 +3868,14 @@
 &nbsp;&nbsp;sum_cachedTokensOut_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(cachedTokensOut) descending</span><br />
 &nbsp;&nbsp;sum_cachedTokensOut_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(cost) ascending</span><br />
+&nbsp;&nbsp;sum_cost_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(cost) descending</span><br />
+&nbsp;&nbsp;sum_cost_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(erroredRequests) ascending</span><br />
+&nbsp;&nbsp;sum_erroredRequests_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(erroredRequests) descending</span><br />
+&nbsp;&nbsp;sum_erroredRequests_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(uncachedTokensIn) ascending</span><br />
 &nbsp;&nbsp;sum_uncachedTokensIn_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(uncachedTokensIn) descending</span><br />
@@ -3855,10 +3895,16 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountAiGatewayRequestsAdaptiveGroupsSum" href="#AccountAiGatewayRequestsAdaptiveGroupsSum">AccountAiGatewayRequestsAdaptiveGroupsSum</a> {<br />
+&nbsp;&nbsp;<span class="c"># Sum of cached requests</span><br />
+&nbsp;&nbsp;cachedRequests: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of cached tokens in</span><br />
 &nbsp;&nbsp;cachedTokensIn: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of cached tokens out</span><br />
 &nbsp;&nbsp;cachedTokensOut: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Total cost"</span><br />
+&nbsp;&nbsp;cost: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of errored requests</span><br />
+&nbsp;&nbsp;erroredRequests: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of uncached tokens in</span><br />
 &nbsp;&nbsp;uncachedTokensIn: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of uncached tokens out</span><br />
@@ -42363,6 +42409,8 @@
 <br />
 <span class="c"># Beta. Raw email routing logs with adaptive sampling</span><br />
 <span class="k">type</span> <a id="ZoneEmailRoutingAdaptive" href="#ZoneEmailRoutingAdaptive">ZoneEmailRoutingAdaptive</a> {<br />
+&nbsp;&nbsp;<span class="c"># ARC check status of the source email</span><br />
+&nbsp;&nbsp;arc: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The date and time the source email was received</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># DKIM check status of the source email</span><br />
@@ -42371,6 +42419,8 @@
 &nbsp;&nbsp;dmarc: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Detailed error message (if any)</span><br />
 &nbsp;&nbsp;errorDetail: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Origin of email (incoming|forward|reply|newEmail)</span><br />
+&nbsp;&nbsp;eventType: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The sender email address of the source email</span><br />
 &nbsp;&nbsp;from: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Is this event related to a NDR (bounce) email?</span><br />
@@ -42396,6 +42446,16 @@
 <span class="k">input</span> <a id="ZoneEmailRoutingAdaptiveFilter_InputObject" href="#ZoneEmailRoutingAdaptiveFilter_InputObject">ZoneEmailRoutingAdaptiveFilter_InputObject</a> {<br />
 &nbsp;&nbsp;AND: <a href="#ZoneEmailRoutingAdaptiveFilter_InputObject">[ZoneEmailRoutingAdaptiveFilter_InputObject!]</a><br />
 &nbsp;&nbsp;OR: <a href="#ZoneEmailRoutingAdaptiveFilter_InputObject">[ZoneEmailRoutingAdaptiveFilter_InputObject!]</a><br />
+&nbsp;&nbsp;arc: <a href="#string">string</a><br />
+&nbsp;&nbsp;arc_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;arc_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;arc_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;arc_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;arc_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;arc_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;arc_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;arc_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;arc_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_geq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetime_gt: <a href="#Time">Time</a><br />
@@ -42434,6 +42494,16 @@
 &nbsp;&nbsp;errorDetail_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;errorDetail_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;errorDetail_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;eventType: <a href="#string">string</a><br />
+&nbsp;&nbsp;eventType_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;eventType_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;eventType_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;eventType_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;eventType_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;eventType_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;eventType_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;eventType_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;eventType_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;from: <a href="#string">string</a><br />
 &nbsp;&nbsp;from_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;from_gt: <a href="#string">string</a><br />
@@ -42541,6 +42611,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneEmailRoutingAdaptiveGroupsDimensions" href="#ZoneEmailRoutingAdaptiveGroupsDimensions">ZoneEmailRoutingAdaptiveGroupsDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># ARC check status of the source email</span><br />
+&nbsp;&nbsp;arc: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The date the source email was received</span><br />
 &nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># The date and time the source email was received truncated to fifteen minutes</span><br />
@@ -42555,6 +42627,8 @@
 &nbsp;&nbsp;dkim: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># DMARC check status of the source email</span><br />
 &nbsp;&nbsp;dmarc: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Origin of email (incoming|forward|reply|newEmail)</span><br />
+&nbsp;&nbsp;eventType: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Is this event related to a NDR (bounce) email?</span><br />
 &nbsp;&nbsp;isNDR: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># The UUID of the routing rule matched by the source email</span><br />
@@ -42570,6 +42644,16 @@
 <span class="k">input</span> <a id="ZoneEmailRoutingAdaptiveGroupsFilter_InputObject" href="#ZoneEmailRoutingAdaptiveGroupsFilter_InputObject">ZoneEmailRoutingAdaptiveGroupsFilter_InputObject</a> {<br />
 &nbsp;&nbsp;AND: <a href="#ZoneEmailRoutingAdaptiveGroupsFilter_InputObject">[ZoneEmailRoutingAdaptiveGroupsFilter_InputObject!]</a><br />
 &nbsp;&nbsp;OR: <a href="#ZoneEmailRoutingAdaptiveGroupsFilter_InputObject">[ZoneEmailRoutingAdaptiveGroupsFilter_InputObject!]</a><br />
+&nbsp;&nbsp;arc: <a href="#string">string</a><br />
+&nbsp;&nbsp;arc_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;arc_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;arc_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;arc_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;arc_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;arc_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;arc_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;arc_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;arc_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;date: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
@@ -42630,6 +42714,16 @@
 &nbsp;&nbsp;dmarc_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;dmarc_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;dmarc_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;eventType: <a href="#string">string</a><br />
+&nbsp;&nbsp;eventType_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;eventType_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;eventType_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;eventType_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;eventType_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;eventType_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;eventType_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;eventType_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;eventType_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;isNDR: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;isNDR_geq: <a href="#uint8">uint8</a><br />
 &nbsp;&nbsp;isNDR_gt: <a href="#uint8">uint8</a><br />
@@ -42679,6 +42773,10 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="ZoneEmailRoutingAdaptiveGroupsOrderBy" href="#ZoneEmailRoutingAdaptiveGroupsOrderBy">ZoneEmailRoutingAdaptiveGroupsOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># arc ascending</span><br />
+&nbsp;&nbsp;arc_ASC<br />
+&nbsp;&nbsp;<span class="c"># arc descending</span><br />
+&nbsp;&nbsp;arc_DESC<br />
 &nbsp;&nbsp;<span class="c"># count() ascending</span><br />
 &nbsp;&nbsp;count_ASC<br />
 &nbsp;&nbsp;<span class="c"># count() descending</span><br />
@@ -42711,6 +42809,10 @@
 &nbsp;&nbsp;dmarc_ASC<br />
 &nbsp;&nbsp;<span class="c"># dmarc descending</span><br />
 &nbsp;&nbsp;dmarc_DESC<br />
+&nbsp;&nbsp;<span class="c"># eventType ascending</span><br />
+&nbsp;&nbsp;eventType_ASC<br />
+&nbsp;&nbsp;<span class="c"># eventType descending</span><br />
+&nbsp;&nbsp;eventType_DESC<br />
 &nbsp;&nbsp;<span class="c"># isNDR ascending</span><br />
 &nbsp;&nbsp;isNDR_ASC<br />
 &nbsp;&nbsp;<span class="c"># isNDR descending</span><br />
@@ -42734,6 +42836,10 @@
 }<br />
 <br />
 <span class="k">enum</span> <a id="ZoneEmailRoutingAdaptiveOrderBy" href="#ZoneEmailRoutingAdaptiveOrderBy">ZoneEmailRoutingAdaptiveOrderBy</a> {<br />
+&nbsp;&nbsp;<span class="c"># arc ascending</span><br />
+&nbsp;&nbsp;arc_ASC<br />
+&nbsp;&nbsp;<span class="c"># arc descending</span><br />
+&nbsp;&nbsp;arc_DESC<br />
 &nbsp;&nbsp;<span class="c"># datetime ascending</span><br />
 &nbsp;&nbsp;datetime_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetime descending</span><br />
@@ -42750,6 +42856,10 @@
 &nbsp;&nbsp;errorDetail_ASC<br />
 &nbsp;&nbsp;<span class="c"># errorDetail descending</span><br />
 &nbsp;&nbsp;errorDetail_DESC<br />
+&nbsp;&nbsp;<span class="c"># eventType ascending</span><br />
+&nbsp;&nbsp;eventType_ASC<br />
+&nbsp;&nbsp;<span class="c"># eventType descending</span><br />
+&nbsp;&nbsp;eventType_DESC<br />
 &nbsp;&nbsp;<span class="c"># from ascending</span><br />
 &nbsp;&nbsp;from_ASC<br />
 &nbsp;&nbsp;<span class="c"># from descending</span><br />
