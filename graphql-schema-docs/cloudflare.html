@@ -13899,6 +13899,10 @@
 &nbsp;&nbsp;applicationIds: <a href="#uint32">[uint32!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Names of the applications that matched the session parameters</span><br />
 &nbsp;&nbsp;applicationNames: <a href="#string">[string!]!</a><br />
+&nbsp;&nbsp;<span class="c"># IDs of the categories that matched the session parameters</span><br />
+&nbsp;&nbsp;categoryIds: <a href="#uint32">[uint32!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Names of the categories that matched the session parameters</span><br />
+&nbsp;&nbsp;categoryNames: <a href="#string">[string!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Colo Code of edge server</span><br />
 &nbsp;&nbsp;coloCode: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Datetime that the session was started</span><br />
@@ -13971,6 +13975,14 @@
 &nbsp;&nbsp;applicationNames_hasall: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;applicationNames_hasany: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;applicationNames_nothas: <a href="#string">string</a><br />
+&nbsp;&nbsp;categoryIds_has: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;categoryIds_hasall: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;categoryIds_hasany: <a href="#uint32">[uint32!]</a><br />
+&nbsp;&nbsp;categoryIds_nothas: <a href="#uint32">uint32</a><br />
+&nbsp;&nbsp;categoryNames_has: <a href="#string">string</a><br />
+&nbsp;&nbsp;categoryNames_hasall: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;categoryNames_hasany: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;categoryNames_nothas: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloCode: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloCode_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;coloCode_gt: <a href="#string">string</a><br />
@@ -14212,6 +14224,14 @@
 &nbsp;&nbsp;applicationNames_ASC<br />
 &nbsp;&nbsp;<span class="c"># applicationNames descending</span><br />
 &nbsp;&nbsp;applicationNames_DESC<br />
+&nbsp;&nbsp;<span class="c"># categoryIds ascending</span><br />
+&nbsp;&nbsp;categoryIds_ASC<br />
+&nbsp;&nbsp;<span class="c"># categoryIds descending</span><br />
+&nbsp;&nbsp;categoryIds_DESC<br />
+&nbsp;&nbsp;<span class="c"># categoryNames ascending</span><br />
+&nbsp;&nbsp;categoryNames_ASC<br />
+&nbsp;&nbsp;<span class="c"># categoryNames descending</span><br />
+&nbsp;&nbsp;categoryNames_DESC<br />
 &nbsp;&nbsp;<span class="c"># coloCode ascending</span><br />
 &nbsp;&nbsp;coloCode_ASC<br />
 &nbsp;&nbsp;<span class="c"># coloCode descending</span><br />
@@ -36298,6 +36318,8 @@
 }<br />
 <br />
 <span class="k">type</span> <a id="AccountWorkersInvocationsAdaptiveDimensions" href="#AccountWorkersInvocationsAdaptiveDimensions">AccountWorkersInvocationsAdaptiveDimensions</a> {<br />
+&nbsp;&nbsp;<span class="c"># IATA airport code for the Cloudflare datacenter where the script ran.</span><br />
+&nbsp;&nbsp;coloCode: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Request datetime, truncated to start of a day</span><br />
 &nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># Request datetime</span><br />
@@ -36331,6 +36353,16 @@
 <span class="k">input</span> <a id="AccountWorkersInvocationsAdaptiveFilter_InputObject" href="#AccountWorkersInvocationsAdaptiveFilter_InputObject">AccountWorkersInvocationsAdaptiveFilter_InputObject</a> {<br />
 &nbsp;&nbsp;AND: <a href="#AccountWorkersInvocationsAdaptiveFilter_InputObject">[AccountWorkersInvocationsAdaptiveFilter_InputObject!]</a><br />
 &nbsp;&nbsp;OR: <a href="#AccountWorkersInvocationsAdaptiveFilter_InputObject">[AccountWorkersInvocationsAdaptiveFilter_InputObject!]</a><br />
+&nbsp;&nbsp;coloCode: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCode_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCode_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;date: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
@@ -36464,6 +36496,8 @@
 &nbsp;&nbsp;cpuTime: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># Maximum duration of one request - GB*s</span><br />
 &nbsp;&nbsp;duration: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;<span class="c"># Maximum Request Duration in microseconds</span><br />
+&nbsp;&nbsp;requestDuration: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># Maximum response body size for one request - bytes</span><br />
 &nbsp;&nbsp;responseBodySize: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># Maximum wall time for one request - microseconds</span><br />
@@ -36475,6 +36509,8 @@
 &nbsp;&nbsp;cpuTime: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># Minimum duration of one request - GB*s</span><br />
 &nbsp;&nbsp;duration: <a href="#float64">float64!</a><br />
+&nbsp;&nbsp;<span class="c"># Minimum Request Duration in microseconds</span><br />
+&nbsp;&nbsp;requestDuration: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># Minimum response body size for one request - bytes</span><br />
 &nbsp;&nbsp;responseBodySize: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># Minimum wall time for one request - microseconds</span><br />
@@ -36490,6 +36526,10 @@
 &nbsp;&nbsp;avg_sampleInterval_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(sampleInterval) descending</span><br />
 &nbsp;&nbsp;avg_sampleInterval_DESC<br />
+&nbsp;&nbsp;<span class="c"># coloCode ascending</span><br />
+&nbsp;&nbsp;coloCode_ASC<br />
+&nbsp;&nbsp;<span class="c"># coloCode descending</span><br />
+&nbsp;&nbsp;coloCode_DESC<br />
 &nbsp;&nbsp;<span class="c"># constantScriptId ascending</span><br />
 &nbsp;&nbsp;constantScriptId_ASC<br />
 &nbsp;&nbsp;<span class="c"># constantScriptId descending</span><br />
@@ -36538,6 +36578,10 @@
 &nbsp;&nbsp;max_duration_ASC<br />
 &nbsp;&nbsp;<span class="c"># max(duration) descending</span><br />
 &nbsp;&nbsp;max_duration_DESC<br />
+&nbsp;&nbsp;<span class="c"># max(requestDuration) ascending</span><br />
+&nbsp;&nbsp;max_requestDuration_ASC<br />
+&nbsp;&nbsp;<span class="c"># max(requestDuration) descending</span><br />
+&nbsp;&nbsp;max_requestDuration_DESC<br />
 &nbsp;&nbsp;<span class="c"># max(responseBodySize) ascending</span><br />
 &nbsp;&nbsp;max_responseBodySize_ASC<br />
 &nbsp;&nbsp;<span class="c"># max(responseBodySize) descending</span><br />
@@ -36554,6 +36598,10 @@
 &nbsp;&nbsp;min_duration_ASC<br />
 &nbsp;&nbsp;<span class="c"># min(duration) descending</span><br />
 &nbsp;&nbsp;min_duration_DESC<br />
+&nbsp;&nbsp;<span class="c"># min(requestDuration) ascending</span><br />
+&nbsp;&nbsp;min_requestDuration_ASC<br />
+&nbsp;&nbsp;<span class="c"># min(requestDuration) descending</span><br />
+&nbsp;&nbsp;min_requestDuration_DESC<br />
 &nbsp;&nbsp;<span class="c"># min(responseBodySize) ascending</span><br />
 &nbsp;&nbsp;min_responseBodySize_ASC<br />
 &nbsp;&nbsp;<span class="c"># min(responseBodySize) descending</span><br />
@@ -36618,6 +36666,34 @@
 &nbsp;&nbsp;quantiles_durationP99_ASC<br />
 &nbsp;&nbsp;<span class="c"># quantiles(durationP99) descending</span><br />
 &nbsp;&nbsp;quantiles_durationP99_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP25) ascending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP25_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP25) descending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP25_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP50) ascending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP50_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP50) descending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP50_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP75) ascending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP75_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP75) descending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP75_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP90) ascending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP90_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP90) descending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP90_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP95) ascending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP95_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP95) descending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP95_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP999) ascending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP999_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP999) descending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP999_DESC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP99) ascending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP99_ASC<br />
+&nbsp;&nbsp;<span class="c"># quantiles(requestDurationP99) descending</span><br />
+&nbsp;&nbsp;quantiles_requestDurationP99_DESC<br />
 &nbsp;&nbsp;<span class="c"># quantiles(responseBodySizeP25) ascending</span><br />
 &nbsp;&nbsp;quantiles_responseBodySizeP25_ASC<br />
 &nbsp;&nbsp;<span class="c"># quantiles(responseBodySizeP25) descending</span><br />
@@ -36710,6 +36786,10 @@
 &nbsp;&nbsp;sum_errors_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(errors) descending</span><br />
 &nbsp;&nbsp;sum_errors_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(requestDuration) ascending</span><br />
+&nbsp;&nbsp;sum_requestDuration_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(requestDuration) descending</span><br />
+&nbsp;&nbsp;sum_requestDuration_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(requests) ascending</span><br />
 &nbsp;&nbsp;sum_requests_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(requests) descending</span><br />
@@ -36761,6 +36841,20 @@
 &nbsp;&nbsp;durationP99: <a href="#float32">float32!</a><br />
 &nbsp;&nbsp;<span class="c"># Duration 99.9th percentile - GB*s</span><br />
 &nbsp;&nbsp;durationP999: <a href="#float32">float32!</a><br />
+&nbsp;&nbsp;<span class="c"># Request duration 25th percentile - microseconds</span><br />
+&nbsp;&nbsp;requestDurationP25: <a href="#float32">float32!</a><br />
+&nbsp;&nbsp;<span class="c"># Request duration 50th percentile - microseconds</span><br />
+&nbsp;&nbsp;requestDurationP50: <a href="#float32">float32!</a><br />
+&nbsp;&nbsp;<span class="c"># Request duration 75th percentile - microseconds</span><br />
+&nbsp;&nbsp;requestDurationP75: <a href="#float32">float32!</a><br />
+&nbsp;&nbsp;<span class="c"># Request duration 90th percentile - microseconds</span><br />
+&nbsp;&nbsp;requestDurationP90: <a href="#float32">float32!</a><br />
+&nbsp;&nbsp;<span class="c"># Request duration 95th percentile - microseconds</span><br />
+&nbsp;&nbsp;requestDurationP95: <a href="#float32">float32!</a><br />
+&nbsp;&nbsp;<span class="c"># Request duration 99th percentile - microseconds</span><br />
+&nbsp;&nbsp;requestDurationP99: <a href="#float32">float32!</a><br />
+&nbsp;&nbsp;<span class="c"># Request duration 99.9th percentile - microseconds</span><br />
+&nbsp;&nbsp;requestDurationP999: <a href="#float32">float32!</a><br />
 &nbsp;&nbsp;<span class="c"># Response body size 25th percentile - bytes</span><br />
 &nbsp;&nbsp;responseBodySizeP25: <a href="#float32">float32!</a><br />
 &nbsp;&nbsp;<span class="c"># Response body size 50th percentile - bytes</span><br />
@@ -36800,6 +36894,8 @@
 &nbsp;&nbsp;duration: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of Errors</span><br />
 &nbsp;&nbsp;errors: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of Request Duration in microseconds</span><br />
+&nbsp;&nbsp;requestDuration: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of Requests</span><br />
 &nbsp;&nbsp;requests: <a href="#uint64">uint64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of Response Body Sizes</span><br />
