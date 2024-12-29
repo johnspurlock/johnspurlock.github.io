@@ -53,6 +53,7 @@ Account-level datasets:
   magicFirewallSamplesAdaptiveGroups
   magicIDPSNetworkAnalyticsAdaptiveGroups
   magicTransitNetworkAnalyticsAdaptiveGroups
+  magicTransitTunnelHealthCheckSLOsAdaptiveGroups
   magicTransitTunnelHealthChecksAdaptiveGroups
   magicTransitTunnelTrafficAdaptiveGroups
 * mnmFlowDataAdaptiveGroups
@@ -311,6 +312,8 @@ type account {
   magicIDPSNetworkAnalyticsAdaptiveGroups(filter: AccountMagicIDPSNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicIDPSNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountMagicIDPSNetworkAnalyticsAdaptiveGroups!]!
   # Network analytics data for Magic Transit traffic
   magicTransitNetworkAnalyticsAdaptiveGroups(filter: AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountMagicTransitNetworkAnalyticsAdaptiveGroups!]!
+  # Magic Transit Tunnel Health Check SLO events with adaptive sampling.
+  magicTransitTunnelHealthCheckSLOsAdaptiveGroups(filter: AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsOrderBy!]): [AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroups!]!
   # Beta. Magic Transit Health check results for customer GRE Tunnels with adaptive sampling (ABR).
   magicTransitTunnelHealthChecksAdaptiveGroups(filter: AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy!]): [AccountMagicTransitTunnelHealthChecksAdaptiveGroups!]!
   # Bandwidth usage metric of a Magic Transit tunnel.
@@ -26290,6 +26293,215 @@ enum AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy {
   tunnelName_DESC
 }
 
+# Magic Transit Tunnel Health Check SLO events with adaptive sampling.
+type AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsAvg
+  # Total number of SLO calculations
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsDimensions
+  # The maximum value for a metric per dimension
+  max: AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsMax
+}
+
+type AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsAvg {
+  # Average calculated SLI for tunnel health checks
+  effectiveSlo: float64!
+  # The average value used for sample interval
+  sampleInterval: float64!
+  # Average target SLO
+  slo: float64!
+}
+
+type AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsDimensions {
+  # The alert type of the notification policy
+  alertType: string!
+  # SLO calculation event timestamp, truncated to start of a day
+  date: Date!
+  # SLO calculation event timestamp
+  datetime: Time!
+  # SLO calculation event timestamp, truncated to start of hour
+  datetimeHour: Time!
+  # SLO calculation event timestamp, truncated to start of minute
+  datetimeMinute: Time!
+  # The ID of the notification policy associated with the calculation
+  policyId: string!
+  # The name of the site the tunnel is associated with
+  siteName: string!
+  # The health status of the tunnel
+  status: string!
+  # The ID of the tunnel
+  tunnelId: string!
+  # The name of the tunnel
+  tunnelName: string!
+}
+
+input AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsFilter_InputObject!]
+  alertType: string
+  alertType_geq: string
+  alertType_gt: string
+  alertType_in: [string!]
+  alertType_leq: string
+  alertType_like: string
+  alertType_lt: string
+  alertType_neq: string
+  alertType_notin: [string!]
+  alertType_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  policyId: string
+  policyId_geq: string
+  policyId_gt: string
+  policyId_in: [string!]
+  policyId_leq: string
+  policyId_like: string
+  policyId_lt: string
+  policyId_neq: string
+  policyId_notin: [string!]
+  policyId_notlike: string
+  siteName: string
+  siteName_geq: string
+  siteName_gt: string
+  siteName_in: [string!]
+  siteName_leq: string
+  siteName_like: string
+  siteName_lt: string
+  siteName_neq: string
+  siteName_notin: [string!]
+  siteName_notlike: string
+  status: string
+  status_geq: string
+  status_gt: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
+  tunnelId: string
+  tunnelId_geq: string
+  tunnelId_gt: string
+  tunnelId_in: [string!]
+  tunnelId_leq: string
+  tunnelId_like: string
+  tunnelId_lt: string
+  tunnelId_neq: string
+  tunnelId_notin: [string!]
+  tunnelId_notlike: string
+  tunnelName: string
+  tunnelName_geq: string
+  tunnelName_gt: string
+  tunnelName_in: [string!]
+  tunnelName_leq: string
+  tunnelName_like: string
+  tunnelName_lt: string
+  tunnelName_neq: string
+  tunnelName_notin: [string!]
+  tunnelName_notlike: string
+}
+
+type AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsMax {
+  # Maximum target SLO
+  slo: float64!
+}
+
+enum AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsOrderBy {
+  # alertType ascending
+  alertType_ASC
+  # alertType descending
+  alertType_DESC
+  # avg(effectiveSlo) ascending
+  avg_effectiveSlo_ASC
+  # avg(effectiveSlo) descending
+  avg_effectiveSlo_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # avg(slo) ascending
+  avg_slo_ASC
+  # avg(slo) descending
+  avg_slo_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # max(slo) ascending
+  max_slo_ASC
+  # max(slo) descending
+  max_slo_DESC
+  # policyId ascending
+  policyId_ASC
+  # policyId descending
+  policyId_DESC
+  # siteName ascending
+  siteName_ASC
+  # siteName descending
+  siteName_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # tunnelId ascending
+  tunnelId_ASC
+  # tunnelId descending
+  tunnelId_DESC
+  # tunnelName ascending
+  tunnelName_ASC
+  # tunnelName descending
+  tunnelName_DESC
+}
+
 # Bandwidth usage metric of a Magic Transit tunnel.
 type AccountMagicTransitTunnelTrafficAdaptiveGroups {
   # The average of values for a metric per dimension
@@ -31755,6 +31967,7 @@ type AccountSettings {
   magicFirewallSamplesAdaptiveGroups: Settings!
   magicIDPSNetworkAnalyticsAdaptiveGroups: Settings!
   magicTransitNetworkAnalyticsAdaptiveGroups: Settings!
+  magicTransitTunnelHealthCheckSLOsAdaptiveGroups: Settings!
   magicTransitTunnelHealthChecksAdaptiveGroups: Settings!
   magicTransitTunnelTrafficAdaptiveGroups: Settings!
   mnmFlowDataAdaptiveGroups: Settings!
