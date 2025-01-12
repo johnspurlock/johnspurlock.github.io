@@ -15295,6 +15295,12 @@ type AccountGatewayResolverByCategoryAdaptiveGroupsDimensions {
   categoryId: uint16!
   # List of resolved intermediate cname domains
   cnames: [string!]!
+  # Address at which the custom resolver query was resolved at
+  customResolverAddress: string!
+  # Whether the custom resolver response was cached or not
+  customResolverCacheStatus: uint8!
+  # Response code recieved from the custom resolver 0 => unknown 27 => dnsFirewallSuccess 29 => dnsFirewallCustomerRatelimit 31 => dnsFirewallUpstreamFailure 32 => dnsFirewallUpstreamServfail
+  customResolverResponseCode: float64!
   # The date and time the DNS query was resolved
   datetime: Time!
   # The date and time the event occurred at the edge truncated to hours
@@ -15307,6 +15313,14 @@ type AccountGatewayResolverByCategoryAdaptiveGroupsDimensions {
   dotSubdomain: string!
   # List of returned Extended DNS Error Codes
   edeErrors: [uint16!]!
+  # The fallback strategy applied over the internal DNS response. Empty if no fallback strategy was applied
+  internalDnsFallbackStrategy: string!
+  # The return code sent back by the internal DNS service
+  internalDnsRCode: uint16!
+  # The DNS internal view identifier that was sent to the internal DNS service
+  internalDnsViewId: string!
+  # The DNS zone identifier returned by the internal DNS service
+  internalDnsZoneId: string!
   # The uuid identifying the customer Location used when resolving
   locationId: string!
   # ID of the application the domain belongs to
@@ -15325,6 +15339,10 @@ type AccountGatewayResolverByCategoryAdaptiveGroupsDimensions {
   resolvedIps: [string!]!
   # Enum identifier for the decision made by gateway-resolver, one of: (0, unknown) (1, allowedByQueryName) (2, blockedByQueryName) (3, blockedByCategory) (4, allowedOnNoLocation) (5, allowedOnNoPolicyMatch) (6, blockedAlwaysCategory) (7, overrideForSafeSearch) (8, overrideApplied) (9, blockedRule) (10, allowedRule)
   resolverDecision: uint16!
+  # ID of the resolver policy/rule that was applied, if any
+  resolverPolicyId: string!
+  # Name of the resolver policy that was applied, if any
+  resolverPolicyName: string!
   # Resource records' classes
   resourceRecordClasses: [string!]!
   # Resource records' names
@@ -15360,6 +15378,32 @@ input AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject {
   cnames_hasall: [string!]
   cnames_hasany: [string!]
   cnames_nothas: string
+  customResolverAddress: string
+  customResolverAddress_geq: string
+  customResolverAddress_gt: string
+  customResolverAddress_in: [string!]
+  customResolverAddress_leq: string
+  customResolverAddress_like: string
+  customResolverAddress_lt: string
+  customResolverAddress_neq: string
+  customResolverAddress_notin: [string!]
+  customResolverAddress_notlike: string
+  customResolverCacheStatus: uint8
+  customResolverCacheStatus_geq: uint8
+  customResolverCacheStatus_gt: uint8
+  customResolverCacheStatus_in: bytes
+  customResolverCacheStatus_leq: uint8
+  customResolverCacheStatus_lt: uint8
+  customResolverCacheStatus_neq: uint8
+  customResolverCacheStatus_notin: bytes
+  customResolverResponseCode: float64
+  customResolverResponseCode_geq: float64
+  customResolverResponseCode_gt: float64
+  customResolverResponseCode_in: [float64!]
+  customResolverResponseCode_leq: float64
+  customResolverResponseCode_lt: float64
+  customResolverResponseCode_neq: float64
+  customResolverResponseCode_notin: [float64!]
   datetime: Time
   datetimeHour: Time
   datetimeHour_geq: Time
@@ -15408,6 +15452,44 @@ input AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject {
   edeErrors_hasall: [uint16!]
   edeErrors_hasany: [uint16!]
   edeErrors_nothas: uint16
+  internalDnsFallbackStrategy: string
+  internalDnsFallbackStrategy_geq: string
+  internalDnsFallbackStrategy_gt: string
+  internalDnsFallbackStrategy_in: [string!]
+  internalDnsFallbackStrategy_leq: string
+  internalDnsFallbackStrategy_like: string
+  internalDnsFallbackStrategy_lt: string
+  internalDnsFallbackStrategy_neq: string
+  internalDnsFallbackStrategy_notin: [string!]
+  internalDnsFallbackStrategy_notlike: string
+  internalDnsRCode: uint16
+  internalDnsRCode_geq: uint16
+  internalDnsRCode_gt: uint16
+  internalDnsRCode_in: [uint16!]
+  internalDnsRCode_leq: uint16
+  internalDnsRCode_lt: uint16
+  internalDnsRCode_neq: uint16
+  internalDnsRCode_notin: [uint16!]
+  internalDnsViewId: string
+  internalDnsViewId_geq: string
+  internalDnsViewId_gt: string
+  internalDnsViewId_in: [string!]
+  internalDnsViewId_leq: string
+  internalDnsViewId_like: string
+  internalDnsViewId_lt: string
+  internalDnsViewId_neq: string
+  internalDnsViewId_notin: [string!]
+  internalDnsViewId_notlike: string
+  internalDnsZoneId: string
+  internalDnsZoneId_geq: string
+  internalDnsZoneId_gt: string
+  internalDnsZoneId_in: [string!]
+  internalDnsZoneId_leq: string
+  internalDnsZoneId_like: string
+  internalDnsZoneId_lt: string
+  internalDnsZoneId_neq: string
+  internalDnsZoneId_notin: [string!]
+  internalDnsZoneId_notlike: string
   locationId: string
   locationId_geq: string
   locationId_gt: string
@@ -15476,6 +15558,26 @@ input AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject {
   resolverDecision_lt: uint16
   resolverDecision_neq: uint16
   resolverDecision_notin: [uint16!]
+  resolverPolicyId: string
+  resolverPolicyId_geq: string
+  resolverPolicyId_gt: string
+  resolverPolicyId_in: [string!]
+  resolverPolicyId_leq: string
+  resolverPolicyId_like: string
+  resolverPolicyId_lt: string
+  resolverPolicyId_neq: string
+  resolverPolicyId_notin: [string!]
+  resolverPolicyId_notlike: string
+  resolverPolicyName: string
+  resolverPolicyName_geq: string
+  resolverPolicyName_gt: string
+  resolverPolicyName_in: [string!]
+  resolverPolicyName_leq: string
+  resolverPolicyName_like: string
+  resolverPolicyName_lt: string
+  resolverPolicyName_neq: string
+  resolverPolicyName_notin: [string!]
+  resolverPolicyName_notlike: string
   resourceRecordClasses_has: string
   resourceRecordClasses_hasall: [string!]
   resourceRecordClasses_hasany: [string!]
@@ -15535,6 +15637,18 @@ enum AccountGatewayResolverByCategoryAdaptiveGroupsOrderBy {
   count_ASC
   # count() descending
   count_DESC
+  # customResolverAddress ascending
+  customResolverAddress_ASC
+  # customResolverAddress descending
+  customResolverAddress_DESC
+  # customResolverCacheStatus ascending
+  customResolverCacheStatus_ASC
+  # customResolverCacheStatus descending
+  customResolverCacheStatus_DESC
+  # customResolverResponseCode ascending
+  customResolverResponseCode_ASC
+  # customResolverResponseCode descending
+  customResolverResponseCode_DESC
   # datetimeHour ascending
   datetimeHour_ASC
   # datetimeHour descending
@@ -15559,6 +15673,22 @@ enum AccountGatewayResolverByCategoryAdaptiveGroupsOrderBy {
   edeErrors_ASC
   # edeErrors descending
   edeErrors_DESC
+  # internalDnsFallbackStrategy ascending
+  internalDnsFallbackStrategy_ASC
+  # internalDnsFallbackStrategy descending
+  internalDnsFallbackStrategy_DESC
+  # internalDnsRCode ascending
+  internalDnsRCode_ASC
+  # internalDnsRCode descending
+  internalDnsRCode_DESC
+  # internalDnsViewId ascending
+  internalDnsViewId_ASC
+  # internalDnsViewId descending
+  internalDnsViewId_DESC
+  # internalDnsZoneId ascending
+  internalDnsZoneId_ASC
+  # internalDnsZoneId descending
+  internalDnsZoneId_DESC
   # locationId ascending
   locationId_ASC
   # locationId descending
@@ -15595,6 +15725,14 @@ enum AccountGatewayResolverByCategoryAdaptiveGroupsOrderBy {
   resolverDecision_ASC
   # resolverDecision descending
   resolverDecision_DESC
+  # resolverPolicyId ascending
+  resolverPolicyId_ASC
+  # resolverPolicyId descending
+  resolverPolicyId_DESC
+  # resolverPolicyName ascending
+  resolverPolicyName_ASC
+  # resolverPolicyName descending
+  resolverPolicyName_DESC
   # resourceRecordClasses ascending
   resourceRecordClasses_ASC
   # resourceRecordClasses descending
@@ -15931,6 +16069,12 @@ type AccountGatewayResolverQueriesAdaptiveGroupsDimensions {
   categoryNames: [string!]!
   # List of resolved intermediate cname domains
   cnames: [string!]!
+  # Address at which the custom resolver query was resolved at
+  customResolverAddress: string!
+  # Whether the custom resolver response was cached or not
+  customResolverCacheStatus: uint8!
+  # Response code recieved from the custom resolver 0 => unknown 27 => dnsFirewallSuccess 29 => dnsFirewallCustomerRatelimit 31 => dnsFirewallUpstreamFailure 32 => dnsFirewallUpstreamServfail
+  customResolverResponseCode: float64!
   # The date and time the DNS query was resolved
   datetime: Time!
   # The date and time the event occurred at the edge truncated to hours
@@ -15943,6 +16087,14 @@ type AccountGatewayResolverQueriesAdaptiveGroupsDimensions {
   dotSubdomain: string!
   # List of returned Extended DNS Error Codes
   edeErrors: [uint16!]!
+  # The fallback strategy applied over the internal DNS response. Empty if no fallback strategy was applied
+  internalDnsFallbackStrategy: string!
+  # The return code sent back by the internal DNS service
+  internalDnsRCode: uint16!
+  # The DNS internal view identifier that was sent to the internal DNS service
+  internalDnsViewId: string!
+  # The DNS zone identifier returned by the internal DNS service
+  internalDnsZoneId: string!
   # The uuid identifying the customer Location used when resolving
   locationId: string!
   # The name identifying the customer Location used when resolving
@@ -15971,6 +16123,10 @@ type AccountGatewayResolverQueriesAdaptiveGroupsDimensions {
   resolvedIps: [string!]!
   # Enum identifier for the decision made by gateway-resolver, one of: (0, unknown) (1, allowedByQueryName) (2, blockedByQueryName) (3, blockedByCategory) (4, allowedOnNoLocation) (5, allowedOnNoPolicyMatch) (6, blockedAlwaysCategory) (7, overrideForSafeSearch) (8, overrideApplied) (9, blockedRule) (10, allowedRule)
   resolverDecision: uint16!
+  # ID of the resolver policy/rule that was applied, if any
+  resolverPolicyId: string!
+  # Name of the resolver policy that was applied, if any
+  resolverPolicyName: string!
   # Resource records' classes
   resourceRecordClasses: [string!]!
   # Resource records' names
@@ -16014,6 +16170,32 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   cnames_hasall: [string!]
   cnames_hasany: [string!]
   cnames_nothas: string
+  customResolverAddress: string
+  customResolverAddress_geq: string
+  customResolverAddress_gt: string
+  customResolverAddress_in: [string!]
+  customResolverAddress_leq: string
+  customResolverAddress_like: string
+  customResolverAddress_lt: string
+  customResolverAddress_neq: string
+  customResolverAddress_notin: [string!]
+  customResolverAddress_notlike: string
+  customResolverCacheStatus: uint8
+  customResolverCacheStatus_geq: uint8
+  customResolverCacheStatus_gt: uint8
+  customResolverCacheStatus_in: bytes
+  customResolverCacheStatus_leq: uint8
+  customResolverCacheStatus_lt: uint8
+  customResolverCacheStatus_neq: uint8
+  customResolverCacheStatus_notin: bytes
+  customResolverResponseCode: float64
+  customResolverResponseCode_geq: float64
+  customResolverResponseCode_gt: float64
+  customResolverResponseCode_in: [float64!]
+  customResolverResponseCode_leq: float64
+  customResolverResponseCode_lt: float64
+  customResolverResponseCode_neq: float64
+  customResolverResponseCode_notin: [float64!]
   datetime: Time
   datetimeHour: Time
   datetimeHour_geq: Time
@@ -16062,6 +16244,44 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   edeErrors_hasall: [uint16!]
   edeErrors_hasany: [uint16!]
   edeErrors_nothas: uint16
+  internalDnsFallbackStrategy: string
+  internalDnsFallbackStrategy_geq: string
+  internalDnsFallbackStrategy_gt: string
+  internalDnsFallbackStrategy_in: [string!]
+  internalDnsFallbackStrategy_leq: string
+  internalDnsFallbackStrategy_like: string
+  internalDnsFallbackStrategy_lt: string
+  internalDnsFallbackStrategy_neq: string
+  internalDnsFallbackStrategy_notin: [string!]
+  internalDnsFallbackStrategy_notlike: string
+  internalDnsRCode: uint16
+  internalDnsRCode_geq: uint16
+  internalDnsRCode_gt: uint16
+  internalDnsRCode_in: [uint16!]
+  internalDnsRCode_leq: uint16
+  internalDnsRCode_lt: uint16
+  internalDnsRCode_neq: uint16
+  internalDnsRCode_notin: [uint16!]
+  internalDnsViewId: string
+  internalDnsViewId_geq: string
+  internalDnsViewId_gt: string
+  internalDnsViewId_in: [string!]
+  internalDnsViewId_leq: string
+  internalDnsViewId_like: string
+  internalDnsViewId_lt: string
+  internalDnsViewId_neq: string
+  internalDnsViewId_notin: [string!]
+  internalDnsViewId_notlike: string
+  internalDnsZoneId: string
+  internalDnsZoneId_geq: string
+  internalDnsZoneId_gt: string
+  internalDnsZoneId_in: [string!]
+  internalDnsZoneId_leq: string
+  internalDnsZoneId_like: string
+  internalDnsZoneId_lt: string
+  internalDnsZoneId_neq: string
+  internalDnsZoneId_notin: [string!]
+  internalDnsZoneId_notlike: string
   locationId: string
   locationId_geq: string
   locationId_gt: string
@@ -16174,6 +16394,26 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   resolverDecision_lt: uint16
   resolverDecision_neq: uint16
   resolverDecision_notin: [uint16!]
+  resolverPolicyId: string
+  resolverPolicyId_geq: string
+  resolverPolicyId_gt: string
+  resolverPolicyId_in: [string!]
+  resolverPolicyId_leq: string
+  resolverPolicyId_like: string
+  resolverPolicyId_lt: string
+  resolverPolicyId_neq: string
+  resolverPolicyId_notin: [string!]
+  resolverPolicyId_notlike: string
+  resolverPolicyName: string
+  resolverPolicyName_geq: string
+  resolverPolicyName_gt: string
+  resolverPolicyName_in: [string!]
+  resolverPolicyName_leq: string
+  resolverPolicyName_like: string
+  resolverPolicyName_lt: string
+  resolverPolicyName_neq: string
+  resolverPolicyName_notin: [string!]
+  resolverPolicyName_notlike: string
   resourceRecordClasses_has: string
   resourceRecordClasses_hasall: [string!]
   resourceRecordClasses_hasany: [string!]
@@ -16247,6 +16487,18 @@ enum AccountGatewayResolverQueriesAdaptiveGroupsOrderBy {
   count_ASC
   # count() descending
   count_DESC
+  # customResolverAddress ascending
+  customResolverAddress_ASC
+  # customResolverAddress descending
+  customResolverAddress_DESC
+  # customResolverCacheStatus ascending
+  customResolverCacheStatus_ASC
+  # customResolverCacheStatus descending
+  customResolverCacheStatus_DESC
+  # customResolverResponseCode ascending
+  customResolverResponseCode_ASC
+  # customResolverResponseCode descending
+  customResolverResponseCode_DESC
   # datetimeHour ascending
   datetimeHour_ASC
   # datetimeHour descending
@@ -16271,6 +16523,22 @@ enum AccountGatewayResolverQueriesAdaptiveGroupsOrderBy {
   edeErrors_ASC
   # edeErrors descending
   edeErrors_DESC
+  # internalDnsFallbackStrategy ascending
+  internalDnsFallbackStrategy_ASC
+  # internalDnsFallbackStrategy descending
+  internalDnsFallbackStrategy_DESC
+  # internalDnsRCode ascending
+  internalDnsRCode_ASC
+  # internalDnsRCode descending
+  internalDnsRCode_DESC
+  # internalDnsViewId ascending
+  internalDnsViewId_ASC
+  # internalDnsViewId descending
+  internalDnsViewId_DESC
+  # internalDnsZoneId ascending
+  internalDnsZoneId_ASC
+  # internalDnsZoneId descending
+  internalDnsZoneId_DESC
   # locationId ascending
   locationId_ASC
   # locationId descending
@@ -16327,6 +16595,14 @@ enum AccountGatewayResolverQueriesAdaptiveGroupsOrderBy {
   resolverDecision_ASC
   # resolverDecision descending
   resolverDecision_DESC
+  # resolverPolicyId ascending
+  resolverPolicyId_ASC
+  # resolverPolicyId descending
+  resolverPolicyId_DESC
+  # resolverPolicyName ascending
+  resolverPolicyName_ASC
+  # resolverPolicyName descending
+  resolverPolicyName_DESC
   # resourceRecordClasses ascending
   resourceRecordClasses_ASC
   # resourceRecordClasses descending
@@ -26317,13 +26593,19 @@ type AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsAvg {
 type AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsDimensions {
   # The alert type of the notification policy
   alertType: string!
-  # SLO calculation event timestamp, truncated to start of a day
+  # SLO calculation event timestamp, truncated to the day
   date: Date!
   # SLO calculation event timestamp
   datetime: Time!
-  # SLO calculation event timestamp, truncated to start of hour
+  # SLO calculation event timestamp, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # SLO calculation event timestamp, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # SLO calculation event timestamp, truncated to multiple of 30 minutes
+  datetimeHalfOfHour: Time!
+  # SLO calculation event timestamp, truncated to the hour
   datetimeHour: Time!
-  # SLO calculation event timestamp, truncated to start of minute
+  # SLO calculation event timestamp, truncated to the minute
   datetimeMinute: Time!
   # The ID of the notification policy associated with the calculation
   policyId: string!
@@ -26359,6 +26641,30 @@ input AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsFilter_InputObject {
   date_neq: Date
   date_notin: [Date!]
   datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHalfOfHour: Time
+  datetimeHalfOfHour_geq: Time
+  datetimeHalfOfHour_gt: Time
+  datetimeHalfOfHour_in: [Time!]
+  datetimeHalfOfHour_leq: Time
+  datetimeHalfOfHour_lt: Time
+  datetimeHalfOfHour_neq: Time
+  datetimeHalfOfHour_notin: [Time!]
   datetimeHour: Time
   datetimeHour_geq: Time
   datetimeHour_gt: Time
@@ -26464,6 +26770,18 @@ enum AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsOrderBy {
   date_ASC
   # date descending
   date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHalfOfHour ascending
+  datetimeHalfOfHour_ASC
+  # datetimeHalfOfHour descending
+  datetimeHalfOfHour_DESC
   # datetimeHour ascending
   datetimeHour_ASC
   # datetimeHour descending
@@ -51810,6 +52128,14 @@ type ZoneWaitingRoomAnalyticsAdaptive {
   totalTimeWaitedP90: int64!
   # 95th percentile of the total time (in seconds) spent waiting in queue by users who were queued and then gained access to the origin
   totalTimeWaitedP95: int64!
+  # Number of Turnstile challenges failed or timed out
+  turnstileFailures: int64!
+  # Number of requests from users who failed a Turnstile challenge and were placed in an infinite queue
+  turnstileInfiniteQueueRefreshes: int64!
+  # Number of Turnstile challenges issued
+  turnstileIssued: int64!
+  # Number of Turnstile challenges successfully completed
+  turnstileSuccesses: int64!
   # Unique Identifier for the waiting room
   waitingRoomId: string!
   # Name of the waiting room
@@ -52027,6 +52353,38 @@ input ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject {
   totalTimeWaitedP95_lt: int64
   totalTimeWaitedP95_neq: int64
   totalTimeWaitedP95_notin: [int64!]
+  turnstileFailures: int64
+  turnstileFailures_geq: int64
+  turnstileFailures_gt: int64
+  turnstileFailures_in: [int64!]
+  turnstileFailures_leq: int64
+  turnstileFailures_lt: int64
+  turnstileFailures_neq: int64
+  turnstileFailures_notin: [int64!]
+  turnstileInfiniteQueueRefreshes: int64
+  turnstileInfiniteQueueRefreshes_geq: int64
+  turnstileInfiniteQueueRefreshes_gt: int64
+  turnstileInfiniteQueueRefreshes_in: [int64!]
+  turnstileInfiniteQueueRefreshes_leq: int64
+  turnstileInfiniteQueueRefreshes_lt: int64
+  turnstileInfiniteQueueRefreshes_neq: int64
+  turnstileInfiniteQueueRefreshes_notin: [int64!]
+  turnstileIssued: int64
+  turnstileIssued_geq: int64
+  turnstileIssued_gt: int64
+  turnstileIssued_in: [int64!]
+  turnstileIssued_leq: int64
+  turnstileIssued_lt: int64
+  turnstileIssued_neq: int64
+  turnstileIssued_notin: [int64!]
+  turnstileSuccesses: int64
+  turnstileSuccesses_geq: int64
+  turnstileSuccesses_gt: int64
+  turnstileSuccesses_in: [int64!]
+  turnstileSuccesses_leq: int64
+  turnstileSuccesses_lt: int64
+  turnstileSuccesses_neq: int64
+  turnstileSuccesses_notin: [int64!]
   waitingRoomId: string
   waitingRoomId_geq: string
   waitingRoomId_gt: string
@@ -52084,6 +52442,14 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroupsAvg {
   totalActiveUsersConfig: int64!
   # Average of total queued users
   totalQueuedUsers: int64!
+  # Average rate of Turnstile challenges failed or timed out. A negative number means no data
+  turnstileFailures: int64!
+  # Average rate of requests from users who failed a Turnstile challenge and were placed in an infinite queue. A negative number means no data
+  turnstileInfiniteQueueRefreshes: int64!
+  # Average rate of Turnstile challenges issued. A negative number means no data
+  turnstileIssued: int64!
+  # Average rate of Turnstile challenges successfully completed. A negative number means no data
+  turnstileSuccesses: int64!
 }
 
 type ZoneWaitingRoomAnalyticsAdaptiveGroupsAvgWeighted {
@@ -52228,6 +52594,14 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroupsMax {
   totalActiveUsersConfig: int64!
   # The maximum value of total number of queued users. A negative number means no data
   totalQueuedUsers: int64!
+  # The maximum value of Turnstile challenges failed or timed out. A negative number means no data
+  turnstileFailures: int64!
+  # The maximum value of requests from users who failed a Turnstile challenge and were placed in an infinite queue. A negative number means no data
+  turnstileInfiniteQueueRefreshes: int64!
+  # The maximum value of Turnstile challenges issued. A negative number means no data
+  turnstileIssued: int64!
+  # The maximum value of Turnstile challenges successfully completed. A negative number means no data
+  turnstileSuccesses: int64!
 }
 
 type ZoneWaitingRoomAnalyticsAdaptiveGroupsMin {
@@ -52247,6 +52621,14 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroupsMin {
   totalActiveUsersConfig: int64!
   # The minimum value of total number of queued users. A negative number means no data
   totalQueuedUsers: int64!
+  # The minimum value of Turnstile challenges failed or timed out. A negative number means no data
+  turnstileFailures: int64!
+  # The minimum value of requests from users who failed a Turnstile challenge and were placed in an infinite queue. A negative number means no data
+  turnstileInfiniteQueueRefreshes: int64!
+  # The minimum value of Turnstile challenges issued. A negative number means no data
+  turnstileIssued: int64!
+  # The minimum value of Turnstile challenges successfully completed. A negative number means no data
+  turnstileSuccesses: int64!
 }
 
 enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
@@ -52354,6 +52736,22 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   avg_totalQueuedUsers_ASC
   # avg(totalQueuedUsers) descending
   avg_totalQueuedUsers_DESC
+  # avg(turnstileFailures) ascending
+  avg_turnstileFailures_ASC
+  # avg(turnstileFailures) descending
+  avg_turnstileFailures_DESC
+  # avg(turnstileInfiniteQueueRefreshes) ascending
+  avg_turnstileInfiniteQueueRefreshes_ASC
+  # avg(turnstileInfiniteQueueRefreshes) descending
+  avg_turnstileInfiniteQueueRefreshes_DESC
+  # avg(turnstileIssued) ascending
+  avg_turnstileIssued_ASC
+  # avg(turnstileIssued) descending
+  avg_turnstileIssued_DESC
+  # avg(turnstileSuccesses) ascending
+  avg_turnstileSuccesses_ASC
+  # avg(turnstileSuccesses) descending
+  avg_turnstileSuccesses_DESC
   # date ascending
   date_ASC
   # date descending
@@ -52414,6 +52812,22 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   max_totalQueuedUsers_ASC
   # max(totalQueuedUsers) descending
   max_totalQueuedUsers_DESC
+  # max(turnstileFailures) ascending
+  max_turnstileFailures_ASC
+  # max(turnstileFailures) descending
+  max_turnstileFailures_DESC
+  # max(turnstileInfiniteQueueRefreshes) ascending
+  max_turnstileInfiniteQueueRefreshes_ASC
+  # max(turnstileInfiniteQueueRefreshes) descending
+  max_turnstileInfiniteQueueRefreshes_DESC
+  # max(turnstileIssued) ascending
+  max_turnstileIssued_ASC
+  # max(turnstileIssued) descending
+  max_turnstileIssued_DESC
+  # max(turnstileSuccesses) ascending
+  max_turnstileSuccesses_ASC
+  # max(turnstileSuccesses) descending
+  max_turnstileSuccesses_DESC
   # min(maxEstimatedTimeMinutes) ascending
   min_maxEstimatedTimeMinutes_ASC
   # min(maxEstimatedTimeMinutes) descending
@@ -52446,6 +52860,22 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   min_totalQueuedUsers_ASC
   # min(totalQueuedUsers) descending
   min_totalQueuedUsers_DESC
+  # min(turnstileFailures) ascending
+  min_turnstileFailures_ASC
+  # min(turnstileFailures) descending
+  min_turnstileFailures_DESC
+  # min(turnstileInfiniteQueueRefreshes) ascending
+  min_turnstileInfiniteQueueRefreshes_ASC
+  # min(turnstileInfiniteQueueRefreshes) descending
+  min_turnstileInfiniteQueueRefreshes_DESC
+  # min(turnstileIssued) ascending
+  min_turnstileIssued_ASC
+  # min(turnstileIssued) descending
+  min_turnstileIssued_DESC
+  # min(turnstileSuccesses) ascending
+  min_turnstileSuccesses_ASC
+  # min(turnstileSuccesses) descending
+  min_turnstileSuccesses_DESC
   # sampleInterval ascending
   sampleInterval_ASC
   # sampleInterval descending
@@ -52458,6 +52888,22 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   sum_sessionsRevoked_ASC
   # sum(sessionsRevoked) descending
   sum_sessionsRevoked_DESC
+  # sum(turnstileFailures) ascending
+  sum_turnstileFailures_ASC
+  # sum(turnstileFailures) descending
+  sum_turnstileFailures_DESC
+  # sum(turnstileInfiniteQueueRefreshes) ascending
+  sum_turnstileInfiniteQueueRefreshes_ASC
+  # sum(turnstileInfiniteQueueRefreshes) descending
+  sum_turnstileInfiniteQueueRefreshes_DESC
+  # sum(turnstileIssued) ascending
+  sum_turnstileIssued_ASC
+  # sum(turnstileIssued) descending
+  sum_turnstileIssued_DESC
+  # sum(turnstileSuccesses) ascending
+  sum_turnstileSuccesses_ASC
+  # sum(turnstileSuccesses) descending
+  sum_turnstileSuccesses_DESC
   # waitingRoomId ascending
   waitingRoomId_ASC
   # waitingRoomId descending
@@ -52469,6 +52915,14 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroupsSum {
   newUsersPerMinute: int64!
   # Sum of sessions revoked. A negative number means no data
   sessionsRevoked: int64!
+  # Sum of Turnstile challenges failed or timed out. A negative number means no data
+  turnstileFailures: int64!
+  # Sum of requests from users who failed a Turnstile challenge and were placed in an infinite queue. A negative number means no data
+  turnstileInfiniteQueueRefreshes: int64!
+  # Sum of Turnstile challenges issued. A negative number means no data
+  turnstileIssued: int64!
+  # Sum of Turnstile challenges successfully completed. A negative number means no data
+  turnstileSuccesses: int64!
 }
 
 enum ZoneWaitingRoomAnalyticsAdaptiveOrderBy {
@@ -52580,6 +53034,22 @@ enum ZoneWaitingRoomAnalyticsAdaptiveOrderBy {
   totalTimeWaitedP95_ASC
   # totalTimeWaitedP95 descending
   totalTimeWaitedP95_DESC
+  # turnstileFailures ascending
+  turnstileFailures_ASC
+  # turnstileFailures descending
+  turnstileFailures_DESC
+  # turnstileInfiniteQueueRefreshes ascending
+  turnstileInfiniteQueueRefreshes_ASC
+  # turnstileInfiniteQueueRefreshes descending
+  turnstileInfiniteQueueRefreshes_DESC
+  # turnstileIssued ascending
+  turnstileIssued_ASC
+  # turnstileIssued descending
+  turnstileIssued_DESC
+  # turnstileSuccesses ascending
+  turnstileSuccesses_ASC
+  # turnstileSuccesses descending
+  turnstileSuccesses_DESC
   # waitingRoomId ascending
   waitingRoomId_ASC
   # waitingRoomId descending

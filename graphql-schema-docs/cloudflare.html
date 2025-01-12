@@ -15147,6 +15147,12 @@
 &nbsp;&nbsp;categoryId: <a href="#uint16">uint16!</a><br />
 &nbsp;&nbsp;<span class="c"># List of resolved intermediate cname domains</span><br />
 &nbsp;&nbsp;cnames: <a href="#string">[string!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Address at which the custom resolver query was resolved at</span><br />
+&nbsp;&nbsp;customResolverAddress: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Whether the custom resolver response was cached or not</span><br />
+&nbsp;&nbsp;customResolverCacheStatus: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Response code recieved from the custom resolver 0 => unknown 27 => dnsFirewallSuccess 29 => dnsFirewallCustomerRatelimit 31 => dnsFirewallUpstreamFailure 32 => dnsFirewallUpstreamServfail</span><br />
+&nbsp;&nbsp;customResolverResponseCode: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># The date and time the DNS query was resolved</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># The date and time the event occurred at the edge truncated to hours</span><br />
@@ -15159,6 +15165,14 @@
 &nbsp;&nbsp;dotSubdomain: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># List of returned Extended DNS Error Codes</span><br />
 &nbsp;&nbsp;edeErrors: <a href="#uint16">[uint16!]!</a><br />
+&nbsp;&nbsp;<span class="c"># The fallback strategy applied over the internal DNS response. Empty if no fallback strategy was applied</span><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The return code sent back by the internal DNS service</span><br />
+&nbsp;&nbsp;internalDnsRCode: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># The DNS internal view identifier that was sent to the internal DNS service</span><br />
+&nbsp;&nbsp;internalDnsViewId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The DNS zone identifier returned by the internal DNS service</span><br />
+&nbsp;&nbsp;internalDnsZoneId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The uuid identifying the customer Location used when resolving</span><br />
 &nbsp;&nbsp;locationId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># ID of the application the domain belongs to</span><br />
@@ -15177,6 +15191,10 @@
 &nbsp;&nbsp;resolvedIps: <a href="#string">[string!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Enum identifier for the decision made by gateway-resolver, one of: (0, unknown) (1, allowedByQueryName) (2, blockedByQueryName) (3, blockedByCategory) (4, allowedOnNoLocation) (5, allowedOnNoPolicyMatch) (6, blockedAlwaysCategory) (7, overrideForSafeSearch) (8, overrideApplied) (9, blockedRule) (10, allowedRule)</span><br />
 &nbsp;&nbsp;resolverDecision: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># ID of the resolver policy/rule that was applied, if any</span><br />
+&nbsp;&nbsp;resolverPolicyId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Name of the resolver policy that was applied, if any</span><br />
+&nbsp;&nbsp;resolverPolicyName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Resource records' classes</span><br />
 &nbsp;&nbsp;resourceRecordClasses: <a href="#string">[string!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Resource records' names</span><br />
@@ -15212,6 +15230,32 @@
 &nbsp;&nbsp;cnames_hasall: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;cnames_hasany: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;cnames_nothas: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverAddress: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverAddress_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverAddress_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverAddress_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;customResolverAddress_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverAddress_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverAddress_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverAddress_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverAddress_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;customResolverAddress_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverCacheStatus: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;customResolverCacheStatus_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;customResolverCacheStatus_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;customResolverCacheStatus_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;customResolverCacheStatus_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;customResolverCacheStatus_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;customResolverCacheStatus_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;customResolverCacheStatus_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;customResolverResponseCode: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;customResolverResponseCode_geq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;customResolverResponseCode_gt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;customResolverResponseCode_in: <a href="#float64">[float64!]</a><br />
+&nbsp;&nbsp;customResolverResponseCode_leq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;customResolverResponseCode_lt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;customResolverResponseCode_neq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;customResolverResponseCode_notin: <a href="#float64">[float64!]</a><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour_geq: <a href="#Time">Time</a><br />
@@ -15260,6 +15304,44 @@
 &nbsp;&nbsp;edeErrors_hasall: <a href="#uint16">[uint16!]</a><br />
 &nbsp;&nbsp;edeErrors_hasany: <a href="#uint16">[uint16!]</a><br />
 &nbsp;&nbsp;edeErrors_nothas: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsRCode: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;internalDnsRCode_geq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;internalDnsRCode_gt: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;internalDnsRCode_in: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;internalDnsRCode_leq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;internalDnsRCode_lt: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;internalDnsRCode_neq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;internalDnsRCode_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;internalDnsViewId: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsViewId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsViewId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsViewId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;internalDnsViewId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsViewId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsViewId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsViewId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsViewId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;internalDnsViewId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsZoneId: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsZoneId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsZoneId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsZoneId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;internalDnsZoneId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsZoneId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsZoneId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsZoneId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsZoneId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;internalDnsZoneId_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;locationId: <a href="#string">string</a><br />
 &nbsp;&nbsp;locationId_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;locationId_gt: <a href="#string">string</a><br />
@@ -15328,6 +15410,26 @@
 &nbsp;&nbsp;resolverDecision_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;resolverDecision_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;resolverDecision_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;resolverPolicyId: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;resolverPolicyId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;resolverPolicyId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyName: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyName_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyName_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyName_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;resolverPolicyName_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyName_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyName_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyName_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyName_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;resolverPolicyName_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;resourceRecordClasses_has: <a href="#string">string</a><br />
 &nbsp;&nbsp;resourceRecordClasses_hasall: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;resourceRecordClasses_hasany: <a href="#string">[string!]</a><br />
@@ -15387,6 +15489,18 @@
 &nbsp;&nbsp;count_ASC<br />
 &nbsp;&nbsp;<span class="c"># count() descending</span><br />
 &nbsp;&nbsp;count_DESC<br />
+&nbsp;&nbsp;<span class="c"># customResolverAddress ascending</span><br />
+&nbsp;&nbsp;customResolverAddress_ASC<br />
+&nbsp;&nbsp;<span class="c"># customResolverAddress descending</span><br />
+&nbsp;&nbsp;customResolverAddress_DESC<br />
+&nbsp;&nbsp;<span class="c"># customResolverCacheStatus ascending</span><br />
+&nbsp;&nbsp;customResolverCacheStatus_ASC<br />
+&nbsp;&nbsp;<span class="c"># customResolverCacheStatus descending</span><br />
+&nbsp;&nbsp;customResolverCacheStatus_DESC<br />
+&nbsp;&nbsp;<span class="c"># customResolverResponseCode ascending</span><br />
+&nbsp;&nbsp;customResolverResponseCode_ASC<br />
+&nbsp;&nbsp;<span class="c"># customResolverResponseCode descending</span><br />
+&nbsp;&nbsp;customResolverResponseCode_DESC<br />
 &nbsp;&nbsp;<span class="c"># datetimeHour ascending</span><br />
 &nbsp;&nbsp;datetimeHour_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetimeHour descending</span><br />
@@ -15411,6 +15525,22 @@
 &nbsp;&nbsp;edeErrors_ASC<br />
 &nbsp;&nbsp;<span class="c"># edeErrors descending</span><br />
 &nbsp;&nbsp;edeErrors_DESC<br />
+&nbsp;&nbsp;<span class="c"># internalDnsFallbackStrategy ascending</span><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_ASC<br />
+&nbsp;&nbsp;<span class="c"># internalDnsFallbackStrategy descending</span><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_DESC<br />
+&nbsp;&nbsp;<span class="c"># internalDnsRCode ascending</span><br />
+&nbsp;&nbsp;internalDnsRCode_ASC<br />
+&nbsp;&nbsp;<span class="c"># internalDnsRCode descending</span><br />
+&nbsp;&nbsp;internalDnsRCode_DESC<br />
+&nbsp;&nbsp;<span class="c"># internalDnsViewId ascending</span><br />
+&nbsp;&nbsp;internalDnsViewId_ASC<br />
+&nbsp;&nbsp;<span class="c"># internalDnsViewId descending</span><br />
+&nbsp;&nbsp;internalDnsViewId_DESC<br />
+&nbsp;&nbsp;<span class="c"># internalDnsZoneId ascending</span><br />
+&nbsp;&nbsp;internalDnsZoneId_ASC<br />
+&nbsp;&nbsp;<span class="c"># internalDnsZoneId descending</span><br />
+&nbsp;&nbsp;internalDnsZoneId_DESC<br />
 &nbsp;&nbsp;<span class="c"># locationId ascending</span><br />
 &nbsp;&nbsp;locationId_ASC<br />
 &nbsp;&nbsp;<span class="c"># locationId descending</span><br />
@@ -15447,6 +15577,14 @@
 &nbsp;&nbsp;resolverDecision_ASC<br />
 &nbsp;&nbsp;<span class="c"># resolverDecision descending</span><br />
 &nbsp;&nbsp;resolverDecision_DESC<br />
+&nbsp;&nbsp;<span class="c"># resolverPolicyId ascending</span><br />
+&nbsp;&nbsp;resolverPolicyId_ASC<br />
+&nbsp;&nbsp;<span class="c"># resolverPolicyId descending</span><br />
+&nbsp;&nbsp;resolverPolicyId_DESC<br />
+&nbsp;&nbsp;<span class="c"># resolverPolicyName ascending</span><br />
+&nbsp;&nbsp;resolverPolicyName_ASC<br />
+&nbsp;&nbsp;<span class="c"># resolverPolicyName descending</span><br />
+&nbsp;&nbsp;resolverPolicyName_DESC<br />
 &nbsp;&nbsp;<span class="c"># resourceRecordClasses ascending</span><br />
 &nbsp;&nbsp;resourceRecordClasses_ASC<br />
 &nbsp;&nbsp;<span class="c"># resourceRecordClasses descending</span><br />
@@ -15783,6 +15921,12 @@
 &nbsp;&nbsp;categoryNames: <a href="#string">[string!]!</a><br />
 &nbsp;&nbsp;<span class="c"># List of resolved intermediate cname domains</span><br />
 &nbsp;&nbsp;cnames: <a href="#string">[string!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Address at which the custom resolver query was resolved at</span><br />
+&nbsp;&nbsp;customResolverAddress: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Whether the custom resolver response was cached or not</span><br />
+&nbsp;&nbsp;customResolverCacheStatus: <a href="#uint8">uint8!</a><br />
+&nbsp;&nbsp;<span class="c"># Response code recieved from the custom resolver 0 => unknown 27 => dnsFirewallSuccess 29 => dnsFirewallCustomerRatelimit 31 => dnsFirewallUpstreamFailure 32 => dnsFirewallUpstreamServfail</span><br />
+&nbsp;&nbsp;customResolverResponseCode: <a href="#float64">float64!</a><br />
 &nbsp;&nbsp;<span class="c"># The date and time the DNS query was resolved</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># The date and time the event occurred at the edge truncated to hours</span><br />
@@ -15795,6 +15939,14 @@
 &nbsp;&nbsp;dotSubdomain: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># List of returned Extended DNS Error Codes</span><br />
 &nbsp;&nbsp;edeErrors: <a href="#uint16">[uint16!]!</a><br />
+&nbsp;&nbsp;<span class="c"># The fallback strategy applied over the internal DNS response. Empty if no fallback strategy was applied</span><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The return code sent back by the internal DNS service</span><br />
+&nbsp;&nbsp;internalDnsRCode: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># The DNS internal view identifier that was sent to the internal DNS service</span><br />
+&nbsp;&nbsp;internalDnsViewId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The DNS zone identifier returned by the internal DNS service</span><br />
+&nbsp;&nbsp;internalDnsZoneId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The uuid identifying the customer Location used when resolving</span><br />
 &nbsp;&nbsp;locationId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The name identifying the customer Location used when resolving</span><br />
@@ -15823,6 +15975,10 @@
 &nbsp;&nbsp;resolvedIps: <a href="#string">[string!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Enum identifier for the decision made by gateway-resolver, one of: (0, unknown) (1, allowedByQueryName) (2, blockedByQueryName) (3, blockedByCategory) (4, allowedOnNoLocation) (5, allowedOnNoPolicyMatch) (6, blockedAlwaysCategory) (7, overrideForSafeSearch) (8, overrideApplied) (9, blockedRule) (10, allowedRule)</span><br />
 &nbsp;&nbsp;resolverDecision: <a href="#uint16">uint16!</a><br />
+&nbsp;&nbsp;<span class="c"># ID of the resolver policy/rule that was applied, if any</span><br />
+&nbsp;&nbsp;resolverPolicyId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Name of the resolver policy that was applied, if any</span><br />
+&nbsp;&nbsp;resolverPolicyName: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Resource records' classes</span><br />
 &nbsp;&nbsp;resourceRecordClasses: <a href="#string">[string!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Resource records' names</span><br />
@@ -15866,6 +16022,32 @@
 &nbsp;&nbsp;cnames_hasall: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;cnames_hasany: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;cnames_nothas: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverAddress: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverAddress_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverAddress_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverAddress_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;customResolverAddress_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverAddress_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverAddress_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverAddress_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverAddress_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;customResolverAddress_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;customResolverCacheStatus: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;customResolverCacheStatus_geq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;customResolverCacheStatus_gt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;customResolverCacheStatus_in: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;customResolverCacheStatus_leq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;customResolverCacheStatus_lt: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;customResolverCacheStatus_neq: <a href="#uint8">uint8</a><br />
+&nbsp;&nbsp;customResolverCacheStatus_notin: <a href="#bytes">bytes</a><br />
+&nbsp;&nbsp;customResolverResponseCode: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;customResolverResponseCode_geq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;customResolverResponseCode_gt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;customResolverResponseCode_in: <a href="#float64">[float64!]</a><br />
+&nbsp;&nbsp;customResolverResponseCode_leq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;customResolverResponseCode_lt: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;customResolverResponseCode_neq: <a href="#float64">float64</a><br />
+&nbsp;&nbsp;customResolverResponseCode_notin: <a href="#float64">[float64!]</a><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour_geq: <a href="#Time">Time</a><br />
@@ -15914,6 +16096,44 @@
 &nbsp;&nbsp;edeErrors_hasall: <a href="#uint16">[uint16!]</a><br />
 &nbsp;&nbsp;edeErrors_hasany: <a href="#uint16">[uint16!]</a><br />
 &nbsp;&nbsp;edeErrors_nothas: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsRCode: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;internalDnsRCode_geq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;internalDnsRCode_gt: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;internalDnsRCode_in: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;internalDnsRCode_leq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;internalDnsRCode_lt: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;internalDnsRCode_neq: <a href="#uint16">uint16</a><br />
+&nbsp;&nbsp;internalDnsRCode_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;internalDnsViewId: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsViewId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsViewId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsViewId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;internalDnsViewId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsViewId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsViewId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsViewId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsViewId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;internalDnsViewId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsZoneId: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsZoneId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsZoneId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsZoneId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;internalDnsZoneId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsZoneId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsZoneId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsZoneId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;internalDnsZoneId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;internalDnsZoneId_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;locationId: <a href="#string">string</a><br />
 &nbsp;&nbsp;locationId_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;locationId_gt: <a href="#string">string</a><br />
@@ -16026,6 +16246,26 @@
 &nbsp;&nbsp;resolverDecision_lt: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;resolverDecision_neq: <a href="#uint16">uint16</a><br />
 &nbsp;&nbsp;resolverDecision_notin: <a href="#uint16">[uint16!]</a><br />
+&nbsp;&nbsp;resolverPolicyId: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;resolverPolicyId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;resolverPolicyId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyName: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyName_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyName_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyName_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;resolverPolicyName_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyName_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyName_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyName_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;resolverPolicyName_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;resolverPolicyName_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;resourceRecordClasses_has: <a href="#string">string</a><br />
 &nbsp;&nbsp;resourceRecordClasses_hasall: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;resourceRecordClasses_hasany: <a href="#string">[string!]</a><br />
@@ -16099,6 +16339,18 @@
 &nbsp;&nbsp;count_ASC<br />
 &nbsp;&nbsp;<span class="c"># count() descending</span><br />
 &nbsp;&nbsp;count_DESC<br />
+&nbsp;&nbsp;<span class="c"># customResolverAddress ascending</span><br />
+&nbsp;&nbsp;customResolverAddress_ASC<br />
+&nbsp;&nbsp;<span class="c"># customResolverAddress descending</span><br />
+&nbsp;&nbsp;customResolverAddress_DESC<br />
+&nbsp;&nbsp;<span class="c"># customResolverCacheStatus ascending</span><br />
+&nbsp;&nbsp;customResolverCacheStatus_ASC<br />
+&nbsp;&nbsp;<span class="c"># customResolverCacheStatus descending</span><br />
+&nbsp;&nbsp;customResolverCacheStatus_DESC<br />
+&nbsp;&nbsp;<span class="c"># customResolverResponseCode ascending</span><br />
+&nbsp;&nbsp;customResolverResponseCode_ASC<br />
+&nbsp;&nbsp;<span class="c"># customResolverResponseCode descending</span><br />
+&nbsp;&nbsp;customResolverResponseCode_DESC<br />
 &nbsp;&nbsp;<span class="c"># datetimeHour ascending</span><br />
 &nbsp;&nbsp;datetimeHour_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetimeHour descending</span><br />
@@ -16123,6 +16375,22 @@
 &nbsp;&nbsp;edeErrors_ASC<br />
 &nbsp;&nbsp;<span class="c"># edeErrors descending</span><br />
 &nbsp;&nbsp;edeErrors_DESC<br />
+&nbsp;&nbsp;<span class="c"># internalDnsFallbackStrategy ascending</span><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_ASC<br />
+&nbsp;&nbsp;<span class="c"># internalDnsFallbackStrategy descending</span><br />
+&nbsp;&nbsp;internalDnsFallbackStrategy_DESC<br />
+&nbsp;&nbsp;<span class="c"># internalDnsRCode ascending</span><br />
+&nbsp;&nbsp;internalDnsRCode_ASC<br />
+&nbsp;&nbsp;<span class="c"># internalDnsRCode descending</span><br />
+&nbsp;&nbsp;internalDnsRCode_DESC<br />
+&nbsp;&nbsp;<span class="c"># internalDnsViewId ascending</span><br />
+&nbsp;&nbsp;internalDnsViewId_ASC<br />
+&nbsp;&nbsp;<span class="c"># internalDnsViewId descending</span><br />
+&nbsp;&nbsp;internalDnsViewId_DESC<br />
+&nbsp;&nbsp;<span class="c"># internalDnsZoneId ascending</span><br />
+&nbsp;&nbsp;internalDnsZoneId_ASC<br />
+&nbsp;&nbsp;<span class="c"># internalDnsZoneId descending</span><br />
+&nbsp;&nbsp;internalDnsZoneId_DESC<br />
 &nbsp;&nbsp;<span class="c"># locationId ascending</span><br />
 &nbsp;&nbsp;locationId_ASC<br />
 &nbsp;&nbsp;<span class="c"># locationId descending</span><br />
@@ -16179,6 +16447,14 @@
 &nbsp;&nbsp;resolverDecision_ASC<br />
 &nbsp;&nbsp;<span class="c"># resolverDecision descending</span><br />
 &nbsp;&nbsp;resolverDecision_DESC<br />
+&nbsp;&nbsp;<span class="c"># resolverPolicyId ascending</span><br />
+&nbsp;&nbsp;resolverPolicyId_ASC<br />
+&nbsp;&nbsp;<span class="c"># resolverPolicyId descending</span><br />
+&nbsp;&nbsp;resolverPolicyId_DESC<br />
+&nbsp;&nbsp;<span class="c"># resolverPolicyName ascending</span><br />
+&nbsp;&nbsp;resolverPolicyName_ASC<br />
+&nbsp;&nbsp;<span class="c"># resolverPolicyName descending</span><br />
+&nbsp;&nbsp;resolverPolicyName_DESC<br />
 &nbsp;&nbsp;<span class="c"># resourceRecordClasses ascending</span><br />
 &nbsp;&nbsp;resourceRecordClasses_ASC<br />
 &nbsp;&nbsp;<span class="c"># resourceRecordClasses descending</span><br />
@@ -26169,13 +26445,19 @@
 <span class="k">type</span> <a id="AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsDimensions" href="#AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsDimensions">AccountMagicTransitTunnelHealthCheckSLOsAdaptiveGroupsDimensions</a> {<br />
 &nbsp;&nbsp;<span class="c"># The alert type of the notification policy</span><br />
 &nbsp;&nbsp;alertType: <a href="#string">string!</a><br />
-&nbsp;&nbsp;<span class="c"># SLO calculation event timestamp, truncated to start of a day</span><br />
+&nbsp;&nbsp;<span class="c"># SLO calculation event timestamp, truncated to the day</span><br />
 &nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># SLO calculation event timestamp</span><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time!</a><br />
-&nbsp;&nbsp;<span class="c"># SLO calculation event timestamp, truncated to start of hour</span><br />
+&nbsp;&nbsp;<span class="c"># SLO calculation event timestamp, truncated to multiple of 15 minutes</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># SLO calculation event timestamp, truncated to multiple of 5 minutes</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># SLO calculation event timestamp, truncated to multiple of 30 minutes</span><br />
+&nbsp;&nbsp;datetimeHalfOfHour: <a href="#Time">Time!</a><br />
+&nbsp;&nbsp;<span class="c"># SLO calculation event timestamp, truncated to the hour</span><br />
 &nbsp;&nbsp;datetimeHour: <a href="#Time">Time!</a><br />
-&nbsp;&nbsp;<span class="c"># SLO calculation event timestamp, truncated to start of minute</span><br />
+&nbsp;&nbsp;<span class="c"># SLO calculation event timestamp, truncated to the minute</span><br />
 &nbsp;&nbsp;datetimeMinute: <a href="#Time">Time!</a><br />
 &nbsp;&nbsp;<span class="c"># The ID of the notification policy associated with the calculation</span><br />
 &nbsp;&nbsp;policyId: <a href="#string">string!</a><br />
@@ -26211,6 +26493,30 @@
 &nbsp;&nbsp;date_neq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_notin: <a href="#Date">[Date!]</a><br />
 &nbsp;&nbsp;datetime: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeFiveMinutes_notin: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeHalfOfHour: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHalfOfHour_geq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHalfOfHour_gt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHalfOfHour_in: <a href="#Time">[Time!]</a><br />
+&nbsp;&nbsp;datetimeHalfOfHour_leq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHalfOfHour_lt: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHalfOfHour_neq: <a href="#Time">Time</a><br />
+&nbsp;&nbsp;datetimeHalfOfHour_notin: <a href="#Time">[Time!]</a><br />
 &nbsp;&nbsp;datetimeHour: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour_geq: <a href="#Time">Time</a><br />
 &nbsp;&nbsp;datetimeHour_gt: <a href="#Time">Time</a><br />
@@ -26316,6 +26622,18 @@
 &nbsp;&nbsp;date_ASC<br />
 &nbsp;&nbsp;<span class="c"># date descending</span><br />
 &nbsp;&nbsp;date_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes ascending</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFifteenMinutes descending</span><br />
+&nbsp;&nbsp;datetimeFifteenMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFiveMinutes ascending</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeFiveMinutes descending</span><br />
+&nbsp;&nbsp;datetimeFiveMinutes_DESC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHalfOfHour ascending</span><br />
+&nbsp;&nbsp;datetimeHalfOfHour_ASC<br />
+&nbsp;&nbsp;<span class="c"># datetimeHalfOfHour descending</span><br />
+&nbsp;&nbsp;datetimeHalfOfHour_DESC<br />
 &nbsp;&nbsp;<span class="c"># datetimeHour ascending</span><br />
 &nbsp;&nbsp;datetimeHour_ASC<br />
 &nbsp;&nbsp;<span class="c"># datetimeHour descending</span><br />
@@ -51662,6 +51980,14 @@
 &nbsp;&nbsp;totalTimeWaitedP90: <a href="#int64">int64!</a><br />
 &nbsp;&nbsp;<span class="c"># 95th percentile of the total time (in seconds) spent waiting in queue by users who were queued and then gained access to the origin</span><br />
 &nbsp;&nbsp;totalTimeWaitedP95: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Number of Turnstile challenges failed or timed out</span><br />
+&nbsp;&nbsp;turnstileFailures: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Number of requests from users who failed a Turnstile challenge and were placed in an infinite queue</span><br />
+&nbsp;&nbsp;turnstileInfiniteQueueRefreshes: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Number of Turnstile challenges issued</span><br />
+&nbsp;&nbsp;turnstileIssued: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Number of Turnstile challenges successfully completed</span><br />
+&nbsp;&nbsp;turnstileSuccesses: <a href="#int64">int64!</a><br />
 &nbsp;&nbsp;<span class="c"># Unique Identifier for the waiting room</span><br />
 &nbsp;&nbsp;waitingRoomId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Name of the waiting room</span><br />
@@ -51879,6 +52205,38 @@
 &nbsp;&nbsp;totalTimeWaitedP95_lt: <a href="#int64">int64</a><br />
 &nbsp;&nbsp;totalTimeWaitedP95_neq: <a href="#int64">int64</a><br />
 &nbsp;&nbsp;totalTimeWaitedP95_notin: <a href="#int64">[int64!]</a><br />
+&nbsp;&nbsp;turnstileFailures: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileFailures_geq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileFailures_gt: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileFailures_in: <a href="#int64">[int64!]</a><br />
+&nbsp;&nbsp;turnstileFailures_leq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileFailures_lt: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileFailures_neq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileFailures_notin: <a href="#int64">[int64!]</a><br />
+&nbsp;&nbsp;turnstileInfiniteQueueRefreshes: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileInfiniteQueueRefreshes_geq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileInfiniteQueueRefreshes_gt: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileInfiniteQueueRefreshes_in: <a href="#int64">[int64!]</a><br />
+&nbsp;&nbsp;turnstileInfiniteQueueRefreshes_leq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileInfiniteQueueRefreshes_lt: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileInfiniteQueueRefreshes_neq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileInfiniteQueueRefreshes_notin: <a href="#int64">[int64!]</a><br />
+&nbsp;&nbsp;turnstileIssued: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileIssued_geq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileIssued_gt: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileIssued_in: <a href="#int64">[int64!]</a><br />
+&nbsp;&nbsp;turnstileIssued_leq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileIssued_lt: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileIssued_neq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileIssued_notin: <a href="#int64">[int64!]</a><br />
+&nbsp;&nbsp;turnstileSuccesses: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileSuccesses_geq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileSuccesses_gt: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileSuccesses_in: <a href="#int64">[int64!]</a><br />
+&nbsp;&nbsp;turnstileSuccesses_leq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileSuccesses_lt: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileSuccesses_neq: <a href="#int64">int64</a><br />
+&nbsp;&nbsp;turnstileSuccesses_notin: <a href="#int64">[int64!]</a><br />
 &nbsp;&nbsp;waitingRoomId: <a href="#string">string</a><br />
 &nbsp;&nbsp;waitingRoomId_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;waitingRoomId_gt: <a href="#string">string</a><br />
@@ -51936,6 +52294,14 @@
 &nbsp;&nbsp;totalActiveUsersConfig: <a href="#int64">int64!</a><br />
 &nbsp;&nbsp;<span class="c"># Average of total queued users</span><br />
 &nbsp;&nbsp;totalQueuedUsers: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Average rate of Turnstile challenges failed or timed out. A negative number means no data</span><br />
+&nbsp;&nbsp;turnstileFailures: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Average rate of requests from users who failed a Turnstile challenge and were placed in an infinite queue. A negative number means no data</span><br />
+&nbsp;&nbsp;turnstileInfiniteQueueRefreshes: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Average rate of Turnstile challenges issued. A negative number means no data</span><br />
+&nbsp;&nbsp;turnstileIssued: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Average rate of Turnstile challenges successfully completed. A negative number means no data</span><br />
+&nbsp;&nbsp;turnstileSuccesses: <a href="#int64">int64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneWaitingRoomAnalyticsAdaptiveGroupsAvgWeighted" href="#ZoneWaitingRoomAnalyticsAdaptiveGroupsAvgWeighted">ZoneWaitingRoomAnalyticsAdaptiveGroupsAvgWeighted</a> {<br />
@@ -52080,6 +52446,14 @@
 &nbsp;&nbsp;totalActiveUsersConfig: <a href="#int64">int64!</a><br />
 &nbsp;&nbsp;<span class="c"># The maximum value of total number of queued users. A negative number means no data</span><br />
 &nbsp;&nbsp;totalQueuedUsers: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The maximum value of Turnstile challenges failed or timed out. A negative number means no data</span><br />
+&nbsp;&nbsp;turnstileFailures: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The maximum value of requests from users who failed a Turnstile challenge and were placed in an infinite queue. A negative number means no data</span><br />
+&nbsp;&nbsp;turnstileInfiniteQueueRefreshes: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The maximum value of Turnstile challenges issued. A negative number means no data</span><br />
+&nbsp;&nbsp;turnstileIssued: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The maximum value of Turnstile challenges successfully completed. A negative number means no data</span><br />
+&nbsp;&nbsp;turnstileSuccesses: <a href="#int64">int64!</a><br />
 }<br />
 <br />
 <span class="k">type</span> <a id="ZoneWaitingRoomAnalyticsAdaptiveGroupsMin" href="#ZoneWaitingRoomAnalyticsAdaptiveGroupsMin">ZoneWaitingRoomAnalyticsAdaptiveGroupsMin</a> {<br />
@@ -52099,6 +52473,14 @@
 &nbsp;&nbsp;totalActiveUsersConfig: <a href="#int64">int64!</a><br />
 &nbsp;&nbsp;<span class="c"># The minimum value of total number of queued users. A negative number means no data</span><br />
 &nbsp;&nbsp;totalQueuedUsers: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The minimum value of Turnstile challenges failed or timed out. A negative number means no data</span><br />
+&nbsp;&nbsp;turnstileFailures: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The minimum value of requests from users who failed a Turnstile challenge and were placed in an infinite queue. A negative number means no data</span><br />
+&nbsp;&nbsp;turnstileInfiniteQueueRefreshes: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The minimum value of Turnstile challenges issued. A negative number means no data</span><br />
+&nbsp;&nbsp;turnstileIssued: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># The minimum value of Turnstile challenges successfully completed. A negative number means no data</span><br />
+&nbsp;&nbsp;turnstileSuccesses: <a href="#int64">int64!</a><br />
 }<br />
 <br />
 <span class="k">enum</span> <a id="ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy" href="#ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy">ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy</a> {<br />
@@ -52206,6 +52588,22 @@
 &nbsp;&nbsp;avg_totalQueuedUsers_ASC<br />
 &nbsp;&nbsp;<span class="c"># avg(totalQueuedUsers) descending</span><br />
 &nbsp;&nbsp;avg_totalQueuedUsers_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(turnstileFailures) ascending</span><br />
+&nbsp;&nbsp;avg_turnstileFailures_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(turnstileFailures) descending</span><br />
+&nbsp;&nbsp;avg_turnstileFailures_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(turnstileInfiniteQueueRefreshes) ascending</span><br />
+&nbsp;&nbsp;avg_turnstileInfiniteQueueRefreshes_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(turnstileInfiniteQueueRefreshes) descending</span><br />
+&nbsp;&nbsp;avg_turnstileInfiniteQueueRefreshes_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(turnstileIssued) ascending</span><br />
+&nbsp;&nbsp;avg_turnstileIssued_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(turnstileIssued) descending</span><br />
+&nbsp;&nbsp;avg_turnstileIssued_DESC<br />
+&nbsp;&nbsp;<span class="c"># avg(turnstileSuccesses) ascending</span><br />
+&nbsp;&nbsp;avg_turnstileSuccesses_ASC<br />
+&nbsp;&nbsp;<span class="c"># avg(turnstileSuccesses) descending</span><br />
+&nbsp;&nbsp;avg_turnstileSuccesses_DESC<br />
 &nbsp;&nbsp;<span class="c"># date ascending</span><br />
 &nbsp;&nbsp;date_ASC<br />
 &nbsp;&nbsp;<span class="c"># date descending</span><br />
@@ -52266,6 +52664,22 @@
 &nbsp;&nbsp;max_totalQueuedUsers_ASC<br />
 &nbsp;&nbsp;<span class="c"># max(totalQueuedUsers) descending</span><br />
 &nbsp;&nbsp;max_totalQueuedUsers_DESC<br />
+&nbsp;&nbsp;<span class="c"># max(turnstileFailures) ascending</span><br />
+&nbsp;&nbsp;max_turnstileFailures_ASC<br />
+&nbsp;&nbsp;<span class="c"># max(turnstileFailures) descending</span><br />
+&nbsp;&nbsp;max_turnstileFailures_DESC<br />
+&nbsp;&nbsp;<span class="c"># max(turnstileInfiniteQueueRefreshes) ascending</span><br />
+&nbsp;&nbsp;max_turnstileInfiniteQueueRefreshes_ASC<br />
+&nbsp;&nbsp;<span class="c"># max(turnstileInfiniteQueueRefreshes) descending</span><br />
+&nbsp;&nbsp;max_turnstileInfiniteQueueRefreshes_DESC<br />
+&nbsp;&nbsp;<span class="c"># max(turnstileIssued) ascending</span><br />
+&nbsp;&nbsp;max_turnstileIssued_ASC<br />
+&nbsp;&nbsp;<span class="c"># max(turnstileIssued) descending</span><br />
+&nbsp;&nbsp;max_turnstileIssued_DESC<br />
+&nbsp;&nbsp;<span class="c"># max(turnstileSuccesses) ascending</span><br />
+&nbsp;&nbsp;max_turnstileSuccesses_ASC<br />
+&nbsp;&nbsp;<span class="c"># max(turnstileSuccesses) descending</span><br />
+&nbsp;&nbsp;max_turnstileSuccesses_DESC<br />
 &nbsp;&nbsp;<span class="c"># min(maxEstimatedTimeMinutes) ascending</span><br />
 &nbsp;&nbsp;min_maxEstimatedTimeMinutes_ASC<br />
 &nbsp;&nbsp;<span class="c"># min(maxEstimatedTimeMinutes) descending</span><br />
@@ -52298,6 +52712,22 @@
 &nbsp;&nbsp;min_totalQueuedUsers_ASC<br />
 &nbsp;&nbsp;<span class="c"># min(totalQueuedUsers) descending</span><br />
 &nbsp;&nbsp;min_totalQueuedUsers_DESC<br />
+&nbsp;&nbsp;<span class="c"># min(turnstileFailures) ascending</span><br />
+&nbsp;&nbsp;min_turnstileFailures_ASC<br />
+&nbsp;&nbsp;<span class="c"># min(turnstileFailures) descending</span><br />
+&nbsp;&nbsp;min_turnstileFailures_DESC<br />
+&nbsp;&nbsp;<span class="c"># min(turnstileInfiniteQueueRefreshes) ascending</span><br />
+&nbsp;&nbsp;min_turnstileInfiniteQueueRefreshes_ASC<br />
+&nbsp;&nbsp;<span class="c"># min(turnstileInfiniteQueueRefreshes) descending</span><br />
+&nbsp;&nbsp;min_turnstileInfiniteQueueRefreshes_DESC<br />
+&nbsp;&nbsp;<span class="c"># min(turnstileIssued) ascending</span><br />
+&nbsp;&nbsp;min_turnstileIssued_ASC<br />
+&nbsp;&nbsp;<span class="c"># min(turnstileIssued) descending</span><br />
+&nbsp;&nbsp;min_turnstileIssued_DESC<br />
+&nbsp;&nbsp;<span class="c"># min(turnstileSuccesses) ascending</span><br />
+&nbsp;&nbsp;min_turnstileSuccesses_ASC<br />
+&nbsp;&nbsp;<span class="c"># min(turnstileSuccesses) descending</span><br />
+&nbsp;&nbsp;min_turnstileSuccesses_DESC<br />
 &nbsp;&nbsp;<span class="c"># sampleInterval ascending</span><br />
 &nbsp;&nbsp;sampleInterval_ASC<br />
 &nbsp;&nbsp;<span class="c"># sampleInterval descending</span><br />
@@ -52310,6 +52740,22 @@
 &nbsp;&nbsp;sum_sessionsRevoked_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(sessionsRevoked) descending</span><br />
 &nbsp;&nbsp;sum_sessionsRevoked_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(turnstileFailures) ascending</span><br />
+&nbsp;&nbsp;sum_turnstileFailures_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(turnstileFailures) descending</span><br />
+&nbsp;&nbsp;sum_turnstileFailures_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(turnstileInfiniteQueueRefreshes) ascending</span><br />
+&nbsp;&nbsp;sum_turnstileInfiniteQueueRefreshes_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(turnstileInfiniteQueueRefreshes) descending</span><br />
+&nbsp;&nbsp;sum_turnstileInfiniteQueueRefreshes_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(turnstileIssued) ascending</span><br />
+&nbsp;&nbsp;sum_turnstileIssued_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(turnstileIssued) descending</span><br />
+&nbsp;&nbsp;sum_turnstileIssued_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(turnstileSuccesses) ascending</span><br />
+&nbsp;&nbsp;sum_turnstileSuccesses_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(turnstileSuccesses) descending</span><br />
+&nbsp;&nbsp;sum_turnstileSuccesses_DESC<br />
 &nbsp;&nbsp;<span class="c"># waitingRoomId ascending</span><br />
 &nbsp;&nbsp;waitingRoomId_ASC<br />
 &nbsp;&nbsp;<span class="c"># waitingRoomId descending</span><br />
@@ -52321,6 +52767,14 @@
 &nbsp;&nbsp;newUsersPerMinute: <a href="#int64">int64!</a><br />
 &nbsp;&nbsp;<span class="c"># Sum of sessions revoked. A negative number means no data</span><br />
 &nbsp;&nbsp;sessionsRevoked: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of Turnstile challenges failed or timed out. A negative number means no data</span><br />
+&nbsp;&nbsp;turnstileFailures: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of requests from users who failed a Turnstile challenge and were placed in an infinite queue. A negative number means no data</span><br />
+&nbsp;&nbsp;turnstileInfiniteQueueRefreshes: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of Turnstile challenges issued. A negative number means no data</span><br />
+&nbsp;&nbsp;turnstileIssued: <a href="#int64">int64!</a><br />
+&nbsp;&nbsp;<span class="c"># Sum of Turnstile challenges successfully completed. A negative number means no data</span><br />
+&nbsp;&nbsp;turnstileSuccesses: <a href="#int64">int64!</a><br />
 }<br />
 <br />
 <span class="k">enum</span> <a id="ZoneWaitingRoomAnalyticsAdaptiveOrderBy" href="#ZoneWaitingRoomAnalyticsAdaptiveOrderBy">ZoneWaitingRoomAnalyticsAdaptiveOrderBy</a> {<br />
@@ -52432,6 +52886,22 @@
 &nbsp;&nbsp;totalTimeWaitedP95_ASC<br />
 &nbsp;&nbsp;<span class="c"># totalTimeWaitedP95 descending</span><br />
 &nbsp;&nbsp;totalTimeWaitedP95_DESC<br />
+&nbsp;&nbsp;<span class="c"># turnstileFailures ascending</span><br />
+&nbsp;&nbsp;turnstileFailures_ASC<br />
+&nbsp;&nbsp;<span class="c"># turnstileFailures descending</span><br />
+&nbsp;&nbsp;turnstileFailures_DESC<br />
+&nbsp;&nbsp;<span class="c"># turnstileInfiniteQueueRefreshes ascending</span><br />
+&nbsp;&nbsp;turnstileInfiniteQueueRefreshes_ASC<br />
+&nbsp;&nbsp;<span class="c"># turnstileInfiniteQueueRefreshes descending</span><br />
+&nbsp;&nbsp;turnstileInfiniteQueueRefreshes_DESC<br />
+&nbsp;&nbsp;<span class="c"># turnstileIssued ascending</span><br />
+&nbsp;&nbsp;turnstileIssued_ASC<br />
+&nbsp;&nbsp;<span class="c"># turnstileIssued descending</span><br />
+&nbsp;&nbsp;turnstileIssued_DESC<br />
+&nbsp;&nbsp;<span class="c"># turnstileSuccesses ascending</span><br />
+&nbsp;&nbsp;turnstileSuccesses_ASC<br />
+&nbsp;&nbsp;<span class="c"># turnstileSuccesses descending</span><br />
+&nbsp;&nbsp;turnstileSuccesses_DESC<br />
 &nbsp;&nbsp;<span class="c"># waitingRoomId ascending</span><br />
 &nbsp;&nbsp;waitingRoomId_ASC<br />
 &nbsp;&nbsp;<span class="c"># waitingRoomId descending</span><br />
