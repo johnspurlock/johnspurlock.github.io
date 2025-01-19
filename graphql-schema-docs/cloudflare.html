@@ -3656,8 +3656,20 @@
 &nbsp;&nbsp;error: <a href="#uint8">uint8!</a><br />
 &nbsp;&nbsp;<span class="c"># Gateway name</span><br />
 &nbsp;&nbsp;gateway: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Metadata keys saved on ai-gateway request</span><br />
+&nbsp;&nbsp;metadataKeys: <a href="#string">[string!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Metadata saved in on ai-gateway request</span><br />
+&nbsp;&nbsp;metadataRaw: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Metadata values saved on ai-gateway request</span><br />
+&nbsp;&nbsp;metadataValues: <a href="#string">[string!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Which models was the request sent to</span><br />
 &nbsp;&nbsp;model: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Prompts used on ai-gateway request</span><br />
+&nbsp;&nbsp;prompts: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># Prompts Ids used on ai-gateway request</span><br />
+&nbsp;&nbsp;promptsIds: <a href="#string">[string!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Prompts versions used on ai-gateway request</span><br />
+&nbsp;&nbsp;promptsVersions: <a href="#string">[string!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Which provider was the request sent to</span><br />
 &nbsp;&nbsp;provider: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Was the request rate limited?: 1 = rate limit applied, 0 = rate limit not applied</span><br />
@@ -3747,6 +3759,24 @@
 &nbsp;&nbsp;gateway_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;gateway_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;gateway_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;metadataKeys_has: <a href="#string">string</a><br />
+&nbsp;&nbsp;metadataKeys_hasall: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;metadataKeys_hasany: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;metadataKeys_nothas: <a href="#string">string</a><br />
+&nbsp;&nbsp;metadataRaw: <a href="#string">string</a><br />
+&nbsp;&nbsp;metadataRaw_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;metadataRaw_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;metadataRaw_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;metadataRaw_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;metadataRaw_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;metadataRaw_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;metadataRaw_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;metadataRaw_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;metadataRaw_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;metadataValues_has: <a href="#string">string</a><br />
+&nbsp;&nbsp;metadataValues_hasall: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;metadataValues_hasany: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;metadataValues_nothas: <a href="#string">string</a><br />
 &nbsp;&nbsp;model: <a href="#string">string</a><br />
 &nbsp;&nbsp;model_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;model_gt: <a href="#string">string</a><br />
@@ -3757,6 +3787,24 @@
 &nbsp;&nbsp;model_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;model_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;model_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;prompts: <a href="#string">string</a><br />
+&nbsp;&nbsp;promptsIds_has: <a href="#string">string</a><br />
+&nbsp;&nbsp;promptsIds_hasall: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;promptsIds_hasany: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;promptsIds_nothas: <a href="#string">string</a><br />
+&nbsp;&nbsp;promptsVersions_has: <a href="#string">string</a><br />
+&nbsp;&nbsp;promptsVersions_hasall: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;promptsVersions_hasany: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;promptsVersions_nothas: <a href="#string">string</a><br />
+&nbsp;&nbsp;prompts_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;prompts_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;prompts_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;prompts_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;prompts_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;prompts_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;prompts_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;prompts_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;prompts_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;provider: <a href="#string">string</a><br />
 &nbsp;&nbsp;provider_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;provider_gt: <a href="#string">string</a><br />
@@ -3842,10 +3890,34 @@
 &nbsp;&nbsp;gateway_ASC<br />
 &nbsp;&nbsp;<span class="c"># gateway descending</span><br />
 &nbsp;&nbsp;gateway_DESC<br />
+&nbsp;&nbsp;<span class="c"># metadataKeys ascending</span><br />
+&nbsp;&nbsp;metadataKeys_ASC<br />
+&nbsp;&nbsp;<span class="c"># metadataKeys descending</span><br />
+&nbsp;&nbsp;metadataKeys_DESC<br />
+&nbsp;&nbsp;<span class="c"># metadataRaw ascending</span><br />
+&nbsp;&nbsp;metadataRaw_ASC<br />
+&nbsp;&nbsp;<span class="c"># metadataRaw descending</span><br />
+&nbsp;&nbsp;metadataRaw_DESC<br />
+&nbsp;&nbsp;<span class="c"># metadataValues ascending</span><br />
+&nbsp;&nbsp;metadataValues_ASC<br />
+&nbsp;&nbsp;<span class="c"># metadataValues descending</span><br />
+&nbsp;&nbsp;metadataValues_DESC<br />
 &nbsp;&nbsp;<span class="c"># model ascending</span><br />
 &nbsp;&nbsp;model_ASC<br />
 &nbsp;&nbsp;<span class="c"># model descending</span><br />
 &nbsp;&nbsp;model_DESC<br />
+&nbsp;&nbsp;<span class="c"># promptsIds ascending</span><br />
+&nbsp;&nbsp;promptsIds_ASC<br />
+&nbsp;&nbsp;<span class="c"># promptsIds descending</span><br />
+&nbsp;&nbsp;promptsIds_DESC<br />
+&nbsp;&nbsp;<span class="c"># promptsVersions ascending</span><br />
+&nbsp;&nbsp;promptsVersions_ASC<br />
+&nbsp;&nbsp;<span class="c"># promptsVersions descending</span><br />
+&nbsp;&nbsp;promptsVersions_DESC<br />
+&nbsp;&nbsp;<span class="c"># prompts ascending</span><br />
+&nbsp;&nbsp;prompts_ASC<br />
+&nbsp;&nbsp;<span class="c"># prompts descending</span><br />
+&nbsp;&nbsp;prompts_DESC<br />
 &nbsp;&nbsp;<span class="c"># provider ascending</span><br />
 &nbsp;&nbsp;provider_ASC<br />
 &nbsp;&nbsp;<span class="c"># provider descending</span><br />

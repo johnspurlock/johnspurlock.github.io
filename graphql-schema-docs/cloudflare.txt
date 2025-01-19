@@ -3804,8 +3804,20 @@ type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
   error: uint8!
   # Gateway name
   gateway: string!
+  # Metadata keys saved on ai-gateway request
+  metadataKeys: [string!]!
+  # Metadata saved in on ai-gateway request
+  metadataRaw: string!
+  # Metadata values saved on ai-gateway request
+  metadataValues: [string!]!
   # Which models was the request sent to
   model: string!
+  # Prompts used on ai-gateway request
+  prompts: string!
+  # Prompts Ids used on ai-gateway request
+  promptsIds: [string!]!
+  # Prompts versions used on ai-gateway request
+  promptsVersions: [string!]!
   # Which provider was the request sent to
   provider: string!
   # Was the request rate limited?: 1 = rate limit applied, 0 = rate limit not applied
@@ -3895,6 +3907,24 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   gateway_neq: string
   gateway_notin: [string!]
   gateway_notlike: string
+  metadataKeys_has: string
+  metadataKeys_hasall: [string!]
+  metadataKeys_hasany: [string!]
+  metadataKeys_nothas: string
+  metadataRaw: string
+  metadataRaw_geq: string
+  metadataRaw_gt: string
+  metadataRaw_in: [string!]
+  metadataRaw_leq: string
+  metadataRaw_like: string
+  metadataRaw_lt: string
+  metadataRaw_neq: string
+  metadataRaw_notin: [string!]
+  metadataRaw_notlike: string
+  metadataValues_has: string
+  metadataValues_hasall: [string!]
+  metadataValues_hasany: [string!]
+  metadataValues_nothas: string
   model: string
   model_geq: string
   model_gt: string
@@ -3905,6 +3935,24 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   model_neq: string
   model_notin: [string!]
   model_notlike: string
+  prompts: string
+  promptsIds_has: string
+  promptsIds_hasall: [string!]
+  promptsIds_hasany: [string!]
+  promptsIds_nothas: string
+  promptsVersions_has: string
+  promptsVersions_hasall: [string!]
+  promptsVersions_hasany: [string!]
+  promptsVersions_nothas: string
+  prompts_geq: string
+  prompts_gt: string
+  prompts_in: [string!]
+  prompts_leq: string
+  prompts_like: string
+  prompts_lt: string
+  prompts_neq: string
+  prompts_notin: [string!]
+  prompts_notlike: string
   provider: string
   provider_geq: string
   provider_gt: string
@@ -3990,10 +4038,34 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   gateway_ASC
   # gateway descending
   gateway_DESC
+  # metadataKeys ascending
+  metadataKeys_ASC
+  # metadataKeys descending
+  metadataKeys_DESC
+  # metadataRaw ascending
+  metadataRaw_ASC
+  # metadataRaw descending
+  metadataRaw_DESC
+  # metadataValues ascending
+  metadataValues_ASC
+  # metadataValues descending
+  metadataValues_DESC
   # model ascending
   model_ASC
   # model descending
   model_DESC
+  # promptsIds ascending
+  promptsIds_ASC
+  # promptsIds descending
+  promptsIds_DESC
+  # promptsVersions ascending
+  promptsVersions_ASC
+  # promptsVersions descending
+  promptsVersions_DESC
+  # prompts ascending
+  prompts_ASC
+  # prompts descending
+  prompts_DESC
   # provider ascending
   provider_ASC
   # provider descending
