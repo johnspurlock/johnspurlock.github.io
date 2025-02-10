@@ -15,6 +15,7 @@ Account-level datasets:
 * callsTurnUsageAdaptiveGroups
 * callsUsageAdaptiveGroups
   cdnNetworkAnalyticsAdaptiveGroups
+* cloudchamberMetricsAdaptiveGroups
 * d1AnalyticsAdaptiveGroups
 * d1QueriesAdaptiveGroups
 * d1StorageAdaptiveGroups
@@ -235,6 +236,8 @@ type account {
   callsUsageAdaptiveGroups(filter: AccountCallsUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCallsUsageAdaptiveGroupsOrderBy!]): [AccountCallsUsageAdaptiveGroups!]!
   # Network analytics data for Cloudflare CDN traffic
   cdnNetworkAnalyticsAdaptiveGroups(filter: AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountCdnNetworkAnalyticsAdaptiveGroups!]!
+  # Metrics for Cloudchamber applications and deployments
+  cloudchamberMetricsAdaptiveGroups(filter: AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCloudchamberMetricsAdaptiveGroupsOrderBy!]): [AccountCloudchamberMetricsAdaptiveGroups!]!
   # Beta. Aggregated D1 analytics with adaptive sampling
   d1AnalyticsAdaptiveGroups(filter: AccountD1AnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1AnalyticsAdaptiveGroupsOrderBy!]): [AccountD1AnalyticsAdaptiveGroups!]!
   # Beta. D1 query metrics with adaptive sampling
@@ -7024,6 +7027,259 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsSum {
   packets: uint64!
 }
 
+# Metrics for Cloudchamber applications and deployments
+type AccountCloudchamberMetricsAdaptiveGroups {
+  # The average value of a metric per dimension
+  avg: AccountCloudchamberMetricsAdaptiveGroupsAvg
+  # Number of metrics received
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountCloudchamberMetricsAdaptiveGroupsDimensions
+  # Maximum value of a metric per dimension
+  max: AccountCloudchamberMetricsAdaptiveGroupsMax
+}
+
+type AccountCloudchamberMetricsAdaptiveGroupsAvg {
+  # Average CPU load
+  cpu: float64!
+  # Average GPU memory usage
+  gpuMemory: float64!
+  # Average memory usage
+  memory: float64!
+  # Average RX bandwidth
+  rxBandwidth: float64!
+  # Average TX bandwidth
+  txBandwidth: float64!
+}
+
+type AccountCloudchamberMetricsAdaptiveGroupsDimensions {
+  # The application ID
+  applicationId: string!
+  # The date the metric was received
+  date: Date!
+  # The date and time the metric was received, truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the metric was received, truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the metric was received, truncated to one hour
+  datetimeHour: Time!
+  # The date and time the metric was received, truncated to one minute
+  datetimeMinute: Time!
+  # The deployment ID
+  deploymentId: string!
+  # Location
+  location: string!
+  # The placement ID
+  placementId: string!
+  # Process type
+  procType: string!
+  # Region
+  region: string!
+}
+
+input AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject!]
+  applicationId: string
+  applicationId_geq: string
+  applicationId_gt: string
+  applicationId_in: [string!]
+  applicationId_leq: string
+  applicationId_like: string
+  applicationId_lt: string
+  applicationId_neq: string
+  applicationId_notin: [string!]
+  applicationId_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  deploymentId: string
+  deploymentId_geq: string
+  deploymentId_gt: string
+  deploymentId_in: [string!]
+  deploymentId_leq: string
+  deploymentId_like: string
+  deploymentId_lt: string
+  deploymentId_neq: string
+  deploymentId_notin: [string!]
+  deploymentId_notlike: string
+  location: string
+  location_geq: string
+  location_gt: string
+  location_in: [string!]
+  location_leq: string
+  location_like: string
+  location_lt: string
+  location_neq: string
+  location_notin: [string!]
+  location_notlike: string
+  placementId: string
+  placementId_geq: string
+  placementId_gt: string
+  placementId_in: [string!]
+  placementId_leq: string
+  placementId_like: string
+  placementId_lt: string
+  placementId_neq: string
+  placementId_notin: [string!]
+  placementId_notlike: string
+  procType: string
+  procType_geq: string
+  procType_gt: string
+  procType_in: [string!]
+  procType_leq: string
+  procType_like: string
+  procType_lt: string
+  procType_neq: string
+  procType_notin: [string!]
+  procType_notlike: string
+  region: string
+  region_geq: string
+  region_gt: string
+  region_in: [string!]
+  region_leq: string
+  region_like: string
+  region_lt: string
+  region_neq: string
+  region_notin: [string!]
+  region_notlike: string
+}
+
+type AccountCloudchamberMetricsAdaptiveGroupsMax {
+  # Maximum GPU memory usage
+  gpuMemory: float64!
+  # Maximum memory usage
+  memory: float64!
+  # Total bytes received
+  rxBytes: uint64!
+  # Total bytes transmitted
+  txBytes: uint64!
+}
+
+enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
+  # applicationId ascending
+  applicationId_ASC
+  # applicationId descending
+  applicationId_DESC
+  # avg(cpu) ascending
+  avg_cpu_ASC
+  # avg(cpu) descending
+  avg_cpu_DESC
+  # avg(gpuMemory) ascending
+  avg_gpuMemory_ASC
+  # avg(gpuMemory) descending
+  avg_gpuMemory_DESC
+  # avg(memory) ascending
+  avg_memory_ASC
+  # avg(memory) descending
+  avg_memory_DESC
+  # avg(rxBandwidth) ascending
+  avg_rxBandwidth_ASC
+  # avg(rxBandwidth) descending
+  avg_rxBandwidth_DESC
+  # avg(txBandwidth) ascending
+  avg_txBandwidth_ASC
+  # avg(txBandwidth) descending
+  avg_txBandwidth_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # deploymentId ascending
+  deploymentId_ASC
+  # deploymentId descending
+  deploymentId_DESC
+  # location ascending
+  location_ASC
+  # location descending
+  location_DESC
+  # max(gpuMemory) ascending
+  max_gpuMemory_ASC
+  # max(gpuMemory) descending
+  max_gpuMemory_DESC
+  # max(memory) ascending
+  max_memory_ASC
+  # max(memory) descending
+  max_memory_DESC
+  # max(rxBytes) ascending
+  max_rxBytes_ASC
+  # max(rxBytes) descending
+  max_rxBytes_DESC
+  # max(txBytes) ascending
+  max_txBytes_ASC
+  # max(txBytes) descending
+  max_txBytes_DESC
+  # placementId ascending
+  placementId_ASC
+  # placementId descending
+  placementId_DESC
+  # procType ascending
+  procType_ASC
+  # procType descending
+  procType_DESC
+  # region ascending
+  region_ASC
+  # region descending
+  region_DESC
+}
+
 # Beta. Aggregated D1 analytics with adaptive sampling
 type AccountD1AnalyticsAdaptiveGroups {
   # The average value for a metric per dimension
@@ -7060,6 +7316,8 @@ type AccountD1AnalyticsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time the D1 request was received truncated to the minute
   datetimeMinute: Time!
+  # The date and time the D1 request was received truncated to start of six hour window
+  datetimeSixHours: Time!
 }
 
 input AccountD1AnalyticsAdaptiveGroupsFilter_InputObject {
@@ -7115,6 +7373,14 @@ input AccountD1AnalyticsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
 }
 
 enum AccountD1AnalyticsAdaptiveGroupsOrderBy {
@@ -7158,6 +7424,10 @@ enum AccountD1AnalyticsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # quantiles(queryBatchResponseBytesP50) ascending
   quantiles_queryBatchResponseBytesP50_ASC
   # quantiles(queryBatchResponseBytesP50) descending
@@ -7260,6 +7530,8 @@ type AccountD1QueriesAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # D1 query sample timestamp, truncated to the minute
   datetimeMinute: Time!
+  # D1 query sample timestamp, truncated to start of six hour window
+  datetimeSixHours: Time!
   # The SQL query that ran on a D1 database, with parameterized values replaced with placeholders.
   query: string!
 }
@@ -7317,6 +7589,14 @@ input AccountD1QueriesAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   query: string
   query_geq: string
   query_gt: string
@@ -7378,6 +7658,10 @@ enum AccountD1QueriesAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # quantiles(queryDurationMsP50) ascending
   quantiles_queryDurationMsP50_ASC
   # quantiles(queryDurationMsP50) descending
@@ -7453,6 +7737,8 @@ type AccountD1StorageAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # D1 storage sample timestamp, truncated to the minute
   datetimeMinute: Time!
+  # D1 storage sample timestamp, truncated to start of six hour window
+  datetimeSixHours: Time!
 }
 
 input AccountD1StorageAdaptiveGroupsFilter_InputObject {
@@ -7508,6 +7794,14 @@ input AccountD1StorageAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
 }
 
 type AccountD1StorageAdaptiveGroupsMax {
@@ -7540,6 +7834,10 @@ enum AccountD1StorageAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # max(databaseSizeBytes) ascending
   max_databaseSizeBytes_ASC
   # max(databaseSizeBytes) descending
@@ -9427,6 +9725,8 @@ type AccountDurableObjectsInvocationsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Request datetime, truncated to start of a minute
   datetimeMinute: Time!
+  # Request datetime, truncated to start of six hour window
+  datetimeSixHours: Time!
   # The name of the script environment
   environmentName: string!
   # Durable Object namespace ID
@@ -9467,6 +9767,14 @@ input AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -9557,6 +9865,10 @@ enum AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -9718,6 +10030,8 @@ type AccountDurableObjectsPeriodicGroupsDimensions {
   datetimeHour: Time!
   # Datetime the metrics period started, truncated to start of a minute
   datetimeMinute: Time!
+  # Datetime the metrics period started, truncated to start of six hour window
+  datetimeSixHours: Time!
   # Durable Object namespace ID
   namespaceId: string!
   # Durable Object ID as a hex string
@@ -9751,6 +10065,14 @@ input AccountDurableObjectsPeriodicGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   namespaceId: string
   namespaceId_geq: string
   namespaceId_gt: string
@@ -9791,6 +10113,10 @@ enum AccountDurableObjectsPeriodicGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # max(activeWebsocketConnections) ascending
   max_activeWebsocketConnections_ASC
   # max(activeWebsocketConnections) descending
@@ -9965,6 +10291,8 @@ type AccountDurableObjectsSubrequestsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Request datetime, truncated to start of a minute
   datetimeMinute: Time!
+  # Request datetime, truncated to start of six hour window
+  datetimeSixHours: Time!
   # The name of the script environment
   environmentName: string!
   # Durable Object namespace ID
@@ -10003,6 +10331,14 @@ input AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -10065,6 +10401,10 @@ enum AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -28692,6 +29032,8 @@ type AccountPagesFunctionsInvocationsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Request datetime, truncated to start of an minute
   datetimeMinute: Time!
+  # Request datetime, truncated to start of six hour window
+  datetimeSixHours: Time!
   # The name of the script
   scriptName: string!
   # Status of the worker invocation
@@ -28728,6 +29070,14 @@ input AccountPagesFunctionsInvocationsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -28784,6 +29134,10 @@ enum AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -32319,6 +32673,7 @@ type AccountSettings {
   callsTurnUsageAdaptiveGroups: Settings!
   callsUsageAdaptiveGroups: Settings!
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
+  cloudchamberMetricsAdaptiveGroups: Settings!
   d1AnalyticsAdaptiveGroups: Settings!
   d1QueriesAdaptiveGroups: Settings!
   d1StorageAdaptiveGroups: Settings!
@@ -36664,6 +37019,8 @@ type AccountWorkerPlacementAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Request timestamp, truncated to start of an minute
   datetimeMinute: Time!
+  # Request timestamp, truncated to start of six hour window
+  datetimeSixHours: Time!
   # Response status of worker
   httpStatus: uint16!
   # 1 if the request was sampled to bypass Smart Placement, 0 if it was processed using Smart Placement
@@ -36726,6 +37083,14 @@ input AccountWorkerPlacementAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -36826,6 +37191,10 @@ enum AccountWorkerPlacementAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -37082,6 +37451,8 @@ type AccountWorkersInvocationsAdaptiveDimensions {
   datetimeHour: Time!
   # Request datetime, truncated to start of an minute
   datetimeMinute: Time!
+  # Request datetime, truncated to start of six hour window
+  datetimeSixHours: Time!
   # The name of the script's dispatch namespace
   dispatchNamespaceName: string!
   # The name of the script environment
@@ -37154,6 +37525,14 @@ input AccountWorkersInvocationsAdaptiveFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -37304,6 +37683,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -37947,6 +38330,8 @@ type AccountWorkersSubrequestsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Request datetime, truncated to start of an minute
   datetimeMinute: Time!
+  # Request datetime, truncated to start of six hour window
+  datetimeSixHours: Time!
   # The name of the script environment
   environmentName: string!
   # The name of the script
@@ -38009,6 +38394,14 @@ input AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -38087,6 +38480,10 @@ enum AccountWorkersSubrequestsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -52200,14 +52597,16 @@ type ZoneWaitingRoomAnalyticsAdaptive {
   totalTimeWaitedP90: int64!
   # 95th percentile of the total time (in seconds) spent waiting in queue by users who were queued and then gained access to the origin
   totalTimeWaitedP95: int64!
-  # Number of Turnstile challenges failed or timed out
+  # Number of users seen who failed to complete a Turnstile challenge and therefore are likely bots. These users are placed in the infinite queue if enabled.
   turnstileFailures: int64!
-  # Number of requests from users who failed a Turnstile challenge and were placed in an infinite queue
+  # Number of requests from users who failed to complete a Turnstile challenge and were placed in an infinite queue
   turnstileInfiniteQueueRefreshes: int64!
-  # Number of Turnstile challenges issued
+  # Number of times a Turnstile challenge was included in the HTML sent to a user
   turnstileIssued: int64!
-  # Number of Turnstile challenges successfully completed
+  # Number of users seen who solved a Turnstile challenge and therefore are likely human. These users are placed in the normal queue.
   turnstileSuccesses: int64!
+  # Number of users seen who didn't attempt a Turnstile challenge and therefore might be bots. These users will continue to be challenged with every request until they either pass or fail the challenge.
+  turnstileUnsolved: int64!
   # Unique Identifier for the waiting room
   waitingRoomId: string!
   # Name of the waiting room
@@ -52457,6 +52856,14 @@ input ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject {
   turnstileSuccesses_lt: int64
   turnstileSuccesses_neq: int64
   turnstileSuccesses_notin: [int64!]
+  turnstileUnsolved: int64
+  turnstileUnsolved_geq: int64
+  turnstileUnsolved_gt: int64
+  turnstileUnsolved_in: [int64!]
+  turnstileUnsolved_leq: int64
+  turnstileUnsolved_lt: int64
+  turnstileUnsolved_neq: int64
+  turnstileUnsolved_notin: [int64!]
   waitingRoomId: string
   waitingRoomId_geq: string
   waitingRoomId_gt: string
@@ -52514,14 +52921,16 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroupsAvg {
   totalActiveUsersConfig: int64!
   # Average of total queued users
   totalQueuedUsers: int64!
-  # Average rate of Turnstile challenges failed or timed out. A negative number means no data
+  # Average rate of users failing a Turnstile challenge and therefore probably being bots. These users are placed in the infinite queue if enabled. A negative number means no data
   turnstileFailures: int64!
-  # Average rate of requests from users who failed a Turnstile challenge and were placed in an infinite queue. A negative number means no data
+  # Average rate of requests from users who failed to complete a Turnstile challenge and were placed in an infinite queue. A negative number means no data
   turnstileInfiniteQueueRefreshes: int64!
-  # Average rate of Turnstile challenges issued. A negative number means no data
+  # Average rate of Turnstile challenge being included in the HTML sent to a user. A negative number means no data
   turnstileIssued: int64!
-  # Average rate of Turnstile challenges successfully completed. A negative number means no data
+  # Average rate of users solving a Turnstile challenge and therefore likely being human. These users are placed in the normal queue. A negative number means no data
   turnstileSuccesses: int64!
+  # Average rate of users not attempting a Turnstile challenge and therefore possibly being bots. These users will continue to be challenged with every request until they either pass or fail the challenge. A negative number means no data
+  turnstileUnsolved: int64!
 }
 
 type ZoneWaitingRoomAnalyticsAdaptiveGroupsAvgWeighted {
@@ -52666,14 +53075,16 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroupsMax {
   totalActiveUsersConfig: int64!
   # The maximum value of total number of queued users. A negative number means no data
   totalQueuedUsers: int64!
-  # The maximum value of Turnstile challenges failed or timed out. A negative number means no data
+  # The maximum number of users seen who failed to complete a Turnstile challenge and therefore are likely bots. These users are placed in the infinite queue if enabled. A negative number means no data
   turnstileFailures: int64!
-  # The maximum value of requests from users who failed a Turnstile challenge and were placed in an infinite queue. A negative number means no data
+  # The maximum value of requests from users who failed to complete a Turnstile challenge and were placed in an infinite queue. A negative number means no data
   turnstileInfiniteQueueRefreshes: int64!
-  # The maximum value of Turnstile challenges issued. A negative number means no data
+  # The maximum number of times a Turnstile challenge was included in the HTML sent to a user. A negative number means no data
   turnstileIssued: int64!
-  # The maximum value of Turnstile challenges successfully completed. A negative number means no data
+  # The maximum number of users seen who solved a Turnstile challenge and therefore are likely human. These users are placed in the normal queue. A negative number means no data
   turnstileSuccesses: int64!
+  # The maximum number of users seen who didn't attempt a Turnstile challenge and therefore might be bots. These users will continue to be challenged with every request until they either pass or fail the challenge. A negative number means no data
+  turnstileUnsolved: int64!
 }
 
 type ZoneWaitingRoomAnalyticsAdaptiveGroupsMin {
@@ -52693,14 +53104,16 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroupsMin {
   totalActiveUsersConfig: int64!
   # The minimum value of total number of queued users. A negative number means no data
   totalQueuedUsers: int64!
-  # The minimum value of Turnstile challenges failed or timed out. A negative number means no data
+  # The minimum number of users seen who failed to complete a Turnstile challenge and therefore are likely bots. These users are placed in the infinite queue if enabled. A negative number means no data
   turnstileFailures: int64!
-  # The minimum value of requests from users who failed a Turnstile challenge and were placed in an infinite queue. A negative number means no data
+  # The minimum value of requests from users who failed to complete a Turnstile challenge and were placed in an infinite queue. A negative number means no data
   turnstileInfiniteQueueRefreshes: int64!
-  # The minimum value of Turnstile challenges issued. A negative number means no data
+  # The minimum number of times a Turnstile challenge was included in the HTML sent to a user. A negative number means no data
   turnstileIssued: int64!
-  # The minimum value of Turnstile challenges successfully completed. A negative number means no data
+  # The minimum number of users seen who solved a Turnstile challenge and therefore are likely human. These users are placed in the normal queue. A negative number means no data
   turnstileSuccesses: int64!
+  # The minimum number of users seen who didn't attempt a Turnstile challenge and therefore might be bots. These users will continue to be challenged with every request until they either pass or fail the challenge. A negative number means no data
+  turnstileUnsolved: int64!
 }
 
 enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
@@ -52824,6 +53237,10 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   avg_turnstileSuccesses_ASC
   # avg(turnstileSuccesses) descending
   avg_turnstileSuccesses_DESC
+  # avg(turnstileUnsolved) ascending
+  avg_turnstileUnsolved_ASC
+  # avg(turnstileUnsolved) descending
+  avg_turnstileUnsolved_DESC
   # date ascending
   date_ASC
   # date descending
@@ -52900,6 +53317,10 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   max_turnstileSuccesses_ASC
   # max(turnstileSuccesses) descending
   max_turnstileSuccesses_DESC
+  # max(turnstileUnsolved) ascending
+  max_turnstileUnsolved_ASC
+  # max(turnstileUnsolved) descending
+  max_turnstileUnsolved_DESC
   # min(maxEstimatedTimeMinutes) ascending
   min_maxEstimatedTimeMinutes_ASC
   # min(maxEstimatedTimeMinutes) descending
@@ -52948,6 +53369,10 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   min_turnstileSuccesses_ASC
   # min(turnstileSuccesses) descending
   min_turnstileSuccesses_DESC
+  # min(turnstileUnsolved) ascending
+  min_turnstileUnsolved_ASC
+  # min(turnstileUnsolved) descending
+  min_turnstileUnsolved_DESC
   # sampleInterval ascending
   sampleInterval_ASC
   # sampleInterval descending
@@ -52976,6 +53401,10 @@ enum ZoneWaitingRoomAnalyticsAdaptiveGroupsOrderBy {
   sum_turnstileSuccesses_ASC
   # sum(turnstileSuccesses) descending
   sum_turnstileSuccesses_DESC
+  # sum(turnstileUnsolved) ascending
+  sum_turnstileUnsolved_ASC
+  # sum(turnstileUnsolved) descending
+  sum_turnstileUnsolved_DESC
   # waitingRoomId ascending
   waitingRoomId_ASC
   # waitingRoomId descending
@@ -52987,14 +53416,16 @@ type ZoneWaitingRoomAnalyticsAdaptiveGroupsSum {
   newUsersPerMinute: int64!
   # Sum of sessions revoked. A negative number means no data
   sessionsRevoked: int64!
-  # Sum of Turnstile challenges failed or timed out. A negative number means no data
+  # Sum of users seen who failed to complete a Turnstile challenge and therefore are likely bots. These users are placed in the infinite queue if enabled. A negative number means no data
   turnstileFailures: int64!
-  # Sum of requests from users who failed a Turnstile challenge and were placed in an infinite queue. A negative number means no data
+  # Sum of requests from users who failed to complete a Turnstile challenge and were placed in an infinite queue. A negative number means no data
   turnstileInfiniteQueueRefreshes: int64!
-  # Sum of Turnstile challenges issued. A negative number means no data
+  # Sum of times a Turnstile challenge was included in the HTML sent to a user. A negative number means no data
   turnstileIssued: int64!
-  # Sum of Turnstile challenges successfully completed. A negative number means no data
+  # Sum of users seen who solved a Turnstile challenge and therefore are likely human. These users are placed in the normal queue. A negative number means no data
   turnstileSuccesses: int64!
+  # Sum of users seen who didn't attempt a Turnstile challenge and therefore might be bots. These users will continue to be challenged with every request until they either pass or fail the challenge. A negative number means no data
+  turnstileUnsolved: int64!
 }
 
 enum ZoneWaitingRoomAnalyticsAdaptiveOrderBy {
@@ -53122,6 +53553,10 @@ enum ZoneWaitingRoomAnalyticsAdaptiveOrderBy {
   turnstileSuccesses_ASC
   # turnstileSuccesses descending
   turnstileSuccesses_DESC
+  # turnstileUnsolved ascending
+  turnstileUnsolved_ASC
+  # turnstileUnsolved descending
+  turnstileUnsolved_DESC
   # waitingRoomId ascending
   waitingRoomId_ASC
   # waitingRoomId descending
@@ -53158,6 +53593,8 @@ type ZoneWorkersZoneInvocationsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Request datetime, truncated to start of an minute
   datetimeMinute: Time!
+  # Request datetime, truncated to start of six hour window
+  datetimeSixHours: Time!
   # Origin HTTP response code
   httpResponseStatus: uint16!
   # Status of the worker invocation
@@ -53200,6 +53637,14 @@ input ZoneWorkersZoneInvocationsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -53248,6 +53693,10 @@ enum ZoneWorkersZoneInvocationsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -53316,6 +53765,8 @@ type ZoneWorkersZoneSubrequestsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Request datetime, truncated to start of an minute
   datetimeMinute: Time!
+  # Request datetime, truncated to start of six hour window
+  datetimeSixHours: Time!
   # Origin HTTP response code
   httpResponseStatus: uint64!
 }
@@ -53356,6 +53807,14 @@ input ZoneWorkersZoneSubrequestsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -53394,6 +53853,10 @@ enum ZoneWorkersZoneSubrequestsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
