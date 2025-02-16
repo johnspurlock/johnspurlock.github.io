@@ -57,6 +57,12 @@ Account-level datasets:
   magicTransitTunnelHealthCheckSLOsAdaptiveGroups
   magicTransitTunnelHealthChecksAdaptiveGroups
   magicTransitTunnelTrafficAdaptiveGroups
+  mconnTelemetryEventsStagingAdaptiveGroups
+  mconnTelemetrySnapshotDisksStagingAdaptiveGroups
+  mconnTelemetrySnapshotMountsStagingAdaptiveGroups
+  mconnTelemetrySnapshotNetdevsStagingAdaptiveGroups
+  mconnTelemetrySnapshotThermalsStagingAdaptiveGroups
+  mconnTelemetrySnapshotsStagingAdaptiveGroups
 * mnmFlowDataAdaptiveGroups
   nelReportsAdaptiveGroups
 * ohttpMetricsAdaptive
@@ -93,6 +99,7 @@ Account-level datasets:
 * warpDeviceAdaptiveGroups
 * workerPlacementAdaptiveGroups
 * workersAnalyticsEngineAdaptiveGroups
+* workersBuildsBuildMinutesAdaptiveGroups
 * workersInvocationsAdaptive
 * workersInvocationsScheduled
 * workersOverviewDataAdaptiveGroups
@@ -321,6 +328,18 @@ type account {
   magicTransitTunnelHealthChecksAdaptiveGroups(filter: AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy!]): [AccountMagicTransitTunnelHealthChecksAdaptiveGroups!]!
   # Bandwidth usage metric of a Magic Transit tunnel.
   magicTransitTunnelTrafficAdaptiveGroups(filter: AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy!]): [AccountMagicTransitTunnelTrafficAdaptiveGroups!]!
+  # Aggregated Magic WAN Connector events with adaptive sampling
+  mconnTelemetryEventsStagingAdaptiveGroups(filter: AccountMconnTelemetryEventsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetryEventsStagingAdaptiveGroupsOrderBy!]): [AccountMconnTelemetryEventsStagingAdaptiveGroups!]!
+  # Aggregated Magic WAN Connector disk snapshots with adaptive sampling
+  mconnTelemetrySnapshotDisksStagingAdaptiveGroups(filter: AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroups!]!
+  # Aggregated Magic WAN Connector mount snapshots with adaptive sampling
+  mconnTelemetrySnapshotMountsStagingAdaptiveGroups(filter: AccountMconnTelemetrySnapshotMountsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotMountsStagingAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotMountsStagingAdaptiveGroups!]!
+  # Aggregated Magic WAN Connector netdev snapshots with adaptive sampling
+  mconnTelemetrySnapshotNetdevsStagingAdaptiveGroups(filter: AccountMconnTelemetrySnapshotNetdevsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotNetdevsStagingAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotNetdevsStagingAdaptiveGroups!]!
+  # Aggregated Magic WAN Connector thermal snapshots with adaptive sampling
+  mconnTelemetrySnapshotThermalsStagingAdaptiveGroups(filter: AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroups!]!
+  # Aggregated Magic WAN Connector system snapshots with adaptive sampling
+  mconnTelemetrySnapshotsStagingAdaptiveGroups(filter: AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotsStagingAdaptiveGroups!]!
   # Flow data collected through Magic Network Monitoring
   mnmFlowDataAdaptiveGroups(filter: AccountMnmFlowDataAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMnmFlowDataAdaptiveGroupsOrderBy!]): [AccountMnmFlowDataAdaptiveGroups!]!
   # Data to visualize network error logs
@@ -394,6 +413,8 @@ type account {
   workerPlacementAdaptiveGroups(filter: AccountWorkerPlacementAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkerPlacementAdaptiveGroupsOrderBy!]): [AccountWorkerPlacementAdaptiveGroups!]!
   # Beta. Custom Events with adaptive sampling
   workersAnalyticsEngineAdaptiveGroups(filter: AccountWorkersAnalyticsEngineAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersAnalyticsEngineAdaptiveGroupsOrderBy!]): [AccountWorkersAnalyticsEngineAdaptiveGroups!]!
+  # Workers Builds build minute overview data with adaptive sampling
+  workersBuildsBuildMinutesAdaptiveGroups(filter: AccountWorkersBuildsBuildMinutesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersBuildsBuildMinutesAdaptiveGroupsOrderBy!]): [AccountWorkersBuildsBuildMinutesAdaptiveGroups!]!
   # Beta. Workers invocations with adaptive sampling
   workersInvocationsAdaptive(filter: AccountWorkersInvocationsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersInvocationsAdaptiveOrderBy!]): [AccountWorkersInvocationsAdaptive!]!
   # Workers scheduled invocations
@@ -7306,6 +7327,8 @@ type AccountD1AnalyticsAdaptiveGroupsAvg {
 type AccountD1AnalyticsAdaptiveGroupsDimensions {
   # The UUID of a D1 database
   databaseId: string!
+  # The role of the D1 database that served the request. One of [primary, replica]
+  databaseRole: string!
   # The date the D1 request was received
   date: Date!
   # The date and time the D1 request was received truncated to fifteen minutes
@@ -7318,6 +7341,10 @@ type AccountD1AnalyticsAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # The date and time the D1 request was received truncated to start of six hour window
   datetimeSixHours: Time!
+  # A consistent identifier of the D1 database instance (whether primary or replica) that served the request.
+  servedByInstance: string!
+  # The region of the D1 database that served the request. One of [WNAM, ENAM, WEUR, EEUR, APAC, OC]
+  servedByRegion: string!
 }
 
 input AccountD1AnalyticsAdaptiveGroupsFilter_InputObject {
@@ -7333,6 +7360,16 @@ input AccountD1AnalyticsAdaptiveGroupsFilter_InputObject {
   databaseId_neq: string
   databaseId_notin: [string!]
   databaseId_notlike: string
+  databaseRole: string
+  databaseRole_geq: string
+  databaseRole_gt: string
+  databaseRole_in: [string!]
+  databaseRole_leq: string
+  databaseRole_like: string
+  databaseRole_lt: string
+  databaseRole_neq: string
+  databaseRole_notin: [string!]
+  databaseRole_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -7381,6 +7418,26 @@ input AccountD1AnalyticsAdaptiveGroupsFilter_InputObject {
   datetimeSixHours_lt: Time
   datetimeSixHours_neq: Time
   datetimeSixHours_notin: [Time!]
+  servedByInstance: string
+  servedByInstance_geq: string
+  servedByInstance_gt: string
+  servedByInstance_in: [string!]
+  servedByInstance_leq: string
+  servedByInstance_like: string
+  servedByInstance_lt: string
+  servedByInstance_neq: string
+  servedByInstance_notin: [string!]
+  servedByInstance_notlike: string
+  servedByRegion: string
+  servedByRegion_geq: string
+  servedByRegion_gt: string
+  servedByRegion_in: [string!]
+  servedByRegion_leq: string
+  servedByRegion_like: string
+  servedByRegion_lt: string
+  servedByRegion_neq: string
+  servedByRegion_notin: [string!]
+  servedByRegion_notlike: string
 }
 
 enum AccountD1AnalyticsAdaptiveGroupsOrderBy {
@@ -7404,6 +7461,10 @@ enum AccountD1AnalyticsAdaptiveGroupsOrderBy {
   databaseId_ASC
   # databaseId descending
   databaseId_DESC
+  # databaseRole ascending
+  databaseRole_ASC
+  # databaseRole descending
+  databaseRole_DESC
   # date ascending
   date_ASC
   # date descending
@@ -7444,6 +7505,14 @@ enum AccountD1AnalyticsAdaptiveGroupsOrderBy {
   quantiles_queryBatchTimeMsP90_ASC
   # quantiles(queryBatchTimeMsP90) descending
   quantiles_queryBatchTimeMsP90_DESC
+  # servedByInstance ascending
+  servedByInstance_ASC
+  # servedByInstance descending
+  servedByInstance_DESC
+  # servedByRegion ascending
+  servedByRegion_ASC
+  # servedByRegion descending
+  servedByRegion_DESC
   # sum(queryBatchResponseBytes) ascending
   sum_queryBatchResponseBytes_ASC
   # sum(queryBatchResponseBytes) descending
@@ -7520,6 +7589,8 @@ type AccountD1QueriesAdaptiveGroupsAvg {
 type AccountD1QueriesAdaptiveGroupsDimensions {
   # The UUID of a D1 database
   databaseId: string!
+  # The role of the D1 database that served the request. One of [primary, replica]
+  databaseRole: string!
   # D1 query sample timestamp
   date: Date!
   # D1 query sample timestamp, truncated to fifteen minutes
@@ -7532,8 +7603,14 @@ type AccountD1QueriesAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # D1 query sample timestamp, truncated to start of six hour window
   datetimeSixHours: Time!
+  # The error D1 returned (if any) after attempting to run a query.
+  error: string!
   # The SQL query that ran on a D1 database, with parameterized values replaced with placeholders.
   query: string!
+  # A consistent identifier of the D1 database instance (whether primary or replica) that served the request.
+  servedByInstance: string!
+  # The region of the D1 database that served the request. One of [WNAM, ENAM, WEUR, EEUR, APAC, OC]
+  servedByRegion: string!
 }
 
 input AccountD1QueriesAdaptiveGroupsFilter_InputObject {
@@ -7549,6 +7626,16 @@ input AccountD1QueriesAdaptiveGroupsFilter_InputObject {
   databaseId_neq: string
   databaseId_notin: [string!]
   databaseId_notlike: string
+  databaseRole: string
+  databaseRole_geq: string
+  databaseRole_gt: string
+  databaseRole_in: [string!]
+  databaseRole_leq: string
+  databaseRole_like: string
+  databaseRole_lt: string
+  databaseRole_neq: string
+  databaseRole_notin: [string!]
+  databaseRole_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -7597,6 +7684,16 @@ input AccountD1QueriesAdaptiveGroupsFilter_InputObject {
   datetimeSixHours_lt: Time
   datetimeSixHours_neq: Time
   datetimeSixHours_notin: [Time!]
+  error: string
+  error_geq: string
+  error_gt: string
+  error_in: [string!]
+  error_leq: string
+  error_like: string
+  error_lt: string
+  error_neq: string
+  error_notin: [string!]
+  error_notlike: string
   query: string
   query_geq: string
   query_gt: string
@@ -7607,6 +7704,26 @@ input AccountD1QueriesAdaptiveGroupsFilter_InputObject {
   query_neq: string
   query_notin: [string!]
   query_notlike: string
+  servedByInstance: string
+  servedByInstance_geq: string
+  servedByInstance_gt: string
+  servedByInstance_in: [string!]
+  servedByInstance_leq: string
+  servedByInstance_like: string
+  servedByInstance_lt: string
+  servedByInstance_neq: string
+  servedByInstance_notin: [string!]
+  servedByInstance_notlike: string
+  servedByRegion: string
+  servedByRegion_geq: string
+  servedByRegion_gt: string
+  servedByRegion_in: [string!]
+  servedByRegion_leq: string
+  servedByRegion_like: string
+  servedByRegion_lt: string
+  servedByRegion_neq: string
+  servedByRegion_notin: [string!]
+  servedByRegion_notlike: string
 }
 
 enum AccountD1QueriesAdaptiveGroupsOrderBy {
@@ -7638,6 +7755,10 @@ enum AccountD1QueriesAdaptiveGroupsOrderBy {
   databaseId_ASC
   # databaseId descending
   databaseId_DESC
+  # databaseRole ascending
+  databaseRole_ASC
+  # databaseRole descending
+  databaseRole_DESC
   # date ascending
   date_ASC
   # date descending
@@ -7662,6 +7783,10 @@ enum AccountD1QueriesAdaptiveGroupsOrderBy {
   datetimeSixHours_ASC
   # datetimeSixHours descending
   datetimeSixHours_DESC
+  # error ascending
+  error_ASC
+  # error descending
+  error_DESC
   # quantiles(queryDurationMsP50) ascending
   quantiles_queryDurationMsP50_ASC
   # quantiles(queryDurationMsP50) descending
@@ -7678,6 +7803,14 @@ enum AccountD1QueriesAdaptiveGroupsOrderBy {
   query_ASC
   # query descending
   query_DESC
+  # servedByInstance ascending
+  servedByInstance_ASC
+  # servedByInstance descending
+  servedByInstance_DESC
+  # servedByRegion ascending
+  servedByRegion_ASC
+  # servedByRegion descending
+  servedByRegion_DESC
   # sum(queryDurationMs) ascending
   sum_queryDurationMs_ASC
   # sum(queryDurationMs) descending
@@ -20256,6 +20389,8 @@ type AccountHyperdriveQueriesAdaptiveGroupsAvg {
 type AccountHyperdriveQueriesAdaptiveGroupsDimensions {
   # The cache status of the Hyperdrive query event
   cacheStatus: string!
+  # IATA airport code for the Cloudflare datacenter where the query was handled.
+  coloCode: string!
   # The ID of the Hyperdrive Config
   configId: string!
   # Hyperdrive query event timestamp, truncated to start of a day
@@ -20283,6 +20418,16 @@ input AccountHyperdriveQueriesAdaptiveGroupsFilter_InputObject {
   cacheStatus_neq: string
   cacheStatus_notin: [string!]
   cacheStatus_notlike: string
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
   configId: string
   configId_geq: string
   configId_gt: string
@@ -20362,6 +20507,10 @@ enum AccountHyperdriveQueriesAdaptiveGroupsOrderBy {
   cacheStatus_ASC
   # cacheStatus descending
   cacheStatus_DESC
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
   # configId ascending
   configId_ASC
   # configId descending
@@ -27886,6 +28035,1038 @@ enum AccountMagicWANConnectorMetricsAdaptiveGroupsOrderBy {
   mconnSiteID_DESC
 }
 
+# Aggregated Magic WAN Connector events with adaptive sampling
+type AccountMconnTelemetryEventsStagingAdaptiveGroups {
+  # Recorded Event count
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMconnTelemetryEventsStagingAdaptiveGroupsDimensions
+}
+
+type AccountMconnTelemetryEventsStagingAdaptiveGroupsDimensions {
+  # Connector identifier
+  connectorId: string!
+  # Timestamp bucketed by 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Timestamp bucketed by 5 minutes
+  datetimeFiveMinutes: Time!
+  # Timestamp bucketed by hour
+  datetimeHour: Time!
+  # Timestamp bucketed by minute
+  datetimeMinute: Time!
+  # Event kind
+  kind: string!
+}
+
+input AccountMconnTelemetryEventsStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMconnTelemetryEventsStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMconnTelemetryEventsStagingAdaptiveGroupsFilter_InputObject!]
+  connectorId: string
+  connectorId_geq: string
+  connectorId_gt: string
+  connectorId_in: [string!]
+  connectorId_leq: string
+  connectorId_like: string
+  connectorId_lt: string
+  connectorId_neq: string
+  connectorId_notin: [string!]
+  connectorId_notlike: string
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  kind: string
+  kind_geq: string
+  kind_gt: string
+  kind_in: [string!]
+  kind_leq: string
+  kind_like: string
+  kind_lt: string
+  kind_neq: string
+  kind_notin: [string!]
+  kind_notlike: string
+}
+
+enum AccountMconnTelemetryEventsStagingAdaptiveGroupsOrderBy {
+  # connectorId ascending
+  connectorId_ASC
+  # connectorId descending
+  connectorId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # kind ascending
+  kind_ASC
+  # kind descending
+  kind_DESC
+}
+
+# Aggregated Magic WAN Connector disk snapshots with adaptive sampling
+type AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroups {
+  # Snapshot Disk count
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsDimensions
+  max: AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsMax
+  sum: AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsSum
+}
+
+type AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsDimensions {
+  # Connector identifier
+  connectorId: string!
+  # Timestamp bucketed by 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Timestamp bucketed by 5 minutes
+  datetimeFiveMinutes: Time!
+  # Timestamp bucketed by hour
+  datetimeHour: Time!
+  # Timestamp bucketed by minute
+  datetimeMinute: Time!
+  # Device name
+  name: string!
+}
+
+input AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsFilter_InputObject!]
+  connectorId: string
+  connectorId_geq: string
+  connectorId_gt: string
+  connectorId_in: [string!]
+  connectorId_leq: string
+  connectorId_like: string
+  connectorId_lt: string
+  connectorId_neq: string
+  connectorId_notin: [string!]
+  connectorId_notlike: string
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  name: string
+  name_geq: string
+  name_gt: string
+  name_in: [string!]
+  name_leq: string
+  name_like: string
+  name_lt: string
+  name_neq: string
+  name_notin: [string!]
+  name_notlike: string
+}
+
+type AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsMax {
+  # I/Os currently in progress
+  inProgress: float64!
+  # Device major number
+  major: float64!
+  # Device minor number
+  minor: float64!
+}
+
+enum AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsOrderBy {
+  # connectorId ascending
+  connectorId_ASC
+  # connectorId descending
+  connectorId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # max(inProgress) ascending
+  max_inProgress_ASC
+  # max(inProgress) descending
+  max_inProgress_DESC
+  # max(major) ascending
+  max_major_ASC
+  # max(major) descending
+  max_major_DESC
+  # max(minor) ascending
+  max_minor_ASC
+  # max(minor) descending
+  max_minor_DESC
+  # name ascending
+  name_ASC
+  # name descending
+  name_DESC
+  # sum(discardsMerged) ascending
+  sum_discardsMerged_ASC
+  # sum(discardsMerged) descending
+  sum_discardsMerged_DESC
+  # sum(discards) ascending
+  sum_discards_ASC
+  # sum(discards) descending
+  sum_discards_DESC
+  # sum(flushes) ascending
+  sum_flushes_ASC
+  # sum(flushes) descending
+  sum_flushes_DESC
+  # sum(merged) ascending
+  sum_merged_ASC
+  # sum(merged) descending
+  sum_merged_DESC
+  # sum(reads) ascending
+  sum_reads_ASC
+  # sum(reads) descending
+  sum_reads_DESC
+  # sum(sectorsDiscarded) ascending
+  sum_sectorsDiscarded_ASC
+  # sum(sectorsDiscarded) descending
+  sum_sectorsDiscarded_DESC
+  # sum(sectorsRead) ascending
+  sum_sectorsRead_ASC
+  # sum(sectorsRead) descending
+  sum_sectorsRead_DESC
+  # sum(sectorsWritten) ascending
+  sum_sectorsWritten_ASC
+  # sum(sectorsWritten) descending
+  sum_sectorsWritten_DESC
+  # sum(writesMerged) ascending
+  sum_writesMerged_ASC
+  # sum(writesMerged) descending
+  sum_writesMerged_DESC
+  # sum(writes) ascending
+  sum_writes_ASC
+  # sum(writes) descending
+  sum_writes_DESC
+}
+
+type AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsSum {
+  # Discards completed successfully (delta)
+  discards: float64!
+  # Discards merged (delta)
+  discardsMerged: float64!
+  # Flushes completed successfully (delta)
+  flushes: float64!
+  # Reads merged (delta)
+  merged: float64!
+  # Reads completed successfully (delta)
+  reads: float64!
+  # Sectors discarded (delta)
+  sectorsDiscarded: float64!
+  # Sectors read successfully (delta)
+  sectorsRead: float64!
+  # Sectors written successfully (delta)
+  sectorsWritten: float64!
+  # Writes completed (delta)
+  writes: float64!
+  # Writes merged (delta)
+  writesMerged: float64!
+}
+
+# Aggregated Magic WAN Connector mount snapshots with adaptive sampling
+type AccountMconnTelemetrySnapshotMountsStagingAdaptiveGroups {
+  # Snapshot Mount count
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMconnTelemetrySnapshotMountsStagingAdaptiveGroupsDimensions
+  max: AccountMconnTelemetrySnapshotMountsStagingAdaptiveGroupsMax
+}
+
+type AccountMconnTelemetrySnapshotMountsStagingAdaptiveGroupsDimensions {
+  # Connector identifier
+  connectorId: string!
+  # Timestamp bucketed by 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Timestamp bucketed by 5 minutes
+  datetimeFiveMinutes: Time!
+  # Timestamp bucketed by hour
+  datetimeHour: Time!
+  # Timestamp bucketed by minute
+  datetimeMinute: Time!
+  # File system on disk (EXT4, NTFS, etc.)
+  fileSystem: string!
+  # Kind of disk (HDD, SSD, etc.)
+  kind: string!
+  # Path where disk is mounted
+  mountPoint: string!
+  # Name of the disk mount
+  name: string!
+}
+
+input AccountMconnTelemetrySnapshotMountsStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMconnTelemetrySnapshotMountsStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMconnTelemetrySnapshotMountsStagingAdaptiveGroupsFilter_InputObject!]
+  connectorId: string
+  connectorId_geq: string
+  connectorId_gt: string
+  connectorId_in: [string!]
+  connectorId_leq: string
+  connectorId_like: string
+  connectorId_lt: string
+  connectorId_neq: string
+  connectorId_notin: [string!]
+  connectorId_notlike: string
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  fileSystem: string
+  fileSystem_geq: string
+  fileSystem_gt: string
+  fileSystem_in: [string!]
+  fileSystem_leq: string
+  fileSystem_like: string
+  fileSystem_lt: string
+  fileSystem_neq: string
+  fileSystem_notin: [string!]
+  fileSystem_notlike: string
+  kind: string
+  kind_geq: string
+  kind_gt: string
+  kind_in: [string!]
+  kind_leq: string
+  kind_like: string
+  kind_lt: string
+  kind_neq: string
+  kind_notin: [string!]
+  kind_notlike: string
+  mountPoint: string
+  mountPoint_geq: string
+  mountPoint_gt: string
+  mountPoint_in: [string!]
+  mountPoint_leq: string
+  mountPoint_like: string
+  mountPoint_lt: string
+  mountPoint_neq: string
+  mountPoint_notin: [string!]
+  mountPoint_notlike: string
+  name: string
+  name_geq: string
+  name_gt: string
+  name_in: [string!]
+  name_leq: string
+  name_like: string
+  name_lt: string
+  name_neq: string
+  name_notin: [string!]
+  name_notlike: string
+}
+
+type AccountMconnTelemetrySnapshotMountsStagingAdaptiveGroupsMax {
+  # Available disk size (bytes)
+  availableBytes: float64!
+  # Determines whether the disk is read-only
+  isReadOnly: float64!
+  # Determines whether the disk is removable
+  isRemovable: float64!
+  # Total disk size (bytes)
+  totalBytes: float64!
+}
+
+enum AccountMconnTelemetrySnapshotMountsStagingAdaptiveGroupsOrderBy {
+  # connectorId ascending
+  connectorId_ASC
+  # connectorId descending
+  connectorId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # fileSystem ascending
+  fileSystem_ASC
+  # fileSystem descending
+  fileSystem_DESC
+  # kind ascending
+  kind_ASC
+  # kind descending
+  kind_DESC
+  # max(availableBytes) ascending
+  max_availableBytes_ASC
+  # max(availableBytes) descending
+  max_availableBytes_DESC
+  # max(isReadOnly) ascending
+  max_isReadOnly_ASC
+  # max(isReadOnly) descending
+  max_isReadOnly_DESC
+  # max(isRemovable) ascending
+  max_isRemovable_ASC
+  # max(isRemovable) descending
+  max_isRemovable_DESC
+  # max(totalBytes) ascending
+  max_totalBytes_ASC
+  # max(totalBytes) descending
+  max_totalBytes_DESC
+  # mountPoint ascending
+  mountPoint_ASC
+  # mountPoint descending
+  mountPoint_DESC
+  # name ascending
+  name_ASC
+  # name descending
+  name_DESC
+}
+
+# Aggregated Magic WAN Connector netdev snapshots with adaptive sampling
+type AccountMconnTelemetrySnapshotNetdevsStagingAdaptiveGroups {
+  # Snapshot Netdev count
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMconnTelemetrySnapshotNetdevsStagingAdaptiveGroupsDimensions
+  sum: AccountMconnTelemetrySnapshotNetdevsStagingAdaptiveGroupsSum
+}
+
+type AccountMconnTelemetrySnapshotNetdevsStagingAdaptiveGroupsDimensions {
+  # Connector identifier
+  connectorId: string!
+  # Timestamp bucketed by 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Timestamp bucketed by 5 minutes
+  datetimeFiveMinutes: Time!
+  # Timestamp bucketed by hour
+  datetimeHour: Time!
+  # Timestamp bucketed by minute
+  datetimeMinute: Time!
+  # Name of the network device
+  name: string!
+}
+
+input AccountMconnTelemetrySnapshotNetdevsStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMconnTelemetrySnapshotNetdevsStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMconnTelemetrySnapshotNetdevsStagingAdaptiveGroupsFilter_InputObject!]
+  connectorId: string
+  connectorId_geq: string
+  connectorId_gt: string
+  connectorId_in: [string!]
+  connectorId_leq: string
+  connectorId_like: string
+  connectorId_lt: string
+  connectorId_neq: string
+  connectorId_notin: [string!]
+  connectorId_notlike: string
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  name: string
+  name_geq: string
+  name_gt: string
+  name_in: [string!]
+  name_leq: string
+  name_like: string
+  name_lt: string
+  name_neq: string
+  name_notin: [string!]
+  name_notlike: string
+}
+
+enum AccountMconnTelemetrySnapshotNetdevsStagingAdaptiveGroupsOrderBy {
+  # connectorId ascending
+  connectorId_ASC
+  # connectorId descending
+  connectorId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # name ascending
+  name_ASC
+  # name descending
+  name_DESC
+  # sum(recvBytes) ascending
+  sum_recvBytes_ASC
+  # sum(recvBytes) descending
+  sum_recvBytes_DESC
+  # sum(recvCompressed) ascending
+  sum_recvCompressed_ASC
+  # sum(recvCompressed) descending
+  sum_recvCompressed_DESC
+  # sum(recvDrop) ascending
+  sum_recvDrop_ASC
+  # sum(recvDrop) descending
+  sum_recvDrop_DESC
+  # sum(recvErrs) ascending
+  sum_recvErrs_ASC
+  # sum(recvErrs) descending
+  sum_recvErrs_DESC
+  # sum(recvFifo) ascending
+  sum_recvFifo_ASC
+  # sum(recvFifo) descending
+  sum_recvFifo_DESC
+  # sum(recvFrame) ascending
+  sum_recvFrame_ASC
+  # sum(recvFrame) descending
+  sum_recvFrame_DESC
+  # sum(recvMulticast) ascending
+  sum_recvMulticast_ASC
+  # sum(recvMulticast) descending
+  sum_recvMulticast_DESC
+  # sum(recvPackets) ascending
+  sum_recvPackets_ASC
+  # sum(recvPackets) descending
+  sum_recvPackets_DESC
+  # sum(sentBytes) ascending
+  sum_sentBytes_ASC
+  # sum(sentBytes) descending
+  sum_sentBytes_DESC
+  # sum(sentCarrier) ascending
+  sum_sentCarrier_ASC
+  # sum(sentCarrier) descending
+  sum_sentCarrier_DESC
+  # sum(sentColls) ascending
+  sum_sentColls_ASC
+  # sum(sentColls) descending
+  sum_sentColls_DESC
+  # sum(sentCompressed) ascending
+  sum_sentCompressed_ASC
+  # sum(sentCompressed) descending
+  sum_sentCompressed_DESC
+  # sum(sentDrop) ascending
+  sum_sentDrop_ASC
+  # sum(sentDrop) descending
+  sum_sentDrop_DESC
+  # sum(sentErrs) ascending
+  sum_sentErrs_ASC
+  # sum(sentErrs) descending
+  sum_sentErrs_DESC
+  # sum(sentFifo) ascending
+  sum_sentFifo_ASC
+  # sum(sentFifo) descending
+  sum_sentFifo_DESC
+  # sum(sentPackets) ascending
+  sum_sentPackets_ASC
+  # sum(sentPackets) descending
+  sum_sentPackets_DESC
+}
+
+type AccountMconnTelemetrySnapshotNetdevsStagingAdaptiveGroupsSum {
+  # Total bytes received (delta)
+  recvBytes: float64!
+  # Compressed packets received (delta)
+  recvCompressed: float64!
+  # Packets dropped (delta)
+  recvDrop: float64!
+  # Bad packets received (delta)
+  recvErrs: float64!
+  # FIFO overruns (delta)
+  recvFifo: float64!
+  # Frame alignment errors (delta)
+  recvFrame: float64!
+  # Multicast packets received (delta)
+  recvMulticast: float64!
+  # Total packets received (delta)
+  recvPackets: float64!
+  # Total bytes transmitted (delta)
+  sentBytes: float64!
+  # Number of packets not sent due to carrier errors (delta)
+  sentCarrier: float64!
+  # Number of collisions (delta)
+  sentColls: float64!
+  # Number of compressed packets transmitted (delta)
+  sentCompressed: float64!
+  # Number of packets dropped during transmission (delta)
+  sentDrop: float64!
+  # Number of transmission errors (delta)
+  sentErrs: float64!
+  # FIFO overruns (delta)
+  sentFifo: float64!
+  # Total packets transmitted (delta)
+  sentPackets: float64!
+}
+
+# Aggregated Magic WAN Connector system snapshots with adaptive sampling
+type AccountMconnTelemetrySnapshotsStagingAdaptiveGroups {
+  # Snapshot count
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsDimensions
+  max: AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsMax
+}
+
+type AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsDimensions {
+  # Connector identifier
+  connectorId: string!
+  # Timestamp bucketed by 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Timestamp bucketed by 5 minutes
+  datetimeFiveMinutes: Time!
+  # Timestamp bucketed by hour
+  datetimeHour: Time!
+  # Timestamp bucketed by minute
+  datetimeMinute: Time!
+  # Version
+  version: string!
+}
+
+input AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsFilter_InputObject!]
+  connectorId: string
+  connectorId_geq: string
+  connectorId_gt: string
+  connectorId_in: [string!]
+  connectorId_leq: string
+  connectorId_like: string
+  connectorId_lt: string
+  connectorId_neq: string
+  connectorId_notin: [string!]
+  connectorId_notlike: string
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  version: string
+  version_geq: string
+  version_gt: string
+  version_in: [string!]
+  version_leq: string
+  version_like: string
+  version_lt: string
+  version_neq: string
+  version_notin: [string!]
+  version_notlike: string
+}
+
+type AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsMax {
+  # Count of processors/cores
+  cpuCount: float64!
+  # Boot time (seconds since Unix epoch)
+  kernelBtime: float64!
+  # Number of processes in runnable state
+  kernelProcessesRunning: float64!
+  # The fifteen-minute load average
+  loadAverage15m: float64!
+  # The one-minute load average
+  loadAverage1m: float64!
+  # The five-minute load average
+  loadAverage5m: float64!
+  # Memory that has been used more recently
+  memoryActiveBytes: float64!
+  # Estimate of how much memory is available for starting new applications
+  memoryAvailableBytes: float64!
+  # Relatively temporary storage for raw disk blocks
+  memoryBuffersBytes: float64!
+  # In-memory cache for files read from the disk
+  memoryCachedBytes: float64!
+  # The sum of LowFree and HighFree
+  memoryFreeBytes: float64!
+  # Memory which has been less recently used
+  memoryInactiveBytes: float64!
+  # Total usable RAM
+  memoryTotalBytes: float64!
+}
+
+enum AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsOrderBy {
+  # connectorId ascending
+  connectorId_ASC
+  # connectorId descending
+  connectorId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # max(cpuCount) ascending
+  max_cpuCount_ASC
+  # max(cpuCount) descending
+  max_cpuCount_DESC
+  # max(kernelBtime) ascending
+  max_kernelBtime_ASC
+  # max(kernelBtime) descending
+  max_kernelBtime_DESC
+  # max(kernelProcessesRunning) ascending
+  max_kernelProcessesRunning_ASC
+  # max(kernelProcessesRunning) descending
+  max_kernelProcessesRunning_DESC
+  # max(loadAverage15m) ascending
+  max_loadAverage15m_ASC
+  # max(loadAverage15m) descending
+  max_loadAverage15m_DESC
+  # max(loadAverage1m) ascending
+  max_loadAverage1m_ASC
+  # max(loadAverage1m) descending
+  max_loadAverage1m_DESC
+  # max(loadAverage5m) ascending
+  max_loadAverage5m_ASC
+  # max(loadAverage5m) descending
+  max_loadAverage5m_DESC
+  # max(memoryActiveBytes) ascending
+  max_memoryActiveBytes_ASC
+  # max(memoryActiveBytes) descending
+  max_memoryActiveBytes_DESC
+  # max(memoryAvailableBytes) ascending
+  max_memoryAvailableBytes_ASC
+  # max(memoryAvailableBytes) descending
+  max_memoryAvailableBytes_DESC
+  # max(memoryBuffersBytes) ascending
+  max_memoryBuffersBytes_ASC
+  # max(memoryBuffersBytes) descending
+  max_memoryBuffersBytes_DESC
+  # max(memoryCachedBytes) ascending
+  max_memoryCachedBytes_ASC
+  # max(memoryCachedBytes) descending
+  max_memoryCachedBytes_DESC
+  # max(memoryFreeBytes) ascending
+  max_memoryFreeBytes_ASC
+  # max(memoryFreeBytes) descending
+  max_memoryFreeBytes_DESC
+  # max(memoryInactiveBytes) ascending
+  max_memoryInactiveBytes_ASC
+  # max(memoryInactiveBytes) descending
+  max_memoryInactiveBytes_DESC
+  # max(memoryTotalBytes) ascending
+  max_memoryTotalBytes_ASC
+  # max(memoryTotalBytes) descending
+  max_memoryTotalBytes_DESC
+  # version ascending
+  version_ASC
+  # version descending
+  version_DESC
+}
+
+# Aggregated Magic WAN Connector thermal snapshots with adaptive sampling
+type AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroups {
+  # Snapshot Thermal count
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsDimensions
+  max: AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsMax
+}
+
+type AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsDimensions {
+  # Connector identifier
+  connectorId: string!
+  # Timestamp bucketed by 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Timestamp bucketed by 5 minutes
+  datetimeFiveMinutes: Time!
+  # Timestamp bucketed by hour
+  datetimeHour: Time!
+  # Timestamp bucketed by minute
+  datetimeMinute: Time!
+  # Sensor identifier for the component
+  label: string!
+}
+
+input AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsFilter_InputObject!]
+  connectorId: string
+  connectorId_geq: string
+  connectorId_gt: string
+  connectorId_in: [string!]
+  connectorId_leq: string
+  connectorId_like: string
+  connectorId_lt: string
+  connectorId_neq: string
+  connectorId_notin: [string!]
+  connectorId_notlike: string
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  label: string
+  label_geq: string
+  label_gt: string
+  label_in: [string!]
+  label_leq: string
+  label_like: string
+  label_lt: string
+  label_neq: string
+  label_notin: [string!]
+  label_notlike: string
+}
+
+type AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsMax {
+  # Critical failure temperature of the component (degrees Celsius)
+  criticalCelcius: float64!
+  # Current temperature of the component (degrees Celsius)
+  currentCelcius: float64!
+  # Maximum temperature of the component (degrees Celsius)
+  maxCelcius: float64!
+}
+
+enum AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsOrderBy {
+  # connectorId ascending
+  connectorId_ASC
+  # connectorId descending
+  connectorId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # label ascending
+  label_ASC
+  # label descending
+  label_DESC
+  # max(criticalCelcius) ascending
+  max_criticalCelcius_ASC
+  # max(criticalCelcius) descending
+  max_criticalCelcius_DESC
+  # max(currentCelcius) ascending
+  max_currentCelcius_ASC
+  # max(currentCelcius) descending
+  max_currentCelcius_DESC
+  # max(maxCelcius) ascending
+  max_maxCelcius_ASC
+  # max(maxCelcius) descending
+  max_maxCelcius_DESC
+}
+
 # Flow data collected through Magic Network Monitoring
 type AccountMnmFlowDataAdaptiveGroups {
   # The average of values for a metric per dimension
@@ -32715,6 +33896,12 @@ type AccountSettings {
   magicTransitTunnelHealthCheckSLOsAdaptiveGroups: Settings!
   magicTransitTunnelHealthChecksAdaptiveGroups: Settings!
   magicTransitTunnelTrafficAdaptiveGroups: Settings!
+  mconnTelemetryEventsStagingAdaptiveGroups: Settings!
+  mconnTelemetrySnapshotDisksStagingAdaptiveGroups: Settings!
+  mconnTelemetrySnapshotMountsStagingAdaptiveGroups: Settings!
+  mconnTelemetrySnapshotNetdevsStagingAdaptiveGroups: Settings!
+  mconnTelemetrySnapshotThermalsStagingAdaptiveGroups: Settings!
+  mconnTelemetrySnapshotsStagingAdaptiveGroups: Settings!
   mnmFlowDataAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   ohttpMetricsAdaptive: Settings!
@@ -32751,6 +33938,7 @@ type AccountSettings {
   warpDeviceAdaptiveGroups: Settings!
   workerPlacementAdaptiveGroups: Settings!
   workersAnalyticsEngineAdaptiveGroups: Settings!
+  workersBuildsBuildMinutesAdaptiveGroups: Settings!
   workersInvocationsAdaptive: Settings!
   workersInvocationsScheduled: Settings!
   workersOverviewDataAdaptiveGroups: Settings!
@@ -37414,6 +38602,48 @@ enum AccountWorkersAnalyticsEngineAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+}
+
+# Workers Builds build minute overview data with adaptive sampling
+type AccountWorkersBuildsBuildMinutesAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountWorkersBuildsBuildMinutesAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountWorkersBuildsBuildMinutesAdaptiveGroupsSum
+}
+
+type AccountWorkersBuildsBuildMinutesAdaptiveGroupsDimensions {
+  # Build minutes recorded timestamp
+  datetime: Time!
+}
+
+input AccountWorkersBuildsBuildMinutesAdaptiveGroupsFilter_InputObject {
+  AND: [AccountWorkersBuildsBuildMinutesAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountWorkersBuildsBuildMinutesAdaptiveGroupsFilter_InputObject!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+}
+
+enum AccountWorkersBuildsBuildMinutesAdaptiveGroupsOrderBy {
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # sum(buildMinutes) ascending
+  sum_buildMinutes_ASC
+  # sum(buildMinutes) descending
+  sum_buildMinutes_DESC
+}
+
+type AccountWorkersBuildsBuildMinutesAdaptiveGroupsSum {
+  # The sum of build minutes
+  buildMinutes: float64!
 }
 
 # Beta. Workers invocations with adaptive sampling
