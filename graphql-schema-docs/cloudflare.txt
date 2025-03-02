@@ -69,6 +69,7 @@ Account-level datasets:
   mconnTelemetrySnapshotThermalsStagingAdaptiveGroups
   mconnTelemetrySnapshotsAdaptiveGroups
   mconnTelemetrySnapshotsStagingAdaptiveGroups
+* mnmAWSVPCFlowDataAdaptiveGroups
 * mnmFlowDataAdaptiveGroups
   nelReportsAdaptiveGroups
 * ohttpMetricsAdaptive
@@ -358,6 +359,8 @@ type account {
   mconnTelemetrySnapshotsAdaptiveGroups(filter: AccountMconnTelemetrySnapshotsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotsAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotsAdaptiveGroups!]!
   # Aggregated Magic WAN Connector system snapshots with adaptive sampling
   mconnTelemetrySnapshotsStagingAdaptiveGroups(filter: AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotsStagingAdaptiveGroups!]!
+  # AWS VPC Flow data collected through Magic Network Monitoring
+  mnmAWSVPCFlowDataAdaptiveGroups(filter: AccountMnmAWSVPCFlowDataAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMnmAWSVPCFlowDataAdaptiveGroupsOrderBy!]): [AccountMnmAWSVPCFlowDataAdaptiveGroups!]!
   # Flow data collected through Magic Network Monitoring
   mnmFlowDataAdaptiveGroups(filter: AccountMnmFlowDataAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMnmFlowDataAdaptiveGroupsOrderBy!]): [AccountMnmFlowDataAdaptiveGroups!]!
   # Data to visualize network error logs
@@ -30139,6 +30142,991 @@ enum AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsOrderBy {
   max_maxCelcius_DESC
 }
 
+# AWS VPC Flow data collected through Magic Network Monitoring
+type AccountMnmAWSVPCFlowDataAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountMnmAWSVPCFlowDataAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountMnmAWSVPCFlowDataAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountMnmAWSVPCFlowDataAdaptiveGroupsSum
+}
+
+type AccountMnmAWSVPCFlowDataAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRate: float64!
+  # Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date
+  bitRateDay: float64!
+  # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
+  bitRateFifteenMinutes: float64!
+  # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
+  bitRateFiveMinutes: float64!
+  # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
+  bitRateHour: float64!
+  # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
+  bitRateMinute: float64!
+  # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
+  bitRateTenSeconds: float64!
+  # Sum of egress bits received, divided by 1 second, providing a per-second egress bit rate when grouped by datetime
+  egressBitRate: float64!
+  # Sum of egress bits received, divided by 86400 seconds, providing a per-second egress bit rate when grouped by date
+  egressBitRateDay: float64!
+  # Sum of egress bits received, divided by 900 seconds, providing a per-second egress bit rate when grouped by datetimeFifteenMinutes
+  egressBitRateFifteenMinutes: float64!
+  # Sum of egress bits received, divided by 300 seconds, providing a per-second egress bit rate when grouped by datetimeFiveMinutes
+  egressBitRateFiveMinutes: float64!
+  # Sum of egress bits received, divided by 3600 seconds, providing a per-second egress bit rate when grouped by datetimeHour
+  egressBitRateHour: float64!
+  # Sum of egress bits received, divided by 60 seconds, providing a per-second egress bit rate when grouped by datetimeMinute
+  egressBitRateMinute: float64!
+  # Sum of egress bits received, divided by 10 seconds, providing a per-second egress bit rate when grouped by datetimeTenSeconds
+  egressBitRateTenSeconds: float64!
+  # Sum of egress packets received, divided by 1 second, providing a per-second egress packet rate when grouped by datetime
+  egressPacketRate: float64!
+  # Sum of egress packets received, divided by 86400 seconds, providing a per-second egress packet rate when grouped by date
+  egressPacketRateDay: float64!
+  # Sum of egress packets received, divided by 900 seconds, providing a per-second egress packet rate when grouped by datetimeFifteenMinutes
+  egressPacketRateFifteenMinutes: float64!
+  # Sum of egress packets received, divided by 300 seconds, providing a per-second egress packet rate when grouped by datetimeFiveMinutes
+  egressPacketRateFiveMinutes: float64!
+  # Sum of egress packets received, divided by 3600 seconds, providing a per-second egress packet rate when grouped by datetimeHour
+  egressPacketRateHour: float64!
+  # Sum of egress packets received, divided by 60 seconds, providing a per-second egress packet rate when grouped by datetimeMinute
+  egressPacketRateMinute: float64!
+  # Sum of egress packets received, divided by 10 seconds, providing a per-second egress packet rate when grouped by datetimeTenSeconds
+  egressPacketRateTenSeconds: float64!
+  # Sum of packets received, divided by 1 second, providing a per-second packet rate when grouped by datetime
+  packetRate: float64!
+  # Sum of packets received, divided by 86400 seconds, providing a per-second packet rate when grouped by date
+  packetRateDay: float64!
+  # Sum of packets received, divided by 900 seconds, providing a per-second packet rate when grouped by datetimeFifteenMinutes
+  packetRateFifteenMinutes: float64!
+  # Sum of packets received, divided by 300 seconds, providing a per-second packet rate when grouped by datetimeFiveMinutes
+  packetRateFiveMinutes: float64!
+  # Sum of packets received, divided by 3600 seconds, providing a per-second packet rate when grouped by datetimeHour
+  packetRateHour: float64!
+  # Sum of packets received, divided by 60 seconds, providing a per-second packet rate when grouped by datetimeMinute
+  packetRateMinute: float64!
+  # Sum of packets received, divided by 10 seconds, providing a per-second packet rate when grouped by datetimeTenSeconds
+  packetRateTenSeconds: float64!
+  # Average sample interval applied to the data
+  sampleInterval: float64!
+}
+
+type AccountMnmAWSVPCFlowDataAdaptiveGroupsDimensions {
+  # The AWS account ID of the owner of the source network interface for which traffic is recorded.
+  accountID: string!
+  # The action that is associated with the traffic: ACCEPT, REJECT.
+  action: string!
+  # The ID of the Availability Zone that contains the network interface for which traffic is recorded.
+  azID: string!
+  # Date that the packet was received
+  date: Date!
+  # Date and time that the packet was received
+  datetime: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest five minutes
+  datetimeFiveMinutes: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest hour
+  datetimeHour: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest minute
+  datetimeMinute: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest ten seconds
+  datetimeTenSeconds: Time!
+  # IP to which the data was sent
+  destinationAddress: string!
+  # Value of the Destination Port header field in the packet
+  destinationPort: uint16!
+  # AWS Resource Name (ARN) of the ECS cluster if the traffic is from a running ECS task.
+  ecsClusterArn: string!
+  # Name of the ECS cluster if the traffic is from a running ECS task.
+  ecsClusterName: string!
+  # Docker runtime ID of the container if the traffic is from a running ECS task.
+  ecsContainerID: string!
+  # ARN of the ECS container instance if the traffic is from a running ECS task on an EC2 instance.
+  ecsContainerInstanceArn: string!
+  # ID of the ECS container instance if the traffic is from a running ECS task on an EC2 instance.
+  ecsContainerInstanceID: string!
+  # Docker runtime ID of the second container if the traffic is from a running ECS task.
+  ecsSecondContainerID: string!
+  # Name of the ECS service if the traffic is from a running ECS task and the ECS task is started by an ECS service.
+  ecsServiceName: string!
+  # ARN of the ECS task if the traffic is from a running ECS task.
+  ecsTaskArn: string!
+  # ARN of the ECS task definition if the traffic is from a running ECS task.
+  ecsTaskDefinitionArn: string!
+  # ID of the ECS task if the traffic is from a running ECS task.
+  ecsTaskID: string!
+  # The time, in Unix seconds, when the last packet of the flow was received within the aggregation interval.
+  end: uint64!
+  # Value of the Ethertype header field in the Ethernet packet (2048 for IPv4; 34525 for IPv6)
+  ethertype: uint16!
+  # Identification of the AWS firehose stream exporting flows
+  firehoseStream: string!
+  # The direction of the flow with respect to the interface where traffic is captured.
+  flowDirection: string!
+  # The ID of the instance that's associated with the network interface for which the traffic is recorded.
+  instanceID: string!
+  # The ID of the network interface for which the traffic is recorded.
+  interfaceID: string!
+  # The logging status of the flow log: OK, NODATA, SKIPDATA.
+  logStatus: string!
+  # The packet-level (original) destination IP address for the traffic.
+  pktDestinationAddress: string!
+  # The name of the subset of IP address ranges for the pktDstaddr field, if the destination IP address is for an AWS service.
+  pktDstAwsService: string!
+  # The packet-level (original) source IP address of the traffic.
+  pktSourceAddress: string!
+  # The name of the subset of IP address ranges for the pktSrcaddr field, if the source IP address is for an AWS service.
+  pktSrcAwsService: string!
+  # Layer 4 protocol
+  protocol: uint16!
+  # Human-readable string representation of the protocol
+  protocolString: string!
+  # The Region that contains the network interface for which traffic is recorded.
+  region: string!
+  # Reason why traffic was rejected.
+  rejectReason: string!
+  # List of flow matching rules
+  ruleIDs: [string!]!
+  # IP from which the data was sent
+  sourceAddress: string!
+  # Value of the Source Port header field in the packet
+  sourcePort: uint16!
+  # The time, in Unix seconds, when the first packet of the flow was received within the aggregation interval.
+  start: uint64!
+  # The ID of the sublocation that contains the network interface for which traffic is recorded.
+  sublocationID: string!
+  # The type of sublocation that's returned in the sublocationID field.
+  sublocationType: string!
+  # The ID of the subnet that contains the network interface for which the traffic is recorded.
+  subnetID: string!
+  # Value of the Flags header field in the TCP packet
+  tcpFlags: uint16!
+  # Human-readable string representation of the Flags header field in the TCP packet
+  tcpFlagsString: string!
+  # The path that egress traffic takes to the destination.
+  trafficPath: uint32!
+  # Version of the record schema
+  version: int64!
+  # The VPC Flow Logs version.
+  vpcFlowVersion: uint32!
+  # The ID of the VPC that contains the network interface for which the traffic is recorded.
+  vpcID: string!
+}
+
+input AccountMnmAWSVPCFlowDataAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMnmAWSVPCFlowDataAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMnmAWSVPCFlowDataAdaptiveGroupsFilter_InputObject!]
+  accountID: string
+  accountID_geq: string
+  accountID_gt: string
+  accountID_in: [string!]
+  accountID_leq: string
+  accountID_like: string
+  accountID_lt: string
+  accountID_neq: string
+  accountID_notin: [string!]
+  accountID_notlike: string
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
+  azID: string
+  azID_geq: string
+  azID_gt: string
+  azID_in: [string!]
+  azID_leq: string
+  azID_like: string
+  azID_lt: string
+  azID_neq: string
+  azID_notin: [string!]
+  azID_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeTenSeconds: Time
+  datetimeTenSeconds_geq: Time
+  datetimeTenSeconds_gt: Time
+  datetimeTenSeconds_in: [Time!]
+  datetimeTenSeconds_leq: Time
+  datetimeTenSeconds_lt: Time
+  datetimeTenSeconds_neq: Time
+  datetimeTenSeconds_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationAddress: string
+  destinationAddress_geq: string
+  destinationAddress_gt: string
+  destinationAddress_in: [string!]
+  destinationAddress_leq: string
+  destinationAddress_like: string
+  destinationAddress_lt: string
+  destinationAddress_neq: string
+  destinationAddress_notin: [string!]
+  destinationAddress_notlike: string
+  destinationPort: uint16
+  destinationPort_geq: uint16
+  destinationPort_gt: uint16
+  destinationPort_in: [uint16!]
+  destinationPort_leq: uint16
+  destinationPort_lt: uint16
+  destinationPort_neq: uint16
+  destinationPort_notin: [uint16!]
+  ecsClusterArn: string
+  ecsClusterArn_geq: string
+  ecsClusterArn_gt: string
+  ecsClusterArn_in: [string!]
+  ecsClusterArn_leq: string
+  ecsClusterArn_like: string
+  ecsClusterArn_lt: string
+  ecsClusterArn_neq: string
+  ecsClusterArn_notin: [string!]
+  ecsClusterArn_notlike: string
+  ecsClusterName: string
+  ecsClusterName_geq: string
+  ecsClusterName_gt: string
+  ecsClusterName_in: [string!]
+  ecsClusterName_leq: string
+  ecsClusterName_like: string
+  ecsClusterName_lt: string
+  ecsClusterName_neq: string
+  ecsClusterName_notin: [string!]
+  ecsClusterName_notlike: string
+  ecsContainerID: string
+  ecsContainerID_geq: string
+  ecsContainerID_gt: string
+  ecsContainerID_in: [string!]
+  ecsContainerID_leq: string
+  ecsContainerID_like: string
+  ecsContainerID_lt: string
+  ecsContainerID_neq: string
+  ecsContainerID_notin: [string!]
+  ecsContainerID_notlike: string
+  ecsContainerInstanceArn: string
+  ecsContainerInstanceArn_geq: string
+  ecsContainerInstanceArn_gt: string
+  ecsContainerInstanceArn_in: [string!]
+  ecsContainerInstanceArn_leq: string
+  ecsContainerInstanceArn_like: string
+  ecsContainerInstanceArn_lt: string
+  ecsContainerInstanceArn_neq: string
+  ecsContainerInstanceArn_notin: [string!]
+  ecsContainerInstanceArn_notlike: string
+  ecsContainerInstanceID: string
+  ecsContainerInstanceID_geq: string
+  ecsContainerInstanceID_gt: string
+  ecsContainerInstanceID_in: [string!]
+  ecsContainerInstanceID_leq: string
+  ecsContainerInstanceID_like: string
+  ecsContainerInstanceID_lt: string
+  ecsContainerInstanceID_neq: string
+  ecsContainerInstanceID_notin: [string!]
+  ecsContainerInstanceID_notlike: string
+  ecsSecondContainerID: string
+  ecsSecondContainerID_geq: string
+  ecsSecondContainerID_gt: string
+  ecsSecondContainerID_in: [string!]
+  ecsSecondContainerID_leq: string
+  ecsSecondContainerID_like: string
+  ecsSecondContainerID_lt: string
+  ecsSecondContainerID_neq: string
+  ecsSecondContainerID_notin: [string!]
+  ecsSecondContainerID_notlike: string
+  ecsServiceName: string
+  ecsServiceName_geq: string
+  ecsServiceName_gt: string
+  ecsServiceName_in: [string!]
+  ecsServiceName_leq: string
+  ecsServiceName_like: string
+  ecsServiceName_lt: string
+  ecsServiceName_neq: string
+  ecsServiceName_notin: [string!]
+  ecsServiceName_notlike: string
+  ecsTaskArn: string
+  ecsTaskArn_geq: string
+  ecsTaskArn_gt: string
+  ecsTaskArn_in: [string!]
+  ecsTaskArn_leq: string
+  ecsTaskArn_like: string
+  ecsTaskArn_lt: string
+  ecsTaskArn_neq: string
+  ecsTaskArn_notin: [string!]
+  ecsTaskArn_notlike: string
+  ecsTaskDefinitionArn: string
+  ecsTaskDefinitionArn_geq: string
+  ecsTaskDefinitionArn_gt: string
+  ecsTaskDefinitionArn_in: [string!]
+  ecsTaskDefinitionArn_leq: string
+  ecsTaskDefinitionArn_like: string
+  ecsTaskDefinitionArn_lt: string
+  ecsTaskDefinitionArn_neq: string
+  ecsTaskDefinitionArn_notin: [string!]
+  ecsTaskDefinitionArn_notlike: string
+  ecsTaskID: string
+  ecsTaskID_geq: string
+  ecsTaskID_gt: string
+  ecsTaskID_in: [string!]
+  ecsTaskID_leq: string
+  ecsTaskID_like: string
+  ecsTaskID_lt: string
+  ecsTaskID_neq: string
+  ecsTaskID_notin: [string!]
+  ecsTaskID_notlike: string
+  end: uint64
+  end_geq: uint64
+  end_gt: uint64
+  end_in: [uint64!]
+  end_leq: uint64
+  end_lt: uint64
+  end_neq: uint64
+  end_notin: [uint64!]
+  ethertype: uint16
+  ethertype_geq: uint16
+  ethertype_gt: uint16
+  ethertype_in: [uint16!]
+  ethertype_leq: uint16
+  ethertype_lt: uint16
+  ethertype_neq: uint16
+  ethertype_notin: [uint16!]
+  firehoseStream: string
+  firehoseStream_geq: string
+  firehoseStream_gt: string
+  firehoseStream_in: [string!]
+  firehoseStream_leq: string
+  firehoseStream_like: string
+  firehoseStream_lt: string
+  firehoseStream_neq: string
+  firehoseStream_notin: [string!]
+  firehoseStream_notlike: string
+  flowDirection: string
+  flowDirection_geq: string
+  flowDirection_gt: string
+  flowDirection_in: [string!]
+  flowDirection_leq: string
+  flowDirection_like: string
+  flowDirection_lt: string
+  flowDirection_neq: string
+  flowDirection_notin: [string!]
+  flowDirection_notlike: string
+  instanceID: string
+  instanceID_geq: string
+  instanceID_gt: string
+  instanceID_in: [string!]
+  instanceID_leq: string
+  instanceID_like: string
+  instanceID_lt: string
+  instanceID_neq: string
+  instanceID_notin: [string!]
+  instanceID_notlike: string
+  interfaceID: string
+  interfaceID_geq: string
+  interfaceID_gt: string
+  interfaceID_in: [string!]
+  interfaceID_leq: string
+  interfaceID_like: string
+  interfaceID_lt: string
+  interfaceID_neq: string
+  interfaceID_notin: [string!]
+  interfaceID_notlike: string
+  logStatus: string
+  logStatus_geq: string
+  logStatus_gt: string
+  logStatus_in: [string!]
+  logStatus_leq: string
+  logStatus_like: string
+  logStatus_lt: string
+  logStatus_neq: string
+  logStatus_notin: [string!]
+  logStatus_notlike: string
+  pktDestinationAddress: string
+  pktDestinationAddress_geq: string
+  pktDestinationAddress_gt: string
+  pktDestinationAddress_in: [string!]
+  pktDestinationAddress_leq: string
+  pktDestinationAddress_like: string
+  pktDestinationAddress_lt: string
+  pktDestinationAddress_neq: string
+  pktDestinationAddress_notin: [string!]
+  pktDestinationAddress_notlike: string
+  pktDstAwsService: string
+  pktDstAwsService_geq: string
+  pktDstAwsService_gt: string
+  pktDstAwsService_in: [string!]
+  pktDstAwsService_leq: string
+  pktDstAwsService_like: string
+  pktDstAwsService_lt: string
+  pktDstAwsService_neq: string
+  pktDstAwsService_notin: [string!]
+  pktDstAwsService_notlike: string
+  pktSourceAddress: string
+  pktSourceAddress_geq: string
+  pktSourceAddress_gt: string
+  pktSourceAddress_in: [string!]
+  pktSourceAddress_leq: string
+  pktSourceAddress_like: string
+  pktSourceAddress_lt: string
+  pktSourceAddress_neq: string
+  pktSourceAddress_notin: [string!]
+  pktSourceAddress_notlike: string
+  pktSrcAwsService: string
+  pktSrcAwsService_geq: string
+  pktSrcAwsService_gt: string
+  pktSrcAwsService_in: [string!]
+  pktSrcAwsService_leq: string
+  pktSrcAwsService_like: string
+  pktSrcAwsService_lt: string
+  pktSrcAwsService_neq: string
+  pktSrcAwsService_notin: [string!]
+  pktSrcAwsService_notlike: string
+  protocol: uint16
+  protocolString: string
+  protocolString_geq: string
+  protocolString_gt: string
+  protocolString_in: [string!]
+  protocolString_leq: string
+  protocolString_like: string
+  protocolString_lt: string
+  protocolString_neq: string
+  protocolString_notin: [string!]
+  protocolString_notlike: string
+  protocol_geq: uint16
+  protocol_gt: uint16
+  protocol_in: [uint16!]
+  protocol_leq: uint16
+  protocol_lt: uint16
+  protocol_neq: uint16
+  protocol_notin: [uint16!]
+  region: string
+  region_geq: string
+  region_gt: string
+  region_in: [string!]
+  region_leq: string
+  region_like: string
+  region_lt: string
+  region_neq: string
+  region_notin: [string!]
+  region_notlike: string
+  rejectReason: string
+  rejectReason_geq: string
+  rejectReason_gt: string
+  rejectReason_in: [string!]
+  rejectReason_leq: string
+  rejectReason_like: string
+  rejectReason_lt: string
+  rejectReason_neq: string
+  rejectReason_notin: [string!]
+  rejectReason_notlike: string
+  ruleIDs_has: string
+  ruleIDs_hasall: [string!]
+  ruleIDs_hasany: [string!]
+  ruleIDs_nothas: string
+  sourceAddress: string
+  sourceAddress_geq: string
+  sourceAddress_gt: string
+  sourceAddress_in: [string!]
+  sourceAddress_leq: string
+  sourceAddress_like: string
+  sourceAddress_lt: string
+  sourceAddress_neq: string
+  sourceAddress_notin: [string!]
+  sourceAddress_notlike: string
+  sourcePort: uint16
+  sourcePort_geq: uint16
+  sourcePort_gt: uint16
+  sourcePort_in: [uint16!]
+  sourcePort_leq: uint16
+  sourcePort_lt: uint16
+  sourcePort_neq: uint16
+  sourcePort_notin: [uint16!]
+  start: uint64
+  start_geq: uint64
+  start_gt: uint64
+  start_in: [uint64!]
+  start_leq: uint64
+  start_lt: uint64
+  start_neq: uint64
+  start_notin: [uint64!]
+  sublocationID: string
+  sublocationID_geq: string
+  sublocationID_gt: string
+  sublocationID_in: [string!]
+  sublocationID_leq: string
+  sublocationID_like: string
+  sublocationID_lt: string
+  sublocationID_neq: string
+  sublocationID_notin: [string!]
+  sublocationID_notlike: string
+  sublocationType: string
+  sublocationType_geq: string
+  sublocationType_gt: string
+  sublocationType_in: [string!]
+  sublocationType_leq: string
+  sublocationType_like: string
+  sublocationType_lt: string
+  sublocationType_neq: string
+  sublocationType_notin: [string!]
+  sublocationType_notlike: string
+  subnetID: string
+  subnetID_geq: string
+  subnetID_gt: string
+  subnetID_in: [string!]
+  subnetID_leq: string
+  subnetID_like: string
+  subnetID_lt: string
+  subnetID_neq: string
+  subnetID_notin: [string!]
+  subnetID_notlike: string
+  tcpFlags: uint16
+  tcpFlagsString: string
+  tcpFlagsString_geq: string
+  tcpFlagsString_gt: string
+  tcpFlagsString_in: [string!]
+  tcpFlagsString_leq: string
+  tcpFlagsString_like: string
+  tcpFlagsString_lt: string
+  tcpFlagsString_neq: string
+  tcpFlagsString_notin: [string!]
+  tcpFlagsString_notlike: string
+  tcpFlags_geq: uint16
+  tcpFlags_gt: uint16
+  tcpFlags_in: [uint16!]
+  tcpFlags_leq: uint16
+  tcpFlags_lt: uint16
+  tcpFlags_neq: uint16
+  tcpFlags_notin: [uint16!]
+  trafficPath: uint32
+  trafficPath_geq: uint32
+  trafficPath_gt: uint32
+  trafficPath_in: [uint32!]
+  trafficPath_leq: uint32
+  trafficPath_lt: uint32
+  trafficPath_neq: uint32
+  trafficPath_notin: [uint32!]
+  version: int64
+  version_geq: int64
+  version_gt: int64
+  version_in: [int64!]
+  version_leq: int64
+  version_lt: int64
+  version_neq: int64
+  version_notin: [int64!]
+  vpcFlowVersion: uint32
+  vpcFlowVersion_geq: uint32
+  vpcFlowVersion_gt: uint32
+  vpcFlowVersion_in: [uint32!]
+  vpcFlowVersion_leq: uint32
+  vpcFlowVersion_lt: uint32
+  vpcFlowVersion_neq: uint32
+  vpcFlowVersion_notin: [uint32!]
+  vpcID: string
+  vpcID_geq: string
+  vpcID_gt: string
+  vpcID_in: [string!]
+  vpcID_leq: string
+  vpcID_like: string
+  vpcID_lt: string
+  vpcID_neq: string
+  vpcID_notin: [string!]
+  vpcID_notlike: string
+}
+
+enum AccountMnmAWSVPCFlowDataAdaptiveGroupsOrderBy {
+  # accountID ascending
+  accountID_ASC
+  # accountID descending
+  accountID_DESC
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # avg(bitRateDay) ascending
+  avg_bitRateDay_ASC
+  # avg(bitRateDay) descending
+  avg_bitRateDay_DESC
+  # avg(bitRateFifteenMinutes) ascending
+  avg_bitRateFifteenMinutes_ASC
+  # avg(bitRateFifteenMinutes) descending
+  avg_bitRateFifteenMinutes_DESC
+  # avg(bitRateFiveMinutes) ascending
+  avg_bitRateFiveMinutes_ASC
+  # avg(bitRateFiveMinutes) descending
+  avg_bitRateFiveMinutes_DESC
+  # avg(bitRateHour) ascending
+  avg_bitRateHour_ASC
+  # avg(bitRateHour) descending
+  avg_bitRateHour_DESC
+  # avg(bitRateMinute) ascending
+  avg_bitRateMinute_ASC
+  # avg(bitRateMinute) descending
+  avg_bitRateMinute_DESC
+  # avg(bitRateTenSeconds) ascending
+  avg_bitRateTenSeconds_ASC
+  # avg(bitRateTenSeconds) descending
+  avg_bitRateTenSeconds_DESC
+  # avg(bitRate) ascending
+  avg_bitRate_ASC
+  # avg(bitRate) descending
+  avg_bitRate_DESC
+  # avg(egressBitRateDay) ascending
+  avg_egressBitRateDay_ASC
+  # avg(egressBitRateDay) descending
+  avg_egressBitRateDay_DESC
+  # avg(egressBitRateFifteenMinutes) ascending
+  avg_egressBitRateFifteenMinutes_ASC
+  # avg(egressBitRateFifteenMinutes) descending
+  avg_egressBitRateFifteenMinutes_DESC
+  # avg(egressBitRateFiveMinutes) ascending
+  avg_egressBitRateFiveMinutes_ASC
+  # avg(egressBitRateFiveMinutes) descending
+  avg_egressBitRateFiveMinutes_DESC
+  # avg(egressBitRateHour) ascending
+  avg_egressBitRateHour_ASC
+  # avg(egressBitRateHour) descending
+  avg_egressBitRateHour_DESC
+  # avg(egressBitRateMinute) ascending
+  avg_egressBitRateMinute_ASC
+  # avg(egressBitRateMinute) descending
+  avg_egressBitRateMinute_DESC
+  # avg(egressBitRateTenSeconds) ascending
+  avg_egressBitRateTenSeconds_ASC
+  # avg(egressBitRateTenSeconds) descending
+  avg_egressBitRateTenSeconds_DESC
+  # avg(egressBitRate) ascending
+  avg_egressBitRate_ASC
+  # avg(egressBitRate) descending
+  avg_egressBitRate_DESC
+  # avg(egressPacketRateDay) ascending
+  avg_egressPacketRateDay_ASC
+  # avg(egressPacketRateDay) descending
+  avg_egressPacketRateDay_DESC
+  # avg(egressPacketRateFifteenMinutes) ascending
+  avg_egressPacketRateFifteenMinutes_ASC
+  # avg(egressPacketRateFifteenMinutes) descending
+  avg_egressPacketRateFifteenMinutes_DESC
+  # avg(egressPacketRateFiveMinutes) ascending
+  avg_egressPacketRateFiveMinutes_ASC
+  # avg(egressPacketRateFiveMinutes) descending
+  avg_egressPacketRateFiveMinutes_DESC
+  # avg(egressPacketRateHour) ascending
+  avg_egressPacketRateHour_ASC
+  # avg(egressPacketRateHour) descending
+  avg_egressPacketRateHour_DESC
+  # avg(egressPacketRateMinute) ascending
+  avg_egressPacketRateMinute_ASC
+  # avg(egressPacketRateMinute) descending
+  avg_egressPacketRateMinute_DESC
+  # avg(egressPacketRateTenSeconds) ascending
+  avg_egressPacketRateTenSeconds_ASC
+  # avg(egressPacketRateTenSeconds) descending
+  avg_egressPacketRateTenSeconds_DESC
+  # avg(egressPacketRate) ascending
+  avg_egressPacketRate_ASC
+  # avg(egressPacketRate) descending
+  avg_egressPacketRate_DESC
+  # avg(packetRateDay) ascending
+  avg_packetRateDay_ASC
+  # avg(packetRateDay) descending
+  avg_packetRateDay_DESC
+  # avg(packetRateFifteenMinutes) ascending
+  avg_packetRateFifteenMinutes_ASC
+  # avg(packetRateFifteenMinutes) descending
+  avg_packetRateFifteenMinutes_DESC
+  # avg(packetRateFiveMinutes) ascending
+  avg_packetRateFiveMinutes_ASC
+  # avg(packetRateFiveMinutes) descending
+  avg_packetRateFiveMinutes_DESC
+  # avg(packetRateHour) ascending
+  avg_packetRateHour_ASC
+  # avg(packetRateHour) descending
+  avg_packetRateHour_DESC
+  # avg(packetRateMinute) ascending
+  avg_packetRateMinute_ASC
+  # avg(packetRateMinute) descending
+  avg_packetRateMinute_DESC
+  # avg(packetRateTenSeconds) ascending
+  avg_packetRateTenSeconds_ASC
+  # avg(packetRateTenSeconds) descending
+  avg_packetRateTenSeconds_DESC
+  # avg(packetRate) ascending
+  avg_packetRate_ASC
+  # avg(packetRate) descending
+  avg_packetRate_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # azID ascending
+  azID_ASC
+  # azID descending
+  azID_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeTenSeconds ascending
+  datetimeTenSeconds_ASC
+  # datetimeTenSeconds descending
+  datetimeTenSeconds_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationAddress ascending
+  destinationAddress_ASC
+  # destinationAddress descending
+  destinationAddress_DESC
+  # destinationPort ascending
+  destinationPort_ASC
+  # destinationPort descending
+  destinationPort_DESC
+  # ecsClusterArn ascending
+  ecsClusterArn_ASC
+  # ecsClusterArn descending
+  ecsClusterArn_DESC
+  # ecsClusterName ascending
+  ecsClusterName_ASC
+  # ecsClusterName descending
+  ecsClusterName_DESC
+  # ecsContainerID ascending
+  ecsContainerID_ASC
+  # ecsContainerID descending
+  ecsContainerID_DESC
+  # ecsContainerInstanceArn ascending
+  ecsContainerInstanceArn_ASC
+  # ecsContainerInstanceArn descending
+  ecsContainerInstanceArn_DESC
+  # ecsContainerInstanceID ascending
+  ecsContainerInstanceID_ASC
+  # ecsContainerInstanceID descending
+  ecsContainerInstanceID_DESC
+  # ecsSecondContainerID ascending
+  ecsSecondContainerID_ASC
+  # ecsSecondContainerID descending
+  ecsSecondContainerID_DESC
+  # ecsServiceName ascending
+  ecsServiceName_ASC
+  # ecsServiceName descending
+  ecsServiceName_DESC
+  # ecsTaskArn ascending
+  ecsTaskArn_ASC
+  # ecsTaskArn descending
+  ecsTaskArn_DESC
+  # ecsTaskDefinitionArn ascending
+  ecsTaskDefinitionArn_ASC
+  # ecsTaskDefinitionArn descending
+  ecsTaskDefinitionArn_DESC
+  # ecsTaskID ascending
+  ecsTaskID_ASC
+  # ecsTaskID descending
+  ecsTaskID_DESC
+  # end ascending
+  end_ASC
+  # end descending
+  end_DESC
+  # ethertype ascending
+  ethertype_ASC
+  # ethertype descending
+  ethertype_DESC
+  # firehoseStream ascending
+  firehoseStream_ASC
+  # firehoseStream descending
+  firehoseStream_DESC
+  # flowDirection ascending
+  flowDirection_ASC
+  # flowDirection descending
+  flowDirection_DESC
+  # instanceID ascending
+  instanceID_ASC
+  # instanceID descending
+  instanceID_DESC
+  # interfaceID ascending
+  interfaceID_ASC
+  # interfaceID descending
+  interfaceID_DESC
+  # logStatus ascending
+  logStatus_ASC
+  # logStatus descending
+  logStatus_DESC
+  # pktDestinationAddress ascending
+  pktDestinationAddress_ASC
+  # pktDestinationAddress descending
+  pktDestinationAddress_DESC
+  # pktDstAwsService ascending
+  pktDstAwsService_ASC
+  # pktDstAwsService descending
+  pktDstAwsService_DESC
+  # pktSourceAddress ascending
+  pktSourceAddress_ASC
+  # pktSourceAddress descending
+  pktSourceAddress_DESC
+  # pktSrcAwsService ascending
+  pktSrcAwsService_ASC
+  # pktSrcAwsService descending
+  pktSrcAwsService_DESC
+  # protocolString ascending
+  protocolString_ASC
+  # protocolString descending
+  protocolString_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # region ascending
+  region_ASC
+  # region descending
+  region_DESC
+  # rejectReason ascending
+  rejectReason_ASC
+  # rejectReason descending
+  rejectReason_DESC
+  # ruleIDs ascending
+  ruleIDs_ASC
+  # ruleIDs descending
+  ruleIDs_DESC
+  # sourceAddress ascending
+  sourceAddress_ASC
+  # sourceAddress descending
+  sourceAddress_DESC
+  # sourcePort ascending
+  sourcePort_ASC
+  # sourcePort descending
+  sourcePort_DESC
+  # start ascending
+  start_ASC
+  # start descending
+  start_DESC
+  # sublocationID ascending
+  sublocationID_ASC
+  # sublocationID descending
+  sublocationID_DESC
+  # sublocationType ascending
+  sublocationType_ASC
+  # sublocationType descending
+  sublocationType_DESC
+  # subnetID ascending
+  subnetID_ASC
+  # subnetID descending
+  subnetID_DESC
+  # sum(bits) ascending
+  sum_bits_ASC
+  # sum(bits) descending
+  sum_bits_DESC
+  # sum(egressBits) ascending
+  sum_egressBits_ASC
+  # sum(egressBits) descending
+  sum_egressBits_DESC
+  # sum(egressPackets) ascending
+  sum_egressPackets_ASC
+  # sum(egressPackets) descending
+  sum_egressPackets_DESC
+  # sum(packets) ascending
+  sum_packets_ASC
+  # sum(packets) descending
+  sum_packets_DESC
+  # tcpFlagsString ascending
+  tcpFlagsString_ASC
+  # tcpFlagsString descending
+  tcpFlagsString_DESC
+  # tcpFlags ascending
+  tcpFlags_ASC
+  # tcpFlags descending
+  tcpFlags_DESC
+  # trafficPath ascending
+  trafficPath_ASC
+  # trafficPath descending
+  trafficPath_DESC
+  # version ascending
+  version_ASC
+  # version descending
+  version_DESC
+  # vpcFlowVersion ascending
+  vpcFlowVersion_ASC
+  # vpcFlowVersion descending
+  vpcFlowVersion_DESC
+  # vpcID ascending
+  vpcID_ASC
+  # vpcID descending
+  vpcID_DESC
+}
+
+type AccountMnmAWSVPCFlowDataAdaptiveGroupsSum {
+  # Sum of bits
+  bits: uint64!
+  # Sum of egress bits
+  egressBits: uint64!
+  # Sum of egress packets
+  egressPackets: uint64!
+  # Sum of packets
+  packets: uint64!
+}
+
 # Flow data collected through Magic Network Monitoring
 type AccountMnmFlowDataAdaptiveGroups {
   # The average of values for a metric per dimension
@@ -34980,6 +35968,7 @@ type AccountSettings {
   mconnTelemetrySnapshotThermalsStagingAdaptiveGroups: Settings!
   mconnTelemetrySnapshotsAdaptiveGroups: Settings!
   mconnTelemetrySnapshotsStagingAdaptiveGroups: Settings!
+  mnmAWSVPCFlowDataAdaptiveGroups: Settings!
   mnmFlowDataAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   ohttpMetricsAdaptive: Settings!
