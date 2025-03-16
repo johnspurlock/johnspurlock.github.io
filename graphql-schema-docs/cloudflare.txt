@@ -9,6 +9,7 @@ Account-level datasets:
 * aiGatewaySizeAdaptiveGroups
 * aiInferenceAdaptive
 * aiInferenceAdaptiveGroups
+* browserIsolationUserActionsAdaptiveGroups
 * browserRenderingEventsAdaptive
 * browserRenderingEventsAdaptiveGroups
 * callsStatusAdaptive
@@ -238,6 +239,8 @@ type account {
   aiInferenceAdaptive(filter: AccountAiInferenceAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveOrderBy!]): [AccountAiInferenceAdaptive!]!
   # Aggregated AI Inference logs with adaptive sampling
   aiInferenceAdaptiveGroups(filter: AccountAiInferenceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveGroupsOrderBy!]): [AccountAiInferenceAdaptiveGroups!]!
+  # Aggregated count of Browser Isolation User Actions matches
+  browserIsolationUserActionsAdaptiveGroups(filter: AccountBrowserIsolationUserActionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserIsolationUserActionsAdaptiveGroupsOrderBy!]): [AccountBrowserIsolationUserActionsAdaptiveGroups!]!
   # Browser Rendering events with adaptive sampling
   browserRenderingEventsAdaptive(filter: AccountBrowserRenderingEventsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserRenderingEventsAdaptiveOrderBy!]): [AccountBrowserRenderingEventsAdaptive!]!
   # Aggregated Browser Rendering events with adaptive sampling
@@ -4322,6 +4325,8 @@ enum AccountAiGatewaySizeAdaptiveGroupsOrderBy {
 
 # AI Inference logs with adaptive sampling
 type AccountAiInferenceAdaptive {
+  # Audio seconds
+  audioSeconds: float64!
   # Name for cost metric 1
   costMetricName1: string!
   # Name for cost metric 2
@@ -4334,14 +4339,26 @@ type AccountAiInferenceAdaptive {
   datetime: Time!
   # Error code
   errorCode: uint32!
+  # Inference steps
+  inferenceSteps: float64!
   # Inference time ms
   inferenceTimeMs: uint64!
+  # Input length
+  inputLength: float64!
+  # Input tokens
+  inputTokens: float64!
   # ModelId that was trigger to inference
   modelId: string!
   # Model that was trigger to inference is Beta
   modelIsBeta: uint8!
   # Monetization unit
   neurons: float64!
+  # Output tokens
+  outputTokens: float64!
+  # Processed pixels
+  processedPixels: float64!
+  # Processed tiles
+  processedTiles: float64!
   # Request size in bytes
   requestBytesIn: uint64!
   # Request size out bytes
@@ -4350,11 +4367,21 @@ type AccountAiInferenceAdaptive {
   requestSource: string!
   # ABR sample interval
   sampleInterval: uint32!
+  # Total tiles
+  totalTiles: float64!
 }
 
 input AccountAiInferenceAdaptiveFilter_InputObject {
   AND: [AccountAiInferenceAdaptiveFilter_InputObject!]
   OR: [AccountAiInferenceAdaptiveFilter_InputObject!]
+  audioSeconds: float64
+  audioSeconds_geq: float64
+  audioSeconds_gt: float64
+  audioSeconds_in: [float64!]
+  audioSeconds_leq: float64
+  audioSeconds_lt: float64
+  audioSeconds_neq: float64
+  audioSeconds_notin: [float64!]
   costMetricName1: string
   costMetricName1_geq: string
   costMetricName1_gt: string
@@ -4407,6 +4434,14 @@ input AccountAiInferenceAdaptiveFilter_InputObject {
   errorCode_lt: uint32
   errorCode_neq: uint32
   errorCode_notin: [uint32!]
+  inferenceSteps: float64
+  inferenceSteps_geq: float64
+  inferenceSteps_gt: float64
+  inferenceSteps_in: [float64!]
+  inferenceSteps_leq: float64
+  inferenceSteps_lt: float64
+  inferenceSteps_neq: float64
+  inferenceSteps_notin: [float64!]
   inferenceTimeMs: uint64
   inferenceTimeMs_geq: uint64
   inferenceTimeMs_gt: uint64
@@ -4415,6 +4450,22 @@ input AccountAiInferenceAdaptiveFilter_InputObject {
   inferenceTimeMs_lt: uint64
   inferenceTimeMs_neq: uint64
   inferenceTimeMs_notin: [uint64!]
+  inputLength: float64
+  inputLength_geq: float64
+  inputLength_gt: float64
+  inputLength_in: [float64!]
+  inputLength_leq: float64
+  inputLength_lt: float64
+  inputLength_neq: float64
+  inputLength_notin: [float64!]
+  inputTokens: float64
+  inputTokens_geq: float64
+  inputTokens_gt: float64
+  inputTokens_in: [float64!]
+  inputTokens_leq: float64
+  inputTokens_lt: float64
+  inputTokens_neq: float64
+  inputTokens_notin: [float64!]
   modelId: string
   modelId_geq: string
   modelId_gt: string
@@ -4441,6 +4492,30 @@ input AccountAiInferenceAdaptiveFilter_InputObject {
   neurons_lt: float64
   neurons_neq: float64
   neurons_notin: [float64!]
+  outputTokens: float64
+  outputTokens_geq: float64
+  outputTokens_gt: float64
+  outputTokens_in: [float64!]
+  outputTokens_leq: float64
+  outputTokens_lt: float64
+  outputTokens_neq: float64
+  outputTokens_notin: [float64!]
+  processedPixels: float64
+  processedPixels_geq: float64
+  processedPixels_gt: float64
+  processedPixels_in: [float64!]
+  processedPixels_leq: float64
+  processedPixels_lt: float64
+  processedPixels_neq: float64
+  processedPixels_notin: [float64!]
+  processedTiles: float64
+  processedTiles_geq: float64
+  processedTiles_gt: float64
+  processedTiles_in: [float64!]
+  processedTiles_leq: float64
+  processedTiles_lt: float64
+  processedTiles_neq: float64
+  processedTiles_notin: [float64!]
   requestBytesIn: uint64
   requestBytesIn_geq: uint64
   requestBytesIn_gt: uint64
@@ -4475,6 +4550,14 @@ input AccountAiInferenceAdaptiveFilter_InputObject {
   sampleInterval_lt: uint32
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
+  totalTiles: float64
+  totalTiles_geq: float64
+  totalTiles_gt: float64
+  totalTiles_in: [float64!]
+  totalTiles_leq: float64
+  totalTiles_lt: float64
+  totalTiles_neq: float64
+  totalTiles_notin: [float64!]
 }
 
 # Aggregated AI Inference logs with adaptive sampling
@@ -4745,6 +4828,10 @@ enum AccountAiInferenceAdaptiveGroupsOrderBy {
   requestSource_ASC
   # requestSource descending
   requestSource_DESC
+  # sum(totalAudioSeconds) ascending
+  sum_totalAudioSeconds_ASC
+  # sum(totalAudioSeconds) descending
+  sum_totalAudioSeconds_DESC
   # sum(totalCostMetricValue1) ascending
   sum_totalCostMetricValue1_ASC
   # sum(totalCostMetricValue1) descending
@@ -4753,14 +4840,38 @@ enum AccountAiInferenceAdaptiveGroupsOrderBy {
   sum_totalCostMetricValue2_ASC
   # sum(totalCostMetricValue2) descending
   sum_totalCostMetricValue2_DESC
+  # sum(totalInferenceSteps) ascending
+  sum_totalInferenceSteps_ASC
+  # sum(totalInferenceSteps) descending
+  sum_totalInferenceSteps_DESC
   # sum(totalInferenceTimeMs) ascending
   sum_totalInferenceTimeMs_ASC
   # sum(totalInferenceTimeMs) descending
   sum_totalInferenceTimeMs_DESC
+  # sum(totalInputLength) ascending
+  sum_totalInputLength_ASC
+  # sum(totalInputLength) descending
+  sum_totalInputLength_DESC
+  # sum(totalInputTokens) ascending
+  sum_totalInputTokens_ASC
+  # sum(totalInputTokens) descending
+  sum_totalInputTokens_DESC
   # sum(totalNeurons) ascending
   sum_totalNeurons_ASC
   # sum(totalNeurons) descending
   sum_totalNeurons_DESC
+  # sum(totalOutputTokens) ascending
+  sum_totalOutputTokens_ASC
+  # sum(totalOutputTokens) descending
+  sum_totalOutputTokens_DESC
+  # sum(totalProcessedPixels) ascending
+  sum_totalProcessedPixels_ASC
+  # sum(totalProcessedPixels) descending
+  sum_totalProcessedPixels_DESC
+  # sum(totalProcessedTiles) ascending
+  sum_totalProcessedTiles_ASC
+  # sum(totalProcessedTiles) descending
+  sum_totalProcessedTiles_DESC
   # sum(totalRequestBytesIn) ascending
   sum_totalRequestBytesIn_ASC
   # sum(totalRequestBytesIn) descending
@@ -4769,24 +4880,48 @@ enum AccountAiInferenceAdaptiveGroupsOrderBy {
   sum_totalRequestBytesOut_ASC
   # sum(totalRequestBytesOut) descending
   sum_totalRequestBytesOut_DESC
+  # sum(totalTiles) ascending
+  sum_totalTiles_ASC
+  # sum(totalTiles) descending
+  sum_totalTiles_DESC
 }
 
 type AccountAiInferenceAdaptiveGroupsSum {
+  # Total audio seconds
+  totalAudioSeconds: float64!
   # Total value for cost metric 1
   totalCostMetricValue1: float64!
   # Total value for cost metric 2
   totalCostMetricValue2: float64!
+  # Total inference steps
+  totalInferenceSteps: float64!
   # Total inference time ms
   totalInferenceTimeMs: uint64!
+  # Total input length
+  totalInputLength: float64!
+  # Total input tokens
+  totalInputTokens: float64!
   # Total neurons
   totalNeurons: float64!
+  # Total output tokens
+  totalOutputTokens: float64!
+  # Total processed pixels
+  totalProcessedPixels: float64!
+  # Total processed tiles
+  totalProcessedTiles: float64!
   # Total bytes in per request
   totalRequestBytesIn: uint64!
   # Total bytes out per request
   totalRequestBytesOut: uint64!
+  # Total tiles
+  totalTiles: float64!
 }
 
 enum AccountAiInferenceAdaptiveOrderBy {
+  # audioSeconds ascending
+  audioSeconds_ASC
+  # audioSeconds descending
+  audioSeconds_DESC
   # costMetricName1 ascending
   costMetricName1_ASC
   # costMetricName1 descending
@@ -4811,10 +4946,22 @@ enum AccountAiInferenceAdaptiveOrderBy {
   errorCode_ASC
   # errorCode descending
   errorCode_DESC
+  # inferenceSteps ascending
+  inferenceSteps_ASC
+  # inferenceSteps descending
+  inferenceSteps_DESC
   # inferenceTimeMs ascending
   inferenceTimeMs_ASC
   # inferenceTimeMs descending
   inferenceTimeMs_DESC
+  # inputLength ascending
+  inputLength_ASC
+  # inputLength descending
+  inputLength_DESC
+  # inputTokens ascending
+  inputTokens_ASC
+  # inputTokens descending
+  inputTokens_DESC
   # modelId ascending
   modelId_ASC
   # modelId descending
@@ -4827,6 +4974,18 @@ enum AccountAiInferenceAdaptiveOrderBy {
   neurons_ASC
   # neurons descending
   neurons_DESC
+  # outputTokens ascending
+  outputTokens_ASC
+  # outputTokens descending
+  outputTokens_DESC
+  # processedPixels ascending
+  processedPixels_ASC
+  # processedPixels descending
+  processedPixels_DESC
+  # processedTiles ascending
+  processedTiles_ASC
+  # processedTiles descending
+  processedTiles_DESC
   # requestBytesIn ascending
   requestBytesIn_ASC
   # requestBytesIn descending
@@ -4843,6 +5002,78 @@ enum AccountAiInferenceAdaptiveOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # totalTiles ascending
+  totalTiles_ASC
+  # totalTiles descending
+  totalTiles_DESC
+}
+
+# Aggregated count of Browser Isolation User Actions matches
+type AccountBrowserIsolationUserActionsAdaptiveGroups {
+  # Number of user actions
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountBrowserIsolationUserActionsAdaptiveGroupsDimensions
+}
+
+type AccountBrowserIsolationUserActionsAdaptiveGroupsDimensions {
+  datetime: Time!
+  # Decision applied to user action. Possible values are allow | block
+  decision: string!
+  # User action type. Possible values are copy | paste | download | upload | print
+  type: string!
+}
+
+input AccountBrowserIsolationUserActionsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountBrowserIsolationUserActionsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountBrowserIsolationUserActionsAdaptiveGroupsFilter_InputObject!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  decision: string
+  decision_geq: string
+  decision_gt: string
+  decision_in: [string!]
+  decision_leq: string
+  decision_like: string
+  decision_lt: string
+  decision_neq: string
+  decision_notin: [string!]
+  decision_notlike: string
+  type: string
+  type_geq: string
+  type_gt: string
+  type_in: [string!]
+  type_leq: string
+  type_like: string
+  type_lt: string
+  type_neq: string
+  type_notin: [string!]
+  type_notlike: string
+}
+
+enum AccountBrowserIsolationUserActionsAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # decision ascending
+  decision_ASC
+  # decision descending
+  decision_DESC
+  # type ascending
+  type_ASC
+  # type descending
+  type_DESC
 }
 
 # Browser Rendering events with adaptive sampling
@@ -7079,6 +7310,8 @@ type AccountCloudchamberMetricsAdaptiveGroups {
   dimensions: AccountCloudchamberMetricsAdaptiveGroupsDimensions
   # Maximum value of a metric per dimension
   max: AccountCloudchamberMetricsAdaptiveGroupsMax
+  # Quantiles of a metric per dimension
+  quantiles: AccountCloudchamberMetricsAdaptiveGroupsQuantiles
 }
 
 type AccountCloudchamberMetricsAdaptiveGroupsAvg {
@@ -7334,10 +7567,103 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   procType_ASC
   # procType descending
   procType_DESC
+  # quantiles(cpuLoadP50) ascending
+  quantiles_cpuLoadP50_ASC
+  # quantiles(cpuLoadP50) descending
+  quantiles_cpuLoadP50_DESC
+  # quantiles(cpuLoadP90) ascending
+  quantiles_cpuLoadP90_ASC
+  # quantiles(cpuLoadP90) descending
+  quantiles_cpuLoadP90_DESC
+  # quantiles(cpuLoadP99) ascending
+  quantiles_cpuLoadP99_ASC
+  # quantiles(cpuLoadP99) descending
+  quantiles_cpuLoadP99_DESC
+  # quantiles(gpuMemoryP50) ascending
+  quantiles_gpuMemoryP50_ASC
+  # quantiles(gpuMemoryP50) descending
+  quantiles_gpuMemoryP50_DESC
+  # quantiles(gpuMemoryP90) ascending
+  quantiles_gpuMemoryP90_ASC
+  # quantiles(gpuMemoryP90) descending
+  quantiles_gpuMemoryP90_DESC
+  # quantiles(gpuMemoryP99) ascending
+  quantiles_gpuMemoryP99_ASC
+  # quantiles(gpuMemoryP99) descending
+  quantiles_gpuMemoryP99_DESC
+  # quantiles(memoryP50) ascending
+  quantiles_memoryP50_ASC
+  # quantiles(memoryP50) descending
+  quantiles_memoryP50_DESC
+  # quantiles(memoryP90) ascending
+  quantiles_memoryP90_ASC
+  # quantiles(memoryP90) descending
+  quantiles_memoryP90_DESC
+  # quantiles(memoryP99) ascending
+  quantiles_memoryP99_ASC
+  # quantiles(memoryP99) descending
+  quantiles_memoryP99_DESC
+  # quantiles(rxBandwidthP50) ascending
+  quantiles_rxBandwidthP50_ASC
+  # quantiles(rxBandwidthP50) descending
+  quantiles_rxBandwidthP50_DESC
+  # quantiles(rxBandwidthP90) ascending
+  quantiles_rxBandwidthP90_ASC
+  # quantiles(rxBandwidthP90) descending
+  quantiles_rxBandwidthP90_DESC
+  # quantiles(rxBandwidthP99) ascending
+  quantiles_rxBandwidthP99_ASC
+  # quantiles(rxBandwidthP99) descending
+  quantiles_rxBandwidthP99_DESC
+  # quantiles(txBandwidthP50) ascending
+  quantiles_txBandwidthP50_ASC
+  # quantiles(txBandwidthP50) descending
+  quantiles_txBandwidthP50_DESC
+  # quantiles(txBandwidthP90) ascending
+  quantiles_txBandwidthP90_ASC
+  # quantiles(txBandwidthP90) descending
+  quantiles_txBandwidthP90_DESC
+  # quantiles(txBandwidthP99) ascending
+  quantiles_txBandwidthP99_ASC
+  # quantiles(txBandwidthP99) descending
+  quantiles_txBandwidthP99_DESC
   # region ascending
   region_ASC
   # region descending
   region_DESC
+}
+
+type AccountCloudchamberMetricsAdaptiveGroupsQuantiles {
+  # CPU load (50th percentile)
+  cpuLoadP50: float64!
+  # CPU load (90th percentile)
+  cpuLoadP90: float64!
+  # CPU load (99th percentile)
+  cpuLoadP99: float64!
+  # GPU memory usage (50th percentile)
+  gpuMemoryP50: float64!
+  # GPU memory usage (90th percentile)
+  gpuMemoryP90: float64!
+  # GPU memory usage (99th percentile)
+  gpuMemoryP99: float64!
+  # Memory usage (50th percentile)
+  memoryP50: float64!
+  # Memory usage (90th percentile)
+  memoryP90: float64!
+  # Memory usage (99th percentile)
+  memoryP99: float64!
+  # RX bandwidth (50th percentile)
+  rxBandwidthP50: float64!
+  # RX bandwidth (90th percentile)
+  rxBandwidthP90: float64!
+  # RX bandwidth (99th percentile)
+  rxBandwidthP99: float64!
+  # TX bandwidth (50th percentile)
+  txBandwidthP50: float64!
+  # TX bandwidth (90th percentile)
+  txBandwidthP90: float64!
+  # TX bandwidth (99th percentile)
+  txBandwidthP99: float64!
 }
 
 # Beta. Aggregated D1 analytics with adaptive sampling
@@ -15480,6 +15806,8 @@ type AccountGatewayL7RequestsAdaptiveGroupsDimensions {
   proxyEndpoint: string!
   # Indicates if the request content was quarantined
   quarantined: uint8!
+  # The URI to which the user was redirected
+  redirectTargetURI: string!
   # The request unique identifier
   requestId: string!
   # Local LAN IP of the device. Only available when connected via a GRE/IPsec tunnel on-ramp
@@ -15657,6 +15985,16 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   quarantined_lt: uint8
   quarantined_neq: uint8
   quarantined_notin: bytes
+  redirectTargetURI: string
+  redirectTargetURI_geq: string
+  redirectTargetURI_gt: string
+  redirectTargetURI_in: [string!]
+  redirectTargetURI_leq: string
+  redirectTargetURI_like: string
+  redirectTargetURI_lt: string
+  redirectTargetURI_neq: string
+  redirectTargetURI_notin: [string!]
+  redirectTargetURI_notlike: string
   requestId: string
   requestId_geq: string
   requestId_gt: string
@@ -15830,6 +16168,10 @@ enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
   quarantined_ASC
   # quarantined descending
   quarantined_DESC
+  # redirectTargetURI ascending
+  redirectTargetURI_ASC
+  # redirectTargetURI descending
+  redirectTargetURI_DESC
   # requestId ascending
   requestId_ASC
   # requestId descending
@@ -28097,6 +28439,8 @@ type AccountMconnTelemetryEventsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Timestamp bucketed by minute
   datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
   # Event kind
   kind: string!
 }
@@ -28146,6 +28490,14 @@ input AccountMconnTelemetryEventsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   kind: string
   kind_geq: string
   kind_gt: string
@@ -28183,6 +28535,10 @@ enum AccountMconnTelemetryEventsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # kind ascending
   kind_ASC
   # kind descending
@@ -28208,6 +28564,8 @@ type AccountMconnTelemetryEventsStagingAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Timestamp bucketed by minute
   datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
   # Event kind
   kind: string!
 }
@@ -28257,6 +28615,14 @@ input AccountMconnTelemetryEventsStagingAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   kind: string
   kind_geq: string
   kind_gt: string
@@ -28294,6 +28660,10 @@ enum AccountMconnTelemetryEventsStagingAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # kind ascending
   kind_ASC
   # kind descending
@@ -28321,6 +28691,8 @@ type AccountMconnTelemetrySnapshotDisksAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Timestamp bucketed by minute
   datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
   # Device name
   name: string!
 }
@@ -28370,6 +28742,14 @@ input AccountMconnTelemetrySnapshotDisksAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   name: string
   name_geq: string
   name_gt: string
@@ -28416,6 +28796,10 @@ enum AccountMconnTelemetrySnapshotDisksAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # max(inProgress) ascending
   max_inProgress_ASC
   # max(inProgress) descending
@@ -28518,6 +28902,8 @@ type AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Timestamp bucketed by minute
   datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
   # Device name
   name: string!
 }
@@ -28567,6 +28953,14 @@ input AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsFilter_InputObject 
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   name: string
   name_geq: string
   name_gt: string
@@ -28613,6 +29007,10 @@ enum AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # max(inProgress) ascending
   max_inProgress_ASC
   # max(inProgress) descending
@@ -28714,6 +29112,8 @@ type AccountMconnTelemetrySnapshotMountsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Timestamp bucketed by minute
   datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
   # File system on disk (EXT4, NTFS, etc.)
   fileSystem: string!
   # Kind of disk (HDD, SSD, etc.)
@@ -28769,6 +29169,14 @@ input AccountMconnTelemetrySnapshotMountsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   fileSystem: string
   fileSystem_geq: string
   fileSystem_gt: string
@@ -28847,6 +29255,10 @@ enum AccountMconnTelemetrySnapshotMountsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # fileSystem ascending
   fileSystem_ASC
   # fileSystem descending
@@ -28901,6 +29313,8 @@ type AccountMconnTelemetrySnapshotMountsStagingAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Timestamp bucketed by minute
   datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
   # File system on disk (EXT4, NTFS, etc.)
   fileSystem: string!
   # Kind of disk (HDD, SSD, etc.)
@@ -28956,6 +29370,14 @@ input AccountMconnTelemetrySnapshotMountsStagingAdaptiveGroupsFilter_InputObject
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   fileSystem: string
   fileSystem_geq: string
   fileSystem_gt: string
@@ -29034,6 +29456,10 @@ enum AccountMconnTelemetrySnapshotMountsStagingAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # fileSystem ascending
   fileSystem_ASC
   # fileSystem descending
@@ -29088,6 +29514,8 @@ type AccountMconnTelemetrySnapshotNetdevsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Timestamp bucketed by minute
   datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
   # Name of the network device
   name: string!
 }
@@ -29137,6 +29565,14 @@ input AccountMconnTelemetrySnapshotNetdevsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   name: string
   name_geq: string
   name_gt: string
@@ -29174,6 +29610,10 @@ enum AccountMconnTelemetrySnapshotNetdevsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # name ascending
   name_ASC
   # name descending
@@ -29299,6 +29739,8 @@ type AccountMconnTelemetrySnapshotNetdevsStagingAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Timestamp bucketed by minute
   datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
   # Name of the network device
   name: string!
 }
@@ -29348,6 +29790,14 @@ input AccountMconnTelemetrySnapshotNetdevsStagingAdaptiveGroupsFilter_InputObjec
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   name: string
   name_geq: string
   name_gt: string
@@ -29385,6 +29835,10 @@ enum AccountMconnTelemetrySnapshotNetdevsStagingAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # name ascending
   name_ASC
   # name descending
@@ -29510,6 +29964,8 @@ type AccountMconnTelemetrySnapshotsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Timestamp bucketed by minute
   datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
   # Version
   version: string!
 }
@@ -29559,6 +30015,14 @@ input AccountMconnTelemetrySnapshotsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   version: string
   version_geq: string
   version_gt: string
@@ -29574,6 +30038,8 @@ input AccountMconnTelemetrySnapshotsAdaptiveGroupsFilter_InputObject {
 type AccountMconnTelemetrySnapshotsAdaptiveGroupsMax {
   # Count of processors/cores
   cpuCount: float64!
+  # Numeric value associated with high availability state (0 = unknown, 1 = active, 2 = standby, 3 = disabled, 4 = fault)
+  haValue: float64!
   # Boot time (seconds since Unix epoch)
   kernelBtime: float64!
   # Number of processes in runnable state
@@ -29625,10 +30091,18 @@ enum AccountMconnTelemetrySnapshotsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # max(cpuCount) ascending
   max_cpuCount_ASC
   # max(cpuCount) descending
   max_cpuCount_DESC
+  # max(haValue) ascending
+  max_haValue_ASC
+  # max(haValue) descending
+  max_haValue_DESC
   # max(kernelBtime) ascending
   max_kernelBtime_ASC
   # max(kernelBtime) descending
@@ -29703,6 +30177,8 @@ type AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Timestamp bucketed by minute
   datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
   # Version
   version: string!
 }
@@ -29752,6 +30228,14 @@ input AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   version: string
   version_geq: string
   version_gt: string
@@ -29767,6 +30251,8 @@ input AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsFilter_InputObject {
 type AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsMax {
   # Count of processors/cores
   cpuCount: float64!
+  # Numeric value associated with high availability state (0 = unknown, 1 = active, 2 = standby, 3 = disabled, 4 = fault)
+  haValue: float64!
   # Boot time (seconds since Unix epoch)
   kernelBtime: float64!
   # Number of processes in runnable state
@@ -29818,10 +30304,18 @@ enum AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # max(cpuCount) ascending
   max_cpuCount_ASC
   # max(cpuCount) descending
   max_cpuCount_DESC
+  # max(haValue) ascending
+  max_haValue_ASC
+  # max(haValue) descending
+  max_haValue_DESC
   # max(kernelBtime) ascending
   max_kernelBtime_ASC
   # max(kernelBtime) descending
@@ -29896,6 +30390,8 @@ type AccountMconnTelemetrySnapshotThermalsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Timestamp bucketed by minute
   datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
   # Sensor identifier for the component
   label: string!
 }
@@ -29945,6 +30441,14 @@ input AccountMconnTelemetrySnapshotThermalsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   label: string
   label_geq: string
   label_gt: string
@@ -29991,6 +30495,10 @@ enum AccountMconnTelemetrySnapshotThermalsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # label ascending
   label_ASC
   # label descending
@@ -30029,6 +30537,8 @@ type AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Timestamp bucketed by minute
   datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
   # Sensor identifier for the component
   label: string!
 }
@@ -30078,6 +30588,14 @@ input AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsFilter_InputObje
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   label: string
   label_geq: string
   label_gt: string
@@ -30124,6 +30642,10 @@ enum AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # label ascending
   label_ASC
   # label descending
@@ -35908,6 +36430,7 @@ type AccountSettings {
   aiGatewaySizeAdaptiveGroups: Settings!
   aiInferenceAdaptive: Settings!
   aiInferenceAdaptiveGroups: Settings!
+  browserIsolationUserActionsAdaptiveGroups: Settings!
   browserRenderingEventsAdaptive: Settings!
   browserRenderingEventsAdaptiveGroups: Settings!
   callsStatusAdaptive: Settings!
@@ -40262,6 +40785,10 @@ type AccountWorkerPlacementAdaptiveGroups {
 }
 
 type AccountWorkerPlacementAdaptiveGroupsDimensions {
+  # IATA airport code for the Cloudflare datacenter where the request entered Cloudflare's network.
+  clientColoCode: string!
+  # IATA airport code for the Cloudflare datacenter where the script ran.
+  coloCode: string!
   # Request timestamp, truncated to start of a day
   date: Date!
   # Request timestamp
@@ -40297,6 +40824,26 @@ type AccountWorkerPlacementAdaptiveGroupsDimensions {
 input AccountWorkerPlacementAdaptiveGroupsFilter_InputObject {
   AND: [AccountWorkerPlacementAdaptiveGroupsFilter_InputObject!]
   OR: [AccountWorkerPlacementAdaptiveGroupsFilter_InputObject!]
+  clientColoCode: string
+  clientColoCode_geq: string
+  clientColoCode_gt: string
+  clientColoCode_in: [string!]
+  clientColoCode_leq: string
+  clientColoCode_like: string
+  clientColoCode_lt: string
+  clientColoCode_neq: string
+  clientColoCode_notin: [string!]
+  clientColoCode_notlike: string
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -40426,6 +40973,14 @@ input AccountWorkerPlacementAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountWorkerPlacementAdaptiveGroupsOrderBy {
+  # clientColoCode ascending
+  clientColoCode_ASC
+  # clientColoCode descending
+  clientColoCode_DESC
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
   # date ascending
   date_ASC
   # date descending
