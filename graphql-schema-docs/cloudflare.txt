@@ -20,6 +20,8 @@ Account-level datasets:
 * d1AnalyticsAdaptiveGroups
 * d1QueriesAdaptiveGroups
 * d1StorageAdaptiveGroups
+* dnsFirewallAnalyticsAdaptive
+* dnsFirewallAnalyticsAdaptiveGroups
   dosdAttackAnalyticsGroups
   dosdNetworkAnalyticsAdaptiveGroups
 * durableObjectsInvocationsAdaptiveGroups
@@ -60,6 +62,8 @@ Account-level datasets:
   magicTransitTunnelTrafficAdaptiveGroups
   mconnTelemetryEventsAdaptiveGroups
   mconnTelemetryEventsStagingAdaptiveGroups
+  mconnTelemetrySnapshotDhcpLeasesAdaptiveGroups
+  mconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroups
   mconnTelemetrySnapshotDisksAdaptiveGroups
   mconnTelemetrySnapshotDisksStagingAdaptiveGroups
   mconnTelemetrySnapshotMountsAdaptiveGroups
@@ -261,6 +265,10 @@ type account {
   d1QueriesAdaptiveGroups(filter: AccountD1QueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1QueriesAdaptiveGroupsOrderBy!]): [AccountD1QueriesAdaptiveGroups!]!
   # Beta. D1 storage with adaptive sampling
   d1StorageAdaptiveGroups(filter: AccountD1StorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1StorageAdaptiveGroupsOrderBy!]): [AccountD1StorageAdaptiveGroups!]!
+  # Analytics data for DNS Firewall queries
+  dnsFirewallAnalyticsAdaptive(filter: AccountDnsFirewallAnalyticsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountDnsFirewallAnalyticsAdaptiveOrderBy!]): [AccountDnsFirewallAnalyticsAdaptive!]!
+  # Analytics data for DNS Firewall queries
+  dnsFirewallAnalyticsAdaptiveGroups(filter: AccountDnsFirewallAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDnsFirewallAnalyticsAdaptiveGroupsOrderBy!]): [AccountDnsFirewallAnalyticsAdaptiveGroups!]!
   # Attack analytics metadata for attacks detected by dosd
   dosdAttackAnalyticsGroups(filter: AccountDosdAttackAnalyticsGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDosdAttackAnalyticsGroupsOrderBy!]): [AccountDosdAttackAnalyticsGroups!]!
   # Network analytics data for dosd
@@ -342,6 +350,10 @@ type account {
   mconnTelemetryEventsAdaptiveGroups(filter: AccountMconnTelemetryEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetryEventsAdaptiveGroupsOrderBy!]): [AccountMconnTelemetryEventsAdaptiveGroups!]!
   # Aggregated Magic WAN Connector events with adaptive sampling
   mconnTelemetryEventsStagingAdaptiveGroups(filter: AccountMconnTelemetryEventsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetryEventsStagingAdaptiveGroupsOrderBy!]): [AccountMconnTelemetryEventsStagingAdaptiveGroups!]!
+  # Aggregated Magic WAN Connector snapshots of DHCP leases with adaptive sampling
+  mconnTelemetrySnapshotDhcpLeasesAdaptiveGroups(filter: AccountMconnTelemetrySnapshotDhcpLeasesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotDhcpLeasesAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotDhcpLeasesAdaptiveGroups!]!
+  # Aggregated Magic WAN Connector snapshots of DHCP leases with adaptive sampling
+  mconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroups(filter: AccountMconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroups!]!
   # Aggregated Magic WAN Connector disk snapshots with adaptive sampling
   mconnTelemetrySnapshotDisksAdaptiveGroups(filter: AccountMconnTelemetrySnapshotDisksAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotDisksAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotDisksAdaptiveGroups!]!
   # Aggregated Magic WAN Connector disk snapshots with adaptive sampling
@@ -8340,6 +8352,661 @@ enum AccountD1StorageAdaptiveGroupsOrderBy {
   max_databaseSizeBytes_ASC
   # max(databaseSizeBytes) descending
   max_databaseSizeBytes_DESC
+}
+
+# Analytics data for DNS Firewall queries
+type AccountDnsFirewallAnalyticsAdaptive {
+  # DNS Firewall cluster tag
+  clusterTag: string!
+  # IATA airport code of the data center that processed the query
+  coloName: string!
+  # Date on which the query was received
+  date: Date!
+  # Time at which the query was received
+  datetime: Time!
+  # Cloudflare edge IP address that the query was received at
+  destinationIP: string!
+  # Internet Protocol version over which the query was received
+  ipVersion: uint8!
+  # Transport protocol over which the query was received
+  protocol: string!
+  # DNS query name without trailing dot
+  queryName: string!
+  # Size of the DNS query in bytes
+  querySize: uint16!
+  # DNS query type
+  queryType: string!
+  # Whether the DNS response was served from cache
+  responseCached: uint8!
+  # DNS response code
+  responseCode: string!
+  # Size of the DNS response in bytes
+  responseSize: uint16!
+  # Whether a stale DNS response was served from cache
+  responseStale: uint8!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # IP address of the client that sent the query (usually this is the resolver's IP address)
+  sourceIP: string!
+  # Upstream server that the query was forwarded to
+  upstreamIP: string!
+}
+
+input AccountDnsFirewallAnalyticsAdaptiveFilter_InputObject {
+  AND: [AccountDnsFirewallAnalyticsAdaptiveFilter_InputObject!]
+  OR: [AccountDnsFirewallAnalyticsAdaptiveFilter_InputObject!]
+  clusterTag: string
+  clusterTag_geq: string
+  clusterTag_gt: string
+  clusterTag_in: [string!]
+  clusterTag_leq: string
+  clusterTag_like: string
+  clusterTag_lt: string
+  clusterTag_neq: string
+  clusterTag_notin: [string!]
+  clusterTag_notlike: string
+  coloName: string
+  coloName_geq: string
+  coloName_gt: string
+  coloName_in: [string!]
+  coloName_leq: string
+  coloName_like: string
+  coloName_lt: string
+  coloName_neq: string
+  coloName_notin: [string!]
+  coloName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationIP: string
+  destinationIP_geq: string
+  destinationIP_gt: string
+  destinationIP_in: [string!]
+  destinationIP_leq: string
+  destinationIP_like: string
+  destinationIP_lt: string
+  destinationIP_neq: string
+  destinationIP_notin: [string!]
+  destinationIP_notlike: string
+  ipVersion: uint8
+  ipVersion_geq: uint8
+  ipVersion_gt: uint8
+  ipVersion_in: bytes
+  ipVersion_leq: uint8
+  ipVersion_lt: uint8
+  ipVersion_neq: uint8
+  ipVersion_notin: bytes
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  queryName: string
+  queryName_geq: string
+  queryName_gt: string
+  queryName_in: [string!]
+  queryName_leq: string
+  queryName_like: string
+  queryName_lt: string
+  queryName_neq: string
+  queryName_notin: [string!]
+  queryName_notlike: string
+  querySize: uint16
+  querySize_geq: uint16
+  querySize_gt: uint16
+  querySize_in: [uint16!]
+  querySize_leq: uint16
+  querySize_lt: uint16
+  querySize_neq: uint16
+  querySize_notin: [uint16!]
+  queryType: string
+  queryType_geq: string
+  queryType_gt: string
+  queryType_in: [string!]
+  queryType_leq: string
+  queryType_like: string
+  queryType_lt: string
+  queryType_neq: string
+  queryType_notin: [string!]
+  queryType_notlike: string
+  responseCached: uint8
+  responseCached_geq: uint8
+  responseCached_gt: uint8
+  responseCached_in: bytes
+  responseCached_leq: uint8
+  responseCached_lt: uint8
+  responseCached_neq: uint8
+  responseCached_notin: bytes
+  responseCode: string
+  responseCode_geq: string
+  responseCode_gt: string
+  responseCode_in: [string!]
+  responseCode_leq: string
+  responseCode_like: string
+  responseCode_lt: string
+  responseCode_neq: string
+  responseCode_notin: [string!]
+  responseCode_notlike: string
+  responseSize: uint16
+  responseSize_geq: uint16
+  responseSize_gt: uint16
+  responseSize_in: [uint16!]
+  responseSize_leq: uint16
+  responseSize_lt: uint16
+  responseSize_neq: uint16
+  responseSize_notin: [uint16!]
+  responseStale: uint8
+  responseStale_geq: uint8
+  responseStale_gt: uint8
+  responseStale_in: bytes
+  responseStale_leq: uint8
+  responseStale_lt: uint8
+  responseStale_neq: uint8
+  responseStale_notin: bytes
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
+  upstreamIP: string
+  upstreamIP_geq: string
+  upstreamIP_gt: string
+  upstreamIP_in: [string!]
+  upstreamIP_leq: string
+  upstreamIP_like: string
+  upstreamIP_lt: string
+  upstreamIP_neq: string
+  upstreamIP_notin: [string!]
+  upstreamIP_notlike: string
+}
+
+# Analytics data for DNS Firewall queries
+type AccountDnsFirewallAnalyticsAdaptiveGroups {
+  # Average of a metric per dimension
+  avg: AccountDnsFirewallAnalyticsAdaptiveGroupsAvg
+  # Number of queries per dimension
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountDnsFirewallAnalyticsAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: AccountDnsFirewallAnalyticsAdaptiveGroupsQuantiles
+}
+
+type AccountDnsFirewallAnalyticsAdaptiveGroupsAvg {
+  # Average processing time in microseconds
+  processingTimeUs: float64!
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountDnsFirewallAnalyticsAdaptiveGroupsDimensions {
+  # ID of DNS Firewall cluster
+  clusterTag: string!
+  # IATA airport code of the data center that processed the query
+  coloName: string!
+  # Date on which the query was received
+  date: Date!
+  # Time at which the query was received
+  datetime: Time!
+  # Time at which the query was received, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Time at which the query was received, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # Time at which the query was received, truncated to multiple of 30 minutes
+  datetimeHalfOfHour: Time!
+  # Time at which the query was received, truncated to the hour
+  datetimeHour: Time!
+  # Time at which the query was received, truncated to the minute
+  datetimeMinute: Time!
+  # Cloudflare edge IP address that the query was received at
+  destinationIP: string!
+  # Internet Protocol version over which the query was received
+  ipVersion: uint8!
+  # Transport protocol over which the query was received
+  protocol: string!
+  # DNS query name without trailing dot
+  queryName: string!
+  # Size of the DNS query in bytes (in multiples of 16)
+  querySizeBucket: string!
+  # DNS query type
+  queryType: string!
+  # Whether the DNS response was served from cache
+  responseCached: uint8!
+  # DNS response code
+  responseCode: string!
+  # Size of the DNS response in bytes (in multiples of 16)
+  responseSizeBucket: string!
+  # Whether a stale DNS response was served from cache
+  responseStale: uint8!
+  # IP address of the client that sent the query (usually this is the resolver's IP address)
+  sourceIP: string!
+  # Upstream server that the query was forwarded to
+  upstreamIP: string!
+}
+
+input AccountDnsFirewallAnalyticsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountDnsFirewallAnalyticsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountDnsFirewallAnalyticsAdaptiveGroupsFilter_InputObject!]
+  clusterTag: string
+  clusterTag_geq: string
+  clusterTag_gt: string
+  clusterTag_in: [string!]
+  clusterTag_leq: string
+  clusterTag_like: string
+  clusterTag_lt: string
+  clusterTag_neq: string
+  clusterTag_notin: [string!]
+  clusterTag_notlike: string
+  coloName: string
+  coloName_geq: string
+  coloName_gt: string
+  coloName_in: [string!]
+  coloName_leq: string
+  coloName_like: string
+  coloName_lt: string
+  coloName_neq: string
+  coloName_notin: [string!]
+  coloName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHalfOfHour: Time
+  datetimeHalfOfHour_geq: Time
+  datetimeHalfOfHour_gt: Time
+  datetimeHalfOfHour_in: [Time!]
+  datetimeHalfOfHour_leq: Time
+  datetimeHalfOfHour_lt: Time
+  datetimeHalfOfHour_neq: Time
+  datetimeHalfOfHour_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationIP: string
+  destinationIP_geq: string
+  destinationIP_gt: string
+  destinationIP_in: [string!]
+  destinationIP_leq: string
+  destinationIP_like: string
+  destinationIP_lt: string
+  destinationIP_neq: string
+  destinationIP_notin: [string!]
+  destinationIP_notlike: string
+  ipVersion: uint8
+  ipVersion_geq: uint8
+  ipVersion_gt: uint8
+  ipVersion_in: bytes
+  ipVersion_leq: uint8
+  ipVersion_lt: uint8
+  ipVersion_neq: uint8
+  ipVersion_notin: bytes
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  queryName: string
+  queryName_geq: string
+  queryName_gt: string
+  queryName_in: [string!]
+  queryName_leq: string
+  queryName_like: string
+  queryName_lt: string
+  queryName_neq: string
+  queryName_notin: [string!]
+  queryName_notlike: string
+  querySizeBucket: string
+  querySizeBucket_geq: string
+  querySizeBucket_gt: string
+  querySizeBucket_in: [string!]
+  querySizeBucket_leq: string
+  querySizeBucket_like: string
+  querySizeBucket_lt: string
+  querySizeBucket_neq: string
+  querySizeBucket_notin: [string!]
+  querySizeBucket_notlike: string
+  queryType: string
+  queryType_geq: string
+  queryType_gt: string
+  queryType_in: [string!]
+  queryType_leq: string
+  queryType_like: string
+  queryType_lt: string
+  queryType_neq: string
+  queryType_notin: [string!]
+  queryType_notlike: string
+  responseCached: uint8
+  responseCached_geq: uint8
+  responseCached_gt: uint8
+  responseCached_in: bytes
+  responseCached_leq: uint8
+  responseCached_lt: uint8
+  responseCached_neq: uint8
+  responseCached_notin: bytes
+  responseCode: string
+  responseCode_geq: string
+  responseCode_gt: string
+  responseCode_in: [string!]
+  responseCode_leq: string
+  responseCode_like: string
+  responseCode_lt: string
+  responseCode_neq: string
+  responseCode_notin: [string!]
+  responseCode_notlike: string
+  responseSizeBucket: string
+  responseSizeBucket_geq: string
+  responseSizeBucket_gt: string
+  responseSizeBucket_in: [string!]
+  responseSizeBucket_leq: string
+  responseSizeBucket_like: string
+  responseSizeBucket_lt: string
+  responseSizeBucket_neq: string
+  responseSizeBucket_notin: [string!]
+  responseSizeBucket_notlike: string
+  responseStale: uint8
+  responseStale_geq: uint8
+  responseStale_gt: uint8
+  responseStale_in: bytes
+  responseStale_leq: uint8
+  responseStale_lt: uint8
+  responseStale_neq: uint8
+  responseStale_notin: bytes
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
+  upstreamIP: string
+  upstreamIP_geq: string
+  upstreamIP_gt: string
+  upstreamIP_in: [string!]
+  upstreamIP_leq: string
+  upstreamIP_like: string
+  upstreamIP_lt: string
+  upstreamIP_neq: string
+  upstreamIP_notin: [string!]
+  upstreamIP_notlike: string
+}
+
+enum AccountDnsFirewallAnalyticsAdaptiveGroupsOrderBy {
+  # avg(processingTimeUs) ascending
+  avg_processingTimeUs_ASC
+  # avg(processingTimeUs) descending
+  avg_processingTimeUs_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # clusterTag ascending
+  clusterTag_ASC
+  # clusterTag descending
+  clusterTag_DESC
+  # coloName ascending
+  coloName_ASC
+  # coloName descending
+  coloName_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHalfOfHour ascending
+  datetimeHalfOfHour_ASC
+  # datetimeHalfOfHour descending
+  datetimeHalfOfHour_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationIP ascending
+  destinationIP_ASC
+  # destinationIP descending
+  destinationIP_DESC
+  # instanceCode ascending
+  instanceCode_ASC
+  # instanceCode descending
+  instanceCode_DESC
+  # ipVersion ascending
+  ipVersion_ASC
+  # ipVersion descending
+  ipVersion_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # quantiles(processingTimeUsP50) ascending
+  quantiles_processingTimeUsP50_ASC
+  # quantiles(processingTimeUsP50) descending
+  quantiles_processingTimeUsP50_DESC
+  # quantiles(processingTimeUsP90) ascending
+  quantiles_processingTimeUsP90_ASC
+  # quantiles(processingTimeUsP90) descending
+  quantiles_processingTimeUsP90_DESC
+  # quantiles(processingTimeUsP99) ascending
+  quantiles_processingTimeUsP99_ASC
+  # quantiles(processingTimeUsP99) descending
+  quantiles_processingTimeUsP99_DESC
+  # queryName ascending
+  queryName_ASC
+  # queryName descending
+  queryName_DESC
+  # querySizeBucket ascending
+  querySizeBucket_ASC
+  # querySizeBucket descending
+  querySizeBucket_DESC
+  # queryType ascending
+  queryType_ASC
+  # queryType descending
+  queryType_DESC
+  # responseCached ascending
+  responseCached_ASC
+  # responseCached descending
+  responseCached_DESC
+  # responseCode ascending
+  responseCode_ASC
+  # responseCode descending
+  responseCode_DESC
+  # responseSizeBucket ascending
+  responseSizeBucket_ASC
+  # responseSizeBucket descending
+  responseSizeBucket_DESC
+  # responseStale ascending
+  responseStale_ASC
+  # responseStale descending
+  responseStale_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # upstreamIP ascending
+  upstreamIP_ASC
+  # upstreamIP descending
+  upstreamIP_DESC
+}
+
+type AccountDnsFirewallAnalyticsAdaptiveGroupsQuantiles {
+  # 50th percentile processing time in microseconds (median)
+  processingTimeUsP50: float64!
+  # 90th percentile processing time in microseconds
+  processingTimeUsP90: float64!
+  # 99th percentile processing time in microseconds
+  processingTimeUsP99: float64!
+}
+
+enum AccountDnsFirewallAnalyticsAdaptiveOrderBy {
+  # clusterTag ascending
+  clusterTag_ASC
+  # clusterTag descending
+  clusterTag_DESC
+  # coloName ascending
+  coloName_ASC
+  # coloName descending
+  coloName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationIP ascending
+  destinationIP_ASC
+  # destinationIP descending
+  destinationIP_DESC
+  # instanceCode ascending
+  instanceCode_ASC
+  # instanceCode descending
+  instanceCode_DESC
+  # ipVersion ascending
+  ipVersion_ASC
+  # ipVersion descending
+  ipVersion_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # queryName ascending
+  queryName_ASC
+  # queryName descending
+  queryName_DESC
+  # querySize ascending
+  querySize_ASC
+  # querySize descending
+  querySize_DESC
+  # queryType ascending
+  queryType_ASC
+  # queryType descending
+  queryType_DESC
+  # responseCached ascending
+  responseCached_ASC
+  # responseCached descending
+  responseCached_DESC
+  # responseCode ascending
+  responseCode_ASC
+  # responseCode descending
+  responseCode_DESC
+  # responseSize ascending
+  responseSize_ASC
+  # responseSize descending
+  responseSize_DESC
+  # responseStale ascending
+  responseStale_ASC
+  # responseStale descending
+  responseStale_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # upstreamIP ascending
+  upstreamIP_ASC
+  # upstreamIP descending
+  upstreamIP_DESC
 }
 
 # Attack analytics metadata for attacks detected by dosd
@@ -20788,6 +21455,8 @@ type AccountHyperdriveQueriesAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # The result of the Hyperdrive event: 'error' or 'complete'. Error events may not have complete data.
   eventStatus: string!
+  # Whether the query originates from a Hyperdrive config on the free tier
+  isFree: string!
 }
 
 input AccountHyperdriveQueriesAdaptiveGroupsFilter_InputObject {
@@ -20865,6 +21534,16 @@ input AccountHyperdriveQueriesAdaptiveGroupsFilter_InputObject {
   eventStatus_neq: string
   eventStatus_notin: [string!]
   eventStatus_notlike: string
+  isFree: string
+  isFree_geq: string
+  isFree_gt: string
+  isFree_in: [string!]
+  isFree_leq: string
+  isFree_like: string
+  isFree_lt: string
+  isFree_neq: string
+  isFree_notin: [string!]
+  isFree_notlike: string
 }
 
 enum AccountHyperdriveQueriesAdaptiveGroupsOrderBy {
@@ -20924,6 +21603,10 @@ enum AccountHyperdriveQueriesAdaptiveGroupsOrderBy {
   eventStatus_ASC
   # eventStatus descending
   eventStatus_DESC
+  # isFree ascending
+  isFree_ASC
+  # isFree descending
+  isFree_DESC
   # sum(clientWriteLatency) ascending
   sum_clientWriteLatency_ASC
   # sum(clientWriteLatency) descending
@@ -28670,6 +29353,404 @@ enum AccountMconnTelemetryEventsStagingAdaptiveGroupsOrderBy {
   kind_DESC
 }
 
+# Aggregated Magic WAN Connector snapshots of DHCP leases with adaptive sampling
+type AccountMconnTelemetrySnapshotDhcpLeasesAdaptiveGroups {
+  # Snapshot DHCP lease count
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMconnTelemetrySnapshotDhcpLeasesAdaptiveGroupsDimensions
+  max: AccountMconnTelemetrySnapshotDhcpLeasesAdaptiveGroupsMax
+}
+
+type AccountMconnTelemetrySnapshotDhcpLeasesAdaptiveGroupsDimensions {
+  # Client ID of the device the IP Address was leased to
+  clientId: string!
+  # Connector identifier
+  connectorId: string!
+  # Timestamp bucketed by 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Timestamp bucketed by 5 minutes
+  datetimeFiveMinutes: Time!
+  # Timestamp bucketed by hour
+  datetimeHour: Time!
+  # Timestamp bucketed by minute
+  datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
+  # Hostname of the device the IP Address was leased to
+  hostname: string!
+  # Name of the network interface
+  interface: string!
+  # IP Address that was leased
+  ipAddress: string!
+  # MAC Address of the device the IP Address was leased to
+  macAddress: string!
+}
+
+input AccountMconnTelemetrySnapshotDhcpLeasesAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMconnTelemetrySnapshotDhcpLeasesAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMconnTelemetrySnapshotDhcpLeasesAdaptiveGroupsFilter_InputObject!]
+  clientId: string
+  clientId_geq: string
+  clientId_gt: string
+  clientId_in: [string!]
+  clientId_leq: string
+  clientId_like: string
+  clientId_lt: string
+  clientId_neq: string
+  clientId_notin: [string!]
+  clientId_notlike: string
+  connectorId: string
+  connectorId_geq: string
+  connectorId_gt: string
+  connectorId_in: [string!]
+  connectorId_leq: string
+  connectorId_like: string
+  connectorId_lt: string
+  connectorId_neq: string
+  connectorId_notin: [string!]
+  connectorId_notlike: string
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  hostname: string
+  hostname_geq: string
+  hostname_gt: string
+  hostname_in: [string!]
+  hostname_leq: string
+  hostname_like: string
+  hostname_lt: string
+  hostname_neq: string
+  hostname_notin: [string!]
+  hostname_notlike: string
+  interface: string
+  interface_geq: string
+  interface_gt: string
+  interface_in: [string!]
+  interface_leq: string
+  interface_like: string
+  interface_lt: string
+  interface_neq: string
+  interface_notin: [string!]
+  interface_notlike: string
+  ipAddress: string
+  ipAddress_geq: string
+  ipAddress_gt: string
+  ipAddress_in: [string!]
+  ipAddress_leq: string
+  ipAddress_like: string
+  ipAddress_lt: string
+  ipAddress_neq: string
+  ipAddress_notin: [string!]
+  ipAddress_notlike: string
+  macAddress: string
+  macAddress_geq: string
+  macAddress_gt: string
+  macAddress_in: [string!]
+  macAddress_leq: string
+  macAddress_like: string
+  macAddress_lt: string
+  macAddress_neq: string
+  macAddress_notin: [string!]
+  macAddress_notlike: string
+}
+
+type AccountMconnTelemetrySnapshotDhcpLeasesAdaptiveGroupsMax {
+  # Expiry time of the DHCP lease (seconds since the Unix epoch)
+  expiryTime: float64!
+}
+
+enum AccountMconnTelemetrySnapshotDhcpLeasesAdaptiveGroupsOrderBy {
+  # clientId ascending
+  clientId_ASC
+  # clientId descending
+  clientId_DESC
+  # connectorId ascending
+  connectorId_ASC
+  # connectorId descending
+  connectorId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # hostname ascending
+  hostname_ASC
+  # hostname descending
+  hostname_DESC
+  # interface ascending
+  interface_ASC
+  # interface descending
+  interface_DESC
+  # ipAddress ascending
+  ipAddress_ASC
+  # ipAddress descending
+  ipAddress_DESC
+  # macAddress ascending
+  macAddress_ASC
+  # macAddress descending
+  macAddress_DESC
+  # max(expiryTime) ascending
+  max_expiryTime_ASC
+  # max(expiryTime) descending
+  max_expiryTime_DESC
+}
+
+# Aggregated Magic WAN Connector snapshots of DHCP leases with adaptive sampling
+type AccountMconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroups {
+  # Snapshot DHCP lease count
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroupsDimensions
+  max: AccountMconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroupsMax
+}
+
+type AccountMconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroupsDimensions {
+  # Client ID of the device the IP Address was leased to
+  clientId: string!
+  # Connector identifier
+  connectorId: string!
+  # Timestamp bucketed by 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Timestamp bucketed by 5 minutes
+  datetimeFiveMinutes: Time!
+  # Timestamp bucketed by hour
+  datetimeHour: Time!
+  # Timestamp bucketed by minute
+  datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
+  # Hostname of the device the IP Address was leased to
+  hostname: string!
+  # Name of the network interface
+  interface: string!
+  # IP Address that was leased
+  ipAddress: string!
+  # MAC Address of the device the IP Address was leased to
+  macAddress: string!
+}
+
+input AccountMconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroupsFilter_InputObject!]
+  clientId: string
+  clientId_geq: string
+  clientId_gt: string
+  clientId_in: [string!]
+  clientId_leq: string
+  clientId_like: string
+  clientId_lt: string
+  clientId_neq: string
+  clientId_notin: [string!]
+  clientId_notlike: string
+  connectorId: string
+  connectorId_geq: string
+  connectorId_gt: string
+  connectorId_in: [string!]
+  connectorId_leq: string
+  connectorId_like: string
+  connectorId_lt: string
+  connectorId_neq: string
+  connectorId_notin: [string!]
+  connectorId_notlike: string
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  hostname: string
+  hostname_geq: string
+  hostname_gt: string
+  hostname_in: [string!]
+  hostname_leq: string
+  hostname_like: string
+  hostname_lt: string
+  hostname_neq: string
+  hostname_notin: [string!]
+  hostname_notlike: string
+  interface: string
+  interface_geq: string
+  interface_gt: string
+  interface_in: [string!]
+  interface_leq: string
+  interface_like: string
+  interface_lt: string
+  interface_neq: string
+  interface_notin: [string!]
+  interface_notlike: string
+  ipAddress: string
+  ipAddress_geq: string
+  ipAddress_gt: string
+  ipAddress_in: [string!]
+  ipAddress_leq: string
+  ipAddress_like: string
+  ipAddress_lt: string
+  ipAddress_neq: string
+  ipAddress_notin: [string!]
+  ipAddress_notlike: string
+  macAddress: string
+  macAddress_geq: string
+  macAddress_gt: string
+  macAddress_in: [string!]
+  macAddress_leq: string
+  macAddress_like: string
+  macAddress_lt: string
+  macAddress_neq: string
+  macAddress_notin: [string!]
+  macAddress_notlike: string
+}
+
+type AccountMconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroupsMax {
+  # Expiry time of the DHCP lease (seconds since the Unix epoch)
+  expiryTime: float64!
+}
+
+enum AccountMconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroupsOrderBy {
+  # clientId ascending
+  clientId_ASC
+  # clientId descending
+  clientId_DESC
+  # connectorId ascending
+  connectorId_ASC
+  # connectorId descending
+  connectorId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # hostname ascending
+  hostname_ASC
+  # hostname descending
+  hostname_DESC
+  # interface ascending
+  interface_ASC
+  # interface descending
+  interface_DESC
+  # ipAddress ascending
+  ipAddress_ASC
+  # ipAddress descending
+  ipAddress_DESC
+  # macAddress ascending
+  macAddress_ASC
+  # macAddress descending
+  macAddress_DESC
+  # max(expiryTime) ascending
+  max_expiryTime_ASC
+  # max(expiryTime) descending
+  max_expiryTime_DESC
+}
+
 # Aggregated Magic WAN Connector disk snapshots with adaptive sampling
 type AccountMconnTelemetrySnapshotDisksAdaptiveGroups {
   # Snapshot Disk count
@@ -35353,6 +36434,7 @@ type AccountRumWebVitalsEventsAdaptiveGroupsAvg {
   # First Contentful Paint in microseconds (negative value indicates N/A)
   firstContentfulPaint: int64!
   # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
+  @Deprecated
   firstInputDelay: int64!
   # Interaction to Next Paint in microseconds (negative value indicates N/A)
   interactionToNextPaint: int64!
@@ -35396,10 +36478,13 @@ type AccountRumWebVitalsEventsAdaptiveGroupsDimensions {
   # Device type used for view the page
   deviceType: string!
   # DOM selector name of the input delay
+  @Deprecated
   firstInputDelayElement: string!
   # Action name of the input delay
+  @Deprecated
   firstInputDelayName: string!
   # Observed path of the First Input Delay (Core Web Vitals)
+  @Deprecated
   firstInputDelayPath: string!
   # DOM selector name of the largest object
   largestContentfulPaintElement: string!
@@ -36201,12 +37286,16 @@ type AccountRumWebVitalsEventsAdaptiveGroupsQuantiles {
   # First Contentful Paint in microseconds (negative value indicates N/A)
   firstContentfulPaintP99: int64!
   # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
+  @Deprecated
   firstInputDelayP50: int64!
   # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
+  @Deprecated
   firstInputDelayP75: int64!
   # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
+  @Deprecated
   firstInputDelayP90: int64!
   # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
+  @Deprecated
   firstInputDelayP99: int64!
   # Interaction to Next Paint in microseconds (negative value indicates N/A)
   interactionToNextPaintP50: int64!
@@ -36276,12 +37365,16 @@ type AccountRumWebVitalsEventsAdaptiveGroupsSum {
   # First Contentful Paint, total count
   fcpTotal: uint64!
   # First Input Delay (Core Web Vitals), count of Good occurrences (under 100 ms)
+  @Deprecated
   fidGood: uint64!
   # First Input Delay (Core Web Vitals), count of Needs Improvement occurrences (between 100 ms and 300ms)
+  @Deprecated
   fidNeedsImprovement: uint64!
   # First Input Delay (Core Web Vitals), count of Poor occurrences (over 300 ms)
+  @Deprecated
   fidPoor: uint64!
   # First Input Delay (Core Web Vitals), total count
+  @Deprecated
   fidTotal: uint64!
   # Interaction to Next Paint, count of Good occurrences (under 200 ms)
   inpGood: uint64!
@@ -36441,6 +37534,8 @@ type AccountSettings {
   d1AnalyticsAdaptiveGroups: Settings!
   d1QueriesAdaptiveGroups: Settings!
   d1StorageAdaptiveGroups: Settings!
+  dnsFirewallAnalyticsAdaptive: Settings!
+  dnsFirewallAnalyticsAdaptiveGroups: Settings!
   dosdAttackAnalyticsGroups: Settings!
   dosdNetworkAnalyticsAdaptiveGroups: Settings!
   durableObjectsInvocationsAdaptiveGroups: Settings!
@@ -36481,6 +37576,8 @@ type AccountSettings {
   magicTransitTunnelTrafficAdaptiveGroups: Settings!
   mconnTelemetryEventsAdaptiveGroups: Settings!
   mconnTelemetryEventsStagingAdaptiveGroups: Settings!
+  mconnTelemetrySnapshotDhcpLeasesAdaptiveGroups: Settings!
+  mconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroups: Settings!
   mconnTelemetrySnapshotDisksAdaptiveGroups: Settings!
   mconnTelemetrySnapshotDisksStagingAdaptiveGroups: Settings!
   mconnTelemetrySnapshotMountsAdaptiveGroups: Settings!
@@ -44354,7 +45451,7 @@ type Settings {
 }
 
 type viewer {
-  accounts(filter: AccountFilter_InputObject!): [account!]!
+  accounts(disableAccountAuthFallback: bool, filter: AccountFilter_InputObject!): [account!]!
   budget: uint64!
   organizations(filter: OrganizationFilter_InputObject!): [organization!]!
   zones(filter: ZoneFilter_InputObject, limit: uint64): [zone!]!
