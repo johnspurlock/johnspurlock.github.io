@@ -3,12 +3,14 @@ Account-level datasets:
 * accessLoginRequestsAdaptiveGroups
   advancedDnsProtectionNetworkAnalyticsAdaptiveGroups
   advancedTcpProtectionNetworkAnalyticsAdaptiveGroups
+* aegisIpUtilizationAdaptiveGroups
 * aiGatewayCacheAdaptiveGroups
 * aiGatewayErrorsAdaptiveGroups
 * aiGatewayRequestsAdaptiveGroups
 * aiGatewaySizeAdaptiveGroups
 * aiInferenceAdaptive
 * aiInferenceAdaptiveGroups
+* browserIsolationSessionsAdaptiveGroups
 * browserIsolationUserActionsAdaptiveGroups
 * browserRenderingEventsAdaptive
 * browserRenderingEventsAdaptiveGroups
@@ -231,6 +233,8 @@ type account {
   # Network analytics data for Advanced TCP Protection
   @Deprecated
   advancedTcpProtectionNetworkAnalyticsAdaptiveGroups(filter: AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroups!]!
+  # Beta. Aegis IP utilization metrics
+  aegisIpUtilizationAdaptiveGroups(filter: AccountAegisIpUtilizationAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAegisIpUtilizationAdaptiveGroupsOrderBy!]): [AccountAegisIpUtilizationAdaptiveGroups!]!
   # AI Gateway Cache
   aiGatewayCacheAdaptiveGroups(filter: AccountAiGatewayCacheAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayCacheAdaptiveGroupsOrderBy!]): [AccountAiGatewayCacheAdaptiveGroups!]!
   # AI Gateway Errors
@@ -243,6 +247,8 @@ type account {
   aiInferenceAdaptive(filter: AccountAiInferenceAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveOrderBy!]): [AccountAiInferenceAdaptive!]!
   # Aggregated AI Inference logs with adaptive sampling
   aiInferenceAdaptiveGroups(filter: AccountAiInferenceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveGroupsOrderBy!]): [AccountAiInferenceAdaptiveGroups!]!
+  # Aggregated count of Browser Isolation sessions
+  browserIsolationSessionsAdaptiveGroups(filter: AccountBrowserIsolationSessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserIsolationSessionsAdaptiveGroupsOrderBy!]): [AccountBrowserIsolationSessionsAdaptiveGroups!]!
   # Aggregated count of Browser Isolation User Actions matches
   browserIsolationUserActionsAdaptiveGroups(filter: AccountBrowserIsolationUserActionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserIsolationUserActionsAdaptiveGroupsOrderBy!]): [AccountBrowserIsolationUserActionsAdaptiveGroups!]!
   # Browser Rendering events with adaptive sampling
@@ -3511,6 +3517,105 @@ type AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsSum {
   packets: uint64!
 }
 
+# Beta. Aegis IP utilization metrics
+type AccountAegisIpUtilizationAdaptiveGroups {
+  # The avg of values for a metric per dimension
+  avg: AccountAegisIpUtilizationAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountAegisIpUtilizationAdaptiveGroupsDimensions
+  # The max of values for a metric per dimension
+  max: AccountAegisIpUtilizationAdaptiveGroupsMax
+}
+
+type AccountAegisIpUtilizationAdaptiveGroupsAvg {
+  # Average utilization (%)
+  utilization: float64!
+}
+
+type AccountAegisIpUtilizationAdaptiveGroupsDimensions {
+  # Timestamp bucketed by 5 minutes
+  datetimeFiveMinutes: Time!
+  # PoP, Aegis IP and origin. Can be used as a grouping key
+  popUtilizationKey: string!
+}
+
+input AccountAegisIpUtilizationAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAegisIpUtilizationAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAegisIpUtilizationAdaptiveGroupsFilter_InputObject!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  egressIp: string
+  egressIp_geq: string
+  egressIp_gt: string
+  egressIp_in: [string!]
+  egressIp_leq: string
+  egressIp_like: string
+  egressIp_lt: string
+  egressIp_neq: string
+  egressIp_notin: [string!]
+  egressIp_notlike: string
+  origin: string
+  origin_geq: string
+  origin_gt: string
+  origin_in: [string!]
+  origin_leq: string
+  origin_like: string
+  origin_lt: string
+  origin_neq: string
+  origin_notin: [string!]
+  origin_notlike: string
+  popName: string
+  popName_geq: string
+  popName_gt: string
+  popName_in: [string!]
+  popName_leq: string
+  popName_like: string
+  popName_lt: string
+  popName_neq: string
+  popName_notin: [string!]
+  popName_notlike: string
+  popUtilizationKey: string
+  popUtilizationKey_geq: string
+  popUtilizationKey_gt: string
+  popUtilizationKey_in: [string!]
+  popUtilizationKey_leq: string
+  popUtilizationKey_like: string
+  popUtilizationKey_lt: string
+  popUtilizationKey_neq: string
+  popUtilizationKey_notin: [string!]
+  popUtilizationKey_notlike: string
+}
+
+type AccountAegisIpUtilizationAdaptiveGroupsMax {
+  # Maximum utilization (%) in a single datacenter
+  utilization: float64!
+}
+
+enum AccountAegisIpUtilizationAdaptiveGroupsOrderBy {
+  # avg(utilization) ascending
+  avg_utilization_ASC
+  # avg(utilization) descending
+  avg_utilization_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # max(utilization) ascending
+  max_utilization_ASC
+  # max(utilization) descending
+  max_utilization_DESC
+  # popUtilizationKey ascending
+  popUtilizationKey_ASC
+  # popUtilizationKey descending
+  popUtilizationKey_DESC
+}
+
 # AI Gateway Cache
 type AccountAiGatewayCacheAdaptiveGroups {
   # Total number of requests for an account with caching enabled: including hits and misses
@@ -4590,8 +4695,10 @@ type AccountAiInferenceAdaptiveGroupsDimensions {
   costMetricValue1: float64!
   # Value for cost metric 2
   costMetricValue2: float64!
-  # The date when starts the inference
+  # The date when the inference starts
   date: Date!
+  # The date when the inference starts
+  datetime: Time!
   # The date and time truncated to fifteen minutes
   datetimeFifteenMinutes: Time!
   # The date and time truncated to five minutes
@@ -4600,6 +4707,8 @@ type AccountAiInferenceAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time truncated to the minute
   datetimeMinute: Time!
+  # The date and time truncated to six hours
+  datetimeSixHours: Time!
   # Error code
   errorCode: uint32!
   # Inference time ms
@@ -4665,6 +4774,7 @@ input AccountAiInferenceAdaptiveGroupsFilter_InputObject {
   date_lt: Date
   date_neq: Date
   date_notin: [Date!]
+  datetime: Time
   datetimeFifteenMinutes: Time
   datetimeFifteenMinutes_geq: Time
   datetimeFifteenMinutes_gt: Time
@@ -4697,6 +4807,21 @@ input AccountAiInferenceAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
   errorCode: uint32
   errorCode_geq: uint32
   errorCode_gt: uint32
@@ -4808,6 +4933,14 @@ enum AccountAiInferenceAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
   # errorCode ascending
   errorCode_ASC
   # errorCode descending
@@ -5018,6 +5151,42 @@ enum AccountAiInferenceAdaptiveOrderBy {
   totalTiles_ASC
   # totalTiles descending
   totalTiles_DESC
+}
+
+# Aggregated count of Browser Isolation sessions
+type AccountBrowserIsolationSessionsAdaptiveGroups {
+  # Number of browser sessions
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountBrowserIsolationSessionsAdaptiveGroupsDimensions
+}
+
+type AccountBrowserIsolationSessionsAdaptiveGroupsDimensions {
+  datetime: Time!
+}
+
+input AccountBrowserIsolationSessionsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountBrowserIsolationSessionsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountBrowserIsolationSessionsAdaptiveGroupsFilter_InputObject!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+}
+
+enum AccountBrowserIsolationSessionsAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
 }
 
 # Aggregated count of Browser Isolation User Actions matches
@@ -12092,6 +12261,10 @@ type AccountFirewallEventsAdaptive {
   edgeColoName: string!
   # HTTP response status code returned to browser
   edgeResponseStatus: uint16!
+  # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
+  firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
+  firewallForAiPiiCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -12473,6 +12646,18 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   edgeResponseStatus_lt: uint16
   edgeResponseStatus_neq: uint16
   edgeResponseStatus_notin: [uint16!]
+  firewallForAiAnyPiiCategory: int8
+  firewallForAiAnyPiiCategory_geq: int8
+  firewallForAiAnyPiiCategory_gt: int8
+  firewallForAiAnyPiiCategory_in: [int8!]
+  firewallForAiAnyPiiCategory_leq: int8
+  firewallForAiAnyPiiCategory_lt: int8
+  firewallForAiAnyPiiCategory_neq: int8
+  firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiPiiCategories_has: string
+  firewallForAiPiiCategories_hasall: [string!]
+  firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -12791,6 +12976,10 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   edgeColoName: string!
   # HTTP response status code returned to browser
   edgeResponseStatus: uint16!
+  # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
+  firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
+  firewallForAiPiiCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -13166,6 +13355,18 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   edgeResponseStatus_lt: uint16
   edgeResponseStatus_neq: uint16
   edgeResponseStatus_notin: [uint16!]
+  firewallForAiAnyPiiCategory: int8
+  firewallForAiAnyPiiCategory_geq: int8
+  firewallForAiAnyPiiCategory_gt: int8
+  firewallForAiAnyPiiCategory_in: [int8!]
+  firewallForAiAnyPiiCategory_leq: int8
+  firewallForAiAnyPiiCategory_lt: int8
+  firewallForAiAnyPiiCategory_neq: int8
+  firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiPiiCategories_has: string
+  firewallForAiPiiCategories_hasall: [string!]
+  firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -13541,6 +13742,14 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   edgeResponseStatus_ASC
   # edgeResponseStatus descending
   edgeResponseStatus_DESC
+  # firewallForAiAnyPiiCategory ascending
+  firewallForAiAnyPiiCategory_ASC
+  # firewallForAiAnyPiiCategory descending
+  firewallForAiAnyPiiCategory_DESC
+  # firewallForAiPiiCategories ascending
+  firewallForAiPiiCategories_ASC
+  # firewallForAiPiiCategories descending
+  firewallForAiPiiCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -13833,6 +14042,14 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   edgeResponseStatus_ASC
   # edgeResponseStatus descending
   edgeResponseStatus_DESC
+  # firewallForAiAnyPiiCategory ascending
+  firewallForAiAnyPiiCategory_ASC
+  # firewallForAiAnyPiiCategory descending
+  firewallForAiAnyPiiCategory_DESC
+  # firewallForAiPiiCategories ascending
+  firewallForAiPiiCategories_ASC
+  # firewallForAiPiiCategories descending
+  firewallForAiPiiCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -18947,6 +19164,10 @@ type AccountHttpRequestsAdaptive {
   edgeResponseStatus: uint16!
   # The time elapsed between processing the first byte of the request until when we started sending a response
   edgeTimeToFirstByteMs: uint16!
+  # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
+  firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
+  firewallForAiPiiCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -19352,6 +19573,18 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   edgeTimeToFirstByteMs_lt: uint16
   edgeTimeToFirstByteMs_neq: uint16
   edgeTimeToFirstByteMs_notin: [uint16!]
+  firewallForAiAnyPiiCategory: int8
+  firewallForAiAnyPiiCategory_geq: int8
+  firewallForAiAnyPiiCategory_gt: int8
+  firewallForAiAnyPiiCategory_in: [int8!]
+  firewallForAiAnyPiiCategory_leq: int8
+  firewallForAiAnyPiiCategory_lt: int8
+  firewallForAiAnyPiiCategory_neq: int8
+  firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiPiiCategories_has: string
+  firewallForAiPiiCategories_hasall: [string!]
+  firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -19707,6 +19940,10 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   edgeResponseStatus: uint16!
   # The time elapsed between processing the first byte of the request until when we started sending a response
   edgeTimeToFirstByteMs: uint16!
+  # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
+  firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
+  firewallForAiPiiCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -20109,6 +20346,18 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   edgeTimeToFirstByteMs_lt: uint16
   edgeTimeToFirstByteMs_neq: uint16
   edgeTimeToFirstByteMs_notin: [uint16!]
+  firewallForAiAnyPiiCategory: int8
+  firewallForAiAnyPiiCategory_geq: int8
+  firewallForAiAnyPiiCategory_gt: int8
+  firewallForAiAnyPiiCategory_in: [int8!]
+  firewallForAiAnyPiiCategory_leq: int8
+  firewallForAiAnyPiiCategory_lt: int8
+  firewallForAiAnyPiiCategory_neq: int8
+  firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiPiiCategories_has: string
+  firewallForAiPiiCategories_hasall: [string!]
+  firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -20548,6 +20797,14 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   edgeTimeToFirstByteMs_ASC
   # edgeTimeToFirstByteMs descending
   edgeTimeToFirstByteMs_DESC
+  # firewallForAiAnyPiiCategory ascending
+  firewallForAiAnyPiiCategory_ASC
+  # firewallForAiAnyPiiCategory descending
+  firewallForAiAnyPiiCategory_DESC
+  # firewallForAiPiiCategories ascending
+  firewallForAiPiiCategories_ASC
+  # firewallForAiPiiCategories descending
+  firewallForAiPiiCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -20978,6 +21235,14 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   edgeTimeToFirstByteMs_ASC
   # edgeTimeToFirstByteMs descending
   edgeTimeToFirstByteMs_DESC
+  # firewallForAiAnyPiiCategory ascending
+  firewallForAiAnyPiiCategory_ASC
+  # firewallForAiAnyPiiCategory descending
+  firewallForAiAnyPiiCategory_DESC
+  # firewallForAiPiiCategories ascending
+  firewallForAiPiiCategories_ASC
+  # firewallForAiPiiCategories descending
+  firewallForAiPiiCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -37517,12 +37782,14 @@ type AccountSettings {
   accessLoginRequestsAdaptiveGroups: Settings!
   advancedDnsProtectionNetworkAnalyticsAdaptiveGroups: Settings!
   advancedTcpProtectionNetworkAnalyticsAdaptiveGroups: Settings!
+  aegisIpUtilizationAdaptiveGroups: Settings!
   aiGatewayCacheAdaptiveGroups: Settings!
   aiGatewayErrorsAdaptiveGroups: Settings!
   aiGatewayRequestsAdaptiveGroups: Settings!
   aiGatewaySizeAdaptiveGroups: Settings!
   aiInferenceAdaptive: Settings!
   aiInferenceAdaptiveGroups: Settings!
+  browserIsolationSessionsAdaptiveGroups: Settings!
   browserIsolationUserActionsAdaptiveGroups: Settings!
   browserRenderingEventsAdaptive: Settings!
   browserRenderingEventsAdaptiveGroups: Settings!
@@ -44398,6 +44665,10 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   edgeResponseStatus: uint16!
   # The time elapsed between processing the first byte of the request until when we started sending a response
   edgeTimeToFirstByteMs: uint16!
+  # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
+  firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
+  firewallForAiPiiCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -44792,6 +45063,18 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   edgeTimeToFirstByteMs_lt: uint16
   edgeTimeToFirstByteMs_neq: uint16
   edgeTimeToFirstByteMs_notin: [uint16!]
+  firewallForAiAnyPiiCategory: int8
+  firewallForAiAnyPiiCategory_geq: int8
+  firewallForAiAnyPiiCategory_gt: int8
+  firewallForAiAnyPiiCategory_in: [int8!]
+  firewallForAiAnyPiiCategory_leq: int8
+  firewallForAiAnyPiiCategory_lt: int8
+  firewallForAiAnyPiiCategory_neq: int8
+  firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiPiiCategories_has: string
+  firewallForAiPiiCategories_hasall: [string!]
+  firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -45213,6 +45496,14 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   edgeTimeToFirstByteMs_ASC
   # edgeTimeToFirstByteMs descending
   edgeTimeToFirstByteMs_DESC
+  # firewallForAiAnyPiiCategory ascending
+  firewallForAiAnyPiiCategory_ASC
+  # firewallForAiAnyPiiCategory descending
+  firewallForAiAnyPiiCategory_DESC
+  # firewallForAiPiiCategories ascending
+  firewallForAiPiiCategories_ASC
+  # firewallForAiPiiCategories descending
+  firewallForAiPiiCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -49292,6 +49583,10 @@ type ZoneFirewallEventsAdaptive {
   edgeColoName: string!
   # HTTP response status code returned to browser
   edgeResponseStatus: uint16!
+  # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
+  firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
+  firewallForAiPiiCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -49392,6 +49687,10 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   datetimeMinute: Time!
   # The description of the rule triggered by this request
   description: string!
+  # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
+  firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
+  firewallForAiPiiCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -49743,6 +50042,18 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   edgeResponseStatus_lt: uint16
   edgeResponseStatus_neq: uint16
   edgeResponseStatus_notin: [uint16!]
+  firewallForAiAnyPiiCategory: int8
+  firewallForAiAnyPiiCategory_geq: int8
+  firewallForAiAnyPiiCategory_gt: int8
+  firewallForAiAnyPiiCategory_in: [int8!]
+  firewallForAiAnyPiiCategory_leq: int8
+  firewallForAiAnyPiiCategory_lt: int8
+  firewallForAiAnyPiiCategory_neq: int8
+  firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiPiiCategories_has: string
+  firewallForAiPiiCategories_hasall: [string!]
+  firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -50012,6 +50323,14 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   description_ASC
   # description descending
   description_DESC
+  # firewallForAiAnyPiiCategory ascending
+  firewallForAiAnyPiiCategory_ASC
+  # firewallForAiAnyPiiCategory descending
+  firewallForAiAnyPiiCategory_DESC
+  # firewallForAiPiiCategories ascending
+  firewallForAiPiiCategories_ASC
+  # firewallForAiPiiCategories descending
+  firewallForAiPiiCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -50414,6 +50733,18 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   edgeResponseStatus_lt: uint16
   edgeResponseStatus_neq: uint16
   edgeResponseStatus_notin: [uint16!]
+  firewallForAiAnyPiiCategory: int8
+  firewallForAiAnyPiiCategory_geq: int8
+  firewallForAiAnyPiiCategory_gt: int8
+  firewallForAiAnyPiiCategory_in: [int8!]
+  firewallForAiAnyPiiCategory_leq: int8
+  firewallForAiAnyPiiCategory_lt: int8
+  firewallForAiAnyPiiCategory_neq: int8
+  firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiPiiCategories_has: string
+  firewallForAiPiiCategories_hasall: [string!]
+  firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -50722,6 +51053,10 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   edgeColoName: string!
   # HTTP response status code returned to browser
   edgeResponseStatus: uint16!
+  # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
+  firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
+  firewallForAiPiiCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -51095,6 +51430,18 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   edgeResponseStatus_lt: uint16
   edgeResponseStatus_neq: uint16
   edgeResponseStatus_notin: [uint16!]
+  firewallForAiAnyPiiCategory: int8
+  firewallForAiAnyPiiCategory_geq: int8
+  firewallForAiAnyPiiCategory_gt: int8
+  firewallForAiAnyPiiCategory_in: [int8!]
+  firewallForAiAnyPiiCategory_leq: int8
+  firewallForAiAnyPiiCategory_lt: int8
+  firewallForAiAnyPiiCategory_neq: int8
+  firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiPiiCategories_has: string
+  firewallForAiPiiCategories_hasall: [string!]
+  firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -51460,6 +51807,14 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   edgeResponseStatus_ASC
   # edgeResponseStatus descending
   edgeResponseStatus_DESC
+  # firewallForAiAnyPiiCategory ascending
+  firewallForAiAnyPiiCategory_ASC
+  # firewallForAiAnyPiiCategory descending
+  firewallForAiAnyPiiCategory_DESC
+  # firewallForAiPiiCategories ascending
+  firewallForAiPiiCategories_ASC
+  # firewallForAiPiiCategories descending
+  firewallForAiPiiCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -51748,6 +52103,14 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   edgeResponseStatus_ASC
   # edgeResponseStatus descending
   edgeResponseStatus_DESC
+  # firewallForAiAnyPiiCategory ascending
+  firewallForAiAnyPiiCategory_ASC
+  # firewallForAiAnyPiiCategory descending
+  firewallForAiAnyPiiCategory_DESC
+  # firewallForAiPiiCategories ascending
+  firewallForAiPiiCategories_ASC
+  # firewallForAiPiiCategories descending
+  firewallForAiPiiCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -53491,6 +53854,10 @@ type ZoneHttpRequestsAdaptive {
   edgeResponseStatus: uint16!
   # The time elapsed between processing the first byte of the request until when we started sending a response
   edgeTimeToFirstByteMs: uint16!
+  # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
+  firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
+  firewallForAiPiiCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -53894,6 +54261,18 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   edgeTimeToFirstByteMs_lt: uint16
   edgeTimeToFirstByteMs_neq: uint16
   edgeTimeToFirstByteMs_notin: [uint16!]
+  firewallForAiAnyPiiCategory: int8
+  firewallForAiAnyPiiCategory_geq: int8
+  firewallForAiAnyPiiCategory_gt: int8
+  firewallForAiAnyPiiCategory_in: [int8!]
+  firewallForAiAnyPiiCategory_leq: int8
+  firewallForAiAnyPiiCategory_lt: int8
+  firewallForAiAnyPiiCategory_neq: int8
+  firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiPiiCategories_has: string
+  firewallForAiPiiCategories_hasall: [string!]
+  firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -54239,6 +54618,10 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   edgeResponseStatus: uint16!
   # The time elapsed between processing the first byte of the request until when we started sending a response
   edgeTimeToFirstByteMs: uint16!
+  # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
+  firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
+  firewallForAiPiiCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -54639,6 +55022,18 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   edgeTimeToFirstByteMs_lt: uint16
   edgeTimeToFirstByteMs_neq: uint16
   edgeTimeToFirstByteMs_notin: [uint16!]
+  firewallForAiAnyPiiCategory: int8
+  firewallForAiAnyPiiCategory_geq: int8
+  firewallForAiAnyPiiCategory_gt: int8
+  firewallForAiAnyPiiCategory_in: [int8!]
+  firewallForAiAnyPiiCategory_leq: int8
+  firewallForAiAnyPiiCategory_lt: int8
+  firewallForAiAnyPiiCategory_neq: int8
+  firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiPiiCategories_has: string
+  firewallForAiPiiCategories_hasall: [string!]
+  firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -55068,6 +55463,14 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   edgeTimeToFirstByteMs_ASC
   # edgeTimeToFirstByteMs descending
   edgeTimeToFirstByteMs_DESC
+  # firewallForAiAnyPiiCategory ascending
+  firewallForAiAnyPiiCategory_ASC
+  # firewallForAiAnyPiiCategory descending
+  firewallForAiAnyPiiCategory_DESC
+  # firewallForAiPiiCategories ascending
+  firewallForAiPiiCategories_ASC
+  # firewallForAiPiiCategories descending
+  firewallForAiPiiCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -55494,6 +55897,14 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   edgeTimeToFirstByteMs_ASC
   # edgeTimeToFirstByteMs descending
   edgeTimeToFirstByteMs_DESC
+  # firewallForAiAnyPiiCategory ascending
+  firewallForAiAnyPiiCategory_ASC
+  # firewallForAiAnyPiiCategory descending
+  firewallForAiAnyPiiCategory_DESC
+  # firewallForAiPiiCategories ascending
+  firewallForAiPiiCategories_ASC
+  # firewallForAiPiiCategories descending
+  firewallForAiPiiCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
