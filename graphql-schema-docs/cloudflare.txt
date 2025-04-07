@@ -10,6 +10,7 @@ Account-level datasets:
 * aiGatewaySizeAdaptiveGroups
 * aiInferenceAdaptive
 * aiInferenceAdaptiveGroups
+* autoRAGEngineAdaptiveGroups
 * browserIsolationSessionsAdaptiveGroups
 * browserIsolationUserActionsAdaptiveGroups
 * browserRenderingEventsAdaptive
@@ -247,6 +248,8 @@ type account {
   aiInferenceAdaptive(filter: AccountAiInferenceAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveOrderBy!]): [AccountAiInferenceAdaptive!]!
   # Aggregated AI Inference logs with adaptive sampling
   aiInferenceAdaptiveGroups(filter: AccountAiInferenceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveGroupsOrderBy!]): [AccountAiInferenceAdaptiveGroups!]!
+  # AutoRAG Engine Ingestion Analytics
+  autoRAGEngineAdaptiveGroups(filter: AccountAutoRAGEngineAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAutoRAGEngineAdaptiveGroupsOrderBy!]): [AccountAutoRAGEngineAdaptiveGroups!]!
   # Aggregated count of Browser Isolation sessions
   browserIsolationSessionsAdaptiveGroups(filter: AccountBrowserIsolationSessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserIsolationSessionsAdaptiveGroupsOrderBy!]): [AccountBrowserIsolationSessionsAdaptiveGroups!]!
   # Aggregated count of Browser Isolation User Actions matches
@@ -5153,6 +5156,154 @@ enum AccountAiInferenceAdaptiveOrderBy {
   totalTiles_DESC
 }
 
+# AutoRAG Engine Ingestion Analytics
+type AccountAutoRAGEngineAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountAutoRAGEngineAdaptiveGroupsDimensions
+  # The max of values for a metric per dimension
+  max: AccountAutoRAGEngineAdaptiveGroupsMax
+}
+
+type AccountAutoRAGEngineAdaptiveGroupsDimensions {
+  # The date when trigger was triggerd
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # AutoRAG Id
+  rag: string!
+  # AutoRAG Source Type
+  sourceType: string!
+}
+
+input AccountAutoRAGEngineAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAutoRAGEngineAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAutoRAGEngineAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  rag: string
+  rag_geq: string
+  rag_gt: string
+  rag_in: [string!]
+  rag_leq: string
+  rag_like: string
+  rag_lt: string
+  rag_neq: string
+  rag_notin: [string!]
+  rag_notlike: string
+  sourceType: string
+  sourceType_geq: string
+  sourceType_gt: string
+  sourceType_in: [string!]
+  sourceType_leq: string
+  sourceType_like: string
+  sourceType_lt: string
+  sourceType_neq: string
+  sourceType_notin: [string!]
+  sourceType_notlike: string
+}
+
+type AccountAutoRAGEngineAdaptiveGroupsMax {
+  # Max of completed items
+  completed: uint32!
+  # Max of errored items
+  errored: uint32!
+  # Max of queued items
+  queued: uint32!
+  # Max of running items
+  running: uint32!
+}
+
+enum AccountAutoRAGEngineAdaptiveGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # max(completed) ascending
+  max_completed_ASC
+  # max(completed) descending
+  max_completed_DESC
+  # max(errored) ascending
+  max_errored_ASC
+  # max(errored) descending
+  max_errored_DESC
+  # max(queued) ascending
+  max_queued_ASC
+  # max(queued) descending
+  max_queued_DESC
+  # max(running) ascending
+  max_running_ASC
+  # max(running) descending
+  max_running_DESC
+  # rag ascending
+  rag_ASC
+  # rag descending
+  rag_DESC
+  # sourceType ascending
+  sourceType_ASC
+  # sourceType descending
+  sourceType_DESC
+}
+
 # Aggregated count of Browser Isolation sessions
 type AccountBrowserIsolationSessionsAdaptiveGroups {
   # Number of browser sessions
@@ -7641,6 +7792,12 @@ input AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject {
 type AccountCloudchamberMetricsAdaptiveGroupsMax {
   # Maximum CPU load
   cpuLoad: float64!
+  # Total disk space available, in bytes
+  diskAvailable: uint64!
+  # Disk usage, in bytes
+  diskUsage: uint64!
+  # Disk usage as a percentage of total disk space
+  diskUsagePercentage: float64!
   # Maximum GPU memory usage
   gpuMemory: float64!
   # Maximum memory usage
@@ -7716,6 +7873,18 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   max_cpuLoad_ASC
   # max(cpuLoad) descending
   max_cpuLoad_DESC
+  # max(diskAvailable) ascending
+  max_diskAvailable_ASC
+  # max(diskAvailable) descending
+  max_diskAvailable_DESC
+  # max(diskUsagePercentage) ascending
+  max_diskUsagePercentage_ASC
+  # max(diskUsagePercentage) descending
+  max_diskUsagePercentage_DESC
+  # max(diskUsage) ascending
+  max_diskUsage_ASC
+  # max(diskUsage) descending
+  max_diskUsage_DESC
   # max(gpuMemory) ascending
   max_gpuMemory_ASC
   # max(gpuMemory) descending
@@ -7760,6 +7929,30 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   quantiles_cpuLoadP99_ASC
   # quantiles(cpuLoadP99) descending
   quantiles_cpuLoadP99_DESC
+  # quantiles(diskUsageP50) ascending
+  quantiles_diskUsageP50_ASC
+  # quantiles(diskUsageP50) descending
+  quantiles_diskUsageP50_DESC
+  # quantiles(diskUsageP90) ascending
+  quantiles_diskUsageP90_ASC
+  # quantiles(diskUsageP90) descending
+  quantiles_diskUsageP90_DESC
+  # quantiles(diskUsageP99) ascending
+  quantiles_diskUsageP99_ASC
+  # quantiles(diskUsageP99) descending
+  quantiles_diskUsageP99_DESC
+  # quantiles(diskUsagePercentageP50) ascending
+  quantiles_diskUsagePercentageP50_ASC
+  # quantiles(diskUsagePercentageP50) descending
+  quantiles_diskUsagePercentageP50_DESC
+  # quantiles(diskUsagePercentageP90) ascending
+  quantiles_diskUsagePercentageP90_ASC
+  # quantiles(diskUsagePercentageP90) descending
+  quantiles_diskUsagePercentageP90_DESC
+  # quantiles(diskUsagePercentageP99) ascending
+  quantiles_diskUsagePercentageP99_ASC
+  # quantiles(diskUsagePercentageP99) descending
+  quantiles_diskUsagePercentageP99_DESC
   # quantiles(gpuMemoryP50) ascending
   quantiles_gpuMemoryP50_ASC
   # quantiles(gpuMemoryP50) descending
@@ -7821,6 +8014,18 @@ type AccountCloudchamberMetricsAdaptiveGroupsQuantiles {
   cpuLoadP90: float64!
   # CPU load (99th percentile)
   cpuLoadP99: float64!
+  # Disk usage in bytes (50th percentile)
+  diskUsageP50: float64!
+  # Disk usage in bytes (90th percentile)
+  diskUsageP90: float64!
+  # Disk usage in bytes (99th percentile)
+  diskUsageP99: float64!
+  # Disk usage as a percentage of total disk space (50th percentile)
+  diskUsagePercentageP50: float64!
+  # Disk usage as a percentage of total disk space (90th percentile)
+  diskUsagePercentageP90: float64!
+  # Disk usage as a percentage of total disk space (99th percentile)
+  diskUsagePercentageP99: float64!
   # GPU memory usage (50th percentile)
   gpuMemoryP50: float64!
   # GPU memory usage (90th percentile)
@@ -37789,6 +37994,7 @@ type AccountSettings {
   aiGatewaySizeAdaptiveGroups: Settings!
   aiInferenceAdaptive: Settings!
   aiInferenceAdaptiveGroups: Settings!
+  autoRAGEngineAdaptiveGroups: Settings!
   browserIsolationSessionsAdaptiveGroups: Settings!
   browserIsolationUserActionsAdaptiveGroups: Settings!
   browserRenderingEventsAdaptive: Settings!
@@ -43743,22 +43949,28 @@ type AccountWorkersSubrequestsAdaptiveGroupsSum {
 
 # Workflows analytics
 type AccountWorkflowsAdaptive {
+  # CPU time in timestamp (ms)
+  cpuTime: uint32!
   # The date when trigger was triggered
   datetime: Time!
   # Instance end timestamp(seconds)
   endTimestamp: uint64!
   # Event type
   eventType: string!
+  # Execution duration in timestamp (GB*s)
+  executionDuration: uint32!
   # Instance Id
   instanceId: string!
+  # Number of retries in timestamp
+  retryCount: uint32!
   # ABR sample interval
   sampleInterval: uint32!
   # Instance start timestamp(seconds)
   startTimestamp: uint64!
-  # Step number
+  # Steps ran in timestamp
   stepCount: uint32!
-  # Step name
-  stepName: string!
+  # Instance storage size growth in timestamp (bytes)
+  storageRate: uint32!
   # Wall time in seconds
   wallTime: uint32!
   # Workflow name
@@ -43768,6 +43980,14 @@ type AccountWorkflowsAdaptive {
 input AccountWorkflowsAdaptiveFilter_InputObject {
   AND: [AccountWorkflowsAdaptiveFilter_InputObject!]
   OR: [AccountWorkflowsAdaptiveFilter_InputObject!]
+  cpuTime: uint32
+  cpuTime_geq: uint32
+  cpuTime_gt: uint32
+  cpuTime_in: [uint32!]
+  cpuTime_leq: uint32
+  cpuTime_lt: uint32
+  cpuTime_neq: uint32
+  cpuTime_notin: [uint32!]
   datetime: Time
   datetime_geq: Time
   datetime_gt: Time
@@ -43794,6 +44014,14 @@ input AccountWorkflowsAdaptiveFilter_InputObject {
   eventType_neq: string
   eventType_notin: [string!]
   eventType_notlike: string
+  executionDuration: uint32
+  executionDuration_geq: uint32
+  executionDuration_gt: uint32
+  executionDuration_in: [uint32!]
+  executionDuration_leq: uint32
+  executionDuration_lt: uint32
+  executionDuration_neq: uint32
+  executionDuration_notin: [uint32!]
   instanceId: string
   instanceId_geq: string
   instanceId_gt: string
@@ -43804,6 +44032,14 @@ input AccountWorkflowsAdaptiveFilter_InputObject {
   instanceId_neq: string
   instanceId_notin: [string!]
   instanceId_notlike: string
+  retryCount: uint32
+  retryCount_geq: uint32
+  retryCount_gt: uint32
+  retryCount_in: [uint32!]
+  retryCount_leq: uint32
+  retryCount_lt: uint32
+  retryCount_neq: uint32
+  retryCount_notin: [uint32!]
   sampleInterval: uint32
   sampleInterval_geq: uint32
   sampleInterval_gt: uint32
@@ -43828,16 +44064,14 @@ input AccountWorkflowsAdaptiveFilter_InputObject {
   stepCount_lt: uint32
   stepCount_neq: uint32
   stepCount_notin: [uint32!]
-  stepName: string
-  stepName_geq: string
-  stepName_gt: string
-  stepName_in: [string!]
-  stepName_leq: string
-  stepName_like: string
-  stepName_lt: string
-  stepName_neq: string
-  stepName_notin: [string!]
-  stepName_notlike: string
+  storageRate: uint32
+  storageRate_geq: uint32
+  storageRate_gt: uint32
+  storageRate_in: [uint32!]
+  storageRate_leq: uint32
+  storageRate_lt: uint32
+  storageRate_neq: uint32
+  storageRate_notin: [uint32!]
   wallTime: uint32
   wallTime_geq: uint32
   wallTime_gt: uint32
@@ -43860,6 +44094,7 @@ input AccountWorkflowsAdaptiveFilter_InputObject {
 
 # Workflows analytics
 type AccountWorkflowsAdaptiveGroups {
+  avg: AccountWorkflowsAdaptiveGroupsAvg
   # Number of events(workflow invocations) per dimension
   count: uint64!
   # List of dimensions to group by
@@ -43867,8 +44102,15 @@ type AccountWorkflowsAdaptiveGroups {
   sum: AccountWorkflowsAdaptiveGroupsSum
 }
 
+type AccountWorkflowsAdaptiveGroupsAvg {
+  # Average CPU time per dimension
+  cpuTime: float32!
+  # Average wall time per dimension
+  wallTime: float32!
+}
+
 type AccountWorkflowsAdaptiveGroupsDimensions {
-  # The date when trigger was triggered
+  # The date when instance was triggered
   date: Date!
   # The date and time truncated to fifteen minutes
   datetimeFifteenMinutes: Time!
@@ -43878,14 +44120,8 @@ type AccountWorkflowsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time truncated to the minute
   datetimeMinute: Time!
-  # Event type
-  eventType: string!
   # Instance Id
   instanceId: string!
-  # Step number
-  stepCount: uint32!
-  # Step name
-  stepName: string!
   # Workflow name
   workflowName: string!
 }
@@ -43933,16 +44169,6 @@ input AccountWorkflowsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
-  eventType: string
-  eventType_geq: string
-  eventType_gt: string
-  eventType_in: [string!]
-  eventType_leq: string
-  eventType_like: string
-  eventType_lt: string
-  eventType_neq: string
-  eventType_notin: [string!]
-  eventType_notlike: string
   instanceId: string
   instanceId_geq: string
   instanceId_gt: string
@@ -43953,24 +44179,6 @@ input AccountWorkflowsAdaptiveGroupsFilter_InputObject {
   instanceId_neq: string
   instanceId_notin: [string!]
   instanceId_notlike: string
-  stepCount: uint32
-  stepCount_geq: uint32
-  stepCount_gt: uint32
-  stepCount_in: [uint32!]
-  stepCount_leq: uint32
-  stepCount_lt: uint32
-  stepCount_neq: uint32
-  stepCount_notin: [uint32!]
-  stepName: string
-  stepName_geq: string
-  stepName_gt: string
-  stepName_in: [string!]
-  stepName_leq: string
-  stepName_like: string
-  stepName_lt: string
-  stepName_neq: string
-  stepName_notin: [string!]
-  stepName_notlike: string
   workflowName: string
   workflowName_geq: string
   workflowName_gt: string
@@ -43984,6 +44192,14 @@ input AccountWorkflowsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountWorkflowsAdaptiveGroupsOrderBy {
+  # avg(cpuTime) ascending
+  avg_cpuTime_ASC
+  # avg(cpuTime) descending
+  avg_cpuTime_DESC
+  # avg(wallTime) ascending
+  avg_wallTime_ASC
+  # avg(wallTime) descending
+  avg_wallTime_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -44008,22 +44224,30 @@ enum AccountWorkflowsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
-  # eventType ascending
-  eventType_ASC
-  # eventType descending
-  eventType_DESC
   # instanceId ascending
   instanceId_ASC
   # instanceId descending
   instanceId_DESC
-  # stepCount ascending
-  stepCount_ASC
-  # stepCount descending
-  stepCount_DESC
-  # stepName ascending
-  stepName_ASC
-  # stepName descending
-  stepName_DESC
+  # sum(cpuTime) ascending
+  sum_cpuTime_ASC
+  # sum(cpuTime) descending
+  sum_cpuTime_DESC
+  # sum(executionDuration) ascending
+  sum_executionDuration_ASC
+  # sum(executionDuration) descending
+  sum_executionDuration_DESC
+  # sum(retryCount) ascending
+  sum_retryCount_ASC
+  # sum(retryCount) descending
+  sum_retryCount_DESC
+  # sum(stepCount) ascending
+  sum_stepCount_ASC
+  # sum(stepCount) descending
+  sum_stepCount_DESC
+  # sum(storageRate) ascending
+  sum_storageRate_ASC
+  # sum(storageRate) descending
+  sum_storageRate_DESC
   # sum(wallTime) ascending
   sum_wallTime_ASC
   # sum(wallTime) descending
@@ -44035,11 +44259,25 @@ enum AccountWorkflowsAdaptiveGroupsOrderBy {
 }
 
 type AccountWorkflowsAdaptiveGroupsSum {
+  # CPU time per dimension (ms)
+  cpuTime: uint32!
+  # Execution duration per dimension (GB*s)
+  executionDuration: uint32!
+  # Number of retries per dimension
+  retryCount: uint32!
+  # Total steps per dimension
+  stepCount: uint32!
+  # Total instance storage growth rate per dimension
+  storageRate: uint64!
   # Total wall time per dimension
   wallTime: uint64!
 }
 
 enum AccountWorkflowsAdaptiveOrderBy {
+  # cpuTime ascending
+  cpuTime_ASC
+  # cpuTime descending
+  cpuTime_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -44052,10 +44290,18 @@ enum AccountWorkflowsAdaptiveOrderBy {
   eventType_ASC
   # eventType descending
   eventType_DESC
+  # executionDuration ascending
+  executionDuration_ASC
+  # executionDuration descending
+  executionDuration_DESC
   # instanceId ascending
   instanceId_ASC
   # instanceId descending
   instanceId_DESC
+  # retryCount ascending
+  retryCount_ASC
+  # retryCount descending
+  retryCount_DESC
   # sampleInterval ascending
   sampleInterval_ASC
   # sampleInterval descending
@@ -44068,10 +44314,10 @@ enum AccountWorkflowsAdaptiveOrderBy {
   stepCount_ASC
   # stepCount descending
   stepCount_DESC
-  # stepName ascending
-  stepName_ASC
-  # stepName descending
-  stepName_DESC
+  # storageRate ascending
+  storageRate_ASC
+  # storageRate descending
+  storageRate_DESC
   # wallTime ascending
   wallTime_ASC
   # wallTime descending
