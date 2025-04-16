@@ -69,12 +69,18 @@ Account-level datasets:
   mconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroups
   mconnTelemetrySnapshotDisksAdaptiveGroups
   mconnTelemetrySnapshotDisksStagingAdaptiveGroups
+  mconnTelemetrySnapshotInterfaceAddressesAdaptiveGroups
+  mconnTelemetrySnapshotInterfaceAddressesStagingAdaptiveGroups
+  mconnTelemetrySnapshotInterfacesAdaptiveGroups
+  mconnTelemetrySnapshotInterfacesStagingAdaptiveGroups
   mconnTelemetrySnapshotMountsAdaptiveGroups
   mconnTelemetrySnapshotMountsStagingAdaptiveGroups
   mconnTelemetrySnapshotNetdevsAdaptiveGroups
   mconnTelemetrySnapshotNetdevsStagingAdaptiveGroups
   mconnTelemetrySnapshotThermalsAdaptiveGroups
   mconnTelemetrySnapshotThermalsStagingAdaptiveGroups
+  mconnTelemetrySnapshotTunnelsAdaptiveGroups
+  mconnTelemetrySnapshotTunnelsStagingAdaptiveGroups
   mconnTelemetrySnapshotsAdaptiveGroups
   mconnTelemetrySnapshotsStagingAdaptiveGroups
 * mnmAWSVPCFlowDataAdaptiveGroups
@@ -367,6 +373,14 @@ type account {
   mconnTelemetrySnapshotDisksAdaptiveGroups(filter: AccountMconnTelemetrySnapshotDisksAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotDisksAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotDisksAdaptiveGroups!]!
   # Aggregated Magic WAN Connector disk snapshots with adaptive sampling
   mconnTelemetrySnapshotDisksStagingAdaptiveGroups(filter: AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroups!]!
+  # Aggregated Magic WAN Connector interface address snapshots with adaptive sampling
+  mconnTelemetrySnapshotInterfaceAddressesAdaptiveGroups(filter: AccountMconnTelemetrySnapshotInterfaceAddressesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotInterfaceAddressesAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotInterfaceAddressesAdaptiveGroups!]!
+  # Aggregated Magic WAN Connector interface address snapshots with adaptive sampling
+  mconnTelemetrySnapshotInterfaceAddressesStagingAdaptiveGroups(filter: AccountMconnTelemetrySnapshotInterfaceAddressesStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotInterfaceAddressesStagingAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotInterfaceAddressesStagingAdaptiveGroups!]!
+  # Aggregated Magic WAN Connector interface snapshots with adaptive sampling
+  mconnTelemetrySnapshotInterfacesAdaptiveGroups(filter: AccountMconnTelemetrySnapshotInterfacesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotInterfacesAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotInterfacesAdaptiveGroups!]!
+  # Aggregated Magic WAN Connector interface snapshots with adaptive sampling
+  mconnTelemetrySnapshotInterfacesStagingAdaptiveGroups(filter: AccountMconnTelemetrySnapshotInterfacesStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotInterfacesStagingAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotInterfacesStagingAdaptiveGroups!]!
   # Aggregated Magic WAN Connector mount snapshots with adaptive sampling
   mconnTelemetrySnapshotMountsAdaptiveGroups(filter: AccountMconnTelemetrySnapshotMountsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotMountsAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotMountsAdaptiveGroups!]!
   # Aggregated Magic WAN Connector mount snapshots with adaptive sampling
@@ -379,6 +393,10 @@ type account {
   mconnTelemetrySnapshotThermalsAdaptiveGroups(filter: AccountMconnTelemetrySnapshotThermalsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotThermalsAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotThermalsAdaptiveGroups!]!
   # Aggregated Magic WAN Connector thermal snapshots with adaptive sampling
   mconnTelemetrySnapshotThermalsStagingAdaptiveGroups(filter: AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroups!]!
+  # Aggregated Magic WAN Connector tunnel snapshots with adaptive sampling
+  mconnTelemetrySnapshotTunnelsAdaptiveGroups(filter: AccountMconnTelemetrySnapshotTunnelsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotTunnelsAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotTunnelsAdaptiveGroups!]!
+  # Aggregated Magic WAN Connector tunnel snapshots with adaptive sampling
+  mconnTelemetrySnapshotTunnelsStagingAdaptiveGroups(filter: AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroups!]!
   # Aggregated Magic WAN Connector system snapshots with adaptive sampling
   mconnTelemetrySnapshotsAdaptiveGroups(filter: AccountMconnTelemetrySnapshotsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotsAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotsAdaptiveGroups!]!
   # Aggregated Magic WAN Connector system snapshots with adaptive sampling
@@ -29850,7 +29868,7 @@ type AccountMconnTelemetrySnapshotDhcpLeasesAdaptiveGroupsDimensions {
   # Hostname of the device the IP Address was leased to
   hostname: string!
   # Name of the network interface
-  interface: string!
+  interfaceName: string!
   # IP Address that was leased
   ipAddress: string!
   # MAC Address of the device the IP Address was leased to
@@ -29930,16 +29948,16 @@ input AccountMconnTelemetrySnapshotDhcpLeasesAdaptiveGroupsFilter_InputObject {
   hostname_neq: string
   hostname_notin: [string!]
   hostname_notlike: string
-  interface: string
-  interface_geq: string
-  interface_gt: string
-  interface_in: [string!]
-  interface_leq: string
-  interface_like: string
-  interface_lt: string
-  interface_neq: string
-  interface_notin: [string!]
-  interface_notlike: string
+  interfaceName: string
+  interfaceName_geq: string
+  interfaceName_gt: string
+  interfaceName_in: [string!]
+  interfaceName_leq: string
+  interfaceName_like: string
+  interfaceName_lt: string
+  interfaceName_neq: string
+  interfaceName_notin: [string!]
+  interfaceName_notlike: string
   ipAddress: string
   ipAddress_geq: string
   ipAddress_gt: string
@@ -30004,10 +30022,10 @@ enum AccountMconnTelemetrySnapshotDhcpLeasesAdaptiveGroupsOrderBy {
   hostname_ASC
   # hostname descending
   hostname_DESC
-  # interface ascending
-  interface_ASC
-  # interface descending
-  interface_DESC
+  # interfaceName ascending
+  interfaceName_ASC
+  # interfaceName descending
+  interfaceName_DESC
   # ipAddress ascending
   ipAddress_ASC
   # ipAddress descending
@@ -30049,7 +30067,7 @@ type AccountMconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroupsDimensions {
   # Hostname of the device the IP Address was leased to
   hostname: string!
   # Name of the network interface
-  interface: string!
+  interfaceName: string!
   # IP Address that was leased
   ipAddress: string!
   # MAC Address of the device the IP Address was leased to
@@ -30129,16 +30147,16 @@ input AccountMconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroupsFilter_InputOb
   hostname_neq: string
   hostname_notin: [string!]
   hostname_notlike: string
-  interface: string
-  interface_geq: string
-  interface_gt: string
-  interface_in: [string!]
-  interface_leq: string
-  interface_like: string
-  interface_lt: string
-  interface_neq: string
-  interface_notin: [string!]
-  interface_notlike: string
+  interfaceName: string
+  interfaceName_geq: string
+  interfaceName_gt: string
+  interfaceName_in: [string!]
+  interfaceName_leq: string
+  interfaceName_like: string
+  interfaceName_lt: string
+  interfaceName_neq: string
+  interfaceName_notin: [string!]
+  interfaceName_notlike: string
   ipAddress: string
   ipAddress_geq: string
   ipAddress_gt: string
@@ -30203,10 +30221,10 @@ enum AccountMconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroupsOrderBy {
   hostname_ASC
   # hostname descending
   hostname_DESC
-  # interface ascending
-  interface_ASC
-  # interface descending
-  interface_DESC
+  # interfaceName ascending
+  interfaceName_ASC
+  # interfaceName descending
+  interfaceName_DESC
   # ipAddress ascending
   ipAddress_ASC
   # ipAddress descending
@@ -30641,6 +30659,590 @@ type AccountMconnTelemetrySnapshotDisksStagingAdaptiveGroupsSum {
   writes: float64!
   # Writes merged (delta)
   writesMerged: float64!
+}
+
+# Aggregated Magic WAN Connector interface address snapshots with adaptive sampling
+type AccountMconnTelemetrySnapshotInterfaceAddressesAdaptiveGroups {
+  # Snapshot Interface Address count
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMconnTelemetrySnapshotInterfaceAddressesAdaptiveGroupsDimensions
+}
+
+type AccountMconnTelemetrySnapshotInterfaceAddressesAdaptiveGroupsDimensions {
+  # Connector identifier
+  connectorId: string!
+  # Timestamp bucketed by 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Timestamp bucketed by 5 minutes
+  datetimeFiveMinutes: Time!
+  # Timestamp bucketed by hour
+  datetimeHour: Time!
+  # Timestamp bucketed by minute
+  datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
+  # Name of the network interface
+  interfaceName: string!
+  # IP address of the network interface
+  ipAddress: string!
+}
+
+input AccountMconnTelemetrySnapshotInterfaceAddressesAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMconnTelemetrySnapshotInterfaceAddressesAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMconnTelemetrySnapshotInterfaceAddressesAdaptiveGroupsFilter_InputObject!]
+  connectorId: string
+  connectorId_geq: string
+  connectorId_gt: string
+  connectorId_in: [string!]
+  connectorId_leq: string
+  connectorId_like: string
+  connectorId_lt: string
+  connectorId_neq: string
+  connectorId_notin: [string!]
+  connectorId_notlike: string
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  interfaceName: string
+  interfaceName_geq: string
+  interfaceName_gt: string
+  interfaceName_in: [string!]
+  interfaceName_leq: string
+  interfaceName_like: string
+  interfaceName_lt: string
+  interfaceName_neq: string
+  interfaceName_notin: [string!]
+  interfaceName_notlike: string
+  ipAddress: string
+  ipAddress_geq: string
+  ipAddress_gt: string
+  ipAddress_in: [string!]
+  ipAddress_leq: string
+  ipAddress_like: string
+  ipAddress_lt: string
+  ipAddress_neq: string
+  ipAddress_notin: [string!]
+  ipAddress_notlike: string
+}
+
+enum AccountMconnTelemetrySnapshotInterfaceAddressesAdaptiveGroupsOrderBy {
+  # connectorId ascending
+  connectorId_ASC
+  # connectorId descending
+  connectorId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # interfaceName ascending
+  interfaceName_ASC
+  # interfaceName descending
+  interfaceName_DESC
+  # ipAddress ascending
+  ipAddress_ASC
+  # ipAddress descending
+  ipAddress_DESC
+}
+
+# Aggregated Magic WAN Connector interface address snapshots with adaptive sampling
+type AccountMconnTelemetrySnapshotInterfaceAddressesStagingAdaptiveGroups {
+  # Snapshot Interface Address count
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMconnTelemetrySnapshotInterfaceAddressesStagingAdaptiveGroupsDimensions
+}
+
+type AccountMconnTelemetrySnapshotInterfaceAddressesStagingAdaptiveGroupsDimensions {
+  # Connector identifier
+  connectorId: string!
+  # Timestamp bucketed by 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Timestamp bucketed by 5 minutes
+  datetimeFiveMinutes: Time!
+  # Timestamp bucketed by hour
+  datetimeHour: Time!
+  # Timestamp bucketed by minute
+  datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
+  # Name of the network interface
+  interfaceName: string!
+  # IP address of the network interface
+  ipAddress: string!
+}
+
+input AccountMconnTelemetrySnapshotInterfaceAddressesStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMconnTelemetrySnapshotInterfaceAddressesStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMconnTelemetrySnapshotInterfaceAddressesStagingAdaptiveGroupsFilter_InputObject!]
+  connectorId: string
+  connectorId_geq: string
+  connectorId_gt: string
+  connectorId_in: [string!]
+  connectorId_leq: string
+  connectorId_like: string
+  connectorId_lt: string
+  connectorId_neq: string
+  connectorId_notin: [string!]
+  connectorId_notlike: string
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  interfaceName: string
+  interfaceName_geq: string
+  interfaceName_gt: string
+  interfaceName_in: [string!]
+  interfaceName_leq: string
+  interfaceName_like: string
+  interfaceName_lt: string
+  interfaceName_neq: string
+  interfaceName_notin: [string!]
+  interfaceName_notlike: string
+  ipAddress: string
+  ipAddress_geq: string
+  ipAddress_gt: string
+  ipAddress_in: [string!]
+  ipAddress_leq: string
+  ipAddress_like: string
+  ipAddress_lt: string
+  ipAddress_neq: string
+  ipAddress_notin: [string!]
+  ipAddress_notlike: string
+}
+
+enum AccountMconnTelemetrySnapshotInterfaceAddressesStagingAdaptiveGroupsOrderBy {
+  # connectorId ascending
+  connectorId_ASC
+  # connectorId descending
+  connectorId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # interfaceName ascending
+  interfaceName_ASC
+  # interfaceName descending
+  interfaceName_DESC
+  # ipAddress ascending
+  ipAddress_ASC
+  # ipAddress descending
+  ipAddress_DESC
+}
+
+# Aggregated Magic WAN Connector interface snapshots with adaptive sampling
+type AccountMconnTelemetrySnapshotInterfacesAdaptiveGroups {
+  # Snapshot Interface count
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMconnTelemetrySnapshotInterfacesAdaptiveGroupsDimensions
+  max: AccountMconnTelemetrySnapshotInterfacesAdaptiveGroupsMax
+}
+
+type AccountMconnTelemetrySnapshotInterfacesAdaptiveGroupsDimensions {
+  # Connector identifier
+  connectorId: string!
+  # Timestamp bucketed by 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Timestamp bucketed by 5 minutes
+  datetimeFiveMinutes: Time!
+  # Timestamp bucketed by hour
+  datetimeHour: Time!
+  # Timestamp bucketed by minute
+  datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
+  # Name of the network interface
+  name: string!
+  # UP/DOWN state of the network interface
+  operstate: string!
+}
+
+input AccountMconnTelemetrySnapshotInterfacesAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMconnTelemetrySnapshotInterfacesAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMconnTelemetrySnapshotInterfacesAdaptiveGroupsFilter_InputObject!]
+  connectorId: string
+  connectorId_geq: string
+  connectorId_gt: string
+  connectorId_in: [string!]
+  connectorId_leq: string
+  connectorId_like: string
+  connectorId_lt: string
+  connectorId_neq: string
+  connectorId_notin: [string!]
+  connectorId_notlike: string
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  name: string
+  name_geq: string
+  name_gt: string
+  name_in: [string!]
+  name_leq: string
+  name_like: string
+  name_lt: string
+  name_neq: string
+  name_notin: [string!]
+  name_notlike: string
+  operstate: string
+  operstate_geq: string
+  operstate_gt: string
+  operstate_in: [string!]
+  operstate_leq: string
+  operstate_like: string
+  operstate_lt: string
+  operstate_neq: string
+  operstate_notin: [string!]
+  operstate_notlike: string
+}
+
+type AccountMconnTelemetrySnapshotInterfacesAdaptiveGroupsMax {
+  # Speed of the network interface (bits per second)
+  speed: float64!
+}
+
+enum AccountMconnTelemetrySnapshotInterfacesAdaptiveGroupsOrderBy {
+  # connectorId ascending
+  connectorId_ASC
+  # connectorId descending
+  connectorId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # max(speed) ascending
+  max_speed_ASC
+  # max(speed) descending
+  max_speed_DESC
+  # name ascending
+  name_ASC
+  # name descending
+  name_DESC
+  # operstate ascending
+  operstate_ASC
+  # operstate descending
+  operstate_DESC
+}
+
+# Aggregated Magic WAN Connector interface snapshots with adaptive sampling
+type AccountMconnTelemetrySnapshotInterfacesStagingAdaptiveGroups {
+  # Snapshot Interface count
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMconnTelemetrySnapshotInterfacesStagingAdaptiveGroupsDimensions
+  max: AccountMconnTelemetrySnapshotInterfacesStagingAdaptiveGroupsMax
+}
+
+type AccountMconnTelemetrySnapshotInterfacesStagingAdaptiveGroupsDimensions {
+  # Connector identifier
+  connectorId: string!
+  # Timestamp bucketed by 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Timestamp bucketed by 5 minutes
+  datetimeFiveMinutes: Time!
+  # Timestamp bucketed by hour
+  datetimeHour: Time!
+  # Timestamp bucketed by minute
+  datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
+  # Name of the network interface
+  name: string!
+  # UP/DOWN state of the network interface
+  operstate: string!
+}
+
+input AccountMconnTelemetrySnapshotInterfacesStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMconnTelemetrySnapshotInterfacesStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMconnTelemetrySnapshotInterfacesStagingAdaptiveGroupsFilter_InputObject!]
+  connectorId: string
+  connectorId_geq: string
+  connectorId_gt: string
+  connectorId_in: [string!]
+  connectorId_leq: string
+  connectorId_like: string
+  connectorId_lt: string
+  connectorId_neq: string
+  connectorId_notin: [string!]
+  connectorId_notlike: string
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  name: string
+  name_geq: string
+  name_gt: string
+  name_in: [string!]
+  name_leq: string
+  name_like: string
+  name_lt: string
+  name_neq: string
+  name_notin: [string!]
+  name_notlike: string
+  operstate: string
+  operstate_geq: string
+  operstate_gt: string
+  operstate_in: [string!]
+  operstate_leq: string
+  operstate_like: string
+  operstate_lt: string
+  operstate_neq: string
+  operstate_notin: [string!]
+  operstate_notlike: string
+}
+
+type AccountMconnTelemetrySnapshotInterfacesStagingAdaptiveGroupsMax {
+  # Speed of the network interface (bits per second)
+  speed: float64!
+}
+
+enum AccountMconnTelemetrySnapshotInterfacesStagingAdaptiveGroupsOrderBy {
+  # connectorId ascending
+  connectorId_ASC
+  # connectorId descending
+  connectorId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # max(speed) ascending
+  max_speed_ASC
+  # max(speed) descending
+  max_speed_DESC
+  # name ascending
+  name_ASC
+  # name descending
+  name_DESC
+  # operstate ascending
+  operstate_ASC
+  # operstate descending
+  operstate_DESC
 }
 
 # Aggregated Magic WAN Connector mount snapshots with adaptive sampling
@@ -32213,6 +32815,308 @@ enum AccountMconnTelemetrySnapshotThermalsStagingAdaptiveGroupsOrderBy {
   max_maxCelcius_ASC
   # max(maxCelcius) descending
   max_maxCelcius_DESC
+}
+
+# Aggregated Magic WAN Connector tunnel snapshots with adaptive sampling
+type AccountMconnTelemetrySnapshotTunnelsAdaptiveGroups {
+  # Snapshot Tunnels count
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMconnTelemetrySnapshotTunnelsAdaptiveGroupsDimensions
+  max: AccountMconnTelemetrySnapshotTunnelsAdaptiveGroupsMax
+}
+
+type AccountMconnTelemetrySnapshotTunnelsAdaptiveGroupsDimensions {
+  # Connector identifier
+  connectorId: string!
+  # Timestamp bucketed by 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Timestamp bucketed by 5 minutes
+  datetimeFiveMinutes: Time!
+  # Timestamp bucketed by hour
+  datetimeHour: Time!
+  # Timestamp bucketed by minute
+  datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
+  # The tunnel interface name (i.e. xfrm1, xfrm3.99, etc.)
+  interfaceName: string!
+  # Tunnel identifier
+  tunnelId: string!
+}
+
+input AccountMconnTelemetrySnapshotTunnelsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMconnTelemetrySnapshotTunnelsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMconnTelemetrySnapshotTunnelsAdaptiveGroupsFilter_InputObject!]
+  connectorId: string
+  connectorId_geq: string
+  connectorId_gt: string
+  connectorId_in: [string!]
+  connectorId_leq: string
+  connectorId_like: string
+  connectorId_lt: string
+  connectorId_neq: string
+  connectorId_notin: [string!]
+  connectorId_notlike: string
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  interfaceName: string
+  interfaceName_geq: string
+  interfaceName_gt: string
+  interfaceName_in: [string!]
+  interfaceName_leq: string
+  interfaceName_like: string
+  interfaceName_lt: string
+  interfaceName_neq: string
+  interfaceName_notin: [string!]
+  interfaceName_notlike: string
+  tunnelId: string
+  tunnelId_geq: string
+  tunnelId_gt: string
+  tunnelId_in: [string!]
+  tunnelId_leq: string
+  tunnelId_like: string
+  tunnelId_lt: string
+  tunnelId_neq: string
+  tunnelId_notin: [string!]
+  tunnelId_notlike: string
+}
+
+type AccountMconnTelemetrySnapshotTunnelsAdaptiveGroupsMax {
+  # Numeric value associated with tunnel state (0 = unknown, 1 = healthy, 2 = degraded, 3 = down)
+  healthValue: float64!
+}
+
+enum AccountMconnTelemetrySnapshotTunnelsAdaptiveGroupsOrderBy {
+  # connectorId ascending
+  connectorId_ASC
+  # connectorId descending
+  connectorId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # interfaceName ascending
+  interfaceName_ASC
+  # interfaceName descending
+  interfaceName_DESC
+  # max(healthValue) ascending
+  max_healthValue_ASC
+  # max(healthValue) descending
+  max_healthValue_DESC
+  # tunnelId ascending
+  tunnelId_ASC
+  # tunnelId descending
+  tunnelId_DESC
+}
+
+# Aggregated Magic WAN Connector tunnel snapshots with adaptive sampling
+type AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroups {
+  # Snapshot Tunnels count
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsDimensions
+  max: AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsMax
+}
+
+type AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsDimensions {
+  # Connector identifier
+  connectorId: string!
+  # Timestamp bucketed by 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Timestamp bucketed by 5 minutes
+  datetimeFiveMinutes: Time!
+  # Timestamp bucketed by hour
+  datetimeHour: Time!
+  # Timestamp bucketed by minute
+  datetimeMinute: Time!
+  # Timestamp bucketed by 6 hours
+  datetimeSixHours: Time!
+  # The tunnel interface name (i.e. xfrm1, xfrm3.99, etc.)
+  interfaceName: string!
+  # Tunnel identifier
+  tunnelId: string!
+}
+
+input AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsFilter_InputObject!]
+  connectorId: string
+  connectorId_geq: string
+  connectorId_gt: string
+  connectorId_in: [string!]
+  connectorId_leq: string
+  connectorId_like: string
+  connectorId_lt: string
+  connectorId_neq: string
+  connectorId_notin: [string!]
+  connectorId_notlike: string
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  interfaceName: string
+  interfaceName_geq: string
+  interfaceName_gt: string
+  interfaceName_in: [string!]
+  interfaceName_leq: string
+  interfaceName_like: string
+  interfaceName_lt: string
+  interfaceName_neq: string
+  interfaceName_notin: [string!]
+  interfaceName_notlike: string
+  tunnelId: string
+  tunnelId_geq: string
+  tunnelId_gt: string
+  tunnelId_in: [string!]
+  tunnelId_leq: string
+  tunnelId_like: string
+  tunnelId_lt: string
+  tunnelId_neq: string
+  tunnelId_notin: [string!]
+  tunnelId_notlike: string
+}
+
+type AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsMax {
+  # Numeric value associated with tunnel state (0 = unknown, 1 = healthy, 2 = degraded, 3 = down)
+  healthValue: float64!
+}
+
+enum AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsOrderBy {
+  # connectorId ascending
+  connectorId_ASC
+  # connectorId descending
+  connectorId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # interfaceName ascending
+  interfaceName_ASC
+  # interfaceName descending
+  interfaceName_DESC
+  # max(healthValue) ascending
+  max_healthValue_ASC
+  # max(healthValue) descending
+  max_healthValue_DESC
+  # tunnelId ascending
+  tunnelId_ASC
+  # tunnelId descending
+  tunnelId_DESC
 }
 
 # AWS VPC Flow data collected through Magic Network Monitoring
@@ -38053,12 +38957,18 @@ type AccountSettings {
   mconnTelemetrySnapshotDhcpLeasesStagingAdaptiveGroups: Settings!
   mconnTelemetrySnapshotDisksAdaptiveGroups: Settings!
   mconnTelemetrySnapshotDisksStagingAdaptiveGroups: Settings!
+  mconnTelemetrySnapshotInterfaceAddressesAdaptiveGroups: Settings!
+  mconnTelemetrySnapshotInterfaceAddressesStagingAdaptiveGroups: Settings!
+  mconnTelemetrySnapshotInterfacesAdaptiveGroups: Settings!
+  mconnTelemetrySnapshotInterfacesStagingAdaptiveGroups: Settings!
   mconnTelemetrySnapshotMountsAdaptiveGroups: Settings!
   mconnTelemetrySnapshotMountsStagingAdaptiveGroups: Settings!
   mconnTelemetrySnapshotNetdevsAdaptiveGroups: Settings!
   mconnTelemetrySnapshotNetdevsStagingAdaptiveGroups: Settings!
   mconnTelemetrySnapshotThermalsAdaptiveGroups: Settings!
   mconnTelemetrySnapshotThermalsStagingAdaptiveGroups: Settings!
+  mconnTelemetrySnapshotTunnelsAdaptiveGroups: Settings!
+  mconnTelemetrySnapshotTunnelsStagingAdaptiveGroups: Settings!
   mconnTelemetrySnapshotsAdaptiveGroups: Settings!
   mconnTelemetrySnapshotsStagingAdaptiveGroups: Settings!
   mnmAWSVPCFlowDataAdaptiveGroups: Settings!
@@ -44120,6 +45030,8 @@ type AccountWorkflowsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time truncated to the minute
   datetimeMinute: Time!
+  # Event type
+  eventType: string!
   # Instance Id
   instanceId: string!
   # Workflow name
@@ -44169,6 +45081,16 @@ input AccountWorkflowsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
   instanceId: string
   instanceId_geq: string
   instanceId_gt: string
@@ -44224,6 +45146,10 @@ enum AccountWorkflowsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
   # instanceId ascending
   instanceId_ASC
   # instanceId descending
@@ -44804,8 +45730,6 @@ input OrganizationFilter_InputObject {
 type OrganizationHttpRequestsAdaptiveGroups {
   # The average value used for sample interval
   avg: OrganizationHttpRequestsAdaptiveGroupsAvg
-  # ALPHA - DO NOT USE
-  confidence(level: float64!): OrganizationHttpRequestsAdaptiveGroupsConfidence!
   # The number of values for a metric per dimension
   count: uint64!
   # List of dimensions to group by
@@ -44826,15 +45750,6 @@ type OrganizationHttpRequestsAdaptiveGroupsAvg {
   # The average originResponseDuration, in milliseconds, excluding 0 values (i.e. cached ones)
   originResponseDurationMs: float64!
   sampleInterval: float64!
-}
-
-type OrganizationHttpRequestsAdaptiveGroupsConfidence {
-  # The number of values for a metric per dimension, with confidence intervals
-  count: Confidence!
-  # Confidence level that was requested
-  level: float64!
-  # The sum of values for a metric per dimension, with confidence intervals
-  sum: OrganizationHttpRequestsAdaptiveGroupsSumConfidence
 }
 
 type OrganizationHttpRequestsAdaptiveGroupsDimensions {
@@ -45955,11 +46870,6 @@ type OrganizationHttpRequestsAdaptiveGroupsSum {
   originResponseDurationMs: uint64!
   # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
   visits: uint64!
-}
-
-type OrganizationHttpRequestsAdaptiveGroupsSumConfidence {
-  # Confidence interval for the corresponding point estimate
-  edgeResponseBytes: Confidence!
 }
 
 # Access and limitations for an organization
