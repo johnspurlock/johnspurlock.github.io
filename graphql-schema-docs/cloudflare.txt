@@ -7692,6 +7692,8 @@ type AccountCloudchamberMetricsAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # The deployment ID
   deploymentId: string!
+  # If set, this metric was emitted while assigned to a durable object
+  durableObjectId: string!
   # Location
   location: string!
   # The placement ID
@@ -7765,6 +7767,16 @@ input AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject {
   deploymentId_neq: string
   deploymentId_notin: [string!]
   deploymentId_notlike: string
+  durableObjectId: string
+  durableObjectId_geq: string
+  durableObjectId_gt: string
+  durableObjectId_in: [string!]
+  durableObjectId_leq: string
+  durableObjectId_like: string
+  durableObjectId_lt: string
+  durableObjectId_neq: string
+  durableObjectId_notin: [string!]
+  durableObjectId_notlike: string
   location: string
   location_geq: string
   location_gt: string
@@ -7883,6 +7895,10 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   deploymentId_ASC
   # deploymentId descending
   deploymentId_DESC
+  # durableObjectId ascending
+  durableObjectId_ASC
+  # durableObjectId descending
+  durableObjectId_DESC
   # location ascending
   location_ASC
   # location descending
@@ -37860,6 +37876,12 @@ type AccountRumWebVitalsEventsAdaptiveGroupsDimensions {
   # Observed path of the First Input Delay (Core Web Vitals)
   @Deprecated
   firstInputDelayPath: string!
+  # DOM selector name of the interaction
+  interactionToNextPaintElement: string!
+  # Action name of the interaction
+  interactionToNextPaintName: string!
+  # Observed path of the Cumulative Layout Shift (Core Web Vitals)
+  interactionToNextPaintPath: string!
   # DOM selector name of the largest object
   largestContentfulPaintElement: string!
   # Host of the largest object
@@ -38057,6 +38079,44 @@ input AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject {
   firstInputDelay_lt: int64
   firstInputDelay_neq: int64
   firstInputDelay_notin: [int64!]
+  interactionToNextPaint: int64
+  interactionToNextPaintElement: string
+  interactionToNextPaintElement_geq: string
+  interactionToNextPaintElement_gt: string
+  interactionToNextPaintElement_in: [string!]
+  interactionToNextPaintElement_leq: string
+  interactionToNextPaintElement_like: string
+  interactionToNextPaintElement_lt: string
+  interactionToNextPaintElement_neq: string
+  interactionToNextPaintElement_notin: [string!]
+  interactionToNextPaintElement_notlike: string
+  interactionToNextPaintName: string
+  interactionToNextPaintName_geq: string
+  interactionToNextPaintName_gt: string
+  interactionToNextPaintName_in: [string!]
+  interactionToNextPaintName_leq: string
+  interactionToNextPaintName_like: string
+  interactionToNextPaintName_lt: string
+  interactionToNextPaintName_neq: string
+  interactionToNextPaintName_notin: [string!]
+  interactionToNextPaintName_notlike: string
+  interactionToNextPaintPath: string
+  interactionToNextPaintPath_geq: string
+  interactionToNextPaintPath_gt: string
+  interactionToNextPaintPath_in: [string!]
+  interactionToNextPaintPath_leq: string
+  interactionToNextPaintPath_like: string
+  interactionToNextPaintPath_lt: string
+  interactionToNextPaintPath_neq: string
+  interactionToNextPaintPath_notin: [string!]
+  interactionToNextPaintPath_notlike: string
+  interactionToNextPaint_geq: int64
+  interactionToNextPaint_gt: int64
+  interactionToNextPaint_in: [int64!]
+  interactionToNextPaint_leq: int64
+  interactionToNextPaint_lt: int64
+  interactionToNextPaint_neq: int64
+  interactionToNextPaint_notin: [int64!]
   largestContentfulPaint: int64
   largestContentfulPaintElement: string
   largestContentfulPaintElement_geq: string
@@ -38332,6 +38392,18 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   firstInputDelayPath_ASC
   # firstInputDelayPath descending
   firstInputDelayPath_DESC
+  # interactionToNextPaintElement ascending
+  interactionToNextPaintElement_ASC
+  # interactionToNextPaintElement descending
+  interactionToNextPaintElement_DESC
+  # interactionToNextPaintName ascending
+  interactionToNextPaintName_ASC
+  # interactionToNextPaintName descending
+  interactionToNextPaintName_DESC
+  # interactionToNextPaintPath ascending
+  interactionToNextPaintPath_ASC
+  # interactionToNextPaintPath descending
+  interactionToNextPaintPath_DESC
   # largestContentfulPaintElement ascending
   largestContentfulPaintElement_ASC
   # largestContentfulPaintElement descending
@@ -43537,6 +43609,10 @@ enum AccountWorkerPlacementAdaptiveGroupsOrderBy {
   requestDurationBucketMin_ASC
   # requestDurationBucketMin descending
   requestDurationBucketMin_DESC
+  # scriptId ascending
+  scriptId_ASC
+  # scriptId descending
+  scriptId_DESC
   # scriptName ascending
   scriptName_ASC
   # scriptName descending
@@ -46898,7 +46974,7 @@ type Settings {
 }
 
 type viewer {
-  accounts(disableAccountAuthFallback: bool, filter: AccountFilter_InputObject!): [account!]!
+  accounts(filter: AccountFilter_InputObject!): [account!]!
   budget: uint64!
   organizations(filter: OrganizationFilter_InputObject!): [organization!]!
   zones(filter: ZoneFilter_InputObject, limit: uint64): [zone!]!
