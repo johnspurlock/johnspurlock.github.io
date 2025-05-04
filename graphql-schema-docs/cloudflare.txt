@@ -20,6 +20,7 @@ Account-level datasets:
 * callsUsageAdaptiveGroups
   cdnNetworkAnalyticsAdaptiveGroups
 * cloudchamberMetricsAdaptiveGroups
+* cloudflareTunnelsAnalyticsAdaptiveGroups
 * d1AnalyticsAdaptiveGroups
 * d1QueriesAdaptiveGroups
 * d1StorageAdaptiveGroups
@@ -55,6 +56,7 @@ Account-level datasets:
 * kvOperationsAdaptiveGroups
 * kvStorageAdaptiveGroups
 * logpushHealthAdaptiveGroups
+  magicEndpointHealthCheckAdaptiveGroups
   magicFirewallNetworkAnalyticsAdaptiveGroups
   magicFirewallRateLimitNetworkAnalyticsAdaptiveGroups
   magicFirewallSamplesAdaptiveGroups
@@ -274,6 +276,8 @@ type account {
   cdnNetworkAnalyticsAdaptiveGroups(filter: AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountCdnNetworkAnalyticsAdaptiveGroups!]!
   # Metrics for Cloudchamber applications and deployments
   cloudchamberMetricsAdaptiveGroups(filter: AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCloudchamberMetricsAdaptiveGroupsOrderBy!]): [AccountCloudchamberMetricsAdaptiveGroups!]!
+  # Cloudflare tunnel Device Analytics
+  cloudflareTunnelsAnalyticsAdaptiveGroups(filter: AccountCloudflareTunnelsAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCloudflareTunnelsAnalyticsAdaptiveGroupsOrderBy!]): [AccountCloudflareTunnelsAnalyticsAdaptiveGroups!]!
   # Beta. Aggregated D1 analytics with adaptive sampling
   d1AnalyticsAdaptiveGroups(filter: AccountD1AnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1AnalyticsAdaptiveGroupsOrderBy!]): [AccountD1AnalyticsAdaptiveGroups!]!
   # Beta. D1 query metrics with adaptive sampling
@@ -345,6 +349,8 @@ type account {
   kvStorageAdaptiveGroups(filter: AccountKvStorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountKvStorageAdaptiveGroupsOrderBy!]): [AccountKvStorageAdaptiveGroups!]!
   # Beta. Logpush job health metrics
   logpushHealthAdaptiveGroups(filter: AccountLogpushHealthAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogpushHealthAdaptiveGroupsOrderBy!]): [AccountLogpushHealthAdaptiveGroups!]!
+  # Magic Endpoint Healthcheck events with adaptive sampling.
+  magicEndpointHealthCheckAdaptiveGroups(filter: AccountMagicEndpointHealthCheckAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicEndpointHealthCheckAdaptiveGroupsOrderBy!]): [AccountMagicEndpointHealthCheckAdaptiveGroups!]!
   # Network analytics data for Magic Firewall
   magicFirewallNetworkAnalyticsAdaptiveGroups(filter: AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountMagicFirewallNetworkAnalyticsAdaptiveGroups!]!
   # Network analytics data for Magic Firewall Ratelimiting
@@ -8084,6 +8090,401 @@ type AccountCloudchamberMetricsAdaptiveGroupsQuantiles {
   txBandwidthP90: float64!
   # TX bandwidth (99th percentile)
   txBandwidthP99: float64!
+}
+
+# Cloudflare tunnel Device Analytics
+type AccountCloudflareTunnelsAnalyticsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountCloudflareTunnelsAnalyticsAdaptiveGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountCloudflareTunnelsAnalyticsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountCloudflareTunnelsAnalyticsAdaptiveGroupsSum
+}
+
+type AccountCloudflareTunnelsAnalyticsAdaptiveGroupsAvg {
+  # Sum of bits received, divided by 1 second, providing a per-second bit rate when grouped by datetime
+  bitRate: float64!
+  # Sum of bits received, divided by 86400 seconds, providing a per-second bit rate when grouped by date
+  bitRateDay: float64!
+  # Sum of bits received, divided by 900 seconds, providing a per-second bit rate when grouped by datetimeFifteenMinutes
+  bitRateFifteenMinutes: float64!
+  # Sum of bits received, divided by 300 seconds, providing a per-second bit rate when grouped by datetimeFiveMinutes
+  bitRateFiveMinutes: float64!
+  # Sum of bits received, divided by 3600 seconds, providing a per-second bit rate when grouped by datetimeHour
+  bitRateHour: float64!
+  # Sum of bits received, divided by 60 seconds, providing a per-second bit rate when grouped by datetimeMinute
+  bitRateMinute: float64!
+  # Sum of bits received, divided by 10 seconds, providing a per-second bit rate when grouped by datetimeTenSeconds
+  bitRateTenSeconds: float64!
+  # Sum of egress bits received, divided by 1 second, providing a per-second egress bit rate when grouped by datetime
+  egressBitRate: float64!
+  # Sum of egress bits received, divided by 86400 seconds, providing a per-second egress bit rate when grouped by date
+  egressBitRateDay: float64!
+  # Sum of egress bits received, divided by 900 seconds, providing a per-second egress bit rate when grouped by datetimeFifteenMinutes
+  egressBitRateFifteenMinutes: float64!
+  # Sum of egress bits received, divided by 300 seconds, providing a per-second egress bit rate when grouped by datetimeFiveMinutes
+  egressBitRateFiveMinutes: float64!
+  # Sum of egress bits received, divided by 3600 seconds, providing a per-second egress bit rate when grouped by datetimeHour
+  egressBitRateHour: float64!
+  # Sum of egress bits received, divided by 60 seconds, providing a per-second egress bit rate when grouped by datetimeMinute
+  egressBitRateMinute: float64!
+  # Sum of egress bits received, divided by 10 seconds, providing a per-second egress bit rate when grouped by datetimeTenSeconds
+  egressBitRateTenSeconds: float64!
+  # Average sample interval applied to the data
+  sampleInterval: float64!
+}
+
+type AccountCloudflareTunnelsAnalyticsAdaptiveGroupsDimensions {
+  # Duration of the network connection in milliseconds.
+  connectionDuration: uint64!
+  # Date that the connection was started
+  date: Date!
+  # Date and time the connection was started
+  datetime: Time!
+  # Date and time that the connection was started, rounded to the start of the nearest fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Date and time that the connection was started, rounded to the start of the nearest five minutes
+  datetimeFiveMinutes: Time!
+  # Date and time that the connection was started, rounded to the start of the nearest hour
+  datetimeHour: Time!
+  # Date and time that the connection was started, rounded to the start of the nearest minute
+  datetimeMinute: Time!
+  # Date and time that the connection was started rounded to the start of the nearest ten seconds
+  datetimeTenSeconds: Time!
+  # Destination country for the network connection. Only available for public addresses.
+  destinationCountry: string!
+  # Destination IP of the network connection.
+  destinationIP: string!
+  # Destination port of the network connection.
+  destinationPort: uint16!
+  # Identifier of the Cloudflare tunnel connector to which the network session was routed to.
+  deviceID: string!
+  # Name of the Cloudflare tunnel connector to which the network session was routed to.
+  deviceName: string!
+  # Network Protocol of the network connection. Available values: [UDP,TCP,ICMP,ICMPv6]
+  protocol: string!
+  # Source country for the network connection. Only available for public addresses.
+  sourceCountry: string!
+  # Source IP of the network connection.
+  sourceIP: string!
+  # Source port of the network connection.
+  sourcePort: uint16!
+  # Duration of the TCP Handshake for TCP connections in milliseconds.
+  tcpHandshakeDuration: uint64!
+}
+
+input AccountCloudflareTunnelsAnalyticsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountCloudflareTunnelsAnalyticsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountCloudflareTunnelsAnalyticsAdaptiveGroupsFilter_InputObject!]
+  connectionDuration: uint64
+  connectionDuration_geq: uint64
+  connectionDuration_gt: uint64
+  connectionDuration_in: [uint64!]
+  connectionDuration_leq: uint64
+  connectionDuration_lt: uint64
+  connectionDuration_neq: uint64
+  connectionDuration_notin: [uint64!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeTenSeconds: Time
+  datetimeTenSeconds_geq: Time
+  datetimeTenSeconds_gt: Time
+  datetimeTenSeconds_in: [Time!]
+  datetimeTenSeconds_leq: Time
+  datetimeTenSeconds_lt: Time
+  datetimeTenSeconds_neq: Time
+  datetimeTenSeconds_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationCountry: string
+  destinationCountry_geq: string
+  destinationCountry_gt: string
+  destinationCountry_in: [string!]
+  destinationCountry_leq: string
+  destinationCountry_like: string
+  destinationCountry_lt: string
+  destinationCountry_neq: string
+  destinationCountry_notin: [string!]
+  destinationCountry_notlike: string
+  destinationIP: string
+  destinationIP_geq: string
+  destinationIP_gt: string
+  destinationIP_in: [string!]
+  destinationIP_leq: string
+  destinationIP_like: string
+  destinationIP_lt: string
+  destinationIP_neq: string
+  destinationIP_notin: [string!]
+  destinationIP_notlike: string
+  destinationPort: uint16
+  destinationPort_geq: uint16
+  destinationPort_gt: uint16
+  destinationPort_in: [uint16!]
+  destinationPort_leq: uint16
+  destinationPort_lt: uint16
+  destinationPort_neq: uint16
+  destinationPort_notin: [uint16!]
+  deviceID: string
+  deviceID_geq: string
+  deviceID_gt: string
+  deviceID_in: [string!]
+  deviceID_leq: string
+  deviceID_like: string
+  deviceID_lt: string
+  deviceID_neq: string
+  deviceID_notin: [string!]
+  deviceID_notlike: string
+  deviceName: string
+  deviceName_geq: string
+  deviceName_gt: string
+  deviceName_in: [string!]
+  deviceName_leq: string
+  deviceName_like: string
+  deviceName_lt: string
+  deviceName_neq: string
+  deviceName_notin: [string!]
+  deviceName_notlike: string
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  sourceCountry: string
+  sourceCountry_geq: string
+  sourceCountry_gt: string
+  sourceCountry_in: [string!]
+  sourceCountry_leq: string
+  sourceCountry_like: string
+  sourceCountry_lt: string
+  sourceCountry_neq: string
+  sourceCountry_notin: [string!]
+  sourceCountry_notlike: string
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
+  sourcePort: uint16
+  sourcePort_geq: uint16
+  sourcePort_gt: uint16
+  sourcePort_in: [uint16!]
+  sourcePort_leq: uint16
+  sourcePort_lt: uint16
+  sourcePort_neq: uint16
+  sourcePort_notin: [uint16!]
+  tcpHandshakeDuration: uint64
+  tcpHandshakeDuration_geq: uint64
+  tcpHandshakeDuration_gt: uint64
+  tcpHandshakeDuration_in: [uint64!]
+  tcpHandshakeDuration_leq: uint64
+  tcpHandshakeDuration_lt: uint64
+  tcpHandshakeDuration_neq: uint64
+  tcpHandshakeDuration_notin: [uint64!]
+}
+
+enum AccountCloudflareTunnelsAnalyticsAdaptiveGroupsOrderBy {
+  # avg(bitRateDay) ascending
+  avg_bitRateDay_ASC
+  # avg(bitRateDay) descending
+  avg_bitRateDay_DESC
+  # avg(bitRateFifteenMinutes) ascending
+  avg_bitRateFifteenMinutes_ASC
+  # avg(bitRateFifteenMinutes) descending
+  avg_bitRateFifteenMinutes_DESC
+  # avg(bitRateFiveMinutes) ascending
+  avg_bitRateFiveMinutes_ASC
+  # avg(bitRateFiveMinutes) descending
+  avg_bitRateFiveMinutes_DESC
+  # avg(bitRateHour) ascending
+  avg_bitRateHour_ASC
+  # avg(bitRateHour) descending
+  avg_bitRateHour_DESC
+  # avg(bitRateMinute) ascending
+  avg_bitRateMinute_ASC
+  # avg(bitRateMinute) descending
+  avg_bitRateMinute_DESC
+  # avg(bitRateTenSeconds) ascending
+  avg_bitRateTenSeconds_ASC
+  # avg(bitRateTenSeconds) descending
+  avg_bitRateTenSeconds_DESC
+  # avg(bitRate) ascending
+  avg_bitRate_ASC
+  # avg(bitRate) descending
+  avg_bitRate_DESC
+  # avg(egressBitRateDay) ascending
+  avg_egressBitRateDay_ASC
+  # avg(egressBitRateDay) descending
+  avg_egressBitRateDay_DESC
+  # avg(egressBitRateFifteenMinutes) ascending
+  avg_egressBitRateFifteenMinutes_ASC
+  # avg(egressBitRateFifteenMinutes) descending
+  avg_egressBitRateFifteenMinutes_DESC
+  # avg(egressBitRateFiveMinutes) ascending
+  avg_egressBitRateFiveMinutes_ASC
+  # avg(egressBitRateFiveMinutes) descending
+  avg_egressBitRateFiveMinutes_DESC
+  # avg(egressBitRateHour) ascending
+  avg_egressBitRateHour_ASC
+  # avg(egressBitRateHour) descending
+  avg_egressBitRateHour_DESC
+  # avg(egressBitRateMinute) ascending
+  avg_egressBitRateMinute_ASC
+  # avg(egressBitRateMinute) descending
+  avg_egressBitRateMinute_DESC
+  # avg(egressBitRateTenSeconds) ascending
+  avg_egressBitRateTenSeconds_ASC
+  # avg(egressBitRateTenSeconds) descending
+  avg_egressBitRateTenSeconds_DESC
+  # avg(egressBitRate) ascending
+  avg_egressBitRate_ASC
+  # avg(egressBitRate) descending
+  avg_egressBitRate_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # connectionDuration ascending
+  connectionDuration_ASC
+  # connectionDuration descending
+  connectionDuration_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeTenSeconds ascending
+  datetimeTenSeconds_ASC
+  # datetimeTenSeconds descending
+  datetimeTenSeconds_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationCountry ascending
+  destinationCountry_ASC
+  # destinationCountry descending
+  destinationCountry_DESC
+  # destinationIP ascending
+  destinationIP_ASC
+  # destinationIP descending
+  destinationIP_DESC
+  # destinationPort ascending
+  destinationPort_ASC
+  # destinationPort descending
+  destinationPort_DESC
+  # deviceID ascending
+  deviceID_ASC
+  # deviceID descending
+  deviceID_DESC
+  # deviceName ascending
+  deviceName_ASC
+  # deviceName descending
+  deviceName_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # sourceCountry ascending
+  sourceCountry_ASC
+  # sourceCountry descending
+  sourceCountry_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sourcePort ascending
+  sourcePort_ASC
+  # sourcePort descending
+  sourcePort_DESC
+  # sum(bits) ascending
+  sum_bits_ASC
+  # sum(bits) descending
+  sum_bits_DESC
+  # sum(egressBits) ascending
+  sum_egressBits_ASC
+  # sum(egressBits) descending
+  sum_egressBits_DESC
+  # tcpHandshakeDuration ascending
+  tcpHandshakeDuration_ASC
+  # tcpHandshakeDuration descending
+  tcpHandshakeDuration_DESC
+}
+
+type AccountCloudflareTunnelsAnalyticsAdaptiveGroupsSum {
+  # Sum of bits
+  bits: uint64!
+  # Sum of egress bits
+  egressBits: uint64!
 }
 
 # Beta. Aggregated D1 analytics with adaptive sampling
@@ -22800,6 +23201,10 @@ input AccountLogpushHealthAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountLogpushHealthAdaptiveGroupsOrderBy {
+  # accountId ascending
+  accountId_ASC
+  # accountId descending
+  accountId_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -22869,6 +23274,209 @@ type AccountLogpushHealthAdaptiveGroupsSum {
   bytesCompressed: uint64!
   # A count of the total number of records pushed.
   records: uint64!
+}
+
+# Magic Endpoint Healthcheck events with adaptive sampling.
+type AccountMagicEndpointHealthCheckAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountMagicEndpointHealthCheckAdaptiveGroupsAvg
+  # Total number of health checks
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMagicEndpointHealthCheckAdaptiveGroupsDimensions
+  # The sum of value for a metric per dimension
+  sum: AccountMagicEndpointHealthCheckAdaptiveGroupsSum
+}
+
+type AccountMagicEndpointHealthCheckAdaptiveGroupsAvg {
+  # Average calculated percentage (0-100) for endpoint healthchecks
+  lossPercentage: float64!
+  # The average value used for sample interval
+  sampleInterval: float64!
+}
+
+type AccountMagicEndpointHealthCheckAdaptiveGroupsDimensions {
+  # The ID of the check associated with the healthcheck
+  checkId: string!
+  # The type of check associated with the healthcheck
+  checkType: string!
+  # Healthcheck event timestamp, truncated to the day
+  date: Date!
+  # Healthcheck event timestamp
+  datetime: Time!
+  # Healthcheck event timestamp, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Calculation event timestamp, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # Healthcheck event timestamp, truncated to multiple of 30 minutes
+  datetimeHalfOfHour: Time!
+  # Healthcheck event timestamp, truncated to the hour
+  datetimeHour: Time!
+  # Healthcheck event timestamp, truncated to the minute
+  datetimeMinute: Time!
+  # The endpoint of the check associated with the healthcheck
+  endpoint: string!
+}
+
+input AccountMagicEndpointHealthCheckAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMagicEndpointHealthCheckAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMagicEndpointHealthCheckAdaptiveGroupsFilter_InputObject!]
+  checkId: string
+  checkId_geq: string
+  checkId_gt: string
+  checkId_in: [string!]
+  checkId_leq: string
+  checkId_like: string
+  checkId_lt: string
+  checkId_neq: string
+  checkId_notin: [string!]
+  checkId_notlike: string
+  checkType: string
+  checkType_geq: string
+  checkType_gt: string
+  checkType_in: [string!]
+  checkType_leq: string
+  checkType_like: string
+  checkType_lt: string
+  checkType_neq: string
+  checkType_notin: [string!]
+  checkType_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHalfOfHour: Time
+  datetimeHalfOfHour_geq: Time
+  datetimeHalfOfHour_gt: Time
+  datetimeHalfOfHour_in: [Time!]
+  datetimeHalfOfHour_leq: Time
+  datetimeHalfOfHour_lt: Time
+  datetimeHalfOfHour_neq: Time
+  datetimeHalfOfHour_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  endpoint: string
+  endpoint_geq: string
+  endpoint_gt: string
+  endpoint_in: [string!]
+  endpoint_leq: string
+  endpoint_like: string
+  endpoint_lt: string
+  endpoint_neq: string
+  endpoint_notin: [string!]
+  endpoint_notlike: string
+}
+
+enum AccountMagicEndpointHealthCheckAdaptiveGroupsOrderBy {
+  # avg(lossPercentage) ascending
+  avg_lossPercentage_ASC
+  # avg(lossPercentage) descending
+  avg_lossPercentage_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # checkId ascending
+  checkId_ASC
+  # checkId descending
+  checkId_DESC
+  # checkType ascending
+  checkType_ASC
+  # checkType descending
+  checkType_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHalfOfHour ascending
+  datetimeHalfOfHour_ASC
+  # datetimeHalfOfHour descending
+  datetimeHalfOfHour_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # endpoint ascending
+  endpoint_ASC
+  # endpoint descending
+  endpoint_DESC
+  # sum(failures) ascending
+  sum_failures_ASC
+  # sum(failures) descending
+  sum_failures_DESC
+  # sum(total) ascending
+  sum_total_ASC
+  # sum(total) descending
+  sum_total_DESC
+}
+
+type AccountMagicEndpointHealthCheckAdaptiveGroupsSum {
+  # Total failures
+  failures: float64!
+  # Total number of health check events
+  total: float64!
 }
 
 # Network analytics data for Magic Firewall
@@ -32207,7 +32815,7 @@ input AccountMconnTelemetrySnapshotsAdaptiveGroupsFilter_InputObject {
 type AccountMconnTelemetrySnapshotsAdaptiveGroupsMax {
   # Count of processors/cores
   cpuCount: float64!
-  # Numeric value associated with high availability state (0 = unknown, 1 = active, 2 = standby, 3 = disabled, 4 = fault)
+  # Numeric value associated with high availability state (0 = disabled, 1 = active, 2 = standby, 3 = stopped, 4 = fault)
   haValue: float64!
   # Boot time (seconds since Unix epoch)
   kernelBtime: float64!
@@ -32420,7 +33028,7 @@ input AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsFilter_InputObject {
 type AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsMax {
   # Count of processors/cores
   cpuCount: float64!
-  # Numeric value associated with high availability state (0 = unknown, 1 = active, 2 = standby, 3 = disabled, 4 = fault)
+  # Numeric value associated with high availability state (0 = disabled, 1 = active, 2 = standby, 3 = stopped, 4 = fault)
   haValue: float64!
   # Boot time (seconds since Unix epoch)
   kernelBtime: float64!
@@ -38980,6 +39588,7 @@ type AccountSettings {
   callsUsageAdaptiveGroups: Settings!
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
   cloudchamberMetricsAdaptiveGroups: Settings!
+  cloudflareTunnelsAnalyticsAdaptiveGroups: Settings!
   d1AnalyticsAdaptiveGroups: Settings!
   d1QueriesAdaptiveGroups: Settings!
   d1StorageAdaptiveGroups: Settings!
@@ -39015,6 +39624,7 @@ type AccountSettings {
   kvOperationsAdaptiveGroups: Settings!
   kvStorageAdaptiveGroups: Settings!
   logpushHealthAdaptiveGroups: Settings!
+  magicEndpointHealthCheckAdaptiveGroups: Settings!
   magicFirewallNetworkAnalyticsAdaptiveGroups: Settings!
   magicFirewallRateLimitNetworkAnalyticsAdaptiveGroups: Settings!
   magicFirewallSamplesAdaptiveGroups: Settings!
@@ -58599,6 +59209,10 @@ input ZoneLogpushHealthAdaptiveGroupsFilter_InputObject {
 }
 
 enum ZoneLogpushHealthAdaptiveGroupsOrderBy {
+  # accountId ascending
+  accountId_ASC
+  # accountId descending
+  accountId_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
