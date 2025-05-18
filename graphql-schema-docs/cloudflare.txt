@@ -13,6 +13,8 @@ Account-level datasets:
 * autoRAGEngineAdaptiveGroups
 * browserIsolationSessionsAdaptiveGroups
 * browserIsolationUserActionsAdaptiveGroups
+* browserRenderingApiAdaptiveGroups
+* browserRenderingBrowserTimeUsageAdaptiveGroups
 * browserRenderingEventsAdaptive
 * browserRenderingEventsAdaptiveGroups
 * callsStatusAdaptive
@@ -262,6 +264,10 @@ type account {
   browserIsolationSessionsAdaptiveGroups(filter: AccountBrowserIsolationSessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserIsolationSessionsAdaptiveGroupsOrderBy!]): [AccountBrowserIsolationSessionsAdaptiveGroups!]!
   # Aggregated count of Browser Isolation User Actions matches
   browserIsolationUserActionsAdaptiveGroups(filter: AccountBrowserIsolationUserActionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserIsolationUserActionsAdaptiveGroupsOrderBy!]): [AccountBrowserIsolationUserActionsAdaptiveGroups!]!
+  # Aggregated Browser Rendering API events with adaptive sampling
+  browserRenderingApiAdaptiveGroups(filter: AccountBrowserRenderingApiAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserRenderingApiAdaptiveGroupsOrderBy!]): [AccountBrowserRenderingApiAdaptiveGroups!]!
+  # Aggregated Browser Rendering and Browser Rendering REST API browser sessions with adaptive sampling
+  browserRenderingBrowserTimeUsageAdaptiveGroups(filter: AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsOrderBy!]): [AccountBrowserRenderingBrowserTimeUsageAdaptiveGroups!]!
   # Browser Rendering events with adaptive sampling
   browserRenderingEventsAdaptive(filter: AccountBrowserRenderingEventsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserRenderingEventsAdaptiveOrderBy!]): [AccountBrowserRenderingEventsAdaptive!]!
   # Aggregated Browser Rendering events with adaptive sampling
@@ -5432,6 +5438,420 @@ enum AccountBrowserIsolationUserActionsAdaptiveGroupsOrderBy {
   type_DESC
 }
 
+# Aggregated Browser Rendering API events with adaptive sampling
+type AccountBrowserRenderingApiAdaptiveGroups {
+  # Total number of Browser Rendering REST API requests for an account
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountBrowserRenderingApiAdaptiveGroupsDimensions
+}
+
+type AccountBrowserRenderingApiAdaptiveGroupsDimensions {
+  # End date and time of the browser session pertaining to the request
+  browserSessionEndTime: Time!
+  # Start date and time of the browser session pertaining to the request
+  browserSessionStartTime: Time!
+  # The date of the event
+  date: Date!
+  # The date and time of the event truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time of the event truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time of the event truncated to the hour
+  datetimeHour: Time!
+  # The date and time of the event truncated to the minute
+  datetimeMinute: Time!
+  # Browser Rendering REST API endpoint of the request
+  endpoint: string!
+  # End date and time of the request
+  requestEndTime: Time!
+  # Start date and time of the request
+  requestStartTime: Time!
+  # Browser session ID
+  sessionId: string!
+  # HTTP response status code
+  status: uint64!
+  # Account tier: 'free' or 'paid' for accounts with Workers Free or Paid plan, correspondingly
+  tier: string!
+}
+
+input AccountBrowserRenderingApiAdaptiveGroupsFilter_InputObject {
+  AND: [AccountBrowserRenderingApiAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountBrowserRenderingApiAdaptiveGroupsFilter_InputObject!]
+  browserSessionEndTime: Time
+  browserSessionEndTime_geq: Time
+  browserSessionEndTime_gt: Time
+  browserSessionEndTime_in: [Time!]
+  browserSessionEndTime_leq: Time
+  browserSessionEndTime_lt: Time
+  browserSessionEndTime_neq: Time
+  browserSessionEndTime_notin: [Time!]
+  browserSessionStartTime: Time
+  browserSessionStartTime_geq: Time
+  browserSessionStartTime_gt: Time
+  browserSessionStartTime_in: [Time!]
+  browserSessionStartTime_leq: Time
+  browserSessionStartTime_lt: Time
+  browserSessionStartTime_neq: Time
+  browserSessionStartTime_notin: [Time!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  endpoint: string
+  endpoint_geq: string
+  endpoint_gt: string
+  endpoint_in: [string!]
+  endpoint_leq: string
+  endpoint_like: string
+  endpoint_lt: string
+  endpoint_neq: string
+  endpoint_notin: [string!]
+  endpoint_notlike: string
+  requestEndTime: Time
+  requestEndTime_geq: Time
+  requestEndTime_gt: Time
+  requestEndTime_in: [Time!]
+  requestEndTime_leq: Time
+  requestEndTime_lt: Time
+  requestEndTime_neq: Time
+  requestEndTime_notin: [Time!]
+  requestStartTime: Time
+  requestStartTime_geq: Time
+  requestStartTime_gt: Time
+  requestStartTime_in: [Time!]
+  requestStartTime_leq: Time
+  requestStartTime_lt: Time
+  requestStartTime_neq: Time
+  requestStartTime_notin: [Time!]
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+  status: uint64
+  status_geq: uint64
+  status_gt: uint64
+  status_in: [uint64!]
+  status_leq: uint64
+  status_lt: uint64
+  status_neq: uint64
+  status_notin: [uint64!]
+  tier: string
+  tier_geq: string
+  tier_gt: string
+  tier_in: [string!]
+  tier_leq: string
+  tier_like: string
+  tier_lt: string
+  tier_neq: string
+  tier_notin: [string!]
+  tier_notlike: string
+}
+
+enum AccountBrowserRenderingApiAdaptiveGroupsOrderBy {
+  # browserSessionEndTime ascending
+  browserSessionEndTime_ASC
+  # browserSessionEndTime descending
+  browserSessionEndTime_DESC
+  # browserSessionStartTime ascending
+  browserSessionStartTime_ASC
+  # browserSessionStartTime descending
+  browserSessionStartTime_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # endpoint ascending
+  endpoint_ASC
+  # endpoint descending
+  endpoint_DESC
+  # env ascending
+  env_ASC
+  # env descending
+  env_DESC
+  # requestEndTime ascending
+  requestEndTime_ASC
+  # requestEndTime descending
+  requestEndTime_DESC
+  # requestStartTime ascending
+  requestStartTime_ASC
+  # requestStartTime descending
+  requestStartTime_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # tier ascending
+  tier_ASC
+  # tier descending
+  tier_DESC
+}
+
+# Aggregated Browser Rendering and Browser Rendering REST API browser sessions with adaptive sampling
+type AccountBrowserRenderingBrowserTimeUsageAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsAvg
+  # Total number of Browser Rendering and Browser Rendering REST API browser sessions for an account
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsDimensions
+  # The maximum value for a metric per dimension
+  max: AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsMax
+  # The minimum value for a metric per dimension
+  min: AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsMin
+  # The total value for a metric per dimension
+  sum: AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsSum
+}
+
+type AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsAvg {
+  # Average browser session duration in ms
+  avgSessionDurationMs: uint64!
+}
+
+type AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsDimensions {
+  # The date of the event
+  date: Date!
+  # The date and time of the event truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time of the event truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time of the event truncated to the hour
+  datetimeHour: Time!
+  # The date and time of the event truncated to the minute
+  datetimeMinute: Time!
+  # Browser session duration in ms
+  sessionDurationMs: uint64!
+  # End date and time of the browser session
+  sessionEnd: Time!
+  # Browser session ID
+  sessionId: string!
+  # Start date and time of the browser session
+  sessionStart: Time!
+}
+
+input AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsFilter_InputObject {
+  AND: [AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  sessionDurationMs: uint64
+  sessionDurationMs_geq: uint64
+  sessionDurationMs_gt: uint64
+  sessionDurationMs_in: [uint64!]
+  sessionDurationMs_leq: uint64
+  sessionDurationMs_lt: uint64
+  sessionDurationMs_neq: uint64
+  sessionDurationMs_notin: [uint64!]
+  sessionEnd: Time
+  sessionEnd_geq: Time
+  sessionEnd_gt: Time
+  sessionEnd_in: [Time!]
+  sessionEnd_leq: Time
+  sessionEnd_lt: Time
+  sessionEnd_neq: Time
+  sessionEnd_notin: [Time!]
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+  sessionStart: Time
+  sessionStart_geq: Time
+  sessionStart_gt: Time
+  sessionStart_in: [Time!]
+  sessionStart_leq: Time
+  sessionStart_lt: Time
+  sessionStart_neq: Time
+  sessionStart_notin: [Time!]
+}
+
+type AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsMax {
+  # Max browser session duration in ms
+  maxSessionDurationMs: uint64!
+}
+
+type AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsMin {
+  # Min browser session duration in ms
+  minSessionDurationMs: uint64!
+}
+
+enum AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsOrderBy {
+  # avg(avgSessionDurationMs) ascending
+  avg_avgSessionDurationMs_ASC
+  # avg(avgSessionDurationMs) descending
+  avg_avgSessionDurationMs_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # max(maxSessionDurationMs) ascending
+  max_maxSessionDurationMs_ASC
+  # max(maxSessionDurationMs) descending
+  max_maxSessionDurationMs_DESC
+  # min(minSessionDurationMs) ascending
+  min_minSessionDurationMs_ASC
+  # min(minSessionDurationMs) descending
+  min_minSessionDurationMs_DESC
+  # rowNum ascending
+  rowNum_ASC
+  # rowNum descending
+  rowNum_DESC
+  # sessionDurationMs ascending
+  sessionDurationMs_ASC
+  # sessionDurationMs descending
+  sessionDurationMs_DESC
+  # sessionEnd ascending
+  sessionEnd_ASC
+  # sessionEnd descending
+  sessionEnd_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # sessionStart ascending
+  sessionStart_ASC
+  # sessionStart descending
+  sessionStart_DESC
+  # sum(totalSessionDurationMs) ascending
+  sum_totalSessionDurationMs_ASC
+  # sum(totalSessionDurationMs) descending
+  sum_totalSessionDurationMs_DESC
+}
+
+type AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsSum {
+  # Total browser sessions duration in ms
+  totalSessionDurationMs: uint64!
+}
+
 # Browser Rendering events with adaptive sampling
 type AccountBrowserRenderingEventsAdaptive {
   # Browser session close code. Enum (-1, N/A) (0, Unknown) (1, NormalClosure) (2, BrowserIdle) (3, ClientClosedEarly) (4, ChromiumChrashed) (5, ClientAbnormalClosure) (6, ServerAbnormalClosure) (7, ClientError) (8, ServerError) (9, WorkerError) (10, ClientNeverConnected) (11, BrowserSessionEvicted)
@@ -5440,6 +5860,8 @@ type AccountBrowserRenderingEventsAdaptive {
   browserEndTime: Time!
   # Browser session start time
   browserStartTime: Time!
+  # Number of browser sessions used concurrently at the time of the event
+  concurrentSessions: uint64!
   # When worker ended devtools connection to browser session
   connectionEndTime: Time!
   # Worker connection ID, when available
@@ -5485,6 +5907,14 @@ input AccountBrowserRenderingEventsAdaptiveFilter_InputObject {
   browserStartTime_lt: Time
   browserStartTime_neq: Time
   browserStartTime_notin: [Time!]
+  concurrentSessions: uint64
+  concurrentSessions_geq: uint64
+  concurrentSessions_gt: uint64
+  concurrentSessions_in: [uint64!]
+  concurrentSessions_leq: uint64
+  concurrentSessions_lt: uint64
+  concurrentSessions_neq: uint64
+  concurrentSessions_notin: [uint64!]
   connectionEndTime: Time
   connectionEndTime_geq: Time
   connectionEndTime_gt: Time
@@ -5551,6 +5981,8 @@ input AccountBrowserRenderingEventsAdaptiveFilter_InputObject {
 
 # Aggregated Browser Rendering events with adaptive sampling
 type AccountBrowserRenderingEventsAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountBrowserRenderingEventsAdaptiveGroupsAvg
   # Total number of events for an account
   count: uint64!
   # List of dimensions to group by
@@ -5562,9 +5994,16 @@ type AccountBrowserRenderingEventsAdaptiveGroups {
   uniq: AccountBrowserRenderingEventsAdaptiveGroupsUniq
 }
 
+type AccountBrowserRenderingEventsAdaptiveGroupsAvg {
+  # Average concurrent browser sessions
+  avgConcurrentSessions: uint64!
+}
+
 type AccountBrowserRenderingEventsAdaptiveGroupsDimensions {
   # Browser session close code. Enum (-1, N/A) (0, Unknown) (1, NormalClosure) (2, BrowserIdle) (3, ClientClosedEarly) (4, ChromiumChrashed) (5, ClientAbnormalClosure) (6, ServerAbnormalClosure) (7, ClientError) (8, ServerError) (9, WorkerError) (10, ClientNeverConnected) (11, BrowserSessionEvicted)
   browserCloseReason: string!
+  # Number of browser sessions used concurrently at the time of the event
+  concurrentSessions: uint64!
   # Worker connection ID, when available
   connectionId: string!
   # The date of the event
@@ -5596,6 +6035,14 @@ input AccountBrowserRenderingEventsAdaptiveGroupsFilter_InputObject {
   browserCloseReason_neq: string
   browserCloseReason_notin: [string!]
   browserCloseReason_notlike: string
+  concurrentSessions: uint64
+  concurrentSessions_geq: uint64
+  concurrentSessions_gt: uint64
+  concurrentSessions_in: [uint64!]
+  concurrentSessions_leq: uint64
+  concurrentSessions_lt: uint64
+  concurrentSessions_neq: uint64
+  concurrentSessions_notin: [uint64!]
   connectionId: string
   connectionId_geq: string
   connectionId_gt: string
@@ -5681,10 +6128,18 @@ type AccountBrowserRenderingEventsAdaptiveGroupsMin {
 }
 
 enum AccountBrowserRenderingEventsAdaptiveGroupsOrderBy {
+  # avg(avgConcurrentSessions) ascending
+  avg_avgConcurrentSessions_ASC
+  # avg(avgConcurrentSessions) descending
+  avg_avgConcurrentSessions_DESC
   # browserCloseReason ascending
   browserCloseReason_ASC
   # browserCloseReason descending
   browserCloseReason_DESC
+  # concurrentSessions ascending
+  concurrentSessions_ASC
+  # concurrentSessions descending
+  concurrentSessions_DESC
   # connectionId ascending
   connectionId_ASC
   # connectionId descending
@@ -5763,6 +6218,10 @@ enum AccountBrowserRenderingEventsAdaptiveOrderBy {
   browserStartTime_ASC
   # browserStartTime descending
   browserStartTime_DESC
+  # concurrentSessions ascending
+  concurrentSessions_ASC
+  # concurrentSessions descending
+  concurrentSessions_DESC
   # connectionEndTime ascending
   connectionEndTime_ASC
   # connectionEndTime descending
@@ -8162,6 +8621,8 @@ type AccountCloudflareTunnelsAnalyticsAdaptiveGroupsDimensions {
   deviceID: string!
   # Name of the Cloudflare tunnel connector to which the network session was routed to.
   deviceName: string!
+  # On ramp path to the Cloudflare tunnel: Warp, Magic Tunnel
+  onRamp: string!
   # Network Protocol of the network connection. Available values: [UDP,TCP,ICMP,ICMPv6]
   protocol: string!
   # Source country for the network connection. Only available for public addresses.
@@ -8289,6 +8750,16 @@ input AccountCloudflareTunnelsAnalyticsAdaptiveGroupsFilter_InputObject {
   deviceName_neq: string
   deviceName_notin: [string!]
   deviceName_notlike: string
+  onRamp: string
+  onRamp_geq: string
+  onRamp_gt: string
+  onRamp_in: [string!]
+  onRamp_leq: string
+  onRamp_like: string
+  onRamp_lt: string
+  onRamp_neq: string
+  onRamp_notin: [string!]
+  onRamp_notlike: string
   protocol: string
   protocol_geq: string
   protocol_gt: string
@@ -8450,6 +8921,14 @@ enum AccountCloudflareTunnelsAnalyticsAdaptiveGroupsOrderBy {
   deviceName_ASC
   # deviceName descending
   deviceName_DESC
+  # offRamp ascending
+  offRamp_ASC
+  # offRamp descending
+  offRamp_DESC
+  # onRamp ascending
+  onRamp_ASC
+  # onRamp descending
+  onRamp_DESC
   # protocol ascending
   protocol_ASC
   # protocol descending
@@ -39581,6 +40060,8 @@ type AccountSettings {
   autoRAGEngineAdaptiveGroups: Settings!
   browserIsolationSessionsAdaptiveGroups: Settings!
   browserIsolationUserActionsAdaptiveGroups: Settings!
+  browserRenderingApiAdaptiveGroups: Settings!
+  browserRenderingBrowserTimeUsageAdaptiveGroups: Settings!
   browserRenderingEventsAdaptive: Settings!
   browserRenderingEventsAdaptiveGroups: Settings!
   callsStatusAdaptive: Settings!
