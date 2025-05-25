@@ -4026,6 +4026,8 @@ type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
   tokensIn: uint64!
   # Number of tokens in the response
   tokensOut: uint64!
+  # Was the request use wholesale: 1 = applied, 0 = not applied
+  wholesale: uint8!
 }
 
 input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
@@ -4193,6 +4195,14 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   tokensOut_lt: uint64
   tokensOut_neq: uint64
   tokensOut_notin: [uint64!]
+  wholesale: uint8
+  wholesale_geq: uint8
+  wholesale_gt: uint8
+  wholesale_in: bytes
+  wholesale_leq: uint8
+  wholesale_lt: uint8
+  wholesale_neq: uint8
+  wholesale_notin: bytes
 }
 
 enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
@@ -4312,6 +4322,10 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   tokensOut_ASC
   # tokensOut descending
   tokensOut_DESC
+  # wholesale ascending
+  wholesale_ASC
+  # wholesale descending
+  wholesale_DESC
 }
 
 type AccountAiGatewayRequestsAdaptiveGroupsSum {
