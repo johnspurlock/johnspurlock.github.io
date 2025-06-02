@@ -26,6 +26,8 @@ Account-level datasets:
 * d1AnalyticsAdaptiveGroups
 * d1QueriesAdaptiveGroups
 * d1StorageAdaptiveGroups
+* dnsAnalyticsAdaptive
+* dnsAnalyticsAdaptiveGroups
 * dnsFirewallAnalyticsAdaptive
 * dnsFirewallAnalyticsAdaptiveGroups
   dosdAttackAnalyticsGroups
@@ -290,6 +292,10 @@ type account {
   d1QueriesAdaptiveGroups(filter: AccountD1QueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1QueriesAdaptiveGroupsOrderBy!]): [AccountD1QueriesAdaptiveGroups!]!
   # Beta. D1 storage with adaptive sampling
   d1StorageAdaptiveGroups(filter: AccountD1StorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1StorageAdaptiveGroupsOrderBy!]): [AccountD1StorageAdaptiveGroups!]!
+  # Analytics data for DNS queries
+  dnsAnalyticsAdaptive(filter: AccountDnsAnalyticsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountDnsAnalyticsAdaptiveOrderBy!]): [AccountDnsAnalyticsAdaptive!]!
+  # Analytics data for DNS queries
+  dnsAnalyticsAdaptiveGroups(filter: AccountDnsAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDnsAnalyticsAdaptiveGroupsOrderBy!]): [AccountDnsAnalyticsAdaptiveGroups!]!
   # Analytics data for DNS Firewall queries
   dnsFirewallAnalyticsAdaptive(filter: AccountDnsFirewallAnalyticsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountDnsFirewallAnalyticsAdaptiveOrderBy!]): [AccountDnsFirewallAnalyticsAdaptive!]!
   # Analytics data for DNS Firewall queries
@@ -9654,6 +9660,661 @@ enum AccountD1StorageAdaptiveGroupsOrderBy {
   max_databaseSizeBytes_ASC
   # max(databaseSizeBytes) descending
   max_databaseSizeBytes_DESC
+}
+
+# Analytics data for DNS queries
+type AccountDnsAnalyticsAdaptive {
+  # IATA airport code of the data center that processed the query
+  coloName: string!
+  # Date on which the query was received
+  date: Date!
+  # Time at which the query was received
+  datetime: Time!
+  # Cloudflare edge IP address that the query was received at
+  destinationIP: string!
+  # Internet Protocol version over which the query was received
+  ipVersion: uint8!
+  # Transport protocol over which the query was received
+  protocol: string!
+  # DNS query name without trailing dot
+  queryName: string!
+  # Size of the DNS query in bytes
+  querySize: uint16!
+  # DNS query type
+  queryType: string!
+  # Whether the DNS response was served from cache
+  responseCached: uint8!
+  # DNS response code
+  responseCode: string!
+  # Size of the DNS response in bytes
+  responseSize: uint16!
+  # Whether a stale DNS response was served from cache
+  responseStale: uint8!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # IP address of the client that sent the query (usually this is the resolver's IP address)
+  sourceIP: string!
+  # Upstream server that the query was forwarded to
+  upstreamIP: string!
+  # Zone query attributed to
+  zoneTag: string!
+}
+
+input AccountDnsAnalyticsAdaptiveFilter_InputObject {
+  AND: [AccountDnsAnalyticsAdaptiveFilter_InputObject!]
+  OR: [AccountDnsAnalyticsAdaptiveFilter_InputObject!]
+  coloName: string
+  coloName_geq: string
+  coloName_gt: string
+  coloName_in: [string!]
+  coloName_leq: string
+  coloName_like: string
+  coloName_lt: string
+  coloName_neq: string
+  coloName_notin: [string!]
+  coloName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationIP: string
+  destinationIP_geq: string
+  destinationIP_gt: string
+  destinationIP_in: [string!]
+  destinationIP_leq: string
+  destinationIP_like: string
+  destinationIP_lt: string
+  destinationIP_neq: string
+  destinationIP_notin: [string!]
+  destinationIP_notlike: string
+  ipVersion: uint8
+  ipVersion_geq: uint8
+  ipVersion_gt: uint8
+  ipVersion_in: bytes
+  ipVersion_leq: uint8
+  ipVersion_lt: uint8
+  ipVersion_neq: uint8
+  ipVersion_notin: bytes
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  queryName: string
+  queryName_geq: string
+  queryName_gt: string
+  queryName_in: [string!]
+  queryName_leq: string
+  queryName_like: string
+  queryName_lt: string
+  queryName_neq: string
+  queryName_notin: [string!]
+  queryName_notlike: string
+  querySize: uint16
+  querySize_geq: uint16
+  querySize_gt: uint16
+  querySize_in: [uint16!]
+  querySize_leq: uint16
+  querySize_lt: uint16
+  querySize_neq: uint16
+  querySize_notin: [uint16!]
+  queryType: string
+  queryType_geq: string
+  queryType_gt: string
+  queryType_in: [string!]
+  queryType_leq: string
+  queryType_like: string
+  queryType_lt: string
+  queryType_neq: string
+  queryType_notin: [string!]
+  queryType_notlike: string
+  responseCached: uint8
+  responseCached_geq: uint8
+  responseCached_gt: uint8
+  responseCached_in: bytes
+  responseCached_leq: uint8
+  responseCached_lt: uint8
+  responseCached_neq: uint8
+  responseCached_notin: bytes
+  responseCode: string
+  responseCode_geq: string
+  responseCode_gt: string
+  responseCode_in: [string!]
+  responseCode_leq: string
+  responseCode_like: string
+  responseCode_lt: string
+  responseCode_neq: string
+  responseCode_notin: [string!]
+  responseCode_notlike: string
+  responseSize: uint16
+  responseSize_geq: uint16
+  responseSize_gt: uint16
+  responseSize_in: [uint16!]
+  responseSize_leq: uint16
+  responseSize_lt: uint16
+  responseSize_neq: uint16
+  responseSize_notin: [uint16!]
+  responseStale: uint8
+  responseStale_geq: uint8
+  responseStale_gt: uint8
+  responseStale_in: bytes
+  responseStale_leq: uint8
+  responseStale_lt: uint8
+  responseStale_neq: uint8
+  responseStale_notin: bytes
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
+  upstreamIP: string
+  upstreamIP_geq: string
+  upstreamIP_gt: string
+  upstreamIP_in: [string!]
+  upstreamIP_leq: string
+  upstreamIP_like: string
+  upstreamIP_lt: string
+  upstreamIP_neq: string
+  upstreamIP_notin: [string!]
+  upstreamIP_notlike: string
+  zoneTag: string
+  zoneTag_geq: string
+  zoneTag_gt: string
+  zoneTag_in: [string!]
+  zoneTag_leq: string
+  zoneTag_like: string
+  zoneTag_lt: string
+  zoneTag_neq: string
+  zoneTag_notin: [string!]
+  zoneTag_notlike: string
+}
+
+# Analytics data for DNS queries
+type AccountDnsAnalyticsAdaptiveGroups {
+  # Average of a metric per dimension
+  avg: AccountDnsAnalyticsAdaptiveGroupsAvg
+  # Number of queries per dimension
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountDnsAnalyticsAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: AccountDnsAnalyticsAdaptiveGroupsQuantiles
+}
+
+type AccountDnsAnalyticsAdaptiveGroupsAvg {
+  # Average processing time in microseconds
+  processingTimeUs: float64!
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountDnsAnalyticsAdaptiveGroupsDimensions {
+  # IATA airport code of the data center that processed the query
+  coloName: string!
+  # Date on which the query was received
+  date: Date!
+  # Time at which the query was received
+  datetime: Time!
+  # Time at which the query was received, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Time at which the query was received, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # Time at which the query was received, truncated to multiple of 30 minutes
+  datetimeHalfOfHour: Time!
+  # Time at which the query was received, truncated to the hour
+  datetimeHour: Time!
+  # Time at which the query was received, truncated to the minute
+  datetimeMinute: Time!
+  # Cloudflare edge IP address that the query was received at
+  destinationIP: string!
+  # Internet Protocol version over which the query was received
+  ipVersion: uint8!
+  # Transport protocol over which the query was received
+  protocol: string!
+  # DNS query name without trailing dot
+  queryName: string!
+  # Size of the DNS query in bytes (in multiples of 16)
+  querySizeBucket: string!
+  # DNS query type
+  queryType: string!
+  # Whether the DNS response was served from cache
+  responseCached: uint8!
+  # DNS response code
+  responseCode: string!
+  # Size of the DNS response in bytes (in multiples of 16)
+  responseSizeBucket: string!
+  # Whether a stale DNS response was served from cache
+  responseStale: uint8!
+  # IP address of the client that sent the query (usually this is the resolver's IP address)
+  sourceIP: string!
+  # Upstream server that the query was forwarded to
+  upstreamIP: string!
+  # Zone query attributed to
+  zoneTag: string!
+}
+
+input AccountDnsAnalyticsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountDnsAnalyticsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountDnsAnalyticsAdaptiveGroupsFilter_InputObject!]
+  coloName: string
+  coloName_geq: string
+  coloName_gt: string
+  coloName_in: [string!]
+  coloName_leq: string
+  coloName_like: string
+  coloName_lt: string
+  coloName_neq: string
+  coloName_notin: [string!]
+  coloName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHalfOfHour: Time
+  datetimeHalfOfHour_geq: Time
+  datetimeHalfOfHour_gt: Time
+  datetimeHalfOfHour_in: [Time!]
+  datetimeHalfOfHour_leq: Time
+  datetimeHalfOfHour_lt: Time
+  datetimeHalfOfHour_neq: Time
+  datetimeHalfOfHour_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationIP: string
+  destinationIP_geq: string
+  destinationIP_gt: string
+  destinationIP_in: [string!]
+  destinationIP_leq: string
+  destinationIP_like: string
+  destinationIP_lt: string
+  destinationIP_neq: string
+  destinationIP_notin: [string!]
+  destinationIP_notlike: string
+  ipVersion: uint8
+  ipVersion_geq: uint8
+  ipVersion_gt: uint8
+  ipVersion_in: bytes
+  ipVersion_leq: uint8
+  ipVersion_lt: uint8
+  ipVersion_neq: uint8
+  ipVersion_notin: bytes
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  queryName: string
+  queryName_geq: string
+  queryName_gt: string
+  queryName_in: [string!]
+  queryName_leq: string
+  queryName_like: string
+  queryName_lt: string
+  queryName_neq: string
+  queryName_notin: [string!]
+  queryName_notlike: string
+  querySizeBucket: string
+  querySizeBucket_geq: string
+  querySizeBucket_gt: string
+  querySizeBucket_in: [string!]
+  querySizeBucket_leq: string
+  querySizeBucket_like: string
+  querySizeBucket_lt: string
+  querySizeBucket_neq: string
+  querySizeBucket_notin: [string!]
+  querySizeBucket_notlike: string
+  queryType: string
+  queryType_geq: string
+  queryType_gt: string
+  queryType_in: [string!]
+  queryType_leq: string
+  queryType_like: string
+  queryType_lt: string
+  queryType_neq: string
+  queryType_notin: [string!]
+  queryType_notlike: string
+  responseCached: uint8
+  responseCached_geq: uint8
+  responseCached_gt: uint8
+  responseCached_in: bytes
+  responseCached_leq: uint8
+  responseCached_lt: uint8
+  responseCached_neq: uint8
+  responseCached_notin: bytes
+  responseCode: string
+  responseCode_geq: string
+  responseCode_gt: string
+  responseCode_in: [string!]
+  responseCode_leq: string
+  responseCode_like: string
+  responseCode_lt: string
+  responseCode_neq: string
+  responseCode_notin: [string!]
+  responseCode_notlike: string
+  responseSizeBucket: string
+  responseSizeBucket_geq: string
+  responseSizeBucket_gt: string
+  responseSizeBucket_in: [string!]
+  responseSizeBucket_leq: string
+  responseSizeBucket_like: string
+  responseSizeBucket_lt: string
+  responseSizeBucket_neq: string
+  responseSizeBucket_notin: [string!]
+  responseSizeBucket_notlike: string
+  responseStale: uint8
+  responseStale_geq: uint8
+  responseStale_gt: uint8
+  responseStale_in: bytes
+  responseStale_leq: uint8
+  responseStale_lt: uint8
+  responseStale_neq: uint8
+  responseStale_notin: bytes
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
+  upstreamIP: string
+  upstreamIP_geq: string
+  upstreamIP_gt: string
+  upstreamIP_in: [string!]
+  upstreamIP_leq: string
+  upstreamIP_like: string
+  upstreamIP_lt: string
+  upstreamIP_neq: string
+  upstreamIP_notin: [string!]
+  upstreamIP_notlike: string
+  zoneTag: string
+  zoneTag_geq: string
+  zoneTag_gt: string
+  zoneTag_in: [string!]
+  zoneTag_leq: string
+  zoneTag_like: string
+  zoneTag_lt: string
+  zoneTag_neq: string
+  zoneTag_notin: [string!]
+  zoneTag_notlike: string
+}
+
+enum AccountDnsAnalyticsAdaptiveGroupsOrderBy {
+  # avg(processingTimeUs) ascending
+  avg_processingTimeUs_ASC
+  # avg(processingTimeUs) descending
+  avg_processingTimeUs_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # coloName ascending
+  coloName_ASC
+  # coloName descending
+  coloName_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHalfOfHour ascending
+  datetimeHalfOfHour_ASC
+  # datetimeHalfOfHour descending
+  datetimeHalfOfHour_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationIP ascending
+  destinationIP_ASC
+  # destinationIP descending
+  destinationIP_DESC
+  # instanceCode ascending
+  instanceCode_ASC
+  # instanceCode descending
+  instanceCode_DESC
+  # ipVersion ascending
+  ipVersion_ASC
+  # ipVersion descending
+  ipVersion_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # quantiles(processingTimeUsP50) ascending
+  quantiles_processingTimeUsP50_ASC
+  # quantiles(processingTimeUsP50) descending
+  quantiles_processingTimeUsP50_DESC
+  # quantiles(processingTimeUsP90) ascending
+  quantiles_processingTimeUsP90_ASC
+  # quantiles(processingTimeUsP90) descending
+  quantiles_processingTimeUsP90_DESC
+  # quantiles(processingTimeUsP99) ascending
+  quantiles_processingTimeUsP99_ASC
+  # quantiles(processingTimeUsP99) descending
+  quantiles_processingTimeUsP99_DESC
+  # queryName ascending
+  queryName_ASC
+  # queryName descending
+  queryName_DESC
+  # querySizeBucket ascending
+  querySizeBucket_ASC
+  # querySizeBucket descending
+  querySizeBucket_DESC
+  # queryType ascending
+  queryType_ASC
+  # queryType descending
+  queryType_DESC
+  # responseCached ascending
+  responseCached_ASC
+  # responseCached descending
+  responseCached_DESC
+  # responseCode ascending
+  responseCode_ASC
+  # responseCode descending
+  responseCode_DESC
+  # responseSizeBucket ascending
+  responseSizeBucket_ASC
+  # responseSizeBucket descending
+  responseSizeBucket_DESC
+  # responseStale ascending
+  responseStale_ASC
+  # responseStale descending
+  responseStale_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # upstreamIP ascending
+  upstreamIP_ASC
+  # upstreamIP descending
+  upstreamIP_DESC
+  # zoneTag ascending
+  zoneTag_ASC
+  # zoneTag descending
+  zoneTag_DESC
+}
+
+type AccountDnsAnalyticsAdaptiveGroupsQuantiles {
+  # 50th percentile processing time in microseconds (median)
+  processingTimeUsP50: float64!
+  # 90th percentile processing time in microseconds
+  processingTimeUsP90: float64!
+  # 99th percentile processing time in microseconds
+  processingTimeUsP99: float64!
+}
+
+enum AccountDnsAnalyticsAdaptiveOrderBy {
+  # coloName ascending
+  coloName_ASC
+  # coloName descending
+  coloName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationIP ascending
+  destinationIP_ASC
+  # destinationIP descending
+  destinationIP_DESC
+  # instanceCode ascending
+  instanceCode_ASC
+  # instanceCode descending
+  instanceCode_DESC
+  # ipVersion ascending
+  ipVersion_ASC
+  # ipVersion descending
+  ipVersion_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # queryName ascending
+  queryName_ASC
+  # queryName descending
+  queryName_DESC
+  # querySize ascending
+  querySize_ASC
+  # querySize descending
+  querySize_DESC
+  # queryType ascending
+  queryType_ASC
+  # queryType descending
+  queryType_DESC
+  # responseCached ascending
+  responseCached_ASC
+  # responseCached descending
+  responseCached_DESC
+  # responseCode ascending
+  responseCode_ASC
+  # responseCode descending
+  responseCode_DESC
+  # responseSize ascending
+  responseSize_ASC
+  # responseSize descending
+  responseSize_DESC
+  # responseStale ascending
+  responseStale_ASC
+  # responseStale descending
+  responseStale_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # upstreamIP ascending
+  upstreamIP_ASC
+  # upstreamIP descending
+  upstreamIP_DESC
+  # zoneTag ascending
+  zoneTag_ASC
+  # zoneTag descending
+  zoneTag_DESC
 }
 
 # Analytics data for DNS Firewall queries
@@ -36831,10 +37492,16 @@ type AccountQueueBacklogAdaptiveGroupsDimensions {
   date: Date!
   # Message operation timestamp
   datetime: Time!
+  # Message operation timestamp, truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Message operation timestamp, truncated to five minutes
+  datetimeFiveMinutes: Time!
   # Message operation timestamp, truncated to start of an hour
   datetimeHour: Time!
   # Message operation timestamp, truncated to start of an minute
   datetimeMinute: Time!
+  # Message operation timestamp, truncated to start of six hour window
+  datetimeSixHours: Time!
   # The ID of the Queue
   queueId: string!
 }
@@ -36851,6 +37518,22 @@ input AccountQueueBacklogAdaptiveGroupsFilter_InputObject {
   date_neq: Date
   date_notin: [Date!]
   datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
   datetimeHour: Time
   datetimeHour_geq: Time
   datetimeHour_gt: Time
@@ -36867,6 +37550,14 @@ input AccountQueueBacklogAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -36903,6 +37594,14 @@ enum AccountQueueBacklogAdaptiveGroupsOrderBy {
   date_ASC
   # date descending
   date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
   # datetimeHour ascending
   datetimeHour_ASC
   # datetimeHour descending
@@ -36911,6 +37610,10 @@ enum AccountQueueBacklogAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -36937,14 +37640,20 @@ type AccountQueueConsumerMetricsAdaptiveGroupsAvg {
 }
 
 type AccountQueueConsumerMetricsAdaptiveGroupsDimensions {
-  # Consumer metric timestamp, truncated to start of a day
+  # Message operation timestamp, truncated to start of a day
   date: Date!
-  # Consumer metric timestamp
+  # Message operation timestamp
   datetime: Time!
-  # Consumer metric timestamp, truncated to start of an hour
+  # Message operation timestamp, truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Message operation timestamp, truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Message operation timestamp, truncated to start of an hour
   datetimeHour: Time!
-  # Consumer metric timestamp, truncated to start of an minute
+  # Message operation timestamp, truncated to start of an minute
   datetimeMinute: Time!
+  # Message operation timestamp, truncated to start of six hour window
+  datetimeSixHours: Time!
   # The ID of the Queue
   queueId: string!
 }
@@ -36961,6 +37670,22 @@ input AccountQueueConsumerMetricsAdaptiveGroupsFilter_InputObject {
   date_neq: Date
   date_notin: [Date!]
   datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
   datetimeHour: Time
   datetimeHour_geq: Time
   datetimeHour_gt: Time
@@ -36977,6 +37702,14 @@ input AccountQueueConsumerMetricsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -37009,6 +37742,14 @@ enum AccountQueueConsumerMetricsAdaptiveGroupsOrderBy {
   date_ASC
   # date descending
   date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
   # datetimeHour ascending
   datetimeHour_ASC
   # datetimeHour descending
@@ -37017,6 +37758,10 @@ enum AccountQueueConsumerMetricsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -37047,10 +37792,16 @@ type AccountQueueDelayedBacklogAdaptiveGroupsDimensions {
   date: Date!
   # Message operation timestamp
   datetime: Time!
+  # Message operation timestamp, truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Message operation timestamp, truncated to five minutes
+  datetimeFiveMinutes: Time!
   # Message operation timestamp, truncated to start of an hour
   datetimeHour: Time!
   # Message operation timestamp, truncated to start of an minute
   datetimeMinute: Time!
+  # Message operation timestamp, truncated to start of six hour window
+  datetimeSixHours: Time!
   # The ID of the Queue
   queueId: string!
 }
@@ -37067,6 +37818,22 @@ input AccountQueueDelayedBacklogAdaptiveGroupsFilter_InputObject {
   date_neq: Date
   date_notin: [Date!]
   datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
   datetimeHour: Time
   datetimeHour_geq: Time
   datetimeHour_gt: Time
@@ -37083,6 +37850,14 @@ input AccountQueueDelayedBacklogAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -37115,6 +37890,14 @@ enum AccountQueueDelayedBacklogAdaptiveGroupsOrderBy {
   date_ASC
   # date descending
   date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
   # datetimeHour ascending
   datetimeHour_ASC
   # datetimeHour descending
@@ -37123,6 +37906,10 @@ enum AccountQueueDelayedBacklogAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -37165,10 +37952,16 @@ type AccountQueueMessageOperationsAdaptiveGroupsDimensions {
   date: Date!
   # Message operation timestamp
   datetime: Time!
+  # Message operation timestamp, truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Message operation timestamp, truncated to five minutes
+  datetimeFiveMinutes: Time!
   # Message operation timestamp, truncated to start of an hour
   datetimeHour: Time!
   # Message operation timestamp, truncated to start of an minute
   datetimeMinute: Time!
+  # Message operation timestamp, truncated to start of six hour window
+  datetimeSixHours: Time!
   # The outcome of the operation. Only applicable to DeleteMessage action types. Can be 'success', 'dlq', or 'fail'. Always 'none' for other operations.
   outcome: string!
   # The ID of the Queue
@@ -37207,6 +38000,22 @@ input AccountQueueMessageOperationsAdaptiveGroupsFilter_InputObject {
   date_neq: Date
   date_notin: [Date!]
   datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
   datetimeHour: Time
   datetimeHour_geq: Time
   datetimeHour_gt: Time
@@ -37223,6 +38032,14 @@ input AccountQueueMessageOperationsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -37286,6 +38103,14 @@ enum AccountQueueMessageOperationsAdaptiveGroupsOrderBy {
   date_ASC
   # date descending
   date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
   # datetimeHour ascending
   datetimeHour_ASC
   # datetimeHour descending
@@ -37294,6 +38119,10 @@ enum AccountQueueMessageOperationsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -40087,6 +40916,8 @@ type AccountSettings {
   d1AnalyticsAdaptiveGroups: Settings!
   d1QueriesAdaptiveGroups: Settings!
   d1StorageAdaptiveGroups: Settings!
+  dnsAnalyticsAdaptive: Settings!
+  dnsAnalyticsAdaptiveGroups: Settings!
   dnsFirewallAnalyticsAdaptive: Settings!
   dnsFirewallAnalyticsAdaptiveGroups: Settings!
   dosdAttackAnalyticsGroups: Settings!
