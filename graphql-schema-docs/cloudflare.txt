@@ -8147,6 +8147,8 @@ type AccountCloudchamberMetricsAdaptiveGroups {
   max: AccountCloudchamberMetricsAdaptiveGroupsMax
   # Quantiles of a metric per dimension
   quantiles: AccountCloudchamberMetricsAdaptiveGroupsQuantiles
+  # The sum of values for a metric per dimension
+  sum: AccountCloudchamberMetricsAdaptiveGroupsSum
 }
 
 type AccountCloudchamberMetricsAdaptiveGroupsAvg {
@@ -8320,10 +8322,12 @@ type AccountCloudchamberMetricsAdaptiveGroupsMax {
   # Maximum RX bandwidth
   rxBandwidth: float64!
   # Total bytes received
+  @Deprecated
   rxBytes: uint64!
   # Maximum TX bandwidth
   txBandwidth: float64!
   # Total bytes transmitted
+  @Deprecated
   txBytes: uint64!
 }
 
@@ -8524,6 +8528,14 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   region_ASC
   # region descending
   region_DESC
+  # sum(rxBytes) ascending
+  sum_rxBytes_ASC
+  # sum(rxBytes) descending
+  sum_rxBytes_DESC
+  # sum(txBytes) ascending
+  sum_txBytes_ASC
+  # sum(txBytes) descending
+  sum_txBytes_DESC
 }
 
 type AccountCloudchamberMetricsAdaptiveGroupsQuantiles {
@@ -8569,6 +8581,13 @@ type AccountCloudchamberMetricsAdaptiveGroupsQuantiles {
   txBandwidthP90: float64!
   # TX bandwidth (99th percentile)
   txBandwidthP99: float64!
+}
+
+type AccountCloudchamberMetricsAdaptiveGroupsSum {
+  # Sum of bytes received
+  rxBytes: uint64!
+  # Sum of bytes transmitted
+  txBytes: uint64!
 }
 
 # Cloudflare tunnel Device Analytics
@@ -27375,7 +27394,10 @@ type AccountMagicFirewallSamplesAdaptiveGroupsDimensions {
   # Date and time that the packet was received
   datetime: Time!
   # Date and time that the packet was received, rounded to the start of the nearest five minutes
+  @Deprecated
   datetimeFiveMinute: Time!
+  # Date and time that the packet was received, rounded to the start of the nearest five minutes
+  datetimeFiveMinutes: Time!
   # Unique identifier of the rule that matched the packet, if any
   ruleId: string!
 }
@@ -27392,6 +27414,14 @@ input AccountMagicFirewallSamplesAdaptiveGroupsFilter_InputObject {
   datetimeFiveMinute_lt: Time
   datetimeFiveMinute_neq: Time
   datetimeFiveMinute_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -27416,6 +27446,10 @@ enum AccountMagicFirewallSamplesAdaptiveGroupsOrderBy {
   datetimeFiveMinute_ASC
   # datetimeFiveMinute descending
   datetimeFiveMinute_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -46678,6 +46712,10 @@ type AccountWorkersSubrequestsAdaptiveGroupsDimensions {
   datetimeSixHours: Time!
   # The name of the script environment
   environmentName: string!
+  # The hostname of the subrequest
+  hostname: string!
+  # Origin HTTP response code
+  httpResponseStatus: uint64!
   # The name of the script
   scriptName: string!
   # The version of the Worker
@@ -46763,6 +46801,24 @@ input AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject {
   environmentName_neq: string
   environmentName_notin: [string!]
   environmentName_notlike: string
+  hostname: string
+  hostname_geq: string
+  hostname_gt: string
+  hostname_in: [string!]
+  hostname_leq: string
+  hostname_like: string
+  hostname_lt: string
+  hostname_neq: string
+  hostname_notin: [string!]
+  hostname_notlike: string
+  httpResponseStatus: uint64
+  httpResponseStatus_geq: uint64
+  httpResponseStatus_gt: uint64
+  httpResponseStatus_in: [uint64!]
+  httpResponseStatus_leq: uint64
+  httpResponseStatus_lt: uint64
+  httpResponseStatus_neq: uint64
+  httpResponseStatus_notin: [uint64!]
   scriptName: string
   scriptName_geq: string
   scriptName_gt: string
@@ -46836,6 +46892,14 @@ enum AccountWorkersSubrequestsAdaptiveGroupsOrderBy {
   environmentName_ASC
   # environmentName descending
   environmentName_DESC
+  # hostname ascending
+  hostname_ASC
+  # hostname descending
+  hostname_DESC
+  # httpResponseStatus ascending
+  httpResponseStatus_ASC
+  # httpResponseStatus descending
+  httpResponseStatus_DESC
   # scriptName ascending
   scriptName_ASC
   # scriptName descending
@@ -46852,6 +46916,14 @@ enum AccountWorkersSubrequestsAdaptiveGroupsOrderBy {
   sum_requestBodySizeUncached_ASC
   # sum(requestBodySizeUncached) descending
   sum_requestBodySizeUncached_DESC
+  # sum(requestBodySize) ascending
+  sum_requestBodySize_ASC
+  # sum(requestBodySize) descending
+  sum_requestBodySize_DESC
+  # sum(responseBodySize) ascending
+  sum_responseBodySize_ASC
+  # sum(responseBodySize) descending
+  sum_responseBodySize_DESC
   # sum(subrequests) ascending
   sum_subrequests_ASC
   # sum(subrequests) descending
@@ -46863,8 +46935,12 @@ enum AccountWorkersSubrequestsAdaptiveGroupsOrderBy {
 }
 
 type AccountWorkersSubrequestsAdaptiveGroupsSum {
+  # Workers fetch request body size in bytes
+  requestBodySize: uint64!
   # Workers fetch request body size in bytes where the request was not cached
   requestBodySizeUncached: uint64!
+  # Workers fetch response body size in bytes
+  responseBodySize: uint64!
   # Number of subrequests
   subrequests: uint64!
 }
@@ -62415,6 +62491,8 @@ type ZoneWorkersZoneSubrequestsAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # Request datetime, truncated to start of six hour window
   datetimeSixHours: Time!
+  # The hostname of the subrequest
+  hostname: string!
   # Origin HTTP response code
   httpResponseStatus: uint64!
 }
@@ -62470,6 +62548,16 @@ input ZoneWorkersZoneSubrequestsAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  hostname: string
+  hostname_geq: string
+  hostname_gt: string
+  hostname_in: [string!]
+  hostname_leq: string
+  hostname_like: string
+  hostname_lt: string
+  hostname_neq: string
+  hostname_notin: [string!]
+  hostname_notlike: string
   httpResponseStatus: uint64
   httpResponseStatus_geq: uint64
   httpResponseStatus_gt: uint64
@@ -62509,6 +62597,10 @@ enum ZoneWorkersZoneSubrequestsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # hostname ascending
+  hostname_ASC
+  # hostname descending
+  hostname_DESC
   # httpResponseStatus ascending
   httpResponseStatus_ASC
   # httpResponseStatus descending
@@ -62521,6 +62613,14 @@ enum ZoneWorkersZoneSubrequestsAdaptiveGroupsOrderBy {
   stableId_ASC
   # stableId descending
   stableId_DESC
+  # sum(requestBodySizeUncached) ascending
+  sum_requestBodySizeUncached_ASC
+  # sum(requestBodySizeUncached) descending
+  sum_requestBodySizeUncached_DESC
+  # sum(requestBodySize) ascending
+  sum_requestBodySize_ASC
+  # sum(requestBodySize) descending
+  sum_requestBodySize_DESC
   # sum(responseBodySize) ascending
   sum_responseBodySize_ASC
   # sum(responseBodySize) descending
@@ -62532,9 +62632,13 @@ enum ZoneWorkersZoneSubrequestsAdaptiveGroupsOrderBy {
 }
 
 type ZoneWorkersZoneSubrequestsAdaptiveGroupsSum {
-  # Bandwidth (in bytes) received via subrequests
+  # Workers fetch request body size in bytes
+  requestBodySize: uint64!
+  # Workers fetch request body size in bytes where the request was not cached
+  requestBodySizeUncached: uint64!
+  # Workers fetch response body size in bytes
   responseBodySize: uint64!
-  # Number of subrequests issued by a worker
+  # Number of sub-requests issued by the edge worker
   subrequests: uint64!
 }
 
