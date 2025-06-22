@@ -10362,6 +10362,8 @@ type AccountDnsFirewallAnalyticsAdaptive {
   responseCached: uint8!
   # DNS response code
   responseCode: string!
+  # Indicates why the DNS Firewall responded to the query in the way it did
+  responseReason: string!
   # Size of the DNS response in bytes
   responseSize: uint16!
   # Whether a stale DNS response was served from cache
@@ -10487,6 +10489,16 @@ input AccountDnsFirewallAnalyticsAdaptiveFilter_InputObject {
   responseCode_neq: string
   responseCode_notin: [string!]
   responseCode_notlike: string
+  responseReason: string
+  responseReason_geq: string
+  responseReason_gt: string
+  responseReason_in: [string!]
+  responseReason_leq: string
+  responseReason_like: string
+  responseReason_lt: string
+  responseReason_neq: string
+  responseReason_notin: [string!]
+  responseReason_notlike: string
   responseSize: uint16
   responseSize_geq: uint16
   responseSize_gt: uint16
@@ -10587,6 +10599,8 @@ type AccountDnsFirewallAnalyticsAdaptiveGroupsDimensions {
   responseCached: uint8!
   # DNS response code
   responseCode: string!
+  # Indicates why the DNS Firewall responded to the query in the way it did
+  responseReason: string!
   # Size of the DNS response in bytes (in multiples of 16)
   responseSizeBucket: string!
   # Whether a stale DNS response was served from cache
@@ -10752,6 +10766,16 @@ input AccountDnsFirewallAnalyticsAdaptiveGroupsFilter_InputObject {
   responseCode_neq: string
   responseCode_notin: [string!]
   responseCode_notlike: string
+  responseReason: string
+  responseReason_geq: string
+  responseReason_gt: string
+  responseReason_in: [string!]
+  responseReason_leq: string
+  responseReason_like: string
+  responseReason_lt: string
+  responseReason_neq: string
+  responseReason_notin: [string!]
+  responseReason_notlike: string
   responseSizeBucket: string
   responseSizeBucket_geq: string
   responseSizeBucket_gt: string
@@ -10889,6 +10913,10 @@ enum AccountDnsFirewallAnalyticsAdaptiveGroupsOrderBy {
   responseCode_ASC
   # responseCode descending
   responseCode_DESC
+  # responseReason ascending
+  responseReason_ASC
+  # responseReason descending
+  responseReason_DESC
   # responseSizeBucket ascending
   responseSizeBucket_ASC
   # responseSizeBucket descending
@@ -10969,6 +10997,10 @@ enum AccountDnsFirewallAnalyticsAdaptiveOrderBy {
   responseCode_ASC
   # responseCode descending
   responseCode_DESC
+  # responseReason ascending
+  responseReason_ASC
+  # responseReason descending
+  responseReason_DESC
   # responseSize ascending
   responseSize_ASC
   # responseSize descending
