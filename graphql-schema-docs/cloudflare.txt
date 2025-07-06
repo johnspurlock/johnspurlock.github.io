@@ -8159,9 +8159,15 @@ type AccountCloudchamberMetricsAdaptiveGroupsAvg {
   # Average memory usage
   memory: float64!
   # Average RX bandwidth
+  @Deprecated
   rxBandwidth: float64!
+  # Average RX bandwidth in bps
+  rxBandwidthBps: float64!
   # Average TX bandwidth
+  @Deprecated
   txBandwidth: float64!
+  # Average TX bandwidth in bps
+  txBandwidthBps: float64!
 }
 
 type AccountCloudchamberMetricsAdaptiveGroupsDimensions {
@@ -8320,12 +8326,18 @@ type AccountCloudchamberMetricsAdaptiveGroupsMax {
   # Maximum memory usage
   memory: float64!
   # Maximum RX bandwidth
+  @Deprecated
   rxBandwidth: float64!
+  # Maximum RX bandwidth
+  rxBandwidthBps: float64!
   # Total bytes received
   @Deprecated
   rxBytes: uint64!
   # Maximum TX bandwidth
+  @Deprecated
   txBandwidth: float64!
+  # Maximum TX bandwidth
+  txBandwidthBps: float64!
   # Total bytes transmitted
   @Deprecated
   txBytes: uint64!
@@ -8348,10 +8360,18 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   avg_memory_ASC
   # avg(memory) descending
   avg_memory_DESC
+  # avg(rxBandwidthBps) ascending
+  avg_rxBandwidthBps_ASC
+  # avg(rxBandwidthBps) descending
+  avg_rxBandwidthBps_DESC
   # avg(rxBandwidth) ascending
   avg_rxBandwidth_ASC
   # avg(rxBandwidth) descending
   avg_rxBandwidth_DESC
+  # avg(txBandwidthBps) ascending
+  avg_txBandwidthBps_ASC
+  # avg(txBandwidthBps) descending
+  avg_txBandwidthBps_DESC
   # avg(txBandwidth) ascending
   avg_txBandwidth_ASC
   # avg(txBandwidth) descending
@@ -8416,6 +8436,10 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   max_memory_ASC
   # max(memory) descending
   max_memory_DESC
+  # max(rxBandwidthBps) ascending
+  max_rxBandwidthBps_ASC
+  # max(rxBandwidthBps) descending
+  max_rxBandwidthBps_DESC
   # max(rxBandwidth) ascending
   max_rxBandwidth_ASC
   # max(rxBandwidth) descending
@@ -8424,6 +8448,10 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   max_rxBytes_ASC
   # max(rxBytes) descending
   max_rxBytes_DESC
+  # max(txBandwidthBps) ascending
+  max_txBandwidthBps_ASC
+  # max(txBandwidthBps) descending
+  max_txBandwidthBps_DESC
   # max(txBandwidth) ascending
   max_txBandwidth_ASC
   # max(txBandwidth) descending
@@ -8500,6 +8528,18 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   quantiles_memoryP99_ASC
   # quantiles(memoryP99) descending
   quantiles_memoryP99_DESC
+  # quantiles(rxBandwidthBpsP50) ascending
+  quantiles_rxBandwidthBpsP50_ASC
+  # quantiles(rxBandwidthBpsP50) descending
+  quantiles_rxBandwidthBpsP50_DESC
+  # quantiles(rxBandwidthBpsP90) ascending
+  quantiles_rxBandwidthBpsP90_ASC
+  # quantiles(rxBandwidthBpsP90) descending
+  quantiles_rxBandwidthBpsP90_DESC
+  # quantiles(rxBandwidthBpsP99) ascending
+  quantiles_rxBandwidthBpsP99_ASC
+  # quantiles(rxBandwidthBpsP99) descending
+  quantiles_rxBandwidthBpsP99_DESC
   # quantiles(rxBandwidthP50) ascending
   quantiles_rxBandwidthP50_ASC
   # quantiles(rxBandwidthP50) descending
@@ -8512,6 +8552,18 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   quantiles_rxBandwidthP99_ASC
   # quantiles(rxBandwidthP99) descending
   quantiles_rxBandwidthP99_DESC
+  # quantiles(txBandwidthBpsP50) ascending
+  quantiles_txBandwidthBpsP50_ASC
+  # quantiles(txBandwidthBpsP50) descending
+  quantiles_txBandwidthBpsP50_DESC
+  # quantiles(txBandwidthBpsP90) ascending
+  quantiles_txBandwidthBpsP90_ASC
+  # quantiles(txBandwidthBpsP90) descending
+  quantiles_txBandwidthBpsP90_DESC
+  # quantiles(txBandwidthBpsP99) ascending
+  quantiles_txBandwidthBpsP99_ASC
+  # quantiles(txBandwidthBpsP99) descending
+  quantiles_txBandwidthBpsP99_DESC
   # quantiles(txBandwidthP50) ascending
   quantiles_txBandwidthP50_ASC
   # quantiles(txBandwidthP50) descending
@@ -8570,16 +8622,34 @@ type AccountCloudchamberMetricsAdaptiveGroupsQuantiles {
   # Memory usage (99th percentile)
   memoryP99: float64!
   # RX bandwidth (50th percentile)
+  rxBandwidthBpsP50: float64!
+  # RX bandwidth (90th percentile)
+  rxBandwidthBpsP90: float64!
+  # RX bandwidth (99th percentile)
+  rxBandwidthBpsP99: float64!
+  # RX bandwidth (50th percentile)
+  @Deprecated
   rxBandwidthP50: float64!
   # RX bandwidth (90th percentile)
+  @Deprecated
   rxBandwidthP90: float64!
   # RX bandwidth (99th percentile)
+  @Deprecated
   rxBandwidthP99: float64!
   # TX bandwidth (50th percentile)
+  txBandwidthBpsP50: float64!
+  # TX bandwidth (90th percentile)
+  txBandwidthBpsP90: float64!
+  # TX bandwidth (99th percentile)
+  txBandwidthBpsP99: float64!
+  # TX bandwidth (50th percentile)
+  @Deprecated
   txBandwidthP50: float64!
   # TX bandwidth (90th percentile)
+  @Deprecated
   txBandwidthP90: float64!
   # TX bandwidth (99th percentile)
+  @Deprecated
   txBandwidthP99: float64!
 }
 
