@@ -59,6 +59,9 @@ Account-level datasets:
 * imagesUniqueTransformations
 * kvOperationsAdaptiveGroups
 * kvStorageAdaptiveGroups
+* liveInputEventsAdaptive
+* liveInputEventsAdaptiveGroups
+* logExplorerIngestionAdaptiveGroups
 * logpushHealthAdaptiveGroups
   magicEndpointHealthCheckAdaptiveGroups
   magicFirewallNetworkAnalyticsAdaptiveGroups
@@ -359,6 +362,12 @@ type account {
   kvOperationsAdaptiveGroups(filter: AccountKvOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountKvOperationsAdaptiveGroupsOrderBy!]): [AccountKvOperationsAdaptiveGroups!]!
   # KV stored data with adaptive sampling
   kvStorageAdaptiveGroups(filter: AccountKvStorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountKvStorageAdaptiveGroupsOrderBy!]): [AccountKvStorageAdaptiveGroups!]!
+  # Live input events with adaptive sampling
+  liveInputEventsAdaptive(filter: AccountLiveInputEventsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountLiveInputEventsAdaptiveOrderBy!]): [AccountLiveInputEventsAdaptive!]!
+  # Aggregated live input events with adaptive sampling
+  liveInputEventsAdaptiveGroups(filter: AccountLiveInputEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLiveInputEventsAdaptiveGroupsOrderBy!]): [AccountLiveInputEventsAdaptiveGroups!]!
+  # Ingestion metrics for Log Explorer
+  logExplorerIngestionAdaptiveGroups(filter: AccountLogExplorerIngestionAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogExplorerIngestionAdaptiveGroupsOrderBy!]): [AccountLogExplorerIngestionAdaptiveGroups!]!
   # Beta. Logpush job health metrics
   logpushHealthAdaptiveGroups(filter: AccountLogpushHealthAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogpushHealthAdaptiveGroupsOrderBy!]): [AccountLogpushHealthAdaptiveGroups!]!
   # Magic Endpoint Healthcheck events with adaptive sampling.
@@ -24349,6 +24358,449 @@ enum AccountKvStorageAdaptiveGroupsOrderBy {
   namespaceId_DESC
 }
 
+# Live input events with adaptive sampling
+type AccountLiveInputEventsAdaptive {
+  # Ingest colo
+  coloCode: string!
+  # The time of the event
+  datetime: Time!
+  # Event code
+  eventCode: string!
+  # Event description
+  eventDescription: string!
+  # Live input ID
+  inputId: string!
+}
+
+input AccountLiveInputEventsAdaptiveFilter_InputObject {
+  AND: [AccountLiveInputEventsAdaptiveFilter_InputObject!]
+  OR: [AccountLiveInputEventsAdaptiveFilter_InputObject!]
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  eventCode: string
+  eventCode_geq: string
+  eventCode_gt: string
+  eventCode_in: [string!]
+  eventCode_leq: string
+  eventCode_like: string
+  eventCode_lt: string
+  eventCode_neq: string
+  eventCode_notin: [string!]
+  eventCode_notlike: string
+  eventDescription: string
+  eventDescription_geq: string
+  eventDescription_gt: string
+  eventDescription_in: [string!]
+  eventDescription_leq: string
+  eventDescription_like: string
+  eventDescription_lt: string
+  eventDescription_neq: string
+  eventDescription_notin: [string!]
+  eventDescription_notlike: string
+  inputId: string
+  inputId_geq: string
+  inputId_gt: string
+  inputId_in: [string!]
+  inputId_leq: string
+  inputId_like: string
+  inputId_lt: string
+  inputId_neq: string
+  inputId_notin: [string!]
+  inputId_notlike: string
+}
+
+# Aggregated live input events with adaptive sampling
+type AccountLiveInputEventsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountLiveInputEventsAdaptiveGroupsAvg
+  # Number of segments stored
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountLiveInputEventsAdaptiveGroupsDimensions
+  # The maximum value for a metric per dimension
+  max: AccountLiveInputEventsAdaptiveGroupsMax
+  # The minimum value for a metric per dimension
+  min: AccountLiveInputEventsAdaptiveGroupsMin
+}
+
+type AccountLiveInputEventsAdaptiveGroupsAvg {
+  # Per-second bit rate when grouped by datetime
+  bitRate: float64!
+  # Per-second bit rate when grouped by datetimeFifteenMinutes
+  bitRateFifteenMinutes: float64!
+  # Per-second bit rate when grouped by datetimeFiveMinutes
+  bitRateFiveMinutes: float64!
+  # Per-second bit rate when grouped by datetimeHour
+  bitRateHour: float64!
+  # Per-second bit rate when grouped by datetimeMinute
+  bitRateMinute: float64!
+  # Average GOP size in bytes
+  gopByteSize: float64!
+  # Average GOP duration in ms
+  gopDuration: float64!
+  # Average GOP upload time in ms
+  gopUploadTime: float64!
+  # Average upload to duration ratio
+  uploadDurationRatio: float64!
+}
+
+type AccountLiveInputEventsAdaptiveGroupsDimensions {
+  # Live input events timestamp
+  datetime: Time!
+  # The date and time of the event truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time of the event truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time of the event truncated to the hour
+  datetimeHour: Time!
+  # The date and time of the event truncated to the minute
+  datetimeMinute: Time!
+  # Event code
+  eventCode: string!
+  # Live input ID
+  inputId: string!
+}
+
+input AccountLiveInputEventsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountLiveInputEventsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountLiveInputEventsAdaptiveGroupsFilter_InputObject!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  eventCode: string
+  eventCode_geq: string
+  eventCode_gt: string
+  eventCode_in: [string!]
+  eventCode_leq: string
+  eventCode_like: string
+  eventCode_lt: string
+  eventCode_neq: string
+  eventCode_notin: [string!]
+  eventCode_notlike: string
+  inputId: string
+  inputId_geq: string
+  inputId_gt: string
+  inputId_in: [string!]
+  inputId_leq: string
+  inputId_like: string
+  inputId_lt: string
+  inputId_neq: string
+  inputId_notin: [string!]
+  inputId_notlike: string
+}
+
+type AccountLiveInputEventsAdaptiveGroupsMax {
+  # Max GOP size in bytes
+  gopByteSize: float64!
+  # Max GOP duration in ms
+  gopDuration: float64!
+  # Max GOP upload time in ms
+  gopUploadTime: float64!
+  # Max upload to duration ratio
+  uploadDurationRatio: float64!
+}
+
+type AccountLiveInputEventsAdaptiveGroupsMin {
+  # Min GOP size in bytes
+  gopByteSize: float64!
+  # Min GOP duration in ms
+  gopDuration: float64!
+  # Min GOP upload time in ms
+  gopUploadTime: float64!
+  # Min upload to duration ratio
+  uploadDurationRatio: float64!
+}
+
+enum AccountLiveInputEventsAdaptiveGroupsOrderBy {
+  # avg(bitRateFifteenMinutes) ascending
+  avg_bitRateFifteenMinutes_ASC
+  # avg(bitRateFifteenMinutes) descending
+  avg_bitRateFifteenMinutes_DESC
+  # avg(bitRateFiveMinutes) ascending
+  avg_bitRateFiveMinutes_ASC
+  # avg(bitRateFiveMinutes) descending
+  avg_bitRateFiveMinutes_DESC
+  # avg(bitRateHour) ascending
+  avg_bitRateHour_ASC
+  # avg(bitRateHour) descending
+  avg_bitRateHour_DESC
+  # avg(bitRateMinute) ascending
+  avg_bitRateMinute_ASC
+  # avg(bitRateMinute) descending
+  avg_bitRateMinute_DESC
+  # avg(bitRate) ascending
+  avg_bitRate_ASC
+  # avg(bitRate) descending
+  avg_bitRate_DESC
+  # avg(gopByteSize) ascending
+  avg_gopByteSize_ASC
+  # avg(gopByteSize) descending
+  avg_gopByteSize_DESC
+  # avg(gopDuration) ascending
+  avg_gopDuration_ASC
+  # avg(gopDuration) descending
+  avg_gopDuration_DESC
+  # avg(gopUploadTime) ascending
+  avg_gopUploadTime_ASC
+  # avg(gopUploadTime) descending
+  avg_gopUploadTime_DESC
+  # avg(uploadDurationRatio) ascending
+  avg_uploadDurationRatio_ASC
+  # avg(uploadDurationRatio) descending
+  avg_uploadDurationRatio_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # eventCode ascending
+  eventCode_ASC
+  # eventCode descending
+  eventCode_DESC
+  # inputId ascending
+  inputId_ASC
+  # inputId descending
+  inputId_DESC
+  # max(gopByteSize) ascending
+  max_gopByteSize_ASC
+  # max(gopByteSize) descending
+  max_gopByteSize_DESC
+  # max(gopDuration) ascending
+  max_gopDuration_ASC
+  # max(gopDuration) descending
+  max_gopDuration_DESC
+  # max(gopUploadTime) ascending
+  max_gopUploadTime_ASC
+  # max(gopUploadTime) descending
+  max_gopUploadTime_DESC
+  # max(uploadDurationRatio) ascending
+  max_uploadDurationRatio_ASC
+  # max(uploadDurationRatio) descending
+  max_uploadDurationRatio_DESC
+  # min(gopByteSize) ascending
+  min_gopByteSize_ASC
+  # min(gopByteSize) descending
+  min_gopByteSize_DESC
+  # min(gopDuration) ascending
+  min_gopDuration_ASC
+  # min(gopDuration) descending
+  min_gopDuration_DESC
+  # min(gopUploadTime) ascending
+  min_gopUploadTime_ASC
+  # min(gopUploadTime) descending
+  min_gopUploadTime_DESC
+  # min(uploadDurationRatio) ascending
+  min_uploadDurationRatio_ASC
+  # min(uploadDurationRatio) descending
+  min_uploadDurationRatio_DESC
+}
+
+enum AccountLiveInputEventsAdaptiveOrderBy {
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # eventCode ascending
+  eventCode_ASC
+  # eventCode descending
+  eventCode_DESC
+  # eventDescription ascending
+  eventDescription_ASC
+  # eventDescription descending
+  eventDescription_DESC
+  # inputId ascending
+  inputId_ASC
+  # inputId descending
+  inputId_DESC
+}
+
+# Ingestion metrics for Log Explorer
+type AccountLogExplorerIngestionAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountLogExplorerIngestionAdaptiveGroupsDimensions
+  sum: AccountLogExplorerIngestionAdaptiveGroupsSum
+}
+
+type AccountLogExplorerIngestionAdaptiveGroupsDimensions {
+  # Ingestion date
+  date: Date!
+  # Ingestion time, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Ingestion time, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # Ingestion time, truncated to the hour
+  datetimeHour: Time!
+  # Ingestion time, truncated to the minute
+  datetimeMinute: Time!
+}
+
+input AccountLogExplorerIngestionAdaptiveGroupsFilter_InputObject {
+  AND: [AccountLogExplorerIngestionAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountLogExplorerIngestionAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+}
+
+enum AccountLogExplorerIngestionAdaptiveGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # sum(billableBytes) ascending
+  sum_billableBytes_ASC
+  # sum(billableBytes) descending
+  sum_billableBytes_DESC
+  # sum(totalBytes) ascending
+  sum_totalBytes_ASC
+  # sum(totalBytes) descending
+  sum_totalBytes_DESC
+}
+
+type AccountLogExplorerIngestionAdaptiveGroupsSum {
+  # Total billable bytes ingested to Log Explorer
+  billableBytes: uint64!
+  # Total bytes ingested to Log Explorer
+  totalBytes: uint64!
+}
+
 # Beta. Logpush job health metrics
 type AccountLogpushHealthAdaptiveGroups {
   avg: AccountLogpushHealthAdaptiveGroupsAvg
@@ -41085,6 +41537,9 @@ type AccountSettings {
   imagesUniqueTransformations: Settings!
   kvOperationsAdaptiveGroups: Settings!
   kvStorageAdaptiveGroups: Settings!
+  liveInputEventsAdaptive: Settings!
+  liveInputEventsAdaptiveGroups: Settings!
+  logExplorerIngestionAdaptiveGroups: Settings!
   logpushHealthAdaptiveGroups: Settings!
   magicEndpointHealthCheckAdaptiveGroups: Settings!
   magicFirewallNetworkAnalyticsAdaptiveGroups: Settings!
