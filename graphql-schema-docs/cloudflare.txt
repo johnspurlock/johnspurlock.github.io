@@ -92,6 +92,7 @@ Account-level datasets:
   mconnTelemetrySnapshotTunnelsStagingAdaptiveGroups
   mconnTelemetrySnapshotsAdaptiveGroups
   mconnTelemetrySnapshotsStagingAdaptiveGroups
+* mediaUniqueTransformations
 * mnmAWSVPCFlowDataAdaptiveGroups
 * mnmFlowDataAdaptiveGroups
   nelReportsAdaptiveGroups
@@ -428,6 +429,8 @@ type account {
   mconnTelemetrySnapshotsAdaptiveGroups(filter: AccountMconnTelemetrySnapshotsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotsAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotsAdaptiveGroups!]!
   # Aggregated Magic WAN Connector system snapshots with adaptive sampling
   mconnTelemetrySnapshotsStagingAdaptiveGroups(filter: AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotsStagingAdaptiveGroups!]!
+  # Media unique transfromations per day
+  mediaUniqueTransformations(filter: AccountMediaUniqueTransformationsFilter_InputObject!, limit: uint64!, orderBy: [AccountMediaUniqueTransformationsOrderBy!]): [AccountMediaUniqueTransformations!]!
   # AWS VPC Flow data collected through Magic Network Monitoring
   mnmAWSVPCFlowDataAdaptiveGroups(filter: AccountMnmAWSVPCFlowDataAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMnmAWSVPCFlowDataAdaptiveGroupsOrderBy!]): [AccountMnmAWSVPCFlowDataAdaptiveGroups!]!
   # Flow data collected through Magic Network Monitoring
@@ -4125,6 +4128,7 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   metadataKeys_has: string
   metadataKeys_hasall: [string!]
   metadataKeys_hasany: [string!]
+  metadataKeys_isempty: bool
   metadataKeys_nothas: string
   metadataRaw: string
   metadataRaw_geq: string
@@ -4139,6 +4143,7 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   metadataValues_has: string
   metadataValues_hasall: [string!]
   metadataValues_hasany: [string!]
+  metadataValues_isempty: bool
   metadataValues_nothas: string
   model: string
   model_geq: string
@@ -4154,10 +4159,12 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   promptsIds_has: string
   promptsIds_hasall: [string!]
   promptsIds_hasany: [string!]
+  promptsIds_isempty: bool
   promptsIds_nothas: string
   promptsVersions_has: string
   promptsVersions_hasall: [string!]
   promptsVersions_hasany: [string!]
+  promptsVersions_isempty: bool
   promptsVersions_nothas: string
   prompts_geq: string
   prompts_gt: string
@@ -14285,10 +14292,12 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
+  botDetectionIds_isempty: bool
   botDetectionIds_nothas: uint32
   botDetectionTags_has: string
   botDetectionTags_hasall: [string!]
   botDetectionTags_hasany: [string!]
+  botDetectionTags_isempty: bool
   botDetectionTags_nothas: string
   botScore: uint8
   botScoreSrcName: string
@@ -14485,14 +14494,17 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   contentScanObjResults_has: string
   contentScanObjResults_hasall: [string!]
   contentScanObjResults_hasany: [string!]
+  contentScanObjResults_isempty: bool
   contentScanObjResults_nothas: string
   contentScanObjSizes_has: uint32
   contentScanObjSizes_hasall: [uint32!]
   contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_isempty: bool
   contentScanObjSizes_nothas: uint32
   contentScanObjTypes_has: string
   contentScanObjTypes_hasall: [string!]
   contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_isempty: bool
   contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
@@ -14581,6 +14593,7 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
@@ -14994,10 +15007,12 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
+  botDetectionIds_isempty: bool
   botDetectionIds_nothas: uint32
   botDetectionTags_has: string
   botDetectionTags_hasall: [string!]
   botDetectionTags_hasany: [string!]
+  botDetectionTags_isempty: bool
   botDetectionTags_nothas: string
   botScore: uint8
   botScoreSrcName: string
@@ -15194,14 +15209,17 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   contentScanObjResults_has: string
   contentScanObjResults_hasall: [string!]
   contentScanObjResults_hasany: [string!]
+  contentScanObjResults_isempty: bool
   contentScanObjResults_nothas: string
   contentScanObjSizes_has: uint32
   contentScanObjSizes_hasall: [uint32!]
   contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_isempty: bool
   contentScanObjSizes_nothas: uint32
   contentScanObjTypes_has: string
   contentScanObjTypes_hasall: [string!]
   contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_isempty: bool
   contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
@@ -15290,6 +15308,7 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
@@ -17842,18 +17861,22 @@ input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
   applicationIds_has: uint32
   applicationIds_hasall: [uint32!]
   applicationIds_hasany: [uint32!]
+  applicationIds_isempty: bool
   applicationIds_nothas: uint32
   applicationNames_has: string
   applicationNames_hasall: [string!]
   applicationNames_hasany: [string!]
+  applicationNames_isempty: bool
   applicationNames_nothas: string
   categoryIds_has: uint32
   categoryIds_hasall: [uint32!]
   categoryIds_hasany: [uint32!]
+  categoryIds_isempty: bool
   categoryIds_nothas: uint32
   categoryNames_has: string
   categoryNames_hasall: [string!]
   categoryNames_hasany: [string!]
+  categoryNames_isempty: bool
   categoryNames_nothas: string
   coloCode: string
   coloCode_geq: string
@@ -18652,18 +18675,22 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   applicationIds_has: uint32
   applicationIds_hasall: [uint32!]
   applicationIds_hasany: [uint32!]
+  applicationIds_isempty: bool
   applicationIds_nothas: uint32
   applicationNames_has: string
   applicationNames_hasall: [string!]
   applicationNames_hasany: [string!]
+  applicationNames_isempty: bool
   applicationNames_nothas: string
   categoryIds_has: uint32
   categoryIds_hasall: [uint32!]
   categoryIds_hasany: [uint32!]
+  categoryIds_isempty: bool
   categoryIds_nothas: uint32
   categoryNames_has: string
   categoryNames_hasall: [string!]
   categoryNames_hasany: [string!]
+  categoryNames_isempty: bool
   categoryNames_nothas: string
   coloCode: string
   coloCode_geq: string
@@ -19103,6 +19130,7 @@ input AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject {
   authoritativeNameserverIps_has: string
   authoritativeNameserverIps_hasall: [string!]
   authoritativeNameserverIps_hasany: [string!]
+  authoritativeNameserverIps_isempty: bool
   authoritativeNameserverIps_nothas: string
   categoryId: uint16
   categoryId_geq: uint16
@@ -19115,6 +19143,7 @@ input AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject {
   cnames_has: string
   cnames_hasall: [string!]
   cnames_hasany: [string!]
+  cnames_isempty: bool
   cnames_nothas: string
   customResolverAddress: string
   customResolverAddress_geq: string
@@ -19189,6 +19218,7 @@ input AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject {
   edeErrors_has: uint16
   edeErrors_hasall: [uint16!]
   edeErrors_hasany: [uint16!]
+  edeErrors_isempty: bool
   edeErrors_nothas: uint16
   internalDnsFallbackStrategy: string
   internalDnsFallbackStrategy_geq: string
@@ -19279,14 +19309,17 @@ input AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject {
   resolvedIpContinents_has: string
   resolvedIpContinents_hasall: [string!]
   resolvedIpContinents_hasany: [string!]
+  resolvedIpContinents_isempty: bool
   resolvedIpContinents_nothas: string
   resolvedIpCountries_has: string
   resolvedIpCountries_hasall: [string!]
   resolvedIpCountries_hasany: [string!]
+  resolvedIpCountries_isempty: bool
   resolvedIpCountries_nothas: string
   resolvedIps_has: string
   resolvedIps_hasall: [string!]
   resolvedIps_hasany: [string!]
+  resolvedIps_isempty: bool
   resolvedIps_nothas: string
   resolverDecision: uint16
   resolverDecision_geq: uint16
@@ -19319,22 +19352,27 @@ input AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject {
   resourceRecordClasses_has: string
   resourceRecordClasses_hasall: [string!]
   resourceRecordClasses_hasany: [string!]
+  resourceRecordClasses_isempty: bool
   resourceRecordClasses_nothas: string
   resourceRecordNames_has: string
   resourceRecordNames_hasall: [string!]
   resourceRecordNames_hasany: [string!]
+  resourceRecordNames_isempty: bool
   resourceRecordNames_nothas: string
   resourceRecordRDatas_has: string
   resourceRecordRDatas_hasall: [string!]
   resourceRecordRDatas_hasany: [string!]
+  resourceRecordRDatas_isempty: bool
   resourceRecordRDatas_nothas: string
   resourceRecordTTLs_has: uint32
   resourceRecordTTLs_hasall: [uint32!]
   resourceRecordTTLs_hasany: [uint32!]
+  resourceRecordTTLs_isempty: bool
   resourceRecordTTLs_nothas: uint32
   resourceRecordTypes_has: string
   resourceRecordTypes_hasall: [string!]
   resourceRecordTypes_hasany: [string!]
+  resourceRecordTypes_isempty: bool
   resourceRecordTypes_nothas: string
   srcIpContinent: string
   srcIpContinent_geq: string
@@ -19889,6 +19927,7 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   authoritativeNameserverIps_has: string
   authoritativeNameserverIps_hasall: [string!]
   authoritativeNameserverIps_hasany: [string!]
+  authoritativeNameserverIps_isempty: bool
   authoritativeNameserverIps_nothas: string
   categoryIds: string
   categoryIds_geq: string
@@ -19903,10 +19942,12 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   categoryNames_has: string
   categoryNames_hasall: [string!]
   categoryNames_hasany: [string!]
+  categoryNames_isempty: bool
   categoryNames_nothas: string
   cnames_has: string
   cnames_hasall: [string!]
   cnames_hasany: [string!]
+  cnames_isempty: bool
   cnames_nothas: string
   customResolverAddress: string
   customResolverAddress_geq: string
@@ -19981,6 +20022,7 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   edeErrors_has: uint16
   edeErrors_hasall: [uint16!]
   edeErrors_hasany: [uint16!]
+  edeErrors_isempty: bool
   edeErrors_nothas: uint16
   internalDnsFallbackStrategy: string
   internalDnsFallbackStrategy_geq: string
@@ -20071,6 +20113,7 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   matchedIndicatorFeedNames_has: string
   matchedIndicatorFeedNames_hasall: [string!]
   matchedIndicatorFeedNames_hasany: [string!]
+  matchedIndicatorFeedNames_isempty: bool
   matchedIndicatorFeedNames_nothas: string
   policyId: string
   policyId_geq: string
@@ -20115,14 +20158,17 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   resolvedIpContinents_has: string
   resolvedIpContinents_hasall: [string!]
   resolvedIpContinents_hasany: [string!]
+  resolvedIpContinents_isempty: bool
   resolvedIpContinents_nothas: string
   resolvedIpCountries_has: string
   resolvedIpCountries_hasall: [string!]
   resolvedIpCountries_hasany: [string!]
+  resolvedIpCountries_isempty: bool
   resolvedIpCountries_nothas: string
   resolvedIps_has: string
   resolvedIps_hasall: [string!]
   resolvedIps_hasany: [string!]
+  resolvedIps_isempty: bool
   resolvedIps_nothas: string
   resolverDecision: uint16
   resolverDecision_geq: uint16
@@ -20155,22 +20201,27 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   resourceRecordClasses_has: string
   resourceRecordClasses_hasall: [string!]
   resourceRecordClasses_hasany: [string!]
+  resourceRecordClasses_isempty: bool
   resourceRecordClasses_nothas: string
   resourceRecordNames_has: string
   resourceRecordNames_hasall: [string!]
   resourceRecordNames_hasany: [string!]
+  resourceRecordNames_isempty: bool
   resourceRecordNames_nothas: string
   resourceRecordRDatas_has: string
   resourceRecordRDatas_hasall: [string!]
   resourceRecordRDatas_hasany: [string!]
+  resourceRecordRDatas_isempty: bool
   resourceRecordRDatas_nothas: string
   resourceRecordTTLs_has: uint32
   resourceRecordTTLs_hasall: [uint32!]
   resourceRecordTTLs_hasany: [uint32!]
+  resourceRecordTTLs_isempty: bool
   resourceRecordTTLs_nothas: uint32
   resourceRecordTypes_has: string
   resourceRecordTypes_hasall: [string!]
   resourceRecordTypes_hasany: [string!]
+  resourceRecordTypes_isempty: bool
   resourceRecordTypes_nothas: string
   scheduleInfo: string
   scheduleInfo_geq: string
@@ -21170,10 +21221,12 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
+  botDetectionIds_isempty: bool
   botDetectionIds_nothas: uint32
   botDetectionTags_has: string
   botDetectionTags_hasall: [string!]
   botDetectionTags_hasany: [string!]
+  botDetectionTags_isempty: bool
   botDetectionTags_nothas: string
   botManagementDecision: string
   botManagementDecision_geq: string
@@ -21406,14 +21459,17 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   contentScanObjResults_has: string
   contentScanObjResults_hasall: [string!]
   contentScanObjResults_hasany: [string!]
+  contentScanObjResults_isempty: bool
   contentScanObjResults_nothas: string
   contentScanObjSizes_has: uint32
   contentScanObjSizes_hasall: [uint32!]
   contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_isempty: bool
   contentScanObjSizes_nothas: uint32
   contentScanObjTypes_has: string
   contentScanObjTypes_hasall: [string!]
   contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_isempty: bool
   contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
@@ -21508,6 +21564,7 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
@@ -21943,10 +22000,12 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
+  botDetectionIds_isempty: bool
   botDetectionIds_nothas: uint32
   botDetectionTags_has: string
   botDetectionTags_hasall: [string!]
   botDetectionTags_hasany: [string!]
+  botDetectionTags_isempty: bool
   botDetectionTags_nothas: string
   botManagementDecision: string
   botManagementDecision_geq: string
@@ -22179,14 +22238,17 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   contentScanObjResults_has: string
   contentScanObjResults_hasall: [string!]
   contentScanObjResults_hasany: [string!]
+  contentScanObjResults_isempty: bool
   contentScanObjResults_nothas: string
   contentScanObjSizes_has: uint32
   contentScanObjSizes_hasall: [uint32!]
   contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_isempty: bool
   contentScanObjSizes_nothas: uint32
   contentScanObjTypes_has: string
   contentScanObjTypes_hasall: [string!]
   contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_isempty: bool
   contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
@@ -22281,6 +22343,7 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
@@ -35485,6 +35548,34 @@ enum AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsOrderBy {
   tunnelId_DESC
 }
 
+# Media unique transfromations per day
+type AccountMediaUniqueTransformations {
+  # The date uniques are calculated for
+  date: Date!
+  # Number of unique media transformations per day in sliding window
+  transformations: uint64!
+}
+
+input AccountMediaUniqueTransformationsFilter_InputObject {
+  AND: [AccountMediaUniqueTransformationsFilter_InputObject!]
+  OR: [AccountMediaUniqueTransformationsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+}
+
+enum AccountMediaUniqueTransformationsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+}
+
 # AWS VPC Flow data collected through Magic Network Monitoring
 type AccountMnmAWSVPCFlowDataAdaptiveGroups {
   # The average of values for a metric per dimension
@@ -36013,6 +36104,7 @@ input AccountMnmAWSVPCFlowDataAdaptiveGroupsFilter_InputObject {
   ruleIDs_has: string
   ruleIDs_hasall: [string!]
   ruleIDs_hasany: [string!]
+  ruleIDs_isempty: bool
   ruleIDs_nothas: string
   sourceAddress: string
   sourceAddress_geq: string
@@ -36742,6 +36834,7 @@ input AccountMnmFlowDataAdaptiveGroupsFilter_InputObject {
   ruleIDs_has: string
   ruleIDs_hasall: [string!]
   ruleIDs_hasany: [string!]
+  ruleIDs_isempty: bool
   ruleIDs_nothas: string
   sourceAS: uint32
   sourceAS_geq: uint32
@@ -41570,6 +41663,7 @@ type AccountSettings {
   mconnTelemetrySnapshotTunnelsStagingAdaptiveGroups: Settings!
   mconnTelemetrySnapshotsAdaptiveGroups: Settings!
   mconnTelemetrySnapshotsStagingAdaptiveGroups: Settings!
+  mediaUniqueTransformations: Settings!
   mnmAWSVPCFlowDataAdaptiveGroups: Settings!
   mnmFlowDataAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
@@ -48778,14 +48872,17 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   contentScanObjResults_has: string
   contentScanObjResults_hasall: [string!]
   contentScanObjResults_hasany: [string!]
+  contentScanObjResults_isempty: bool
   contentScanObjResults_nothas: string
   contentScanObjSizes_has: uint32
   contentScanObjSizes_hasall: [uint32!]
   contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_isempty: bool
   contentScanObjSizes_nothas: uint32
   contentScanObjTypes_has: string
   contentScanObjTypes_hasall: [string!]
   contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_isempty: bool
   contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
@@ -48880,6 +48977,7 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
@@ -50033,6 +50131,7 @@ input ZoneApiGatewayMatchedSessionIDsPerEndpointAdaptiveGroupsFilter_InputObject
   apiGatewayMatchedSessionIdentifier_has: string
   apiGatewayMatchedSessionIdentifier_hasall: [string!]
   apiGatewayMatchedSessionIdentifier_hasany: [string!]
+  apiGatewayMatchedSessionIdentifier_isempty: bool
   apiGatewayMatchedSessionIdentifier_nothas: string
   date: Date
   date_geq: Date
@@ -53558,10 +53657,12 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
+  botDetectionIds_isempty: bool
   botDetectionIds_nothas: uint32
   botDetectionTags_has: string
   botDetectionTags_hasall: [string!]
   botDetectionTags_hasany: [string!]
+  botDetectionTags_isempty: bool
   botDetectionTags_nothas: string
   botScore: uint8
   botScoreSrcName: string
@@ -53758,14 +53859,17 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   contentScanObjResults_has: string
   contentScanObjResults_hasall: [string!]
   contentScanObjResults_hasany: [string!]
+  contentScanObjResults_isempty: bool
   contentScanObjResults_nothas: string
   contentScanObjSizes_has: uint32
   contentScanObjSizes_hasall: [uint32!]
   contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_isempty: bool
   contentScanObjSizes_nothas: uint32
   contentScanObjTypes_has: string
   contentScanObjTypes_hasall: [string!]
   contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_isempty: bool
   contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
@@ -53854,6 +53958,7 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
@@ -54249,10 +54354,12 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
+  botDetectionIds_isempty: bool
   botDetectionIds_nothas: uint32
   botDetectionTags_has: string
   botDetectionTags_hasall: [string!]
   botDetectionTags_hasany: [string!]
+  botDetectionTags_isempty: bool
   botDetectionTags_nothas: string
   botScore: uint8
   botScoreSrcName: string
@@ -54449,14 +54556,17 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   contentScanObjResults_has: string
   contentScanObjResults_hasall: [string!]
   contentScanObjResults_hasany: [string!]
+  contentScanObjResults_isempty: bool
   contentScanObjResults_nothas: string
   contentScanObjSizes_has: uint32
   contentScanObjSizes_hasall: [uint32!]
   contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_isempty: bool
   contentScanObjSizes_nothas: uint32
   contentScanObjTypes_has: string
   contentScanObjTypes_hasall: [string!]
   contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_isempty: bool
   contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
@@ -54545,6 +54655,7 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
@@ -54946,10 +55057,12 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
+  botDetectionIds_isempty: bool
   botDetectionIds_nothas: uint32
   botDetectionTags_has: string
   botDetectionTags_hasall: [string!]
   botDetectionTags_hasany: [string!]
+  botDetectionTags_isempty: bool
   botDetectionTags_nothas: string
   botScore: uint8
   botScoreSrcName: string
@@ -55146,14 +55259,17 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   contentScanObjResults_has: string
   contentScanObjResults_hasall: [string!]
   contentScanObjResults_hasany: [string!]
+  contentScanObjResults_isempty: bool
   contentScanObjResults_nothas: string
   contentScanObjSizes_has: uint32
   contentScanObjSizes_hasall: [uint32!]
   contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_isempty: bool
   contentScanObjSizes_nothas: uint32
   contentScanObjTypes_has: string
   contentScanObjTypes_hasall: [string!]
   contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_isempty: bool
   contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
@@ -55242,6 +55358,7 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
@@ -57735,10 +57852,12 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
+  botDetectionIds_isempty: bool
   botDetectionIds_nothas: uint32
   botDetectionTags_has: string
   botDetectionTags_hasall: [string!]
   botDetectionTags_hasany: [string!]
+  botDetectionTags_isempty: bool
   botDetectionTags_nothas: string
   botManagementDecision: string
   botManagementDecision_geq: string
@@ -57971,14 +58090,17 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   contentScanObjResults_has: string
   contentScanObjResults_hasall: [string!]
   contentScanObjResults_hasany: [string!]
+  contentScanObjResults_isempty: bool
   contentScanObjResults_nothas: string
   contentScanObjSizes_has: uint32
   contentScanObjSizes_hasall: [uint32!]
   contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_isempty: bool
   contentScanObjSizes_nothas: uint32
   contentScanObjTypes_has: string
   contentScanObjTypes_hasall: [string!]
   contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_isempty: bool
   contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
@@ -58073,6 +58195,7 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
@@ -58496,10 +58619,12 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
+  botDetectionIds_isempty: bool
   botDetectionIds_nothas: uint32
   botDetectionTags_has: string
   botDetectionTags_hasall: [string!]
   botDetectionTags_hasany: [string!]
+  botDetectionTags_isempty: bool
   botDetectionTags_nothas: string
   botManagementDecision: string
   botManagementDecision_geq: string
@@ -58732,14 +58857,17 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   contentScanObjResults_has: string
   contentScanObjResults_hasall: [string!]
   contentScanObjResults_hasany: [string!]
+  contentScanObjResults_isempty: bool
   contentScanObjResults_nothas: string
   contentScanObjSizes_has: uint32
   contentScanObjSizes_hasall: [uint32!]
   contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_isempty: bool
   contentScanObjSizes_nothas: uint32
   contentScanObjTypes_has: string
   contentScanObjTypes_hasall: [string!]
   contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_isempty: bool
   contentScanObjTypes_nothas: string
   date: Date
   date_geq: Date
@@ -58834,6 +58962,7 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
@@ -65237,6 +65366,7 @@ input ZoneZarazAnalyticsTrackTrafficSourcesAdaptiveGroupsFilter_InputObject {
   tracks_has: string
   tracks_hasall: [string!]
   tracks_hasany: [string!]
+  tracks_isempty: bool
   tracks_nothas: string
 }
 
@@ -65991,6 +66121,7 @@ input ZoneZarazAnalyticsTriggersTrafficSourcesAdaptiveGroupsFilter_InputObject {
   triggers_has: string
   triggers_hasall: [string!]
   triggers_hasany: [string!]
+  triggers_isempty: bool
   triggers_nothas: string
 }
 
