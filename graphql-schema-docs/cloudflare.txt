@@ -23,6 +23,7 @@ Account-level datasets:
   cdnNetworkAnalyticsAdaptiveGroups
 * cloudchamberMetricsAdaptiveGroups
 * cloudflareTunnelsAnalyticsAdaptiveGroups
+* containersMetricsAdaptiveGroups
 * d1AnalyticsAdaptiveGroups
 * d1QueriesAdaptiveGroups
 * d1StorageAdaptiveGroups
@@ -116,6 +117,7 @@ Account-level datasets:
 * sippyOperationsAdaptiveGroups
   spectrumNetworkAnalyticsAdaptiveGroups
   storageTraces
+* streamCMCDAdaptiveGroups
 * streamMinutesViewedAdaptiveGroups
 * turnstileAdaptiveGroups
 * vectorizeQueriesAdaptiveGroups
@@ -290,6 +292,8 @@ type account {
   cloudchamberMetricsAdaptiveGroups(filter: AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCloudchamberMetricsAdaptiveGroupsOrderBy!]): [AccountCloudchamberMetricsAdaptiveGroups!]!
   # Cloudflare tunnel Device Analytics
   cloudflareTunnelsAnalyticsAdaptiveGroups(filter: AccountCloudflareTunnelsAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCloudflareTunnelsAnalyticsAdaptiveGroupsOrderBy!]): [AccountCloudflareTunnelsAnalyticsAdaptiveGroups!]!
+  # Metrics for Cloudchamber applications and deployments
+  containersMetricsAdaptiveGroups(filter: AccountContainersMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountContainersMetricsAdaptiveGroupsOrderBy!]): [AccountContainersMetricsAdaptiveGroups!]!
   # Beta. Aggregated D1 analytics with adaptive sampling
   d1AnalyticsAdaptiveGroups(filter: AccountD1AnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1AnalyticsAdaptiveGroupsOrderBy!]): [AccountD1AnalyticsAdaptiveGroups!]!
   # Beta. D1 query metrics with adaptive sampling
@@ -478,6 +482,8 @@ type account {
   spectrumNetworkAnalyticsAdaptiveGroups(filter: AccountSpectrumNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountSpectrumNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountSpectrumNetworkAnalyticsAdaptiveGroups!]!
   # Storage Tracing Information
   storageTraces(filter: AccountStorageTracesFilter_InputObject!, limit: uint64!, orderBy: [AccountStorageTracesOrderBy!]): [AccountStorageTraces!]!
+  # Stream CMCD data
+  streamCMCDAdaptiveGroups(filter: AccountStreamCMCDAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountStreamCMCDAdaptiveGroupsOrderBy!]): [AccountStreamCMCDAdaptiveGroups!]!
   # A high-level summary of Cloudflare Stream minutes viewed.
   streamMinutesViewedAdaptiveGroups(filter: AccountStreamMinutesViewedAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountStreamMinutesViewedAdaptiveGroupsOrderBy!]): [AccountStreamMinutesViewedAdaptiveGroups!]!
   # Beta. Cloudflare Turnstile aggregated events with adaptive sampling
@@ -9091,6 +9097,531 @@ type AccountCloudflareTunnelsAnalyticsAdaptiveGroupsSum {
   egressBits: uint64!
 }
 
+# Metrics for Cloudchamber applications and deployments
+type AccountContainersMetricsAdaptiveGroups {
+  # The average value of a metric per dimension
+  avg: AccountContainersMetricsAdaptiveGroupsAvg
+  # Number of metrics received
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountContainersMetricsAdaptiveGroupsDimensions
+  # Maximum value of a metric per dimension
+  max: AccountContainersMetricsAdaptiveGroupsMax
+  # Quantiles of a metric per dimension
+  quantiles: AccountContainersMetricsAdaptiveGroupsQuantiles
+  # The sum of values for a metric per dimension
+  sum: AccountContainersMetricsAdaptiveGroupsSum
+}
+
+type AccountContainersMetricsAdaptiveGroupsAvg {
+  # Average CPU load
+  cpuLoad: float64!
+  # Average GPU memory usage
+  gpuMemory: float64!
+  # Average memory usage
+  memory: float64!
+  # Average RX bandwidth
+  @Deprecated
+  rxBandwidth: float64!
+  # Average RX bandwidth in bps
+  rxBandwidthBps: float64!
+  # Average TX bandwidth
+  @Deprecated
+  txBandwidth: float64!
+  # Average TX bandwidth in bps
+  txBandwidthBps: float64!
+}
+
+type AccountContainersMetricsAdaptiveGroupsDimensions {
+  # The application ID
+  applicationId: string!
+  # The date the metric was received
+  date: Date!
+  # The date and time the metric was received, truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the metric was received, truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the metric was received, truncated to one hour
+  datetimeHour: Time!
+  # The date and time the metric was received, truncated to one minute
+  datetimeMinute: Time!
+  # The deployment ID
+  deploymentId: string!
+  # If set, this metric was emitted while assigned to a durable object
+  durableObjectId: string!
+  # Location
+  location: string!
+  # The placement ID
+  placementId: string!
+  # Process type
+  procType: string!
+  # Region
+  region: string!
+}
+
+input AccountContainersMetricsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountContainersMetricsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountContainersMetricsAdaptiveGroupsFilter_InputObject!]
+  applicationId: string
+  applicationId_geq: string
+  applicationId_gt: string
+  applicationId_in: [string!]
+  applicationId_leq: string
+  applicationId_like: string
+  applicationId_lt: string
+  applicationId_neq: string
+  applicationId_notin: [string!]
+  applicationId_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  deploymentId: string
+  deploymentId_geq: string
+  deploymentId_gt: string
+  deploymentId_in: [string!]
+  deploymentId_leq: string
+  deploymentId_like: string
+  deploymentId_lt: string
+  deploymentId_neq: string
+  deploymentId_notin: [string!]
+  deploymentId_notlike: string
+  durableObjectId: string
+  durableObjectId_geq: string
+  durableObjectId_gt: string
+  durableObjectId_in: [string!]
+  durableObjectId_leq: string
+  durableObjectId_like: string
+  durableObjectId_lt: string
+  durableObjectId_neq: string
+  durableObjectId_notin: [string!]
+  durableObjectId_notlike: string
+  location: string
+  location_geq: string
+  location_gt: string
+  location_in: [string!]
+  location_leq: string
+  location_like: string
+  location_lt: string
+  location_neq: string
+  location_notin: [string!]
+  location_notlike: string
+  placementId: string
+  placementId_geq: string
+  placementId_gt: string
+  placementId_in: [string!]
+  placementId_leq: string
+  placementId_like: string
+  placementId_lt: string
+  placementId_neq: string
+  placementId_notin: [string!]
+  placementId_notlike: string
+  procType: string
+  procType_geq: string
+  procType_gt: string
+  procType_in: [string!]
+  procType_leq: string
+  procType_like: string
+  procType_lt: string
+  procType_neq: string
+  procType_notin: [string!]
+  procType_notlike: string
+  region: string
+  region_geq: string
+  region_gt: string
+  region_in: [string!]
+  region_leq: string
+  region_like: string
+  region_lt: string
+  region_neq: string
+  region_notin: [string!]
+  region_notlike: string
+}
+
+type AccountContainersMetricsAdaptiveGroupsMax {
+  # Maximum CPU load
+  cpuLoad: float64!
+  # Total disk space available, in bytes
+  diskAvailable: uint64!
+  # Disk usage, in bytes
+  diskUsage: uint64!
+  # Disk usage as a percentage of total disk space
+  diskUsagePercentage: float64!
+  # Maximum GPU memory usage
+  gpuMemory: float64!
+  # Maximum memory usage
+  memory: float64!
+  # Maximum RX bandwidth
+  @Deprecated
+  rxBandwidth: float64!
+  # Maximum RX bandwidth
+  rxBandwidthBps: float64!
+  # Total bytes received
+  @Deprecated
+  rxBytes: uint64!
+  # Maximum TX bandwidth
+  @Deprecated
+  txBandwidth: float64!
+  # Maximum TX bandwidth
+  txBandwidthBps: float64!
+  # Total bytes transmitted
+  @Deprecated
+  txBytes: uint64!
+}
+
+enum AccountContainersMetricsAdaptiveGroupsOrderBy {
+  # applicationId ascending
+  applicationId_ASC
+  # applicationId descending
+  applicationId_DESC
+  # avg(cpuLoad) ascending
+  avg_cpuLoad_ASC
+  # avg(cpuLoad) descending
+  avg_cpuLoad_DESC
+  # avg(gpuMemory) ascending
+  avg_gpuMemory_ASC
+  # avg(gpuMemory) descending
+  avg_gpuMemory_DESC
+  # avg(memory) ascending
+  avg_memory_ASC
+  # avg(memory) descending
+  avg_memory_DESC
+  # avg(rxBandwidthBps) ascending
+  avg_rxBandwidthBps_ASC
+  # avg(rxBandwidthBps) descending
+  avg_rxBandwidthBps_DESC
+  # avg(rxBandwidth) ascending
+  avg_rxBandwidth_ASC
+  # avg(rxBandwidth) descending
+  avg_rxBandwidth_DESC
+  # avg(txBandwidthBps) ascending
+  avg_txBandwidthBps_ASC
+  # avg(txBandwidthBps) descending
+  avg_txBandwidthBps_DESC
+  # avg(txBandwidth) ascending
+  avg_txBandwidth_ASC
+  # avg(txBandwidth) descending
+  avg_txBandwidth_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # deploymentId ascending
+  deploymentId_ASC
+  # deploymentId descending
+  deploymentId_DESC
+  # durableObjectId ascending
+  durableObjectId_ASC
+  # durableObjectId descending
+  durableObjectId_DESC
+  # location ascending
+  location_ASC
+  # location descending
+  location_DESC
+  # max(cpuLoad) ascending
+  max_cpuLoad_ASC
+  # max(cpuLoad) descending
+  max_cpuLoad_DESC
+  # max(diskAvailable) ascending
+  max_diskAvailable_ASC
+  # max(diskAvailable) descending
+  max_diskAvailable_DESC
+  # max(diskUsagePercentage) ascending
+  max_diskUsagePercentage_ASC
+  # max(diskUsagePercentage) descending
+  max_diskUsagePercentage_DESC
+  # max(diskUsage) ascending
+  max_diskUsage_ASC
+  # max(diskUsage) descending
+  max_diskUsage_DESC
+  # max(gpuMemory) ascending
+  max_gpuMemory_ASC
+  # max(gpuMemory) descending
+  max_gpuMemory_DESC
+  # max(memory) ascending
+  max_memory_ASC
+  # max(memory) descending
+  max_memory_DESC
+  # max(rxBandwidthBps) ascending
+  max_rxBandwidthBps_ASC
+  # max(rxBandwidthBps) descending
+  max_rxBandwidthBps_DESC
+  # max(rxBandwidth) ascending
+  max_rxBandwidth_ASC
+  # max(rxBandwidth) descending
+  max_rxBandwidth_DESC
+  # max(rxBytes) ascending
+  max_rxBytes_ASC
+  # max(rxBytes) descending
+  max_rxBytes_DESC
+  # max(txBandwidthBps) ascending
+  max_txBandwidthBps_ASC
+  # max(txBandwidthBps) descending
+  max_txBandwidthBps_DESC
+  # max(txBandwidth) ascending
+  max_txBandwidth_ASC
+  # max(txBandwidth) descending
+  max_txBandwidth_DESC
+  # max(txBytes) ascending
+  max_txBytes_ASC
+  # max(txBytes) descending
+  max_txBytes_DESC
+  # placementId ascending
+  placementId_ASC
+  # placementId descending
+  placementId_DESC
+  # procType ascending
+  procType_ASC
+  # procType descending
+  procType_DESC
+  # quantiles(cpuLoadP50) ascending
+  quantiles_cpuLoadP50_ASC
+  # quantiles(cpuLoadP50) descending
+  quantiles_cpuLoadP50_DESC
+  # quantiles(cpuLoadP90) ascending
+  quantiles_cpuLoadP90_ASC
+  # quantiles(cpuLoadP90) descending
+  quantiles_cpuLoadP90_DESC
+  # quantiles(cpuLoadP99) ascending
+  quantiles_cpuLoadP99_ASC
+  # quantiles(cpuLoadP99) descending
+  quantiles_cpuLoadP99_DESC
+  # quantiles(diskUsageP50) ascending
+  quantiles_diskUsageP50_ASC
+  # quantiles(diskUsageP50) descending
+  quantiles_diskUsageP50_DESC
+  # quantiles(diskUsageP90) ascending
+  quantiles_diskUsageP90_ASC
+  # quantiles(diskUsageP90) descending
+  quantiles_diskUsageP90_DESC
+  # quantiles(diskUsageP99) ascending
+  quantiles_diskUsageP99_ASC
+  # quantiles(diskUsageP99) descending
+  quantiles_diskUsageP99_DESC
+  # quantiles(diskUsagePercentageP50) ascending
+  quantiles_diskUsagePercentageP50_ASC
+  # quantiles(diskUsagePercentageP50) descending
+  quantiles_diskUsagePercentageP50_DESC
+  # quantiles(diskUsagePercentageP90) ascending
+  quantiles_diskUsagePercentageP90_ASC
+  # quantiles(diskUsagePercentageP90) descending
+  quantiles_diskUsagePercentageP90_DESC
+  # quantiles(diskUsagePercentageP99) ascending
+  quantiles_diskUsagePercentageP99_ASC
+  # quantiles(diskUsagePercentageP99) descending
+  quantiles_diskUsagePercentageP99_DESC
+  # quantiles(gpuMemoryP50) ascending
+  quantiles_gpuMemoryP50_ASC
+  # quantiles(gpuMemoryP50) descending
+  quantiles_gpuMemoryP50_DESC
+  # quantiles(gpuMemoryP90) ascending
+  quantiles_gpuMemoryP90_ASC
+  # quantiles(gpuMemoryP90) descending
+  quantiles_gpuMemoryP90_DESC
+  # quantiles(gpuMemoryP99) ascending
+  quantiles_gpuMemoryP99_ASC
+  # quantiles(gpuMemoryP99) descending
+  quantiles_gpuMemoryP99_DESC
+  # quantiles(memoryP50) ascending
+  quantiles_memoryP50_ASC
+  # quantiles(memoryP50) descending
+  quantiles_memoryP50_DESC
+  # quantiles(memoryP90) ascending
+  quantiles_memoryP90_ASC
+  # quantiles(memoryP90) descending
+  quantiles_memoryP90_DESC
+  # quantiles(memoryP99) ascending
+  quantiles_memoryP99_ASC
+  # quantiles(memoryP99) descending
+  quantiles_memoryP99_DESC
+  # quantiles(rxBandwidthBpsP50) ascending
+  quantiles_rxBandwidthBpsP50_ASC
+  # quantiles(rxBandwidthBpsP50) descending
+  quantiles_rxBandwidthBpsP50_DESC
+  # quantiles(rxBandwidthBpsP90) ascending
+  quantiles_rxBandwidthBpsP90_ASC
+  # quantiles(rxBandwidthBpsP90) descending
+  quantiles_rxBandwidthBpsP90_DESC
+  # quantiles(rxBandwidthBpsP99) ascending
+  quantiles_rxBandwidthBpsP99_ASC
+  # quantiles(rxBandwidthBpsP99) descending
+  quantiles_rxBandwidthBpsP99_DESC
+  # quantiles(rxBandwidthP50) ascending
+  quantiles_rxBandwidthP50_ASC
+  # quantiles(rxBandwidthP50) descending
+  quantiles_rxBandwidthP50_DESC
+  # quantiles(rxBandwidthP90) ascending
+  quantiles_rxBandwidthP90_ASC
+  # quantiles(rxBandwidthP90) descending
+  quantiles_rxBandwidthP90_DESC
+  # quantiles(rxBandwidthP99) ascending
+  quantiles_rxBandwidthP99_ASC
+  # quantiles(rxBandwidthP99) descending
+  quantiles_rxBandwidthP99_DESC
+  # quantiles(txBandwidthBpsP50) ascending
+  quantiles_txBandwidthBpsP50_ASC
+  # quantiles(txBandwidthBpsP50) descending
+  quantiles_txBandwidthBpsP50_DESC
+  # quantiles(txBandwidthBpsP90) ascending
+  quantiles_txBandwidthBpsP90_ASC
+  # quantiles(txBandwidthBpsP90) descending
+  quantiles_txBandwidthBpsP90_DESC
+  # quantiles(txBandwidthBpsP99) ascending
+  quantiles_txBandwidthBpsP99_ASC
+  # quantiles(txBandwidthBpsP99) descending
+  quantiles_txBandwidthBpsP99_DESC
+  # quantiles(txBandwidthP50) ascending
+  quantiles_txBandwidthP50_ASC
+  # quantiles(txBandwidthP50) descending
+  quantiles_txBandwidthP50_DESC
+  # quantiles(txBandwidthP90) ascending
+  quantiles_txBandwidthP90_ASC
+  # quantiles(txBandwidthP90) descending
+  quantiles_txBandwidthP90_DESC
+  # quantiles(txBandwidthP99) ascending
+  quantiles_txBandwidthP99_ASC
+  # quantiles(txBandwidthP99) descending
+  quantiles_txBandwidthP99_DESC
+  # region ascending
+  region_ASC
+  # region descending
+  region_DESC
+  # sum(rxBytes) ascending
+  sum_rxBytes_ASC
+  # sum(rxBytes) descending
+  sum_rxBytes_DESC
+  # sum(txBytes) ascending
+  sum_txBytes_ASC
+  # sum(txBytes) descending
+  sum_txBytes_DESC
+}
+
+type AccountContainersMetricsAdaptiveGroupsQuantiles {
+  # CPU load (50th percentile)
+  cpuLoadP50: float64!
+  # CPU load (90th percentile)
+  cpuLoadP90: float64!
+  # CPU load (99th percentile)
+  cpuLoadP99: float64!
+  # Disk usage in bytes (50th percentile)
+  diskUsageP50: float64!
+  # Disk usage in bytes (90th percentile)
+  diskUsageP90: float64!
+  # Disk usage in bytes (99th percentile)
+  diskUsageP99: float64!
+  # Disk usage as a percentage of total disk space (50th percentile)
+  diskUsagePercentageP50: float64!
+  # Disk usage as a percentage of total disk space (90th percentile)
+  diskUsagePercentageP90: float64!
+  # Disk usage as a percentage of total disk space (99th percentile)
+  diskUsagePercentageP99: float64!
+  # GPU memory usage (50th percentile)
+  gpuMemoryP50: float64!
+  # GPU memory usage (90th percentile)
+  gpuMemoryP90: float64!
+  # GPU memory usage (99th percentile)
+  gpuMemoryP99: float64!
+  # Memory usage (50th percentile)
+  memoryP50: float64!
+  # Memory usage (90th percentile)
+  memoryP90: float64!
+  # Memory usage (99th percentile)
+  memoryP99: float64!
+  # RX bandwidth (50th percentile)
+  rxBandwidthBpsP50: float64!
+  # RX bandwidth (90th percentile)
+  rxBandwidthBpsP90: float64!
+  # RX bandwidth (99th percentile)
+  rxBandwidthBpsP99: float64!
+  # RX bandwidth (50th percentile)
+  @Deprecated
+  rxBandwidthP50: float64!
+  # RX bandwidth (90th percentile)
+  @Deprecated
+  rxBandwidthP90: float64!
+  # RX bandwidth (99th percentile)
+  @Deprecated
+  rxBandwidthP99: float64!
+  # TX bandwidth (50th percentile)
+  txBandwidthBpsP50: float64!
+  # TX bandwidth (90th percentile)
+  txBandwidthBpsP90: float64!
+  # TX bandwidth (99th percentile)
+  txBandwidthBpsP99: float64!
+  # TX bandwidth (50th percentile)
+  @Deprecated
+  txBandwidthP50: float64!
+  # TX bandwidth (90th percentile)
+  @Deprecated
+  txBandwidthP90: float64!
+  # TX bandwidth (99th percentile)
+  @Deprecated
+  txBandwidthP99: float64!
+}
+
+type AccountContainersMetricsAdaptiveGroupsSum {
+  # Sum of bytes received
+  rxBytes: uint64!
+  # Sum of bytes transmitted
+  txBytes: uint64!
+}
+
 # Beta. Aggregated D1 analytics with adaptive sampling
 type AccountD1AnalyticsAdaptiveGroups {
   # The average value for a metric per dimension
@@ -14124,6 +14655,8 @@ type AccountFirewallEventsAdaptive {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
+  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -14194,8 +14727,12 @@ type AccountFirewallEventsAdaptive {
   edgeResponseStatus: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
+  firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
   firewallForAiPiiCategories: [string!]!
+  # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
+  firewallForAiUnsafeTopicCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -14289,6 +14826,11 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureRefs_has: string
+  attackSignatureRefs_hasall: [string!]
+  attackSignatureRefs_hasany: [string!]
+  attackSignatureRefs_isempty: bool
+  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -14590,11 +15132,24 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiInjectionScore: int8
+  firewallForAiInjectionScore_geq: int8
+  firewallForAiInjectionScore_gt: int8
+  firewallForAiInjectionScore_in: [int8!]
+  firewallForAiInjectionScore_leq: int8
+  firewallForAiInjectionScore_lt: int8
+  firewallForAiInjectionScore_neq: int8
+  firewallForAiInjectionScore_notin: [int8!]
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
   firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
+  firewallForAiUnsafeTopicCategories_has: string
+  firewallForAiUnsafeTopicCategories_hasall: [string!]
+  firewallForAiUnsafeTopicCategories_hasany: [string!]
+  firewallForAiUnsafeTopicCategories_isempty: bool
+  firewallForAiUnsafeTopicCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -14845,6 +15400,8 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
+  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -14915,8 +15472,12 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   edgeResponseStatus: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
+  firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
   firewallForAiPiiCategories: [string!]!
+  # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
+  firewallForAiUnsafeTopicCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -15004,6 +15565,11 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureRefs_has: string
+  attackSignatureRefs_hasall: [string!]
+  attackSignatureRefs_hasany: [string!]
+  attackSignatureRefs_isempty: bool
+  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -15305,11 +15871,24 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiInjectionScore: int8
+  firewallForAiInjectionScore_geq: int8
+  firewallForAiInjectionScore_gt: int8
+  firewallForAiInjectionScore_in: [int8!]
+  firewallForAiInjectionScore_leq: int8
+  firewallForAiInjectionScore_lt: int8
+  firewallForAiInjectionScore_neq: int8
+  firewallForAiInjectionScore_notin: [int8!]
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
   firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
+  firewallForAiUnsafeTopicCategories_has: string
+  firewallForAiUnsafeTopicCategories_hasall: [string!]
+  firewallForAiUnsafeTopicCategories_hasany: [string!]
+  firewallForAiUnsafeTopicCategories_isempty: bool
+  firewallForAiUnsafeTopicCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -15541,6 +16120,10 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureRefs ascending
+  attackSignatureRefs_ASC
+  # attackSignatureRefs descending
+  attackSignatureRefs_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -15689,10 +16272,18 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiInjectionScore ascending
+  firewallForAiInjectionScore_ASC
+  # firewallForAiInjectionScore descending
+  firewallForAiInjectionScore_DESC
   # firewallForAiPiiCategories ascending
   firewallForAiPiiCategories_ASC
   # firewallForAiPiiCategories descending
   firewallForAiPiiCategories_DESC
+  # firewallForAiUnsafeTopicCategories ascending
+  firewallForAiUnsafeTopicCategories_ASC
+  # firewallForAiUnsafeTopicCategories descending
+  firewallForAiUnsafeTopicCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -15849,6 +16440,10 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureRefs ascending
+  attackSignatureRefs_ASC
+  # attackSignatureRefs descending
+  attackSignatureRefs_DESC
   # botDetectionIds ascending
   botDetectionIds_ASC
   # botDetectionIds descending
@@ -15989,10 +16584,18 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiInjectionScore ascending
+  firewallForAiInjectionScore_ASC
+  # firewallForAiInjectionScore descending
+  firewallForAiInjectionScore_DESC
   # firewallForAiPiiCategories ascending
   firewallForAiPiiCategories_ASC
   # firewallForAiPiiCategories descending
   firewallForAiPiiCategories_DESC
+  # firewallForAiUnsafeTopicCategories ascending
+  firewallForAiUnsafeTopicCategories_ASC
+  # firewallForAiUnsafeTopicCategories descending
+  firewallForAiUnsafeTopicCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -20440,6 +21043,7 @@ type AccountHttpRequests1dGroups {
 
 type AccountHttpRequests1dGroupsAvg {
   bytes: float64!
+  edgeRequestBytes: float64!
   # Average sample interval
   sampleInterval: float64!
 }
@@ -20510,6 +21114,10 @@ enum AccountHttpRequests1dGroupsOrderBy {
   avg_bytes_ASC
   # avg(bytes) descending
   avg_bytes_DESC
+  # avg(edgeRequestBytes) ascending
+  avg_edgeRequestBytes_ASC
+  # avg(edgeRequestBytes) descending
+  avg_edgeRequestBytes_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -20530,6 +21138,10 @@ enum AccountHttpRequests1dGroupsOrderBy {
   sum_cachedRequests_ASC
   # sum(cachedRequests) descending
   sum_cachedRequests_DESC
+  # sum(edgeRequestBytes) ascending
+  sum_edgeRequestBytes_ASC
+  # sum(edgeRequestBytes) descending
+  sum_edgeRequestBytes_DESC
   # sum(encryptedBytes) ascending
   sum_encryptedBytes_ASC
   # sum(encryptedBytes) descending
@@ -20574,6 +21186,8 @@ type AccountHttpRequests1dGroupsSum {
   clientSSLMap: [AccountHttpRequests1dGroupsClientSSLMapElem!]!
   contentTypeMap: [AccountHttpRequests1dGroupsContentTypeMapElem!]!
   countryMap: [AccountHttpRequests1dGroupsCountryMapElem!]!
+  # Bytes sent from client
+  edgeRequestBytes: uint64!
   # Bytes returned to client using SSL/TLS protocol
   encryptedBytes: uint64!
   # Requests served using SSL/TLS protocol
@@ -20613,6 +21227,7 @@ type AccountHttpRequests1hGroups {
 
 type AccountHttpRequests1hGroupsAvg {
   bytes: float64!
+  edgeRequestBytes: float64!
   # Average sample interval
   sampleInterval: float64!
 }
@@ -20693,6 +21308,10 @@ enum AccountHttpRequests1hGroupsOrderBy {
   avg_bytes_ASC
   # avg(bytes) descending
   avg_bytes_DESC
+  # avg(edgeRequestBytes) ascending
+  avg_edgeRequestBytes_ASC
+  # avg(edgeRequestBytes) descending
+  avg_edgeRequestBytes_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -20717,6 +21336,10 @@ enum AccountHttpRequests1hGroupsOrderBy {
   sum_cachedRequests_ASC
   # sum(cachedRequests) descending
   sum_cachedRequests_DESC
+  # sum(edgeRequestBytes) ascending
+  sum_edgeRequestBytes_ASC
+  # sum(edgeRequestBytes) descending
+  sum_edgeRequestBytes_DESC
   # sum(encryptedBytes) ascending
   sum_encryptedBytes_ASC
   # sum(encryptedBytes) descending
@@ -20761,6 +21384,8 @@ type AccountHttpRequests1hGroupsSum {
   clientSSLMap: [AccountHttpRequests1hGroupsClientSSLMapElem!]!
   contentTypeMap: [AccountHttpRequests1hGroupsContentTypeMapElem!]!
   countryMap: [AccountHttpRequests1hGroupsCountryMapElem!]!
+  # Bytes sent from client
+  edgeRequestBytes: uint64!
   # Bytes returned to client using SSL/TLS protocol
   encryptedBytes: uint64!
   # Requests served using SSL/TLS protocol
@@ -20800,6 +21425,7 @@ type AccountHttpRequests1mGroups {
 
 type AccountHttpRequests1mGroupsAvg {
   bytes: float64!
+  edgeRequestBytes: float64!
   # Average sample interval
   sampleInterval: float64!
 }
@@ -20941,6 +21567,10 @@ enum AccountHttpRequests1mGroupsOrderBy {
   avg_bytes_ASC
   # avg(bytes) descending
   avg_bytes_DESC
+  # avg(edgeRequestBytes) ascending
+  avg_edgeRequestBytes_ASC
+  # avg(edgeRequestBytes) descending
+  avg_edgeRequestBytes_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -20989,6 +21619,10 @@ enum AccountHttpRequests1mGroupsOrderBy {
   sum_cachedRequests_ASC
   # sum(cachedRequests) descending
   sum_cachedRequests_DESC
+  # sum(edgeRequestBytes) ascending
+  sum_edgeRequestBytes_ASC
+  # sum(edgeRequestBytes) descending
+  sum_edgeRequestBytes_DESC
   # sum(encryptedBytes) ascending
   sum_encryptedBytes_ASC
   # sum(encryptedBytes) descending
@@ -21033,6 +21667,8 @@ type AccountHttpRequests1mGroupsSum {
   clientSSLMap: [AccountHttpRequests1mGroupsClientSSLMapElem!]!
   contentTypeMap: [AccountHttpRequests1mGroupsContentTypeMapElem!]!
   countryMap: [AccountHttpRequests1mGroupsCountryMapElem!]!
+  # Bytes sent from client
+  edgeRequestBytes: uint64!
   # Bytes returned to client using SSL/TLS protocol
   encryptedBytes: uint64!
   # Requests served using SSL/TLS protocol
@@ -21064,6 +21700,8 @@ type AccountHttpRequestsAdaptive {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
+  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -21141,8 +21779,12 @@ type AccountHttpRequestsAdaptive {
   edgeTimeToFirstByteMs: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
+  firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
   firewallForAiPiiCategories: [string!]!
+  # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
+  firewallForAiUnsafeTopicCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -21218,6 +21860,11 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureRefs_has: string
+  attackSignatureRefs_hasall: [string!]
+  attackSignatureRefs_hasany: [string!]
+  attackSignatureRefs_isempty: bool
+  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -21561,11 +22208,24 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiInjectionScore: int8
+  firewallForAiInjectionScore_geq: int8
+  firewallForAiInjectionScore_gt: int8
+  firewallForAiInjectionScore_in: [int8!]
+  firewallForAiInjectionScore_leq: int8
+  firewallForAiInjectionScore_lt: int8
+  firewallForAiInjectionScore_neq: int8
+  firewallForAiInjectionScore_notin: [int8!]
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
   firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
+  firewallForAiUnsafeTopicCategories_has: string
+  firewallForAiUnsafeTopicCategories_hasall: [string!]
+  firewallForAiUnsafeTopicCategories_hasany: [string!]
+  firewallForAiUnsafeTopicCategories_isempty: bool
+  firewallForAiUnsafeTopicCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -21850,6 +22510,8 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
+  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -21923,8 +22585,12 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   edgeTimeToFirstByteMs: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
+  firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
   firewallForAiPiiCategories: [string!]!
+  # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
+  firewallForAiUnsafeTopicCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -21997,6 +22663,11 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureRefs_has: string
+  attackSignatureRefs_hasall: [string!]
+  attackSignatureRefs_hasany: [string!]
+  attackSignatureRefs_isempty: bool
+  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -22340,11 +23011,24 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiInjectionScore: int8
+  firewallForAiInjectionScore_geq: int8
+  firewallForAiInjectionScore_gt: int8
+  firewallForAiInjectionScore_in: [int8!]
+  firewallForAiInjectionScore_leq: int8
+  firewallForAiInjectionScore_lt: int8
+  firewallForAiInjectionScore_neq: int8
+  firewallForAiInjectionScore_notin: [int8!]
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
   firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
+  firewallForAiUnsafeTopicCategories_has: string
+  firewallForAiUnsafeTopicCategories_hasall: [string!]
+  firewallForAiUnsafeTopicCategories_hasany: [string!]
+  firewallForAiUnsafeTopicCategories_isempty: bool
+  firewallForAiUnsafeTopicCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -22604,6 +23288,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureRefs ascending
+  attackSignatureRefs_ASC
+  # attackSignatureRefs descending
+  attackSignatureRefs_DESC
   # avg(crossZoneSubrequests) ascending
   avg_crossZoneSubrequests_ASC
   # avg(crossZoneSubrequests) descending
@@ -22788,10 +23476,18 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiInjectionScore ascending
+  firewallForAiInjectionScore_ASC
+  # firewallForAiInjectionScore descending
+  firewallForAiInjectionScore_DESC
   # firewallForAiPiiCategories ascending
   firewallForAiPiiCategories_ASC
   # firewallForAiPiiCategories descending
   firewallForAiPiiCategories_DESC
+  # firewallForAiUnsafeTopicCategories ascending
+  firewallForAiUnsafeTopicCategories_ASC
+  # firewallForAiUnsafeTopicCategories descending
+  firewallForAiUnsafeTopicCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -22928,6 +23624,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   sum_edgeDnsResponseTimeMs_ASC
   # sum(edgeDnsResponseTimeMs) descending
   sum_edgeDnsResponseTimeMs_DESC
+  # sum(edgeRequestBytes) ascending
+  sum_edgeRequestBytes_ASC
+  # sum(edgeRequestBytes) descending
+  sum_edgeRequestBytes_DESC
   # sum(edgeResponseBytes) ascending
   sum_edgeResponseBytes_ASC
   # sum(edgeResponseBytes) descending
@@ -23038,6 +23738,7 @@ type AccountHttpRequestsAdaptiveGroupsSum {
   # The number of requests that were inititiated by a Cloudflare Worker on another zone
   crossZoneSubrequests: uint64!
   edgeDnsResponseTimeMs: uint64!
+  edgeRequestBytes: uint64!
   edgeResponseBytes: uint64!
   edgeTimeToFirstByteMs: uint64!
   originResponseDurationMs: uint64!
@@ -23046,6 +23747,8 @@ type AccountHttpRequestsAdaptiveGroupsSum {
 }
 
 type AccountHttpRequestsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  edgeRequestBytes: Confidence!
   # Confidence interval for the corresponding point estimate
   edgeResponseBytes: Confidence!
 }
@@ -23066,6 +23769,10 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureRefs ascending
+  attackSignatureRefs_ASC
+  # attackSignatureRefs descending
+  attackSignatureRefs_DESC
   # botDetectionIds ascending
   botDetectionIds_ASC
   # botDetectionIds descending
@@ -23226,10 +23933,18 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiInjectionScore ascending
+  firewallForAiInjectionScore_ASC
+  # firewallForAiInjectionScore descending
+  firewallForAiInjectionScore_DESC
   # firewallForAiPiiCategories ascending
   firewallForAiPiiCategories_ASC
   # firewallForAiPiiCategories descending
   firewallForAiPiiCategories_DESC
+  # firewallForAiUnsafeTopicCategories ascending
+  firewallForAiUnsafeTopicCategories_ASC
+  # firewallForAiUnsafeTopicCategories descending
+  firewallForAiUnsafeTopicCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -41594,6 +42309,7 @@ type AccountSettings {
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
   cloudchamberMetricsAdaptiveGroups: Settings!
   cloudflareTunnelsAnalyticsAdaptiveGroups: Settings!
+  containersMetricsAdaptiveGroups: Settings!
   d1AnalyticsAdaptiveGroups: Settings!
   d1QueriesAdaptiveGroups: Settings!
   d1StorageAdaptiveGroups: Settings!
@@ -41687,6 +42403,7 @@ type AccountSettings {
   sippyOperationsAdaptiveGroups: Settings!
   spectrumNetworkAnalyticsAdaptiveGroups: Settings!
   storageTraces: Settings!
+  streamCMCDAdaptiveGroups: Settings!
   streamMinutesViewedAdaptiveGroups: Settings!
   turnstileAdaptiveGroups: Settings!
   vectorizeQueriesAdaptiveGroups: Settings!
@@ -43790,6 +44507,533 @@ enum AccountStorageTracesOrderBy {
   userAccountId_ASC
   # userAccountId descending
   userAccountId_DESC
+}
+
+# Stream CMCD data
+type AccountStreamCMCDAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountStreamCMCDAdaptiveGroupsAvg
+  # The number of values for a metric per dimension
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountStreamCMCDAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: AccountStreamCMCDAdaptiveGroupsQuantiles
+  # The sum of values for a metric per dimension
+  sum: AccountStreamCMCDAdaptiveGroupsSum
+  # The number of unique values for a metric per dimension
+  uniq: AccountStreamCMCDAdaptiveGroupsUniq
+}
+
+type AccountStreamCMCDAdaptiveGroupsAvg {
+  # Average buffer length
+  bufferLength: float64!
+  # Average buffer starvation duration in milliseconds
+  bufferStarvationDuration: float64!
+  # Average encoded bitrate
+  encodedBitrate: float64!
+  # Average buffer starvation duration at the start of viewing in milliseconds
+  initialBufferStarvationDuration: float64!
+  # Average throughput
+  measuredThroughput: float64!
+}
+
+type AccountStreamCMCDAdaptiveGroupsDimensions {
+  # Buffer length of the requested object
+  bufferLength: uint16!
+  # 1 if the buffer was starved between the last request and this request, 0 if not
+  bufferStarvation: uint8!
+  # Buffer starvation duration in milliseconds
+  bufferStarvationDuration: uint16!
+  # Content ID
+  contentId: string!
+  # Viewer country
+  country: uint16!
+  # Creator ID
+  creatorId: string!
+  # Ingest event timestamp
+  datetime: Time!
+  # The date and time of the ingest event truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time of the ingest event truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time of the ingest event truncated to the hour
+  datetimeHour: Time!
+  # The date and time of the ingest event truncated to the minute
+  datetimeMinute: Time!
+  # The date and time of the ingest event truncated to the start of the six hour window
+  datetimeSixHours: Time!
+  # Encoded bitrate of the requested object
+  encodedBitrate: uint16!
+  # HLS type, hls if HLS, ll-hls if LL-HLS, otherwise blank
+  hlsType: string!
+  # Initial buffer starvation duration in milliseconds
+  initialBufferStarvationDuration: uint16!
+  # Input ID
+  inputId: string!
+  # Throughput between client and server
+  measuredThroughput: uint16!
+  # Playback duration in ms of the requested object
+  objectDuration: uint16!
+  # 1 if real-time, 2 if 2x speed, 0 if not playing
+  playbackRate: uint8!
+  # Resolution
+  resolution: string!
+  # Session ID
+  sessionId: string!
+  # 1 if request object is needed for startup, 0 if not
+  startup: uint8!
+  # l for live, v for video on demand (VOD)
+  streamType: string!
+  # h if HLS or LL-HLS, d if DASH
+  streamingFormat: string!
+  # Highest available bitrate rendition
+  topBitrate: uint32!
+  # Video ID
+  videoId: string!
+}
+
+input AccountStreamCMCDAdaptiveGroupsFilter_InputObject {
+  AND: [AccountStreamCMCDAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountStreamCMCDAdaptiveGroupsFilter_InputObject!]
+  bufferLength: uint16
+  bufferLength_geq: uint16
+  bufferLength_gt: uint16
+  bufferLength_in: [uint16!]
+  bufferLength_leq: uint16
+  bufferLength_lt: uint16
+  bufferLength_neq: uint16
+  bufferLength_notin: [uint16!]
+  bufferStarvation: uint8
+  bufferStarvationDuration: uint16
+  bufferStarvationDuration_geq: uint16
+  bufferStarvationDuration_gt: uint16
+  bufferStarvationDuration_in: [uint16!]
+  bufferStarvationDuration_leq: uint16
+  bufferStarvationDuration_lt: uint16
+  bufferStarvationDuration_neq: uint16
+  bufferStarvationDuration_notin: [uint16!]
+  bufferStarvation_geq: uint8
+  bufferStarvation_gt: uint8
+  bufferStarvation_in: bytes
+  bufferStarvation_leq: uint8
+  bufferStarvation_lt: uint8
+  bufferStarvation_neq: uint8
+  bufferStarvation_notin: bytes
+  contentId: string
+  contentId_geq: string
+  contentId_gt: string
+  contentId_in: [string!]
+  contentId_leq: string
+  contentId_like: string
+  contentId_lt: string
+  contentId_neq: string
+  contentId_notin: [string!]
+  contentId_notlike: string
+  country: uint16
+  country_geq: uint16
+  country_gt: uint16
+  country_in: [uint16!]
+  country_leq: uint16
+  country_lt: uint16
+  country_neq: uint16
+  country_notin: [uint16!]
+  creatorId: string
+  creatorId_geq: string
+  creatorId_gt: string
+  creatorId_in: [string!]
+  creatorId_leq: string
+  creatorId_like: string
+  creatorId_lt: string
+  creatorId_neq: string
+  creatorId_notin: [string!]
+  creatorId_notlike: string
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  encodedBitrate: uint16
+  encodedBitrate_geq: uint16
+  encodedBitrate_gt: uint16
+  encodedBitrate_in: [uint16!]
+  encodedBitrate_leq: uint16
+  encodedBitrate_lt: uint16
+  encodedBitrate_neq: uint16
+  encodedBitrate_notin: [uint16!]
+  hlsType: string
+  hlsType_geq: string
+  hlsType_gt: string
+  hlsType_in: [string!]
+  hlsType_leq: string
+  hlsType_like: string
+  hlsType_lt: string
+  hlsType_neq: string
+  hlsType_notin: [string!]
+  hlsType_notlike: string
+  initialBufferStarvationDuration: uint16
+  initialBufferStarvationDuration_geq: uint16
+  initialBufferStarvationDuration_gt: uint16
+  initialBufferStarvationDuration_in: [uint16!]
+  initialBufferStarvationDuration_leq: uint16
+  initialBufferStarvationDuration_lt: uint16
+  initialBufferStarvationDuration_neq: uint16
+  initialBufferStarvationDuration_notin: [uint16!]
+  inputId: string
+  inputId_geq: string
+  inputId_gt: string
+  inputId_in: [string!]
+  inputId_leq: string
+  inputId_like: string
+  inputId_lt: string
+  inputId_neq: string
+  inputId_notin: [string!]
+  inputId_notlike: string
+  measuredThroughput: uint16
+  measuredThroughput_geq: uint16
+  measuredThroughput_gt: uint16
+  measuredThroughput_in: [uint16!]
+  measuredThroughput_leq: uint16
+  measuredThroughput_lt: uint16
+  measuredThroughput_neq: uint16
+  measuredThroughput_notin: [uint16!]
+  objectDuration: uint16
+  objectDuration_geq: uint16
+  objectDuration_gt: uint16
+  objectDuration_in: [uint16!]
+  objectDuration_leq: uint16
+  objectDuration_lt: uint16
+  objectDuration_neq: uint16
+  objectDuration_notin: [uint16!]
+  playbackRate: uint8
+  playbackRate_geq: uint8
+  playbackRate_gt: uint8
+  playbackRate_in: bytes
+  playbackRate_leq: uint8
+  playbackRate_lt: uint8
+  playbackRate_neq: uint8
+  playbackRate_notin: bytes
+  resolution: string
+  resolution_geq: string
+  resolution_gt: string
+  resolution_in: [string!]
+  resolution_leq: string
+  resolution_like: string
+  resolution_lt: string
+  resolution_neq: string
+  resolution_notin: [string!]
+  resolution_notlike: string
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+  startup: uint8
+  startup_geq: uint8
+  startup_gt: uint8
+  startup_in: bytes
+  startup_leq: uint8
+  startup_lt: uint8
+  startup_neq: uint8
+  startup_notin: bytes
+  streamType: string
+  streamType_geq: string
+  streamType_gt: string
+  streamType_in: [string!]
+  streamType_leq: string
+  streamType_like: string
+  streamType_lt: string
+  streamType_neq: string
+  streamType_notin: [string!]
+  streamType_notlike: string
+  streamingFormat: string
+  streamingFormat_geq: string
+  streamingFormat_gt: string
+  streamingFormat_in: [string!]
+  streamingFormat_leq: string
+  streamingFormat_like: string
+  streamingFormat_lt: string
+  streamingFormat_neq: string
+  streamingFormat_notin: [string!]
+  streamingFormat_notlike: string
+  topBitrate: uint32
+  topBitrate_geq: uint32
+  topBitrate_gt: uint32
+  topBitrate_in: [uint32!]
+  topBitrate_leq: uint32
+  topBitrate_lt: uint32
+  topBitrate_neq: uint32
+  topBitrate_notin: [uint32!]
+  videoId: string
+  videoId_geq: string
+  videoId_gt: string
+  videoId_in: [string!]
+  videoId_leq: string
+  videoId_like: string
+  videoId_lt: string
+  videoId_neq: string
+  videoId_notin: [string!]
+  videoId_notlike: string
+}
+
+enum AccountStreamCMCDAdaptiveGroupsOrderBy {
+  # avg(bufferLength) ascending
+  avg_bufferLength_ASC
+  # avg(bufferLength) descending
+  avg_bufferLength_DESC
+  # avg(bufferStarvationDuration) ascending
+  avg_bufferStarvationDuration_ASC
+  # avg(bufferStarvationDuration) descending
+  avg_bufferStarvationDuration_DESC
+  # avg(encodedBitrate) ascending
+  avg_encodedBitrate_ASC
+  # avg(encodedBitrate) descending
+  avg_encodedBitrate_DESC
+  # avg(initialBufferStarvationDuration) ascending
+  avg_initialBufferStarvationDuration_ASC
+  # avg(initialBufferStarvationDuration) descending
+  avg_initialBufferStarvationDuration_DESC
+  # avg(measuredThroughput) ascending
+  avg_measuredThroughput_ASC
+  # avg(measuredThroughput) descending
+  avg_measuredThroughput_DESC
+  # bufferLength ascending
+  bufferLength_ASC
+  # bufferLength descending
+  bufferLength_DESC
+  # bufferStarvationDuration ascending
+  bufferStarvationDuration_ASC
+  # bufferStarvationDuration descending
+  bufferStarvationDuration_DESC
+  # bufferStarvation ascending
+  bufferStarvation_ASC
+  # bufferStarvation descending
+  bufferStarvation_DESC
+  # contentId ascending
+  contentId_ASC
+  # contentId descending
+  contentId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
+  # creatorId ascending
+  creatorId_ASC
+  # creatorId descending
+  creatorId_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # encodedBitrate ascending
+  encodedBitrate_ASC
+  # encodedBitrate descending
+  encodedBitrate_DESC
+  # hlsType ascending
+  hlsType_ASC
+  # hlsType descending
+  hlsType_DESC
+  # initialBufferStarvationDuration ascending
+  initialBufferStarvationDuration_ASC
+  # initialBufferStarvationDuration descending
+  initialBufferStarvationDuration_DESC
+  # inputId ascending
+  inputId_ASC
+  # inputId descending
+  inputId_DESC
+  # measuredThroughput ascending
+  measuredThroughput_ASC
+  # measuredThroughput descending
+  measuredThroughput_DESC
+  # mediaType ascending
+  mediaType_ASC
+  # mediaType descending
+  mediaType_DESC
+  # millisecondsViewed ascending
+  millisecondsViewed_ASC
+  # millisecondsViewed descending
+  millisecondsViewed_DESC
+  # objectDuration ascending
+  objectDuration_ASC
+  # objectDuration descending
+  objectDuration_DESC
+  # playbackRate ascending
+  playbackRate_ASC
+  # playbackRate descending
+  playbackRate_DESC
+  # quantiles(bufferStarvationDurationP50) ascending
+  quantiles_bufferStarvationDurationP50_ASC
+  # quantiles(bufferStarvationDurationP50) descending
+  quantiles_bufferStarvationDurationP50_DESC
+  # quantiles(bufferStarvationDurationP75) ascending
+  quantiles_bufferStarvationDurationP75_ASC
+  # quantiles(bufferStarvationDurationP75) descending
+  quantiles_bufferStarvationDurationP75_DESC
+  # quantiles(bufferStarvationDurationP90) ascending
+  quantiles_bufferStarvationDurationP90_ASC
+  # quantiles(bufferStarvationDurationP90) descending
+  quantiles_bufferStarvationDurationP90_DESC
+  # quantiles(bufferStarvationDurationP99) ascending
+  quantiles_bufferStarvationDurationP99_ASC
+  # quantiles(bufferStarvationDurationP99) descending
+  quantiles_bufferStarvationDurationP99_DESC
+  # quantiles(initialBufferStarvationDurationP50) ascending
+  quantiles_initialBufferStarvationDurationP50_ASC
+  # quantiles(initialBufferStarvationDurationP50) descending
+  quantiles_initialBufferStarvationDurationP50_DESC
+  # quantiles(initialBufferStarvationDurationP75) ascending
+  quantiles_initialBufferStarvationDurationP75_ASC
+  # quantiles(initialBufferStarvationDurationP75) descending
+  quantiles_initialBufferStarvationDurationP75_DESC
+  # quantiles(initialBufferStarvationDurationP90) ascending
+  quantiles_initialBufferStarvationDurationP90_ASC
+  # quantiles(initialBufferStarvationDurationP90) descending
+  quantiles_initialBufferStarvationDurationP90_DESC
+  # quantiles(initialBufferStarvationDurationP99) ascending
+  quantiles_initialBufferStarvationDurationP99_ASC
+  # quantiles(initialBufferStarvationDurationP99) descending
+  quantiles_initialBufferStarvationDurationP99_DESC
+  # resolution ascending
+  resolution_ASC
+  # resolution descending
+  resolution_DESC
+  # responseStatus ascending
+  responseStatus_ASC
+  # responseStatus descending
+  responseStatus_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # startup ascending
+  startup_ASC
+  # startup descending
+  startup_DESC
+  # streamType ascending
+  streamType_ASC
+  # streamType descending
+  streamType_DESC
+  # streamingFormat ascending
+  streamingFormat_ASC
+  # streamingFormat descending
+  streamingFormat_DESC
+  # sum(millisecondsViewed) ascending
+  sum_millisecondsViewed_ASC
+  # sum(millisecondsViewed) descending
+  sum_millisecondsViewed_DESC
+  # topBitrate ascending
+  topBitrate_ASC
+  # topBitrate descending
+  topBitrate_DESC
+  # uniq(viewers) ascending
+  uniq_viewers_ASC
+  # uniq(viewers) descending
+  uniq_viewers_DESC
+  # videoId ascending
+  videoId_ASC
+  # videoId descending
+  videoId_DESC
+}
+
+type AccountStreamCMCDAdaptiveGroupsQuantiles {
+  # 50th percentile buffer starvation duration in milliseconds
+  bufferStarvationDurationP50: float64!
+  # 75th percentile buffer starvation duration in milliseconds
+  bufferStarvationDurationP75: float64!
+  # 90th percentile buffer starvation duration in milliseconds
+  bufferStarvationDurationP90: float64!
+  # 99th percentile buffer starvation duration in milliseconds
+  bufferStarvationDurationP99: float64!
+  # 50th percentile initial buffer starvation duration in milliseconds
+  initialBufferStarvationDurationP50: float64!
+  # 75th percentile initial buffer starvation duration in milliseconds
+  initialBufferStarvationDurationP75: float64!
+  # 90th percentile initial buffer starvation duration in milliseconds
+  initialBufferStarvationDurationP90: float64!
+  # 99th percentile initial buffer starvation duration in milliseconds
+  initialBufferStarvationDurationP99: float64!
+}
+
+type AccountStreamCMCDAdaptiveGroupsSum {
+  # Estimated time viewed in milliseconds
+  millisecondsViewed: uint64!
+}
+
+type AccountStreamCMCDAdaptiveGroupsUniq {
+  # The number of unique viewers
+  viewers: uint64!
 }
 
 # A high-level summary of Cloudflare Stream minutes viewed.
@@ -48498,6 +49742,8 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
+  attackSignatureRefs: [string!]!
   # Judgement of the bot management system
   botManagementDecision: string!
   # The final score originated from bot management detections.
@@ -48567,8 +49813,12 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   edgeTimeToFirstByteMs: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
+  firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
   firewallForAiPiiCategories: [string!]!
+  # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
+  firewallForAiUnsafeTopicCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -48641,6 +49891,11 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureRefs_has: string
+  attackSignatureRefs_hasall: [string!]
+  attackSignatureRefs_hasany: [string!]
+  attackSignatureRefs_isempty: bool
+  attackSignatureRefs_nothas: string
   botManagementDecision: string
   botManagementDecision_geq: string
   botManagementDecision_gt: string
@@ -48974,11 +50229,24 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiInjectionScore: int8
+  firewallForAiInjectionScore_geq: int8
+  firewallForAiInjectionScore_gt: int8
+  firewallForAiInjectionScore_in: [int8!]
+  firewallForAiInjectionScore_leq: int8
+  firewallForAiInjectionScore_lt: int8
+  firewallForAiInjectionScore_neq: int8
+  firewallForAiInjectionScore_notin: [int8!]
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
   firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
+  firewallForAiUnsafeTopicCategories_has: string
+  firewallForAiUnsafeTopicCategories_hasall: [string!]
+  firewallForAiUnsafeTopicCategories_hasany: [string!]
+  firewallForAiUnsafeTopicCategories_isempty: bool
+  firewallForAiUnsafeTopicCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -49228,6 +50496,10 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureRefs ascending
+  attackSignatureRefs_ASC
+  # attackSignatureRefs descending
+  attackSignatureRefs_DESC
   # avg(crossZoneSubrequests) ascending
   avg_crossZoneSubrequests_ASC
   # avg(crossZoneSubrequests) descending
@@ -49404,10 +50676,18 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiInjectionScore ascending
+  firewallForAiInjectionScore_ASC
+  # firewallForAiInjectionScore descending
+  firewallForAiInjectionScore_DESC
   # firewallForAiPiiCategories ascending
   firewallForAiPiiCategories_ASC
   # firewallForAiPiiCategories descending
   firewallForAiPiiCategories_DESC
+  # firewallForAiUnsafeTopicCategories ascending
+  firewallForAiUnsafeTopicCategories_ASC
+  # firewallForAiUnsafeTopicCategories descending
+  firewallForAiUnsafeTopicCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -49641,9 +50921,9 @@ type Settings {
 }
 
 type viewer {
-  accounts(filter: AccountFilter_InputObject!): [account!]!
+  accounts(filter: AccountFilter_InputObject): [account!]!
   budget: uint64!
-  organizations(filter: OrganizationFilter_InputObject!): [organization!]!
+  organizations(filter: OrganizationFilter_InputObject): [organization!]!
   zones(filter: ZoneFilter_InputObject, limit: uint64): [zone!]!
 }
 
@@ -53415,6 +54695,8 @@ type ZoneFirewallEventsAdaptive {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
+  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -53485,8 +54767,12 @@ type ZoneFirewallEventsAdaptive {
   edgeResponseStatus: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
+  firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
   firewallForAiPiiCategories: [string!]!
+  # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
+  firewallForAiUnsafeTopicCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -53565,6 +54851,8 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
+  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -53589,8 +54877,12 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   description: string!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
+  firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
   firewallForAiPiiCategories: [string!]!
+  # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
+  firewallForAiUnsafeTopicCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -53654,6 +54946,11 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureRefs_has: string
+  attackSignatureRefs_hasall: [string!]
+  attackSignatureRefs_hasany: [string!]
+  attackSignatureRefs_isempty: bool
+  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -53955,11 +55252,24 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiInjectionScore: int8
+  firewallForAiInjectionScore_geq: int8
+  firewallForAiInjectionScore_gt: int8
+  firewallForAiInjectionScore_in: [int8!]
+  firewallForAiInjectionScore_leq: int8
+  firewallForAiInjectionScore_lt: int8
+  firewallForAiInjectionScore_neq: int8
+  firewallForAiInjectionScore_notin: [int8!]
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
   firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
+  firewallForAiUnsafeTopicCategories_has: string
+  firewallForAiUnsafeTopicCategories_hasall: [string!]
+  firewallForAiUnsafeTopicCategories_hasany: [string!]
+  firewallForAiUnsafeTopicCategories_isempty: bool
+  firewallForAiUnsafeTopicCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -54177,6 +55487,10 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureRefs ascending
+  attackSignatureRefs_ASC
+  # attackSignatureRefs descending
+  attackSignatureRefs_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -54233,10 +55547,18 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiInjectionScore ascending
+  firewallForAiInjectionScore_ASC
+  # firewallForAiInjectionScore descending
+  firewallForAiInjectionScore_DESC
   # firewallForAiPiiCategories ascending
   firewallForAiPiiCategories_ASC
   # firewallForAiPiiCategories descending
   firewallForAiPiiCategories_DESC
+  # firewallForAiUnsafeTopicCategories ascending
+  firewallForAiUnsafeTopicCategories_ASC
+  # firewallForAiUnsafeTopicCategories descending
+  firewallForAiUnsafeTopicCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -54351,6 +55673,11 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureRefs_has: string
+  attackSignatureRefs_hasall: [string!]
+  attackSignatureRefs_hasany: [string!]
+  attackSignatureRefs_isempty: bool
+  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -54652,11 +55979,24 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiInjectionScore: int8
+  firewallForAiInjectionScore_geq: int8
+  firewallForAiInjectionScore_gt: int8
+  firewallForAiInjectionScore_in: [int8!]
+  firewallForAiInjectionScore_leq: int8
+  firewallForAiInjectionScore_lt: int8
+  firewallForAiInjectionScore_neq: int8
+  firewallForAiInjectionScore_notin: [int8!]
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
   firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
+  firewallForAiUnsafeTopicCategories_has: string
+  firewallForAiUnsafeTopicCategories_hasall: [string!]
+  firewallForAiUnsafeTopicCategories_hasany: [string!]
+  firewallForAiUnsafeTopicCategories_isempty: bool
+  firewallForAiUnsafeTopicCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -54897,6 +56237,8 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
+  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -54967,8 +56309,12 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   edgeResponseStatus: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
+  firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
   firewallForAiPiiCategories: [string!]!
+  # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
+  firewallForAiUnsafeTopicCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -55054,6 +56400,11 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureRefs_has: string
+  attackSignatureRefs_hasall: [string!]
+  attackSignatureRefs_hasany: [string!]
+  attackSignatureRefs_isempty: bool
+  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -55355,11 +56706,24 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiInjectionScore: int8
+  firewallForAiInjectionScore_geq: int8
+  firewallForAiInjectionScore_gt: int8
+  firewallForAiInjectionScore_in: [int8!]
+  firewallForAiInjectionScore_leq: int8
+  firewallForAiInjectionScore_lt: int8
+  firewallForAiInjectionScore_neq: int8
+  firewallForAiInjectionScore_notin: [int8!]
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
   firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
+  firewallForAiUnsafeTopicCategories_has: string
+  firewallForAiUnsafeTopicCategories_hasall: [string!]
+  firewallForAiUnsafeTopicCategories_hasany: [string!]
+  firewallForAiUnsafeTopicCategories_isempty: bool
+  firewallForAiUnsafeTopicCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -55581,6 +56945,10 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureRefs ascending
+  attackSignatureRefs_ASC
+  # attackSignatureRefs descending
+  attackSignatureRefs_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -55729,10 +57097,18 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiInjectionScore ascending
+  firewallForAiInjectionScore_ASC
+  # firewallForAiInjectionScore descending
+  firewallForAiInjectionScore_DESC
   # firewallForAiPiiCategories ascending
   firewallForAiPiiCategories_ASC
   # firewallForAiPiiCategories descending
   firewallForAiPiiCategories_DESC
+  # firewallForAiUnsafeTopicCategories ascending
+  firewallForAiUnsafeTopicCategories_ASC
+  # firewallForAiUnsafeTopicCategories descending
+  firewallForAiUnsafeTopicCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -55885,6 +57261,10 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureRefs ascending
+  attackSignatureRefs_ASC
+  # attackSignatureRefs descending
+  attackSignatureRefs_DESC
   # botDetectionIds ascending
   botDetectionIds_ASC
   # botDetectionIds descending
@@ -56025,10 +57405,18 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiInjectionScore ascending
+  firewallForAiInjectionScore_ASC
+  # firewallForAiInjectionScore descending
+  firewallForAiInjectionScore_DESC
   # firewallForAiPiiCategories ascending
   firewallForAiPiiCategories_ASC
   # firewallForAiPiiCategories descending
   firewallForAiPiiCategories_DESC
+  # firewallForAiUnsafeTopicCategories ascending
+  firewallForAiUnsafeTopicCategories_ASC
+  # firewallForAiUnsafeTopicCategories descending
+  firewallForAiUnsafeTopicCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -56919,6 +58307,7 @@ type ZoneHttpRequests1dGroups {
 
 type ZoneHttpRequests1dGroupsAvg {
   bytes: float64!
+  edgeRequestBytes: float64!
   # Average sample interval
   sampleInterval: float64!
 }
@@ -56989,6 +58378,10 @@ enum ZoneHttpRequests1dGroupsOrderBy {
   avg_bytes_ASC
   # avg(bytes) descending
   avg_bytes_DESC
+  # avg(edgeRequestBytes) ascending
+  avg_edgeRequestBytes_ASC
+  # avg(edgeRequestBytes) descending
+  avg_edgeRequestBytes_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -57009,6 +58402,10 @@ enum ZoneHttpRequests1dGroupsOrderBy {
   sum_cachedRequests_ASC
   # sum(cachedRequests) descending
   sum_cachedRequests_DESC
+  # sum(edgeRequestBytes) ascending
+  sum_edgeRequestBytes_ASC
+  # sum(edgeRequestBytes) descending
+  sum_edgeRequestBytes_DESC
   # sum(encryptedBytes) ascending
   sum_encryptedBytes_ASC
   # sum(encryptedBytes) descending
@@ -57053,6 +58450,8 @@ type ZoneHttpRequests1dGroupsSum {
   clientSSLMap: [ZoneHttpRequests1dGroupsClientSSLMapElem!]!
   contentTypeMap: [ZoneHttpRequests1dGroupsContentTypeMapElem!]!
   countryMap: [ZoneHttpRequests1dGroupsCountryMapElem!]!
+  # Bytes sent from client
+  edgeRequestBytes: uint64!
   # Bytes returned to client using SSL/TLS protocol
   encryptedBytes: uint64!
   # Requests served using SSL/TLS protocol
@@ -57092,6 +58491,7 @@ type ZoneHttpRequests1hGroups {
 
 type ZoneHttpRequests1hGroupsAvg {
   bytes: float64!
+  edgeRequestBytes: float64!
   # Average sample interval
   sampleInterval: float64!
 }
@@ -57172,6 +58572,10 @@ enum ZoneHttpRequests1hGroupsOrderBy {
   avg_bytes_ASC
   # avg(bytes) descending
   avg_bytes_DESC
+  # avg(edgeRequestBytes) ascending
+  avg_edgeRequestBytes_ASC
+  # avg(edgeRequestBytes) descending
+  avg_edgeRequestBytes_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -57196,6 +58600,10 @@ enum ZoneHttpRequests1hGroupsOrderBy {
   sum_cachedRequests_ASC
   # sum(cachedRequests) descending
   sum_cachedRequests_DESC
+  # sum(edgeRequestBytes) ascending
+  sum_edgeRequestBytes_ASC
+  # sum(edgeRequestBytes) descending
+  sum_edgeRequestBytes_DESC
   # sum(encryptedBytes) ascending
   sum_encryptedBytes_ASC
   # sum(encryptedBytes) descending
@@ -57240,6 +58648,8 @@ type ZoneHttpRequests1hGroupsSum {
   clientSSLMap: [ZoneHttpRequests1hGroupsClientSSLMapElem!]!
   contentTypeMap: [ZoneHttpRequests1hGroupsContentTypeMapElem!]!
   countryMap: [ZoneHttpRequests1hGroupsCountryMapElem!]!
+  # Bytes sent from client
+  edgeRequestBytes: uint64!
   # Bytes returned to client using SSL/TLS protocol
   encryptedBytes: uint64!
   # Requests served using SSL/TLS protocol
@@ -57433,6 +58843,7 @@ type ZoneHttpRequests1mGroups {
 
 type ZoneHttpRequests1mGroupsAvg {
   bytes: float64!
+  edgeRequestBytes: float64!
   # Average sample interval
   sampleInterval: float64!
 }
@@ -57574,6 +58985,10 @@ enum ZoneHttpRequests1mGroupsOrderBy {
   avg_bytes_ASC
   # avg(bytes) descending
   avg_bytes_DESC
+  # avg(edgeRequestBytes) ascending
+  avg_edgeRequestBytes_ASC
+  # avg(edgeRequestBytes) descending
+  avg_edgeRequestBytes_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -57622,6 +59037,10 @@ enum ZoneHttpRequests1mGroupsOrderBy {
   sum_cachedRequests_ASC
   # sum(cachedRequests) descending
   sum_cachedRequests_DESC
+  # sum(edgeRequestBytes) ascending
+  sum_edgeRequestBytes_ASC
+  # sum(edgeRequestBytes) descending
+  sum_edgeRequestBytes_DESC
   # sum(encryptedBytes) ascending
   sum_encryptedBytes_ASC
   # sum(encryptedBytes) descending
@@ -57666,6 +59085,8 @@ type ZoneHttpRequests1mGroupsSum {
   clientSSLMap: [ZoneHttpRequests1mGroupsClientSSLMapElem!]!
   contentTypeMap: [ZoneHttpRequests1mGroupsContentTypeMapElem!]!
   countryMap: [ZoneHttpRequests1mGroupsCountryMapElem!]!
+  # Bytes sent from client
+  edgeRequestBytes: uint64!
   # Bytes returned to client using SSL/TLS protocol
   encryptedBytes: uint64!
   # Requests served using SSL/TLS protocol
@@ -57697,6 +59118,8 @@ type ZoneHttpRequestsAdaptive {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
+  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -57774,8 +59197,12 @@ type ZoneHttpRequestsAdaptive {
   edgeTimeToFirstByteMs: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
+  firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
   firewallForAiPiiCategories: [string!]!
+  # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
+  firewallForAiUnsafeTopicCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -57849,6 +59276,11 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureRefs_has: string
+  attackSignatureRefs_hasall: [string!]
+  attackSignatureRefs_hasany: [string!]
+  attackSignatureRefs_isempty: bool
+  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -58192,11 +59624,24 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiInjectionScore: int8
+  firewallForAiInjectionScore_geq: int8
+  firewallForAiInjectionScore_gt: int8
+  firewallForAiInjectionScore_in: [int8!]
+  firewallForAiInjectionScore_leq: int8
+  firewallForAiInjectionScore_lt: int8
+  firewallForAiInjectionScore_neq: int8
+  firewallForAiInjectionScore_notin: [int8!]
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
   firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
+  firewallForAiUnsafeTopicCategories_has: string
+  firewallForAiUnsafeTopicCategories_hasall: [string!]
+  firewallForAiUnsafeTopicCategories_hasany: [string!]
+  firewallForAiUnsafeTopicCategories_isempty: bool
+  firewallForAiUnsafeTopicCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -58471,6 +59916,8 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
+  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -58544,8 +59991,12 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   edgeTimeToFirstByteMs: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
+  firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
   firewallForAiPiiCategories: [string!]!
+  # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
+  firewallForAiUnsafeTopicCategories: [string!]!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -58616,6 +60067,11 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureRefs_has: string
+  attackSignatureRefs_hasall: [string!]
+  attackSignatureRefs_hasany: [string!]
+  attackSignatureRefs_isempty: bool
+  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -58959,11 +60415,24 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiInjectionScore: int8
+  firewallForAiInjectionScore_geq: int8
+  firewallForAiInjectionScore_gt: int8
+  firewallForAiInjectionScore_in: [int8!]
+  firewallForAiInjectionScore_leq: int8
+  firewallForAiInjectionScore_lt: int8
+  firewallForAiInjectionScore_neq: int8
+  firewallForAiInjectionScore_notin: [int8!]
   firewallForAiPiiCategories_has: string
   firewallForAiPiiCategories_hasall: [string!]
   firewallForAiPiiCategories_hasany: [string!]
   firewallForAiPiiCategories_isempty: bool
   firewallForAiPiiCategories_nothas: string
+  firewallForAiUnsafeTopicCategories_has: string
+  firewallForAiUnsafeTopicCategories_hasall: [string!]
+  firewallForAiUnsafeTopicCategories_hasany: [string!]
+  firewallForAiUnsafeTopicCategories_isempty: bool
+  firewallForAiUnsafeTopicCategories_nothas: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -59213,6 +60682,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureRefs ascending
+  attackSignatureRefs_ASC
+  # attackSignatureRefs descending
+  attackSignatureRefs_DESC
   # avg(crossZoneSubrequests) ascending
   avg_crossZoneSubrequests_ASC
   # avg(crossZoneSubrequests) descending
@@ -59397,10 +60870,18 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiInjectionScore ascending
+  firewallForAiInjectionScore_ASC
+  # firewallForAiInjectionScore descending
+  firewallForAiInjectionScore_DESC
   # firewallForAiPiiCategories ascending
   firewallForAiPiiCategories_ASC
   # firewallForAiPiiCategories descending
   firewallForAiPiiCategories_DESC
+  # firewallForAiUnsafeTopicCategories ascending
+  firewallForAiUnsafeTopicCategories_ASC
+  # firewallForAiUnsafeTopicCategories descending
+  firewallForAiUnsafeTopicCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -59537,6 +61018,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   sum_edgeDnsResponseTimeMs_ASC
   # sum(edgeDnsResponseTimeMs) descending
   sum_edgeDnsResponseTimeMs_DESC
+  # sum(edgeRequestBytes) ascending
+  sum_edgeRequestBytes_ASC
+  # sum(edgeRequestBytes) descending
+  sum_edgeRequestBytes_DESC
   # sum(edgeResponseBytes) ascending
   sum_edgeResponseBytes_ASC
   # sum(edgeResponseBytes) descending
@@ -59643,6 +61128,7 @@ type ZoneHttpRequestsAdaptiveGroupsSum {
   # The number of requests that were inititiated by a Cloudflare Worker on another zone
   crossZoneSubrequests: uint64!
   edgeDnsResponseTimeMs: uint64!
+  edgeRequestBytes: uint64!
   edgeResponseBytes: uint64!
   edgeTimeToFirstByteMs: uint64!
   originResponseDurationMs: uint64!
@@ -59651,6 +61137,8 @@ type ZoneHttpRequestsAdaptiveGroupsSum {
 }
 
 type ZoneHttpRequestsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  edgeRequestBytes: Confidence!
   # Confidence interval for the corresponding point estimate
   edgeResponseBytes: Confidence!
 }
@@ -59671,6 +61159,10 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureRefs ascending
+  attackSignatureRefs_ASC
+  # attackSignatureRefs descending
+  attackSignatureRefs_DESC
   # botDetectionIds ascending
   botDetectionIds_ASC
   # botDetectionIds descending
@@ -59831,10 +61323,18 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiInjectionScore ascending
+  firewallForAiInjectionScore_ASC
+  # firewallForAiInjectionScore descending
+  firewallForAiInjectionScore_DESC
   # firewallForAiPiiCategories ascending
   firewallForAiPiiCategories_ASC
   # firewallForAiPiiCategories descending
   firewallForAiPiiCategories_DESC
+  # firewallForAiUnsafeTopicCategories ascending
+  firewallForAiUnsafeTopicCategories_ASC
+  # firewallForAiUnsafeTopicCategories descending
+  firewallForAiUnsafeTopicCategories_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
