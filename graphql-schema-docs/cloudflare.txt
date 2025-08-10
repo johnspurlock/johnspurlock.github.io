@@ -35,6 +35,7 @@ Account-level datasets:
   dosdNetworkAnalyticsAdaptiveGroups
 * durableObjectsInvocationsAdaptiveGroups
 * durableObjectsPeriodicGroups
+* durableObjectsSqlStorageGroups
 * durableObjectsStorageGroups
 * durableObjectsSubrequestsAdaptiveGroups
   fbmAttackAnalyticsGroups
@@ -316,6 +317,8 @@ type account {
   durableObjectsInvocationsAdaptiveGroups(filter: AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy!]): [AccountDurableObjectsInvocationsAdaptiveGroups!]!
   # Durable Objects periodic metrics
   durableObjectsPeriodicGroups(filter: AccountDurableObjectsPeriodicGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsPeriodicGroupsOrderBy!]): [AccountDurableObjectsPeriodicGroups!]!
+  # Storage metrics for SQL-backed Durable Objects.
+  durableObjectsSqlStorageGroups(filter: AccountDurableObjectsSqlStorageGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsSqlStorageGroupsOrderBy!]): [AccountDurableObjectsSqlStorageGroups!]!
   # Durable Objects storage metrics
   durableObjectsStorageGroups(filter: AccountDurableObjectsStorageGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsStorageGroupsOrderBy!]): [AccountDurableObjectsStorageGroups!]!
   # Durable Objects subrequests with adaptive sampling
@@ -14018,11 +14021,97 @@ type AccountDurableObjectsPeriodicGroupsSum {
   subrequests: uint64!
 }
 
+# Storage metrics for SQL-backed Durable Objects.
+type AccountDurableObjectsSqlStorageGroups {
+  # List of dimensions to group by
+  dimensions: AccountDurableObjectsSqlStorageGroupsDimensions
+  # The max value for a metric
+  max: AccountDurableObjectsSqlStorageGroupsMax
+}
+
+type AccountDurableObjectsSqlStorageGroupsDimensions {
+  # Datetime that the storage usage was recorded, truncated to start of a day
+  date: Date!
+  # Datetime that the storage usage was recorded, truncated to start of an hour
+  datetimeHour: Time!
+  # Datetime that the storage usage was recorded, truncated to start of a minute
+  datetimeMinute: Time!
+  # Durable Object namespace ID
+  namespaceId: string!
+}
+
+input AccountDurableObjectsSqlStorageGroupsFilter_InputObject {
+  AND: [AccountDurableObjectsSqlStorageGroupsFilter_InputObject!]
+  OR: [AccountDurableObjectsSqlStorageGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  namespaceId: string
+  namespaceId_geq: string
+  namespaceId_gt: string
+  namespaceId_in: [string!]
+  namespaceId_leq: string
+  namespaceId_like: string
+  namespaceId_lt: string
+  namespaceId_neq: string
+  namespaceId_notin: [string!]
+  namespaceId_notlike: string
+}
+
+type AccountDurableObjectsSqlStorageGroupsMax {
+  # Max of stored bytes
+  storedBytes: uint64!
+}
+
+enum AccountDurableObjectsSqlStorageGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # max(storedBytes) ascending
+  max_storedBytes_ASC
+  # max(storedBytes) descending
+  max_storedBytes_DESC
+  # namespaceId ascending
+  namespaceId_ASC
+  # namespaceId descending
+  namespaceId_DESC
+}
+
 # Durable Objects storage metrics
 type AccountDurableObjectsStorageGroups {
   # List of dimensions to group by
   dimensions: AccountDurableObjectsStorageGroupsDimensions
-  # The sum of values for a metric per dimension
+  # The max value for a metric
   max: AccountDurableObjectsStorageGroupsMax
 }
 
@@ -42321,6 +42410,7 @@ type AccountSettings {
   dosdNetworkAnalyticsAdaptiveGroups: Settings!
   durableObjectsInvocationsAdaptiveGroups: Settings!
   durableObjectsPeriodicGroups: Settings!
+  durableObjectsSqlStorageGroups: Settings!
   durableObjectsStorageGroups: Settings!
   durableObjectsSubrequestsAdaptiveGroups: Settings!
   fbmAttackAnalyticsGroups: Settings!
@@ -44517,6 +44607,8 @@ type AccountStreamCMCDAdaptiveGroups {
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountStreamCMCDAdaptiveGroupsDimensions
+  # The maximum value for a metric per dimension
+  max: AccountStreamCMCDAdaptiveGroupsMax
   # Quantiles of a metric per dimension
   quantiles: AccountStreamCMCDAdaptiveGroupsQuantiles
   # The sum of values for a metric per dimension
@@ -44548,7 +44640,7 @@ type AccountStreamCMCDAdaptiveGroupsDimensions {
   # Content ID
   contentId: string!
   # Viewer country
-  country: uint16!
+  country: string!
   # Creator ID
   creatorId: string!
   # Ingest event timestamp
@@ -44630,14 +44722,16 @@ input AccountStreamCMCDAdaptiveGroupsFilter_InputObject {
   contentId_neq: string
   contentId_notin: [string!]
   contentId_notlike: string
-  country: uint16
-  country_geq: uint16
-  country_gt: uint16
-  country_in: [uint16!]
-  country_leq: uint16
-  country_lt: uint16
-  country_neq: uint16
-  country_notin: [uint16!]
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
   creatorId: string
   creatorId_geq: string
   creatorId_gt: string
@@ -44824,6 +44918,11 @@ input AccountStreamCMCDAdaptiveGroupsFilter_InputObject {
   videoId_notlike: string
 }
 
+type AccountStreamCMCDAdaptiveGroupsMax {
+  # Last time this dimension combination was seen
+  latestDatetime: Time!
+}
+
 enum AccountStreamCMCDAdaptiveGroupsOrderBy {
   # avg(bufferLength) ascending
   avg_bufferLength_ASC
@@ -44913,6 +45012,10 @@ enum AccountStreamCMCDAdaptiveGroupsOrderBy {
   inputId_ASC
   # inputId descending
   inputId_DESC
+  # max(latestDatetime) ascending
+  max_latestDatetime_ASC
+  # max(latestDatetime) descending
+  max_latestDatetime_DESC
   # measuredThroughput ascending
   measuredThroughput_ASC
   # measuredThroughput descending
