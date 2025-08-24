@@ -10958,6 +10958,8 @@ enum AccountDnsAnalyticsAdaptiveOrderBy {
 
 # Analytics data for DNS Firewall queries
 type AccountDnsFirewallAnalyticsAdaptive {
+  # DNS Firewall cluster name
+  clusterName: string!
   # DNS Firewall cluster tag
   clusterTag: string!
   # IATA airport code of the data center that processed the query
@@ -10966,7 +10968,7 @@ type AccountDnsFirewallAnalyticsAdaptive {
   date: Date!
   # Time at which the query was received
   datetime: Time!
-  # Cloudflare edge IP address that the query was received at
+  # Cloudflare edge IP address that the query was received at, this will be one of your cluster IPs.
   destinationIP: string!
   # Internet Protocol version over which the query was received
   ipVersion: uint8!
@@ -10999,6 +11001,16 @@ type AccountDnsFirewallAnalyticsAdaptive {
 input AccountDnsFirewallAnalyticsAdaptiveFilter_InputObject {
   AND: [AccountDnsFirewallAnalyticsAdaptiveFilter_InputObject!]
   OR: [AccountDnsFirewallAnalyticsAdaptiveFilter_InputObject!]
+  clusterName: string
+  clusterName_geq: string
+  clusterName_gt: string
+  clusterName_in: [string!]
+  clusterName_leq: string
+  clusterName_like: string
+  clusterName_lt: string
+  clusterName_neq: string
+  clusterName_notin: [string!]
+  clusterName_notlike: string
   clusterTag: string
   clusterTag_geq: string
   clusterTag_gt: string
@@ -11185,6 +11197,8 @@ type AccountDnsFirewallAnalyticsAdaptiveGroupsAvg {
 }
 
 type AccountDnsFirewallAnalyticsAdaptiveGroupsDimensions {
+  # DNS Firewall cluster name
+  clusterName: string!
   # ID of DNS Firewall cluster
   clusterTag: string!
   # IATA airport code of the data center that processed the query
@@ -11203,7 +11217,7 @@ type AccountDnsFirewallAnalyticsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Time at which the query was received, truncated to the minute
   datetimeMinute: Time!
-  # Cloudflare edge IP address that the query was received at
+  # Cloudflare edge IP address that the query was received at, this will be one of your cluster IPs.
   destinationIP: string!
   # Internet Protocol version over which the query was received
   ipVersion: uint8!
@@ -11234,6 +11248,16 @@ type AccountDnsFirewallAnalyticsAdaptiveGroupsDimensions {
 input AccountDnsFirewallAnalyticsAdaptiveGroupsFilter_InputObject {
   AND: [AccountDnsFirewallAnalyticsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountDnsFirewallAnalyticsAdaptiveGroupsFilter_InputObject!]
+  clusterName: string
+  clusterName_geq: string
+  clusterName_gt: string
+  clusterName_in: [string!]
+  clusterName_leq: string
+  clusterName_like: string
+  clusterName_lt: string
+  clusterName_neq: string
+  clusterName_notin: [string!]
+  clusterName_notlike: string
   clusterTag: string
   clusterTag_geq: string
   clusterTag_gt: string
@@ -11445,6 +11469,10 @@ enum AccountDnsFirewallAnalyticsAdaptiveGroupsOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # clusterName ascending
+  clusterName_ASC
+  # clusterName descending
+  clusterName_DESC
   # clusterTag ascending
   clusterTag_ASC
   # clusterTag descending
@@ -11565,6 +11593,10 @@ type AccountDnsFirewallAnalyticsAdaptiveGroupsQuantiles {
 }
 
 enum AccountDnsFirewallAnalyticsAdaptiveOrderBy {
+  # clusterName ascending
+  clusterName_ASC
+  # clusterName descending
+  clusterName_DESC
   # clusterTag ascending
   clusterTag_ASC
   # clusterTag descending
@@ -21901,6 +21933,8 @@ type AccountHttpRequestsAdaptive {
   securityAction: string!
   # The Cloudflare security product triggered by this request
   securitySource: string!
+  # API Security Session ID hash
+  sessionIdHash: string!
   upperTierColoName: string!
   # visitor's user-agent string
   userAgent: string!
@@ -22445,6 +22479,16 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   securitySource_neq: string
   securitySource_notin: [string!]
   securitySource_notlike: string
+  sessionIdHash: string
+  sessionIdHash_geq: string
+  sessionIdHash_gt: string
+  sessionIdHash_in: [string!]
+  sessionIdHash_leq: string
+  sessionIdHash_like: string
+  sessionIdHash_lt: string
+  sessionIdHash_neq: string
+  sessionIdHash_notin: [string!]
+  sessionIdHash_notlike: string
   upperTierColoName: string
   upperTierColoName_geq: string
   upperTierColoName_gt: string
@@ -22705,6 +22749,8 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   securityAction: string!
   # The Cloudflare security product triggered by this request
   securitySource: string!
+  # API Security Session ID hash
+  sessionIdHash: string!
   upperTierColoName: string!
   userAgent: string!
   # Browser parsed from the user agent
@@ -23256,6 +23302,16 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   securitySource_neq: string
   securitySource_notin: [string!]
   securitySource_notlike: string
+  sessionIdHash: string
+  sessionIdHash_geq: string
+  sessionIdHash_gt: string
+  sessionIdHash_in: [string!]
+  sessionIdHash_leq: string
+  sessionIdHash_like: string
+  sessionIdHash_lt: string
+  sessionIdHash_neq: string
+  sessionIdHash_notin: [string!]
+  sessionIdHash_notlike: string
   upperTierColoName: string
   upperTierColoName_geq: string
   upperTierColoName_gt: string
@@ -23689,6 +23745,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   securitySource_ASC
   # securitySource descending
   securitySource_DESC
+  # sessionIdHash ascending
+  sessionIdHash_ASC
+  # sessionIdHash descending
+  sessionIdHash_DESC
   # sum(botDetectionIdArray) ascending
   sum_botDetectionIdArray_ASC
   # sum(botDetectionIdArray) descending
@@ -24090,6 +24150,10 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   securitySource_ASC
   # securitySource descending
   securitySource_DESC
+  # sessionIdHash ascending
+  sessionIdHash_ASC
+  # sessionIdHash descending
+  sessionIdHash_DESC
   # upperTierColoName ascending
   upperTierColoName_ASC
   # upperTierColoName descending
@@ -49947,6 +50011,8 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   securityAction: string!
   # The Cloudflare security product triggered by this request
   securitySource: string!
+  # API Security Session ID hash
+  sessionIdHash: string!
   upperTierColoName: string!
   userAgent: string!
   # Browser parsed from the user agent
@@ -50488,6 +50554,16 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   securitySource_neq: string
   securitySource_notin: [string!]
   securitySource_notlike: string
+  sessionIdHash: string
+  sessionIdHash_geq: string
+  sessionIdHash_gt: string
+  sessionIdHash_in: [string!]
+  sessionIdHash_leq: string
+  sessionIdHash_like: string
+  sessionIdHash_lt: string
+  sessionIdHash_neq: string
+  sessionIdHash_notin: [string!]
+  sessionIdHash_notlike: string
   upperTierColoName: string
   upperTierColoName_geq: string
   upperTierColoName_gt: string
@@ -50891,6 +50967,10 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   securitySource_ASC
   # securitySource descending
   securitySource_DESC
+  # sessionIdHash ascending
+  sessionIdHash_ASC
+  # sessionIdHash descending
+  sessionIdHash_DESC
   # sum(crossZoneSubrequests) ascending
   sum_crossZoneSubrequests_ASC
   # sum(crossZoneSubrequests) descending
@@ -59333,6 +59413,8 @@ type ZoneHttpRequestsAdaptive {
   securityAction: string!
   # The Cloudflare security product triggered by this request
   securitySource: string!
+  # API Security Session ID hash
+  sessionIdHash: string!
   upperTierColoName: string!
   # visitor's user-agent string
   userAgent: string!
@@ -59875,6 +59957,16 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   securitySource_neq: string
   securitySource_notin: [string!]
   securitySource_notlike: string
+  sessionIdHash: string
+  sessionIdHash_geq: string
+  sessionIdHash_gt: string
+  sessionIdHash_in: [string!]
+  sessionIdHash_leq: string
+  sessionIdHash_like: string
+  sessionIdHash_lt: string
+  sessionIdHash_neq: string
+  sessionIdHash_notin: [string!]
+  sessionIdHash_notlike: string
   upperTierColoName: string
   upperTierColoName_geq: string
   upperTierColoName_gt: string
@@ -60125,6 +60217,8 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   securityAction: string!
   # The Cloudflare security product triggered by this request
   securitySource: string!
+  # API Security Session ID hash
+  sessionIdHash: string!
   upperTierColoName: string!
   userAgent: string!
   # Browser parsed from the user agent
@@ -60674,6 +60768,16 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   securitySource_neq: string
   securitySource_notin: [string!]
   securitySource_notlike: string
+  sessionIdHash: string
+  sessionIdHash_geq: string
+  sessionIdHash_gt: string
+  sessionIdHash_in: [string!]
+  sessionIdHash_leq: string
+  sessionIdHash_like: string
+  sessionIdHash_lt: string
+  sessionIdHash_neq: string
+  sessionIdHash_notin: [string!]
+  sessionIdHash_notlike: string
   upperTierColoName: string
   upperTierColoName_geq: string
   upperTierColoName_gt: string
@@ -61097,6 +61201,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   securitySource_ASC
   # securitySource descending
   securitySource_DESC
+  # sessionIdHash ascending
+  sessionIdHash_ASC
+  # sessionIdHash descending
+  sessionIdHash_DESC
   # sum(botDetectionIdArray) ascending
   sum_botDetectionIdArray_ASC
   # sum(botDetectionIdArray) descending
@@ -61494,6 +61602,10 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   securitySource_ASC
   # securitySource descending
   securitySource_DESC
+  # sessionIdHash ascending
+  sessionIdHash_ASC
+  # sessionIdHash descending
+  sessionIdHash_DESC
   # upperTierColoName ascending
   upperTierColoName_ASC
   # upperTierColoName descending
