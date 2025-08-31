@@ -10,10 +10,12 @@ Account-level datasets:
 * aiGatewaySizeAdaptiveGroups
 * aiInferenceAdaptive
 * aiInferenceAdaptiveGroups
+* autoRAGConfigAPIAdaptiveGroups
 * autoRAGEngineAdaptiveGroups
 * browserIsolationSessionsAdaptiveGroups
 * browserIsolationUserActionsAdaptiveGroups
 * browserRenderingApiAdaptiveGroups
+* browserRenderingBindingSessionsAdaptiveGroups
 * browserRenderingBrowserTimeUsageAdaptiveGroups
 * browserRenderingEventsAdaptive
 * browserRenderingEventsAdaptiveGroups
@@ -243,7 +245,8 @@ scalar uint64
 scalar uint8
 
 type account {
-  # Beta. Magic WAN Connector Metrics
+  # Magic WAN Connector Metrics (deprecated)
+  @Deprecated
   MagicWANConnectorMetricsAdaptiveGroups(filter: AccountMagicWANConnectorMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicWANConnectorMetricsAdaptiveGroupsOrderBy!]): [AccountMagicWANConnectorMetricsAdaptiveGroups!]!
   # Access login requests
   accessLoginRequestsAdaptiveGroups(filter: AccountAccessLoginRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAccessLoginRequestsAdaptiveGroupsOrderBy!]): [AccountAccessLoginRequestsAdaptiveGroups!]!
@@ -267,6 +270,8 @@ type account {
   aiInferenceAdaptive(filter: AccountAiInferenceAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveOrderBy!]): [AccountAiInferenceAdaptive!]!
   # Aggregated AI Inference logs with adaptive sampling
   aiInferenceAdaptiveGroups(filter: AccountAiInferenceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveGroupsOrderBy!]): [AccountAiInferenceAdaptiveGroups!]!
+  # AutoRAG Config API Search Analytics
+  autoRAGConfigAPIAdaptiveGroups(filter: AccountAutoRAGConfigAPIAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAutoRAGConfigAPIAdaptiveGroupsOrderBy!]): [AccountAutoRAGConfigAPIAdaptiveGroups!]!
   # AutoRAG Engine Ingestion Analytics
   autoRAGEngineAdaptiveGroups(filter: AccountAutoRAGEngineAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAutoRAGEngineAdaptiveGroupsOrderBy!]): [AccountAutoRAGEngineAdaptiveGroups!]!
   # Aggregated count of Browser Isolation sessions
@@ -275,6 +280,8 @@ type account {
   browserIsolationUserActionsAdaptiveGroups(filter: AccountBrowserIsolationUserActionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserIsolationUserActionsAdaptiveGroupsOrderBy!]): [AccountBrowserIsolationUserActionsAdaptiveGroups!]!
   # Aggregated Browser Rendering API events with adaptive sampling
   browserRenderingApiAdaptiveGroups(filter: AccountBrowserRenderingApiAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserRenderingApiAdaptiveGroupsOrderBy!]): [AccountBrowserRenderingApiAdaptiveGroups!]!
+  # Aggregated Browser Rendering worker binding sessions with adaptive sampling
+  browserRenderingBindingSessionsAdaptiveGroups(filter: AccountBrowserRenderingBindingSessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserRenderingBindingSessionsAdaptiveGroupsOrderBy!]): [AccountBrowserRenderingBindingSessionsAdaptiveGroups!]!
   # Aggregated Browser Rendering and Browser Rendering REST API browser sessions with adaptive sampling
   browserRenderingBrowserTimeUsageAdaptiveGroups(filter: AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsOrderBy!]): [AccountBrowserRenderingBrowserTimeUsageAdaptiveGroups!]!
   # Browser Rendering events with adaptive sampling
@@ -5231,6 +5238,542 @@ enum AccountAiInferenceAdaptiveOrderBy {
   totalTiles_DESC
 }
 
+# AutoRAG Config API Search Analytics
+type AccountAutoRAGConfigAPIAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountAutoRAGConfigAPIAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountAutoRAGConfigAPIAdaptiveGroupsSum
+}
+
+type AccountAutoRAGConfigAPIAdaptiveGroupsDimensions {
+  # Whether the prompt for AI Search is included (0 = false, 1 = true)
+  aiPromptIncluded: uint8!
+  # The time in milliseconds it took to do generate a response with AI Search
+  aiSearchDurationMs: int64!
+  # The size in tokens of the input for response generation with AI Search
+  aiSearchInputSizeTokens: int64!
+  # The model used for AI Search, if it was used
+  aiSearchModel: string!
+  # The size in tokens of the AI Search generated response
+  aiSearchResultSizeTokens: int64!
+  # An array of file sizes of the files returned in this search
+  chuckSizeTokensArray: [int64!]!
+  # How much overlap exists between contiguous chunks
+  chunkOverlap: int64!
+  # The size of text chunks
+  chunkSize: int64!
+  # The date when trigger was triggered
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Whether to do query rewriting when performing searches with this RAG (0 = false, 1 = true)
+  doRewrite: uint8!
+  # The model used to generate embeddings
+  embeddingModel: string!
+  # Whether chunking is enabled for this AutoRAG (0 = false, 1 = true)
+  enableChunking: uint8!
+  # An array of IDs of the files returned in this search
+  fileIdArray: [string!]!
+  # An array of names of the files returned in this search
+  filenameArray: [string!]!
+  # The time in milliseconds it took to retrieve files for this search
+  getFilesDurationMs: int64!
+  # The time in milliseconds it took to generate embeddings for this search's query
+  getQueryVectorsAvgDurationMs: int64!
+  # The time in milliseconds it took to retrieve stored file embeddings
+  getResultVectorsAvgDurationMs: int64!
+  # Whether the search response was streamed or not (0 = false, 1 = true)
+  isStream: uint8!
+  # THe max number of results that can be returned
+  maxResults: int64!
+  # The number of returned results
+  numResults: int64!
+  # The size of the given query in tokens
+  querySizeTokens: int64!
+  # AutoRAG Id
+  rag: string!
+  # Whether to this search implied regenerating markdown for returned results (0 = false, 1 = true)
+  regenerateMarkdown: uint8!
+  # The time in milliseconds that it took to rewrite the query
+  rewriteDurationMs: int64!
+  # The size in tokens of the rewritten input
+  rewriteInputSizeTokens: int64!
+  # The model used for rewriting queries
+  rewriteModel: string!
+  # Whether the rewrite prompt is included (0 = false, 1 = true)
+  rewritePromptIncluded: uint8!
+  # The size in tokens of the rewritten query
+  rewriteResultSizeTokens: int64!
+  # An array of matching scores of the files returned in this search
+  scoreArray: [float64!]!
+  # The score threshold over which matches are included in the result
+  scoreThreshold: float64!
+  # AutoRAG Search Type
+  searchType: string!
+  # The total time in milliseconds that performing this search took
+  totalDurationMs: int64!
+}
+
+input AccountAutoRAGConfigAPIAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAutoRAGConfigAPIAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAutoRAGConfigAPIAdaptiveGroupsFilter_InputObject!]
+  aiPromptIncluded: uint8
+  aiPromptIncluded_geq: uint8
+  aiPromptIncluded_gt: uint8
+  aiPromptIncluded_in: bytes
+  aiPromptIncluded_leq: uint8
+  aiPromptIncluded_lt: uint8
+  aiPromptIncluded_neq: uint8
+  aiPromptIncluded_notin: bytes
+  aiSearchDurationMs: int64
+  aiSearchDurationMs_geq: int64
+  aiSearchDurationMs_gt: int64
+  aiSearchDurationMs_in: [int64!]
+  aiSearchDurationMs_leq: int64
+  aiSearchDurationMs_lt: int64
+  aiSearchDurationMs_neq: int64
+  aiSearchDurationMs_notin: [int64!]
+  aiSearchInputSizeTokens: int64
+  aiSearchInputSizeTokens_geq: int64
+  aiSearchInputSizeTokens_gt: int64
+  aiSearchInputSizeTokens_in: [int64!]
+  aiSearchInputSizeTokens_leq: int64
+  aiSearchInputSizeTokens_lt: int64
+  aiSearchInputSizeTokens_neq: int64
+  aiSearchInputSizeTokens_notin: [int64!]
+  aiSearchModel: string
+  aiSearchModel_geq: string
+  aiSearchModel_gt: string
+  aiSearchModel_in: [string!]
+  aiSearchModel_leq: string
+  aiSearchModel_like: string
+  aiSearchModel_lt: string
+  aiSearchModel_neq: string
+  aiSearchModel_notin: [string!]
+  aiSearchModel_notlike: string
+  aiSearchResultSizeTokens: int64
+  aiSearchResultSizeTokens_geq: int64
+  aiSearchResultSizeTokens_gt: int64
+  aiSearchResultSizeTokens_in: [int64!]
+  aiSearchResultSizeTokens_leq: int64
+  aiSearchResultSizeTokens_lt: int64
+  aiSearchResultSizeTokens_neq: int64
+  aiSearchResultSizeTokens_notin: [int64!]
+  chuckSizeTokensArray_has: int64
+  chuckSizeTokensArray_hasall: [int64!]
+  chuckSizeTokensArray_hasany: [int64!]
+  chuckSizeTokensArray_isempty: bool
+  chuckSizeTokensArray_nothas: int64
+  chunkOverlap: int64
+  chunkOverlap_geq: int64
+  chunkOverlap_gt: int64
+  chunkOverlap_in: [int64!]
+  chunkOverlap_leq: int64
+  chunkOverlap_lt: int64
+  chunkOverlap_neq: int64
+  chunkOverlap_notin: [int64!]
+  chunkSize: int64
+  chunkSize_geq: int64
+  chunkSize_gt: int64
+  chunkSize_in: [int64!]
+  chunkSize_leq: int64
+  chunkSize_lt: int64
+  chunkSize_neq: int64
+  chunkSize_notin: [int64!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  doRewrite: uint8
+  doRewrite_geq: uint8
+  doRewrite_gt: uint8
+  doRewrite_in: bytes
+  doRewrite_leq: uint8
+  doRewrite_lt: uint8
+  doRewrite_neq: uint8
+  doRewrite_notin: bytes
+  embeddingModel: string
+  embeddingModel_geq: string
+  embeddingModel_gt: string
+  embeddingModel_in: [string!]
+  embeddingModel_leq: string
+  embeddingModel_like: string
+  embeddingModel_lt: string
+  embeddingModel_neq: string
+  embeddingModel_notin: [string!]
+  embeddingModel_notlike: string
+  enableChunking: uint8
+  enableChunking_geq: uint8
+  enableChunking_gt: uint8
+  enableChunking_in: bytes
+  enableChunking_leq: uint8
+  enableChunking_lt: uint8
+  enableChunking_neq: uint8
+  enableChunking_notin: bytes
+  fileIdArray_has: string
+  fileIdArray_hasall: [string!]
+  fileIdArray_hasany: [string!]
+  fileIdArray_isempty: bool
+  fileIdArray_nothas: string
+  filenameArray_has: string
+  filenameArray_hasall: [string!]
+  filenameArray_hasany: [string!]
+  filenameArray_isempty: bool
+  filenameArray_nothas: string
+  getFilesDurationMs: int64
+  getFilesDurationMs_geq: int64
+  getFilesDurationMs_gt: int64
+  getFilesDurationMs_in: [int64!]
+  getFilesDurationMs_leq: int64
+  getFilesDurationMs_lt: int64
+  getFilesDurationMs_neq: int64
+  getFilesDurationMs_notin: [int64!]
+  getQueryVectorsAvgDurationMs: int64
+  getQueryVectorsAvgDurationMs_geq: int64
+  getQueryVectorsAvgDurationMs_gt: int64
+  getQueryVectorsAvgDurationMs_in: [int64!]
+  getQueryVectorsAvgDurationMs_leq: int64
+  getQueryVectorsAvgDurationMs_lt: int64
+  getQueryVectorsAvgDurationMs_neq: int64
+  getQueryVectorsAvgDurationMs_notin: [int64!]
+  getResultVectorsAvgDurationMs: int64
+  getResultVectorsAvgDurationMs_geq: int64
+  getResultVectorsAvgDurationMs_gt: int64
+  getResultVectorsAvgDurationMs_in: [int64!]
+  getResultVectorsAvgDurationMs_leq: int64
+  getResultVectorsAvgDurationMs_lt: int64
+  getResultVectorsAvgDurationMs_neq: int64
+  getResultVectorsAvgDurationMs_notin: [int64!]
+  isStream: uint8
+  isStream_geq: uint8
+  isStream_gt: uint8
+  isStream_in: bytes
+  isStream_leq: uint8
+  isStream_lt: uint8
+  isStream_neq: uint8
+  isStream_notin: bytes
+  maxResults: int64
+  maxResults_geq: int64
+  maxResults_gt: int64
+  maxResults_in: [int64!]
+  maxResults_leq: int64
+  maxResults_lt: int64
+  maxResults_neq: int64
+  maxResults_notin: [int64!]
+  numResults: int64
+  numResults_geq: int64
+  numResults_gt: int64
+  numResults_in: [int64!]
+  numResults_leq: int64
+  numResults_lt: int64
+  numResults_neq: int64
+  numResults_notin: [int64!]
+  querySizeTokens: int64
+  querySizeTokens_geq: int64
+  querySizeTokens_gt: int64
+  querySizeTokens_in: [int64!]
+  querySizeTokens_leq: int64
+  querySizeTokens_lt: int64
+  querySizeTokens_neq: int64
+  querySizeTokens_notin: [int64!]
+  rag: string
+  rag_geq: string
+  rag_gt: string
+  rag_in: [string!]
+  rag_leq: string
+  rag_like: string
+  rag_lt: string
+  rag_neq: string
+  rag_notin: [string!]
+  rag_notlike: string
+  regenerateMarkdown: uint8
+  regenerateMarkdown_geq: uint8
+  regenerateMarkdown_gt: uint8
+  regenerateMarkdown_in: bytes
+  regenerateMarkdown_leq: uint8
+  regenerateMarkdown_lt: uint8
+  regenerateMarkdown_neq: uint8
+  regenerateMarkdown_notin: bytes
+  rewriteDurationMs: int64
+  rewriteDurationMs_geq: int64
+  rewriteDurationMs_gt: int64
+  rewriteDurationMs_in: [int64!]
+  rewriteDurationMs_leq: int64
+  rewriteDurationMs_lt: int64
+  rewriteDurationMs_neq: int64
+  rewriteDurationMs_notin: [int64!]
+  rewriteInputSizeTokens: int64
+  rewriteInputSizeTokens_geq: int64
+  rewriteInputSizeTokens_gt: int64
+  rewriteInputSizeTokens_in: [int64!]
+  rewriteInputSizeTokens_leq: int64
+  rewriteInputSizeTokens_lt: int64
+  rewriteInputSizeTokens_neq: int64
+  rewriteInputSizeTokens_notin: [int64!]
+  rewriteModel: string
+  rewriteModel_geq: string
+  rewriteModel_gt: string
+  rewriteModel_in: [string!]
+  rewriteModel_leq: string
+  rewriteModel_like: string
+  rewriteModel_lt: string
+  rewriteModel_neq: string
+  rewriteModel_notin: [string!]
+  rewriteModel_notlike: string
+  rewritePromptIncluded: uint8
+  rewritePromptIncluded_geq: uint8
+  rewritePromptIncluded_gt: uint8
+  rewritePromptIncluded_in: bytes
+  rewritePromptIncluded_leq: uint8
+  rewritePromptIncluded_lt: uint8
+  rewritePromptIncluded_neq: uint8
+  rewritePromptIncluded_notin: bytes
+  rewriteResultSizeTokens: int64
+  rewriteResultSizeTokens_geq: int64
+  rewriteResultSizeTokens_gt: int64
+  rewriteResultSizeTokens_in: [int64!]
+  rewriteResultSizeTokens_leq: int64
+  rewriteResultSizeTokens_lt: int64
+  rewriteResultSizeTokens_neq: int64
+  rewriteResultSizeTokens_notin: [int64!]
+  scoreArray_has: float64
+  scoreArray_hasall: [float64!]
+  scoreArray_hasany: [float64!]
+  scoreArray_isempty: bool
+  scoreArray_nothas: float64
+  scoreThreshold: float64
+  scoreThreshold_geq: float64
+  scoreThreshold_gt: float64
+  scoreThreshold_in: [float64!]
+  scoreThreshold_leq: float64
+  scoreThreshold_lt: float64
+  scoreThreshold_neq: float64
+  scoreThreshold_notin: [float64!]
+  searchType: string
+  searchType_geq: string
+  searchType_gt: string
+  searchType_in: [string!]
+  searchType_leq: string
+  searchType_like: string
+  searchType_lt: string
+  searchType_neq: string
+  searchType_notin: [string!]
+  searchType_notlike: string
+  totalDurationMs: int64
+  totalDurationMs_geq: int64
+  totalDurationMs_gt: int64
+  totalDurationMs_in: [int64!]
+  totalDurationMs_leq: int64
+  totalDurationMs_lt: int64
+  totalDurationMs_neq: int64
+  totalDurationMs_notin: [int64!]
+}
+
+enum AccountAutoRAGConfigAPIAdaptiveGroupsOrderBy {
+  # aiPromptIncluded ascending
+  aiPromptIncluded_ASC
+  # aiPromptIncluded descending
+  aiPromptIncluded_DESC
+  # aiSearchDurationMs ascending
+  aiSearchDurationMs_ASC
+  # aiSearchDurationMs descending
+  aiSearchDurationMs_DESC
+  # aiSearchInputSizeTokens ascending
+  aiSearchInputSizeTokens_ASC
+  # aiSearchInputSizeTokens descending
+  aiSearchInputSizeTokens_DESC
+  # aiSearchModel ascending
+  aiSearchModel_ASC
+  # aiSearchModel descending
+  aiSearchModel_DESC
+  # aiSearchResultSizeTokens ascending
+  aiSearchResultSizeTokens_ASC
+  # aiSearchResultSizeTokens descending
+  aiSearchResultSizeTokens_DESC
+  # chuckSizeTokensArray ascending
+  chuckSizeTokensArray_ASC
+  # chuckSizeTokensArray descending
+  chuckSizeTokensArray_DESC
+  # chunkOverlap ascending
+  chunkOverlap_ASC
+  # chunkOverlap descending
+  chunkOverlap_DESC
+  # chunkSize ascending
+  chunkSize_ASC
+  # chunkSize descending
+  chunkSize_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # doRewrite ascending
+  doRewrite_ASC
+  # doRewrite descending
+  doRewrite_DESC
+  # embeddingModel ascending
+  embeddingModel_ASC
+  # embeddingModel descending
+  embeddingModel_DESC
+  # enableChunking ascending
+  enableChunking_ASC
+  # enableChunking descending
+  enableChunking_DESC
+  # fileIdArray ascending
+  fileIdArray_ASC
+  # fileIdArray descending
+  fileIdArray_DESC
+  # filenameArray ascending
+  filenameArray_ASC
+  # filenameArray descending
+  filenameArray_DESC
+  # getFilesDurationMs ascending
+  getFilesDurationMs_ASC
+  # getFilesDurationMs descending
+  getFilesDurationMs_DESC
+  # getQueryVectorsAvgDurationMs ascending
+  getQueryVectorsAvgDurationMs_ASC
+  # getQueryVectorsAvgDurationMs descending
+  getQueryVectorsAvgDurationMs_DESC
+  # getResultVectorsAvgDurationMs ascending
+  getResultVectorsAvgDurationMs_ASC
+  # getResultVectorsAvgDurationMs descending
+  getResultVectorsAvgDurationMs_DESC
+  # isStream ascending
+  isStream_ASC
+  # isStream descending
+  isStream_DESC
+  # maxResults ascending
+  maxResults_ASC
+  # maxResults descending
+  maxResults_DESC
+  # numResults ascending
+  numResults_ASC
+  # numResults descending
+  numResults_DESC
+  # querySizeTokens ascending
+  querySizeTokens_ASC
+  # querySizeTokens descending
+  querySizeTokens_DESC
+  # rag ascending
+  rag_ASC
+  # rag descending
+  rag_DESC
+  # regenerateMarkdown ascending
+  regenerateMarkdown_ASC
+  # regenerateMarkdown descending
+  regenerateMarkdown_DESC
+  # rewriteDurationMs ascending
+  rewriteDurationMs_ASC
+  # rewriteDurationMs descending
+  rewriteDurationMs_DESC
+  # rewriteInputSizeTokens ascending
+  rewriteInputSizeTokens_ASC
+  # rewriteInputSizeTokens descending
+  rewriteInputSizeTokens_DESC
+  # rewriteModel ascending
+  rewriteModel_ASC
+  # rewriteModel descending
+  rewriteModel_DESC
+  # rewritePromptIncluded ascending
+  rewritePromptIncluded_ASC
+  # rewritePromptIncluded descending
+  rewritePromptIncluded_DESC
+  # rewriteResultSizeTokens ascending
+  rewriteResultSizeTokens_ASC
+  # rewriteResultSizeTokens descending
+  rewriteResultSizeTokens_DESC
+  # scoreArray ascending
+  scoreArray_ASC
+  # scoreArray descending
+  scoreArray_DESC
+  # scoreThreshold ascending
+  scoreThreshold_ASC
+  # scoreThreshold descending
+  scoreThreshold_DESC
+  # searchType ascending
+  searchType_ASC
+  # searchType descending
+  searchType_DESC
+  # sum(aiSearchCount) ascending
+  sum_aiSearchCount_ASC
+  # sum(aiSearchCount) descending
+  sum_aiSearchCount_DESC
+  # sum(searchCount) ascending
+  sum_searchCount_ASC
+  # sum(searchCount) descending
+  sum_searchCount_DESC
+  # totalDurationMs ascending
+  totalDurationMs_ASC
+  # totalDurationMs descending
+  totalDurationMs_DESC
+}
+
+type AccountAutoRAGConfigAPIAdaptiveGroupsSum {
+  # The number of AI Searches for this RAG
+  aiSearchCount: uint64!
+  # The number of Searches for this RAG
+  searchCount: uint64!
+}
+
 # AutoRAG Engine Ingestion Analytics
 type AccountAutoRAGEngineAdaptiveGroups {
   # List of dimensions to group by
@@ -5240,7 +5783,7 @@ type AccountAutoRAGEngineAdaptiveGroups {
 }
 
 type AccountAutoRAGEngineAdaptiveGroupsDimensions {
-  # The date when trigger was triggerd
+  # The date when trigger was triggered
   date: Date!
   # The date and time truncated to fifteen minutes
   datetimeFifteenMinutes: Time!
@@ -5323,13 +5866,13 @@ input AccountAutoRAGEngineAdaptiveGroupsFilter_InputObject {
 
 type AccountAutoRAGEngineAdaptiveGroupsMax {
   # Max of completed items
-  completed: uint32!
+  completed: int64!
   # Max of errored items
-  errored: uint32!
+  errored: int64!
   # Max of queued items
-  queued: uint32!
+  queued: int64!
   # Max of running items
-  running: uint32!
+  running: int64!
 }
 
 enum AccountAutoRAGEngineAdaptiveGroupsOrderBy {
@@ -5696,6 +6239,161 @@ enum AccountBrowserRenderingApiAdaptiveGroupsOrderBy {
   tier_ASC
   # tier descending
   tier_DESC
+}
+
+# Aggregated Browser Rendering worker binding sessions with adaptive sampling
+type AccountBrowserRenderingBindingSessionsAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountBrowserRenderingBindingSessionsAdaptiveGroupsAvg
+  # Total number of sessions for an account
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountBrowserRenderingBindingSessionsAdaptiveGroupsDimensions
+  # The maximum value for a metric per dimension
+  max: AccountBrowserRenderingBindingSessionsAdaptiveGroupsMax
+  uniq: AccountBrowserRenderingBindingSessionsAdaptiveGroupsUniq
+}
+
+type AccountBrowserRenderingBindingSessionsAdaptiveGroupsAvg {
+  # Average concurrent browser sessions
+  avgConcurrentSessions: uint64!
+}
+
+type AccountBrowserRenderingBindingSessionsAdaptiveGroupsDimensions {
+  # Number of browser sessions used concurrently at the time of the event
+  concurrentSessions: uint64!
+  # The date of the event
+  date: Date!
+  # The date and time of the event truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time of the event truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time of the event truncated to the hour
+  datetimeHour: Time!
+  # The date and time of the event truncated to the minute
+  datetimeMinute: Time!
+  # Browser session ID
+  sessionId: string!
+}
+
+input AccountBrowserRenderingBindingSessionsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountBrowserRenderingBindingSessionsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountBrowserRenderingBindingSessionsAdaptiveGroupsFilter_InputObject!]
+  concurrentSessions: uint64
+  concurrentSessions_geq: uint64
+  concurrentSessions_gt: uint64
+  concurrentSessions_in: [uint64!]
+  concurrentSessions_leq: uint64
+  concurrentSessions_lt: uint64
+  concurrentSessions_neq: uint64
+  concurrentSessions_notin: [uint64!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+}
+
+type AccountBrowserRenderingBindingSessionsAdaptiveGroupsMax {
+  # Maximum concurrent browser sessions
+  maxConcurrentSessions: uint64!
+}
+
+enum AccountBrowserRenderingBindingSessionsAdaptiveGroupsOrderBy {
+  # avg(avgConcurrentSessions) ascending
+  avg_avgConcurrentSessions_ASC
+  # avg(avgConcurrentSessions) descending
+  avg_avgConcurrentSessions_DESC
+  # concurrentSessions ascending
+  concurrentSessions_ASC
+  # concurrentSessions descending
+  concurrentSessions_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # max(maxConcurrentSessions) ascending
+  max_maxConcurrentSessions_ASC
+  # max(maxConcurrentSessions) descending
+  max_maxConcurrentSessions_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # uniq(sessionIdCount) ascending
+  uniq_sessionIdCount_ASC
+  # uniq(sessionIdCount) descending
+  uniq_sessionIdCount_DESC
+}
+
+type AccountBrowserRenderingBindingSessionsAdaptiveGroupsUniq {
+  # Unique browser sessions
+  sessionIdCount: uint32!
 }
 
 # Aggregated Browser Rendering and Browser Rendering REST API browser sessions with adaptive sampling
@@ -8208,6 +8906,8 @@ type AccountCloudchamberMetricsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time the metric was received, truncated to one minute
   datetimeMinute: Time!
+  # The date and time the metric was received, truncated to six hours
+  datetimeSixHours: Time!
   # The deployment ID
   deploymentId: string!
   # If set, this metric was emitted while assigned to a durable object
@@ -8275,6 +8975,14 @@ input AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   deploymentId: string
   deploymentId_geq: string
   deploymentId_gt: string
@@ -8425,6 +9133,10 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # deploymentId ascending
   deploymentId_ASC
   # deploymentId descending
@@ -9148,6 +9860,8 @@ type AccountContainersMetricsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time the metric was received, truncated to one minute
   datetimeMinute: Time!
+  # The date and time the metric was received, truncated to six hours
+  datetimeSixHours: Time!
   # The deployment ID
   deploymentId: string!
   # If set, this metric was emitted while assigned to a durable object
@@ -9215,6 +9929,14 @@ input AccountContainersMetricsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   deploymentId: string
   deploymentId_geq: string
   deploymentId_gt: string
@@ -9365,6 +10087,10 @@ enum AccountContainersMetricsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # deploymentId ascending
   deploymentId_ASC
   # deploymentId descending
@@ -14776,6 +15502,8 @@ type AccountFirewallEventsAdaptive {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
+  attackSignatureCategories: [string!]!
   # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
   attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
@@ -14947,6 +15675,11 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureCategories_has: string
+  attackSignatureCategories_hasall: [string!]
+  attackSignatureCategories_hasany: [string!]
+  attackSignatureCategories_isempty: bool
+  attackSignatureCategories_nothas: string
   attackSignatureRefs_has: string
   attackSignatureRefs_hasall: [string!]
   attackSignatureRefs_hasany: [string!]
@@ -15521,6 +16254,8 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
+  attackSignatureCategories: [string!]!
   # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
   attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
@@ -15686,6 +16421,11 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureCategories_has: string
+  attackSignatureCategories_hasall: [string!]
+  attackSignatureCategories_hasany: [string!]
+  attackSignatureCategories_isempty: bool
+  attackSignatureCategories_nothas: string
   attackSignatureRefs_has: string
   attackSignatureRefs_hasall: [string!]
   attackSignatureRefs_hasany: [string!]
@@ -16241,6 +16981,10 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureCategories ascending
+  attackSignatureCategories_ASC
+  # attackSignatureCategories descending
+  attackSignatureCategories_DESC
   # attackSignatureRefs ascending
   attackSignatureRefs_ASC
   # attackSignatureRefs descending
@@ -16561,6 +17305,10 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureCategories ascending
+  attackSignatureCategories_ASC
+  # attackSignatureCategories descending
+  attackSignatureCategories_DESC
   # attackSignatureRefs ascending
   attackSignatureRefs_ASC
   # attackSignatureRefs descending
@@ -21821,6 +22569,8 @@ type AccountHttpRequestsAdaptive {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
+  attackSignatureCategories: [string!]!
   # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
   attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
@@ -21983,6 +22733,11 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureCategories_has: string
+  attackSignatureCategories_hasall: [string!]
+  attackSignatureCategories_hasany: [string!]
+  attackSignatureCategories_isempty: bool
+  attackSignatureCategories_nothas: string
   attackSignatureRefs_has: string
   attackSignatureRefs_hasall: [string!]
   attackSignatureRefs_hasany: [string!]
@@ -22643,6 +23398,8 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
+  attackSignatureCategories: [string!]!
   # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
   attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
@@ -22798,6 +23555,11 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureCategories_has: string
+  attackSignatureCategories_hasall: [string!]
+  attackSignatureCategories_hasany: [string!]
+  attackSignatureCategories_isempty: bool
+  attackSignatureCategories_nothas: string
   attackSignatureRefs_has: string
   attackSignatureRefs_hasall: [string!]
   attackSignatureRefs_hasany: [string!]
@@ -23433,6 +24195,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureCategories ascending
+  attackSignatureCategories_ASC
+  # attackSignatureCategories descending
+  attackSignatureCategories_DESC
   # attackSignatureRefs ascending
   attackSignatureRefs_ASC
   # attackSignatureRefs descending
@@ -23918,6 +24684,10 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureCategories ascending
+  attackSignatureCategories_ASC
+  # attackSignatureCategories descending
+  attackSignatureCategories_DESC
   # attackSignatureRefs ascending
   attackSignatureRefs_ASC
   # attackSignatureRefs descending
@@ -25974,6 +26744,8 @@ type AccountMagicEndpointHealthCheckAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # The endpoint of the check associated with the healthcheck
   endpoint: string!
+  # The name associated with the healthcheck
+  name: string!
 }
 
 input AccountMagicEndpointHealthCheckAdaptiveGroupsFilter_InputObject {
@@ -26065,6 +26837,16 @@ input AccountMagicEndpointHealthCheckAdaptiveGroupsFilter_InputObject {
   endpoint_neq: string
   endpoint_notin: [string!]
   endpoint_notlike: string
+  name: string
+  name_geq: string
+  name_gt: string
+  name_in: [string!]
+  name_leq: string
+  name_like: string
+  name_lt: string
+  name_neq: string
+  name_notin: [string!]
+  name_notlike: string
 }
 
 enum AccountMagicEndpointHealthCheckAdaptiveGroupsOrderBy {
@@ -26120,6 +26902,10 @@ enum AccountMagicEndpointHealthCheckAdaptiveGroupsOrderBy {
   endpoint_ASC
   # endpoint descending
   endpoint_DESC
+  # name ascending
+  name_ASC
+  # name descending
+  name_DESC
   # sum(failures) ascending
   sum_failures_ASC
   # sum(failures) descending
@@ -32673,7 +33459,7 @@ type AccountMagicTransitTunnelTrafficAdaptiveGroupsSum {
   packets: uint64!
 }
 
-# Beta. Magic WAN Connector Metrics
+# Magic WAN Connector Metrics (deprecated)
 type AccountMagicWANConnectorMetricsAdaptiveGroups {
   avg: AccountMagicWANConnectorMetricsAdaptiveGroupsAvg
   # List of dimensions to group by
@@ -42449,10 +43235,12 @@ type AccountSettings {
   aiGatewaySizeAdaptiveGroups: Settings!
   aiInferenceAdaptive: Settings!
   aiInferenceAdaptiveGroups: Settings!
+  autoRAGConfigAPIAdaptiveGroups: Settings!
   autoRAGEngineAdaptiveGroups: Settings!
   browserIsolationSessionsAdaptiveGroups: Settings!
   browserIsolationUserActionsAdaptiveGroups: Settings!
   browserRenderingApiAdaptiveGroups: Settings!
+  browserRenderingBindingSessionsAdaptiveGroups: Settings!
   browserRenderingBrowserTimeUsageAdaptiveGroups: Settings!
   browserRenderingEventsAdaptive: Settings!
   browserRenderingEventsAdaptiveGroups: Settings!
@@ -49909,6 +50697,8 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
+  attackSignatureCategories: [string!]!
   # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
   attackSignatureRefs: [string!]!
   # Judgement of the bot management system
@@ -50060,6 +50850,11 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureCategories_has: string
+  attackSignatureCategories_hasall: [string!]
+  attackSignatureCategories_hasany: [string!]
+  attackSignatureCategories_isempty: bool
+  attackSignatureCategories_nothas: string
   attackSignatureRefs_has: string
   attackSignatureRefs_hasall: [string!]
   attackSignatureRefs_hasany: [string!]
@@ -50675,6 +51470,10 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureCategories ascending
+  attackSignatureCategories_ASC
+  # attackSignatureCategories descending
+  attackSignatureCategories_DESC
   # attackSignatureRefs ascending
   attackSignatureRefs_ASC
   # attackSignatureRefs descending
@@ -54878,6 +55677,8 @@ type ZoneFirewallEventsAdaptive {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
+  attackSignatureCategories: [string!]!
   # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
   attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
@@ -55034,6 +55835,8 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
+  attackSignatureCategories: [string!]!
   # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
   attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
@@ -55129,6 +55932,11 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureCategories_has: string
+  attackSignatureCategories_hasall: [string!]
+  attackSignatureCategories_hasany: [string!]
+  attackSignatureCategories_isempty: bool
+  attackSignatureCategories_nothas: string
   attackSignatureRefs_has: string
   attackSignatureRefs_hasall: [string!]
   attackSignatureRefs_hasany: [string!]
@@ -55670,6 +56478,10 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureCategories ascending
+  attackSignatureCategories_ASC
+  # attackSignatureCategories descending
+  attackSignatureCategories_DESC
   # attackSignatureRefs ascending
   attackSignatureRefs_ASC
   # attackSignatureRefs descending
@@ -55856,6 +56668,11 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureCategories_has: string
+  attackSignatureCategories_hasall: [string!]
+  attackSignatureCategories_hasany: [string!]
+  attackSignatureCategories_isempty: bool
+  attackSignatureCategories_nothas: string
   attackSignatureRefs_has: string
   attackSignatureRefs_hasall: [string!]
   attackSignatureRefs_hasany: [string!]
@@ -56420,6 +57237,8 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
+  attackSignatureCategories: [string!]!
   # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
   attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
@@ -56583,6 +57402,11 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureCategories_has: string
+  attackSignatureCategories_hasall: [string!]
+  attackSignatureCategories_hasany: [string!]
+  attackSignatureCategories_isempty: bool
+  attackSignatureCategories_nothas: string
   attackSignatureRefs_has: string
   attackSignatureRefs_hasall: [string!]
   attackSignatureRefs_hasany: [string!]
@@ -57128,6 +57952,10 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureCategories ascending
+  attackSignatureCategories_ASC
+  # attackSignatureCategories descending
+  attackSignatureCategories_DESC
   # attackSignatureRefs ascending
   attackSignatureRefs_ASC
   # attackSignatureRefs descending
@@ -57444,6 +58272,10 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureCategories ascending
+  attackSignatureCategories_ASC
+  # attackSignatureCategories descending
+  attackSignatureCategories_DESC
   # attackSignatureRefs ascending
   attackSignatureRefs_ASC
   # attackSignatureRefs descending
@@ -59301,6 +60133,8 @@ type ZoneHttpRequestsAdaptive {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
+  attackSignatureCategories: [string!]!
   # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
   attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
@@ -59461,6 +60295,11 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureCategories_has: string
+  attackSignatureCategories_hasall: [string!]
+  attackSignatureCategories_hasany: [string!]
+  attackSignatureCategories_isempty: bool
+  attackSignatureCategories_nothas: string
   attackSignatureRefs_has: string
   attackSignatureRefs_hasall: [string!]
   attackSignatureRefs_hasany: [string!]
@@ -60111,6 +60950,8 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway host matched at the edge
   apiGatewayMatchedHost: string!
+  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
+  attackSignatureCategories: [string!]!
   # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
   attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
@@ -60264,6 +61105,11 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
+  attackSignatureCategories_has: string
+  attackSignatureCategories_hasall: [string!]
+  attackSignatureCategories_hasany: [string!]
+  attackSignatureCategories_isempty: bool
+  attackSignatureCategories_nothas: string
   attackSignatureRefs_has: string
   attackSignatureRefs_hasall: [string!]
   attackSignatureRefs_hasany: [string!]
@@ -60889,6 +61735,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureCategories ascending
+  attackSignatureCategories_ASC
+  # attackSignatureCategories descending
+  attackSignatureCategories_DESC
   # attackSignatureRefs ascending
   attackSignatureRefs_ASC
   # attackSignatureRefs descending
@@ -61370,6 +62220,10 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
+  # attackSignatureCategories ascending
+  attackSignatureCategories_ASC
+  # attackSignatureCategories descending
+  attackSignatureCategories_DESC
   # attackSignatureRefs ascending
   attackSignatureRefs_ASC
   # attackSignatureRefs descending
