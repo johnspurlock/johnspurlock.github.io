@@ -105,6 +105,10 @@ Account-level datasets:
 * pagesFunctionsInvocationsAdaptiveGroups
 * pipelinesDeliveryAdaptiveGroups
 * pipelinesIngestionAdaptiveGroups
+* pipelinesOperatorAdaptiveGroups
+* pipelinesOperatorStagingAdaptiveGroups
+* pipelinesSinkAdaptiveGroups
+* pipelinesSinkStagingAdaptiveGroups
 * queueBacklogAdaptiveGroups
 * queueConsumerMetricsAdaptiveGroups
 * queueDelayedBacklogAdaptiveGroups
@@ -461,6 +465,14 @@ type account {
   pipelinesDeliveryAdaptiveGroups(filter: AccountPipelinesDeliveryAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesDeliveryAdaptiveGroupsOrderBy!]): [AccountPipelinesDeliveryAdaptiveGroups!]!
   # Beta. Data ingested via Workers Pipelines
   pipelinesIngestionAdaptiveGroups(filter: AccountPipelinesIngestionAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesIngestionAdaptiveGroupsOrderBy!]): [AccountPipelinesIngestionAdaptiveGroups!]!
+  # Aggregated Pipelines source metrics with adaptive sampling
+  pipelinesOperatorAdaptiveGroups(filter: AccountPipelinesOperatorAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesOperatorAdaptiveGroupsOrderBy!]): [AccountPipelinesOperatorAdaptiveGroups!]!
+  # Aggregated Pipelines source metrics with adaptive sampling
+  pipelinesOperatorStagingAdaptiveGroups(filter: AccountPipelinesOperatorStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesOperatorStagingAdaptiveGroupsOrderBy!]): [AccountPipelinesOperatorStagingAdaptiveGroups!]!
+  # Aggregated Pipelines sink metrics with adaptive sampling
+  pipelinesSinkAdaptiveGroups(filter: AccountPipelinesSinkAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesSinkAdaptiveGroupsOrderBy!]): [AccountPipelinesSinkAdaptiveGroups!]!
+  # Aggregated Pipelines sink metrics with adaptive sampling
+  pipelinesSinkStagingAdaptiveGroups(filter: AccountPipelinesSinkStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesSinkStagingAdaptiveGroupsOrderBy!]): [AccountPipelinesSinkStagingAdaptiveGroups!]!
   # Beta. Queue backlog data with adaptive sampling. Queues that are not being written to, or read from, will not return data, even if they have a backlog.
   queueBacklogAdaptiveGroups(filter: AccountQueueBacklogAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueBacklogAdaptiveGroupsOrderBy!]): [AccountQueueBacklogAdaptiveGroups!]!
   # Beta. Queue consumer metrics with adaptive sampling. Inactive queues will not return data.
@@ -607,6 +619,8 @@ type AccountAccessLoginRequestsAdaptiveGroupsDimensions {
   mtlsStatus: string!
   # Service token ID
   serviceTokenId: string!
+  # Service token version
+  serviceTokenVersion: uint64!
   # User UUID
   userUuid: string!
 }
@@ -780,6 +794,14 @@ input AccountAccessLoginRequestsAdaptiveGroupsFilter_InputObject {
   serviceTokenId_neq: string
   serviceTokenId_notin: [string!]
   serviceTokenId_notlike: string
+  serviceTokenVersion: uint64
+  serviceTokenVersion_geq: uint64
+  serviceTokenVersion_gt: uint64
+  serviceTokenVersion_in: [uint64!]
+  serviceTokenVersion_leq: uint64
+  serviceTokenVersion_lt: uint64
+  serviceTokenVersion_neq: uint64
+  serviceTokenVersion_notin: [uint64!]
   userUuid: string
   userUuid_geq: string
   userUuid_gt: string
@@ -873,6 +895,10 @@ enum AccountAccessLoginRequestsAdaptiveGroupsOrderBy {
   serviceTokenId_ASC
   # serviceTokenId descending
   serviceTokenId_DESC
+  # serviceTokenVersion ascending
+  serviceTokenVersion_ASC
+  # serviceTokenVersion descending
+  serviceTokenVersion_DESC
   # userUuid ascending
   userUuid_ASC
   # userUuid descending
@@ -6915,7 +6941,7 @@ type AccountBrowserRenderingBrowserTimeUsageAdaptiveGroupsSumConfidence {
 
 # Browser Rendering events with adaptive sampling
 type AccountBrowserRenderingEventsAdaptive {
-  # Browser session close code. Enum (-1, N/A) (0, Unknown) (1, NormalClosure) (2, BrowserIdle) (3, ClientClosedEarly) (4, ChromiumChrashed) (5, ClientAbnormalClosure) (6, ServerAbnormalClosure) (7, ClientError) (8, ServerError) (9, WorkerError) (10, ClientNeverConnected) (11, BrowserSessionEvicted)
+  # Browser session close code. Enum (-1, N/A) (0, Unknown) (1, NormalClosure) (2, BrowserIdle) (3, ClientClosedEarly) (4, ChromiumChrashed) (5, ClientAbnormalClosure) (6, ServerAbnormalClosure) (7, ClientError) (8, ServerError) (9, WorkerError) (10, ClientNeverConnected) (11, BrowserSessionEvicted) (12, UsedBrowserTimeLimitExceeded)
   browserCloseReason: string!
   # Browser session end time
   browserEndTime: Time!
@@ -7070,7 +7096,7 @@ type AccountBrowserRenderingEventsAdaptiveGroupsConfidence {
 }
 
 type AccountBrowserRenderingEventsAdaptiveGroupsDimensions {
-  # Browser session close code. Enum (-1, N/A) (0, Unknown) (1, NormalClosure) (2, BrowserIdle) (3, ClientClosedEarly) (4, ChromiumChrashed) (5, ClientAbnormalClosure) (6, ServerAbnormalClosure) (7, ClientError) (8, ServerError) (9, WorkerError) (10, ClientNeverConnected) (11, BrowserSessionEvicted)
+  # Browser session close code. Enum (-1, N/A) (0, Unknown) (1, NormalClosure) (2, BrowserIdle) (3, ClientClosedEarly) (4, ChromiumChrashed) (5, ClientAbnormalClosure) (6, ServerAbnormalClosure) (7, ClientError) (8, ServerError) (9, WorkerError) (10, ClientNeverConnected) (11, BrowserSessionEvicted) (12, UsedBrowserTimeLimitExceeded)
   browserCloseReason: string!
   # Number of browser sessions used concurrently at the time of the event
   concurrentSessions: uint64!
@@ -41589,6 +41615,622 @@ type AccountPipelinesIngestionAdaptiveGroupsSumConfidence {
   ingestedRecords: Confidence!
 }
 
+# Aggregated Pipelines source metrics with adaptive sampling
+type AccountPipelinesOperatorAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountPipelinesOperatorAdaptiveGroupsConfidence!
+  # List of dimensions to group by
+  dimensions: AccountPipelinesOperatorAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountPipelinesOperatorAdaptiveGroupsSum
+}
+
+type AccountPipelinesOperatorAdaptiveGroupsConfidence {
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountPipelinesOperatorAdaptiveGroupsSumConfidence
+}
+
+type AccountPipelinesOperatorAdaptiveGroupsDimensions {
+  # Delivery operation timestamp, truncated to start of a day
+  date: Date!
+  # Delivery operation timestamp
+  datetime: Time!
+  # Delivery operation timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Delivery operation timestamp, truncated to start of a minute
+  datetimeMinute: Time!
+  # The pipeline ID
+  pipelineId: string!
+  # The Stream ID
+  streamId: string!
+}
+
+input AccountPipelinesOperatorAdaptiveGroupsFilter_InputObject {
+  AND: [AccountPipelinesOperatorAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountPipelinesOperatorAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  pipelineId: string
+  pipelineId_geq: string
+  pipelineId_gt: string
+  pipelineId_in: [string!]
+  pipelineId_leq: string
+  pipelineId_like: string
+  pipelineId_lt: string
+  pipelineId_neq: string
+  pipelineId_notin: [string!]
+  pipelineId_notlike: string
+  streamId: string
+  streamId_geq: string
+  streamId_gt: string
+  streamId_in: [string!]
+  streamId_leq: string
+  streamId_like: string
+  streamId_lt: string
+  streamId_neq: string
+  streamId_notin: [string!]
+  streamId_notlike: string
+}
+
+enum AccountPipelinesOperatorAdaptiveGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # pipelineId ascending
+  pipelineId_ASC
+  # pipelineId descending
+  pipelineId_DESC
+  # streamId ascending
+  streamId_ASC
+  # streamId descending
+  streamId_DESC
+  # sum(bytesIn) ascending
+  sum_bytesIn_ASC
+  # sum(bytesIn) descending
+  sum_bytesIn_DESC
+  # sum(decodeErrors) ascending
+  sum_decodeErrors_ASC
+  # sum(decodeErrors) descending
+  sum_decodeErrors_DESC
+  # sum(recordsIn) ascending
+  sum_recordsIn_ASC
+  # sum(recordsIn) descending
+  sum_recordsIn_DESC
+}
+
+type AccountPipelinesOperatorAdaptiveGroupsSum {
+  # Total number of bytes ingested
+  bytesIn: int64!
+  # Number of messages that could not be deserialized in the stream schema
+  decodeErrors: int64!
+  # Total number of records ingestesd
+  recordsIn: int64!
+}
+
+type AccountPipelinesOperatorAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  bytesIn: Confidence!
+  # Confidence interval for the corresponding point estimate
+  decodeErrors: Confidence!
+  # Confidence interval for the corresponding point estimate
+  recordsIn: Confidence!
+}
+
+# Aggregated Pipelines source metrics with adaptive sampling
+type AccountPipelinesOperatorStagingAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountPipelinesOperatorStagingAdaptiveGroupsConfidence!
+  # List of dimensions to group by
+  dimensions: AccountPipelinesOperatorStagingAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountPipelinesOperatorStagingAdaptiveGroupsSum
+}
+
+type AccountPipelinesOperatorStagingAdaptiveGroupsConfidence {
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountPipelinesOperatorStagingAdaptiveGroupsSumConfidence
+}
+
+type AccountPipelinesOperatorStagingAdaptiveGroupsDimensions {
+  # Delivery operation timestamp, truncated to start of a day
+  date: Date!
+  # Delivery operation timestamp
+  datetime: Time!
+  # Delivery operation timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Delivery operation timestamp, truncated to start of a minute
+  datetimeMinute: Time!
+  # The pipeline ID
+  pipelineId: string!
+  # The Stream ID
+  streamId: string!
+}
+
+input AccountPipelinesOperatorStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountPipelinesOperatorStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountPipelinesOperatorStagingAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  pipelineId: string
+  pipelineId_geq: string
+  pipelineId_gt: string
+  pipelineId_in: [string!]
+  pipelineId_leq: string
+  pipelineId_like: string
+  pipelineId_lt: string
+  pipelineId_neq: string
+  pipelineId_notin: [string!]
+  pipelineId_notlike: string
+  streamId: string
+  streamId_geq: string
+  streamId_gt: string
+  streamId_in: [string!]
+  streamId_leq: string
+  streamId_like: string
+  streamId_lt: string
+  streamId_neq: string
+  streamId_notin: [string!]
+  streamId_notlike: string
+}
+
+enum AccountPipelinesOperatorStagingAdaptiveGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # pipelineId ascending
+  pipelineId_ASC
+  # pipelineId descending
+  pipelineId_DESC
+  # streamId ascending
+  streamId_ASC
+  # streamId descending
+  streamId_DESC
+  # sum(bytesIn) ascending
+  sum_bytesIn_ASC
+  # sum(bytesIn) descending
+  sum_bytesIn_DESC
+  # sum(decodeErrors) ascending
+  sum_decodeErrors_ASC
+  # sum(decodeErrors) descending
+  sum_decodeErrors_DESC
+  # sum(messagesIn) ascending
+  sum_messagesIn_ASC
+  # sum(messagesIn) descending
+  sum_messagesIn_DESC
+}
+
+type AccountPipelinesOperatorStagingAdaptiveGroupsSum {
+  # Total number of bytes ingested
+  bytesIn: int64!
+  # Number of messages that could not be deserialized in the stream schema
+  decodeErrors: int64!
+  # Total number of messages ingested
+  messagesIn: int64!
+}
+
+type AccountPipelinesOperatorStagingAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  bytesIn: Confidence!
+  # Confidence interval for the corresponding point estimate
+  decodeErrors: Confidence!
+  # Confidence interval for the corresponding point estimate
+  messagesIn: Confidence!
+}
+
+# Aggregated Pipelines sink metrics with adaptive sampling
+type AccountPipelinesSinkAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountPipelinesSinkAdaptiveGroupsConfidence!
+  # List of dimensions to group by
+  dimensions: AccountPipelinesSinkAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountPipelinesSinkAdaptiveGroupsSum
+}
+
+type AccountPipelinesSinkAdaptiveGroupsConfidence {
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountPipelinesSinkAdaptiveGroupsSumConfidence
+}
+
+type AccountPipelinesSinkAdaptiveGroupsDimensions {
+  # Delivery operation timestamp, truncated to start of a day
+  date: Date!
+  # Delivery operation timestamp
+  datetime: Time!
+  # Delivery operation timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Delivery operation timestamp, truncated to start of a minute
+  datetimeMinute: Time!
+  # The pipeline ID
+  pipelineId: string!
+  # The Sink ID
+  sinkId: string!
+}
+
+input AccountPipelinesSinkAdaptiveGroupsFilter_InputObject {
+  AND: [AccountPipelinesSinkAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountPipelinesSinkAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  pipelineId: string
+  pipelineId_geq: string
+  pipelineId_gt: string
+  pipelineId_in: [string!]
+  pipelineId_leq: string
+  pipelineId_like: string
+  pipelineId_lt: string
+  pipelineId_neq: string
+  pipelineId_notin: [string!]
+  pipelineId_notlike: string
+  sinkId: string
+  sinkId_geq: string
+  sinkId_gt: string
+  sinkId_in: [string!]
+  sinkId_leq: string
+  sinkId_like: string
+  sinkId_lt: string
+  sinkId_neq: string
+  sinkId_notin: [string!]
+  sinkId_notlike: string
+}
+
+enum AccountPipelinesSinkAdaptiveGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # pipelineId ascending
+  pipelineId_ASC
+  # pipelineId descending
+  pipelineId_DESC
+  # sinkId ascending
+  sinkId_ASC
+  # sinkId descending
+  sinkId_DESC
+  # sum(bytesWritten) ascending
+  sum_bytesWritten_ASC
+  # sum(bytesWritten) descending
+  sum_bytesWritten_DESC
+  # sum(filesWritten) ascending
+  sum_filesWritten_ASC
+  # sum(filesWritten) descending
+  sum_filesWritten_DESC
+  # sum(recordsWritten) ascending
+  sum_recordsWritten_ASC
+  # sum(recordsWritten) descending
+  sum_recordsWritten_DESC
+  # sum(rowGroupsWritten) ascending
+  sum_rowGroupsWritten_ASC
+  # sum(rowGroupsWritten) descending
+  sum_rowGroupsWritten_DESC
+  # sum(uncompressedBytesWritten) ascending
+  sum_uncompressedBytesWritten_ASC
+  # sum(uncompressedBytesWritten) descending
+  sum_uncompressedBytesWritten_DESC
+}
+
+type AccountPipelinesSinkAdaptiveGroupsSum {
+  # Total number of bytes written to the sink, after compression
+  bytesWritten: int64!
+  # Number of files written
+  filesWritten: int64!
+  # Total number of records written to the sink
+  recordsWritten: int64!
+  # Number of Parquet Row Groups written
+  rowGroupsWritten: int64!
+  # Total number of bytes written before compression
+  uncompressedBytesWritten: int64!
+}
+
+type AccountPipelinesSinkAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  bytesWritten: Confidence!
+  # Confidence interval for the corresponding point estimate
+  filesWritten: Confidence!
+  # Confidence interval for the corresponding point estimate
+  recordsWritten: Confidence!
+  # Confidence interval for the corresponding point estimate
+  rowGroupsWritten: Confidence!
+  # Confidence interval for the corresponding point estimate
+  uncompressedBytesWritten: Confidence!
+}
+
+# Aggregated Pipelines sink metrics with adaptive sampling
+type AccountPipelinesSinkStagingAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountPipelinesSinkStagingAdaptiveGroupsConfidence!
+  # List of dimensions to group by
+  dimensions: AccountPipelinesSinkStagingAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountPipelinesSinkStagingAdaptiveGroupsSum
+}
+
+type AccountPipelinesSinkStagingAdaptiveGroupsConfidence {
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountPipelinesSinkStagingAdaptiveGroupsSumConfidence
+}
+
+type AccountPipelinesSinkStagingAdaptiveGroupsDimensions {
+  # Delivery operation timestamp, truncated to start of a day
+  date: Date!
+  # Delivery operation timestamp
+  datetime: Time!
+  # Delivery operation timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Delivery operation timestamp, truncated to start of a minute
+  datetimeMinute: Time!
+  # The pipeline ID
+  pipelineId: string!
+  # The Stream ID
+  streamId: string!
+}
+
+input AccountPipelinesSinkStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountPipelinesSinkStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountPipelinesSinkStagingAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  pipelineId: string
+  pipelineId_geq: string
+  pipelineId_gt: string
+  pipelineId_in: [string!]
+  pipelineId_leq: string
+  pipelineId_like: string
+  pipelineId_lt: string
+  pipelineId_neq: string
+  pipelineId_notin: [string!]
+  pipelineId_notlike: string
+  streamId: string
+  streamId_geq: string
+  streamId_gt: string
+  streamId_in: [string!]
+  streamId_leq: string
+  streamId_like: string
+  streamId_lt: string
+  streamId_neq: string
+  streamId_notin: [string!]
+  streamId_notlike: string
+}
+
+enum AccountPipelinesSinkStagingAdaptiveGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # pipelineId ascending
+  pipelineId_ASC
+  # pipelineId descending
+  pipelineId_DESC
+  # streamId ascending
+  streamId_ASC
+  # streamId descending
+  streamId_DESC
+  # sum(bytesWritten) ascending
+  sum_bytesWritten_ASC
+  # sum(bytesWritten) descending
+  sum_bytesWritten_DESC
+  # sum(filesWritten) ascending
+  sum_filesWritten_ASC
+  # sum(filesWritten) descending
+  sum_filesWritten_DESC
+  # sum(recordsWritten) ascending
+  sum_recordsWritten_ASC
+  # sum(recordsWritten) descending
+  sum_recordsWritten_DESC
+  # sum(rowGroupsWritten) ascending
+  sum_rowGroupsWritten_ASC
+  # sum(rowGroupsWritten) descending
+  sum_rowGroupsWritten_DESC
+  # sum(uncompressedBytesWritten) ascending
+  sum_uncompressedBytesWritten_ASC
+  # sum(uncompressedBytesWritten) descending
+  sum_uncompressedBytesWritten_DESC
+}
+
+type AccountPipelinesSinkStagingAdaptiveGroupsSum {
+  # Total number of bytes written to the sink, after compression
+  bytesWritten: int64!
+  # Number of files written
+  filesWritten: int64!
+  # Total number of records written to the sink
+  recordsWritten: int64!
+  # Number of Parquet Row Groups written
+  rowGroupsWritten: int64!
+  # Total number of bytes written before compression
+  uncompressedBytesWritten: int64!
+}
+
+type AccountPipelinesSinkStagingAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  bytesWritten: Confidence!
+  # Confidence interval for the corresponding point estimate
+  filesWritten: Confidence!
+  # Confidence interval for the corresponding point estimate
+  recordsWritten: Confidence!
+  # Confidence interval for the corresponding point estimate
+  rowGroupsWritten: Confidence!
+  # Confidence interval for the corresponding point estimate
+  uncompressedBytesWritten: Confidence!
+}
+
 # Beta. Queue backlog data with adaptive sampling. Queues that are not being written to, or read from, will not return data, even if they have a backlog.
 type AccountQueueBacklogAdaptiveGroups {
   # The average value for a metric per dimension
@@ -45235,6 +45877,10 @@ type AccountSettings {
   pagesFunctionsInvocationsAdaptiveGroups: Settings!
   pipelinesDeliveryAdaptiveGroups: Settings!
   pipelinesIngestionAdaptiveGroups: Settings!
+  pipelinesOperatorAdaptiveGroups: Settings!
+  pipelinesOperatorStagingAdaptiveGroups: Settings!
+  pipelinesSinkAdaptiveGroups: Settings!
+  pipelinesSinkStagingAdaptiveGroups: Settings!
   queueBacklogAdaptiveGroups: Settings!
   queueConsumerMetricsAdaptiveGroups: Settings!
   queueDelayedBacklogAdaptiveGroups: Settings!
