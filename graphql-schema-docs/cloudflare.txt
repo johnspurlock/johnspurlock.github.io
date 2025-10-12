@@ -58228,6 +58228,8 @@ type ZoneEmailRoutingAdaptive {
   eventType: string!
   # The sender email address of the source email
   from: string!
+  # Is this event related to Email Sending?
+  isEmailSending: uint8!
   # Is this event related to a NDR (bounce) email?
   isNDR: uint8!
   # Source email is spam
@@ -58335,6 +58337,14 @@ input ZoneEmailRoutingAdaptiveFilter_InputObject {
   from_neq: string
   from_notin: [string!]
   from_notlike: string
+  isEmailSending: uint8
+  isEmailSending_geq: uint8
+  isEmailSending_gt: uint8
+  isEmailSending_in: bytes
+  isEmailSending_leq: uint8
+  isEmailSending_lt: uint8
+  isEmailSending_neq: uint8
+  isEmailSending_notin: bytes
   isNDR: uint8
   isNDR_geq: uint8
   isNDR_gt: uint8
@@ -58485,6 +58495,8 @@ type ZoneEmailRoutingAdaptiveGroupsDimensions {
   dmarc: string!
   # Origin of email (incoming|forward|reply|newEmail)
   eventType: string!
+  # Is this event related to Email Sending?
+  isEmailSending: uint8!
   # Is this event related to a NDR (bounce) email?
   isNDR: uint8!
   # Source email is spam
@@ -58596,6 +58608,14 @@ input ZoneEmailRoutingAdaptiveGroupsFilter_InputObject {
   eventType_neq: string
   eventType_notin: [string!]
   eventType_notlike: string
+  isEmailSending: uint8
+  isEmailSending_geq: uint8
+  isEmailSending_gt: uint8
+  isEmailSending_in: bytes
+  isEmailSending_leq: uint8
+  isEmailSending_lt: uint8
+  isEmailSending_neq: uint8
+  isEmailSending_notin: bytes
   isNDR: uint8
   isNDR_geq: uint8
   isNDR_gt: uint8
@@ -58713,6 +58733,10 @@ enum ZoneEmailRoutingAdaptiveGroupsOrderBy {
   eventType_ASC
   # eventType descending
   eventType_DESC
+  # isEmailSending ascending
+  isEmailSending_ASC
+  # isEmailSending descending
+  isEmailSending_DESC
   # isNDR ascending
   isNDR_ASC
   # isNDR descending
@@ -58780,6 +58804,10 @@ enum ZoneEmailRoutingAdaptiveOrderBy {
   from_ASC
   # from descending
   from_DESC
+  # isEmailSending ascending
+  isEmailSending_ASC
+  # isEmailSending descending
+  isEmailSending_DESC
   # isNDR ascending
   isNDR_ASC
   # isNDR descending
