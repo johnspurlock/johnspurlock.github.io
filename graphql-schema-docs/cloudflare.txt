@@ -5502,6 +5502,8 @@ type AccountAutoRAGConfigAPIAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time truncated to the minute
   datetimeMinute: Time!
+  # Whether re-ranking was used when performing this search task (0 = false, 1 = true)
+  doReranking: uint8!
   # Whether to do query rewriting when performing searches with this RAG (0 = false, 1 = true)
   doRewrite: uint8!
   # The model used to generate embeddings
@@ -5522,6 +5524,8 @@ type AccountAutoRAGConfigAPIAdaptiveGroupsDimensions {
   isStream: uint8!
   # THe max number of results that can be returned
   maxResults: int64!
+  # The time in milliseconds it took to generate embeddings for this search's query
+  numChunksToRetrieve: int64!
   # The number of returned results
   numResults: int64!
   # The size of the given query in tokens
@@ -5530,6 +5534,8 @@ type AccountAutoRAGConfigAPIAdaptiveGroupsDimensions {
   rag: string!
   # Whether to this search implied regenerating markdown for returned results (0 = false, 1 = true)
   regenerateMarkdown: uint8!
+  # The reranking model used in this search
+  rerankingModel: string!
   # The time in milliseconds that it took to rewrite the query
   rewriteDurationMs: int64!
   # The size in tokens of the rewritten input
@@ -5656,6 +5662,14 @@ input AccountAutoRAGConfigAPIAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  doReranking: uint8
+  doReranking_geq: uint8
+  doReranking_gt: uint8
+  doReranking_in: bytes
+  doReranking_leq: uint8
+  doReranking_lt: uint8
+  doReranking_neq: uint8
+  doReranking_notin: bytes
   doRewrite: uint8
   doRewrite_geq: uint8
   doRewrite_gt: uint8
@@ -5732,6 +5746,14 @@ input AccountAutoRAGConfigAPIAdaptiveGroupsFilter_InputObject {
   maxResults_lt: int64
   maxResults_neq: int64
   maxResults_notin: [int64!]
+  numChunksToRetrieve: int64
+  numChunksToRetrieve_geq: int64
+  numChunksToRetrieve_gt: int64
+  numChunksToRetrieve_in: [int64!]
+  numChunksToRetrieve_leq: int64
+  numChunksToRetrieve_lt: int64
+  numChunksToRetrieve_neq: int64
+  numChunksToRetrieve_notin: [int64!]
   numResults: int64
   numResults_geq: int64
   numResults_gt: int64
@@ -5766,6 +5788,16 @@ input AccountAutoRAGConfigAPIAdaptiveGroupsFilter_InputObject {
   regenerateMarkdown_lt: uint8
   regenerateMarkdown_neq: uint8
   regenerateMarkdown_notin: bytes
+  rerankingModel: string
+  rerankingModel_geq: string
+  rerankingModel_gt: string
+  rerankingModel_in: [string!]
+  rerankingModel_leq: string
+  rerankingModel_like: string
+  rerankingModel_lt: string
+  rerankingModel_neq: string
+  rerankingModel_notin: [string!]
+  rerankingModel_notlike: string
   rewriteDurationMs: int64
   rewriteDurationMs_geq: int64
   rewriteDurationMs_gt: int64
@@ -5894,6 +5926,10 @@ enum AccountAutoRAGConfigAPIAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # doReranking ascending
+  doReranking_ASC
+  # doReranking descending
+  doReranking_DESC
   # doRewrite ascending
   doRewrite_ASC
   # doRewrite descending
@@ -5934,6 +5970,10 @@ enum AccountAutoRAGConfigAPIAdaptiveGroupsOrderBy {
   maxResults_ASC
   # maxResults descending
   maxResults_DESC
+  # numChunksToRetrieve ascending
+  numChunksToRetrieve_ASC
+  # numChunksToRetrieve descending
+  numChunksToRetrieve_DESC
   # numResults ascending
   numResults_ASC
   # numResults descending
@@ -5950,6 +5990,10 @@ enum AccountAutoRAGConfigAPIAdaptiveGroupsOrderBy {
   regenerateMarkdown_ASC
   # regenerateMarkdown descending
   regenerateMarkdown_DESC
+  # rerankingModel ascending
+  rerankingModel_ASC
+  # rerankingModel descending
+  rerankingModel_DESC
   # rewriteDurationMs ascending
   rewriteDurationMs_ASC
   # rewriteDurationMs descending
@@ -16298,6 +16342,14 @@ type AccountFirewallEventsAdaptive {
   firewallForAiPiiCategories: [string!]!
   # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
   firewallForAiUnsafeTopicCategories: [string!]!
+  # The primary attack or use case detected in the request by Fraud detections
+  fraudAttack: string!
+  # Array of fraud detections ids that matched this request
+  fraudDetectionIds: [uint32!]!
+  # Array of fraud detections tags that matched this request
+  fraudDetectionTags: [string!]!
+  # Risk of a specific email address in account signup attempts
+  fraudEmailRisk: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -16307,6 +16359,8 @@ type AccountFirewallEventsAdaptive {
   ja4: string!
   # Inter-request statistics computed for this JA4 across Cloudflare's entire global edge network
   ja4Signals: [AccountFirewallEventsAdaptiveJa4SignalsElem!]!
+  # Whether the request passed background JavaScript Detection
+  jsDetectionPassed: string!
   # The kind of event, currently only possible values are: firewall
   kind: string!
   # The distinct result of checking for leaked credentials
@@ -16333,6 +16387,8 @@ type AccountFirewallEventsAdaptive {
   source: string!
   # visitor's user-agent string
   userAgent: string!
+  # The category of verified bot
+  verifiedBotCategory: string!
   # Beta. Overall request score generated by the WAF detection module
   wafAttackScore: uint8!
   # Beta. Overall request score class generated by the WAF detection module
@@ -16720,6 +16776,36 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   firewallForAiUnsafeTopicCategories_hasany: [string!]
   firewallForAiUnsafeTopicCategories_isempty: bool
   firewallForAiUnsafeTopicCategories_nothas: string
+  fraudAttack: string
+  fraudAttack_geq: string
+  fraudAttack_gt: string
+  fraudAttack_in: [string!]
+  fraudAttack_leq: string
+  fraudAttack_like: string
+  fraudAttack_lt: string
+  fraudAttack_neq: string
+  fraudAttack_notin: [string!]
+  fraudAttack_notlike: string
+  fraudDetectionIds_has: uint32
+  fraudDetectionIds_hasall: [uint32!]
+  fraudDetectionIds_hasany: [uint32!]
+  fraudDetectionIds_isempty: bool
+  fraudDetectionIds_nothas: uint32
+  fraudDetectionTags_has: string
+  fraudDetectionTags_hasall: [string!]
+  fraudDetectionTags_hasany: [string!]
+  fraudDetectionTags_isempty: bool
+  fraudDetectionTags_nothas: string
+  fraudEmailRisk: string
+  fraudEmailRisk_geq: string
+  fraudEmailRisk_gt: string
+  fraudEmailRisk_in: [string!]
+  fraudEmailRisk_leq: string
+  fraudEmailRisk_like: string
+  fraudEmailRisk_lt: string
+  fraudEmailRisk_neq: string
+  fraudEmailRisk_notin: [string!]
+  fraudEmailRisk_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -16748,6 +16834,16 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   ja4_neq: string
   ja4_notin: [string!]
   ja4_notlike: string
+  jsDetectionPassed: string
+  jsDetectionPassed_geq: string
+  jsDetectionPassed_gt: string
+  jsDetectionPassed_in: [string!]
+  jsDetectionPassed_leq: string
+  jsDetectionPassed_like: string
+  jsDetectionPassed_lt: string
+  jsDetectionPassed_neq: string
+  jsDetectionPassed_notin: [string!]
+  jsDetectionPassed_notlike: string
   kind: string
   kind_geq: string
   kind_gt: string
@@ -16862,6 +16958,16 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   userAgent_neq: string
   userAgent_notin: [string!]
   userAgent_notlike: string
+  verifiedBotCategory: string
+  verifiedBotCategory_geq: string
+  verifiedBotCategory_gt: string
+  verifiedBotCategory_in: [string!]
+  verifiedBotCategory_leq: string
+  verifiedBotCategory_like: string
+  verifiedBotCategory_lt: string
+  verifiedBotCategory_neq: string
+  verifiedBotCategory_notin: [string!]
+  verifiedBotCategory_notlike: string
   wafAttackScore: uint8
   wafAttackScoreClass: string
   wafAttackScoreClass_geq: string
@@ -17059,6 +17165,14 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   firewallForAiPiiCategories: [string!]!
   # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
   firewallForAiUnsafeTopicCategories: [string!]!
+  # The primary attack or use case detected in the request by Fraud detections
+  fraudAttack: string!
+  # Array of fraud detections ids that matched this request
+  fraudDetectionIds: [uint32!]!
+  # Array of fraud detections tags that matched this request
+  fraudDetectionTags: [string!]!
+  # Risk of a specific email address in account signup attempts
+  fraudEmailRisk: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -17066,6 +17180,8 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   ja3Hash: string!
   # JA4 TLS fingerprint
   ja4: string!
+  # Whether the request passed background JavaScript Detection
+  jsDetectionPassed: string!
   # The kind of event, currently only possible values are: firewall
   kind: string!
   # Rules match index in the chain
@@ -17088,6 +17204,8 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   source: string!
   # visitor's user-agent string
   userAgent: string!
+  # The category of verified bot
+  verifiedBotCategory: string!
   # Beta. Overall request score generated by the WAF detection module
   wafAttackScore: uint8!
   # Beta. Overall request score class generated by the WAF detection module
@@ -17475,6 +17593,36 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   firewallForAiUnsafeTopicCategories_hasany: [string!]
   firewallForAiUnsafeTopicCategories_isempty: bool
   firewallForAiUnsafeTopicCategories_nothas: string
+  fraudAttack: string
+  fraudAttack_geq: string
+  fraudAttack_gt: string
+  fraudAttack_in: [string!]
+  fraudAttack_leq: string
+  fraudAttack_like: string
+  fraudAttack_lt: string
+  fraudAttack_neq: string
+  fraudAttack_notin: [string!]
+  fraudAttack_notlike: string
+  fraudDetectionIds_has: uint32
+  fraudDetectionIds_hasall: [uint32!]
+  fraudDetectionIds_hasany: [uint32!]
+  fraudDetectionIds_isempty: bool
+  fraudDetectionIds_nothas: uint32
+  fraudDetectionTags_has: string
+  fraudDetectionTags_hasall: [string!]
+  fraudDetectionTags_hasany: [string!]
+  fraudDetectionTags_isempty: bool
+  fraudDetectionTags_nothas: string
+  fraudEmailRisk: string
+  fraudEmailRisk_geq: string
+  fraudEmailRisk_gt: string
+  fraudEmailRisk_in: [string!]
+  fraudEmailRisk_leq: string
+  fraudEmailRisk_like: string
+  fraudEmailRisk_lt: string
+  fraudEmailRisk_neq: string
+  fraudEmailRisk_notin: [string!]
+  fraudEmailRisk_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -17503,6 +17651,16 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   ja4_neq: string
   ja4_notin: [string!]
   ja4_notlike: string
+  jsDetectionPassed: string
+  jsDetectionPassed_geq: string
+  jsDetectionPassed_gt: string
+  jsDetectionPassed_in: [string!]
+  jsDetectionPassed_leq: string
+  jsDetectionPassed_like: string
+  jsDetectionPassed_lt: string
+  jsDetectionPassed_neq: string
+  jsDetectionPassed_notin: [string!]
+  jsDetectionPassed_notlike: string
   kind: string
   kind_geq: string
   kind_gt: string
@@ -17607,6 +17765,16 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   userAgent_neq: string
   userAgent_notin: [string!]
   userAgent_notlike: string
+  verifiedBotCategory: string
+  verifiedBotCategory_geq: string
+  verifiedBotCategory_gt: string
+  verifiedBotCategory_in: [string!]
+  verifiedBotCategory_leq: string
+  verifiedBotCategory_like: string
+  verifiedBotCategory_lt: string
+  verifiedBotCategory_neq: string
+  verifiedBotCategory_notin: [string!]
+  verifiedBotCategory_notlike: string
   wafAttackScore: uint8
   wafAttackScoreClass: string
   wafAttackScoreClass_geq: string
@@ -17874,6 +18042,22 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   firewallForAiUnsafeTopicCategories_ASC
   # firewallForAiUnsafeTopicCategories descending
   firewallForAiUnsafeTopicCategories_DESC
+  # fraudAttack ascending
+  fraudAttack_ASC
+  # fraudAttack descending
+  fraudAttack_DESC
+  # fraudDetectionIds ascending
+  fraudDetectionIds_ASC
+  # fraudDetectionIds descending
+  fraudDetectionIds_DESC
+  # fraudDetectionTags ascending
+  fraudDetectionTags_ASC
+  # fraudDetectionTags descending
+  fraudDetectionTags_DESC
+  # fraudEmailRisk ascending
+  fraudEmailRisk_ASC
+  # fraudEmailRisk descending
+  fraudEmailRisk_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -17886,6 +18070,10 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   ja4_ASC
   # ja4 descending
   ja4_DESC
+  # jsDetectionPassed ascending
+  jsDetectionPassed_ASC
+  # jsDetectionPassed descending
+  jsDetectionPassed_DESC
   # kind ascending
   kind_ASC
   # kind descending
@@ -17942,10 +18130,30 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   sum_botDetectionTagCountArray_ASC
   # sum(botDetectionTagCountArray) descending
   sum_botDetectionTagCountArray_DESC
+  # sum(fraudDetectionIdArray) ascending
+  sum_fraudDetectionIdArray_ASC
+  # sum(fraudDetectionIdArray) descending
+  sum_fraudDetectionIdArray_DESC
+  # sum(fraudDetectionIdCountArray) ascending
+  sum_fraudDetectionIdCountArray_ASC
+  # sum(fraudDetectionIdCountArray) descending
+  sum_fraudDetectionIdCountArray_DESC
+  # sum(fraudDetectionTagArray) ascending
+  sum_fraudDetectionTagArray_ASC
+  # sum(fraudDetectionTagArray) descending
+  sum_fraudDetectionTagArray_DESC
+  # sum(fraudDetectionTagCountArray) ascending
+  sum_fraudDetectionTagCountArray_ASC
+  # sum(fraudDetectionTagCountArray) descending
+  sum_fraudDetectionTagCountArray_DESC
   # userAgent ascending
   userAgent_ASC
   # userAgent descending
   userAgent_DESC
+  # verifiedBotCategory ascending
+  verifiedBotCategory_ASC
+  # verifiedBotCategory descending
+  verifiedBotCategory_DESC
   # visibility ascending
   visibility_ASC
   # visibility descending
@@ -18001,6 +18209,14 @@ type AccountFirewallEventsAdaptiveGroupsSum {
   botDetectionTagArray: [string!]!
   # Count array of bot management detection tags. Elements in this array correspond to elements in botDetectionTagArray by index.
   botDetectionTagCountArray: [uint32!]!
+  # Array of fraud detection ids
+  fraudDetectionIdArray: [uint32!]!
+  # Count array of fraud detection ids. Elements in this array correspond to elements in fraudDetectionIdArray by index.
+  fraudDetectionIdCountArray: [uint32!]!
+  # Array of fraud detection tags
+  fraudDetectionTagArray: [string!]!
+  # Count array of fraud detection tags. Elements in this array correspond to elements in fraudDetectionTagArray by index.
+  fraudDetectionTagCountArray: [uint32!]!
 }
 
 type AccountFirewallEventsAdaptiveJa4SignalsElem {
@@ -18190,6 +18406,22 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   firewallForAiUnsafeTopicCategories_ASC
   # firewallForAiUnsafeTopicCategories descending
   firewallForAiUnsafeTopicCategories_DESC
+  # fraudAttack ascending
+  fraudAttack_ASC
+  # fraudAttack descending
+  fraudAttack_DESC
+  # fraudDetectionIds ascending
+  fraudDetectionIds_ASC
+  # fraudDetectionIds descending
+  fraudDetectionIds_DESC
+  # fraudDetectionTags ascending
+  fraudDetectionTags_ASC
+  # fraudDetectionTags descending
+  fraudDetectionTags_DESC
+  # fraudEmailRisk ascending
+  fraudEmailRisk_ASC
+  # fraudEmailRisk descending
+  fraudEmailRisk_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -18202,6 +18434,10 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   ja4_ASC
   # ja4 descending
   ja4_DESC
+  # jsDetectionPassed ascending
+  jsDetectionPassed_ASC
+  # jsDetectionPassed descending
+  jsDetectionPassed_DESC
   # kind ascending
   kind_ASC
   # kind descending
@@ -18250,6 +18486,10 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   userAgent_ASC
   # userAgent descending
   userAgent_DESC
+  # verifiedBotCategory ascending
+  verifiedBotCategory_ASC
+  # verifiedBotCategory descending
+  verifiedBotCategory_DESC
   # visibility ascending
   visibility_ASC
   # visibility descending
@@ -23538,6 +23778,14 @@ type AccountHttpRequestsAdaptive {
   firewallForAiPiiCategories: [string!]!
   # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
   firewallForAiUnsafeTopicCategories: [string!]!
+  # The primary attack or use case detected in the request by Fraud detections
+  fraudAttack: string!
+  # Array of fraud detections ids that matched this request
+  fraudDetectionIds: [uint32!]!
+  # Array of fraud detections tags that matched this request
+  fraudDetectionTags: [string!]!
+  # Risk of a specific email address in account signup attempts
+  fraudEmailRisk: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -23549,6 +23797,8 @@ type AccountHttpRequestsAdaptive {
   ja4: string!
   # Inter-request statistics computed for this JA4 across Cloudflare's entire global edge network
   ja4Signals: [AccountHttpRequestsAdaptiveJa4SignalsElem!]!
+  # Whether the request passed background JavaScript Detection
+  jsDetectionPassed: string!
   # The distinct result of checking for leaked credentials
   leakedCredentialCheckResult: string!
   originASN: uint32!
@@ -23574,6 +23824,8 @@ type AccountHttpRequestsAdaptive {
   userAgentBrowser: string!
   # OS parsed from the user agent
   userAgentOS: string!
+  # The category of verified bot
+  verifiedBotCategory: string!
   # Beta. Overall request score generated by the WAF detection module
   wafAttackScore: uint8!
   # Beta. Overall request score class generated by the WAF detection module
@@ -23986,6 +24238,36 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   firewallForAiUnsafeTopicCategories_hasany: [string!]
   firewallForAiUnsafeTopicCategories_isempty: bool
   firewallForAiUnsafeTopicCategories_nothas: string
+  fraudAttack: string
+  fraudAttack_geq: string
+  fraudAttack_gt: string
+  fraudAttack_in: [string!]
+  fraudAttack_leq: string
+  fraudAttack_like: string
+  fraudAttack_lt: string
+  fraudAttack_neq: string
+  fraudAttack_notin: [string!]
+  fraudAttack_notlike: string
+  fraudDetectionIds_has: uint32
+  fraudDetectionIds_hasall: [uint32!]
+  fraudDetectionIds_hasany: [uint32!]
+  fraudDetectionIds_isempty: bool
+  fraudDetectionIds_nothas: uint32
+  fraudDetectionTags_has: string
+  fraudDetectionTags_hasall: [string!]
+  fraudDetectionTags_hasany: [string!]
+  fraudDetectionTags_isempty: bool
+  fraudDetectionTags_nothas: string
+  fraudEmailRisk: string
+  fraudEmailRisk_geq: string
+  fraudEmailRisk_gt: string
+  fraudEmailRisk_in: [string!]
+  fraudEmailRisk_leq: string
+  fraudEmailRisk_like: string
+  fraudEmailRisk_lt: string
+  fraudEmailRisk_neq: string
+  fraudEmailRisk_notin: [string!]
+  fraudEmailRisk_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -24022,6 +24304,16 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   ja4_neq: string
   ja4_notin: [string!]
   ja4_notlike: string
+  jsDetectionPassed: string
+  jsDetectionPassed_geq: string
+  jsDetectionPassed_gt: string
+  jsDetectionPassed_in: [string!]
+  jsDetectionPassed_leq: string
+  jsDetectionPassed_like: string
+  jsDetectionPassed_lt: string
+  jsDetectionPassed_neq: string
+  jsDetectionPassed_notin: [string!]
+  jsDetectionPassed_notlike: string
   leakedCredentialCheckResult: string
   leakedCredentialCheckResult_geq: string
   leakedCredentialCheckResult_gt: string
@@ -24166,6 +24458,16 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   userAgent_neq: string
   userAgent_notin: [string!]
   userAgent_notlike: string
+  verifiedBotCategory: string
+  verifiedBotCategory_geq: string
+  verifiedBotCategory_gt: string
+  verifiedBotCategory_in: [string!]
+  verifiedBotCategory_leq: string
+  verifiedBotCategory_like: string
+  verifiedBotCategory_lt: string
+  verifiedBotCategory_neq: string
+  verifiedBotCategory_notin: [string!]
+  verifiedBotCategory_notlike: string
   wafAttackScore: uint8
   wafAttackScoreClass: string
   wafAttackScoreClass_geq: string
@@ -24363,6 +24665,14 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   firewallForAiPiiCategories: [string!]!
   # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
   firewallForAiUnsafeTopicCategories: [string!]!
+  # The primary attack or use case detected in the request by Fraud detections
+  fraudAttack: string!
+  # Array of fraud detections ids that matched this request
+  fraudDetectionIds: [uint32!]!
+  # Array of fraud detections tags that matched this request
+  fraudDetectionTags: [string!]!
+  # Risk of a specific email address in account signup attempts
+  fraudEmailRisk: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -24372,6 +24682,8 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   ja3Hash: string!
   # JA4 TLS fingerprint
   ja4: string!
+  # Whether the request passed background JavaScript Detection
+  jsDetectionPassed: string!
   # The distinct result of checking for leaked credentials
   leakedCredentialCheckResult: string!
   originASN: uint32!
@@ -24396,6 +24708,8 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   userAgentBrowser: string!
   # OS parsed from the user agent
   userAgentOS: string!
+  # The category of verified bot
+  verifiedBotCategory: string!
   # Beta. Overall request score generated by the WAF detection module
   wafAttackScore: uint8!
   # Beta. Overall request score class generated by the WAF detection module
@@ -24808,6 +25122,36 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   firewallForAiUnsafeTopicCategories_hasany: [string!]
   firewallForAiUnsafeTopicCategories_isempty: bool
   firewallForAiUnsafeTopicCategories_nothas: string
+  fraudAttack: string
+  fraudAttack_geq: string
+  fraudAttack_gt: string
+  fraudAttack_in: [string!]
+  fraudAttack_leq: string
+  fraudAttack_like: string
+  fraudAttack_lt: string
+  fraudAttack_neq: string
+  fraudAttack_notin: [string!]
+  fraudAttack_notlike: string
+  fraudDetectionIds_has: uint32
+  fraudDetectionIds_hasall: [uint32!]
+  fraudDetectionIds_hasany: [uint32!]
+  fraudDetectionIds_isempty: bool
+  fraudDetectionIds_nothas: uint32
+  fraudDetectionTags_has: string
+  fraudDetectionTags_hasall: [string!]
+  fraudDetectionTags_hasany: [string!]
+  fraudDetectionTags_isempty: bool
+  fraudDetectionTags_nothas: string
+  fraudEmailRisk: string
+  fraudEmailRisk_geq: string
+  fraudEmailRisk_gt: string
+  fraudEmailRisk_in: [string!]
+  fraudEmailRisk_leq: string
+  fraudEmailRisk_like: string
+  fraudEmailRisk_lt: string
+  fraudEmailRisk_neq: string
+  fraudEmailRisk_notin: [string!]
+  fraudEmailRisk_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -24844,6 +25188,16 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   ja4_neq: string
   ja4_notin: [string!]
   ja4_notlike: string
+  jsDetectionPassed: string
+  jsDetectionPassed_geq: string
+  jsDetectionPassed_gt: string
+  jsDetectionPassed_in: [string!]
+  jsDetectionPassed_leq: string
+  jsDetectionPassed_like: string
+  jsDetectionPassed_lt: string
+  jsDetectionPassed_neq: string
+  jsDetectionPassed_notin: [string!]
+  jsDetectionPassed_notlike: string
   leakedCredentialCheckResult: string
   leakedCredentialCheckResult_geq: string
   leakedCredentialCheckResult_gt: string
@@ -24996,6 +25350,16 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   userAgent_neq: string
   userAgent_notin: [string!]
   userAgent_notlike: string
+  verifiedBotCategory: string
+  verifiedBotCategory_geq: string
+  verifiedBotCategory_gt: string
+  verifiedBotCategory_in: [string!]
+  verifiedBotCategory_leq: string
+  verifiedBotCategory_like: string
+  verifiedBotCategory_lt: string
+  verifiedBotCategory_neq: string
+  verifiedBotCategory_notin: [string!]
+  verifiedBotCategory_notlike: string
   wafAttackScore: uint8
   wafAttackScoreClass: string
   wafAttackScoreClass_geq: string
@@ -25281,6 +25645,22 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   firewallForAiUnsafeTopicCategories_ASC
   # firewallForAiUnsafeTopicCategories descending
   firewallForAiUnsafeTopicCategories_DESC
+  # fraudAttack ascending
+  fraudAttack_ASC
+  # fraudAttack descending
+  fraudAttack_DESC
+  # fraudDetectionIds ascending
+  fraudDetectionIds_ASC
+  # fraudDetectionIds descending
+  fraudDetectionIds_DESC
+  # fraudDetectionTags ascending
+  fraudDetectionTags_ASC
+  # fraudDetectionTags descending
+  fraudDetectionTags_DESC
+  # fraudEmailRisk ascending
+  fraudEmailRisk_ASC
+  # fraudEmailRisk descending
+  fraudEmailRisk_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -25297,6 +25677,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   ja4_ASC
   # ja4 descending
   ja4_DESC
+  # jsDetectionPassed ascending
+  jsDetectionPassed_ASC
+  # jsDetectionPassed descending
+  jsDetectionPassed_DESC
   # leakedCredentialCheckResult ascending
   leakedCredentialCheckResult_ASC
   # leakedCredentialCheckResult descending
@@ -25433,6 +25817,22 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   sum_edgeTimeToFirstByteMs_ASC
   # sum(edgeTimeToFirstByteMs) descending
   sum_edgeTimeToFirstByteMs_DESC
+  # sum(fraudDetectionIdArray) ascending
+  sum_fraudDetectionIdArray_ASC
+  # sum(fraudDetectionIdArray) descending
+  sum_fraudDetectionIdArray_DESC
+  # sum(fraudDetectionIdCountArray) ascending
+  sum_fraudDetectionIdCountArray_ASC
+  # sum(fraudDetectionIdCountArray) descending
+  sum_fraudDetectionIdCountArray_DESC
+  # sum(fraudDetectionTagArray) ascending
+  sum_fraudDetectionTagArray_ASC
+  # sum(fraudDetectionTagArray) descending
+  sum_fraudDetectionTagArray_DESC
+  # sum(fraudDetectionTagCountArray) ascending
+  sum_fraudDetectionTagCountArray_ASC
+  # sum(fraudDetectionTagCountArray) descending
+  sum_fraudDetectionTagCountArray_DESC
   # sum(originResponseDurationMs) ascending
   sum_originResponseDurationMs_ASC
   # sum(originResponseDurationMs) descending
@@ -25457,6 +25857,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   userAgent_ASC
   # userAgent descending
   userAgent_DESC
+  # verifiedBotCategory ascending
+  verifiedBotCategory_ASC
+  # verifiedBotCategory descending
+  verifiedBotCategory_DESC
   # wafAttackScoreClass ascending
   wafAttackScoreClass_ASC
   # wafAttackScoreClass descending
@@ -25538,6 +25942,14 @@ type AccountHttpRequestsAdaptiveGroupsSum {
   edgeRequestBytes: uint64!
   edgeResponseBytes: uint64!
   edgeTimeToFirstByteMs: uint64!
+  # Array of fraud detection ids
+  fraudDetectionIdArray: [uint32!]!
+  # Count array of fraud detection ids. Elements in this array correspond to elements in fraudDetectionIdArray by index.
+  fraudDetectionIdCountArray: [uint32!]!
+  # Array of fraud detection tags
+  fraudDetectionTagArray: [string!]!
+  # Count array of fraud detection tags. Elements in this array correspond to elements in fraudDetectionTagArray by index.
+  fraudDetectionTagCountArray: [uint32!]!
   originResponseDurationMs: uint64!
   # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
   visits: uint64!
@@ -25756,6 +26168,22 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   firewallForAiUnsafeTopicCategories_ASC
   # firewallForAiUnsafeTopicCategories descending
   firewallForAiUnsafeTopicCategories_DESC
+  # fraudAttack ascending
+  fraudAttack_ASC
+  # fraudAttack descending
+  fraudAttack_DESC
+  # fraudDetectionIds ascending
+  fraudDetectionIds_ASC
+  # fraudDetectionIds descending
+  fraudDetectionIds_DESC
+  # fraudDetectionTags ascending
+  fraudDetectionTags_ASC
+  # fraudDetectionTags descending
+  fraudDetectionTags_DESC
+  # fraudEmailRisk ascending
+  fraudEmailRisk_ASC
+  # fraudEmailRisk descending
+  fraudEmailRisk_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -25772,6 +26200,10 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   ja4_ASC
   # ja4 descending
   ja4_DESC
+  # jsDetectionPassed ascending
+  jsDetectionPassed_ASC
+  # jsDetectionPassed descending
+  jsDetectionPassed_DESC
   # leakedCredentialCheckResult ascending
   leakedCredentialCheckResult_ASC
   # leakedCredentialCheckResult descending
@@ -25832,6 +26264,10 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   userAgent_ASC
   # userAgent descending
   userAgent_DESC
+  # verifiedBotCategory ascending
+  verifiedBotCategory_ASC
+  # verifiedBotCategory descending
+  verifiedBotCategory_DESC
   # wafAttackScoreClass ascending
   wafAttackScoreClass_ASC
   # wafAttackScoreClass descending
@@ -53826,6 +54262,14 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   firewallForAiPiiCategories: [string!]!
   # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
   firewallForAiUnsafeTopicCategories: [string!]!
+  # The primary attack or use case detected in the request by Fraud detections
+  fraudAttack: string!
+  # Array of fraud detections ids that matched this request
+  fraudDetectionIds: [uint32!]!
+  # Array of fraud detections tags that matched this request
+  fraudDetectionTags: [string!]!
+  # Risk of a specific email address in account signup attempts
+  fraudEmailRisk: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -53835,6 +54279,8 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   ja3Hash: string!
   # JA4 TLS fingerprint
   ja4: string!
+  # Whether the request passed background JavaScript Detection
+  jsDetectionPassed: string!
   # The distinct result of checking for leaked credentials
   leakedCredentialCheckResult: string!
   originASN: uint32!
@@ -53859,6 +54305,8 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   userAgentBrowser: string!
   # OS parsed from the user agent
   userAgentOS: string!
+  # The category of verified bot
+  verifiedBotCategory: string!
   # Beta. Overall request score generated by the WAF detection module
   wafAttackScore: uint8!
   # Beta. Overall request score class generated by the WAF detection module
@@ -54261,6 +54709,36 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   firewallForAiUnsafeTopicCategories_hasany: [string!]
   firewallForAiUnsafeTopicCategories_isempty: bool
   firewallForAiUnsafeTopicCategories_nothas: string
+  fraudAttack: string
+  fraudAttack_geq: string
+  fraudAttack_gt: string
+  fraudAttack_in: [string!]
+  fraudAttack_leq: string
+  fraudAttack_like: string
+  fraudAttack_lt: string
+  fraudAttack_neq: string
+  fraudAttack_notin: [string!]
+  fraudAttack_notlike: string
+  fraudDetectionIds_has: uint32
+  fraudDetectionIds_hasall: [uint32!]
+  fraudDetectionIds_hasany: [uint32!]
+  fraudDetectionIds_isempty: bool
+  fraudDetectionIds_nothas: uint32
+  fraudDetectionTags_has: string
+  fraudDetectionTags_hasall: [string!]
+  fraudDetectionTags_hasany: [string!]
+  fraudDetectionTags_isempty: bool
+  fraudDetectionTags_nothas: string
+  fraudEmailRisk: string
+  fraudEmailRisk_geq: string
+  fraudEmailRisk_gt: string
+  fraudEmailRisk_in: [string!]
+  fraudEmailRisk_leq: string
+  fraudEmailRisk_like: string
+  fraudEmailRisk_lt: string
+  fraudEmailRisk_neq: string
+  fraudEmailRisk_notin: [string!]
+  fraudEmailRisk_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -54297,6 +54775,16 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   ja4_neq: string
   ja4_notin: [string!]
   ja4_notlike: string
+  jsDetectionPassed: string
+  jsDetectionPassed_geq: string
+  jsDetectionPassed_gt: string
+  jsDetectionPassed_in: [string!]
+  jsDetectionPassed_leq: string
+  jsDetectionPassed_like: string
+  jsDetectionPassed_lt: string
+  jsDetectionPassed_neq: string
+  jsDetectionPassed_notin: [string!]
+  jsDetectionPassed_notlike: string
   leakedCredentialCheckResult: string
   leakedCredentialCheckResult_geq: string
   leakedCredentialCheckResult_gt: string
@@ -54449,6 +54937,16 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   userAgent_neq: string
   userAgent_notin: [string!]
   userAgent_notlike: string
+  verifiedBotCategory: string
+  verifiedBotCategory_geq: string
+  verifiedBotCategory_gt: string
+  verifiedBotCategory_in: [string!]
+  verifiedBotCategory_leq: string
+  verifiedBotCategory_like: string
+  verifiedBotCategory_lt: string
+  verifiedBotCategory_neq: string
+  verifiedBotCategory_notin: [string!]
+  verifiedBotCategory_notlike: string
   wafAttackScore: uint8
   wafAttackScoreClass: string
   wafAttackScoreClass_geq: string
@@ -54716,6 +55214,22 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   firewallForAiUnsafeTopicCategories_ASC
   # firewallForAiUnsafeTopicCategories descending
   firewallForAiUnsafeTopicCategories_DESC
+  # fraudAttack ascending
+  fraudAttack_ASC
+  # fraudAttack descending
+  fraudAttack_DESC
+  # fraudDetectionIds ascending
+  fraudDetectionIds_ASC
+  # fraudDetectionIds descending
+  fraudDetectionIds_DESC
+  # fraudDetectionTags ascending
+  fraudDetectionTags_ASC
+  # fraudDetectionTags descending
+  fraudDetectionTags_DESC
+  # fraudEmailRisk ascending
+  fraudEmailRisk_ASC
+  # fraudEmailRisk descending
+  fraudEmailRisk_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -54732,6 +55246,10 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   ja4_ASC
   # ja4 descending
   ja4_DESC
+  # jsDetectionPassed ascending
+  jsDetectionPassed_ASC
+  # jsDetectionPassed descending
+  jsDetectionPassed_DESC
   # leakedCredentialCheckResult ascending
   leakedCredentialCheckResult_ASC
   # leakedCredentialCheckResult descending
@@ -54836,6 +55354,22 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   sum_edgeTimeToFirstByteMs_ASC
   # sum(edgeTimeToFirstByteMs) descending
   sum_edgeTimeToFirstByteMs_DESC
+  # sum(fraudDetectionIdArray) ascending
+  sum_fraudDetectionIdArray_ASC
+  # sum(fraudDetectionIdArray) descending
+  sum_fraudDetectionIdArray_DESC
+  # sum(fraudDetectionIdCountArray) ascending
+  sum_fraudDetectionIdCountArray_ASC
+  # sum(fraudDetectionIdCountArray) descending
+  sum_fraudDetectionIdCountArray_DESC
+  # sum(fraudDetectionTagArray) ascending
+  sum_fraudDetectionTagArray_ASC
+  # sum(fraudDetectionTagArray) descending
+  sum_fraudDetectionTagArray_DESC
+  # sum(fraudDetectionTagCountArray) ascending
+  sum_fraudDetectionTagCountArray_ASC
+  # sum(fraudDetectionTagCountArray) descending
+  sum_fraudDetectionTagCountArray_DESC
   # sum(originResponseDurationMs) ascending
   sum_originResponseDurationMs_ASC
   # sum(originResponseDurationMs) descending
@@ -54860,6 +55394,10 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   userAgent_ASC
   # userAgent descending
   userAgent_DESC
+  # verifiedBotCategory ascending
+  verifiedBotCategory_ASC
+  # verifiedBotCategory descending
+  verifiedBotCategory_DESC
   # wafAttackScoreClass ascending
   wafAttackScoreClass_ASC
   # wafAttackScoreClass descending
@@ -54922,6 +55460,14 @@ type OrganizationHttpRequestsAdaptiveGroupsSum {
   edgeDnsResponseTimeMs: uint64!
   edgeResponseBytes: uint64!
   edgeTimeToFirstByteMs: uint64!
+  # Array of fraud detection ids
+  fraudDetectionIdArray: [uint32!]!
+  # Count array of fraud detection ids. Elements in this array correspond to elements in fraudDetectionIdArray by index.
+  fraudDetectionIdCountArray: [uint32!]!
+  # Array of fraud detection tags
+  fraudDetectionTagArray: [string!]!
+  # Count array of fraud detection tags. Elements in this array correspond to elements in fraudDetectionTagArray by index.
+  fraudDetectionTagCountArray: [uint32!]!
   originResponseDurationMs: uint64!
   # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
   visits: uint64!
@@ -58952,6 +59498,14 @@ type ZoneFirewallEventsAdaptive {
   firewallForAiPiiCategories: [string!]!
   # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
   firewallForAiUnsafeTopicCategories: [string!]!
+  # The primary attack or use case detected in the request by Fraud detections
+  fraudAttack: string!
+  # Array of fraud detections ids that matched this request
+  fraudDetectionIds: [uint32!]!
+  # Array of fraud detections tags that matched this request
+  fraudDetectionTags: [string!]!
+  # Risk of a specific email address in account signup attempts
+  fraudEmailRisk: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -58961,6 +59515,8 @@ type ZoneFirewallEventsAdaptive {
   ja4: string!
   # Inter-request statistics computed for this JA4 across Cloudflare's entire global edge network
   ja4Signals: [ZoneFirewallEventsAdaptiveJa4SignalsElem!]!
+  # Whether the request passed background JavaScript Detection
+  jsDetectionPassed: string!
   # The kind of event, currently only possible values are: firewall
   kind: string!
   # The distinct result of checking for leaked credentials
@@ -58987,6 +59543,8 @@ type ZoneFirewallEventsAdaptive {
   source: string!
   # visitor's user-agent string
   userAgent: string!
+  # The category of verified bot
+  verifiedBotCategory: string!
   # Beta. Overall request score generated by the WAF detection module
   wafAttackScore: uint8!
   # Beta. Overall request score class generated by the WAF detection module
@@ -59073,6 +59631,14 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   firewallForAiPiiCategories: [string!]!
   # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
   firewallForAiUnsafeTopicCategories: [string!]!
+  # The primary attack or use case detected in the request by Fraud detections
+  fraudAttack: string!
+  # Array of fraud detections ids that matched this request
+  fraudDetectionIds: [uint32!]!
+  # Array of fraud detections tags that matched this request
+  fraudDetectionTags: [string!]!
+  # Risk of a specific email address in account signup attempts
+  fraudEmailRisk: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -59080,6 +59646,10 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   ja3Hash: string!
   # JA4 TLS fingerprint
   ja4: string!
+  # Whether the request passed background JavaScript Detection
+  jsDetectionPassed: string!
+  # The category of verified bot
+  verifiedBotCategory: string!
   # Beta. Overall request score generated by the WAF detection module
   wafAttackScore: uint8!
   # Beta. Overall request score class generated by the WAF detection module
@@ -59465,6 +60035,36 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   firewallForAiUnsafeTopicCategories_hasany: [string!]
   firewallForAiUnsafeTopicCategories_isempty: bool
   firewallForAiUnsafeTopicCategories_nothas: string
+  fraudAttack: string
+  fraudAttack_geq: string
+  fraudAttack_gt: string
+  fraudAttack_in: [string!]
+  fraudAttack_leq: string
+  fraudAttack_like: string
+  fraudAttack_lt: string
+  fraudAttack_neq: string
+  fraudAttack_notin: [string!]
+  fraudAttack_notlike: string
+  fraudDetectionIds_has: uint32
+  fraudDetectionIds_hasall: [uint32!]
+  fraudDetectionIds_hasany: [uint32!]
+  fraudDetectionIds_isempty: bool
+  fraudDetectionIds_nothas: uint32
+  fraudDetectionTags_has: string
+  fraudDetectionTags_hasall: [string!]
+  fraudDetectionTags_hasany: [string!]
+  fraudDetectionTags_isempty: bool
+  fraudDetectionTags_nothas: string
+  fraudEmailRisk: string
+  fraudEmailRisk_geq: string
+  fraudEmailRisk_gt: string
+  fraudEmailRisk_in: [string!]
+  fraudEmailRisk_leq: string
+  fraudEmailRisk_like: string
+  fraudEmailRisk_lt: string
+  fraudEmailRisk_neq: string
+  fraudEmailRisk_notin: [string!]
+  fraudEmailRisk_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -59493,6 +60093,16 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   ja4_neq: string
   ja4_notin: [string!]
   ja4_notlike: string
+  jsDetectionPassed: string
+  jsDetectionPassed_geq: string
+  jsDetectionPassed_gt: string
+  jsDetectionPassed_in: [string!]
+  jsDetectionPassed_leq: string
+  jsDetectionPassed_like: string
+  jsDetectionPassed_lt: string
+  jsDetectionPassed_neq: string
+  jsDetectionPassed_notin: [string!]
+  jsDetectionPassed_notlike: string
   kind: string
   kind_geq: string
   kind_gt: string
@@ -59597,6 +60207,16 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   userAgent_neq: string
   userAgent_notin: [string!]
   userAgent_notlike: string
+  verifiedBotCategory: string
+  verifiedBotCategory_geq: string
+  verifiedBotCategory_gt: string
+  verifiedBotCategory_in: [string!]
+  verifiedBotCategory_leq: string
+  verifiedBotCategory_like: string
+  verifiedBotCategory_lt: string
+  verifiedBotCategory_neq: string
+  verifiedBotCategory_notin: [string!]
+  verifiedBotCategory_notlike: string
   wafAttackScore: uint8
   wafAttackScoreClass: string
   wafAttackScoreClass_geq: string
@@ -59758,6 +60378,22 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   firewallForAiUnsafeTopicCategories_ASC
   # firewallForAiUnsafeTopicCategories descending
   firewallForAiUnsafeTopicCategories_DESC
+  # fraudAttack ascending
+  fraudAttack_ASC
+  # fraudAttack descending
+  fraudAttack_DESC
+  # fraudDetectionIds ascending
+  fraudDetectionIds_ASC
+  # fraudDetectionIds descending
+  fraudDetectionIds_DESC
+  # fraudDetectionTags ascending
+  fraudDetectionTags_ASC
+  # fraudDetectionTags descending
+  fraudDetectionTags_DESC
+  # fraudEmailRisk ascending
+  fraudEmailRisk_ASC
+  # fraudEmailRisk descending
+  fraudEmailRisk_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -59770,6 +60406,10 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   ja4_ASC
   # ja4 descending
   ja4_DESC
+  # jsDetectionPassed ascending
+  jsDetectionPassed_ASC
+  # jsDetectionPassed descending
+  jsDetectionPassed_DESC
   # sum(botDetectionIdArray) ascending
   sum_botDetectionIdArray_ASC
   # sum(botDetectionIdArray) descending
@@ -59786,6 +60426,26 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   sum_botDetectionTagCountArray_ASC
   # sum(botDetectionTagCountArray) descending
   sum_botDetectionTagCountArray_DESC
+  # sum(fraudDetectionIdArray) ascending
+  sum_fraudDetectionIdArray_ASC
+  # sum(fraudDetectionIdArray) descending
+  sum_fraudDetectionIdArray_DESC
+  # sum(fraudDetectionIdCountArray) ascending
+  sum_fraudDetectionIdCountArray_ASC
+  # sum(fraudDetectionIdCountArray) descending
+  sum_fraudDetectionIdCountArray_DESC
+  # sum(fraudDetectionTagArray) ascending
+  sum_fraudDetectionTagArray_ASC
+  # sum(fraudDetectionTagArray) descending
+  sum_fraudDetectionTagArray_DESC
+  # sum(fraudDetectionTagCountArray) ascending
+  sum_fraudDetectionTagCountArray_ASC
+  # sum(fraudDetectionTagCountArray) descending
+  sum_fraudDetectionTagCountArray_DESC
+  # verifiedBotCategory ascending
+  verifiedBotCategory_ASC
+  # verifiedBotCategory descending
+  verifiedBotCategory_DESC
   # visibility ascending
   visibility_ASC
   # visibility descending
@@ -59837,6 +60497,14 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsSum {
   botDetectionTagArray: [string!]!
   # Count array of bot management detection tags. Elements in this array correspond to elements in botDetectionTagArray by index.
   botDetectionTagCountArray: [uint32!]!
+  # Array of fraud detection ids
+  fraudDetectionIdArray: [uint32!]!
+  # Count array of fraud detection ids. Elements in this array correspond to elements in fraudDetectionIdArray by index.
+  fraudDetectionIdCountArray: [uint32!]!
+  # Array of fraud detection tags
+  fraudDetectionTagArray: [string!]!
+  # Count array of fraud detection tags. Elements in this array correspond to elements in fraudDetectionTagArray by index.
+  fraudDetectionTagCountArray: [uint32!]!
 }
 
 input ZoneFirewallEventsAdaptiveFilter_InputObject {
@@ -60201,6 +60869,36 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   firewallForAiUnsafeTopicCategories_hasany: [string!]
   firewallForAiUnsafeTopicCategories_isempty: bool
   firewallForAiUnsafeTopicCategories_nothas: string
+  fraudAttack: string
+  fraudAttack_geq: string
+  fraudAttack_gt: string
+  fraudAttack_in: [string!]
+  fraudAttack_leq: string
+  fraudAttack_like: string
+  fraudAttack_lt: string
+  fraudAttack_neq: string
+  fraudAttack_notin: [string!]
+  fraudAttack_notlike: string
+  fraudDetectionIds_has: uint32
+  fraudDetectionIds_hasall: [uint32!]
+  fraudDetectionIds_hasany: [uint32!]
+  fraudDetectionIds_isempty: bool
+  fraudDetectionIds_nothas: uint32
+  fraudDetectionTags_has: string
+  fraudDetectionTags_hasall: [string!]
+  fraudDetectionTags_hasany: [string!]
+  fraudDetectionTags_isempty: bool
+  fraudDetectionTags_nothas: string
+  fraudEmailRisk: string
+  fraudEmailRisk_geq: string
+  fraudEmailRisk_gt: string
+  fraudEmailRisk_in: [string!]
+  fraudEmailRisk_leq: string
+  fraudEmailRisk_like: string
+  fraudEmailRisk_lt: string
+  fraudEmailRisk_neq: string
+  fraudEmailRisk_notin: [string!]
+  fraudEmailRisk_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -60229,6 +60927,16 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   ja4_neq: string
   ja4_notin: [string!]
   ja4_notlike: string
+  jsDetectionPassed: string
+  jsDetectionPassed_geq: string
+  jsDetectionPassed_gt: string
+  jsDetectionPassed_in: [string!]
+  jsDetectionPassed_leq: string
+  jsDetectionPassed_like: string
+  jsDetectionPassed_lt: string
+  jsDetectionPassed_neq: string
+  jsDetectionPassed_notin: [string!]
+  jsDetectionPassed_notlike: string
   kind: string
   kind_geq: string
   kind_gt: string
@@ -60343,6 +61051,16 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   userAgent_neq: string
   userAgent_notin: [string!]
   userAgent_notlike: string
+  verifiedBotCategory: string
+  verifiedBotCategory_geq: string
+  verifiedBotCategory_gt: string
+  verifiedBotCategory_in: [string!]
+  verifiedBotCategory_leq: string
+  verifiedBotCategory_like: string
+  verifiedBotCategory_lt: string
+  verifiedBotCategory_neq: string
+  verifiedBotCategory_notin: [string!]
+  verifiedBotCategory_notlike: string
   wafAttackScore: uint8
   wafAttackScoreClass: string
   wafAttackScoreClass_geq: string
@@ -60530,6 +61248,14 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   firewallForAiPiiCategories: [string!]!
   # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
   firewallForAiUnsafeTopicCategories: [string!]!
+  # The primary attack or use case detected in the request by Fraud detections
+  fraudAttack: string!
+  # Array of fraud detections ids that matched this request
+  fraudDetectionIds: [uint32!]!
+  # Array of fraud detections tags that matched this request
+  fraudDetectionTags: [string!]!
+  # Risk of a specific email address in account signup attempts
+  fraudEmailRisk: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -60537,6 +61263,8 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   ja3Hash: string!
   # JA4 TLS fingerprint
   ja4: string!
+  # Whether the request passed background JavaScript Detection
+  jsDetectionPassed: string!
   # The kind of event, currently only possible values are: firewall
   kind: string!
   # Rules match index in the chain
@@ -60559,6 +61287,8 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   source: string!
   # visitor's user-agent string
   userAgent: string!
+  # The category of verified bot
+  verifiedBotCategory: string!
   # Beta. Overall request score generated by the WAF detection module
   wafAttackScore: uint8!
   # Beta. Overall request score class generated by the WAF detection module
@@ -60944,6 +61674,36 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   firewallForAiUnsafeTopicCategories_hasany: [string!]
   firewallForAiUnsafeTopicCategories_isempty: bool
   firewallForAiUnsafeTopicCategories_nothas: string
+  fraudAttack: string
+  fraudAttack_geq: string
+  fraudAttack_gt: string
+  fraudAttack_in: [string!]
+  fraudAttack_leq: string
+  fraudAttack_like: string
+  fraudAttack_lt: string
+  fraudAttack_neq: string
+  fraudAttack_notin: [string!]
+  fraudAttack_notlike: string
+  fraudDetectionIds_has: uint32
+  fraudDetectionIds_hasall: [uint32!]
+  fraudDetectionIds_hasany: [uint32!]
+  fraudDetectionIds_isempty: bool
+  fraudDetectionIds_nothas: uint32
+  fraudDetectionTags_has: string
+  fraudDetectionTags_hasall: [string!]
+  fraudDetectionTags_hasany: [string!]
+  fraudDetectionTags_isempty: bool
+  fraudDetectionTags_nothas: string
+  fraudEmailRisk: string
+  fraudEmailRisk_geq: string
+  fraudEmailRisk_gt: string
+  fraudEmailRisk_in: [string!]
+  fraudEmailRisk_leq: string
+  fraudEmailRisk_like: string
+  fraudEmailRisk_lt: string
+  fraudEmailRisk_neq: string
+  fraudEmailRisk_notin: [string!]
+  fraudEmailRisk_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -60972,6 +61732,16 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   ja4_neq: string
   ja4_notin: [string!]
   ja4_notlike: string
+  jsDetectionPassed: string
+  jsDetectionPassed_geq: string
+  jsDetectionPassed_gt: string
+  jsDetectionPassed_in: [string!]
+  jsDetectionPassed_leq: string
+  jsDetectionPassed_like: string
+  jsDetectionPassed_lt: string
+  jsDetectionPassed_neq: string
+  jsDetectionPassed_notin: [string!]
+  jsDetectionPassed_notlike: string
   kind: string
   kind_geq: string
   kind_gt: string
@@ -61076,6 +61846,16 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   userAgent_neq: string
   userAgent_notin: [string!]
   userAgent_notlike: string
+  verifiedBotCategory: string
+  verifiedBotCategory_geq: string
+  verifiedBotCategory_gt: string
+  verifiedBotCategory_in: [string!]
+  verifiedBotCategory_leq: string
+  verifiedBotCategory_like: string
+  verifiedBotCategory_lt: string
+  verifiedBotCategory_neq: string
+  verifiedBotCategory_notin: [string!]
+  verifiedBotCategory_notlike: string
   wafAttackScore: uint8
   wafAttackScoreClass: string
   wafAttackScoreClass_geq: string
@@ -61333,6 +62113,22 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   firewallForAiUnsafeTopicCategories_ASC
   # firewallForAiUnsafeTopicCategories descending
   firewallForAiUnsafeTopicCategories_DESC
+  # fraudAttack ascending
+  fraudAttack_ASC
+  # fraudAttack descending
+  fraudAttack_DESC
+  # fraudDetectionIds ascending
+  fraudDetectionIds_ASC
+  # fraudDetectionIds descending
+  fraudDetectionIds_DESC
+  # fraudDetectionTags ascending
+  fraudDetectionTags_ASC
+  # fraudDetectionTags descending
+  fraudDetectionTags_DESC
+  # fraudEmailRisk ascending
+  fraudEmailRisk_ASC
+  # fraudEmailRisk descending
+  fraudEmailRisk_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -61345,6 +62141,10 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   ja4_ASC
   # ja4 descending
   ja4_DESC
+  # jsDetectionPassed ascending
+  jsDetectionPassed_ASC
+  # jsDetectionPassed descending
+  jsDetectionPassed_DESC
   # kind ascending
   kind_ASC
   # kind descending
@@ -61401,10 +62201,30 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   sum_botDetectionTagCountArray_ASC
   # sum(botDetectionTagCountArray) descending
   sum_botDetectionTagCountArray_DESC
+  # sum(fraudDetectionIdArray) ascending
+  sum_fraudDetectionIdArray_ASC
+  # sum(fraudDetectionIdArray) descending
+  sum_fraudDetectionIdArray_DESC
+  # sum(fraudDetectionIdCountArray) ascending
+  sum_fraudDetectionIdCountArray_ASC
+  # sum(fraudDetectionIdCountArray) descending
+  sum_fraudDetectionIdCountArray_DESC
+  # sum(fraudDetectionTagArray) ascending
+  sum_fraudDetectionTagArray_ASC
+  # sum(fraudDetectionTagArray) descending
+  sum_fraudDetectionTagArray_DESC
+  # sum(fraudDetectionTagCountArray) ascending
+  sum_fraudDetectionTagCountArray_ASC
+  # sum(fraudDetectionTagCountArray) descending
+  sum_fraudDetectionTagCountArray_DESC
   # userAgent ascending
   userAgent_ASC
   # userAgent descending
   userAgent_DESC
+  # verifiedBotCategory ascending
+  verifiedBotCategory_ASC
+  # verifiedBotCategory descending
+  verifiedBotCategory_DESC
   # visibility ascending
   visibility_ASC
   # visibility descending
@@ -61456,6 +62276,14 @@ type ZoneFirewallEventsAdaptiveGroupsSum {
   botDetectionTagArray: [string!]!
   # Count array of bot management detection tags. Elements in this array correspond to elements in botDetectionTagArray by index.
   botDetectionTagCountArray: [uint32!]!
+  # Array of fraud detection ids
+  fraudDetectionIdArray: [uint32!]!
+  # Count array of fraud detection ids. Elements in this array correspond to elements in fraudDetectionIdArray by index.
+  fraudDetectionIdCountArray: [uint32!]!
+  # Array of fraud detection tags
+  fraudDetectionTagArray: [string!]!
+  # Count array of fraud detection tags. Elements in this array correspond to elements in fraudDetectionTagArray by index.
+  fraudDetectionTagCountArray: [uint32!]!
 }
 
 type ZoneFirewallEventsAdaptiveJa4SignalsElem {
@@ -61645,6 +62473,22 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   firewallForAiUnsafeTopicCategories_ASC
   # firewallForAiUnsafeTopicCategories descending
   firewallForAiUnsafeTopicCategories_DESC
+  # fraudAttack ascending
+  fraudAttack_ASC
+  # fraudAttack descending
+  fraudAttack_DESC
+  # fraudDetectionIds ascending
+  fraudDetectionIds_ASC
+  # fraudDetectionIds descending
+  fraudDetectionIds_DESC
+  # fraudDetectionTags ascending
+  fraudDetectionTags_ASC
+  # fraudDetectionTags descending
+  fraudDetectionTags_DESC
+  # fraudEmailRisk ascending
+  fraudEmailRisk_ASC
+  # fraudEmailRisk descending
+  fraudEmailRisk_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -61657,6 +62501,10 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   ja4_ASC
   # ja4 descending
   ja4_DESC
+  # jsDetectionPassed ascending
+  jsDetectionPassed_ASC
+  # jsDetectionPassed descending
+  jsDetectionPassed_DESC
   # kind ascending
   kind_ASC
   # kind descending
@@ -61705,6 +62553,10 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   userAgent_ASC
   # userAgent descending
   userAgent_DESC
+  # verifiedBotCategory ascending
+  verifiedBotCategory_ASC
+  # verifiedBotCategory descending
+  verifiedBotCategory_DESC
   # visibility ascending
   visibility_ASC
   # visibility descending
@@ -63449,6 +64301,14 @@ type ZoneHttpRequestsAdaptive {
   firewallForAiPiiCategories: [string!]!
   # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
   firewallForAiUnsafeTopicCategories: [string!]!
+  # The primary attack or use case detected in the request by Fraud detections
+  fraudAttack: string!
+  # Array of fraud detections ids that matched this request
+  fraudDetectionIds: [uint32!]!
+  # Array of fraud detections tags that matched this request
+  fraudDetectionTags: [string!]!
+  # Risk of a specific email address in account signup attempts
+  fraudEmailRisk: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -63460,6 +64320,8 @@ type ZoneHttpRequestsAdaptive {
   ja4: string!
   # Inter-request statistics computed for this JA4 across Cloudflare's entire global edge network
   ja4Signals: [ZoneHttpRequestsAdaptiveJa4SignalsElem!]!
+  # Whether the request passed background JavaScript Detection
+  jsDetectionPassed: string!
   # The distinct result of checking for leaked credentials
   leakedCredentialCheckResult: string!
   originASN: uint32!
@@ -63485,6 +64347,8 @@ type ZoneHttpRequestsAdaptive {
   userAgentBrowser: string!
   # OS parsed from the user agent
   userAgentOS: string!
+  # The category of verified bot
+  verifiedBotCategory: string!
   # Beta. Overall request score generated by the WAF detection module
   wafAttackScore: uint8!
   # Beta. Overall request score class generated by the WAF detection module
@@ -63895,6 +64759,36 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   firewallForAiUnsafeTopicCategories_hasany: [string!]
   firewallForAiUnsafeTopicCategories_isempty: bool
   firewallForAiUnsafeTopicCategories_nothas: string
+  fraudAttack: string
+  fraudAttack_geq: string
+  fraudAttack_gt: string
+  fraudAttack_in: [string!]
+  fraudAttack_leq: string
+  fraudAttack_like: string
+  fraudAttack_lt: string
+  fraudAttack_neq: string
+  fraudAttack_notin: [string!]
+  fraudAttack_notlike: string
+  fraudDetectionIds_has: uint32
+  fraudDetectionIds_hasall: [uint32!]
+  fraudDetectionIds_hasany: [uint32!]
+  fraudDetectionIds_isempty: bool
+  fraudDetectionIds_nothas: uint32
+  fraudDetectionTags_has: string
+  fraudDetectionTags_hasall: [string!]
+  fraudDetectionTags_hasany: [string!]
+  fraudDetectionTags_isempty: bool
+  fraudDetectionTags_nothas: string
+  fraudEmailRisk: string
+  fraudEmailRisk_geq: string
+  fraudEmailRisk_gt: string
+  fraudEmailRisk_in: [string!]
+  fraudEmailRisk_leq: string
+  fraudEmailRisk_like: string
+  fraudEmailRisk_lt: string
+  fraudEmailRisk_neq: string
+  fraudEmailRisk_notin: [string!]
+  fraudEmailRisk_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -63931,6 +64825,16 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   ja4_neq: string
   ja4_notin: [string!]
   ja4_notlike: string
+  jsDetectionPassed: string
+  jsDetectionPassed_geq: string
+  jsDetectionPassed_gt: string
+  jsDetectionPassed_in: [string!]
+  jsDetectionPassed_leq: string
+  jsDetectionPassed_like: string
+  jsDetectionPassed_lt: string
+  jsDetectionPassed_neq: string
+  jsDetectionPassed_notin: [string!]
+  jsDetectionPassed_notlike: string
   leakedCredentialCheckResult: string
   leakedCredentialCheckResult_geq: string
   leakedCredentialCheckResult_gt: string
@@ -64075,6 +64979,16 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   userAgent_neq: string
   userAgent_notin: [string!]
   userAgent_notlike: string
+  verifiedBotCategory: string
+  verifiedBotCategory_geq: string
+  verifiedBotCategory_gt: string
+  verifiedBotCategory_in: [string!]
+  verifiedBotCategory_leq: string
+  verifiedBotCategory_like: string
+  verifiedBotCategory_lt: string
+  verifiedBotCategory_neq: string
+  verifiedBotCategory_notin: [string!]
+  verifiedBotCategory_notlike: string
   wafAttackScore: uint8
   wafAttackScoreClass: string
   wafAttackScoreClass_geq: string
@@ -64262,6 +65176,14 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   firewallForAiPiiCategories: [string!]!
   # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
   firewallForAiUnsafeTopicCategories: [string!]!
+  # The primary attack or use case detected in the request by Fraud detections
+  fraudAttack: string!
+  # Array of fraud detections ids that matched this request
+  fraudDetectionIds: [uint32!]!
+  # Array of fraud detections tags that matched this request
+  fraudDetectionTags: [string!]!
+  # Risk of a specific email address in account signup attempts
+  fraudEmailRisk: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -64271,6 +65193,8 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   ja3Hash: string!
   # JA4 TLS fingerprint
   ja4: string!
+  # Whether the request passed background JavaScript Detection
+  jsDetectionPassed: string!
   # The distinct result of checking for leaked credentials
   leakedCredentialCheckResult: string!
   originASN: uint32!
@@ -64295,6 +65219,8 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   userAgentBrowser: string!
   # OS parsed from the user agent
   userAgentOS: string!
+  # The category of verified bot
+  verifiedBotCategory: string!
   # Beta. Overall request score generated by the WAF detection module
   wafAttackScore: uint8!
   # Beta. Overall request score class generated by the WAF detection module
@@ -64705,6 +65631,36 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   firewallForAiUnsafeTopicCategories_hasany: [string!]
   firewallForAiUnsafeTopicCategories_isempty: bool
   firewallForAiUnsafeTopicCategories_nothas: string
+  fraudAttack: string
+  fraudAttack_geq: string
+  fraudAttack_gt: string
+  fraudAttack_in: [string!]
+  fraudAttack_leq: string
+  fraudAttack_like: string
+  fraudAttack_lt: string
+  fraudAttack_neq: string
+  fraudAttack_notin: [string!]
+  fraudAttack_notlike: string
+  fraudDetectionIds_has: uint32
+  fraudDetectionIds_hasall: [uint32!]
+  fraudDetectionIds_hasany: [uint32!]
+  fraudDetectionIds_isempty: bool
+  fraudDetectionIds_nothas: uint32
+  fraudDetectionTags_has: string
+  fraudDetectionTags_hasall: [string!]
+  fraudDetectionTags_hasany: [string!]
+  fraudDetectionTags_isempty: bool
+  fraudDetectionTags_nothas: string
+  fraudEmailRisk: string
+  fraudEmailRisk_geq: string
+  fraudEmailRisk_gt: string
+  fraudEmailRisk_in: [string!]
+  fraudEmailRisk_leq: string
+  fraudEmailRisk_like: string
+  fraudEmailRisk_lt: string
+  fraudEmailRisk_neq: string
+  fraudEmailRisk_notin: [string!]
+  fraudEmailRisk_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -64741,6 +65697,16 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   ja4_neq: string
   ja4_notin: [string!]
   ja4_notlike: string
+  jsDetectionPassed: string
+  jsDetectionPassed_geq: string
+  jsDetectionPassed_gt: string
+  jsDetectionPassed_in: [string!]
+  jsDetectionPassed_leq: string
+  jsDetectionPassed_like: string
+  jsDetectionPassed_lt: string
+  jsDetectionPassed_neq: string
+  jsDetectionPassed_notin: [string!]
+  jsDetectionPassed_notlike: string
   leakedCredentialCheckResult: string
   leakedCredentialCheckResult_geq: string
   leakedCredentialCheckResult_gt: string
@@ -64893,6 +65859,16 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   userAgent_neq: string
   userAgent_notin: [string!]
   userAgent_notlike: string
+  verifiedBotCategory: string
+  verifiedBotCategory_geq: string
+  verifiedBotCategory_gt: string
+  verifiedBotCategory_in: [string!]
+  verifiedBotCategory_leq: string
+  verifiedBotCategory_like: string
+  verifiedBotCategory_lt: string
+  verifiedBotCategory_neq: string
+  verifiedBotCategory_notin: [string!]
+  verifiedBotCategory_notlike: string
   wafAttackScore: uint8
   wafAttackScoreClass: string
   wafAttackScoreClass_geq: string
@@ -65168,6 +66144,22 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   firewallForAiUnsafeTopicCategories_ASC
   # firewallForAiUnsafeTopicCategories descending
   firewallForAiUnsafeTopicCategories_DESC
+  # fraudAttack ascending
+  fraudAttack_ASC
+  # fraudAttack descending
+  fraudAttack_DESC
+  # fraudDetectionIds ascending
+  fraudDetectionIds_ASC
+  # fraudDetectionIds descending
+  fraudDetectionIds_DESC
+  # fraudDetectionTags ascending
+  fraudDetectionTags_ASC
+  # fraudDetectionTags descending
+  fraudDetectionTags_DESC
+  # fraudEmailRisk ascending
+  fraudEmailRisk_ASC
+  # fraudEmailRisk descending
+  fraudEmailRisk_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -65184,6 +66176,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   ja4_ASC
   # ja4 descending
   ja4_DESC
+  # jsDetectionPassed ascending
+  jsDetectionPassed_ASC
+  # jsDetectionPassed descending
+  jsDetectionPassed_DESC
   # leakedCredentialCheckResult ascending
   leakedCredentialCheckResult_ASC
   # leakedCredentialCheckResult descending
@@ -65320,6 +66316,22 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   sum_edgeTimeToFirstByteMs_ASC
   # sum(edgeTimeToFirstByteMs) descending
   sum_edgeTimeToFirstByteMs_DESC
+  # sum(fraudDetectionIdArray) ascending
+  sum_fraudDetectionIdArray_ASC
+  # sum(fraudDetectionIdArray) descending
+  sum_fraudDetectionIdArray_DESC
+  # sum(fraudDetectionIdCountArray) ascending
+  sum_fraudDetectionIdCountArray_ASC
+  # sum(fraudDetectionIdCountArray) descending
+  sum_fraudDetectionIdCountArray_DESC
+  # sum(fraudDetectionTagArray) ascending
+  sum_fraudDetectionTagArray_ASC
+  # sum(fraudDetectionTagArray) descending
+  sum_fraudDetectionTagArray_DESC
+  # sum(fraudDetectionTagCountArray) ascending
+  sum_fraudDetectionTagCountArray_ASC
+  # sum(fraudDetectionTagCountArray) descending
+  sum_fraudDetectionTagCountArray_DESC
   # sum(originResponseDurationMs) ascending
   sum_originResponseDurationMs_ASC
   # sum(originResponseDurationMs) descending
@@ -65344,6 +66356,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   userAgent_ASC
   # userAgent descending
   userAgent_DESC
+  # verifiedBotCategory ascending
+  verifiedBotCategory_ASC
+  # verifiedBotCategory descending
+  verifiedBotCategory_DESC
   # wafAttackScoreClass ascending
   wafAttackScoreClass_ASC
   # wafAttackScoreClass descending
@@ -65421,6 +66437,14 @@ type ZoneHttpRequestsAdaptiveGroupsSum {
   edgeRequestBytes: uint64!
   edgeResponseBytes: uint64!
   edgeTimeToFirstByteMs: uint64!
+  # Array of fraud detection ids
+  fraudDetectionIdArray: [uint32!]!
+  # Count array of fraud detection ids. Elements in this array correspond to elements in fraudDetectionIdArray by index.
+  fraudDetectionIdCountArray: [uint32!]!
+  # Array of fraud detection tags
+  fraudDetectionTagArray: [string!]!
+  # Count array of fraud detection tags. Elements in this array correspond to elements in fraudDetectionTagArray by index.
+  fraudDetectionTagCountArray: [uint32!]!
   originResponseDurationMs: uint64!
   # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
   visits: uint64!
@@ -65639,6 +66663,22 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   firewallForAiUnsafeTopicCategories_ASC
   # firewallForAiUnsafeTopicCategories descending
   firewallForAiUnsafeTopicCategories_DESC
+  # fraudAttack ascending
+  fraudAttack_ASC
+  # fraudAttack descending
+  fraudAttack_DESC
+  # fraudDetectionIds ascending
+  fraudDetectionIds_ASC
+  # fraudDetectionIds descending
+  fraudDetectionIds_DESC
+  # fraudDetectionTags ascending
+  fraudDetectionTags_ASC
+  # fraudDetectionTags descending
+  fraudDetectionTags_DESC
+  # fraudEmailRisk ascending
+  fraudEmailRisk_ASC
+  # fraudEmailRisk descending
+  fraudEmailRisk_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -65655,6 +66695,10 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   ja4_ASC
   # ja4 descending
   ja4_DESC
+  # jsDetectionPassed ascending
+  jsDetectionPassed_ASC
+  # jsDetectionPassed descending
+  jsDetectionPassed_DESC
   # leakedCredentialCheckResult ascending
   leakedCredentialCheckResult_ASC
   # leakedCredentialCheckResult descending
@@ -65715,6 +66759,10 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   userAgent_ASC
   # userAgent descending
   userAgent_DESC
+  # verifiedBotCategory ascending
+  verifiedBotCategory_ASC
+  # verifiedBotCategory descending
+  verifiedBotCategory_DESC
   # wafAttackScoreClass ascending
   wafAttackScoreClass_ASC
   # wafAttackScoreClass descending
