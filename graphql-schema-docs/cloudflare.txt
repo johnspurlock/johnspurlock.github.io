@@ -61,6 +61,7 @@ Account-level datasets:
 * hyperdriveQueriesAdaptiveGroups
 * imagesRequestsAdaptiveGroups
 * imagesUniqueTransformations
+* imagesUniqueTransformationsAccumulatedSinceStartOfMonth
 * kvOperationsAdaptiveGroups
 * kvStorageAdaptiveGroups
 * liveInputEventsAdaptive
@@ -97,6 +98,7 @@ Account-level datasets:
   mconnTelemetrySnapshotsAdaptiveGroups
   mconnTelemetrySnapshotsStagingAdaptiveGroups
 * mediaUniqueTransformations
+* mediaUniqueTransformationsAccumulatedSinceStartOfMonth
 * mnmAWSVPCFlowDataAdaptiveGroups
 * mnmFlowDataAdaptiveGroups
   nelReportsAdaptiveGroups
@@ -166,6 +168,8 @@ Zone-level datasets:
 * dnsAnalyticsAdaptiveGroups
 * emailRoutingAdaptive
 * emailRoutingAdaptiveGroups
+* emailSendingAdaptive
+* emailSendingAdaptiveGroups
 * firewallEventsAdaptive
 * firewallEventsAdaptiveByTimeGroups
   firewallEventsAdaptiveGroups
@@ -377,6 +381,8 @@ type account {
   imagesRequestsAdaptiveGroups(filter: AccountImagesRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesRequestsAdaptiveGroupsOrderBy!]): [AccountImagesRequestsAdaptiveGroups!]!
   # Image unique transfromations per day
   imagesUniqueTransformations(filter: AccountImagesUniqueTransformationsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesUniqueTransformationsOrderBy!]): [AccountImagesUniqueTransformations!]!
+  # Image unique transformations accumulated since start of month
+  imagesUniqueTransformationsAccumulatedSinceStartOfMonth(filter: AccountImagesUniqueTransformationsAccumulatedSinceStartOfMonthFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesUniqueTransformationsAccumulatedSinceStartOfMonthOrderBy!]): [AccountImagesUniqueTransformationsAccumulatedSinceStartOfMonth!]!
   # KV operations data with adaptive sampling
   kvOperationsAdaptiveGroups(filter: AccountKvOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountKvOperationsAdaptiveGroupsOrderBy!]): [AccountKvOperationsAdaptiveGroups!]!
   # KV stored data with adaptive sampling
@@ -449,6 +455,8 @@ type account {
   mconnTelemetrySnapshotsStagingAdaptiveGroups(filter: AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetrySnapshotsStagingAdaptiveGroupsOrderBy!]): [AccountMconnTelemetrySnapshotsStagingAdaptiveGroups!]!
   # Media unique transfromations per day
   mediaUniqueTransformations(filter: AccountMediaUniqueTransformationsFilter_InputObject!, limit: uint64!, orderBy: [AccountMediaUniqueTransformationsOrderBy!]): [AccountMediaUniqueTransformations!]!
+  # Media unique transformations accumulated since start of month
+  mediaUniqueTransformationsAccumulatedSinceStartOfMonth(filter: AccountMediaUniqueTransformationsAccumulatedSinceStartOfMonthFilter_InputObject!, limit: uint64!, orderBy: [AccountMediaUniqueTransformationsAccumulatedSinceStartOfMonthOrderBy!]): [AccountMediaUniqueTransformationsAccumulatedSinceStartOfMonth!]!
   # AWS VPC Flow data collected through Magic Network Monitoring
   mnmAWSVPCFlowDataAdaptiveGroups(filter: AccountMnmAWSVPCFlowDataAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMnmAWSVPCFlowDataAdaptiveGroupsOrderBy!]): [AccountMnmAWSVPCFlowDataAdaptiveGroups!]!
   # Flow data collected through Magic Network Monitoring
@@ -5524,7 +5532,7 @@ type AccountAutoRAGConfigAPIAdaptiveGroupsDimensions {
   isStream: uint8!
   # THe max number of results that can be returned
   maxResults: int64!
-  # The time in milliseconds it took to generate embeddings for this search's query
+  # The number of chunks to retrieve from the vector store, calculated based on the configured number of results to retrieve
   numChunksToRetrieve: int64!
   # The number of returned results
   numResults: int64!
@@ -5534,6 +5542,8 @@ type AccountAutoRAGConfigAPIAdaptiveGroupsDimensions {
   rag: string!
   # Whether to this search implied regenerating markdown for returned results (0 = false, 1 = true)
   regenerateMarkdown: uint8!
+  # The time in milliseconds it took to re-rank results based on this search's query
+  rerankingDurationMs: int64!
   # The reranking model used in this search
   rerankingModel: string!
   # The time in milliseconds that it took to rewrite the query
@@ -5788,6 +5798,14 @@ input AccountAutoRAGConfigAPIAdaptiveGroupsFilter_InputObject {
   regenerateMarkdown_lt: uint8
   regenerateMarkdown_neq: uint8
   regenerateMarkdown_notin: bytes
+  rerankingDurationMs: int64
+  rerankingDurationMs_geq: int64
+  rerankingDurationMs_gt: int64
+  rerankingDurationMs_in: [int64!]
+  rerankingDurationMs_leq: int64
+  rerankingDurationMs_lt: int64
+  rerankingDurationMs_neq: int64
+  rerankingDurationMs_notin: [int64!]
   rerankingModel: string
   rerankingModel_geq: string
   rerankingModel_gt: string
@@ -5990,6 +6008,10 @@ enum AccountAutoRAGConfigAPIAdaptiveGroupsOrderBy {
   regenerateMarkdown_ASC
   # regenerateMarkdown descending
   regenerateMarkdown_DESC
+  # rerankingDurationMs ascending
+  rerankingDurationMs_ASC
+  # rerankingDurationMs descending
+  rerankingDurationMs_DESC
   # rerankingModel ascending
   rerankingModel_ASC
   # rerankingModel descending
@@ -27075,6 +27097,34 @@ type AccountImagesUniqueTransformations {
   transformations: uint64!
 }
 
+# Image unique transformations accumulated since start of month
+type AccountImagesUniqueTransformationsAccumulatedSinceStartOfMonth {
+  # The date uniques are calculated for
+  date: Date!
+  # Accumulated number of unique image transformations since start of month per day in sliding window
+  transformations: uint64!
+}
+
+input AccountImagesUniqueTransformationsAccumulatedSinceStartOfMonthFilter_InputObject {
+  AND: [AccountImagesUniqueTransformationsAccumulatedSinceStartOfMonthFilter_InputObject!]
+  OR: [AccountImagesUniqueTransformationsAccumulatedSinceStartOfMonthFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+}
+
+enum AccountImagesUniqueTransformationsAccumulatedSinceStartOfMonthOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+}
+
 input AccountImagesUniqueTransformationsFilter_InputObject {
   AND: [AccountImagesUniqueTransformationsFilter_InputObject!]
   OR: [AccountImagesUniqueTransformationsFilter_InputObject!]
@@ -39208,6 +39258,34 @@ type AccountMediaUniqueTransformations {
   transformations: uint64!
 }
 
+# Media unique transformations accumulated since start of month
+type AccountMediaUniqueTransformationsAccumulatedSinceStartOfMonth {
+  # The date uniques are calculated for
+  date: Date!
+  # Accumulated number of unique media transformations since start of month per day in sliding window
+  transformations: uint64!
+}
+
+input AccountMediaUniqueTransformationsAccumulatedSinceStartOfMonthFilter_InputObject {
+  AND: [AccountMediaUniqueTransformationsAccumulatedSinceStartOfMonthFilter_InputObject!]
+  OR: [AccountMediaUniqueTransformationsAccumulatedSinceStartOfMonthFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+}
+
+enum AccountMediaUniqueTransformationsAccumulatedSinceStartOfMonthOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+}
+
 input AccountMediaUniqueTransformationsFilter_InputObject {
   AND: [AccountMediaUniqueTransformationsFilter_InputObject!]
   OR: [AccountMediaUniqueTransformationsFilter_InputObject!]
@@ -46275,6 +46353,7 @@ type AccountSettings {
   hyperdriveQueriesAdaptiveGroups: Settings!
   imagesRequestsAdaptiveGroups: Settings!
   imagesUniqueTransformations: Settings!
+  imagesUniqueTransformationsAccumulatedSinceStartOfMonth: Settings!
   kvOperationsAdaptiveGroups: Settings!
   kvStorageAdaptiveGroups: Settings!
   liveInputEventsAdaptive: Settings!
@@ -46311,6 +46390,7 @@ type AccountSettings {
   mconnTelemetrySnapshotsAdaptiveGroups: Settings!
   mconnTelemetrySnapshotsStagingAdaptiveGroups: Settings!
   mediaUniqueTransformations: Settings!
+  mediaUniqueTransformationsAccumulatedSinceStartOfMonth: Settings!
   mnmAWSVPCFlowDataAdaptiveGroups: Settings!
   mnmFlowDataAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
@@ -55549,6 +55629,10 @@ type zone {
   emailRoutingAdaptive(filter: ZoneEmailRoutingAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneEmailRoutingAdaptiveOrderBy!]): [ZoneEmailRoutingAdaptive!]!
   # Beta. Aggregated email routing logs with adaptive sampling
   emailRoutingAdaptiveGroups(filter: ZoneEmailRoutingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneEmailRoutingAdaptiveGroupsOrderBy!]): [ZoneEmailRoutingAdaptiveGroups!]!
+  # Raw email sending logs with adaptive sampling
+  emailSendingAdaptive(filter: ZoneEmailSendingAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneEmailSendingAdaptiveOrderBy!]): [ZoneEmailSendingAdaptive!]!
+  # Aggregated email sending logs with adaptive sampling
+  emailSendingAdaptiveGroups(filter: ZoneEmailSendingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneEmailSendingAdaptiveGroupsOrderBy!]): [ZoneEmailSendingAdaptiveGroups!]!
   # Raw Firewall events with adaptive sampling
   firewallEventsAdaptive(filter: ZoneFirewallEventsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneFirewallEventsAdaptiveOrderBy!]): [ZoneFirewallEventsAdaptive!]!
   # Aggregated Firewall events with adaptive sampling grouped by time
@@ -58774,8 +58858,6 @@ type ZoneEmailRoutingAdaptive {
   eventType: string!
   # The sender email address of the source email
   from: string!
-  # Is this event related to Email Sending?
-  isEmailSending: uint8!
   # Is this event related to a NDR (bounce) email?
   isNDR: uint8!
   # Source email is spam
@@ -58883,14 +58965,6 @@ input ZoneEmailRoutingAdaptiveFilter_InputObject {
   from_neq: string
   from_notin: [string!]
   from_notlike: string
-  isEmailSending: uint8
-  isEmailSending_geq: uint8
-  isEmailSending_gt: uint8
-  isEmailSending_in: bytes
-  isEmailSending_leq: uint8
-  isEmailSending_lt: uint8
-  isEmailSending_neq: uint8
-  isEmailSending_notin: bytes
   isNDR: uint8
   isNDR_geq: uint8
   isNDR_gt: uint8
@@ -59041,8 +59115,6 @@ type ZoneEmailRoutingAdaptiveGroupsDimensions {
   dmarc: string!
   # Origin of email (incoming|forward|reply|newEmail)
   eventType: string!
-  # Is this event related to Email Sending?
-  isEmailSending: uint8!
   # Is this event related to a NDR (bounce) email?
   isNDR: uint8!
   # Source email is spam
@@ -59154,14 +59226,6 @@ input ZoneEmailRoutingAdaptiveGroupsFilter_InputObject {
   eventType_neq: string
   eventType_notin: [string!]
   eventType_notlike: string
-  isEmailSending: uint8
-  isEmailSending_geq: uint8
-  isEmailSending_gt: uint8
-  isEmailSending_in: bytes
-  isEmailSending_leq: uint8
-  isEmailSending_lt: uint8
-  isEmailSending_neq: uint8
-  isEmailSending_notin: bytes
   isNDR: uint8
   isNDR_geq: uint8
   isNDR_gt: uint8
@@ -59370,6 +59434,570 @@ enum ZoneEmailRoutingAdaptiveOrderBy {
   ruleMatched_ASC
   # ruleMatched descending
   ruleMatched_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # spamScore ascending
+  spamScore_ASC
+  # spamScore descending
+  spamScore_DESC
+  # spamThreshold ascending
+  spamThreshold_ASC
+  # spamThreshold descending
+  spamThreshold_DESC
+  # spf ascending
+  spf_ASC
+  # spf descending
+  spf_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # subject ascending
+  subject_ASC
+  # subject descending
+  subject_DESC
+  # to ascending
+  to_ASC
+  # to descending
+  to_DESC
+}
+
+# Raw email sending logs with adaptive sampling
+type ZoneEmailSendingAdaptive {
+  # ARC check status of the source email
+  arc: string!
+  # The date and time the source email was received
+  datetime: Time!
+  # DKIM check status of the source email
+  dkim: string!
+  # DMARC check status of the source email
+  dmarc: string!
+  # Detailed error message (if any)
+  errorDetail: string!
+  # Origin of email (incoming|forward|reply|newEmail)
+  eventType: string!
+  # The sender email address of the source email
+  from: string!
+  # Is this event related to a NDR (bounce) email?
+  isNDR: uint8!
+  # Source email is spam
+  isSpam: uint8!
+  # The Message-ID header of the source email (if present)
+  messageId: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # Unique identifier for the email log entry (note: retries for the same email may result in multiple log entries)
+  sessionId: string!
+  # Spam score value
+  spamScore: uint32!
+  # Spam threshold value
+  spamThreshold: uint32!
+  # SPF check status of the source email
+  spf: string!
+  # The resulting outcome (action) for the email
+  status: string!
+  # The subject of the source email
+  subject: string!
+  # The recipient email address of the source email
+  to: string!
+}
+
+input ZoneEmailSendingAdaptiveFilter_InputObject {
+  AND: [ZoneEmailSendingAdaptiveFilter_InputObject!]
+  OR: [ZoneEmailSendingAdaptiveFilter_InputObject!]
+  arc: string
+  arc_geq: string
+  arc_gt: string
+  arc_in: [string!]
+  arc_leq: string
+  arc_like: string
+  arc_lt: string
+  arc_neq: string
+  arc_notin: [string!]
+  arc_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  dkim: string
+  dkim_geq: string
+  dkim_gt: string
+  dkim_in: [string!]
+  dkim_leq: string
+  dkim_like: string
+  dkim_lt: string
+  dkim_neq: string
+  dkim_notin: [string!]
+  dkim_notlike: string
+  dmarc: string
+  dmarc_geq: string
+  dmarc_gt: string
+  dmarc_in: [string!]
+  dmarc_leq: string
+  dmarc_like: string
+  dmarc_lt: string
+  dmarc_neq: string
+  dmarc_notin: [string!]
+  dmarc_notlike: string
+  errorDetail: string
+  errorDetail_geq: string
+  errorDetail_gt: string
+  errorDetail_in: [string!]
+  errorDetail_leq: string
+  errorDetail_like: string
+  errorDetail_lt: string
+  errorDetail_neq: string
+  errorDetail_notin: [string!]
+  errorDetail_notlike: string
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
+  from: string
+  from_geq: string
+  from_gt: string
+  from_in: [string!]
+  from_leq: string
+  from_like: string
+  from_lt: string
+  from_neq: string
+  from_notin: [string!]
+  from_notlike: string
+  isNDR: uint8
+  isNDR_geq: uint8
+  isNDR_gt: uint8
+  isNDR_in: bytes
+  isNDR_leq: uint8
+  isNDR_lt: uint8
+  isNDR_neq: uint8
+  isNDR_notin: bytes
+  isSpam: uint8
+  isSpam_geq: uint8
+  isSpam_gt: uint8
+  isSpam_in: bytes
+  isSpam_leq: uint8
+  isSpam_lt: uint8
+  isSpam_neq: uint8
+  isSpam_notin: bytes
+  messageId: string
+  messageId_geq: string
+  messageId_gt: string
+  messageId_in: [string!]
+  messageId_leq: string
+  messageId_like: string
+  messageId_lt: string
+  messageId_neq: string
+  messageId_notin: [string!]
+  messageId_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+  spamScore: uint32
+  spamScore_geq: uint32
+  spamScore_gt: uint32
+  spamScore_in: [uint32!]
+  spamScore_leq: uint32
+  spamScore_lt: uint32
+  spamScore_neq: uint32
+  spamScore_notin: [uint32!]
+  spamThreshold: uint32
+  spamThreshold_geq: uint32
+  spamThreshold_gt: uint32
+  spamThreshold_in: [uint32!]
+  spamThreshold_leq: uint32
+  spamThreshold_lt: uint32
+  spamThreshold_neq: uint32
+  spamThreshold_notin: [uint32!]
+  spf: string
+  spf_geq: string
+  spf_gt: string
+  spf_in: [string!]
+  spf_leq: string
+  spf_like: string
+  spf_lt: string
+  spf_neq: string
+  spf_notin: [string!]
+  spf_notlike: string
+  status: string
+  status_geq: string
+  status_gt: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
+  subject: string
+  subject_geq: string
+  subject_gt: string
+  subject_in: [string!]
+  subject_leq: string
+  subject_like: string
+  subject_lt: string
+  subject_neq: string
+  subject_notin: [string!]
+  subject_notlike: string
+  to: string
+  to_geq: string
+  to_gt: string
+  to_in: [string!]
+  to_leq: string
+  to_like: string
+  to_lt: string
+  to_neq: string
+  to_notin: [string!]
+  to_notlike: string
+}
+
+# Aggregated email sending logs with adaptive sampling
+type ZoneEmailSendingAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): ZoneEmailSendingAdaptiveGroupsConfidence!
+  # Number of emails processed
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneEmailSendingAdaptiveGroupsDimensions
+}
+
+type ZoneEmailSendingAdaptiveGroupsConfidence {
+  # Number of emails processed, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type ZoneEmailSendingAdaptiveGroupsDimensions {
+  # ARC check status of the source email
+  arc: string!
+  # The date the source email was received
+  date: Date!
+  # The date and time the source email was received truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the source email was received truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the source email was received truncated to the hour
+  datetimeHour: Time!
+  # The date and time the source email was received truncated to the minute
+  datetimeMinute: Time!
+  # DKIM check status of the source email
+  dkim: string!
+  # DMARC check status of the source email
+  dmarc: string!
+  # Origin of email (incoming|forward|reply|newEmail)
+  eventType: string!
+  # Is this event related to a NDR (bounce) email?
+  isNDR: uint8!
+  # Source email is spam
+  isSpam: uint8!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # Spam score value
+  spamScore: uint32!
+  # Spam threshold value
+  spamThreshold: uint32!
+  # SPF check status of the source email
+  spf: string!
+  # The resulting outcome (action) for the email
+  status: string!
+}
+
+input ZoneEmailSendingAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneEmailSendingAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneEmailSendingAdaptiveGroupsFilter_InputObject!]
+  arc: string
+  arc_geq: string
+  arc_gt: string
+  arc_in: [string!]
+  arc_leq: string
+  arc_like: string
+  arc_lt: string
+  arc_neq: string
+  arc_notin: [string!]
+  arc_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  dkim: string
+  dkim_geq: string
+  dkim_gt: string
+  dkim_in: [string!]
+  dkim_leq: string
+  dkim_like: string
+  dkim_lt: string
+  dkim_neq: string
+  dkim_notin: [string!]
+  dkim_notlike: string
+  dmarc: string
+  dmarc_geq: string
+  dmarc_gt: string
+  dmarc_in: [string!]
+  dmarc_leq: string
+  dmarc_like: string
+  dmarc_lt: string
+  dmarc_neq: string
+  dmarc_notin: [string!]
+  dmarc_notlike: string
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
+  isNDR: uint8
+  isNDR_geq: uint8
+  isNDR_gt: uint8
+  isNDR_in: bytes
+  isNDR_leq: uint8
+  isNDR_lt: uint8
+  isNDR_neq: uint8
+  isNDR_notin: bytes
+  isSpam: uint8
+  isSpam_geq: uint8
+  isSpam_gt: uint8
+  isSpam_in: bytes
+  isSpam_leq: uint8
+  isSpam_lt: uint8
+  isSpam_neq: uint8
+  isSpam_notin: bytes
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  spamScore: uint32
+  spamScore_geq: uint32
+  spamScore_gt: uint32
+  spamScore_in: [uint32!]
+  spamScore_leq: uint32
+  spamScore_lt: uint32
+  spamScore_neq: uint32
+  spamScore_notin: [uint32!]
+  spamThreshold: uint32
+  spamThreshold_geq: uint32
+  spamThreshold_gt: uint32
+  spamThreshold_in: [uint32!]
+  spamThreshold_leq: uint32
+  spamThreshold_lt: uint32
+  spamThreshold_neq: uint32
+  spamThreshold_notin: [uint32!]
+  spf: string
+  spf_geq: string
+  spf_gt: string
+  spf_in: [string!]
+  spf_leq: string
+  spf_like: string
+  spf_lt: string
+  spf_neq: string
+  spf_notin: [string!]
+  spf_notlike: string
+  status: string
+  status_geq: string
+  status_gt: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
+}
+
+enum ZoneEmailSendingAdaptiveGroupsOrderBy {
+  # arc ascending
+  arc_ASC
+  # arc descending
+  arc_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # dkim ascending
+  dkim_ASC
+  # dkim descending
+  dkim_DESC
+  # dmarc ascending
+  dmarc_ASC
+  # dmarc descending
+  dmarc_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
+  # isEmailSending ascending
+  isEmailSending_ASC
+  # isEmailSending descending
+  isEmailSending_DESC
+  # isNDR ascending
+  isNDR_ASC
+  # isNDR descending
+  isNDR_DESC
+  # isSpam ascending
+  isSpam_ASC
+  # isSpam descending
+  isSpam_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # spamScore ascending
+  spamScore_ASC
+  # spamScore descending
+  spamScore_DESC
+  # spamThreshold ascending
+  spamThreshold_ASC
+  # spamThreshold descending
+  spamThreshold_DESC
+  # spf ascending
+  spf_ASC
+  # spf descending
+  spf_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+}
+
+enum ZoneEmailSendingAdaptiveOrderBy {
+  # arc ascending
+  arc_ASC
+  # arc descending
+  arc_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # dkim ascending
+  dkim_ASC
+  # dkim descending
+  dkim_DESC
+  # dmarc ascending
+  dmarc_ASC
+  # dmarc descending
+  dmarc_DESC
+  # errorDetail ascending
+  errorDetail_ASC
+  # errorDetail descending
+  errorDetail_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
+  # from ascending
+  from_ASC
+  # from descending
+  from_DESC
+  # isEmailSending ascending
+  isEmailSending_ASC
+  # isEmailSending descending
+  isEmailSending_DESC
+  # isNDR ascending
+  isNDR_ASC
+  # isNDR descending
+  isNDR_DESC
+  # isSpam ascending
+  isSpam_ASC
+  # isSpam descending
+  isSpam_DESC
+  # messageId ascending
+  messageId_ASC
+  # messageId descending
+  messageId_DESC
   # sampleInterval ascending
   sampleInterval_ASC
   # sampleInterval descending
@@ -68903,6 +69531,8 @@ type ZoneSettings {
   dnsAnalyticsAdaptiveGroups: Settings!
   emailRoutingAdaptive: Settings!
   emailRoutingAdaptiveGroups: Settings!
+  emailSendingAdaptive: Settings!
+  emailSendingAdaptiveGroups: Settings!
   firewallEventsAdaptive: Settings!
   firewallEventsAdaptiveByTimeGroups: Settings!
   firewallEventsAdaptiveGroups: Settings!
