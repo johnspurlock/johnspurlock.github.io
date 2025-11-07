@@ -147,6 +147,7 @@ Account-level datasets:
 * workersOverviewDataAdaptiveGroups
 * workersOverviewRequestsAdaptiveGroups
 * workersSubrequestsAdaptiveGroups
+* workersVpcConnectionAdaptiveGroups
 * workflowsAdaptive
 * workflowsAdaptiveGroups
 * zarazTrackAdaptiveGroups
@@ -189,6 +190,8 @@ Zone-level datasets:
 * logpushHealthAdaptiveGroups
   nelReportsAdaptiveGroups
   pageShieldReportsAdaptiveGroups
+* userProfilesAdaptiveGroups
+* userProfilesRawEventsGroups
   waitingRoomAnalyticsAdaptive
   waitingRoomAnalyticsAdaptiveGroups
 * workersZoneInvocationsAdaptiveGroups
@@ -554,6 +557,8 @@ type account {
   workersOverviewRequestsAdaptiveGroups(filter: AccountWorkersOverviewRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersOverviewRequestsAdaptiveGroupsOrderBy!]): [AccountWorkersOverviewRequestsAdaptiveGroups!]!
   # Beta. Workers subrequests with adaptive sampling
   workersSubrequestsAdaptiveGroups(filter: AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersSubrequestsAdaptiveGroupsOrderBy!]): [AccountWorkersSubrequestsAdaptiveGroups!]!
+  # Workers VPC connections with adaptive sampling.
+  workersVpcConnectionAdaptiveGroups(filter: AccountWorkersVpcConnectionAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersVpcConnectionAdaptiveGroupsOrderBy!]): [AccountWorkersVpcConnectionAdaptiveGroups!]!
   # Workflows analytics
   workflowsAdaptive(filter: AccountWorkflowsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkflowsAdaptiveOrderBy!]): [AccountWorkflowsAdaptive!]!
   # Workflows analytics
@@ -1061,7 +1066,7 @@ type AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsDimensions {
   icmpType: uint8!
   # Value of the Destination Address header field in the IPv4 or IPv6 packet
   ipDestinationAddress: string!
-  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipDestinationSubnet: string!
   # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
   ipFragmentOffset: uint16!
@@ -1075,7 +1080,7 @@ type AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsDimensions {
   ipProtocolName: string!
   # Value of the Source Address header field in the IPv4 or IPv6 packet
   ipSourceAddress: string!
-  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipSourceSubnet: string!
   # Total length of the IPv4 or IPv6 packet, in bytes
   ipTotalLength: uint16!
@@ -2471,7 +2476,7 @@ type AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsDimensions {
   icmpType: uint8!
   # Value of the Destination Address header field in the IPv4 or IPv6 packet
   ipDestinationAddress: string!
-  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipDestinationSubnet: string!
   # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
   ipFragmentOffset: uint16!
@@ -2485,7 +2490,7 @@ type AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsDimensions {
   ipProtocolName: string!
   # Value of the Source Address header field in the IPv4 or IPv6 packet
   ipSourceAddress: string!
-  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipSourceSubnet: string!
   # Total length of the IPv4 or IPv6 packet, in bytes
   ipTotalLength: uint16!
@@ -8106,7 +8111,7 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
   icmpType: uint8!
   # Value of the Destination Address header field in the IPv4 or IPv6 packet
   ipDestinationAddress: string!
-  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipDestinationSubnet: string!
   # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
   ipFragmentOffset: uint16!
@@ -8120,7 +8125,7 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsDimensions {
   ipProtocolName: string!
   # Value of the Source Address header field in the IPv4 or IPv6 packet
   ipSourceAddress: string!
-  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipSourceSubnet: string!
   # Total length of the IPv4 or IPv6 packet, in bytes
   ipTotalLength: uint16!
@@ -13617,7 +13622,7 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions {
   icmpType: uint8!
   # Value of the Destination Address header field in the IPv4 or IPv6 packet
   ipDestinationAddress: string!
-  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipDestinationSubnet: string!
   # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
   ipFragmentOffset: uint16!
@@ -13631,7 +13636,7 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsDimensions {
   ipProtocolName: string!
   # Value of the Source Address header field in the IPv4 or IPv6 packet
   ipSourceAddress: string!
-  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipSourceSubnet: string!
   # Total length of the IPv4 or IPv6 packet, in bytes
   ipTotalLength: uint16!
@@ -18702,7 +18707,7 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions {
   icmpType: uint8!
   # Value of the Destination Address header field in the IPv4 or IPv6 packet
   ipDestinationAddress: string!
-  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipDestinationSubnet: string!
   # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
   ipFragmentOffset: uint16!
@@ -18716,7 +18721,7 @@ type AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsDimensions {
   ipProtocolName: string!
   # Value of the Source Address header field in the IPv4 or IPv6 packet
   ipSourceAddress: string!
-  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipSourceSubnet: string!
   # Total length of the IPv4 or IPv6 packet, in bytes
   ipTotalLength: uint16!
@@ -23095,6 +23100,7 @@ type AccountHttpRequests1dGroupsCountryMapElem {
   clientCountryName: string!
   requests: uint64!
   # Requests classified as threats
+  @Deprecated
   threats: uint64!
 }
 
@@ -23212,6 +23218,7 @@ type AccountHttpRequests1dGroupsSum {
   responseStatusMap: [AccountHttpRequests1dGroupsResponseStatusMapElem!]!
   threatPathingMap: [AccountHttpRequests1dGroupsThreatPathingMapElem!]!
   # Requests classified as threats
+  @Deprecated
   threats: uint64!
 }
 
@@ -23279,6 +23286,7 @@ type AccountHttpRequests1hGroupsCountryMapElem {
   clientCountryName: string!
   requests: uint64!
   # Requests classified as threats
+  @Deprecated
   threats: uint64!
 }
 
@@ -23410,6 +23418,7 @@ type AccountHttpRequests1hGroupsSum {
   responseStatusMap: [AccountHttpRequests1hGroupsResponseStatusMapElem!]!
   threatPathingMap: [AccountHttpRequests1hGroupsThreatPathingMapElem!]!
   # Requests classified as threats
+  @Deprecated
   threats: uint64!
 }
 
@@ -23477,6 +23486,7 @@ type AccountHttpRequests1mGroupsCountryMapElem {
   clientCountryName: string!
   requests: uint64!
   # Requests classified as threats
+  @Deprecated
   threats: uint64!
 }
 
@@ -23693,6 +23703,7 @@ type AccountHttpRequests1mGroupsSum {
   responseStatusMap: [AccountHttpRequests1mGroupsResponseStatusMapElem!]!
   threatPathingMap: [AccountHttpRequests1mGroupsThreatPathingMapElem!]!
   # Requests classified as threats
+  @Deprecated
   threats: uint64!
 }
 
@@ -23830,6 +23841,8 @@ type AccountHttpRequestsAdaptive {
   originResponseDurationMs: uint64!
   # HTTP origin response status code returned to browser
   originResponseStatus: uint16!
+  # Pay Per Crawl outcome, when applicable (e.g. request enabled for charging and not blocked by a WAF rule)
+  payPerCrawlStatus: string!
   # The RayId of the request
   rayName: string!
   requestSource: string!
@@ -24390,6 +24403,16 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   originResponseStatus_lt: uint16
   originResponseStatus_neq: uint16
   originResponseStatus_notin: [uint16!]
+  payPerCrawlStatus: string
+  payPerCrawlStatus_geq: string
+  payPerCrawlStatus_gt: string
+  payPerCrawlStatus_in: [string!]
+  payPerCrawlStatus_leq: string
+  payPerCrawlStatus_like: string
+  payPerCrawlStatus_lt: string
+  payPerCrawlStatus_neq: string
+  payPerCrawlStatus_notin: [string!]
+  payPerCrawlStatus_notlike: string
   rayName: string
   rayName_geq: string
   rayName_gt: string
@@ -24715,6 +24738,8 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   originResponseDurationMs: uint64!
   # HTTP response status code returned by the origin
   originResponseStatus: uint16!
+  # Pay Per Crawl outcome, when applicable (e.g. request enabled for charging and not blocked by a WAF rule)
+  payPerCrawlStatus: string!
   requestSource: string!
   # ABR sample interval
   sampleInterval: uint32!
@@ -25274,6 +25299,16 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   originResponseStatus_lt: uint16
   originResponseStatus_neq: uint16
   originResponseStatus_notin: [uint16!]
+  payPerCrawlStatus: string
+  payPerCrawlStatus_geq: string
+  payPerCrawlStatus_gt: string
+  payPerCrawlStatus_in: [string!]
+  payPerCrawlStatus_leq: string
+  payPerCrawlStatus_like: string
+  payPerCrawlStatus_lt: string
+  payPerCrawlStatus_neq: string
+  payPerCrawlStatus_notin: [string!]
+  payPerCrawlStatus_notlike: string
   rayName: string
   rayName_geq: string
   rayName_gt: string
@@ -25727,6 +25762,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   originResponseStatus_ASC
   # originResponseStatus descending
   originResponseStatus_DESC
+  # payPerCrawlStatus ascending
+  payPerCrawlStatus_ASC
+  # payPerCrawlStatus descending
+  payPerCrawlStatus_DESC
   # quantiles(edgeDnsResponseTimeMsP50) ascending
   quantiles_edgeDnsResponseTimeMsP50_ASC
   # quantiles(edgeDnsResponseTimeMsP50) descending
@@ -26250,6 +26289,10 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   originResponseStatus_ASC
   # originResponseStatus descending
   originResponseStatus_DESC
+  # payPerCrawlStatus ascending
+  payPerCrawlStatus_ASC
+  # payPerCrawlStatus descending
+  payPerCrawlStatus_DESC
   # rayName ascending
   rayName_ASC
   # rayName descending
@@ -28658,7 +28701,7 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions {
   icmpType: uint8!
   # Value of the Destination Address header field in the IPv4 or IPv6 packet
   ipDestinationAddress: string!
-  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipDestinationSubnet: string!
   # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
   ipFragmentOffset: uint16!
@@ -28672,7 +28715,7 @@ type AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsDimensions {
   ipProtocolName: string!
   # Value of the Source Address header field in the IPv4 or IPv6 packet
   ipSourceAddress: string!
-  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipSourceSubnet: string!
   # Total length of the IPv4 or IPv6 packet, in bytes
   ipTotalLength: uint16!
@@ -30072,7 +30115,7 @@ type AccountMagicFirewallRateLimitNetworkAnalyticsAdaptiveGroupsDimensions {
   icmpType: uint8!
   # Value of the Destination Address header field in the IPv4 or IPv6 packet
   ipDestinationAddress: string!
-  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipDestinationSubnet: string!
   # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
   ipFragmentOffset: uint16!
@@ -30086,7 +30129,7 @@ type AccountMagicFirewallRateLimitNetworkAnalyticsAdaptiveGroupsDimensions {
   ipProtocolName: string!
   # Value of the Source Address header field in the IPv4 or IPv6 packet
   ipSourceAddress: string!
-  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipSourceSubnet: string!
   # Total length of the IPv4 or IPv6 packet, in bytes
   ipTotalLength: uint16!
@@ -31597,7 +31640,7 @@ type AccountMagicIDPSNetworkAnalyticsAdaptiveGroupsDimensions {
   icmpType: uint8!
   # Value of the Destination Address header field in the IPv4 or IPv6 packet
   ipDestinationAddress: string!
-  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipDestinationSubnet: string!
   # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
   ipFragmentOffset: uint16!
@@ -31611,7 +31654,7 @@ type AccountMagicIDPSNetworkAnalyticsAdaptiveGroupsDimensions {
   ipProtocolName: string!
   # Value of the Source Address header field in the IPv4 or IPv6 packet
   ipSourceAddress: string!
-  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipSourceSubnet: string!
   # Total length of the IPv4 or IPv6 packet, in bytes
   ipTotalLength: uint16!
@@ -32939,7 +32982,7 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
   ingressTunnelName: string!
   # Value of the Destination Address header field in the IPv4 or IPv6 packet
   ipDestinationAddress: string!
-  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipDestinationSubnet: string!
   # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
   ipFragmentOffset: uint16!
@@ -32953,7 +32996,7 @@ type AccountMagicTransitNetworkAnalyticsAdaptiveGroupsDimensions {
   ipProtocolName: string!
   # Value of the Source Address header field in the IPv4 or IPv6 packet
   ipSourceAddress: string!
-  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipSourceSubnet: string!
   # Total length of the IPv4 or IPv6 packet, in bytes
   ipTotalLength: uint16!
@@ -46439,6 +46482,7 @@ type AccountSettings {
   workersOverviewDataAdaptiveGroups: Settings!
   workersOverviewRequestsAdaptiveGroups: Settings!
   workersSubrequestsAdaptiveGroups: Settings!
+  workersVpcConnectionAdaptiveGroups: Settings!
   workflowsAdaptive: Settings!
   workflowsAdaptiveGroups: Settings!
   zarazTrackAdaptiveGroups: Settings!
@@ -47274,7 +47318,7 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions {
   icmpType: uint8!
   # Value of the Destination Address header field in the IPv4 or IPv6 packet
   ipDestinationAddress: string!
-  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Destination Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipDestinationSubnet: string!
   # Value of the Fragment Offset header field in the IPv4 or IPv6 packet
   ipFragmentOffset: uint16!
@@ -47288,7 +47332,7 @@ type AccountSpectrumNetworkAnalyticsAdaptiveGroupsDimensions {
   ipProtocolName: string!
   # Value of the Source Address header field in the IPv4 or IPv6 packet
   ipSourceAddress: string!
-  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /64 for IPv6)
+  # Computed subnet of the Source Address header field in the IPv4 or IPv6 packet (/24 for IPv4; /48 for IPv6)
   ipSourceSubnet: string!
   # Total length of the IPv4 or IPv6 packet, in bytes
   ipTotalLength: uint16!
@@ -53307,6 +53351,207 @@ type AccountWorkersSubrequestsAdaptiveGroupsSumConfidence {
   timeToResponseUs: Confidence!
 }
 
+# Workers VPC connections with adaptive sampling.
+type AccountWorkersVpcConnectionAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountWorkersVpcConnectionAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountWorkersVpcConnectionAdaptiveGroupsConfidence!
+  # Total number of Workers VPC Connections
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountWorkersVpcConnectionAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountWorkersVpcConnectionAdaptiveGroupsSum
+}
+
+type AccountWorkersVpcConnectionAdaptiveGroupsAvg {
+  # Average latency (in milliseconds) of retrieving a connection to the origin database
+  connectionLatency: uint64!
+  # Average latency (in milliseconds) of resolving the hostname of the origin
+  dnsLatency: uint64!
+  # The average value used for sample interval
+  sampleInterval: float64!
+}
+
+type AccountWorkersVpcConnectionAdaptiveGroupsConfidence {
+  # Total number of Workers VPC Connections, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountWorkersVpcConnectionAdaptiveGroupsSumConfidence
+}
+
+type AccountWorkersVpcConnectionAdaptiveGroupsDimensions {
+  # IATA airport code for the Cloudflare datacenter where the connection originated.
+  coloCode: string!
+  # Workers VPC Connection timestamp, truncated to start of a day
+  date: Date!
+  # Workers VPC Connection timestamp
+  datetime: Time!
+  # Workers VPC Connection timestamp, truncated to start of hour
+  datetimeHour: Time!
+  # Workers VPC Connection timestamp, truncated to start of minute
+  datetimeMinute: Time!
+  # Set for error statuses, contains a user-facing error message.
+  errorCode: string!
+  # The result status of the connection: 'success' or 'error'. Error events may not have complete data.
+  status: string!
+  # The ID of the Workers VPC Resource
+  targetId: string!
+}
+
+input AccountWorkersVpcConnectionAdaptiveGroupsFilter_InputObject {
+  AND: [AccountWorkersVpcConnectionAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountWorkersVpcConnectionAdaptiveGroupsFilter_InputObject!]
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  errorCode: string
+  errorCode_geq: string
+  errorCode_gt: string
+  errorCode_in: [string!]
+  errorCode_leq: string
+  errorCode_like: string
+  errorCode_lt: string
+  errorCode_neq: string
+  errorCode_notin: [string!]
+  errorCode_notlike: string
+  status: string
+  status_geq: string
+  status_gt: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
+  targetId: string
+  targetId_geq: string
+  targetId_gt: string
+  targetId_in: [string!]
+  targetId_leq: string
+  targetId_like: string
+  targetId_lt: string
+  targetId_neq: string
+  targetId_notin: [string!]
+  targetId_notlike: string
+}
+
+enum AccountWorkersVpcConnectionAdaptiveGroupsOrderBy {
+  # avg(connectionLatency) ascending
+  avg_connectionLatency_ASC
+  # avg(connectionLatency) descending
+  avg_connectionLatency_DESC
+  # avg(dnsLatency) ascending
+  avg_dnsLatency_ASC
+  # avg(dnsLatency) descending
+  avg_dnsLatency_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # errorCode ascending
+  errorCode_ASC
+  # errorCode descending
+  errorCode_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # sum(connectionLatency) ascending
+  sum_connectionLatency_ASC
+  # sum(connectionLatency) descending
+  sum_connectionLatency_DESC
+  # sum(dnsLatency) ascending
+  sum_dnsLatency_ASC
+  # sum(dnsLatency) descending
+  sum_dnsLatency_DESC
+  # targetId ascending
+  targetId_ASC
+  # targetId descending
+  targetId_DESC
+}
+
+type AccountWorkersVpcConnectionAdaptiveGroupsSum {
+  # Total latency (in milliseconds) of establishing a connection to the origin, including DNS resolution and TLS session establishment.
+  connectionLatency: uint64!
+  # Total Latency (in milliseconds) of resolving the hostname of the origin
+  dnsLatency: uint64!
+}
+
+type AccountWorkersVpcConnectionAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  connectionLatency: Confidence!
+  # Confidence interval for the corresponding point estimate
+  dnsLatency: Confidence!
+}
+
 # Workflows analytics
 type AccountWorkflowsAdaptive {
   # CPU time in timestamp (ms)
@@ -54370,6 +54615,8 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   originResponseDurationMs: uint64!
   # HTTP response status code returned by the origin
   originResponseStatus: uint16!
+  # Pay Per Crawl outcome, when applicable (e.g. request enabled for charging and not blocked by a WAF rule)
+  payPerCrawlStatus: string!
   requestSource: string!
   # ABR sample interval
   sampleInterval: uint32!
@@ -54919,6 +55166,16 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   originResponseStatus_lt: uint16
   originResponseStatus_neq: uint16
   originResponseStatus_notin: [uint16!]
+  payPerCrawlStatus: string
+  payPerCrawlStatus_geq: string
+  payPerCrawlStatus_gt: string
+  payPerCrawlStatus_in: [string!]
+  payPerCrawlStatus_leq: string
+  payPerCrawlStatus_like: string
+  payPerCrawlStatus_lt: string
+  payPerCrawlStatus_neq: string
+  payPerCrawlStatus_notin: [string!]
+  payPerCrawlStatus_notlike: string
   rayName: string
   rayName_geq: string
   rayName_gt: string
@@ -55354,6 +55611,10 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   originResponseStatus_ASC
   # originResponseStatus descending
   originResponseStatus_DESC
+  # payPerCrawlStatus ascending
+  payPerCrawlStatus_ASC
+  # payPerCrawlStatus descending
+  payPerCrawlStatus_DESC
   # quantiles(edgeDnsResponseTimeMsP50) ascending
   quantiles_edgeDnsResponseTimeMsP50_ASC
   # quantiles(edgeDnsResponseTimeMsP50) descending
@@ -55674,6 +55935,10 @@ type zone {
   # Page Shield CSP reports
   pageShieldReportsAdaptiveGroups(filter: ZonePageShieldReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZonePageShieldReportsAdaptiveGroupsOrderBy!]): [ZonePageShieldReportsAdaptiveGroups!]!
   settings: ZoneSettings
+  # User ID profiles for login and sign up attempts
+  userProfilesAdaptiveGroups(filter: ZoneUserProfilesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneUserProfilesAdaptiveGroupsOrderBy!]): [ZoneUserProfilesAdaptiveGroups!]!
+  # Historical login and signup events per user.
+  userProfilesRawEventsGroups(filter: ZoneUserProfilesRawEventsGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneUserProfilesRawEventsGroupsOrderBy!]): [ZoneUserProfilesRawEventsGroups!]!
   # Raw Waiting Room analytics logs
   waitingRoomAnalyticsAdaptive(filter: ZoneWaitingRoomAnalyticsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneWaitingRoomAnalyticsAdaptiveOrderBy!]): [ZoneWaitingRoomAnalyticsAdaptive!]!
   # Aggregated Waiting Room analytics logs with adaptive sampling
@@ -63932,6 +64197,7 @@ type ZoneHttpRequests1dByColoGroupsCountryMapElem {
   clientCountryName: string!
   requests: uint64!
   # Requests classified as threats
+  @Deprecated
   threats: uint64!
 }
 
@@ -64070,6 +64336,7 @@ type ZoneHttpRequests1dGroupsCountryMapElem {
   clientCountryName: string!
   requests: uint64!
   # Requests classified as threats
+  @Deprecated
   threats: uint64!
 }
 
@@ -64187,6 +64454,7 @@ type ZoneHttpRequests1dGroupsSum {
   responseStatusMap: [ZoneHttpRequests1dGroupsResponseStatusMapElem!]!
   threatPathingMap: [ZoneHttpRequests1dGroupsThreatPathingMapElem!]!
   # Requests classified as threats
+  @Deprecated
   threats: uint64!
 }
 
@@ -64254,6 +64522,7 @@ type ZoneHttpRequests1hGroupsCountryMapElem {
   clientCountryName: string!
   requests: uint64!
   # Requests classified as threats
+  @Deprecated
   threats: uint64!
 }
 
@@ -64385,6 +64654,7 @@ type ZoneHttpRequests1hGroupsSum {
   responseStatusMap: [ZoneHttpRequests1hGroupsResponseStatusMapElem!]!
   threatPathingMap: [ZoneHttpRequests1hGroupsThreatPathingMapElem!]!
   # Requests classified as threats
+  @Deprecated
   threats: uint64!
 }
 
@@ -64412,6 +64682,7 @@ type ZoneHttpRequests1mByColoGroupsCountryMapElem {
   clientCountryName: string!
   requests: uint64!
   # Requests classified as threats
+  @Deprecated
   threats: uint64!
 }
 
@@ -64606,6 +64877,7 @@ type ZoneHttpRequests1mGroupsCountryMapElem {
   clientCountryName: string!
   requests: uint64!
   # Requests classified as threats
+  @Deprecated
   threats: uint64!
 }
 
@@ -64822,6 +65094,7 @@ type ZoneHttpRequests1mGroupsSum {
   responseStatusMap: [ZoneHttpRequests1mGroupsResponseStatusMapElem!]!
   threatPathingMap: [ZoneHttpRequests1mGroupsThreatPathingMapElem!]!
   # Requests classified as threats
+  @Deprecated
   threats: uint64!
 }
 
@@ -64959,6 +65232,8 @@ type ZoneHttpRequestsAdaptive {
   originResponseDurationMs: uint64!
   # HTTP origin response status code returned to browser
   originResponseStatus: uint16!
+  # Pay Per Crawl outcome, when applicable (e.g. request enabled for charging and not blocked by a WAF rule)
+  payPerCrawlStatus: string!
   # The RayId of the request
   rayName: string!
   requestSource: string!
@@ -65517,6 +65792,16 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   originResponseStatus_lt: uint16
   originResponseStatus_neq: uint16
   originResponseStatus_notin: [uint16!]
+  payPerCrawlStatus: string
+  payPerCrawlStatus_geq: string
+  payPerCrawlStatus_gt: string
+  payPerCrawlStatus_in: [string!]
+  payPerCrawlStatus_leq: string
+  payPerCrawlStatus_like: string
+  payPerCrawlStatus_lt: string
+  payPerCrawlStatus_neq: string
+  payPerCrawlStatus_notin: [string!]
+  payPerCrawlStatus_notlike: string
   rayName: string
   rayName_geq: string
   rayName_gt: string
@@ -65832,6 +66117,8 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   originResponseDurationMs: uint64!
   # HTTP response status code returned by the origin
   originResponseStatus: uint16!
+  # Pay Per Crawl outcome, when applicable (e.g. request enabled for charging and not blocked by a WAF rule)
+  payPerCrawlStatus: string!
   requestSource: string!
   # ABR sample interval
   sampleInterval: uint32!
@@ -66389,6 +66676,16 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   originResponseStatus_lt: uint16
   originResponseStatus_neq: uint16
   originResponseStatus_notin: [uint16!]
+  payPerCrawlStatus: string
+  payPerCrawlStatus_geq: string
+  payPerCrawlStatus_gt: string
+  payPerCrawlStatus_in: [string!]
+  payPerCrawlStatus_leq: string
+  payPerCrawlStatus_like: string
+  payPerCrawlStatus_lt: string
+  payPerCrawlStatus_neq: string
+  payPerCrawlStatus_notin: [string!]
+  payPerCrawlStatus_notlike: string
   rayName: string
   rayName_geq: string
   rayName_gt: string
@@ -66832,6 +67129,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   originResponseStatus_ASC
   # originResponseStatus descending
   originResponseStatus_DESC
+  # payPerCrawlStatus ascending
+  payPerCrawlStatus_ASC
+  # payPerCrawlStatus descending
+  payPerCrawlStatus_DESC
   # quantiles(edgeDnsResponseTimeMsP50) ascending
   quantiles_edgeDnsResponseTimeMsP50_ASC
   # quantiles(edgeDnsResponseTimeMsP50) descending
@@ -67351,6 +67652,10 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   originResponseStatus_ASC
   # originResponseStatus descending
   originResponseStatus_DESC
+  # payPerCrawlStatus ascending
+  payPerCrawlStatus_ASC
+  # payPerCrawlStatus descending
+  payPerCrawlStatus_DESC
   # rayName ascending
   rayName_ASC
   # rayName descending
@@ -69552,6 +69857,8 @@ type ZoneSettings {
   logpushHealthAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   pageShieldReportsAdaptiveGroups: Settings!
+  userProfilesAdaptiveGroups: Settings!
+  userProfilesRawEventsGroups: Settings!
   waitingRoomAnalyticsAdaptive: Settings!
   waitingRoomAnalyticsAdaptiveGroups: Settings!
   workersZoneInvocationsAdaptiveGroups: Settings!
@@ -69567,6 +69874,204 @@ type ZoneSettings {
   zarazFetchAdaptiveGroups: Settings!
   zarazTrackAdaptiveGroups: Settings!
   zarazTriggersAdaptiveGroups: Settings!
+}
+
+# User ID profiles for login and sign up attempts
+type ZoneUserProfilesAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: ZoneUserProfilesAdaptiveGroupsDimensions
+  sum: ZoneUserProfilesAdaptiveGroupsSum
+  uniq: ZoneUserProfilesAdaptiveGroupsUniq
+}
+
+type ZoneUserProfilesAdaptiveGroupsDimensions {
+  # Profile aggregates for a given date.
+  date: Date!
+  # Unique identifier for a user. 128-bit hash.
+  userId: string!
+}
+
+input ZoneUserProfilesAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneUserProfilesAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneUserProfilesAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  userId: string
+  userId_geq: string
+  userId_gt: string
+  userId_in: [string!]
+  userId_leq: string
+  userId_like: string
+  userId_lt: string
+  userId_neq: string
+  userId_notin: [string!]
+  userId_notlike: string
+}
+
+enum ZoneUserProfilesAdaptiveGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # sum(topCountries) ascending
+  sum_topCountries_ASC
+  # sum(topCountries) descending
+  sum_topCountries_DESC
+  # uniq(ipCount) ascending
+  uniq_ipCount_ASC
+  # uniq(ipCount) descending
+  uniq_ipCount_DESC
+  # userId ascending
+  userId_ASC
+  # userId descending
+  userId_DESC
+}
+
+type ZoneUserProfilesAdaptiveGroupsSum {
+  # Array of top 5 country codes (alpha2) for a user id.
+  topCountries: [string!]!
+}
+
+type ZoneUserProfilesAdaptiveGroupsUniq {
+  # Number of unique IPs for a user id.
+  ipCount: uint64!
+}
+
+# Historical login and signup events per user.
+type ZoneUserProfilesRawEventsGroups {
+  # Abuse detections.
+  bmDetectionTags: [string!]!
+  # City name.
+  clientCity: string!
+  # Country code (alpha2).
+  clientCountry: string!
+  # Date of the event.
+  date: Date!
+  # Device browser name.
+  deviceBrowser: string!
+  # Device OS name.
+  deviceOS: string!
+  # When the event happened.
+  eventTimestamp: Time!
+  # Unique identifier for a user.
+  userId: string!
+}
+
+input ZoneUserProfilesRawEventsGroupsFilter_InputObject {
+  AND: [ZoneUserProfilesRawEventsGroupsFilter_InputObject!]
+  OR: [ZoneUserProfilesRawEventsGroupsFilter_InputObject!]
+  bmDetectionTags_has: string
+  bmDetectionTags_hasall: [string!]
+  bmDetectionTags_hasany: [string!]
+  bmDetectionTags_isempty: bool
+  bmDetectionTags_nothas: string
+  clientCity: string
+  clientCity_geq: string
+  clientCity_gt: string
+  clientCity_in: [string!]
+  clientCity_leq: string
+  clientCity_like: string
+  clientCity_lt: string
+  clientCity_neq: string
+  clientCity_notin: [string!]
+  clientCity_notlike: string
+  clientCountry: string
+  clientCountry_geq: string
+  clientCountry_gt: string
+  clientCountry_in: [string!]
+  clientCountry_leq: string
+  clientCountry_like: string
+  clientCountry_lt: string
+  clientCountry_neq: string
+  clientCountry_notin: [string!]
+  clientCountry_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  deviceBrowser: string
+  deviceBrowser_geq: string
+  deviceBrowser_gt: string
+  deviceBrowser_in: [string!]
+  deviceBrowser_leq: string
+  deviceBrowser_like: string
+  deviceBrowser_lt: string
+  deviceBrowser_neq: string
+  deviceBrowser_notin: [string!]
+  deviceBrowser_notlike: string
+  deviceOS: string
+  deviceOS_geq: string
+  deviceOS_gt: string
+  deviceOS_in: [string!]
+  deviceOS_leq: string
+  deviceOS_like: string
+  deviceOS_lt: string
+  deviceOS_neq: string
+  deviceOS_notin: [string!]
+  deviceOS_notlike: string
+  eventTimestamp: Time
+  eventTimestamp_geq: Time
+  eventTimestamp_gt: Time
+  eventTimestamp_in: [Time!]
+  eventTimestamp_leq: Time
+  eventTimestamp_lt: Time
+  eventTimestamp_neq: Time
+  eventTimestamp_notin: [Time!]
+  userId: string
+  userId_geq: string
+  userId_gt: string
+  userId_in: [string!]
+  userId_leq: string
+  userId_like: string
+  userId_lt: string
+  userId_neq: string
+  userId_notin: [string!]
+  userId_notlike: string
+}
+
+enum ZoneUserProfilesRawEventsGroupsOrderBy {
+  # bmDetectionTags ascending
+  bmDetectionTags_ASC
+  # bmDetectionTags descending
+  bmDetectionTags_DESC
+  # clientCity ascending
+  clientCity_ASC
+  # clientCity descending
+  clientCity_DESC
+  # clientCountry ascending
+  clientCountry_ASC
+  # clientCountry descending
+  clientCountry_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # deviceBrowser ascending
+  deviceBrowser_ASC
+  # deviceBrowser descending
+  deviceBrowser_DESC
+  # deviceOS ascending
+  deviceOS_ASC
+  # deviceOS descending
+  deviceOS_DESC
+  # eventTimestamp ascending
+  eventTimestamp_ASC
+  # eventTimestamp descending
+  eventTimestamp_DESC
+  # userId ascending
+  userId_ASC
+  # userId descending
+  userId_DESC
 }
 
 # Raw Waiting Room analytics logs
