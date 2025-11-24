@@ -128,6 +128,8 @@ Account-level datasets:
   storageTraces
 * streamCMCDAdaptiveGroups
 * streamMinutesViewedAdaptiveGroups
+* toMarkdownConversionAdaptive
+* toMarkdownConversionAdaptiveGroups
 * turnstileAdaptiveGroups
 * vectorizeQueriesAdaptiveGroups
 * vectorizeStorageAdaptiveGroups
@@ -519,6 +521,10 @@ type account {
   streamCMCDAdaptiveGroups(filter: AccountStreamCMCDAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountStreamCMCDAdaptiveGroupsOrderBy!]): [AccountStreamCMCDAdaptiveGroups!]!
   # A high-level summary of Cloudflare Stream minutes viewed.
   streamMinutesViewedAdaptiveGroups(filter: AccountStreamMinutesViewedAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountStreamMinutesViewedAdaptiveGroupsOrderBy!]): [AccountStreamMinutesViewedAdaptiveGroups!]!
+  # Markdown Conversion Metrics
+  toMarkdownConversionAdaptive(filter: AccountToMarkdownConversionAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountToMarkdownConversionAdaptiveOrderBy!]): [AccountToMarkdownConversionAdaptive!]!
+  # Markdown Conversion Metrics
+  toMarkdownConversionAdaptiveGroups(filter: AccountToMarkdownConversionAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountToMarkdownConversionAdaptiveGroupsOrderBy!]): [AccountToMarkdownConversionAdaptiveGroups!]!
   # Beta. Cloudflare Turnstile aggregated events with adaptive sampling
   turnstileAdaptiveGroups(filter: AccountTurnstileAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountTurnstileAdaptiveGroupsOrderBy!]): [AccountTurnstileAdaptiveGroups!]!
   # Beta. Vectorize usage with adaptive sampling
@@ -4761,6 +4767,8 @@ type AccountAiInferenceAdaptive {
   requestSource: string!
   # ABR sample interval
   sampleInterval: uint32!
+  # Individual elements from the tags string
+  tag: string!
   # Total tiles
   totalTiles: float64!
 }
@@ -4944,6 +4952,16 @@ input AccountAiInferenceAdaptiveFilter_InputObject {
   sampleInterval_lt: uint32
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
+  tag: string
+  tag_geq: string
+  tag_gt: string
+  tag_in: [string!]
+  tag_leq: string
+  tag_like: string
+  tag_lt: string
+  tag_neq: string
+  tag_notin: [string!]
+  tag_notlike: string
   totalTiles: float64
   totalTiles_geq: float64
   totalTiles_gt: float64
@@ -5012,6 +5030,8 @@ type AccountAiInferenceAdaptiveGroupsDimensions {
   requestBytesOut: uint64!
   # Source who triggered (worker binding, pages binding, rest api)
   requestSource: string!
+  # Individual elements from the tags string
+  tag: string!
 }
 
 input AccountAiInferenceAdaptiveGroupsFilter_InputObject {
@@ -5177,6 +5197,16 @@ input AccountAiInferenceAdaptiveGroupsFilter_InputObject {
   requestSource_neq: string
   requestSource_notin: [string!]
   requestSource_notlike: string
+  tag: string
+  tag_geq: string
+  tag_gt: string
+  tag_in: [string!]
+  tag_leq: string
+  tag_like: string
+  tag_lt: string
+  tag_neq: string
+  tag_notin: [string!]
+  tag_notlike: string
 }
 
 enum AccountAiInferenceAdaptiveGroupsOrderBy {
@@ -5316,6 +5346,10 @@ enum AccountAiInferenceAdaptiveGroupsOrderBy {
   sum_totalTiles_ASC
   # sum(totalTiles) descending
   sum_totalTiles_DESC
+  # tag ascending
+  tag_ASC
+  # tag descending
+  tag_DESC
 }
 
 type AccountAiInferenceAdaptiveGroupsSum {
@@ -5465,6 +5499,10 @@ enum AccountAiInferenceAdaptiveOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # tag ascending
+  tag_ASC
+  # tag descending
+  tag_DESC
   # totalTiles ascending
   totalTiles_ASC
   # totalTiles descending
@@ -15002,6 +15040,10 @@ type AccountDurableObjectsInvocationsAdaptiveGroupsDimensions {
   date: Date!
   # Request datetime
   datetime: Time!
+  # Request datetime, truncated to start of a minute
+  datetimeFifteenMinutes: Time!
+  # Request datetime, truncated to start of a minute
+  datetimeFiveMinutes: Time!
   # Request datetime, truncated to start of an hour
   datetimeHour: Time!
   # Request datetime, truncated to start of a minute
@@ -15032,6 +15074,22 @@ input AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject {
   date_neq: Date
   date_notin: [Date!]
   datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
   datetimeHour: Time
   datetimeHour_geq: Time
   datetimeHour_gt: Time
@@ -15138,6 +15196,14 @@ enum AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy {
   date_ASC
   # date descending
   date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
   # datetimeHour ascending
   datetimeHour_ASC
   # datetimeHour descending
@@ -15331,6 +15397,10 @@ type AccountDurableObjectsPeriodicGroupsConfidence {
 type AccountDurableObjectsPeriodicGroupsDimensions {
   # Datetime the metrics period started, truncated to start of a day
   date: Date!
+  # Datetime the metrics period started, truncated to start of a minute
+  datetimeFifteenMinutes: Time!
+  # Datetime the metrics period started, truncated to start of a minute
+  datetimeFiveMinutes: Time!
   # Datetime the metrics period started, truncated to start of an hour
   datetimeHour: Time!
   # Datetime the metrics period started, truncated to start of a minute
@@ -15354,6 +15424,22 @@ input AccountDurableObjectsPeriodicGroupsFilter_InputObject {
   date_lt: Date
   date_neq: Date
   date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
   datetimeHour: Time
   datetimeHour_geq: Time
   datetimeHour_gt: Time
@@ -15410,6 +15496,14 @@ enum AccountDurableObjectsPeriodicGroupsOrderBy {
   date_ASC
   # date descending
   date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
   # datetimeHour ascending
   datetimeHour_ASC
   # datetimeHour descending
@@ -46463,6 +46557,8 @@ type AccountSettings {
   storageTraces: Settings!
   streamCMCDAdaptiveGroups: Settings!
   streamMinutesViewedAdaptiveGroups: Settings!
+  toMarkdownConversionAdaptive: Settings!
+  toMarkdownConversionAdaptiveGroups: Settings!
   turnstileAdaptiveGroups: Settings!
   vectorizeQueriesAdaptiveGroups: Settings!
   vectorizeStorageAdaptiveGroups: Settings!
@@ -49386,6 +49482,663 @@ enum AccountStreamMinutesViewedAdaptiveGroupsOrderBy {
 
 type AccountStreamMinutesViewedAdaptiveGroupsSum {
   minutesViewed: uint64!
+}
+
+# Markdown Conversion Metrics
+type AccountToMarkdownConversionAdaptive {
+  # The ID of this conversion, as a ULID
+  conversionId: string!
+  # The date when trigger was triggered
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # The duration in milliseconds it took to convert this file
+  durationMs: uint32!
+  # The reason this conversion might have errored. Empty if the conversion is successful
+  errorReason: string!
+  # The name of the file under conversion
+  fileName: string!
+  # The size of the file being converted in bytes
+  fileSize: uint32!
+  # The MIME Type of the file under conversion
+  mimeType: string!
+  # Conversion options used on the request that originated this conversion
+  options: string!
+  # The size of the markdown content after conversion, in bytes
+  outputSize: uint32!
+  # The original file conversion that originated this one. Empty if this is a 'root' conversion
+  parentConversion: string!
+  # The ID of this request that originated this conversion, as a ULID
+  requestId: string!
+  # Whether this conversion was successful or not. Values can be 'markdown' for success or 'error' for errors
+  result: string!
+  # The service that originated this conversion request
+  service: string!
+  # Whether this conversion request was done via the binding method or via an API request
+  source: string!
+}
+
+input AccountToMarkdownConversionAdaptiveFilter_InputObject {
+  AND: [AccountToMarkdownConversionAdaptiveFilter_InputObject!]
+  OR: [AccountToMarkdownConversionAdaptiveFilter_InputObject!]
+  conversionId: string
+  conversionId_geq: string
+  conversionId_gt: string
+  conversionId_in: [string!]
+  conversionId_leq: string
+  conversionId_like: string
+  conversionId_lt: string
+  conversionId_neq: string
+  conversionId_notin: [string!]
+  conversionId_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  durationMs: uint32
+  durationMs_geq: uint32
+  durationMs_gt: uint32
+  durationMs_in: [uint32!]
+  durationMs_leq: uint32
+  durationMs_lt: uint32
+  durationMs_neq: uint32
+  durationMs_notin: [uint32!]
+  errorReason: string
+  errorReason_geq: string
+  errorReason_gt: string
+  errorReason_in: [string!]
+  errorReason_leq: string
+  errorReason_like: string
+  errorReason_lt: string
+  errorReason_neq: string
+  errorReason_notin: [string!]
+  errorReason_notlike: string
+  fileName: string
+  fileName_geq: string
+  fileName_gt: string
+  fileName_in: [string!]
+  fileName_leq: string
+  fileName_like: string
+  fileName_lt: string
+  fileName_neq: string
+  fileName_notin: [string!]
+  fileName_notlike: string
+  fileSize: uint32
+  fileSize_geq: uint32
+  fileSize_gt: uint32
+  fileSize_in: [uint32!]
+  fileSize_leq: uint32
+  fileSize_lt: uint32
+  fileSize_neq: uint32
+  fileSize_notin: [uint32!]
+  mimeType: string
+  mimeType_geq: string
+  mimeType_gt: string
+  mimeType_in: [string!]
+  mimeType_leq: string
+  mimeType_like: string
+  mimeType_lt: string
+  mimeType_neq: string
+  mimeType_notin: [string!]
+  mimeType_notlike: string
+  options: string
+  options_geq: string
+  options_gt: string
+  options_in: [string!]
+  options_leq: string
+  options_like: string
+  options_lt: string
+  options_neq: string
+  options_notin: [string!]
+  options_notlike: string
+  outputSize: uint32
+  outputSize_geq: uint32
+  outputSize_gt: uint32
+  outputSize_in: [uint32!]
+  outputSize_leq: uint32
+  outputSize_lt: uint32
+  outputSize_neq: uint32
+  outputSize_notin: [uint32!]
+  parentConversion: string
+  parentConversion_geq: string
+  parentConversion_gt: string
+  parentConversion_in: [string!]
+  parentConversion_leq: string
+  parentConversion_like: string
+  parentConversion_lt: string
+  parentConversion_neq: string
+  parentConversion_notin: [string!]
+  parentConversion_notlike: string
+  requestId: string
+  requestId_geq: string
+  requestId_gt: string
+  requestId_in: [string!]
+  requestId_leq: string
+  requestId_like: string
+  requestId_lt: string
+  requestId_neq: string
+  requestId_notin: [string!]
+  requestId_notlike: string
+  result: string
+  result_geq: string
+  result_gt: string
+  result_in: [string!]
+  result_leq: string
+  result_like: string
+  result_lt: string
+  result_neq: string
+  result_notin: [string!]
+  result_notlike: string
+  service: string
+  service_geq: string
+  service_gt: string
+  service_in: [string!]
+  service_leq: string
+  service_like: string
+  service_lt: string
+  service_neq: string
+  service_notin: [string!]
+  service_notlike: string
+  source: string
+  source_geq: string
+  source_gt: string
+  source_in: [string!]
+  source_leq: string
+  source_like: string
+  source_lt: string
+  source_neq: string
+  source_notin: [string!]
+  source_notlike: string
+}
+
+# Markdown Conversion Metrics
+type AccountToMarkdownConversionAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountToMarkdownConversionAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountToMarkdownConversionAdaptiveGroupsConfidence!
+  # Total number of conversions for an account
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountToMarkdownConversionAdaptiveGroupsDimensions
+  # The max of values for a metric per dimension
+  max: AccountToMarkdownConversionAdaptiveGroupsMax
+  # The min of values for a metric per dimension
+  min: AccountToMarkdownConversionAdaptiveGroupsMin
+}
+
+type AccountToMarkdownConversionAdaptiveGroupsAvg {
+  # Average of output size
+  completed: uint32!
+  # Average of conversion duration
+  durationMs: uint32!
+  # Average of file sizes
+  fileSize: uint32!
+}
+
+type AccountToMarkdownConversionAdaptiveGroupsConfidence {
+  # Total number of conversions for an account, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type AccountToMarkdownConversionAdaptiveGroupsDimensions {
+  # The ID of this conversion, as a ULID
+  conversionId: string!
+  # The date when trigger was triggered
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # The duration in milliseconds it took to convert this file
+  durationMs: uint32!
+  # The reason this conversion might have errored. Empty if the conversion is successful
+  errorReason: string!
+  # The name of the file under conversion
+  fileName: string!
+  # The size of the file being converted in bytes
+  fileSize: uint32!
+  # The MIME Type of the file under conversion
+  mimeType: string!
+  # Conversion options used on the request that originated this conversion
+  options: string!
+  # The size of the markdown content after conversion, in bytes
+  outputSize: uint32!
+  # The original file conversion that originated this one. Empty if this is a 'root' conversion
+  parentConversion: string!
+  # The ID of this request that originated this conversion, as a ULID
+  requestId: string!
+  # Whether this conversion was successful or not. Values can be 'markdown' for success or 'error' for errors
+  result: string!
+  # The service that originated this conversion request
+  service: string!
+  # Whether this conversion request was done via the binding method or via an API request
+  source: string!
+}
+
+input AccountToMarkdownConversionAdaptiveGroupsFilter_InputObject {
+  AND: [AccountToMarkdownConversionAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountToMarkdownConversionAdaptiveGroupsFilter_InputObject!]
+  conversionId: string
+  conversionId_geq: string
+  conversionId_gt: string
+  conversionId_in: [string!]
+  conversionId_leq: string
+  conversionId_like: string
+  conversionId_lt: string
+  conversionId_neq: string
+  conversionId_notin: [string!]
+  conversionId_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  durationMs: uint32
+  durationMs_geq: uint32
+  durationMs_gt: uint32
+  durationMs_in: [uint32!]
+  durationMs_leq: uint32
+  durationMs_lt: uint32
+  durationMs_neq: uint32
+  durationMs_notin: [uint32!]
+  errorReason: string
+  errorReason_geq: string
+  errorReason_gt: string
+  errorReason_in: [string!]
+  errorReason_leq: string
+  errorReason_like: string
+  errorReason_lt: string
+  errorReason_neq: string
+  errorReason_notin: [string!]
+  errorReason_notlike: string
+  fileName: string
+  fileName_geq: string
+  fileName_gt: string
+  fileName_in: [string!]
+  fileName_leq: string
+  fileName_like: string
+  fileName_lt: string
+  fileName_neq: string
+  fileName_notin: [string!]
+  fileName_notlike: string
+  fileSize: uint32
+  fileSize_geq: uint32
+  fileSize_gt: uint32
+  fileSize_in: [uint32!]
+  fileSize_leq: uint32
+  fileSize_lt: uint32
+  fileSize_neq: uint32
+  fileSize_notin: [uint32!]
+  mimeType: string
+  mimeType_geq: string
+  mimeType_gt: string
+  mimeType_in: [string!]
+  mimeType_leq: string
+  mimeType_like: string
+  mimeType_lt: string
+  mimeType_neq: string
+  mimeType_notin: [string!]
+  mimeType_notlike: string
+  options: string
+  options_geq: string
+  options_gt: string
+  options_in: [string!]
+  options_leq: string
+  options_like: string
+  options_lt: string
+  options_neq: string
+  options_notin: [string!]
+  options_notlike: string
+  outputSize: uint32
+  outputSize_geq: uint32
+  outputSize_gt: uint32
+  outputSize_in: [uint32!]
+  outputSize_leq: uint32
+  outputSize_lt: uint32
+  outputSize_neq: uint32
+  outputSize_notin: [uint32!]
+  parentConversion: string
+  parentConversion_geq: string
+  parentConversion_gt: string
+  parentConversion_in: [string!]
+  parentConversion_leq: string
+  parentConversion_like: string
+  parentConversion_lt: string
+  parentConversion_neq: string
+  parentConversion_notin: [string!]
+  parentConversion_notlike: string
+  requestId: string
+  requestId_geq: string
+  requestId_gt: string
+  requestId_in: [string!]
+  requestId_leq: string
+  requestId_like: string
+  requestId_lt: string
+  requestId_neq: string
+  requestId_notin: [string!]
+  requestId_notlike: string
+  result: string
+  result_geq: string
+  result_gt: string
+  result_in: [string!]
+  result_leq: string
+  result_like: string
+  result_lt: string
+  result_neq: string
+  result_notin: [string!]
+  result_notlike: string
+  service: string
+  service_geq: string
+  service_gt: string
+  service_in: [string!]
+  service_leq: string
+  service_like: string
+  service_lt: string
+  service_neq: string
+  service_notin: [string!]
+  service_notlike: string
+  source: string
+  source_geq: string
+  source_gt: string
+  source_in: [string!]
+  source_leq: string
+  source_like: string
+  source_lt: string
+  source_neq: string
+  source_notin: [string!]
+  source_notlike: string
+}
+
+type AccountToMarkdownConversionAdaptiveGroupsMax {
+  # Max of output size
+  completed: uint32!
+  # Max of conversion duration
+  durationMs: uint32!
+  # Max of file sizes
+  fileSize: uint32!
+}
+
+type AccountToMarkdownConversionAdaptiveGroupsMin {
+  # Min of output size
+  completed: uint32!
+  # Min of conversion duration
+  durationMs: uint32!
+  # Min of file sizes
+  fileSize: uint32!
+}
+
+enum AccountToMarkdownConversionAdaptiveGroupsOrderBy {
+  # avg(completed) ascending
+  avg_completed_ASC
+  # avg(completed) descending
+  avg_completed_DESC
+  # avg(durationMs) ascending
+  avg_durationMs_ASC
+  # avg(durationMs) descending
+  avg_durationMs_DESC
+  # avg(fileSize) ascending
+  avg_fileSize_ASC
+  # avg(fileSize) descending
+  avg_fileSize_DESC
+  # conversionId ascending
+  conversionId_ASC
+  # conversionId descending
+  conversionId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # durationMs ascending
+  durationMs_ASC
+  # durationMs descending
+  durationMs_DESC
+  # errorReason ascending
+  errorReason_ASC
+  # errorReason descending
+  errorReason_DESC
+  # fileName ascending
+  fileName_ASC
+  # fileName descending
+  fileName_DESC
+  # fileSize ascending
+  fileSize_ASC
+  # fileSize descending
+  fileSize_DESC
+  # max(completed) ascending
+  max_completed_ASC
+  # max(completed) descending
+  max_completed_DESC
+  # max(durationMs) ascending
+  max_durationMs_ASC
+  # max(durationMs) descending
+  max_durationMs_DESC
+  # max(fileSize) ascending
+  max_fileSize_ASC
+  # max(fileSize) descending
+  max_fileSize_DESC
+  # mimeType ascending
+  mimeType_ASC
+  # mimeType descending
+  mimeType_DESC
+  # min(completed) ascending
+  min_completed_ASC
+  # min(completed) descending
+  min_completed_DESC
+  # min(durationMs) ascending
+  min_durationMs_ASC
+  # min(durationMs) descending
+  min_durationMs_DESC
+  # min(fileSize) ascending
+  min_fileSize_ASC
+  # min(fileSize) descending
+  min_fileSize_DESC
+  # options ascending
+  options_ASC
+  # options descending
+  options_DESC
+  # outputSize ascending
+  outputSize_ASC
+  # outputSize descending
+  outputSize_DESC
+  # parentConversion ascending
+  parentConversion_ASC
+  # parentConversion descending
+  parentConversion_DESC
+  # requestId ascending
+  requestId_ASC
+  # requestId descending
+  requestId_DESC
+  # result ascending
+  result_ASC
+  # result descending
+  result_DESC
+  # service ascending
+  service_ASC
+  # service descending
+  service_DESC
+  # source ascending
+  source_ASC
+  # source descending
+  source_DESC
+}
+
+enum AccountToMarkdownConversionAdaptiveOrderBy {
+  # conversionId ascending
+  conversionId_ASC
+  # conversionId descending
+  conversionId_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # durationMs ascending
+  durationMs_ASC
+  # durationMs descending
+  durationMs_DESC
+  # errorReason ascending
+  errorReason_ASC
+  # errorReason descending
+  errorReason_DESC
+  # fileName ascending
+  fileName_ASC
+  # fileName descending
+  fileName_DESC
+  # fileSize ascending
+  fileSize_ASC
+  # fileSize descending
+  fileSize_DESC
+  # mimeType ascending
+  mimeType_ASC
+  # mimeType descending
+  mimeType_DESC
+  # options ascending
+  options_ASC
+  # options descending
+  options_DESC
+  # outputSize ascending
+  outputSize_ASC
+  # outputSize descending
+  outputSize_DESC
+  # parentConversion ascending
+  parentConversion_ASC
+  # parentConversion descending
+  parentConversion_DESC
+  # requestId ascending
+  requestId_ASC
+  # requestId descending
+  requestId_DESC
+  # result ascending
+  result_ASC
+  # result descending
+  result_DESC
+  # service ascending
+  service_ASC
+  # service descending
+  service_DESC
+  # source ascending
+  source_ASC
+  # source descending
+  source_DESC
 }
 
 # Beta. Cloudflare Turnstile aggregated events with adaptive sampling
