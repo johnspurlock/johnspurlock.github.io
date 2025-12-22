@@ -61898,6 +61898,8 @@ type ZoneEmailSendingAdaptive {
   dkim: string!
   # DMARC check status of the source email
   dmarc: string!
+  # Error type (if any)
+  errorCause: string!
   # Detailed error message (if any)
   errorDetail: string!
   # Origin of email (incoming|forward|reply|newEmail)
@@ -61969,6 +61971,16 @@ input ZoneEmailSendingAdaptiveFilter_InputObject {
   dmarc_neq: string
   dmarc_notin: [string!]
   dmarc_notlike: string
+  errorCause: string
+  errorCause_geq: string
+  errorCause_gt: string
+  errorCause_in: [string!]
+  errorCause_leq: string
+  errorCause_like: string
+  errorCause_lt: string
+  errorCause_neq: string
+  errorCause_notin: [string!]
+  errorCause_notlike: string
   errorDetail: string
   errorDetail_geq: string
   errorDetail_gt: string
@@ -62135,6 +62147,8 @@ type ZoneEmailSendingAdaptiveGroupsDimensions {
   dkim: string!
   # DMARC check status of the source email
   dmarc: string!
+  # Error type (if any)
+  errorCause: string!
   # Origin of email (incoming|forward|reply|newEmail)
   eventType: string!
   # Is this event related to a NDR (bounce) email?
@@ -62226,6 +62240,16 @@ input ZoneEmailSendingAdaptiveGroupsFilter_InputObject {
   dmarc_neq: string
   dmarc_notin: [string!]
   dmarc_notlike: string
+  errorCause: string
+  errorCause_geq: string
+  errorCause_gt: string
+  errorCause_in: [string!]
+  errorCause_leq: string
+  errorCause_like: string
+  errorCause_lt: string
+  errorCause_neq: string
+  errorCause_notin: [string!]
+  errorCause_notlike: string
   eventType: string
   eventType_geq: string
   eventType_gt: string
@@ -62335,6 +62359,10 @@ enum ZoneEmailSendingAdaptiveGroupsOrderBy {
   dmarc_ASC
   # dmarc descending
   dmarc_DESC
+  # errorCause ascending
+  errorCause_ASC
+  # errorCause descending
+  errorCause_DESC
   # eventType ascending
   eventType_ASC
   # eventType descending
@@ -62390,6 +62418,10 @@ enum ZoneEmailSendingAdaptiveOrderBy {
   dmarc_ASC
   # dmarc descending
   dmarc_DESC
+  # errorCause ascending
+  errorCause_ASC
+  # errorCause descending
+  errorCause_DESC
   # errorDetail ascending
   errorDetail_ASC
   # errorDetail descending
