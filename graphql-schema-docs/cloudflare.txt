@@ -60825,11 +60825,17 @@ type ZoneDnsAnalyticsAdaptiveGroups {
   dimensions: ZoneDnsAnalyticsAdaptiveGroupsDimensions
   # Quantiles of a metric per dimension
   quantiles: ZoneDnsAnalyticsAdaptiveGroupsQuantiles
+  # The sum of values for a metric per dimension
+  sum: ZoneDnsAnalyticsAdaptiveGroupsSum
 }
 
 type ZoneDnsAnalyticsAdaptiveGroupsAvg {
   # Average processing time in microseconds
   processingTimeUs: float64!
+  # Average processing time in microseconds, only counting where responseCached and responseStale are not zero
+  processingTimeUsNotCachedAndNotStale: float64!
+  # Average processing time in microseconds, only counting where responseStale is not zero
+  processingTimeUsNotStale: float64!
   # Average sample interval
   sampleInterval: float64!
 }
@@ -60839,6 +60845,8 @@ type ZoneDnsAnalyticsAdaptiveGroupsConfidence {
   count: Confidence!
   # Confidence level that was requested
   level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: ZoneDnsAnalyticsAdaptiveGroupsSumConfidence
 }
 
 type ZoneDnsAnalyticsAdaptiveGroupsDimensions {
@@ -61070,6 +61078,14 @@ input ZoneDnsAnalyticsAdaptiveGroupsFilter_InputObject {
 }
 
 enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
+  # avg(processingTimeUsNotCachedAndNotStale) ascending
+  avg_processingTimeUsNotCachedAndNotStale_ASC
+  # avg(processingTimeUsNotCachedAndNotStale) descending
+  avg_processingTimeUsNotCachedAndNotStale_DESC
+  # avg(processingTimeUsNotStale) ascending
+  avg_processingTimeUsNotStale_ASC
+  # avg(processingTimeUsNotStale) descending
+  avg_processingTimeUsNotStale_DESC
   # avg(processingTimeUs) ascending
   avg_processingTimeUs_ASC
   # avg(processingTimeUs) descending
@@ -61130,6 +61146,30 @@ enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
   protocol_ASC
   # protocol descending
   protocol_DESC
+  # quantiles(processingTimeUsNotCachedAndNotStaleP50) ascending
+  quantiles_processingTimeUsNotCachedAndNotStaleP50_ASC
+  # quantiles(processingTimeUsNotCachedAndNotStaleP50) descending
+  quantiles_processingTimeUsNotCachedAndNotStaleP50_DESC
+  # quantiles(processingTimeUsNotCachedAndNotStaleP90) ascending
+  quantiles_processingTimeUsNotCachedAndNotStaleP90_ASC
+  # quantiles(processingTimeUsNotCachedAndNotStaleP90) descending
+  quantiles_processingTimeUsNotCachedAndNotStaleP90_DESC
+  # quantiles(processingTimeUsNotCachedAndNotStaleP99) ascending
+  quantiles_processingTimeUsNotCachedAndNotStaleP99_ASC
+  # quantiles(processingTimeUsNotCachedAndNotStaleP99) descending
+  quantiles_processingTimeUsNotCachedAndNotStaleP99_DESC
+  # quantiles(processingTimeUsNotStaleP50) ascending
+  quantiles_processingTimeUsNotStaleP50_ASC
+  # quantiles(processingTimeUsNotStaleP50) descending
+  quantiles_processingTimeUsNotStaleP50_DESC
+  # quantiles(processingTimeUsNotStaleP90) ascending
+  quantiles_processingTimeUsNotStaleP90_ASC
+  # quantiles(processingTimeUsNotStaleP90) descending
+  quantiles_processingTimeUsNotStaleP90_DESC
+  # quantiles(processingTimeUsNotStaleP99) ascending
+  quantiles_processingTimeUsNotStaleP99_ASC
+  # quantiles(processingTimeUsNotStaleP99) descending
+  quantiles_processingTimeUsNotStaleP99_DESC
   # quantiles(processingTimeUsP50) ascending
   quantiles_processingTimeUsP50_ASC
   # quantiles(processingTimeUsP50) descending
@@ -61174,6 +61214,14 @@ enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
   sourceIP_ASC
   # sourceIP descending
   sourceIP_DESC
+  # sum(countNotCachedAndNotStale) ascending
+  sum_countNotCachedAndNotStale_ASC
+  # sum(countNotCachedAndNotStale) descending
+  sum_countNotCachedAndNotStale_DESC
+  # sum(countNotStale) ascending
+  sum_countNotStale_ASC
+  # sum(countNotStale) descending
+  sum_countNotStale_DESC
   # upstreamIP ascending
   upstreamIP_ASC
   # upstreamIP descending
@@ -61181,12 +61229,38 @@ enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
 }
 
 type ZoneDnsAnalyticsAdaptiveGroupsQuantiles {
+  # 50th percentile processing time in microseconds (median), only counting where responseCached and responseStale are not zero
+  processingTimeUsNotCachedAndNotStaleP50: float64!
+  # 90th percentile processing time in microseconds, only counting where responseCached and responseStale are not zero
+  processingTimeUsNotCachedAndNotStaleP90: float64!
+  # 99th percentile processing time in microseconds, only counting where responseCached and responseStale are not zero
+  processingTimeUsNotCachedAndNotStaleP99: float64!
+  # 50th percentile processing time in microseconds (median), only counting where responseStale is not zero
+  processingTimeUsNotStaleP50: float64!
+  # 90th percentile processing time in microseconds, only counting where responseStale is not zero
+  processingTimeUsNotStaleP90: float64!
+  # 99th percentile processing time in microseconds, only counting where responseStale is not zero
+  processingTimeUsNotStaleP99: float64!
   # 50th percentile processing time in microseconds (median)
   processingTimeUsP50: float64!
   # 90th percentile processing time in microseconds
   processingTimeUsP90: float64!
   # 99th percentile processing time in microseconds
   processingTimeUsP99: float64!
+}
+
+type ZoneDnsAnalyticsAdaptiveGroupsSum {
+  # Number of queries where responseCached and responseStale are not zero
+  countNotCachedAndNotStale: uint64!
+  # Number of queries where responseStale is not zero
+  countNotStale: uint64!
+}
+
+type ZoneDnsAnalyticsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  countNotCachedAndNotStale: Confidence!
+  # Confidence interval for the corresponding point estimate
+  countNotStale: Confidence!
 }
 
 enum ZoneDnsAnalyticsAdaptiveOrderBy {
