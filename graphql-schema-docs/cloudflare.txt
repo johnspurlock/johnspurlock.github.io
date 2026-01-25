@@ -111,6 +111,8 @@ Account-level datasets:
 * pipelinesOperatorStagingAdaptiveGroups
 * pipelinesSinkAdaptiveGroups
 * pipelinesSinkStagingAdaptiveGroups
+* pipelinesUserErrorsAdaptive
+* pipelinesUserErrorsAdaptiveGroups
   programmableFlowProtectionNetworkAnalyticsAdaptiveGroups
 * queueBacklogAdaptiveGroups
 * queueConsumerMetricsAdaptiveGroups
@@ -487,6 +489,10 @@ type account {
   pipelinesSinkAdaptiveGroups(filter: AccountPipelinesSinkAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesSinkAdaptiveGroupsOrderBy!]): [AccountPipelinesSinkAdaptiveGroups!]!
   # Aggregated Pipelines sink metrics with adaptive sampling
   pipelinesSinkStagingAdaptiveGroups(filter: AccountPipelinesSinkStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesSinkStagingAdaptiveGroupsOrderBy!]): [AccountPipelinesSinkStagingAdaptiveGroups!]!
+  # Raw user errors from Workers Pipelines
+  pipelinesUserErrorsAdaptive(filter: AccountPipelinesUserErrorsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesUserErrorsAdaptiveOrderBy!]): [AccountPipelinesUserErrorsAdaptive!]!
+  # User errors from Workers Pipelines
+  pipelinesUserErrorsAdaptiveGroups(filter: AccountPipelinesUserErrorsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesUserErrorsAdaptiveGroupsOrderBy!]): [AccountPipelinesUserErrorsAdaptiveGroups!]!
   # Network analytics data for Programmable Flow Protection
   programmableFlowProtectionNetworkAnalyticsAdaptiveGroups(filter: AccountProgrammableFlowProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountProgrammableFlowProtectionNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountProgrammableFlowProtectionNetworkAnalyticsAdaptiveGroups!]!
   # Beta. Queue backlog data with adaptive sampling. Queues that are not being written to, or read from, will not return data, even if they have a backlog.
@@ -15177,6 +15183,8 @@ input AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject {
 }
 
 type AccountDurableObjectsInvocationsAdaptiveGroupsMax {
+  # Maximum request datetime
+  datetime: Time!
   # Maximum response body size for one request - bytes
   responseBodySize: float64!
   # Maximum wall time for one request - microseconds
@@ -15227,6 +15235,10 @@ enum AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy {
   environmentName_ASC
   # environmentName descending
   environmentName_DESC
+  # max(datetime) ascending
+  max_datetime_ASC
+  # max(datetime) descending
+  max_datetime_DESC
   # max(responseBodySize) ascending
   max_responseBodySize_ASC
   # max(responseBodySize) descending
@@ -15664,6 +15676,8 @@ type AccountDurableObjectsSqlStorageGroupsDimensions {
   datetimeHour: Time!
   # Datetime that the storage usage was recorded, truncated to start of a minute
   datetimeMinute: Time!
+  # Datetime that the storage usage was recorded, truncated to start of six hour window
+  datetimeSixHours: Time!
   # Durable Object namespace ID
   namespaceId: string!
 }
@@ -15695,6 +15709,14 @@ input AccountDurableObjectsSqlStorageGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
   namespaceId: string
   namespaceId_geq: string
   namespaceId_gt: string
@@ -15725,6 +15747,10 @@ enum AccountDurableObjectsSqlStorageGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
   # max(storedBytes) ascending
   max_storedBytes_ASC
   # max(storedBytes) descending
@@ -42891,6 +42917,246 @@ type AccountPipelinesSinkStagingAdaptiveGroupsSumConfidence {
   uncompressedBytesWritten: Confidence!
 }
 
+# Raw user errors from Workers Pipelines
+type AccountPipelinesUserErrorsAdaptive {
+  # Error timestamp
+  datetime: Time!
+  # Error details
+  errorDetails: string!
+  # Error category
+  errorFamily: string!
+  # Specific error type
+  errorType: string!
+  # The pipeline identifier
+  pipelineId: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+}
+
+input AccountPipelinesUserErrorsAdaptiveFilter_InputObject {
+  AND: [AccountPipelinesUserErrorsAdaptiveFilter_InputObject!]
+  OR: [AccountPipelinesUserErrorsAdaptiveFilter_InputObject!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  errorDetails: string
+  errorDetails_geq: string
+  errorDetails_gt: string
+  errorDetails_in: [string!]
+  errorDetails_leq: string
+  errorDetails_like: string
+  errorDetails_lt: string
+  errorDetails_neq: string
+  errorDetails_notin: [string!]
+  errorDetails_notlike: string
+  errorFamily: string
+  errorFamily_geq: string
+  errorFamily_gt: string
+  errorFamily_in: [string!]
+  errorFamily_leq: string
+  errorFamily_like: string
+  errorFamily_lt: string
+  errorFamily_neq: string
+  errorFamily_notin: [string!]
+  errorFamily_notlike: string
+  errorType: string
+  errorType_geq: string
+  errorType_gt: string
+  errorType_in: [string!]
+  errorType_leq: string
+  errorType_like: string
+  errorType_lt: string
+  errorType_neq: string
+  errorType_notin: [string!]
+  errorType_notlike: string
+  pipelineId: string
+  pipelineId_geq: string
+  pipelineId_gt: string
+  pipelineId_in: [string!]
+  pipelineId_leq: string
+  pipelineId_like: string
+  pipelineId_lt: string
+  pipelineId_neq: string
+  pipelineId_notin: [string!]
+  pipelineId_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+}
+
+# User errors from Workers Pipelines
+type AccountPipelinesUserErrorsAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountPipelinesUserErrorsAdaptiveGroupsConfidence!
+  # Number of user errors
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountPipelinesUserErrorsAdaptiveGroupsDimensions
+}
+
+type AccountPipelinesUserErrorsAdaptiveGroupsConfidence {
+  # Number of user errors, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type AccountPipelinesUserErrorsAdaptiveGroupsDimensions {
+  # Error timestamp, truncated to start of a day
+  date: Date!
+  # Error timestamp
+  datetime: Time!
+  # Error timestamp, truncated to start of hour
+  datetimeHour: Time!
+  # Error timestamp, truncated to start of minute
+  datetimeMinute: Time!
+  # Error category
+  errorFamily: string!
+  # Specific error type
+  errorType: string!
+  # The pipeline identifier
+  pipelineId: string!
+}
+
+input AccountPipelinesUserErrorsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountPipelinesUserErrorsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountPipelinesUserErrorsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  errorFamily: string
+  errorFamily_geq: string
+  errorFamily_gt: string
+  errorFamily_in: [string!]
+  errorFamily_leq: string
+  errorFamily_like: string
+  errorFamily_lt: string
+  errorFamily_neq: string
+  errorFamily_notin: [string!]
+  errorFamily_notlike: string
+  errorType: string
+  errorType_geq: string
+  errorType_gt: string
+  errorType_in: [string!]
+  errorType_leq: string
+  errorType_like: string
+  errorType_lt: string
+  errorType_neq: string
+  errorType_notin: [string!]
+  errorType_notlike: string
+  pipelineId: string
+  pipelineId_geq: string
+  pipelineId_gt: string
+  pipelineId_in: [string!]
+  pipelineId_leq: string
+  pipelineId_like: string
+  pipelineId_lt: string
+  pipelineId_neq: string
+  pipelineId_notin: [string!]
+  pipelineId_notlike: string
+}
+
+enum AccountPipelinesUserErrorsAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # errorFamily ascending
+  errorFamily_ASC
+  # errorFamily descending
+  errorFamily_DESC
+  # errorType ascending
+  errorType_ASC
+  # errorType descending
+  errorType_DESC
+  # pipelineId ascending
+  pipelineId_ASC
+  # pipelineId descending
+  pipelineId_DESC
+}
+
+enum AccountPipelinesUserErrorsAdaptiveOrderBy {
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # errorDetails ascending
+  errorDetails_ASC
+  # errorDetails descending
+  errorDetails_DESC
+  # errorFamily ascending
+  errorFamily_ASC
+  # errorFamily descending
+  errorFamily_DESC
+  # errorType ascending
+  errorType_ASC
+  # errorType descending
+  errorType_DESC
+  # pipelineId ascending
+  pipelineId_ASC
+  # pipelineId descending
+  pipelineId_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+}
+
 # Network analytics data for Programmable Flow Protection
 type AccountProgrammableFlowProtectionNetworkAnalyticsAdaptiveGroups {
   # The average of values for a metric per dimension
@@ -47941,6 +48207,8 @@ type AccountSettings {
   pipelinesOperatorStagingAdaptiveGroups: Settings!
   pipelinesSinkAdaptiveGroups: Settings!
   pipelinesSinkStagingAdaptiveGroups: Settings!
+  pipelinesUserErrorsAdaptive: Settings!
+  pipelinesUserErrorsAdaptiveGroups: Settings!
   programmableFlowProtectionNetworkAnalyticsAdaptiveGroups: Settings!
   queueBacklogAdaptiveGroups: Settings!
   queueConsumerMetricsAdaptiveGroups: Settings!
@@ -60832,10 +61100,10 @@ type ZoneDnsAnalyticsAdaptiveGroups {
 type ZoneDnsAnalyticsAdaptiveGroupsAvg {
   # Average processing time in microseconds
   processingTimeUs: float64!
-  # Average processing time in microseconds, only counting where responseCached and responseStale are not zero
+  # Average processing time in microseconds, only counting where responseCached and responseStale are zero
   processingTimeUsNotCachedAndNotStale: float64!
   # Average processing time in microseconds, only counting where responseStale is not zero
-  processingTimeUsNotStale: float64!
+  processingTimeUsStale: float64!
   # Average sample interval
   sampleInterval: float64!
 }
@@ -61082,10 +61350,10 @@ enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
   avg_processingTimeUsNotCachedAndNotStale_ASC
   # avg(processingTimeUsNotCachedAndNotStale) descending
   avg_processingTimeUsNotCachedAndNotStale_DESC
-  # avg(processingTimeUsNotStale) ascending
-  avg_processingTimeUsNotStale_ASC
-  # avg(processingTimeUsNotStale) descending
-  avg_processingTimeUsNotStale_DESC
+  # avg(processingTimeUsStale) ascending
+  avg_processingTimeUsStale_ASC
+  # avg(processingTimeUsStale) descending
+  avg_processingTimeUsStale_DESC
   # avg(processingTimeUs) ascending
   avg_processingTimeUs_ASC
   # avg(processingTimeUs) descending
@@ -61158,18 +61426,6 @@ enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
   quantiles_processingTimeUsNotCachedAndNotStaleP99_ASC
   # quantiles(processingTimeUsNotCachedAndNotStaleP99) descending
   quantiles_processingTimeUsNotCachedAndNotStaleP99_DESC
-  # quantiles(processingTimeUsNotStaleP50) ascending
-  quantiles_processingTimeUsNotStaleP50_ASC
-  # quantiles(processingTimeUsNotStaleP50) descending
-  quantiles_processingTimeUsNotStaleP50_DESC
-  # quantiles(processingTimeUsNotStaleP90) ascending
-  quantiles_processingTimeUsNotStaleP90_ASC
-  # quantiles(processingTimeUsNotStaleP90) descending
-  quantiles_processingTimeUsNotStaleP90_DESC
-  # quantiles(processingTimeUsNotStaleP99) ascending
-  quantiles_processingTimeUsNotStaleP99_ASC
-  # quantiles(processingTimeUsNotStaleP99) descending
-  quantiles_processingTimeUsNotStaleP99_DESC
   # quantiles(processingTimeUsP50) ascending
   quantiles_processingTimeUsP50_ASC
   # quantiles(processingTimeUsP50) descending
@@ -61182,6 +61438,18 @@ enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
   quantiles_processingTimeUsP99_ASC
   # quantiles(processingTimeUsP99) descending
   quantiles_processingTimeUsP99_DESC
+  # quantiles(processingTimeUsStaleP50) ascending
+  quantiles_processingTimeUsStaleP50_ASC
+  # quantiles(processingTimeUsStaleP50) descending
+  quantiles_processingTimeUsStaleP50_DESC
+  # quantiles(processingTimeUsStaleP90) ascending
+  quantiles_processingTimeUsStaleP90_ASC
+  # quantiles(processingTimeUsStaleP90) descending
+  quantiles_processingTimeUsStaleP90_DESC
+  # quantiles(processingTimeUsStaleP99) ascending
+  quantiles_processingTimeUsStaleP99_ASC
+  # quantiles(processingTimeUsStaleP99) descending
+  quantiles_processingTimeUsStaleP99_DESC
   # queryName ascending
   queryName_ASC
   # queryName descending
@@ -61218,10 +61486,10 @@ enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
   sum_countNotCachedAndNotStale_ASC
   # sum(countNotCachedAndNotStale) descending
   sum_countNotCachedAndNotStale_DESC
-  # sum(countNotStale) ascending
-  sum_countNotStale_ASC
-  # sum(countNotStale) descending
-  sum_countNotStale_DESC
+  # sum(countStale) ascending
+  sum_countStale_ASC
+  # sum(countStale) descending
+  sum_countStale_DESC
   # upstreamIP ascending
   upstreamIP_ASC
   # upstreamIP descending
@@ -61229,38 +61497,38 @@ enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
 }
 
 type ZoneDnsAnalyticsAdaptiveGroupsQuantiles {
-  # 50th percentile processing time in microseconds (median), only counting where responseCached and responseStale are not zero
+  # 50th percentile processing time in microseconds (median), only counting where responseCached and responseStale are zero
   processingTimeUsNotCachedAndNotStaleP50: float64!
-  # 90th percentile processing time in microseconds, only counting where responseCached and responseStale are not zero
+  # 90th percentile processing time in microseconds, only counting where responseCached and responseStale are zero
   processingTimeUsNotCachedAndNotStaleP90: float64!
-  # 99th percentile processing time in microseconds, only counting where responseCached and responseStale are not zero
+  # 99th percentile processing time in microseconds, only counting where responseCached and responseStale are zero
   processingTimeUsNotCachedAndNotStaleP99: float64!
-  # 50th percentile processing time in microseconds (median), only counting where responseStale is not zero
-  processingTimeUsNotStaleP50: float64!
-  # 90th percentile processing time in microseconds, only counting where responseStale is not zero
-  processingTimeUsNotStaleP90: float64!
-  # 99th percentile processing time in microseconds, only counting where responseStale is not zero
-  processingTimeUsNotStaleP99: float64!
   # 50th percentile processing time in microseconds (median)
   processingTimeUsP50: float64!
   # 90th percentile processing time in microseconds
   processingTimeUsP90: float64!
   # 99th percentile processing time in microseconds
   processingTimeUsP99: float64!
+  # 50th percentile processing time in microseconds (median), only counting where responseStale is not zero
+  processingTimeUsStaleP50: float64!
+  # 90th percentile processing time in microseconds, only counting where responseStale is not zero
+  processingTimeUsStaleP90: float64!
+  # 99th percentile processing time in microseconds, only counting where responseStale is not zero
+  processingTimeUsStaleP99: float64!
 }
 
 type ZoneDnsAnalyticsAdaptiveGroupsSum {
-  # Number of queries where responseCached and responseStale are not zero
+  # Number of queries where responseCached and responseStale are zero
   countNotCachedAndNotStale: uint64!
   # Number of queries where responseStale is not zero
-  countNotStale: uint64!
+  countStale: uint64!
 }
 
 type ZoneDnsAnalyticsAdaptiveGroupsSumConfidence {
   # Confidence interval for the corresponding point estimate
   countNotCachedAndNotStale: Confidence!
   # Confidence interval for the corresponding point estimate
-  countNotStale: Confidence!
+  countStale: Confidence!
 }
 
 enum ZoneDnsAnalyticsAdaptiveOrderBy {
@@ -61352,6 +61620,8 @@ type ZoneEmailRoutingAdaptive {
   eventType: string!
   # The sender email address of the source email
   from: string!
+  # Is this the last event for this email?
+  isLastEvent: uint8!
   # Is this event related to a NDR (bounce) email?
   isNDR: uint8!
   # Source email is spam
@@ -61459,6 +61729,14 @@ input ZoneEmailRoutingAdaptiveFilter_InputObject {
   from_neq: string
   from_notin: [string!]
   from_notlike: string
+  isLastEvent: uint8
+  isLastEvent_geq: uint8
+  isLastEvent_gt: uint8
+  isLastEvent_in: bytes
+  isLastEvent_leq: uint8
+  isLastEvent_lt: uint8
+  isLastEvent_neq: uint8
+  isLastEvent_notin: bytes
   isNDR: uint8
   isNDR_geq: uint8
   isNDR_gt: uint8
@@ -61609,6 +61887,8 @@ type ZoneEmailRoutingAdaptiveGroupsDimensions {
   dmarc: string!
   # Origin of email (incoming|forward|reply|newEmail)
   eventType: string!
+  # Is this the last event for this email?
+  isLastEvent: uint8!
   # Is this event related to a NDR (bounce) email?
   isNDR: uint8!
   # Source email is spam
@@ -61720,6 +62000,14 @@ input ZoneEmailRoutingAdaptiveGroupsFilter_InputObject {
   eventType_neq: string
   eventType_notin: [string!]
   eventType_notlike: string
+  isLastEvent: uint8
+  isLastEvent_geq: uint8
+  isLastEvent_gt: uint8
+  isLastEvent_in: bytes
+  isLastEvent_leq: uint8
+  isLastEvent_lt: uint8
+  isLastEvent_neq: uint8
+  isLastEvent_notin: bytes
   isNDR: uint8
   isNDR_geq: uint8
   isNDR_gt: uint8
@@ -61841,6 +62129,10 @@ enum ZoneEmailRoutingAdaptiveGroupsOrderBy {
   isEmailSending_ASC
   # isEmailSending descending
   isEmailSending_DESC
+  # isLastEvent ascending
+  isLastEvent_ASC
+  # isLastEvent descending
+  isLastEvent_DESC
   # isNDR ascending
   isNDR_ASC
   # isNDR descending
@@ -61912,6 +62204,10 @@ enum ZoneEmailRoutingAdaptiveOrderBy {
   isEmailSending_ASC
   # isEmailSending descending
   isEmailSending_DESC
+  # isLastEvent ascending
+  isLastEvent_ASC
+  # isLastEvent descending
+  isLastEvent_DESC
   # isNDR ascending
   isNDR_ASC
   # isNDR descending
@@ -61980,6 +62276,8 @@ type ZoneEmailSendingAdaptive {
   eventType: string!
   # The sender email address of the source email
   from: string!
+  # Is this the last event for this email?
+  isLastEvent: uint8!
   # Is this event related to a NDR (bounce) email?
   isNDR: uint8!
   # Source email is spam
@@ -62085,6 +62383,14 @@ input ZoneEmailSendingAdaptiveFilter_InputObject {
   from_neq: string
   from_notin: [string!]
   from_notlike: string
+  isLastEvent: uint8
+  isLastEvent_geq: uint8
+  isLastEvent_gt: uint8
+  isLastEvent_in: bytes
+  isLastEvent_leq: uint8
+  isLastEvent_lt: uint8
+  isLastEvent_neq: uint8
+  isLastEvent_notin: bytes
   isNDR: uint8
   isNDR_geq: uint8
   isNDR_gt: uint8
@@ -62225,6 +62531,8 @@ type ZoneEmailSendingAdaptiveGroupsDimensions {
   errorCause: string!
   # Origin of email (incoming|forward|reply|newEmail)
   eventType: string!
+  # Is this the last event for this email?
+  isLastEvent: uint8!
   # Is this event related to a NDR (bounce) email?
   isNDR: uint8!
   # Source email is spam
@@ -62334,6 +62642,14 @@ input ZoneEmailSendingAdaptiveGroupsFilter_InputObject {
   eventType_neq: string
   eventType_notin: [string!]
   eventType_notlike: string
+  isLastEvent: uint8
+  isLastEvent_geq: uint8
+  isLastEvent_gt: uint8
+  isLastEvent_in: bytes
+  isLastEvent_leq: uint8
+  isLastEvent_lt: uint8
+  isLastEvent_neq: uint8
+  isLastEvent_notin: bytes
   isNDR: uint8
   isNDR_geq: uint8
   isNDR_gt: uint8
@@ -62445,6 +62761,10 @@ enum ZoneEmailSendingAdaptiveGroupsOrderBy {
   isEmailSending_ASC
   # isEmailSending descending
   isEmailSending_DESC
+  # isLastEvent ascending
+  isLastEvent_ASC
+  # isLastEvent descending
+  isLastEvent_DESC
   # isNDR ascending
   isNDR_ASC
   # isNDR descending
@@ -62512,6 +62832,10 @@ enum ZoneEmailSendingAdaptiveOrderBy {
   isEmailSending_ASC
   # isEmailSending descending
   isEmailSending_DESC
+  # isLastEvent ascending
+  isLastEvent_ASC
+  # isLastEvent descending
+  isLastEvent_DESC
   # isNDR ascending
   isNDR_ASC
   # isNDR descending
