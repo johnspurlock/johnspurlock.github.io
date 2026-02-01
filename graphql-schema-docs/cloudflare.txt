@@ -113,6 +113,8 @@ Account-level datasets:
 * pipelinesSinkStagingAdaptiveGroups
 * pipelinesUserErrorsAdaptive
 * pipelinesUserErrorsAdaptiveGroups
+* pipelinesUserErrorsStagingAdaptive
+* pipelinesUserErrorsStagingAdaptiveGroups
   programmableFlowProtectionNetworkAnalyticsAdaptiveGroups
 * queueBacklogAdaptiveGroups
 * queueConsumerMetricsAdaptiveGroups
@@ -120,6 +122,7 @@ Account-level datasets:
 * queueMessageOperationsAdaptiveGroups
 * r2OperationsAdaptiveGroups
 * r2StorageAdaptiveGroups
+* realtimeKitUsageAdaptiveGroups
 * rumPageloadEventsAdaptiveGroups
 * rumPerformanceEventsAdaptiveGroups
 * rumWebVitalsEventsAdaptive
@@ -493,6 +496,10 @@ type account {
   pipelinesUserErrorsAdaptive(filter: AccountPipelinesUserErrorsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesUserErrorsAdaptiveOrderBy!]): [AccountPipelinesUserErrorsAdaptive!]!
   # User errors from Workers Pipelines
   pipelinesUserErrorsAdaptiveGroups(filter: AccountPipelinesUserErrorsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesUserErrorsAdaptiveGroupsOrderBy!]): [AccountPipelinesUserErrorsAdaptiveGroups!]!
+  # Raw user errors from Workers Pipelines (staging)
+  pipelinesUserErrorsStagingAdaptive(filter: AccountPipelinesUserErrorsStagingAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesUserErrorsStagingAdaptiveOrderBy!]): [AccountPipelinesUserErrorsStagingAdaptive!]!
+  # User errors from Workers Pipelines (staging)
+  pipelinesUserErrorsStagingAdaptiveGroups(filter: AccountPipelinesUserErrorsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesUserErrorsStagingAdaptiveGroupsOrderBy!]): [AccountPipelinesUserErrorsStagingAdaptiveGroups!]!
   # Network analytics data for Programmable Flow Protection
   programmableFlowProtectionNetworkAnalyticsAdaptiveGroups(filter: AccountProgrammableFlowProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountProgrammableFlowProtectionNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountProgrammableFlowProtectionNetworkAnalyticsAdaptiveGroups!]!
   # Beta. Queue backlog data with adaptive sampling. Queues that are not being written to, or read from, will not return data, even if they have a backlog.
@@ -507,6 +514,8 @@ type account {
   r2OperationsAdaptiveGroups(filter: AccountR2OperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2OperationsAdaptiveGroupsOrderBy!]): [AccountR2OperationsAdaptiveGroups!]!
   # Beta. R2 storage with adaptive sampling
   r2StorageAdaptiveGroups(filter: AccountR2StorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2StorageAdaptiveGroupsOrderBy!]): [AccountR2StorageAdaptiveGroups!]!
+  # RealtimeKit usage metrics
+  realtimeKitUsageAdaptiveGroups(filter: AccountRealtimeKitUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountRealtimeKitUsageAdaptiveGroupsOrderBy!]): [AccountRealtimeKitUsageAdaptiveGroups!]!
   # Beta. Aggregated RUM pageload event metrics with adaptive sampling
   rumPageloadEventsAdaptiveGroups(filter: AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountRumPageloadEventsAdaptiveGroupsOrderBy!]): [AccountRumPageloadEventsAdaptiveGroups!]!
   # Beta. Aggregated RUM performance event metrics with adaptive sampling
@@ -9892,6 +9901,18 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   region_ASC
   # region descending
   region_DESC
+  # sum(allocatedDisk) ascending
+  sum_allocatedDisk_ASC
+  # sum(allocatedDisk) descending
+  sum_allocatedDisk_DESC
+  # sum(allocatedMemory) ascending
+  sum_allocatedMemory_ASC
+  # sum(allocatedMemory) descending
+  sum_allocatedMemory_DESC
+  # sum(cpuTimeSec) ascending
+  sum_cpuTimeSec_ASC
+  # sum(cpuTimeSec) descending
+  sum_cpuTimeSec_DESC
   # sum(rxBytes) ascending
   sum_rxBytes_ASC
   # sum(rxBytes) descending
@@ -9966,6 +9987,12 @@ type AccountCloudchamberMetricsAdaptiveGroupsQuantiles {
 }
 
 type AccountCloudchamberMetricsAdaptiveGroupsSum {
+  # Sum of allocated disk in byte-seconds
+  allocatedDisk: float64!
+  # Sum of allocated memory in byte-seconds
+  allocatedMemory: float64!
+  # Sum of CPU time in seconds
+  cpuTimeSec: float64!
   # Sum of bytes received
   rxBytes: uint64!
   # Sum of bytes transmitted
@@ -9973,6 +10000,12 @@ type AccountCloudchamberMetricsAdaptiveGroupsSum {
 }
 
 type AccountCloudchamberMetricsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  allocatedDisk: Confidence!
+  # Confidence interval for the corresponding point estimate
+  allocatedMemory: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cpuTimeSec: Confidence!
   # Confidence interval for the corresponding point estimate
   rxBytes: Confidence!
   # Confidence interval for the corresponding point estimate
@@ -10913,6 +10946,18 @@ enum AccountContainersMetricsAdaptiveGroupsOrderBy {
   region_ASC
   # region descending
   region_DESC
+  # sum(allocatedDisk) ascending
+  sum_allocatedDisk_ASC
+  # sum(allocatedDisk) descending
+  sum_allocatedDisk_DESC
+  # sum(allocatedMemory) ascending
+  sum_allocatedMemory_ASC
+  # sum(allocatedMemory) descending
+  sum_allocatedMemory_DESC
+  # sum(cpuTimeSec) ascending
+  sum_cpuTimeSec_ASC
+  # sum(cpuTimeSec) descending
+  sum_cpuTimeSec_DESC
   # sum(rxBytes) ascending
   sum_rxBytes_ASC
   # sum(rxBytes) descending
@@ -10987,6 +11032,12 @@ type AccountContainersMetricsAdaptiveGroupsQuantiles {
 }
 
 type AccountContainersMetricsAdaptiveGroupsSum {
+  # Sum of allocated disk in byte-seconds
+  allocatedDisk: float64!
+  # Sum of allocated memory in byte-seconds
+  allocatedMemory: float64!
+  # Sum of CPU time in seconds
+  cpuTimeSec: float64!
   # Sum of bytes received
   rxBytes: uint64!
   # Sum of bytes transmitted
@@ -10994,6 +11045,12 @@ type AccountContainersMetricsAdaptiveGroupsSum {
 }
 
 type AccountContainersMetricsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  allocatedDisk: Confidence!
+  # Confidence interval for the corresponding point estimate
+  allocatedMemory: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cpuTimeSec: Confidence!
   # Confidence interval for the corresponding point estimate
   rxBytes: Confidence!
   # Confidence interval for the corresponding point estimate
@@ -16500,6 +16557,10 @@ type AccountFirewallEventsAdaptive {
   fraudDetectionTags: [string!]!
   # Risk of a specific email address in account signup attempts
   fraudEmailRisk: string!
+  # Identifies action that a given user is performing. Possible values are login, signup.
+  fraudEventType: string!
+  # A unique identifier generated by the Fraud Detection system for each user, generated during any action determined by the fraud event type.
+  fraudUserId: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -16956,6 +17017,26 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   fraudEmailRisk_neq: string
   fraudEmailRisk_notin: [string!]
   fraudEmailRisk_notlike: string
+  fraudEventType: string
+  fraudEventType_geq: string
+  fraudEventType_gt: string
+  fraudEventType_in: [string!]
+  fraudEventType_leq: string
+  fraudEventType_like: string
+  fraudEventType_lt: string
+  fraudEventType_neq: string
+  fraudEventType_notin: [string!]
+  fraudEventType_notlike: string
+  fraudUserId: string
+  fraudUserId_geq: string
+  fraudUserId_gt: string
+  fraudUserId_in: [string!]
+  fraudUserId_leq: string
+  fraudUserId_like: string
+  fraudUserId_lt: string
+  fraudUserId_neq: string
+  fraudUserId_notin: [string!]
+  fraudUserId_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -17323,6 +17404,10 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   fraudDetectionTags: [string!]!
   # Risk of a specific email address in account signup attempts
   fraudEmailRisk: string!
+  # Identifies action that a given user is performing. Possible values are login, signup.
+  fraudEventType: string!
+  # A unique identifier generated by the Fraud Detection system for each user, generated during any action determined by the fraud event type.
+  fraudUserId: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -17773,6 +17858,26 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   fraudEmailRisk_neq: string
   fraudEmailRisk_notin: [string!]
   fraudEmailRisk_notlike: string
+  fraudEventType: string
+  fraudEventType_geq: string
+  fraudEventType_gt: string
+  fraudEventType_in: [string!]
+  fraudEventType_leq: string
+  fraudEventType_like: string
+  fraudEventType_lt: string
+  fraudEventType_neq: string
+  fraudEventType_notin: [string!]
+  fraudEventType_notlike: string
+  fraudUserId: string
+  fraudUserId_geq: string
+  fraudUserId_gt: string
+  fraudUserId_in: [string!]
+  fraudUserId_leq: string
+  fraudUserId_like: string
+  fraudUserId_lt: string
+  fraudUserId_neq: string
+  fraudUserId_notin: [string!]
+  fraudUserId_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -18208,6 +18313,14 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   fraudEmailRisk_ASC
   # fraudEmailRisk descending
   fraudEmailRisk_DESC
+  # fraudEventType ascending
+  fraudEventType_ASC
+  # fraudEventType descending
+  fraudEventType_DESC
+  # fraudUserId ascending
+  fraudUserId_ASC
+  # fraudUserId descending
+  fraudUserId_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -18572,6 +18685,14 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   fraudEmailRisk_ASC
   # fraudEmailRisk descending
   fraudEmailRisk_DESC
+  # fraudEventType ascending
+  fraudEventType_ASC
+  # fraudEventType descending
+  fraudEventType_DESC
+  # fraudUserId ascending
+  fraudUserId_ASC
+  # fraudUserId descending
+  fraudUserId_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -23942,6 +24063,10 @@ type AccountHttpRequestsAdaptive {
   fraudDetectionTags: [string!]!
   # Risk of a specific email address in account signup attempts
   fraudEmailRisk: string!
+  # Identifies action that a given user is performing. Possible values are login, signup.
+  fraudEventType: string!
+  # A unique identifier generated by the Fraud Detection system for each user, generated during any action determined by the fraud event type.
+  fraudUserId: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -24426,6 +24551,26 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   fraudEmailRisk_neq: string
   fraudEmailRisk_notin: [string!]
   fraudEmailRisk_notlike: string
+  fraudEventType: string
+  fraudEventType_geq: string
+  fraudEventType_gt: string
+  fraudEventType_in: [string!]
+  fraudEventType_leq: string
+  fraudEventType_like: string
+  fraudEventType_lt: string
+  fraudEventType_neq: string
+  fraudEventType_notin: [string!]
+  fraudEventType_notlike: string
+  fraudUserId: string
+  fraudUserId_geq: string
+  fraudUserId_gt: string
+  fraudUserId_in: [string!]
+  fraudUserId_leq: string
+  fraudUserId_like: string
+  fraudUserId_lt: string
+  fraudUserId_neq: string
+  fraudUserId_notin: [string!]
+  fraudUserId_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -24841,6 +24986,10 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   fraudDetectionTags: [string!]!
   # Risk of a specific email address in account signup attempts
   fraudEmailRisk: string!
+  # Identifies action that a given user is performing. Possible values are login, signup.
+  fraudEventType: string!
+  # A unique identifier generated by the Fraud Detection system for each user, generated during any action determined by the fraud event type.
+  fraudUserId: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -25322,6 +25471,26 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   fraudEmailRisk_neq: string
   fraudEmailRisk_notin: [string!]
   fraudEmailRisk_notlike: string
+  fraudEventType: string
+  fraudEventType_geq: string
+  fraudEventType_gt: string
+  fraudEventType_in: [string!]
+  fraudEventType_leq: string
+  fraudEventType_like: string
+  fraudEventType_lt: string
+  fraudEventType_neq: string
+  fraudEventType_notin: [string!]
+  fraudEventType_notlike: string
+  fraudUserId: string
+  fraudUserId_geq: string
+  fraudUserId_gt: string
+  fraudUserId_in: [string!]
+  fraudUserId_leq: string
+  fraudUserId_like: string
+  fraudUserId_lt: string
+  fraudUserId_neq: string
+  fraudUserId_notin: [string!]
+  fraudUserId_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -25841,6 +26010,14 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   fraudEmailRisk_ASC
   # fraudEmailRisk descending
   fraudEmailRisk_DESC
+  # fraudEventType ascending
+  fraudEventType_ASC
+  # fraudEventType descending
+  fraudEventType_DESC
+  # fraudUserId ascending
+  fraudUserId_ASC
+  # fraudUserId descending
+  fraudUserId_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -26368,6 +26545,14 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   fraudEmailRisk_ASC
   # fraudEmailRisk descending
   fraudEmailRisk_DESC
+  # fraudEventType ascending
+  fraudEventType_ASC
+  # fraudEventType descending
+  fraudEventType_DESC
+  # fraudUserId ascending
+  fraudUserId_ASC
+  # fraudUserId descending
+  fraudUserId_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -43157,6 +43342,246 @@ enum AccountPipelinesUserErrorsAdaptiveOrderBy {
   sampleInterval_DESC
 }
 
+# Raw user errors from Workers Pipelines (staging)
+type AccountPipelinesUserErrorsStagingAdaptive {
+  # Error timestamp
+  datetime: Time!
+  # Error details
+  errorDetails: string!
+  # Error category
+  errorFamily: string!
+  # Specific error type
+  errorType: string!
+  # The pipeline identifier
+  pipelineId: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+}
+
+input AccountPipelinesUserErrorsStagingAdaptiveFilter_InputObject {
+  AND: [AccountPipelinesUserErrorsStagingAdaptiveFilter_InputObject!]
+  OR: [AccountPipelinesUserErrorsStagingAdaptiveFilter_InputObject!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  errorDetails: string
+  errorDetails_geq: string
+  errorDetails_gt: string
+  errorDetails_in: [string!]
+  errorDetails_leq: string
+  errorDetails_like: string
+  errorDetails_lt: string
+  errorDetails_neq: string
+  errorDetails_notin: [string!]
+  errorDetails_notlike: string
+  errorFamily: string
+  errorFamily_geq: string
+  errorFamily_gt: string
+  errorFamily_in: [string!]
+  errorFamily_leq: string
+  errorFamily_like: string
+  errorFamily_lt: string
+  errorFamily_neq: string
+  errorFamily_notin: [string!]
+  errorFamily_notlike: string
+  errorType: string
+  errorType_geq: string
+  errorType_gt: string
+  errorType_in: [string!]
+  errorType_leq: string
+  errorType_like: string
+  errorType_lt: string
+  errorType_neq: string
+  errorType_notin: [string!]
+  errorType_notlike: string
+  pipelineId: string
+  pipelineId_geq: string
+  pipelineId_gt: string
+  pipelineId_in: [string!]
+  pipelineId_leq: string
+  pipelineId_like: string
+  pipelineId_lt: string
+  pipelineId_neq: string
+  pipelineId_notin: [string!]
+  pipelineId_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+}
+
+# User errors from Workers Pipelines (staging)
+type AccountPipelinesUserErrorsStagingAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountPipelinesUserErrorsStagingAdaptiveGroupsConfidence!
+  # Number of user errors
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountPipelinesUserErrorsStagingAdaptiveGroupsDimensions
+}
+
+type AccountPipelinesUserErrorsStagingAdaptiveGroupsConfidence {
+  # Number of user errors, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type AccountPipelinesUserErrorsStagingAdaptiveGroupsDimensions {
+  # Error timestamp, truncated to start of a day
+  date: Date!
+  # Error timestamp
+  datetime: Time!
+  # Error timestamp, truncated to start of hour
+  datetimeHour: Time!
+  # Error timestamp, truncated to start of minute
+  datetimeMinute: Time!
+  # Error category
+  errorFamily: string!
+  # Specific error type
+  errorType: string!
+  # The pipeline identifier
+  pipelineId: string!
+}
+
+input AccountPipelinesUserErrorsStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountPipelinesUserErrorsStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountPipelinesUserErrorsStagingAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  errorFamily: string
+  errorFamily_geq: string
+  errorFamily_gt: string
+  errorFamily_in: [string!]
+  errorFamily_leq: string
+  errorFamily_like: string
+  errorFamily_lt: string
+  errorFamily_neq: string
+  errorFamily_notin: [string!]
+  errorFamily_notlike: string
+  errorType: string
+  errorType_geq: string
+  errorType_gt: string
+  errorType_in: [string!]
+  errorType_leq: string
+  errorType_like: string
+  errorType_lt: string
+  errorType_neq: string
+  errorType_notin: [string!]
+  errorType_notlike: string
+  pipelineId: string
+  pipelineId_geq: string
+  pipelineId_gt: string
+  pipelineId_in: [string!]
+  pipelineId_leq: string
+  pipelineId_like: string
+  pipelineId_lt: string
+  pipelineId_neq: string
+  pipelineId_notin: [string!]
+  pipelineId_notlike: string
+}
+
+enum AccountPipelinesUserErrorsStagingAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # errorFamily ascending
+  errorFamily_ASC
+  # errorFamily descending
+  errorFamily_DESC
+  # errorType ascending
+  errorType_ASC
+  # errorType descending
+  errorType_DESC
+  # pipelineId ascending
+  pipelineId_ASC
+  # pipelineId descending
+  pipelineId_DESC
+}
+
+enum AccountPipelinesUserErrorsStagingAdaptiveOrderBy {
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # errorDetails ascending
+  errorDetails_ASC
+  # errorDetails descending
+  errorDetails_DESC
+  # errorFamily ascending
+  errorFamily_ASC
+  # errorFamily descending
+  errorFamily_DESC
+  # errorType ascending
+  errorType_ASC
+  # errorType descending
+  errorType_DESC
+  # pipelineId ascending
+  pipelineId_ASC
+  # pipelineId descending
+  pipelineId_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+}
+
 # Network analytics data for Programmable Flow Protection
 type AccountProgrammableFlowProtectionNetworkAnalyticsAdaptiveGroups {
   # The average of values for a metric per dimension
@@ -45599,6 +46024,181 @@ enum AccountR2StorageAdaptiveGroupsOrderBy {
   storageClass_ASC
   # storageClass descending
   storageClass_DESC
+}
+
+# RealtimeKit usage metrics
+type AccountRealtimeKitUsageAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountRealtimeKitUsageAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountRealtimeKitUsageAdaptiveGroupsConfidence!
+  # Total number of RealtimeKit usage events
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountRealtimeKitUsageAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountRealtimeKitUsageAdaptiveGroupsSum
+}
+
+type AccountRealtimeKitUsageAdaptiveGroupsAvg {
+  # Average audio-only participant minutes per event
+  audioMinutes: float64!
+  # Average export minutes per event (recording, RTMP or HLS streaming, audio only)
+  exportAudioMinutes: float64!
+  # Average export minutes per event (recording, RTMP or HLS streaming)
+  exportMinutes: float64!
+  # Average audio and video participant minutes per event
+  mediaMinutes: float64!
+}
+
+type AccountRealtimeKitUsageAdaptiveGroupsConfidence {
+  # Total number of RealtimeKit usage events, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountRealtimeKitUsageAdaptiveGroupsSumConfidence
+}
+
+type AccountRealtimeKitUsageAdaptiveGroupsDimensions {
+  # The RealtimeKit application identifier
+  appId: string!
+  # The date of the usage event
+  date: Date!
+  # The exact timestamp of the usage event
+  datetime: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+}
+
+input AccountRealtimeKitUsageAdaptiveGroupsFilter_InputObject {
+  AND: [AccountRealtimeKitUsageAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountRealtimeKitUsageAdaptiveGroupsFilter_InputObject!]
+  appId: string
+  appId_geq: string
+  appId_gt: string
+  appId_in: [string!]
+  appId_leq: string
+  appId_like: string
+  appId_lt: string
+  appId_neq: string
+  appId_notin: [string!]
+  appId_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+}
+
+enum AccountRealtimeKitUsageAdaptiveGroupsOrderBy {
+  # appId ascending
+  appId_ASC
+  # appId descending
+  appId_DESC
+  # avg(audioMinutes) ascending
+  avg_audioMinutes_ASC
+  # avg(audioMinutes) descending
+  avg_audioMinutes_DESC
+  # avg(exportAudioMinutes) ascending
+  avg_exportAudioMinutes_ASC
+  # avg(exportAudioMinutes) descending
+  avg_exportAudioMinutes_DESC
+  # avg(exportMinutes) ascending
+  avg_exportMinutes_ASC
+  # avg(exportMinutes) descending
+  avg_exportMinutes_DESC
+  # avg(mediaMinutes) ascending
+  avg_mediaMinutes_ASC
+  # avg(mediaMinutes) descending
+  avg_mediaMinutes_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # sum(audioMinutes) ascending
+  sum_audioMinutes_ASC
+  # sum(audioMinutes) descending
+  sum_audioMinutes_DESC
+  # sum(exportAudioMinutes) ascending
+  sum_exportAudioMinutes_ASC
+  # sum(exportAudioMinutes) descending
+  sum_exportAudioMinutes_DESC
+  # sum(exportMinutes) ascending
+  sum_exportMinutes_ASC
+  # sum(exportMinutes) descending
+  sum_exportMinutes_DESC
+  # sum(mediaMinutes) ascending
+  sum_mediaMinutes_ASC
+  # sum(mediaMinutes) descending
+  sum_mediaMinutes_DESC
+}
+
+type AccountRealtimeKitUsageAdaptiveGroupsSum {
+  # Total audio only participant minutes
+  audioMinutes: float64!
+  # Total export minutes (recording, RTMP or HLS streaming, audio only)
+  exportAudioMinutes: float64!
+  # Total export minutes (recording, RTMP or HLS streaming)
+  exportMinutes: float64!
+  # Total audio and video participant minutes
+  mediaMinutes: float64!
+}
+
+type AccountRealtimeKitUsageAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  audioMinutes: Confidence!
+  # Confidence interval for the corresponding point estimate
+  exportAudioMinutes: Confidence!
+  # Confidence interval for the corresponding point estimate
+  exportMinutes: Confidence!
+  # Confidence interval for the corresponding point estimate
+  mediaMinutes: Confidence!
 }
 
 # Beta. Aggregated RUM pageload event metrics with adaptive sampling
@@ -48209,6 +48809,8 @@ type AccountSettings {
   pipelinesSinkStagingAdaptiveGroups: Settings!
   pipelinesUserErrorsAdaptive: Settings!
   pipelinesUserErrorsAdaptiveGroups: Settings!
+  pipelinesUserErrorsStagingAdaptive: Settings!
+  pipelinesUserErrorsStagingAdaptiveGroups: Settings!
   programmableFlowProtectionNetworkAnalyticsAdaptiveGroups: Settings!
   queueBacklogAdaptiveGroups: Settings!
   queueConsumerMetricsAdaptiveGroups: Settings!
@@ -48216,6 +48818,7 @@ type AccountSettings {
   queueMessageOperationsAdaptiveGroups: Settings!
   r2OperationsAdaptiveGroups: Settings!
   r2StorageAdaptiveGroups: Settings!
+  realtimeKitUsageAdaptiveGroups: Settings!
   rumPageloadEventsAdaptiveGroups: Settings!
   rumPerformanceEventsAdaptiveGroups: Settings!
   rumWebVitalsEventsAdaptive: Settings!
@@ -57018,6 +57621,10 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   fraudDetectionTags: [string!]!
   # Risk of a specific email address in account signup attempts
   fraudEmailRisk: string!
+  # Identifies action that a given user is performing. Possible values are login, signup.
+  fraudEventType: string!
+  # A unique identifier generated by the Fraud Detection system for each user, generated during any action determined by the fraud event type.
+  fraudUserId: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -57489,6 +58096,26 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   fraudEmailRisk_neq: string
   fraudEmailRisk_notin: [string!]
   fraudEmailRisk_notlike: string
+  fraudEventType: string
+  fraudEventType_geq: string
+  fraudEventType_gt: string
+  fraudEventType_in: [string!]
+  fraudEventType_leq: string
+  fraudEventType_like: string
+  fraudEventType_lt: string
+  fraudEventType_neq: string
+  fraudEventType_notin: [string!]
+  fraudEventType_notlike: string
+  fraudUserId: string
+  fraudUserId_geq: string
+  fraudUserId_gt: string
+  fraudUserId_in: [string!]
+  fraudUserId_leq: string
+  fraudUserId_like: string
+  fraudUserId_lt: string
+  fraudUserId_neq: string
+  fraudUserId_notin: [string!]
+  fraudUserId_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -57990,6 +58617,14 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   fraudEmailRisk_ASC
   # fraudEmailRisk descending
   fraudEmailRisk_DESC
+  # fraudEventType ascending
+  fraudEventType_ASC
+  # fraudEventType descending
+  fraudEventType_DESC
+  # fraudUserId ascending
+  fraudUserId_ASC
+  # fraudUserId descending
+  fraudUserId_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -62268,6 +62903,8 @@ type ZoneEmailSendingAdaptive {
   dkim: string!
   # DMARC check status of the source email
   dmarc: string!
+  # The envelope recipient email address
+  envelopeTos: string!
   # Error type (if any)
   errorCause: string!
   # Detailed error message (if any)
@@ -62343,6 +62980,16 @@ input ZoneEmailSendingAdaptiveFilter_InputObject {
   dmarc_neq: string
   dmarc_notin: [string!]
   dmarc_notlike: string
+  envelopeTos: string
+  envelopeTos_geq: string
+  envelopeTos_gt: string
+  envelopeTos_in: [string!]
+  envelopeTos_leq: string
+  envelopeTos_like: string
+  envelopeTos_lt: string
+  envelopeTos_neq: string
+  envelopeTos_notin: [string!]
+  envelopeTos_notlike: string
   errorCause: string
   errorCause_geq: string
   errorCause_gt: string
@@ -62527,6 +63174,8 @@ type ZoneEmailSendingAdaptiveGroupsDimensions {
   dkim: string!
   # DMARC check status of the source email
   dmarc: string!
+  # The envelope recipient email address
+  envelopeTos: string!
   # Error type (if any)
   errorCause: string!
   # Origin of email (incoming|forward|reply|newEmail)
@@ -62622,6 +63271,16 @@ input ZoneEmailSendingAdaptiveGroupsFilter_InputObject {
   dmarc_neq: string
   dmarc_notin: [string!]
   dmarc_notlike: string
+  envelopeTos: string
+  envelopeTos_geq: string
+  envelopeTos_gt: string
+  envelopeTos_in: [string!]
+  envelopeTos_leq: string
+  envelopeTos_like: string
+  envelopeTos_lt: string
+  envelopeTos_neq: string
+  envelopeTos_notin: [string!]
+  envelopeTos_notlike: string
   errorCause: string
   errorCause_geq: string
   errorCause_gt: string
@@ -62749,6 +63408,10 @@ enum ZoneEmailSendingAdaptiveGroupsOrderBy {
   dmarc_ASC
   # dmarc descending
   dmarc_DESC
+  # envelopeTos ascending
+  envelopeTos_ASC
+  # envelopeTos descending
+  envelopeTos_DESC
   # errorCause ascending
   errorCause_ASC
   # errorCause descending
@@ -62812,6 +63475,10 @@ enum ZoneEmailSendingAdaptiveOrderBy {
   dmarc_ASC
   # dmarc descending
   dmarc_DESC
+  # envelopeTos ascending
+  envelopeTos_ASC
+  # envelopeTos descending
+  envelopeTos_DESC
   # errorCause ascending
   errorCause_ASC
   # errorCause descending
@@ -62984,6 +63651,10 @@ type ZoneFirewallEventsAdaptive {
   fraudDetectionTags: [string!]!
   # Risk of a specific email address in account signup attempts
   fraudEmailRisk: string!
+  # Identifies action that a given user is performing. Possible values are login, signup.
+  fraudEventType: string!
+  # A unique identifier generated by the Fraud Detection system for each user, generated during any action determined by the fraud event type.
+  fraudUserId: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -63117,6 +63788,10 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   fraudDetectionTags: [string!]!
   # Risk of a specific email address in account signup attempts
   fraudEmailRisk: string!
+  # Identifies action that a given user is performing. Possible values are login, signup.
+  fraudEventType: string!
+  # A unique identifier generated by the Fraud Detection system for each user, generated during any action determined by the fraud event type.
+  fraudUserId: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -63543,6 +64218,26 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   fraudEmailRisk_neq: string
   fraudEmailRisk_notin: [string!]
   fraudEmailRisk_notlike: string
+  fraudEventType: string
+  fraudEventType_geq: string
+  fraudEventType_gt: string
+  fraudEventType_in: [string!]
+  fraudEventType_leq: string
+  fraudEventType_like: string
+  fraudEventType_lt: string
+  fraudEventType_neq: string
+  fraudEventType_notin: [string!]
+  fraudEventType_notlike: string
+  fraudUserId: string
+  fraudUserId_geq: string
+  fraudUserId_gt: string
+  fraudUserId_in: [string!]
+  fraudUserId_leq: string
+  fraudUserId_like: string
+  fraudUserId_lt: string
+  fraudUserId_neq: string
+  fraudUserId_notin: [string!]
+  fraudUserId_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -63872,6 +64567,14 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   fraudEmailRisk_ASC
   # fraudEmailRisk descending
   fraudEmailRisk_DESC
+  # fraudEventType ascending
+  fraudEventType_ASC
+  # fraudEventType descending
+  fraudEventType_DESC
+  # fraudUserId ascending
+  fraudUserId_ASC
+  # fraudUserId descending
+  fraudUserId_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -64377,6 +65080,26 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   fraudEmailRisk_neq: string
   fraudEmailRisk_notin: [string!]
   fraudEmailRisk_notlike: string
+  fraudEventType: string
+  fraudEventType_geq: string
+  fraudEventType_gt: string
+  fraudEventType_in: [string!]
+  fraudEventType_leq: string
+  fraudEventType_like: string
+  fraudEventType_lt: string
+  fraudEventType_neq: string
+  fraudEventType_notin: [string!]
+  fraudEventType_notlike: string
+  fraudUserId: string
+  fraudUserId_geq: string
+  fraudUserId_gt: string
+  fraudUserId_in: [string!]
+  fraudUserId_leq: string
+  fraudUserId_like: string
+  fraudUserId_lt: string
+  fraudUserId_neq: string
+  fraudUserId_notin: [string!]
+  fraudUserId_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -64734,6 +65457,10 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   fraudDetectionTags: [string!]!
   # Risk of a specific email address in account signup attempts
   fraudEmailRisk: string!
+  # Identifies action that a given user is performing. Possible values are login, signup.
+  fraudEventType: string!
+  # A unique identifier generated by the Fraud Detection system for each user, generated during any action determined by the fraud event type.
+  fraudUserId: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -65182,6 +65909,26 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   fraudEmailRisk_neq: string
   fraudEmailRisk_notin: [string!]
   fraudEmailRisk_notlike: string
+  fraudEventType: string
+  fraudEventType_geq: string
+  fraudEventType_gt: string
+  fraudEventType_in: [string!]
+  fraudEventType_leq: string
+  fraudEventType_like: string
+  fraudEventType_lt: string
+  fraudEventType_neq: string
+  fraudEventType_notin: [string!]
+  fraudEventType_notlike: string
+  fraudUserId: string
+  fraudUserId_geq: string
+  fraudUserId_gt: string
+  fraudUserId_in: [string!]
+  fraudUserId_leq: string
+  fraudUserId_like: string
+  fraudUserId_lt: string
+  fraudUserId_neq: string
+  fraudUserId_notin: [string!]
+  fraudUserId_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -65607,6 +66354,14 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   fraudEmailRisk_ASC
   # fraudEmailRisk descending
   fraudEmailRisk_DESC
+  # fraudEventType ascending
+  fraudEventType_ASC
+  # fraudEventType descending
+  fraudEventType_DESC
+  # fraudUserId ascending
+  fraudUserId_ASC
+  # fraudUserId descending
+  fraudUserId_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -65967,6 +66722,14 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   fraudEmailRisk_ASC
   # fraudEmailRisk descending
   fraudEmailRisk_DESC
+  # fraudEventType ascending
+  fraudEventType_ASC
+  # fraudEventType descending
+  fraudEventType_DESC
+  # fraudUserId ascending
+  fraudUserId_ASC
+  # fraudUserId descending
+  fraudUserId_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -67795,6 +68558,10 @@ type ZoneHttpRequestsAdaptive {
   fraudDetectionTags: [string!]!
   # Risk of a specific email address in account signup attempts
   fraudEmailRisk: string!
+  # Identifies action that a given user is performing. Possible values are login, signup.
+  fraudEventType: string!
+  # A unique identifier generated by the Fraud Detection system for each user, generated during any action determined by the fraud event type.
+  fraudUserId: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -68277,6 +69044,26 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   fraudEmailRisk_neq: string
   fraudEmailRisk_notin: [string!]
   fraudEmailRisk_notlike: string
+  fraudEventType: string
+  fraudEventType_geq: string
+  fraudEventType_gt: string
+  fraudEventType_in: [string!]
+  fraudEventType_leq: string
+  fraudEventType_like: string
+  fraudEventType_lt: string
+  fraudEventType_neq: string
+  fraudEventType_notin: [string!]
+  fraudEventType_notlike: string
+  fraudUserId: string
+  fraudUserId_geq: string
+  fraudUserId_gt: string
+  fraudUserId_in: [string!]
+  fraudUserId_leq: string
+  fraudUserId_like: string
+  fraudUserId_lt: string
+  fraudUserId_neq: string
+  fraudUserId_notin: [string!]
+  fraudUserId_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -68682,6 +69469,10 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   fraudDetectionTags: [string!]!
   # Risk of a specific email address in account signup attempts
   fraudEmailRisk: string!
+  # Identifies action that a given user is performing. Possible values are login, signup.
+  fraudEventType: string!
+  # A unique identifier generated by the Fraud Detection system for each user, generated during any action determined by the fraud event type.
+  fraudUserId: string!
   # Version associated with HTTP Application
   @Deprecated
   httpApplicationVersion: uint64!
@@ -69161,6 +69952,26 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   fraudEmailRisk_neq: string
   fraudEmailRisk_notin: [string!]
   fraudEmailRisk_notlike: string
+  fraudEventType: string
+  fraudEventType_geq: string
+  fraudEventType_gt: string
+  fraudEventType_in: [string!]
+  fraudEventType_leq: string
+  fraudEventType_like: string
+  fraudEventType_lt: string
+  fraudEventType_neq: string
+  fraudEventType_notin: [string!]
+  fraudEventType_notlike: string
+  fraudUserId: string
+  fraudUserId_geq: string
+  fraudUserId_gt: string
+  fraudUserId_in: [string!]
+  fraudUserId_leq: string
+  fraudUserId_like: string
+  fraudUserId_lt: string
+  fraudUserId_neq: string
+  fraudUserId_notin: [string!]
+  fraudUserId_notlike: string
   httpApplicationVersion: uint64
   httpApplicationVersion_geq: uint64
   httpApplicationVersion_gt: uint64
@@ -69670,6 +70481,14 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   fraudEmailRisk_ASC
   # fraudEmailRisk descending
   fraudEmailRisk_DESC
+  # fraudEventType ascending
+  fraudEventType_ASC
+  # fraudEventType descending
+  fraudEventType_DESC
+  # fraudUserId ascending
+  fraudUserId_ASC
+  # fraudUserId descending
+  fraudUserId_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
@@ -70193,6 +71012,14 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   fraudEmailRisk_ASC
   # fraudEmailRisk descending
   fraudEmailRisk_DESC
+  # fraudEventType ascending
+  fraudEventType_ASC
+  # fraudEventType descending
+  fraudEventType_DESC
+  # fraudUserId ascending
+  fraudUserId_ASC
+  # fraudUserId descending
+  fraudUserId_DESC
   # httpApplicationVersion ascending
   httpApplicationVersion_ASC
   # httpApplicationVersion descending
