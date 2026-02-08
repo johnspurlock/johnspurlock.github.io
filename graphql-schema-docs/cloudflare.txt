@@ -9478,6 +9478,8 @@ type AccountCloudchamberMetricsAdaptiveGroupsConfidence {
 }
 
 type AccountCloudchamberMetricsAdaptiveGroupsDimensions {
+  # Whether the container is active or not
+  active: uint8!
   # The application ID
   applicationId: string!
   # The date the metric was received
@@ -9509,6 +9511,14 @@ type AccountCloudchamberMetricsAdaptiveGroupsDimensions {
 input AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject {
   AND: [AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject!]
+  active: uint8
+  active_geq: uint8
+  active_gt: uint8
+  active_in: bytes
+  active_leq: uint8
+  active_lt: uint8
+  active_neq: uint8
+  active_notin: bytes
   applicationId: string
   applicationId_geq: string
   applicationId_gt: string
@@ -9661,6 +9671,10 @@ type AccountCloudchamberMetricsAdaptiveGroupsMax {
 }
 
 enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
+  # active ascending
+  active_ASC
+  # active descending
+  active_DESC
   # applicationId ascending
   applicationId_ASC
   # applicationId descending
@@ -10523,6 +10537,8 @@ type AccountContainersMetricsAdaptiveGroupsConfidence {
 }
 
 type AccountContainersMetricsAdaptiveGroupsDimensions {
+  # Whether the container is active or not
+  active: uint8!
   # The application ID
   applicationId: string!
   # The date the metric was received
@@ -10554,6 +10570,14 @@ type AccountContainersMetricsAdaptiveGroupsDimensions {
 input AccountContainersMetricsAdaptiveGroupsFilter_InputObject {
   AND: [AccountContainersMetricsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountContainersMetricsAdaptiveGroupsFilter_InputObject!]
+  active: uint8
+  active_geq: uint8
+  active_gt: uint8
+  active_in: bytes
+  active_leq: uint8
+  active_lt: uint8
+  active_neq: uint8
+  active_notin: bytes
   applicationId: string
   applicationId_geq: string
   applicationId_gt: string
@@ -10706,6 +10730,10 @@ type AccountContainersMetricsAdaptiveGroupsMax {
 }
 
 enum AccountContainersMetricsAdaptiveGroupsOrderBy {
+  # active ascending
+  active_ASC
+  # active descending
+  active_DESC
   # applicationId ascending
   applicationId_ASC
   # applicationId descending
@@ -73371,6 +73399,8 @@ type ZoneUserProfilesRawEventsGroups {
   deviceOS: string!
   # When the event happened.
   eventTimestamp: Time!
+  # Type of the event. Possible values are signup or login.
+  eventType: string!
   # Unique identifier for a user.
   userId: string!
 }
@@ -73439,6 +73469,16 @@ input ZoneUserProfilesRawEventsGroupsFilter_InputObject {
   eventTimestamp_lt: Time
   eventTimestamp_neq: Time
   eventTimestamp_notin: [Time!]
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
   userId: string
   userId_geq: string
   userId_gt: string
@@ -73480,6 +73520,10 @@ enum ZoneUserProfilesRawEventsGroupsOrderBy {
   eventTimestamp_ASC
   # eventTimestamp descending
   eventTimestamp_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
   # userId ascending
   userId_ASC
   # userId descending
