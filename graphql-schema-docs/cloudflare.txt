@@ -7084,6 +7084,8 @@ type AccountBrowserRenderingEventsAdaptive {
   connectionStartTime: Time!
   # The time of the event
   datetime: Time!
+  # Browser session recording mode: 'unknown', 'enabled', or 'disabled'
+  recordingMode: string!
   # ABR sample interval
   sampleInterval: uint32!
   # Name of worker who initiated the request
@@ -7163,6 +7165,16 @@ input AccountBrowserRenderingEventsAdaptiveFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  recordingMode: string
+  recordingMode_geq: string
+  recordingMode_gt: string
+  recordingMode_in: [string!]
+  recordingMode_leq: string
+  recordingMode_like: string
+  recordingMode_lt: string
+  recordingMode_neq: string
+  recordingMode_notin: [string!]
+  recordingMode_notlike: string
   sampleInterval: uint32
   sampleInterval_geq: uint32
   sampleInterval_gt: uint32
@@ -7239,6 +7251,8 @@ type AccountBrowserRenderingEventsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time of the event truncated to the minute
   datetimeMinute: Time!
+  # Browser session recording mode: 'unknown', 'enabled', or 'disabled'
+  recordingMode: string!
   # Name of worker who initiated the request
   scriptName: string!
   # Browser session ID
@@ -7316,6 +7330,16 @@ input AccountBrowserRenderingEventsAdaptiveGroupsFilter_InputObject {
   datetimeMinute_lt: Time
   datetimeMinute_neq: Time
   datetimeMinute_notin: [Time!]
+  recordingMode: string
+  recordingMode_geq: string
+  recordingMode_gt: string
+  recordingMode_in: [string!]
+  recordingMode_leq: string
+  recordingMode_like: string
+  recordingMode_lt: string
+  recordingMode_neq: string
+  recordingMode_notin: [string!]
+  recordingMode_notlike: string
   scriptName: string
   scriptName_geq: string
   scriptName_gt: string
@@ -7403,6 +7427,10 @@ enum AccountBrowserRenderingEventsAdaptiveGroupsOrderBy {
   min_earliestBrowserStartTime_ASC
   # min(earliestBrowserStartTime) descending
   min_earliestBrowserStartTime_DESC
+  # recordingMode ascending
+  recordingMode_ASC
+  # recordingMode descending
+  recordingMode_DESC
   # scriptName ascending
   scriptName_ASC
   # scriptName descending
@@ -7461,6 +7489,10 @@ enum AccountBrowserRenderingEventsAdaptiveOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # recordingMode ascending
+  recordingMode_ASC
+  # recordingMode descending
+  recordingMode_DESC
   # sampleInterval ascending
   sampleInterval_ASC
   # sampleInterval descending
