@@ -2064,6 +2064,10 @@ enum AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsOrderBy {
   destinationPort_ASC
   # destinationPort descending
   destinationPort_DESC
+  # destinationService ascending
+  destinationService_ASC
+  # destinationService descending
+  destinationService_DESC
   # direction ascending
   direction_ASC
   # direction descending
@@ -2256,6 +2260,10 @@ enum AccountAdvancedDnsProtectionNetworkAnalyticsAdaptiveGroupsOrderBy {
   sourcePort_ASC
   # sourcePort descending
   sourcePort_DESC
+  # sourceService ascending
+  sourceService_ASC
+  # sourceService descending
+  sourceService_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
@@ -3466,6 +3474,10 @@ enum AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsOrderBy {
   destinationPort_ASC
   # destinationPort descending
   destinationPort_DESC
+  # destinationService ascending
+  destinationService_ASC
+  # destinationService descending
+  destinationService_DESC
   # direction ascending
   direction_ASC
   # direction descending
@@ -3654,6 +3666,10 @@ enum AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsOrderBy {
   sourcePort_ASC
   # sourcePort descending
   sourcePort_DESC
+  # sourceService ascending
+  sourceService_ASC
+  # sourceService descending
+  sourceService_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
@@ -14828,6 +14844,10 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   destinationPort_ASC
   # destinationPort descending
   destinationPort_DESC
+  # destinationService ascending
+  destinationService_ASC
+  # destinationService descending
+  destinationService_DESC
   # direction ascending
   direction_ASC
   # direction descending
@@ -15032,6 +15052,10 @@ enum AccountDosdNetworkAnalyticsAdaptiveGroupsOrderBy {
   sourcePort_ASC
   # sourcePort descending
   sourcePort_DESC
+  # sourceService ascending
+  sourceService_ASC
+  # sourceService descending
+  sourceService_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
@@ -15186,6 +15210,8 @@ type AccountDurableObjectsInvocationsAdaptiveGroupsDimensions {
   scriptName: string!
   # Status of the worker invocation
   status: string!
+  # Type of invocation
+  type: string!
 }
 
 input AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject {
@@ -15297,6 +15323,16 @@ input AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject {
   status_neq: string
   status_notin: [string!]
   status_notlike: string
+  type: string
+  type_geq: string
+  type_gt: string
+  type_in: [string!]
+  type_leq: string
+  type_like: string
+  type_lt: string
+  type_neq: string
+  type_notin: [string!]
+  type_notlike: string
 }
 
 type AccountDurableObjectsInvocationsAdaptiveGroupsMax {
@@ -15456,6 +15492,10 @@ enum AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy {
   sum_wallTime_ASC
   # sum(wallTime) descending
   sum_wallTime_DESC
+  # type ascending
+  type_ASC
+  # type descending
+  type_DESC
 }
 
 type AccountDurableObjectsInvocationsAdaptiveGroupsQuantiles {
@@ -15511,6 +15551,8 @@ type AccountDurableObjectsInvocationsAdaptiveGroupsSumConfidence {
 type AccountDurableObjectsPeriodicGroups {
   # ALPHA - DO NOT USE
   confidence(level: float64!): AccountDurableObjectsPeriodicGroupsConfidence!
+  # Count of periodic metric events
+  count: uint64!
   # List of dimensions to group by
   dimensions: AccountDurableObjectsPeriodicGroupsDimensions
   # The max value for a metric
@@ -15520,6 +15562,8 @@ type AccountDurableObjectsPeriodicGroups {
 }
 
 type AccountDurableObjectsPeriodicGroupsConfidence {
+  # Count of periodic metric events, with confidence intervals
+  count: Confidence!
   # Confidence level that was requested
   level: float64!
   # The sum of values for a metric per dimension, with confidence intervals
@@ -15624,6 +15668,10 @@ type AccountDurableObjectsPeriodicGroupsMax {
 }
 
 enum AccountDurableObjectsPeriodicGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
   # date ascending
   date_ASC
   # date descending
@@ -16603,6 +16651,10 @@ type AccountFirewallEventsAdaptive {
   edgeResponseStatus: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.custom_topic_categories.
+  firewallForAiCustomTopicCategories: [AccountFirewallEventsAdaptiveFirewallForAiCustomTopicCategoriesElem!]!
+  # Minimum score across all the defined firewall for ai custom topics; 100 if empty.
+  firewallForAiCustomTopicCategoriesScoresMin: uint8!
   # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
   firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
@@ -17029,6 +17081,14 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiCustomTopicCategoriesScoresMin: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_geq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_gt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_in: bytes
+  firewallForAiCustomTopicCategoriesScoresMin_leq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_lt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_neq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_notin: bytes
   firewallForAiInjectionScore: int8
   firewallForAiInjectionScore_geq: int8
   firewallForAiInjectionScore_gt: int8
@@ -17345,6 +17405,13 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   zoneVersion_notin: [uint64!]
 }
 
+type AccountFirewallEventsAdaptiveFirewallForAiCustomTopicCategoriesElem {
+  # Topic score
+  score: uint8!
+  # Topic label
+  topicLabel: string!
+}
+
 # Aggregated Firewall events with adaptive sampling
 type AccountFirewallEventsAdaptiveGroups {
   # The average value used for sample interval
@@ -17450,6 +17517,8 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   edgeResponseStatus: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Minimum score across all the defined firewall for ai custom topics; 100 if empty.
+  firewallForAiCustomTopicCategoriesScoresMin: uint8!
   # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
   firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
@@ -17870,6 +17939,14 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiCustomTopicCategoriesScoresMin: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_geq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_gt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_in: bytes
+  firewallForAiCustomTopicCategoriesScoresMin_leq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_lt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_neq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_notin: bytes
   firewallForAiInjectionScore: int8
   firewallForAiInjectionScore_geq: int8
   firewallForAiInjectionScore_gt: int8
@@ -18345,6 +18422,10 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiCustomTopicCategoriesScoresMin ascending
+  firewallForAiCustomTopicCategoriesScoresMin_ASC
+  # firewallForAiCustomTopicCategoriesScoresMin descending
+  firewallForAiCustomTopicCategoriesScoresMin_DESC
   # firewallForAiInjectionScore ascending
   firewallForAiInjectionScore_ASC
   # firewallForAiInjectionScore descending
@@ -18717,6 +18798,10 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiCustomTopicCategoriesScoresMin ascending
+  firewallForAiCustomTopicCategoriesScoresMin_ASC
+  # firewallForAiCustomTopicCategoriesScoresMin descending
+  firewallForAiCustomTopicCategoriesScoresMin_DESC
   # firewallForAiInjectionScore ascending
   firewallForAiInjectionScore_ASC
   # firewallForAiInjectionScore descending
@@ -19977,6 +20062,10 @@ enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
   destinationPort_ASC
   # destinationPort descending
   destinationPort_DESC
+  # destinationService ascending
+  destinationService_ASC
+  # destinationService descending
+  destinationService_DESC
   # direction ascending
   direction_ASC
   # direction descending
@@ -20165,6 +20254,10 @@ enum AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy {
   sourcePort_ASC
   # sourcePort descending
   sourcePort_DESC
+  # sourceService ascending
+  sourceService_ASC
+  # sourceService descending
+  sourceService_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
@@ -24109,6 +24202,10 @@ type AccountHttpRequestsAdaptive {
   edgeTimeToFirstByteMs: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.custom_topic_categories.
+  firewallForAiCustomTopicCategories: [AccountHttpRequestsAdaptiveFirewallForAiCustomTopicCategoriesElem!]!
+  # Minimum score across all the defined firewall for ai custom topics; 100 if empty.
+  firewallForAiCustomTopicCategoriesScoresMin: uint8!
   # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
   firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
@@ -24563,6 +24660,14 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiCustomTopicCategoriesScoresMin: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_geq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_gt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_in: bytes
+  firewallForAiCustomTopicCategoriesScoresMin_leq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_lt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_neq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_notin: bytes
   firewallForAiInjectionScore: int8
   firewallForAiInjectionScore_geq: int8
   firewallForAiInjectionScore_gt: int8
@@ -24913,6 +25018,13 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   zoneVersion_notin: [uint64!]
 }
 
+type AccountHttpRequestsAdaptiveFirewallForAiCustomTopicCategoriesElem {
+  # Topic score
+  score: uint8!
+  # Topic label
+  topicLabel: string!
+}
+
 # Aggregated HTTP requests data with adaptive sampling
 type AccountHttpRequestsAdaptiveGroups {
   # The average value used for sample interval
@@ -25032,6 +25144,8 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   edgeTimeToFirstByteMs: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Minimum score across all the defined firewall for ai custom topics; 100 if empty.
+  firewallForAiCustomTopicCategoriesScoresMin: uint8!
   # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
   firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
@@ -25483,6 +25597,14 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiCustomTopicCategoriesScoresMin: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_geq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_gt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_in: bytes
+  firewallForAiCustomTopicCategoriesScoresMin_leq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_lt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_neq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_notin: bytes
   firewallForAiInjectionScore: int8
   firewallForAiInjectionScore_geq: int8
   firewallForAiInjectionScore_gt: int8
@@ -26042,6 +26164,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiCustomTopicCategoriesScoresMin ascending
+  firewallForAiCustomTopicCategoriesScoresMin_ASC
+  # firewallForAiCustomTopicCategoriesScoresMin descending
+  firewallForAiCustomTopicCategoriesScoresMin_DESC
   # firewallForAiInjectionScore ascending
   firewallForAiInjectionScore_ASC
   # firewallForAiInjectionScore descending
@@ -26577,6 +26703,10 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiCustomTopicCategoriesScoresMin ascending
+  firewallForAiCustomTopicCategoriesScoresMin_ASC
+  # firewallForAiCustomTopicCategoriesScoresMin descending
+  firewallForAiCustomTopicCategoriesScoresMin_DESC
   # firewallForAiInjectionScore ascending
   firewallForAiInjectionScore_ASC
   # firewallForAiInjectionScore descending
@@ -28304,6 +28434,8 @@ type AccountLogExplorerIngestionAdaptiveGroupsConfidence {
 }
 
 type AccountLogExplorerIngestionAdaptiveGroupsDimensions {
+  # The dataset name
+  dataset: string!
   # Ingestion date
   date: Date!
   # Ingestion time, truncated to multiple of 15 minutes
@@ -28314,11 +28446,23 @@ type AccountLogExplorerIngestionAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Ingestion time, truncated to the minute
   datetimeMinute: Time!
+  # Zone associated with the ingestion
+  zoneTag: string!
 }
 
 input AccountLogExplorerIngestionAdaptiveGroupsFilter_InputObject {
   AND: [AccountLogExplorerIngestionAdaptiveGroupsFilter_InputObject!]
   OR: [AccountLogExplorerIngestionAdaptiveGroupsFilter_InputObject!]
+  dataset: string
+  dataset_geq: string
+  dataset_gt: string
+  dataset_in: [string!]
+  dataset_leq: string
+  dataset_like: string
+  dataset_lt: string
+  dataset_neq: string
+  dataset_notin: [string!]
+  dataset_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -28367,9 +28511,23 @@ input AccountLogExplorerIngestionAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  zoneTag: string
+  zoneTag_geq: string
+  zoneTag_gt: string
+  zoneTag_in: [string!]
+  zoneTag_leq: string
+  zoneTag_like: string
+  zoneTag_lt: string
+  zoneTag_neq: string
+  zoneTag_notin: [string!]
+  zoneTag_notlike: string
 }
 
 enum AccountLogExplorerIngestionAdaptiveGroupsOrderBy {
+  # dataset ascending
+  dataset_ASC
+  # dataset descending
+  dataset_DESC
   # date ascending
   date_ASC
   # date descending
@@ -28398,6 +28556,10 @@ enum AccountLogExplorerIngestionAdaptiveGroupsOrderBy {
   sum_totalBytes_ASC
   # sum(totalBytes) descending
   sum_totalBytes_DESC
+  # zoneTag ascending
+  zoneTag_ASC
+  # zoneTag descending
+  zoneTag_DESC
 }
 
 type AccountLogExplorerIngestionAdaptiveGroupsSum {
@@ -30049,6 +30211,10 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   destinationPort_ASC
   # destinationPort descending
   destinationPort_DESC
+  # destinationService ascending
+  destinationService_ASC
+  # destinationService descending
+  destinationService_DESC
   # direction ascending
   direction_ASC
   # direction descending
@@ -30237,6 +30403,10 @@ enum AccountMagicFirewallNetworkAnalyticsAdaptiveGroupsOrderBy {
   sourcePort_ASC
   # sourcePort descending
   sourcePort_DESC
+  # sourceService ascending
+  sourceService_ASC
+  # sourceService descending
+  sourceService_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
@@ -31463,6 +31633,10 @@ enum AccountMagicFirewallRateLimitNetworkAnalyticsAdaptiveGroupsOrderBy {
   destinationPort_ASC
   # destinationPort descending
   destinationPort_DESC
+  # destinationService ascending
+  destinationService_ASC
+  # destinationService descending
+  destinationService_DESC
   # direction ascending
   direction_ASC
   # direction descending
@@ -31651,6 +31825,10 @@ enum AccountMagicFirewallRateLimitNetworkAnalyticsAdaptiveGroupsOrderBy {
   sourcePort_ASC
   # sourcePort descending
   sourcePort_DESC
+  # sourceService ascending
+  sourceService_ASC
+  # sourceService descending
+  sourceService_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
@@ -32926,6 +33104,10 @@ enum AccountMagicIDPSNetworkAnalyticsAdaptiveGroupsOrderBy {
   destinationPort_ASC
   # destinationPort descending
   destinationPort_DESC
+  # destinationService ascending
+  destinationService_ASC
+  # destinationService descending
+  destinationService_DESC
   # direction ascending
   direction_ASC
   # direction descending
@@ -33098,6 +33280,10 @@ enum AccountMagicIDPSNetworkAnalyticsAdaptiveGroupsOrderBy {
   sourcePort_ASC
   # sourcePort descending
   sourcePort_DESC
+  # sourceService ascending
+  sourceService_ASC
+  # sourceService descending
+  sourceService_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
@@ -44740,6 +44926,10 @@ enum AccountProgrammableFlowProtectionNetworkAnalyticsAdaptiveGroupsOrderBy {
   destinationPort_ASC
   # destinationPort descending
   destinationPort_DESC
+  # destinationService ascending
+  destinationService_ASC
+  # destinationService descending
+  destinationService_DESC
   # direction ascending
   direction_ASC
   # direction descending
@@ -44924,6 +45114,10 @@ enum AccountProgrammableFlowProtectionNetworkAnalyticsAdaptiveGroupsOrderBy {
   sourcePort_ASC
   # sourcePort descending
   sourcePort_DESC
+  # sourceService ascending
+  sourceService_ASC
+  # sourceService descending
+  sourceService_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
@@ -57667,6 +57861,8 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   edgeTimeToFirstByteMs: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Minimum score across all the defined firewall for ai custom topics; 100 if empty.
+  firewallForAiCustomTopicCategoriesScoresMin: uint8!
   # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
   firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
@@ -58108,6 +58304,14 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiCustomTopicCategoriesScoresMin: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_geq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_gt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_in: bytes
+  firewallForAiCustomTopicCategoriesScoresMin_leq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_lt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_neq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_notin: bytes
   firewallForAiInjectionScore: int8
   firewallForAiInjectionScore_geq: int8
   firewallForAiInjectionScore_gt: int8
@@ -58649,6 +58853,10 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiCustomTopicCategoriesScoresMin ascending
+  firewallForAiCustomTopicCategoriesScoresMin_ASC
+  # firewallForAiCustomTopicCategoriesScoresMin descending
+  firewallForAiCustomTopicCategoriesScoresMin_DESC
   # firewallForAiInjectionScore ascending
   firewallForAiInjectionScore_ASC
   # firewallForAiInjectionScore descending
@@ -63697,6 +63905,10 @@ type ZoneFirewallEventsAdaptive {
   edgeResponseStatus: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.custom_topic_categories.
+  firewallForAiCustomTopicCategories: [ZoneFirewallEventsAdaptiveFirewallForAiCustomTopicCategoriesElem!]!
+  # Minimum score across all the defined firewall for ai custom topics; 100 if empty.
+  firewallForAiCustomTopicCategoriesScoresMin: uint8!
   # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
   firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
@@ -63834,6 +64046,8 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   description: string!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Minimum score across all the defined firewall for ai custom topics; 100 if empty.
+  firewallForAiCustomTopicCategoriesScoresMin: uint8!
   # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
   firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
@@ -64230,6 +64444,14 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiCustomTopicCategoriesScoresMin: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_geq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_gt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_in: bytes
+  firewallForAiCustomTopicCategoriesScoresMin_leq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_lt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_neq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_notin: bytes
   firewallForAiInjectionScore: int8
   firewallForAiInjectionScore_geq: int8
   firewallForAiInjectionScore_gt: int8
@@ -64599,6 +64821,10 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiCustomTopicCategoriesScoresMin ascending
+  firewallForAiCustomTopicCategoriesScoresMin_ASC
+  # firewallForAiCustomTopicCategoriesScoresMin descending
+  firewallForAiCustomTopicCategoriesScoresMin_DESC
   # firewallForAiInjectionScore ascending
   firewallForAiInjectionScore_ASC
   # firewallForAiInjectionScore descending
@@ -65092,6 +65318,14 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiCustomTopicCategoriesScoresMin: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_geq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_gt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_in: bytes
+  firewallForAiCustomTopicCategoriesScoresMin_leq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_lt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_neq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_notin: bytes
   firewallForAiInjectionScore: int8
   firewallForAiInjectionScore_geq: int8
   firewallForAiInjectionScore_gt: int8
@@ -65398,6 +65632,13 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   zoneVersion_notin: [uint64!]
 }
 
+type ZoneFirewallEventsAdaptiveFirewallForAiCustomTopicCategoriesElem {
+  # Topic score
+  score: uint8!
+  # Topic label
+  topicLabel: string!
+}
+
 # Aggregated Firewall events with adaptive sampling
 type ZoneFirewallEventsAdaptiveGroups {
   # The average value used for sample interval
@@ -65503,6 +65744,8 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   edgeResponseStatus: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Minimum score across all the defined firewall for ai custom topics; 100 if empty.
+  firewallForAiCustomTopicCategoriesScoresMin: uint8!
   # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
   firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
@@ -65921,6 +66164,14 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiCustomTopicCategoriesScoresMin: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_geq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_gt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_in: bytes
+  firewallForAiCustomTopicCategoriesScoresMin_leq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_lt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_neq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_notin: bytes
   firewallForAiInjectionScore: int8
   firewallForAiInjectionScore_geq: int8
   firewallForAiInjectionScore_gt: int8
@@ -66386,6 +66637,10 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiCustomTopicCategoriesScoresMin ascending
+  firewallForAiCustomTopicCategoriesScoresMin_ASC
+  # firewallForAiCustomTopicCategoriesScoresMin descending
+  firewallForAiCustomTopicCategoriesScoresMin_DESC
   # firewallForAiInjectionScore ascending
   firewallForAiInjectionScore_ASC
   # firewallForAiInjectionScore descending
@@ -66754,6 +67009,10 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiCustomTopicCategoriesScoresMin ascending
+  firewallForAiCustomTopicCategoriesScoresMin_ASC
+  # firewallForAiCustomTopicCategoriesScoresMin descending
+  firewallForAiCustomTopicCategoriesScoresMin_DESC
   # firewallForAiInjectionScore ascending
   firewallForAiInjectionScore_ASC
   # firewallForAiInjectionScore descending
@@ -68604,6 +68863,10 @@ type ZoneHttpRequestsAdaptive {
   edgeTimeToFirstByteMs: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.custom_topic_categories.
+  firewallForAiCustomTopicCategories: [ZoneHttpRequestsAdaptiveFirewallForAiCustomTopicCategoriesElem!]!
+  # Minimum score across all the defined firewall for ai custom topics; 100 if empty.
+  firewallForAiCustomTopicCategoriesScoresMin: uint8!
   # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
   firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
@@ -69056,6 +69319,14 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiCustomTopicCategoriesScoresMin: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_geq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_gt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_in: bytes
+  firewallForAiCustomTopicCategoriesScoresMin_leq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_lt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_neq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_notin: bytes
   firewallForAiInjectionScore: int8
   firewallForAiInjectionScore_geq: int8
   firewallForAiInjectionScore_gt: int8
@@ -69396,6 +69667,13 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   zoneVersion_notin: [uint64!]
 }
 
+type ZoneHttpRequestsAdaptiveFirewallForAiCustomTopicCategoriesElem {
+  # Topic score
+  score: uint8!
+  # Topic label
+  topicLabel: string!
+}
+
 # Aggregated HTTP requests data with adaptive sampling
 type ZoneHttpRequestsAdaptiveGroups {
   # The average value used for sample interval
@@ -69515,6 +69793,8 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   edgeTimeToFirstByteMs: uint16!
   # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
   firewallForAiAnyPiiCategory: int8!
+  # Minimum score across all the defined firewall for ai custom topics; 100 if empty.
+  firewallForAiCustomTopicCategoriesScoresMin: uint8!
   # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
   firewallForAiInjectionScore: int8!
   # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
@@ -69964,6 +70244,14 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   firewallForAiAnyPiiCategory_lt: int8
   firewallForAiAnyPiiCategory_neq: int8
   firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiCustomTopicCategoriesScoresMin: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_geq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_gt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_in: bytes
+  firewallForAiCustomTopicCategoriesScoresMin_leq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_lt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_neq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_notin: bytes
   firewallForAiInjectionScore: int8
   firewallForAiInjectionScore_geq: int8
   firewallForAiInjectionScore_gt: int8
@@ -70513,6 +70801,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiCustomTopicCategoriesScoresMin ascending
+  firewallForAiCustomTopicCategoriesScoresMin_ASC
+  # firewallForAiCustomTopicCategoriesScoresMin descending
+  firewallForAiCustomTopicCategoriesScoresMin_DESC
   # firewallForAiInjectionScore ascending
   firewallForAiInjectionScore_ASC
   # firewallForAiInjectionScore descending
@@ -71044,6 +71336,10 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   firewallForAiAnyPiiCategory_ASC
   # firewallForAiAnyPiiCategory descending
   firewallForAiAnyPiiCategory_DESC
+  # firewallForAiCustomTopicCategoriesScoresMin ascending
+  firewallForAiCustomTopicCategoriesScoresMin_ASC
+  # firewallForAiCustomTopicCategoriesScoresMin descending
+  firewallForAiCustomTopicCategoriesScoresMin_DESC
   # firewallForAiInjectionScore ascending
   firewallForAiInjectionScore_ASC
   # firewallForAiInjectionScore descending
