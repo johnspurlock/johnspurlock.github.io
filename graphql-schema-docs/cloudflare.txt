@@ -10,10 +10,13 @@ Account-level datasets:
 * aiGatewaySizeAdaptiveGroups
 * aiInferenceAdaptive
 * aiInferenceAdaptiveGroups
+* aiSearchAPIAdaptiveGroups
+* aiSearchIngestedItemsAdaptiveGroups
 * autoRAGConfigAPIAdaptiveGroups
 * autoRAGEngineAdaptiveGroups
 * browserIsolationSessionsAdaptiveGroups
 * browserIsolationUserActionsAdaptiveGroups
+* browserRenderingApiAdaptive
 * browserRenderingApiAdaptiveGroups
 * browserRenderingBindingSessionsAdaptiveGroups
 * browserRenderingBrowserTimeUsageAdaptiveGroups
@@ -289,6 +292,10 @@ type account {
   aiInferenceAdaptive(filter: AccountAiInferenceAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveOrderBy!]): [AccountAiInferenceAdaptive!]!
   # Aggregated AI Inference logs with adaptive sampling
   aiInferenceAdaptiveGroups(filter: AccountAiInferenceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveGroupsOrderBy!]): [AccountAiInferenceAdaptiveGroups!]!
+  # AI Search API Search Analytics
+  aiSearchAPIAdaptiveGroups(filter: AccountAiSearchAPIAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchAPIAdaptiveGroupsOrderBy!]): [AccountAiSearchAPIAdaptiveGroups!]!
+  # AI Search Ingested Items Analytics
+  aiSearchIngestedItemsAdaptiveGroups(filter: AccountAiSearchIngestedItemsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchIngestedItemsAdaptiveGroupsOrderBy!]): [AccountAiSearchIngestedItemsAdaptiveGroups!]!
   # AutoRAG Config API Search Analytics
   autoRAGConfigAPIAdaptiveGroups(filter: AccountAutoRAGConfigAPIAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAutoRAGConfigAPIAdaptiveGroupsOrderBy!]): [AccountAutoRAGConfigAPIAdaptiveGroups!]!
   # AutoRAG Engine Ingestion Analytics
@@ -297,6 +304,8 @@ type account {
   browserIsolationSessionsAdaptiveGroups(filter: AccountBrowserIsolationSessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserIsolationSessionsAdaptiveGroupsOrderBy!]): [AccountBrowserIsolationSessionsAdaptiveGroups!]!
   # Aggregated count of Browser Isolation User Actions matches
   browserIsolationUserActionsAdaptiveGroups(filter: AccountBrowserIsolationUserActionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserIsolationUserActionsAdaptiveGroupsOrderBy!]): [AccountBrowserIsolationUserActionsAdaptiveGroups!]!
+  # Browser Rendering API events with adaptive sampling
+  browserRenderingApiAdaptive(filter: AccountBrowserRenderingApiAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserRenderingApiAdaptiveOrderBy!]): [AccountBrowserRenderingApiAdaptive!]!
   # Aggregated Browser Rendering API events with adaptive sampling
   browserRenderingApiAdaptiveGroups(filter: AccountBrowserRenderingApiAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountBrowserRenderingApiAdaptiveGroupsOrderBy!]): [AccountBrowserRenderingApiAdaptiveGroups!]!
   # Aggregated Browser Rendering worker binding sessions with adaptive sampling
@@ -5543,6 +5552,925 @@ enum AccountAiInferenceAdaptiveOrderBy {
   totalTiles_DESC
 }
 
+# AI Search API Search Analytics
+type AccountAiSearchAPIAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountAiSearchAPIAdaptiveGroupsConfidence!
+  # Total number of search events
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiSearchAPIAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountAiSearchAPIAdaptiveGroupsSum
+}
+
+type AccountAiSearchAPIAdaptiveGroupsConfidence {
+  # Total number of search events, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountAiSearchAPIAdaptiveGroupsSumConfidence
+}
+
+type AccountAiSearchAPIAdaptiveGroupsDimensions {
+  # Whether the prompt for AI Search is included (0 = false, 1 = true)
+  aiPromptIncluded: uint8!
+  # The time in milliseconds it took to generate a response with AI Search
+  aiSearchDurationMs: int64!
+  # The size in tokens of the input for response generation with AI Search
+  aiSearchInputSizeTokens: int64!
+  # The model used for AI Search, if it was used
+  aiSearchModel: string!
+  # The size in tokens of the AI Search generated response
+  aiSearchResultSizeTokens: int64!
+  # How much overlap exists between contiguous chunks
+  chunkOverlap: int64!
+  # The size of text chunks
+  chunkSize: int64!
+  # The date of the search event
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Whether re-ranking was used when performing this search task (0 = false, 1 = true)
+  doReranking: uint8!
+  # Whether to do query rewriting when performing searches with this AI Search instance (0 = false, 1 = true)
+  doRewrite: uint8!
+  # The model used to generate embeddings
+  embeddingModel: string!
+  # Whether chunking is enabled for this AI Search instance (0 = false, 1 = true)
+  enableChunking: uint8!
+  # The time in milliseconds it took to retrieve files for this search
+  getFilesDurationMs: int64!
+  # The time in milliseconds it took to generate embeddings for this search's query
+  getQueryVectorsAvgDurationMs: int64!
+  # The time in milliseconds it took to retrieve stored file embeddings
+  getResultVectorsAvgDurationMs: int64!
+  # AI Search Instance Id
+  instanceId: string!
+  # Whether the search response was streamed or not (0 = false, 1 = true)
+  isStream: uint8!
+  # The max number of results that can be returned
+  maxResults: int64!
+  # The number of chunks to retrieve from the vector store, calculated based on the configured number of results to retrieve
+  numChunksToRetrieve: int64!
+  # The number of returned results
+  numResults: int64!
+  # The size of the given query in tokens
+  querySizeTokens: int64!
+  # Whether this search implied regenerating markdown for returned results (0 = false, 1 = true)
+  regenerateMarkdown: uint8!
+  # The time in milliseconds it took to re-rank results based on this search's query
+  rerankingDurationMs: int64!
+  # The reranking model used in this search
+  rerankingModel: string!
+  # The time in milliseconds that it took to rewrite the query
+  rewriteDurationMs: int64!
+  # The size in tokens of the rewritten input
+  rewriteInputSizeTokens: int64!
+  # The model used for rewriting queries
+  rewriteModel: string!
+  # Whether the rewrite prompt is included (0 = false, 1 = true)
+  rewritePromptIncluded: uint8!
+  # The size in tokens of the rewritten query
+  rewriteResultSizeTokens: int64!
+  # The score threshold over which matches are included in the result
+  scoreThreshold: float64!
+  # AI Search Type
+  searchType: string!
+  # The total time in milliseconds that performing this search took
+  totalDurationMs: int64!
+}
+
+input AccountAiSearchAPIAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiSearchAPIAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiSearchAPIAdaptiveGroupsFilter_InputObject!]
+  aiPromptIncluded: uint8
+  aiPromptIncluded_geq: uint8
+  aiPromptIncluded_gt: uint8
+  aiPromptIncluded_in: bytes
+  aiPromptIncluded_leq: uint8
+  aiPromptIncluded_lt: uint8
+  aiPromptIncluded_neq: uint8
+  aiPromptIncluded_notin: bytes
+  aiSearchDurationMs: int64
+  aiSearchDurationMs_geq: int64
+  aiSearchDurationMs_gt: int64
+  aiSearchDurationMs_in: [int64!]
+  aiSearchDurationMs_leq: int64
+  aiSearchDurationMs_lt: int64
+  aiSearchDurationMs_neq: int64
+  aiSearchDurationMs_notin: [int64!]
+  aiSearchInputSizeTokens: int64
+  aiSearchInputSizeTokens_geq: int64
+  aiSearchInputSizeTokens_gt: int64
+  aiSearchInputSizeTokens_in: [int64!]
+  aiSearchInputSizeTokens_leq: int64
+  aiSearchInputSizeTokens_lt: int64
+  aiSearchInputSizeTokens_neq: int64
+  aiSearchInputSizeTokens_notin: [int64!]
+  aiSearchModel: string
+  aiSearchModel_geq: string
+  aiSearchModel_gt: string
+  aiSearchModel_in: [string!]
+  aiSearchModel_leq: string
+  aiSearchModel_like: string
+  aiSearchModel_lt: string
+  aiSearchModel_neq: string
+  aiSearchModel_notin: [string!]
+  aiSearchModel_notlike: string
+  aiSearchResultSizeTokens: int64
+  aiSearchResultSizeTokens_geq: int64
+  aiSearchResultSizeTokens_gt: int64
+  aiSearchResultSizeTokens_in: [int64!]
+  aiSearchResultSizeTokens_leq: int64
+  aiSearchResultSizeTokens_lt: int64
+  aiSearchResultSizeTokens_neq: int64
+  aiSearchResultSizeTokens_notin: [int64!]
+  chunkOverlap: int64
+  chunkOverlap_geq: int64
+  chunkOverlap_gt: int64
+  chunkOverlap_in: [int64!]
+  chunkOverlap_leq: int64
+  chunkOverlap_lt: int64
+  chunkOverlap_neq: int64
+  chunkOverlap_notin: [int64!]
+  chunkSize: int64
+  chunkSize_geq: int64
+  chunkSize_gt: int64
+  chunkSize_in: [int64!]
+  chunkSize_leq: int64
+  chunkSize_lt: int64
+  chunkSize_neq: int64
+  chunkSize_notin: [int64!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  doReranking: uint8
+  doReranking_geq: uint8
+  doReranking_gt: uint8
+  doReranking_in: bytes
+  doReranking_leq: uint8
+  doReranking_lt: uint8
+  doReranking_neq: uint8
+  doReranking_notin: bytes
+  doRewrite: uint8
+  doRewrite_geq: uint8
+  doRewrite_gt: uint8
+  doRewrite_in: bytes
+  doRewrite_leq: uint8
+  doRewrite_lt: uint8
+  doRewrite_neq: uint8
+  doRewrite_notin: bytes
+  embeddingModel: string
+  embeddingModel_geq: string
+  embeddingModel_gt: string
+  embeddingModel_in: [string!]
+  embeddingModel_leq: string
+  embeddingModel_like: string
+  embeddingModel_lt: string
+  embeddingModel_neq: string
+  embeddingModel_notin: [string!]
+  embeddingModel_notlike: string
+  enableChunking: uint8
+  enableChunking_geq: uint8
+  enableChunking_gt: uint8
+  enableChunking_in: bytes
+  enableChunking_leq: uint8
+  enableChunking_lt: uint8
+  enableChunking_neq: uint8
+  enableChunking_notin: bytes
+  getFilesDurationMs: int64
+  getFilesDurationMs_geq: int64
+  getFilesDurationMs_gt: int64
+  getFilesDurationMs_in: [int64!]
+  getFilesDurationMs_leq: int64
+  getFilesDurationMs_lt: int64
+  getFilesDurationMs_neq: int64
+  getFilesDurationMs_notin: [int64!]
+  getQueryVectorsAvgDurationMs: int64
+  getQueryVectorsAvgDurationMs_geq: int64
+  getQueryVectorsAvgDurationMs_gt: int64
+  getQueryVectorsAvgDurationMs_in: [int64!]
+  getQueryVectorsAvgDurationMs_leq: int64
+  getQueryVectorsAvgDurationMs_lt: int64
+  getQueryVectorsAvgDurationMs_neq: int64
+  getQueryVectorsAvgDurationMs_notin: [int64!]
+  getResultVectorsAvgDurationMs: int64
+  getResultVectorsAvgDurationMs_geq: int64
+  getResultVectorsAvgDurationMs_gt: int64
+  getResultVectorsAvgDurationMs_in: [int64!]
+  getResultVectorsAvgDurationMs_leq: int64
+  getResultVectorsAvgDurationMs_lt: int64
+  getResultVectorsAvgDurationMs_neq: int64
+  getResultVectorsAvgDurationMs_notin: [int64!]
+  instanceId: string
+  instanceId_geq: string
+  instanceId_gt: string
+  instanceId_in: [string!]
+  instanceId_leq: string
+  instanceId_like: string
+  instanceId_lt: string
+  instanceId_neq: string
+  instanceId_notin: [string!]
+  instanceId_notlike: string
+  isStream: uint8
+  isStream_geq: uint8
+  isStream_gt: uint8
+  isStream_in: bytes
+  isStream_leq: uint8
+  isStream_lt: uint8
+  isStream_neq: uint8
+  isStream_notin: bytes
+  maxResults: int64
+  maxResults_geq: int64
+  maxResults_gt: int64
+  maxResults_in: [int64!]
+  maxResults_leq: int64
+  maxResults_lt: int64
+  maxResults_neq: int64
+  maxResults_notin: [int64!]
+  numChunksToRetrieve: int64
+  numChunksToRetrieve_geq: int64
+  numChunksToRetrieve_gt: int64
+  numChunksToRetrieve_in: [int64!]
+  numChunksToRetrieve_leq: int64
+  numChunksToRetrieve_lt: int64
+  numChunksToRetrieve_neq: int64
+  numChunksToRetrieve_notin: [int64!]
+  numResults: int64
+  numResults_geq: int64
+  numResults_gt: int64
+  numResults_in: [int64!]
+  numResults_leq: int64
+  numResults_lt: int64
+  numResults_neq: int64
+  numResults_notin: [int64!]
+  querySizeTokens: int64
+  querySizeTokens_geq: int64
+  querySizeTokens_gt: int64
+  querySizeTokens_in: [int64!]
+  querySizeTokens_leq: int64
+  querySizeTokens_lt: int64
+  querySizeTokens_neq: int64
+  querySizeTokens_notin: [int64!]
+  regenerateMarkdown: uint8
+  regenerateMarkdown_geq: uint8
+  regenerateMarkdown_gt: uint8
+  regenerateMarkdown_in: bytes
+  regenerateMarkdown_leq: uint8
+  regenerateMarkdown_lt: uint8
+  regenerateMarkdown_neq: uint8
+  regenerateMarkdown_notin: bytes
+  rerankingDurationMs: int64
+  rerankingDurationMs_geq: int64
+  rerankingDurationMs_gt: int64
+  rerankingDurationMs_in: [int64!]
+  rerankingDurationMs_leq: int64
+  rerankingDurationMs_lt: int64
+  rerankingDurationMs_neq: int64
+  rerankingDurationMs_notin: [int64!]
+  rerankingModel: string
+  rerankingModel_geq: string
+  rerankingModel_gt: string
+  rerankingModel_in: [string!]
+  rerankingModel_leq: string
+  rerankingModel_like: string
+  rerankingModel_lt: string
+  rerankingModel_neq: string
+  rerankingModel_notin: [string!]
+  rerankingModel_notlike: string
+  rewriteDurationMs: int64
+  rewriteDurationMs_geq: int64
+  rewriteDurationMs_gt: int64
+  rewriteDurationMs_in: [int64!]
+  rewriteDurationMs_leq: int64
+  rewriteDurationMs_lt: int64
+  rewriteDurationMs_neq: int64
+  rewriteDurationMs_notin: [int64!]
+  rewriteInputSizeTokens: int64
+  rewriteInputSizeTokens_geq: int64
+  rewriteInputSizeTokens_gt: int64
+  rewriteInputSizeTokens_in: [int64!]
+  rewriteInputSizeTokens_leq: int64
+  rewriteInputSizeTokens_lt: int64
+  rewriteInputSizeTokens_neq: int64
+  rewriteInputSizeTokens_notin: [int64!]
+  rewriteModel: string
+  rewriteModel_geq: string
+  rewriteModel_gt: string
+  rewriteModel_in: [string!]
+  rewriteModel_leq: string
+  rewriteModel_like: string
+  rewriteModel_lt: string
+  rewriteModel_neq: string
+  rewriteModel_notin: [string!]
+  rewriteModel_notlike: string
+  rewritePromptIncluded: uint8
+  rewritePromptIncluded_geq: uint8
+  rewritePromptIncluded_gt: uint8
+  rewritePromptIncluded_in: bytes
+  rewritePromptIncluded_leq: uint8
+  rewritePromptIncluded_lt: uint8
+  rewritePromptIncluded_neq: uint8
+  rewritePromptIncluded_notin: bytes
+  rewriteResultSizeTokens: int64
+  rewriteResultSizeTokens_geq: int64
+  rewriteResultSizeTokens_gt: int64
+  rewriteResultSizeTokens_in: [int64!]
+  rewriteResultSizeTokens_leq: int64
+  rewriteResultSizeTokens_lt: int64
+  rewriteResultSizeTokens_neq: int64
+  rewriteResultSizeTokens_notin: [int64!]
+  scoreThreshold: float64
+  scoreThreshold_geq: float64
+  scoreThreshold_gt: float64
+  scoreThreshold_in: [float64!]
+  scoreThreshold_leq: float64
+  scoreThreshold_lt: float64
+  scoreThreshold_neq: float64
+  scoreThreshold_notin: [float64!]
+  searchType: string
+  searchType_geq: string
+  searchType_gt: string
+  searchType_in: [string!]
+  searchType_leq: string
+  searchType_like: string
+  searchType_lt: string
+  searchType_neq: string
+  searchType_notin: [string!]
+  searchType_notlike: string
+  totalDurationMs: int64
+  totalDurationMs_geq: int64
+  totalDurationMs_gt: int64
+  totalDurationMs_in: [int64!]
+  totalDurationMs_leq: int64
+  totalDurationMs_lt: int64
+  totalDurationMs_neq: int64
+  totalDurationMs_notin: [int64!]
+}
+
+enum AccountAiSearchAPIAdaptiveGroupsOrderBy {
+  # aiPromptIncluded ascending
+  aiPromptIncluded_ASC
+  # aiPromptIncluded descending
+  aiPromptIncluded_DESC
+  # aiSearchDurationMs ascending
+  aiSearchDurationMs_ASC
+  # aiSearchDurationMs descending
+  aiSearchDurationMs_DESC
+  # aiSearchInputSizeTokens ascending
+  aiSearchInputSizeTokens_ASC
+  # aiSearchInputSizeTokens descending
+  aiSearchInputSizeTokens_DESC
+  # aiSearchModel ascending
+  aiSearchModel_ASC
+  # aiSearchModel descending
+  aiSearchModel_DESC
+  # aiSearchResultSizeTokens ascending
+  aiSearchResultSizeTokens_ASC
+  # aiSearchResultSizeTokens descending
+  aiSearchResultSizeTokens_DESC
+  # chunkOverlap ascending
+  chunkOverlap_ASC
+  # chunkOverlap descending
+  chunkOverlap_DESC
+  # chunkSizeTokensArray ascending
+  chunkSizeTokensArray_ASC
+  # chunkSizeTokensArray descending
+  chunkSizeTokensArray_DESC
+  # chunkSize ascending
+  chunkSize_ASC
+  # chunkSize descending
+  chunkSize_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # doReranking ascending
+  doReranking_ASC
+  # doReranking descending
+  doReranking_DESC
+  # doRewrite ascending
+  doRewrite_ASC
+  # doRewrite descending
+  doRewrite_DESC
+  # embeddingModel ascending
+  embeddingModel_ASC
+  # embeddingModel descending
+  embeddingModel_DESC
+  # enableChunking ascending
+  enableChunking_ASC
+  # enableChunking descending
+  enableChunking_DESC
+  # fileIdArray ascending
+  fileIdArray_ASC
+  # fileIdArray descending
+  fileIdArray_DESC
+  # filenameArray ascending
+  filenameArray_ASC
+  # filenameArray descending
+  filenameArray_DESC
+  # getFilesDurationMs ascending
+  getFilesDurationMs_ASC
+  # getFilesDurationMs descending
+  getFilesDurationMs_DESC
+  # getQueryVectorsAvgDurationMs ascending
+  getQueryVectorsAvgDurationMs_ASC
+  # getQueryVectorsAvgDurationMs descending
+  getQueryVectorsAvgDurationMs_DESC
+  # getResultVectorsAvgDurationMs ascending
+  getResultVectorsAvgDurationMs_ASC
+  # getResultVectorsAvgDurationMs descending
+  getResultVectorsAvgDurationMs_DESC
+  # instanceId ascending
+  instanceId_ASC
+  # instanceId descending
+  instanceId_DESC
+  # isStream ascending
+  isStream_ASC
+  # isStream descending
+  isStream_DESC
+  # maxResults ascending
+  maxResults_ASC
+  # maxResults descending
+  maxResults_DESC
+  # numChunksToRetrieve ascending
+  numChunksToRetrieve_ASC
+  # numChunksToRetrieve descending
+  numChunksToRetrieve_DESC
+  # numResults ascending
+  numResults_ASC
+  # numResults descending
+  numResults_DESC
+  # querySizeTokens ascending
+  querySizeTokens_ASC
+  # querySizeTokens descending
+  querySizeTokens_DESC
+  # regenerateMarkdown ascending
+  regenerateMarkdown_ASC
+  # regenerateMarkdown descending
+  regenerateMarkdown_DESC
+  # rerankingDurationMs ascending
+  rerankingDurationMs_ASC
+  # rerankingDurationMs descending
+  rerankingDurationMs_DESC
+  # rerankingModel ascending
+  rerankingModel_ASC
+  # rerankingModel descending
+  rerankingModel_DESC
+  # rewriteDurationMs ascending
+  rewriteDurationMs_ASC
+  # rewriteDurationMs descending
+  rewriteDurationMs_DESC
+  # rewriteInputSizeTokens ascending
+  rewriteInputSizeTokens_ASC
+  # rewriteInputSizeTokens descending
+  rewriteInputSizeTokens_DESC
+  # rewriteModel ascending
+  rewriteModel_ASC
+  # rewriteModel descending
+  rewriteModel_DESC
+  # rewritePromptIncluded ascending
+  rewritePromptIncluded_ASC
+  # rewritePromptIncluded descending
+  rewritePromptIncluded_DESC
+  # rewriteResultSizeTokens ascending
+  rewriteResultSizeTokens_ASC
+  # rewriteResultSizeTokens descending
+  rewriteResultSizeTokens_DESC
+  # scoreArray ascending
+  scoreArray_ASC
+  # scoreArray descending
+  scoreArray_DESC
+  # scoreThreshold ascending
+  scoreThreshold_ASC
+  # scoreThreshold descending
+  scoreThreshold_DESC
+  # searchType ascending
+  searchType_ASC
+  # searchType descending
+  searchType_DESC
+  # sum(aiSearchCount) ascending
+  sum_aiSearchCount_ASC
+  # sum(aiSearchCount) descending
+  sum_aiSearchCount_DESC
+  # sum(searchCount) ascending
+  sum_searchCount_ASC
+  # sum(searchCount) descending
+  sum_searchCount_DESC
+  # totalDurationMs ascending
+  totalDurationMs_ASC
+  # totalDurationMs descending
+  totalDurationMs_DESC
+}
+
+type AccountAiSearchAPIAdaptiveGroupsSum {
+  # The number of AI searches for this AI Search instance
+  aiSearchCount: uint64!
+  # The number of Searches for this AI Search instance
+  searchCount: uint64!
+}
+
+type AccountAiSearchAPIAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  aiSearchCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  searchCount: Confidence!
+}
+
+# AI Search Ingested Items Analytics
+type AccountAiSearchIngestedItemsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountAiSearchIngestedItemsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountAiSearchIngestedItemsAdaptiveGroupsConfidence!
+  # Total number of ingestion item events
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiSearchIngestedItemsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountAiSearchIngestedItemsAdaptiveGroupsSum
+}
+
+type AccountAiSearchIngestedItemsAdaptiveGroupsAvg {
+  # Average chunking duration in milliseconds
+  chunkingDurationMs: float64!
+  # Average embedding duration in milliseconds
+  embeddingDurationMs: float64!
+  # Average file size in bytes
+  fileSizeBytes: float64!
+  # Average number of chunks
+  numChunks: float64!
+  # Average duration in milliseconds for processing items
+  totalDurationMs: float64!
+  # Average number of tokens
+  totalTokens: float64!
+  # Average vectorize duration in milliseconds
+  vectorizeDurationMs: float64!
+}
+
+type AccountAiSearchIngestedItemsAdaptiveGroupsConfidence {
+  # Total number of ingestion item events, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountAiSearchIngestedItemsAdaptiveGroupsSumConfidence
+}
+
+type AccountAiSearchIngestedItemsAdaptiveGroupsDimensions {
+  # How much overlap exists between contiguous chunks
+  chunkOverlap: int64!
+  # The size of text chunks
+  chunkSize: int64!
+  # The date of the ingestion event
+  date: Date!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # The model used to generate embeddings
+  embeddingModel: string!
+  # Whether an error occurred during ingestion (0 = false, 1 = true)
+  error: uint8!
+  # The file key identifier
+  fileKey: string!
+  # The index identifier
+  indexId: string!
+  # AI Search Instance Id
+  instanceId: string!
+}
+
+input AccountAiSearchIngestedItemsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiSearchIngestedItemsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiSearchIngestedItemsAdaptiveGroupsFilter_InputObject!]
+  chunkOverlap: int64
+  chunkOverlap_geq: int64
+  chunkOverlap_gt: int64
+  chunkOverlap_in: [int64!]
+  chunkOverlap_leq: int64
+  chunkOverlap_lt: int64
+  chunkOverlap_neq: int64
+  chunkOverlap_notin: [int64!]
+  chunkSize: int64
+  chunkSize_geq: int64
+  chunkSize_gt: int64
+  chunkSize_in: [int64!]
+  chunkSize_leq: int64
+  chunkSize_lt: int64
+  chunkSize_neq: int64
+  chunkSize_notin: [int64!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  embeddingModel: string
+  embeddingModel_geq: string
+  embeddingModel_gt: string
+  embeddingModel_in: [string!]
+  embeddingModel_leq: string
+  embeddingModel_like: string
+  embeddingModel_lt: string
+  embeddingModel_neq: string
+  embeddingModel_notin: [string!]
+  embeddingModel_notlike: string
+  error: uint8
+  error_geq: uint8
+  error_gt: uint8
+  error_in: bytes
+  error_leq: uint8
+  error_lt: uint8
+  error_neq: uint8
+  error_notin: bytes
+  fileKey: string
+  fileKey_geq: string
+  fileKey_gt: string
+  fileKey_in: [string!]
+  fileKey_leq: string
+  fileKey_like: string
+  fileKey_lt: string
+  fileKey_neq: string
+  fileKey_notin: [string!]
+  fileKey_notlike: string
+  indexId: string
+  indexId_geq: string
+  indexId_gt: string
+  indexId_in: [string!]
+  indexId_leq: string
+  indexId_like: string
+  indexId_lt: string
+  indexId_neq: string
+  indexId_notin: [string!]
+  indexId_notlike: string
+  instanceId: string
+  instanceId_geq: string
+  instanceId_gt: string
+  instanceId_in: [string!]
+  instanceId_leq: string
+  instanceId_like: string
+  instanceId_lt: string
+  instanceId_neq: string
+  instanceId_notin: [string!]
+  instanceId_notlike: string
+}
+
+enum AccountAiSearchIngestedItemsAdaptiveGroupsOrderBy {
+  # avg(chunkingDurationMs) ascending
+  avg_chunkingDurationMs_ASC
+  # avg(chunkingDurationMs) descending
+  avg_chunkingDurationMs_DESC
+  # avg(embeddingDurationMs) ascending
+  avg_embeddingDurationMs_ASC
+  # avg(embeddingDurationMs) descending
+  avg_embeddingDurationMs_DESC
+  # avg(fileSizeBytes) ascending
+  avg_fileSizeBytes_ASC
+  # avg(fileSizeBytes) descending
+  avg_fileSizeBytes_DESC
+  # avg(numChunks) ascending
+  avg_numChunks_ASC
+  # avg(numChunks) descending
+  avg_numChunks_DESC
+  # avg(totalDurationMs) ascending
+  avg_totalDurationMs_ASC
+  # avg(totalDurationMs) descending
+  avg_totalDurationMs_DESC
+  # avg(totalTokens) ascending
+  avg_totalTokens_ASC
+  # avg(totalTokens) descending
+  avg_totalTokens_DESC
+  # avg(vectorizeDurationMs) ascending
+  avg_vectorizeDurationMs_ASC
+  # avg(vectorizeDurationMs) descending
+  avg_vectorizeDurationMs_DESC
+  # chunkOverlap ascending
+  chunkOverlap_ASC
+  # chunkOverlap descending
+  chunkOverlap_DESC
+  # chunkSize ascending
+  chunkSize_ASC
+  # chunkSize descending
+  chunkSize_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # embeddingModel ascending
+  embeddingModel_ASC
+  # embeddingModel descending
+  embeddingModel_DESC
+  # errorType ascending
+  errorType_ASC
+  # errorType descending
+  errorType_DESC
+  # error ascending
+  error_ASC
+  # error descending
+  error_DESC
+  # fileKey ascending
+  fileKey_ASC
+  # fileKey descending
+  fileKey_DESC
+  # indexId ascending
+  indexId_ASC
+  # indexId descending
+  indexId_DESC
+  # instanceId ascending
+  instanceId_ASC
+  # instanceId descending
+  instanceId_DESC
+  # sum(chunkingDurationMs) ascending
+  sum_chunkingDurationMs_ASC
+  # sum(chunkingDurationMs) descending
+  sum_chunkingDurationMs_DESC
+  # sum(embeddingDurationMs) ascending
+  sum_embeddingDurationMs_ASC
+  # sum(embeddingDurationMs) descending
+  sum_embeddingDurationMs_DESC
+  # sum(fileSizeBytes) ascending
+  sum_fileSizeBytes_ASC
+  # sum(fileSizeBytes) descending
+  sum_fileSizeBytes_DESC
+  # sum(numChunks) ascending
+  sum_numChunks_ASC
+  # sum(numChunks) descending
+  sum_numChunks_DESC
+  # sum(totalDurationMs) ascending
+  sum_totalDurationMs_ASC
+  # sum(totalDurationMs) descending
+  sum_totalDurationMs_DESC
+  # sum(totalTokens) ascending
+  sum_totalTokens_ASC
+  # sum(totalTokens) descending
+  sum_totalTokens_DESC
+  # sum(vectorizeDurationMs) ascending
+  sum_vectorizeDurationMs_ASC
+  # sum(vectorizeDurationMs) descending
+  sum_vectorizeDurationMs_DESC
+  # version ascending
+  version_ASC
+  # version descending
+  version_DESC
+}
+
+type AccountAiSearchIngestedItemsAdaptiveGroupsSum {
+  # Total chunking duration in milliseconds
+  chunkingDurationMs: int64!
+  # Total embedding duration in milliseconds
+  embeddingDurationMs: int64!
+  # Total file size in bytes
+  fileSizeBytes: int64!
+  # Total number of chunks
+  numChunks: int64!
+  # Total duration in milliseconds for processing items
+  totalDurationMs: int64!
+  # Total number of tokens
+  totalTokens: int64!
+  # Total vectorize duration in milliseconds
+  vectorizeDurationMs: int64!
+}
+
+type AccountAiSearchIngestedItemsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  chunkingDurationMs: Confidence!
+  # Confidence interval for the corresponding point estimate
+  embeddingDurationMs: Confidence!
+  # Confidence interval for the corresponding point estimate
+  fileSizeBytes: Confidence!
+  # Confidence interval for the corresponding point estimate
+  numChunks: Confidence!
+  # Confidence interval for the corresponding point estimate
+  totalDurationMs: Confidence!
+  # Confidence interval for the corresponding point estimate
+  totalTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  vectorizeDurationMs: Confidence!
+}
+
 # AutoRAG Config API Search Analytics
 type AccountAutoRAGConfigAPIAdaptiveGroups {
   # ALPHA - DO NOT USE
@@ -6479,6 +7407,145 @@ enum AccountBrowserIsolationUserActionsAdaptiveGroupsOrderBy {
   type_DESC
 }
 
+# Browser Rendering API events with adaptive sampling
+type AccountBrowserRenderingApiAdaptive {
+  # End date and time of the browser session pertaining to the request
+  browserSessionEndTime: Time!
+  # Start date and time of the browser session pertaining to the request
+  browserSessionStartTime: Time!
+  # Job ID of a request to the Browser Rendering crawl endpoints
+  crawlJobId: string!
+  # The time of the event
+  datetime: Time!
+  # Browser Rendering REST API endpoint of the request
+  endpoint: string!
+  # End date and time of the request
+  requestEndTime: Time!
+  # Browser Rendering REST API unique request ID
+  requestId: string!
+  # Start date and time of the request
+  requestStartTime: Time!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # Browser session ID
+  sessionId: string!
+  # HTTP response status code
+  status: uint64!
+  # Target URL of the request
+  targetUrl: string!
+}
+
+input AccountBrowserRenderingApiAdaptiveFilter_InputObject {
+  AND: [AccountBrowserRenderingApiAdaptiveFilter_InputObject!]
+  OR: [AccountBrowserRenderingApiAdaptiveFilter_InputObject!]
+  browserSessionEndTime: Time
+  browserSessionEndTime_geq: Time
+  browserSessionEndTime_gt: Time
+  browserSessionEndTime_in: [Time!]
+  browserSessionEndTime_leq: Time
+  browserSessionEndTime_lt: Time
+  browserSessionEndTime_neq: Time
+  browserSessionEndTime_notin: [Time!]
+  browserSessionStartTime: Time
+  browserSessionStartTime_geq: Time
+  browserSessionStartTime_gt: Time
+  browserSessionStartTime_in: [Time!]
+  browserSessionStartTime_leq: Time
+  browserSessionStartTime_lt: Time
+  browserSessionStartTime_neq: Time
+  browserSessionStartTime_notin: [Time!]
+  crawlJobId: string
+  crawlJobId_geq: string
+  crawlJobId_gt: string
+  crawlJobId_in: [string!]
+  crawlJobId_leq: string
+  crawlJobId_like: string
+  crawlJobId_lt: string
+  crawlJobId_neq: string
+  crawlJobId_notin: [string!]
+  crawlJobId_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  endpoint: string
+  endpoint_geq: string
+  endpoint_gt: string
+  endpoint_in: [string!]
+  endpoint_leq: string
+  endpoint_like: string
+  endpoint_lt: string
+  endpoint_neq: string
+  endpoint_notin: [string!]
+  endpoint_notlike: string
+  requestEndTime: Time
+  requestEndTime_geq: Time
+  requestEndTime_gt: Time
+  requestEndTime_in: [Time!]
+  requestEndTime_leq: Time
+  requestEndTime_lt: Time
+  requestEndTime_neq: Time
+  requestEndTime_notin: [Time!]
+  requestId: string
+  requestId_geq: string
+  requestId_gt: string
+  requestId_in: [string!]
+  requestId_leq: string
+  requestId_like: string
+  requestId_lt: string
+  requestId_neq: string
+  requestId_notin: [string!]
+  requestId_notlike: string
+  requestStartTime: Time
+  requestStartTime_geq: Time
+  requestStartTime_gt: Time
+  requestStartTime_in: [Time!]
+  requestStartTime_leq: Time
+  requestStartTime_lt: Time
+  requestStartTime_neq: Time
+  requestStartTime_notin: [Time!]
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+  status: uint64
+  status_geq: uint64
+  status_gt: uint64
+  status_in: [uint64!]
+  status_leq: uint64
+  status_lt: uint64
+  status_neq: uint64
+  status_notin: [uint64!]
+  targetUrl: string
+  targetUrl_geq: string
+  targetUrl_gt: string
+  targetUrl_in: [string!]
+  targetUrl_leq: string
+  targetUrl_like: string
+  targetUrl_lt: string
+  targetUrl_neq: string
+  targetUrl_notin: [string!]
+  targetUrl_notlike: string
+}
+
 # Aggregated Browser Rendering API events with adaptive sampling
 type AccountBrowserRenderingApiAdaptiveGroups {
   # ALPHA - DO NOT USE
@@ -6501,6 +7568,8 @@ type AccountBrowserRenderingApiAdaptiveGroupsDimensions {
   browserSessionEndTime: Time!
   # Start date and time of the browser session pertaining to the request
   browserSessionStartTime: Time!
+  # Job ID of a request to the Browser Rendering crawl endpoints
+  crawlJobId: string!
   # The date of the event
   date: Date!
   # The date and time of the event truncated to fifteen minutes
@@ -6515,14 +7584,16 @@ type AccountBrowserRenderingApiAdaptiveGroupsDimensions {
   endpoint: string!
   # End date and time of the request
   requestEndTime: Time!
+  # Browser Rendering REST API unique request ID
+  requestId: string!
   # Start date and time of the request
   requestStartTime: Time!
   # Browser session ID
   sessionId: string!
   # HTTP response status code
   status: uint64!
-  # Account tier: 'free' or 'paid' for accounts with Workers Free or Paid plan, correspondingly
-  tier: string!
+  # Target URL of the request
+  targetUrl: string!
 }
 
 input AccountBrowserRenderingApiAdaptiveGroupsFilter_InputObject {
@@ -6544,6 +7615,16 @@ input AccountBrowserRenderingApiAdaptiveGroupsFilter_InputObject {
   browserSessionStartTime_lt: Time
   browserSessionStartTime_neq: Time
   browserSessionStartTime_notin: [Time!]
+  crawlJobId: string
+  crawlJobId_geq: string
+  crawlJobId_gt: string
+  crawlJobId_in: [string!]
+  crawlJobId_leq: string
+  crawlJobId_like: string
+  crawlJobId_lt: string
+  crawlJobId_neq: string
+  crawlJobId_notin: [string!]
+  crawlJobId_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -6602,6 +7683,16 @@ input AccountBrowserRenderingApiAdaptiveGroupsFilter_InputObject {
   requestEndTime_lt: Time
   requestEndTime_neq: Time
   requestEndTime_notin: [Time!]
+  requestId: string
+  requestId_geq: string
+  requestId_gt: string
+  requestId_in: [string!]
+  requestId_leq: string
+  requestId_like: string
+  requestId_lt: string
+  requestId_neq: string
+  requestId_notin: [string!]
+  requestId_notlike: string
   requestStartTime: Time
   requestStartTime_geq: Time
   requestStartTime_gt: Time
@@ -6628,16 +7719,16 @@ input AccountBrowserRenderingApiAdaptiveGroupsFilter_InputObject {
   status_lt: uint64
   status_neq: uint64
   status_notin: [uint64!]
-  tier: string
-  tier_geq: string
-  tier_gt: string
-  tier_in: [string!]
-  tier_leq: string
-  tier_like: string
-  tier_lt: string
-  tier_neq: string
-  tier_notin: [string!]
-  tier_notlike: string
+  targetUrl: string
+  targetUrl_geq: string
+  targetUrl_gt: string
+  targetUrl_in: [string!]
+  targetUrl_leq: string
+  targetUrl_like: string
+  targetUrl_lt: string
+  targetUrl_neq: string
+  targetUrl_notin: [string!]
+  targetUrl_notlike: string
 }
 
 enum AccountBrowserRenderingApiAdaptiveGroupsOrderBy {
@@ -6653,6 +7744,10 @@ enum AccountBrowserRenderingApiAdaptiveGroupsOrderBy {
   count_ASC
   # count() descending
   count_DESC
+  # crawlJobId ascending
+  crawlJobId_ASC
+  # crawlJobId descending
+  crawlJobId_DESC
   # date ascending
   date_ASC
   # date descending
@@ -6685,6 +7780,10 @@ enum AccountBrowserRenderingApiAdaptiveGroupsOrderBy {
   requestEndTime_ASC
   # requestEndTime descending
   requestEndTime_DESC
+  # requestId ascending
+  requestId_ASC
+  # requestId descending
+  requestId_DESC
   # requestStartTime ascending
   requestStartTime_ASC
   # requestStartTime descending
@@ -6697,6 +7796,69 @@ enum AccountBrowserRenderingApiAdaptiveGroupsOrderBy {
   status_ASC
   # status descending
   status_DESC
+  # targetUrl ascending
+  targetUrl_ASC
+  # targetUrl descending
+  targetUrl_DESC
+  # tier ascending
+  tier_ASC
+  # tier descending
+  tier_DESC
+}
+
+enum AccountBrowserRenderingApiAdaptiveOrderBy {
+  # browserSessionEndTime ascending
+  browserSessionEndTime_ASC
+  # browserSessionEndTime descending
+  browserSessionEndTime_DESC
+  # browserSessionStartTime ascending
+  browserSessionStartTime_ASC
+  # browserSessionStartTime descending
+  browserSessionStartTime_DESC
+  # crawlJobId ascending
+  crawlJobId_ASC
+  # crawlJobId descending
+  crawlJobId_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # endpoint ascending
+  endpoint_ASC
+  # endpoint descending
+  endpoint_DESC
+  # env ascending
+  env_ASC
+  # env descending
+  env_DESC
+  # requestEndTime ascending
+  requestEndTime_ASC
+  # requestEndTime descending
+  requestEndTime_DESC
+  # requestId ascending
+  requestId_ASC
+  # requestId descending
+  requestId_DESC
+  # requestStartTime ascending
+  requestStartTime_ASC
+  # requestStartTime descending
+  requestStartTime_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # targetUrl ascending
+  targetUrl_ASC
+  # targetUrl descending
+  targetUrl_DESC
   # tier ascending
   tier_ASC
   # tier descending
@@ -7090,6 +8252,8 @@ type AccountBrowserRenderingEventsAdaptive {
   browserEndTime: Time!
   # Browser session start time
   browserStartTime: Time!
+  # Library used to launch the browser session
+  clientLibrary: string!
   # Number of browser sessions used concurrently at the time of the event
   concurrentSessions: uint64!
   # When worker ended devtools connection to browser session
@@ -7139,6 +8303,16 @@ input AccountBrowserRenderingEventsAdaptiveFilter_InputObject {
   browserStartTime_lt: Time
   browserStartTime_neq: Time
   browserStartTime_notin: [Time!]
+  clientLibrary: string
+  clientLibrary_geq: string
+  clientLibrary_gt: string
+  clientLibrary_in: [string!]
+  clientLibrary_leq: string
+  clientLibrary_like: string
+  clientLibrary_lt: string
+  clientLibrary_neq: string
+  clientLibrary_notin: [string!]
+  clientLibrary_notlike: string
   concurrentSessions: uint64
   concurrentSessions_geq: uint64
   concurrentSessions_gt: uint64
@@ -7253,6 +8427,8 @@ type AccountBrowserRenderingEventsAdaptiveGroupsConfidence {
 type AccountBrowserRenderingEventsAdaptiveGroupsDimensions {
   # Browser session close code. Enum (-1, N/A) (0, Unknown) (1, NormalClosure) (2, BrowserIdle) (3, ClientClosedEarly) (4, ChromiumChrashed) (5, ClientAbnormalClosure) (6, ServerAbnormalClosure) (7, ClientError) (8, ServerError) (9, WorkerError) (10, ClientNeverConnected) (11, BrowserSessionEvicted) (12, UsedBrowserTimeLimitExceeded)
   browserCloseReason: string!
+  # Library used to launch the browser session
+  clientLibrary: string!
   # Number of browser sessions used concurrently at the time of the event
   concurrentSessions: uint64!
   # Worker connection ID, when available
@@ -7288,6 +8464,16 @@ input AccountBrowserRenderingEventsAdaptiveGroupsFilter_InputObject {
   browserCloseReason_neq: string
   browserCloseReason_notin: [string!]
   browserCloseReason_notlike: string
+  clientLibrary: string
+  clientLibrary_geq: string
+  clientLibrary_gt: string
+  clientLibrary_in: [string!]
+  clientLibrary_leq: string
+  clientLibrary_like: string
+  clientLibrary_lt: string
+  clientLibrary_neq: string
+  clientLibrary_notin: [string!]
+  clientLibrary_notlike: string
   concurrentSessions: uint64
   concurrentSessions_geq: uint64
   concurrentSessions_gt: uint64
@@ -7399,6 +8585,10 @@ enum AccountBrowserRenderingEventsAdaptiveGroupsOrderBy {
   browserCloseReason_ASC
   # browserCloseReason descending
   browserCloseReason_DESC
+  # clientLibrary ascending
+  clientLibrary_ASC
+  # clientLibrary descending
+  clientLibrary_DESC
   # concurrentSessions ascending
   concurrentSessions_ASC
   # concurrentSessions descending
@@ -7485,6 +8675,10 @@ enum AccountBrowserRenderingEventsAdaptiveOrderBy {
   browserStartTime_ASC
   # browserStartTime descending
   browserStartTime_DESC
+  # clientLibrary ascending
+  clientLibrary_ASC
+  # clientLibrary descending
+  clientLibrary_DESC
   # concurrentSessions ascending
   concurrentSessions_ASC
   # concurrentSessions descending
@@ -48960,10 +50154,13 @@ type AccountSettings {
   aiGatewaySizeAdaptiveGroups: Settings!
   aiInferenceAdaptive: Settings!
   aiInferenceAdaptiveGroups: Settings!
+  aiSearchAPIAdaptiveGroups: Settings!
+  aiSearchIngestedItemsAdaptiveGroups: Settings!
   autoRAGConfigAPIAdaptiveGroups: Settings!
   autoRAGEngineAdaptiveGroups: Settings!
   browserIsolationSessionsAdaptiveGroups: Settings!
   browserIsolationUserActionsAdaptiveGroups: Settings!
+  browserRenderingApiAdaptive: Settings!
   browserRenderingApiAdaptiveGroups: Settings!
   browserRenderingBindingSessionsAdaptiveGroups: Settings!
   browserRenderingBrowserTimeUsageAdaptiveGroups: Settings!
