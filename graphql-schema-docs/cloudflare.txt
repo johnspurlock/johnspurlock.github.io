@@ -330,11 +330,11 @@ type account {
   cloudflareTunnelsAnalyticsAdaptiveGroups(filter: AccountCloudflareTunnelsAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCloudflareTunnelsAnalyticsAdaptiveGroupsOrderBy!]): [AccountCloudflareTunnelsAnalyticsAdaptiveGroups!]!
   # Metrics for Cloudchamber applications and deployments
   containersMetricsAdaptiveGroups(filter: AccountContainersMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountContainersMetricsAdaptiveGroupsOrderBy!]): [AccountContainersMetricsAdaptiveGroups!]!
-  # Beta. Aggregated D1 analytics with adaptive sampling
+  # Aggregated D1 analytics with adaptive sampling
   d1AnalyticsAdaptiveGroups(filter: AccountD1AnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1AnalyticsAdaptiveGroupsOrderBy!]): [AccountD1AnalyticsAdaptiveGroups!]!
-  # Beta. D1 query metrics with adaptive sampling
+  # D1 query metrics with adaptive sampling
   d1QueriesAdaptiveGroups(filter: AccountD1QueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1QueriesAdaptiveGroupsOrderBy!]): [AccountD1QueriesAdaptiveGroups!]!
-  # Beta. D1 storage with adaptive sampling
+  # D1 storage with adaptive sampling
   d1StorageAdaptiveGroups(filter: AccountD1StorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1StorageAdaptiveGroupsOrderBy!]): [AccountD1StorageAdaptiveGroups!]!
   # Analytics data for DNS queries
   dnsAnalyticsAdaptive(filter: AccountDnsAnalyticsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountDnsAnalyticsAdaptiveOrderBy!]): [AccountDnsAnalyticsAdaptive!]!
@@ -10693,7 +10693,10 @@ type AccountCloudchamberMetricsAdaptiveGroups {
 
 type AccountCloudchamberMetricsAdaptiveGroupsAvg {
   # Average CPU load
+  @Deprecated
   cpuLoad: float64!
+  # Average CPU utilization
+  cpuUtilization: float64!
   # Average GPU memory usage
   gpuMemory: float64!
   # Average memory usage
@@ -10925,6 +10928,10 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   avg_cpuLoad_ASC
   # avg(cpuLoad) descending
   avg_cpuLoad_DESC
+  # avg(cpuUtilization) ascending
+  avg_cpuUtilization_ASC
+  # avg(cpuUtilization) descending
+  avg_cpuUtilization_DESC
   # avg(gpuMemory) ascending
   avg_gpuMemory_ASC
   # avg(gpuMemory) descending
@@ -11045,110 +11052,282 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   procType_ASC
   # procType descending
   procType_DESC
+  # quantiles(cpuLoadP25) ascending
+  quantiles_cpuLoadP25_ASC
+  # quantiles(cpuLoadP25) descending
+  quantiles_cpuLoadP25_DESC
   # quantiles(cpuLoadP50) ascending
   quantiles_cpuLoadP50_ASC
   # quantiles(cpuLoadP50) descending
   quantiles_cpuLoadP50_DESC
+  # quantiles(cpuLoadP75) ascending
+  quantiles_cpuLoadP75_ASC
+  # quantiles(cpuLoadP75) descending
+  quantiles_cpuLoadP75_DESC
   # quantiles(cpuLoadP90) ascending
   quantiles_cpuLoadP90_ASC
   # quantiles(cpuLoadP90) descending
   quantiles_cpuLoadP90_DESC
+  # quantiles(cpuLoadP95) ascending
+  quantiles_cpuLoadP95_ASC
+  # quantiles(cpuLoadP95) descending
+  quantiles_cpuLoadP95_DESC
+  # quantiles(cpuLoadP999) ascending
+  quantiles_cpuLoadP999_ASC
+  # quantiles(cpuLoadP999) descending
+  quantiles_cpuLoadP999_DESC
   # quantiles(cpuLoadP99) ascending
   quantiles_cpuLoadP99_ASC
   # quantiles(cpuLoadP99) descending
   quantiles_cpuLoadP99_DESC
+  # quantiles(cpuUtilizationP25) ascending
+  quantiles_cpuUtilizationP25_ASC
+  # quantiles(cpuUtilizationP25) descending
+  quantiles_cpuUtilizationP25_DESC
+  # quantiles(cpuUtilizationP50) ascending
+  quantiles_cpuUtilizationP50_ASC
+  # quantiles(cpuUtilizationP50) descending
+  quantiles_cpuUtilizationP50_DESC
+  # quantiles(cpuUtilizationP75) ascending
+  quantiles_cpuUtilizationP75_ASC
+  # quantiles(cpuUtilizationP75) descending
+  quantiles_cpuUtilizationP75_DESC
+  # quantiles(cpuUtilizationP90) ascending
+  quantiles_cpuUtilizationP90_ASC
+  # quantiles(cpuUtilizationP90) descending
+  quantiles_cpuUtilizationP90_DESC
+  # quantiles(cpuUtilizationP95) ascending
+  quantiles_cpuUtilizationP95_ASC
+  # quantiles(cpuUtilizationP95) descending
+  quantiles_cpuUtilizationP95_DESC
+  # quantiles(cpuUtilizationP999) ascending
+  quantiles_cpuUtilizationP999_ASC
+  # quantiles(cpuUtilizationP999) descending
+  quantiles_cpuUtilizationP999_DESC
+  # quantiles(cpuUtilizationP99) ascending
+  quantiles_cpuUtilizationP99_ASC
+  # quantiles(cpuUtilizationP99) descending
+  quantiles_cpuUtilizationP99_DESC
+  # quantiles(diskUsageP25) ascending
+  quantiles_diskUsageP25_ASC
+  # quantiles(diskUsageP25) descending
+  quantiles_diskUsageP25_DESC
   # quantiles(diskUsageP50) ascending
   quantiles_diskUsageP50_ASC
   # quantiles(diskUsageP50) descending
   quantiles_diskUsageP50_DESC
+  # quantiles(diskUsageP75) ascending
+  quantiles_diskUsageP75_ASC
+  # quantiles(diskUsageP75) descending
+  quantiles_diskUsageP75_DESC
   # quantiles(diskUsageP90) ascending
   quantiles_diskUsageP90_ASC
   # quantiles(diskUsageP90) descending
   quantiles_diskUsageP90_DESC
+  # quantiles(diskUsageP95) ascending
+  quantiles_diskUsageP95_ASC
+  # quantiles(diskUsageP95) descending
+  quantiles_diskUsageP95_DESC
+  # quantiles(diskUsageP999) ascending
+  quantiles_diskUsageP999_ASC
+  # quantiles(diskUsageP999) descending
+  quantiles_diskUsageP999_DESC
   # quantiles(diskUsageP99) ascending
   quantiles_diskUsageP99_ASC
   # quantiles(diskUsageP99) descending
   quantiles_diskUsageP99_DESC
+  # quantiles(diskUsagePercentageP25) ascending
+  quantiles_diskUsagePercentageP25_ASC
+  # quantiles(diskUsagePercentageP25) descending
+  quantiles_diskUsagePercentageP25_DESC
   # quantiles(diskUsagePercentageP50) ascending
   quantiles_diskUsagePercentageP50_ASC
   # quantiles(diskUsagePercentageP50) descending
   quantiles_diskUsagePercentageP50_DESC
+  # quantiles(diskUsagePercentageP75) ascending
+  quantiles_diskUsagePercentageP75_ASC
+  # quantiles(diskUsagePercentageP75) descending
+  quantiles_diskUsagePercentageP75_DESC
   # quantiles(diskUsagePercentageP90) ascending
   quantiles_diskUsagePercentageP90_ASC
   # quantiles(diskUsagePercentageP90) descending
   quantiles_diskUsagePercentageP90_DESC
+  # quantiles(diskUsagePercentageP95) ascending
+  quantiles_diskUsagePercentageP95_ASC
+  # quantiles(diskUsagePercentageP95) descending
+  quantiles_diskUsagePercentageP95_DESC
+  # quantiles(diskUsagePercentageP999) ascending
+  quantiles_diskUsagePercentageP999_ASC
+  # quantiles(diskUsagePercentageP999) descending
+  quantiles_diskUsagePercentageP999_DESC
   # quantiles(diskUsagePercentageP99) ascending
   quantiles_diskUsagePercentageP99_ASC
   # quantiles(diskUsagePercentageP99) descending
   quantiles_diskUsagePercentageP99_DESC
+  # quantiles(gpuMemoryP25) ascending
+  quantiles_gpuMemoryP25_ASC
+  # quantiles(gpuMemoryP25) descending
+  quantiles_gpuMemoryP25_DESC
   # quantiles(gpuMemoryP50) ascending
   quantiles_gpuMemoryP50_ASC
   # quantiles(gpuMemoryP50) descending
   quantiles_gpuMemoryP50_DESC
+  # quantiles(gpuMemoryP75) ascending
+  quantiles_gpuMemoryP75_ASC
+  # quantiles(gpuMemoryP75) descending
+  quantiles_gpuMemoryP75_DESC
   # quantiles(gpuMemoryP90) ascending
   quantiles_gpuMemoryP90_ASC
   # quantiles(gpuMemoryP90) descending
   quantiles_gpuMemoryP90_DESC
+  # quantiles(gpuMemoryP95) ascending
+  quantiles_gpuMemoryP95_ASC
+  # quantiles(gpuMemoryP95) descending
+  quantiles_gpuMemoryP95_DESC
+  # quantiles(gpuMemoryP999) ascending
+  quantiles_gpuMemoryP999_ASC
+  # quantiles(gpuMemoryP999) descending
+  quantiles_gpuMemoryP999_DESC
   # quantiles(gpuMemoryP99) ascending
   quantiles_gpuMemoryP99_ASC
   # quantiles(gpuMemoryP99) descending
   quantiles_gpuMemoryP99_DESC
+  # quantiles(memoryP25) ascending
+  quantiles_memoryP25_ASC
+  # quantiles(memoryP25) descending
+  quantiles_memoryP25_DESC
   # quantiles(memoryP50) ascending
   quantiles_memoryP50_ASC
   # quantiles(memoryP50) descending
   quantiles_memoryP50_DESC
+  # quantiles(memoryP75) ascending
+  quantiles_memoryP75_ASC
+  # quantiles(memoryP75) descending
+  quantiles_memoryP75_DESC
   # quantiles(memoryP90) ascending
   quantiles_memoryP90_ASC
   # quantiles(memoryP90) descending
   quantiles_memoryP90_DESC
+  # quantiles(memoryP95) ascending
+  quantiles_memoryP95_ASC
+  # quantiles(memoryP95) descending
+  quantiles_memoryP95_DESC
+  # quantiles(memoryP999) ascending
+  quantiles_memoryP999_ASC
+  # quantiles(memoryP999) descending
+  quantiles_memoryP999_DESC
   # quantiles(memoryP99) ascending
   quantiles_memoryP99_ASC
   # quantiles(memoryP99) descending
   quantiles_memoryP99_DESC
+  # quantiles(rxBandwidthBpsP25) ascending
+  quantiles_rxBandwidthBpsP25_ASC
+  # quantiles(rxBandwidthBpsP25) descending
+  quantiles_rxBandwidthBpsP25_DESC
   # quantiles(rxBandwidthBpsP50) ascending
   quantiles_rxBandwidthBpsP50_ASC
   # quantiles(rxBandwidthBpsP50) descending
   quantiles_rxBandwidthBpsP50_DESC
+  # quantiles(rxBandwidthBpsP75) ascending
+  quantiles_rxBandwidthBpsP75_ASC
+  # quantiles(rxBandwidthBpsP75) descending
+  quantiles_rxBandwidthBpsP75_DESC
   # quantiles(rxBandwidthBpsP90) ascending
   quantiles_rxBandwidthBpsP90_ASC
   # quantiles(rxBandwidthBpsP90) descending
   quantiles_rxBandwidthBpsP90_DESC
+  # quantiles(rxBandwidthBpsP95) ascending
+  quantiles_rxBandwidthBpsP95_ASC
+  # quantiles(rxBandwidthBpsP95) descending
+  quantiles_rxBandwidthBpsP95_DESC
+  # quantiles(rxBandwidthBpsP999) ascending
+  quantiles_rxBandwidthBpsP999_ASC
+  # quantiles(rxBandwidthBpsP999) descending
+  quantiles_rxBandwidthBpsP999_DESC
   # quantiles(rxBandwidthBpsP99) ascending
   quantiles_rxBandwidthBpsP99_ASC
   # quantiles(rxBandwidthBpsP99) descending
   quantiles_rxBandwidthBpsP99_DESC
+  # quantiles(rxBandwidthP25) ascending
+  quantiles_rxBandwidthP25_ASC
+  # quantiles(rxBandwidthP25) descending
+  quantiles_rxBandwidthP25_DESC
   # quantiles(rxBandwidthP50) ascending
   quantiles_rxBandwidthP50_ASC
   # quantiles(rxBandwidthP50) descending
   quantiles_rxBandwidthP50_DESC
+  # quantiles(rxBandwidthP75) ascending
+  quantiles_rxBandwidthP75_ASC
+  # quantiles(rxBandwidthP75) descending
+  quantiles_rxBandwidthP75_DESC
   # quantiles(rxBandwidthP90) ascending
   quantiles_rxBandwidthP90_ASC
   # quantiles(rxBandwidthP90) descending
   quantiles_rxBandwidthP90_DESC
+  # quantiles(rxBandwidthP95) ascending
+  quantiles_rxBandwidthP95_ASC
+  # quantiles(rxBandwidthP95) descending
+  quantiles_rxBandwidthP95_DESC
+  # quantiles(rxBandwidthP999) ascending
+  quantiles_rxBandwidthP999_ASC
+  # quantiles(rxBandwidthP999) descending
+  quantiles_rxBandwidthP999_DESC
   # quantiles(rxBandwidthP99) ascending
   quantiles_rxBandwidthP99_ASC
   # quantiles(rxBandwidthP99) descending
   quantiles_rxBandwidthP99_DESC
+  # quantiles(txBandwidthBpsP25) ascending
+  quantiles_txBandwidthBpsP25_ASC
+  # quantiles(txBandwidthBpsP25) descending
+  quantiles_txBandwidthBpsP25_DESC
   # quantiles(txBandwidthBpsP50) ascending
   quantiles_txBandwidthBpsP50_ASC
   # quantiles(txBandwidthBpsP50) descending
   quantiles_txBandwidthBpsP50_DESC
+  # quantiles(txBandwidthBpsP75) ascending
+  quantiles_txBandwidthBpsP75_ASC
+  # quantiles(txBandwidthBpsP75) descending
+  quantiles_txBandwidthBpsP75_DESC
   # quantiles(txBandwidthBpsP90) ascending
   quantiles_txBandwidthBpsP90_ASC
   # quantiles(txBandwidthBpsP90) descending
   quantiles_txBandwidthBpsP90_DESC
+  # quantiles(txBandwidthBpsP95) ascending
+  quantiles_txBandwidthBpsP95_ASC
+  # quantiles(txBandwidthBpsP95) descending
+  quantiles_txBandwidthBpsP95_DESC
+  # quantiles(txBandwidthBpsP999) ascending
+  quantiles_txBandwidthBpsP999_ASC
+  # quantiles(txBandwidthBpsP999) descending
+  quantiles_txBandwidthBpsP999_DESC
   # quantiles(txBandwidthBpsP99) ascending
   quantiles_txBandwidthBpsP99_ASC
   # quantiles(txBandwidthBpsP99) descending
   quantiles_txBandwidthBpsP99_DESC
+  # quantiles(txBandwidthP25) ascending
+  quantiles_txBandwidthP25_ASC
+  # quantiles(txBandwidthP25) descending
+  quantiles_txBandwidthP25_DESC
   # quantiles(txBandwidthP50) ascending
   quantiles_txBandwidthP50_ASC
   # quantiles(txBandwidthP50) descending
   quantiles_txBandwidthP50_DESC
+  # quantiles(txBandwidthP75) ascending
+  quantiles_txBandwidthP75_ASC
+  # quantiles(txBandwidthP75) descending
+  quantiles_txBandwidthP75_DESC
   # quantiles(txBandwidthP90) ascending
   quantiles_txBandwidthP90_ASC
   # quantiles(txBandwidthP90) descending
   quantiles_txBandwidthP90_DESC
+  # quantiles(txBandwidthP95) ascending
+  quantiles_txBandwidthP95_ASC
+  # quantiles(txBandwidthP95) descending
+  quantiles_txBandwidthP95_DESC
+  # quantiles(txBandwidthP999) ascending
+  quantiles_txBandwidthP999_ASC
+  # quantiles(txBandwidthP999) descending
+  quantiles_txBandwidthP999_DESC
   # quantiles(txBandwidthP99) ascending
   quantiles_txBandwidthP99_ASC
   # quantiles(txBandwidthP99) descending
@@ -11157,6 +11336,10 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   region_ASC
   # region descending
   region_DESC
+  # sum(allocatedCpu) ascending
+  sum_allocatedCpu_ASC
+  # sum(allocatedCpu) descending
+  sum_allocatedCpu_DESC
   # sum(allocatedDisk) ascending
   sum_allocatedDisk_ASC
   # sum(allocatedDisk) descending
@@ -11180,69 +11363,165 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
 }
 
 type AccountCloudchamberMetricsAdaptiveGroupsQuantiles {
+  # CPU load (25th percentile)
+  cpuLoadP25: float64!
   # CPU load (50th percentile)
   cpuLoadP50: float64!
+  # CPU load (75th percentile)
+  cpuLoadP75: float64!
   # CPU load (90th percentile)
   cpuLoadP90: float64!
+  # CPU load (95th percentile)
+  cpuLoadP95: float64!
   # CPU load (99th percentile)
   cpuLoadP99: float64!
+  # CPU load (99.9th percentile)
+  cpuLoadP999: float64!
+  # CPU utilization (25th percentile)
+  cpuUtilizationP25: float64!
+  # CPU utilization (50th percentile)
+  cpuUtilizationP50: float64!
+  # CPU utilization (75th percentile)
+  cpuUtilizationP75: float64!
+  # CPU utilization (90th percentile)
+  cpuUtilizationP90: float64!
+  # CPU utilization (95th percentile)
+  cpuUtilizationP95: float64!
+  # CPU utilization (99th percentile)
+  cpuUtilizationP99: float64!
+  # CPU utilization (99.9th percentile)
+  cpuUtilizationP999: float64!
+  # Disk usage in bytes (25th percentile)
+  diskUsageP25: float64!
   # Disk usage in bytes (50th percentile)
   diskUsageP50: float64!
+  # Disk usage in bytes (75th percentile)
+  diskUsageP75: float64!
   # Disk usage in bytes (90th percentile)
   diskUsageP90: float64!
+  # Disk usage in bytes (95th percentile)
+  diskUsageP95: float64!
   # Disk usage in bytes (99th percentile)
   diskUsageP99: float64!
+  # Disk usage in bytes (99.9th percentile)
+  diskUsageP999: float64!
+  # Disk usage as a percentage of total disk space (25th percentile)
+  diskUsagePercentageP25: float64!
   # Disk usage as a percentage of total disk space (50th percentile)
   diskUsagePercentageP50: float64!
+  # Disk usage as a percentage of total disk space (75th percentile)
+  diskUsagePercentageP75: float64!
   # Disk usage as a percentage of total disk space (90th percentile)
   diskUsagePercentageP90: float64!
+  # Disk usage as a percentage of total disk space (95th percentile)
+  diskUsagePercentageP95: float64!
   # Disk usage as a percentage of total disk space (99th percentile)
   diskUsagePercentageP99: float64!
+  # Disk usage as a percentage of total disk space (99.9th percentile)
+  diskUsagePercentageP999: float64!
+  # GPU memory usage (25th percentile)
+  gpuMemoryP25: float64!
   # GPU memory usage (50th percentile)
   gpuMemoryP50: float64!
+  # GPU memory usage (75th percentile)
+  gpuMemoryP75: float64!
   # GPU memory usage (90th percentile)
   gpuMemoryP90: float64!
+  # GPU memory usage (95th percentile)
+  gpuMemoryP95: float64!
   # GPU memory usage (99th percentile)
   gpuMemoryP99: float64!
+  # GPU memory usage (99.9th percentile)
+  gpuMemoryP999: float64!
+  # Memory usage (25th percentile)
+  memoryP25: float64!
   # Memory usage (50th percentile)
   memoryP50: float64!
+  # Memory usage (75th percentile)
+  memoryP75: float64!
   # Memory usage (90th percentile)
   memoryP90: float64!
+  # Memory usage (95th percentile)
+  memoryP95: float64!
   # Memory usage (99th percentile)
   memoryP99: float64!
+  # Memory usage (99.9th percentile)
+  memoryP999: float64!
+  # RX bandwidth (25th percentile)
+  rxBandwidthBpsP25: float64!
   # RX bandwidth (50th percentile)
   rxBandwidthBpsP50: float64!
+  # RX bandwidth (75th percentile)
+  rxBandwidthBpsP75: float64!
   # RX bandwidth (90th percentile)
   rxBandwidthBpsP90: float64!
+  # RX bandwidth (95th percentile)
+  rxBandwidthBpsP95: float64!
   # RX bandwidth (99th percentile)
   rxBandwidthBpsP99: float64!
+  # RX bandwidth (99.9th percentile)
+  rxBandwidthBpsP999: float64!
+  # RX bandwidth (25th percentile)
+  @Deprecated
+  rxBandwidthP25: float64!
   # RX bandwidth (50th percentile)
   @Deprecated
   rxBandwidthP50: float64!
+  # RX bandwidth (75th percentile)
+  @Deprecated
+  rxBandwidthP75: float64!
   # RX bandwidth (90th percentile)
   @Deprecated
   rxBandwidthP90: float64!
+  # RX bandwidth (95th percentile)
+  @Deprecated
+  rxBandwidthP95: float64!
   # RX bandwidth (99th percentile)
   @Deprecated
   rxBandwidthP99: float64!
+  # RX bandwidth (99.9th percentile)
+  @Deprecated
+  rxBandwidthP999: float64!
+  # TX bandwidth (25th percentile)
+  txBandwidthBpsP25: float64!
   # TX bandwidth (50th percentile)
   txBandwidthBpsP50: float64!
+  # TX bandwidth (75th percentile)
+  txBandwidthBpsP75: float64!
   # TX bandwidth (90th percentile)
   txBandwidthBpsP90: float64!
+  # TX bandwidth (95th percentile)
+  txBandwidthBpsP95: float64!
   # TX bandwidth (99th percentile)
   txBandwidthBpsP99: float64!
+  # TX bandwidth (99.9th percentile)
+  txBandwidthBpsP999: float64!
+  # TX bandwidth (25th percentile)
+  @Deprecated
+  txBandwidthP25: float64!
   # TX bandwidth (50th percentile)
   @Deprecated
   txBandwidthP50: float64!
+  # TX bandwidth (75th percentile)
+  @Deprecated
+  txBandwidthP75: float64!
   # TX bandwidth (90th percentile)
   @Deprecated
   txBandwidthP90: float64!
+  # TX bandwidth (95th percentile)
+  @Deprecated
+  txBandwidthP95: float64!
   # TX bandwidth (99th percentile)
   @Deprecated
   txBandwidthP99: float64!
+  # TX bandwidth (99.9th percentile)
+  @Deprecated
+  txBandwidthP999: float64!
 }
 
 type AccountCloudchamberMetricsAdaptiveGroupsSum {
+  # Sum of allocated vCPU in vCPU-seconds
+  allocatedCpu: float64!
   # Sum of allocated disk in byte-seconds
   allocatedDisk: float64!
   # Sum of allocated memory in byte-seconds
@@ -11256,6 +11535,8 @@ type AccountCloudchamberMetricsAdaptiveGroupsSum {
 }
 
 type AccountCloudchamberMetricsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  allocatedCpu: Confidence!
   # Confidence interval for the corresponding point estimate
   allocatedDisk: Confidence!
   # Confidence interval for the corresponding point estimate
@@ -11752,7 +12033,10 @@ type AccountContainersMetricsAdaptiveGroups {
 
 type AccountContainersMetricsAdaptiveGroupsAvg {
   # Average CPU load
+  @Deprecated
   cpuLoad: float64!
+  # Average CPU utilization
+  cpuUtilization: float64!
   # Average GPU memory usage
   gpuMemory: float64!
   # Average memory usage
@@ -11984,6 +12268,10 @@ enum AccountContainersMetricsAdaptiveGroupsOrderBy {
   avg_cpuLoad_ASC
   # avg(cpuLoad) descending
   avg_cpuLoad_DESC
+  # avg(cpuUtilization) ascending
+  avg_cpuUtilization_ASC
+  # avg(cpuUtilization) descending
+  avg_cpuUtilization_DESC
   # avg(gpuMemory) ascending
   avg_gpuMemory_ASC
   # avg(gpuMemory) descending
@@ -12104,110 +12392,282 @@ enum AccountContainersMetricsAdaptiveGroupsOrderBy {
   procType_ASC
   # procType descending
   procType_DESC
+  # quantiles(cpuLoadP25) ascending
+  quantiles_cpuLoadP25_ASC
+  # quantiles(cpuLoadP25) descending
+  quantiles_cpuLoadP25_DESC
   # quantiles(cpuLoadP50) ascending
   quantiles_cpuLoadP50_ASC
   # quantiles(cpuLoadP50) descending
   quantiles_cpuLoadP50_DESC
+  # quantiles(cpuLoadP75) ascending
+  quantiles_cpuLoadP75_ASC
+  # quantiles(cpuLoadP75) descending
+  quantiles_cpuLoadP75_DESC
   # quantiles(cpuLoadP90) ascending
   quantiles_cpuLoadP90_ASC
   # quantiles(cpuLoadP90) descending
   quantiles_cpuLoadP90_DESC
+  # quantiles(cpuLoadP95) ascending
+  quantiles_cpuLoadP95_ASC
+  # quantiles(cpuLoadP95) descending
+  quantiles_cpuLoadP95_DESC
+  # quantiles(cpuLoadP999) ascending
+  quantiles_cpuLoadP999_ASC
+  # quantiles(cpuLoadP999) descending
+  quantiles_cpuLoadP999_DESC
   # quantiles(cpuLoadP99) ascending
   quantiles_cpuLoadP99_ASC
   # quantiles(cpuLoadP99) descending
   quantiles_cpuLoadP99_DESC
+  # quantiles(cpuUtilizationP25) ascending
+  quantiles_cpuUtilizationP25_ASC
+  # quantiles(cpuUtilizationP25) descending
+  quantiles_cpuUtilizationP25_DESC
+  # quantiles(cpuUtilizationP50) ascending
+  quantiles_cpuUtilizationP50_ASC
+  # quantiles(cpuUtilizationP50) descending
+  quantiles_cpuUtilizationP50_DESC
+  # quantiles(cpuUtilizationP75) ascending
+  quantiles_cpuUtilizationP75_ASC
+  # quantiles(cpuUtilizationP75) descending
+  quantiles_cpuUtilizationP75_DESC
+  # quantiles(cpuUtilizationP90) ascending
+  quantiles_cpuUtilizationP90_ASC
+  # quantiles(cpuUtilizationP90) descending
+  quantiles_cpuUtilizationP90_DESC
+  # quantiles(cpuUtilizationP95) ascending
+  quantiles_cpuUtilizationP95_ASC
+  # quantiles(cpuUtilizationP95) descending
+  quantiles_cpuUtilizationP95_DESC
+  # quantiles(cpuUtilizationP999) ascending
+  quantiles_cpuUtilizationP999_ASC
+  # quantiles(cpuUtilizationP999) descending
+  quantiles_cpuUtilizationP999_DESC
+  # quantiles(cpuUtilizationP99) ascending
+  quantiles_cpuUtilizationP99_ASC
+  # quantiles(cpuUtilizationP99) descending
+  quantiles_cpuUtilizationP99_DESC
+  # quantiles(diskUsageP25) ascending
+  quantiles_diskUsageP25_ASC
+  # quantiles(diskUsageP25) descending
+  quantiles_diskUsageP25_DESC
   # quantiles(diskUsageP50) ascending
   quantiles_diskUsageP50_ASC
   # quantiles(diskUsageP50) descending
   quantiles_diskUsageP50_DESC
+  # quantiles(diskUsageP75) ascending
+  quantiles_diskUsageP75_ASC
+  # quantiles(diskUsageP75) descending
+  quantiles_diskUsageP75_DESC
   # quantiles(diskUsageP90) ascending
   quantiles_diskUsageP90_ASC
   # quantiles(diskUsageP90) descending
   quantiles_diskUsageP90_DESC
+  # quantiles(diskUsageP95) ascending
+  quantiles_diskUsageP95_ASC
+  # quantiles(diskUsageP95) descending
+  quantiles_diskUsageP95_DESC
+  # quantiles(diskUsageP999) ascending
+  quantiles_diskUsageP999_ASC
+  # quantiles(diskUsageP999) descending
+  quantiles_diskUsageP999_DESC
   # quantiles(diskUsageP99) ascending
   quantiles_diskUsageP99_ASC
   # quantiles(diskUsageP99) descending
   quantiles_diskUsageP99_DESC
+  # quantiles(diskUsagePercentageP25) ascending
+  quantiles_diskUsagePercentageP25_ASC
+  # quantiles(diskUsagePercentageP25) descending
+  quantiles_diskUsagePercentageP25_DESC
   # quantiles(diskUsagePercentageP50) ascending
   quantiles_diskUsagePercentageP50_ASC
   # quantiles(diskUsagePercentageP50) descending
   quantiles_diskUsagePercentageP50_DESC
+  # quantiles(diskUsagePercentageP75) ascending
+  quantiles_diskUsagePercentageP75_ASC
+  # quantiles(diskUsagePercentageP75) descending
+  quantiles_diskUsagePercentageP75_DESC
   # quantiles(diskUsagePercentageP90) ascending
   quantiles_diskUsagePercentageP90_ASC
   # quantiles(diskUsagePercentageP90) descending
   quantiles_diskUsagePercentageP90_DESC
+  # quantiles(diskUsagePercentageP95) ascending
+  quantiles_diskUsagePercentageP95_ASC
+  # quantiles(diskUsagePercentageP95) descending
+  quantiles_diskUsagePercentageP95_DESC
+  # quantiles(diskUsagePercentageP999) ascending
+  quantiles_diskUsagePercentageP999_ASC
+  # quantiles(diskUsagePercentageP999) descending
+  quantiles_diskUsagePercentageP999_DESC
   # quantiles(diskUsagePercentageP99) ascending
   quantiles_diskUsagePercentageP99_ASC
   # quantiles(diskUsagePercentageP99) descending
   quantiles_diskUsagePercentageP99_DESC
+  # quantiles(gpuMemoryP25) ascending
+  quantiles_gpuMemoryP25_ASC
+  # quantiles(gpuMemoryP25) descending
+  quantiles_gpuMemoryP25_DESC
   # quantiles(gpuMemoryP50) ascending
   quantiles_gpuMemoryP50_ASC
   # quantiles(gpuMemoryP50) descending
   quantiles_gpuMemoryP50_DESC
+  # quantiles(gpuMemoryP75) ascending
+  quantiles_gpuMemoryP75_ASC
+  # quantiles(gpuMemoryP75) descending
+  quantiles_gpuMemoryP75_DESC
   # quantiles(gpuMemoryP90) ascending
   quantiles_gpuMemoryP90_ASC
   # quantiles(gpuMemoryP90) descending
   quantiles_gpuMemoryP90_DESC
+  # quantiles(gpuMemoryP95) ascending
+  quantiles_gpuMemoryP95_ASC
+  # quantiles(gpuMemoryP95) descending
+  quantiles_gpuMemoryP95_DESC
+  # quantiles(gpuMemoryP999) ascending
+  quantiles_gpuMemoryP999_ASC
+  # quantiles(gpuMemoryP999) descending
+  quantiles_gpuMemoryP999_DESC
   # quantiles(gpuMemoryP99) ascending
   quantiles_gpuMemoryP99_ASC
   # quantiles(gpuMemoryP99) descending
   quantiles_gpuMemoryP99_DESC
+  # quantiles(memoryP25) ascending
+  quantiles_memoryP25_ASC
+  # quantiles(memoryP25) descending
+  quantiles_memoryP25_DESC
   # quantiles(memoryP50) ascending
   quantiles_memoryP50_ASC
   # quantiles(memoryP50) descending
   quantiles_memoryP50_DESC
+  # quantiles(memoryP75) ascending
+  quantiles_memoryP75_ASC
+  # quantiles(memoryP75) descending
+  quantiles_memoryP75_DESC
   # quantiles(memoryP90) ascending
   quantiles_memoryP90_ASC
   # quantiles(memoryP90) descending
   quantiles_memoryP90_DESC
+  # quantiles(memoryP95) ascending
+  quantiles_memoryP95_ASC
+  # quantiles(memoryP95) descending
+  quantiles_memoryP95_DESC
+  # quantiles(memoryP999) ascending
+  quantiles_memoryP999_ASC
+  # quantiles(memoryP999) descending
+  quantiles_memoryP999_DESC
   # quantiles(memoryP99) ascending
   quantiles_memoryP99_ASC
   # quantiles(memoryP99) descending
   quantiles_memoryP99_DESC
+  # quantiles(rxBandwidthBpsP25) ascending
+  quantiles_rxBandwidthBpsP25_ASC
+  # quantiles(rxBandwidthBpsP25) descending
+  quantiles_rxBandwidthBpsP25_DESC
   # quantiles(rxBandwidthBpsP50) ascending
   quantiles_rxBandwidthBpsP50_ASC
   # quantiles(rxBandwidthBpsP50) descending
   quantiles_rxBandwidthBpsP50_DESC
+  # quantiles(rxBandwidthBpsP75) ascending
+  quantiles_rxBandwidthBpsP75_ASC
+  # quantiles(rxBandwidthBpsP75) descending
+  quantiles_rxBandwidthBpsP75_DESC
   # quantiles(rxBandwidthBpsP90) ascending
   quantiles_rxBandwidthBpsP90_ASC
   # quantiles(rxBandwidthBpsP90) descending
   quantiles_rxBandwidthBpsP90_DESC
+  # quantiles(rxBandwidthBpsP95) ascending
+  quantiles_rxBandwidthBpsP95_ASC
+  # quantiles(rxBandwidthBpsP95) descending
+  quantiles_rxBandwidthBpsP95_DESC
+  # quantiles(rxBandwidthBpsP999) ascending
+  quantiles_rxBandwidthBpsP999_ASC
+  # quantiles(rxBandwidthBpsP999) descending
+  quantiles_rxBandwidthBpsP999_DESC
   # quantiles(rxBandwidthBpsP99) ascending
   quantiles_rxBandwidthBpsP99_ASC
   # quantiles(rxBandwidthBpsP99) descending
   quantiles_rxBandwidthBpsP99_DESC
+  # quantiles(rxBandwidthP25) ascending
+  quantiles_rxBandwidthP25_ASC
+  # quantiles(rxBandwidthP25) descending
+  quantiles_rxBandwidthP25_DESC
   # quantiles(rxBandwidthP50) ascending
   quantiles_rxBandwidthP50_ASC
   # quantiles(rxBandwidthP50) descending
   quantiles_rxBandwidthP50_DESC
+  # quantiles(rxBandwidthP75) ascending
+  quantiles_rxBandwidthP75_ASC
+  # quantiles(rxBandwidthP75) descending
+  quantiles_rxBandwidthP75_DESC
   # quantiles(rxBandwidthP90) ascending
   quantiles_rxBandwidthP90_ASC
   # quantiles(rxBandwidthP90) descending
   quantiles_rxBandwidthP90_DESC
+  # quantiles(rxBandwidthP95) ascending
+  quantiles_rxBandwidthP95_ASC
+  # quantiles(rxBandwidthP95) descending
+  quantiles_rxBandwidthP95_DESC
+  # quantiles(rxBandwidthP999) ascending
+  quantiles_rxBandwidthP999_ASC
+  # quantiles(rxBandwidthP999) descending
+  quantiles_rxBandwidthP999_DESC
   # quantiles(rxBandwidthP99) ascending
   quantiles_rxBandwidthP99_ASC
   # quantiles(rxBandwidthP99) descending
   quantiles_rxBandwidthP99_DESC
+  # quantiles(txBandwidthBpsP25) ascending
+  quantiles_txBandwidthBpsP25_ASC
+  # quantiles(txBandwidthBpsP25) descending
+  quantiles_txBandwidthBpsP25_DESC
   # quantiles(txBandwidthBpsP50) ascending
   quantiles_txBandwidthBpsP50_ASC
   # quantiles(txBandwidthBpsP50) descending
   quantiles_txBandwidthBpsP50_DESC
+  # quantiles(txBandwidthBpsP75) ascending
+  quantiles_txBandwidthBpsP75_ASC
+  # quantiles(txBandwidthBpsP75) descending
+  quantiles_txBandwidthBpsP75_DESC
   # quantiles(txBandwidthBpsP90) ascending
   quantiles_txBandwidthBpsP90_ASC
   # quantiles(txBandwidthBpsP90) descending
   quantiles_txBandwidthBpsP90_DESC
+  # quantiles(txBandwidthBpsP95) ascending
+  quantiles_txBandwidthBpsP95_ASC
+  # quantiles(txBandwidthBpsP95) descending
+  quantiles_txBandwidthBpsP95_DESC
+  # quantiles(txBandwidthBpsP999) ascending
+  quantiles_txBandwidthBpsP999_ASC
+  # quantiles(txBandwidthBpsP999) descending
+  quantiles_txBandwidthBpsP999_DESC
   # quantiles(txBandwidthBpsP99) ascending
   quantiles_txBandwidthBpsP99_ASC
   # quantiles(txBandwidthBpsP99) descending
   quantiles_txBandwidthBpsP99_DESC
+  # quantiles(txBandwidthP25) ascending
+  quantiles_txBandwidthP25_ASC
+  # quantiles(txBandwidthP25) descending
+  quantiles_txBandwidthP25_DESC
   # quantiles(txBandwidthP50) ascending
   quantiles_txBandwidthP50_ASC
   # quantiles(txBandwidthP50) descending
   quantiles_txBandwidthP50_DESC
+  # quantiles(txBandwidthP75) ascending
+  quantiles_txBandwidthP75_ASC
+  # quantiles(txBandwidthP75) descending
+  quantiles_txBandwidthP75_DESC
   # quantiles(txBandwidthP90) ascending
   quantiles_txBandwidthP90_ASC
   # quantiles(txBandwidthP90) descending
   quantiles_txBandwidthP90_DESC
+  # quantiles(txBandwidthP95) ascending
+  quantiles_txBandwidthP95_ASC
+  # quantiles(txBandwidthP95) descending
+  quantiles_txBandwidthP95_DESC
+  # quantiles(txBandwidthP999) ascending
+  quantiles_txBandwidthP999_ASC
+  # quantiles(txBandwidthP999) descending
+  quantiles_txBandwidthP999_DESC
   # quantiles(txBandwidthP99) ascending
   quantiles_txBandwidthP99_ASC
   # quantiles(txBandwidthP99) descending
@@ -12216,6 +12676,10 @@ enum AccountContainersMetricsAdaptiveGroupsOrderBy {
   region_ASC
   # region descending
   region_DESC
+  # sum(allocatedCpu) ascending
+  sum_allocatedCpu_ASC
+  # sum(allocatedCpu) descending
+  sum_allocatedCpu_DESC
   # sum(allocatedDisk) ascending
   sum_allocatedDisk_ASC
   # sum(allocatedDisk) descending
@@ -12239,69 +12703,165 @@ enum AccountContainersMetricsAdaptiveGroupsOrderBy {
 }
 
 type AccountContainersMetricsAdaptiveGroupsQuantiles {
+  # CPU load (25th percentile)
+  cpuLoadP25: float64!
   # CPU load (50th percentile)
   cpuLoadP50: float64!
+  # CPU load (75th percentile)
+  cpuLoadP75: float64!
   # CPU load (90th percentile)
   cpuLoadP90: float64!
+  # CPU load (95th percentile)
+  cpuLoadP95: float64!
   # CPU load (99th percentile)
   cpuLoadP99: float64!
+  # CPU load (99.9th percentile)
+  cpuLoadP999: float64!
+  # CPU utilization (25th percentile)
+  cpuUtilizationP25: float64!
+  # CPU utilization (50th percentile)
+  cpuUtilizationP50: float64!
+  # CPU utilization (75th percentile)
+  cpuUtilizationP75: float64!
+  # CPU utilization (90th percentile)
+  cpuUtilizationP90: float64!
+  # CPU utilization (95th percentile)
+  cpuUtilizationP95: float64!
+  # CPU utilization (99th percentile)
+  cpuUtilizationP99: float64!
+  # CPU utilization (99.9th percentile)
+  cpuUtilizationP999: float64!
+  # Disk usage in bytes (25th percentile)
+  diskUsageP25: float64!
   # Disk usage in bytes (50th percentile)
   diskUsageP50: float64!
+  # Disk usage in bytes (75th percentile)
+  diskUsageP75: float64!
   # Disk usage in bytes (90th percentile)
   diskUsageP90: float64!
+  # Disk usage in bytes (95th percentile)
+  diskUsageP95: float64!
   # Disk usage in bytes (99th percentile)
   diskUsageP99: float64!
+  # Disk usage in bytes (99.9th percentile)
+  diskUsageP999: float64!
+  # Disk usage as a percentage of total disk space (25th percentile)
+  diskUsagePercentageP25: float64!
   # Disk usage as a percentage of total disk space (50th percentile)
   diskUsagePercentageP50: float64!
+  # Disk usage as a percentage of total disk space (75th percentile)
+  diskUsagePercentageP75: float64!
   # Disk usage as a percentage of total disk space (90th percentile)
   diskUsagePercentageP90: float64!
+  # Disk usage as a percentage of total disk space (95th percentile)
+  diskUsagePercentageP95: float64!
   # Disk usage as a percentage of total disk space (99th percentile)
   diskUsagePercentageP99: float64!
+  # Disk usage as a percentage of total disk space (99.9th percentile)
+  diskUsagePercentageP999: float64!
+  # GPU memory usage (25th percentile)
+  gpuMemoryP25: float64!
   # GPU memory usage (50th percentile)
   gpuMemoryP50: float64!
+  # GPU memory usage (75th percentile)
+  gpuMemoryP75: float64!
   # GPU memory usage (90th percentile)
   gpuMemoryP90: float64!
+  # GPU memory usage (95th percentile)
+  gpuMemoryP95: float64!
   # GPU memory usage (99th percentile)
   gpuMemoryP99: float64!
+  # GPU memory usage (99.9th percentile)
+  gpuMemoryP999: float64!
+  # Memory usage (25th percentile)
+  memoryP25: float64!
   # Memory usage (50th percentile)
   memoryP50: float64!
+  # Memory usage (75th percentile)
+  memoryP75: float64!
   # Memory usage (90th percentile)
   memoryP90: float64!
+  # Memory usage (95th percentile)
+  memoryP95: float64!
   # Memory usage (99th percentile)
   memoryP99: float64!
+  # Memory usage (99.9th percentile)
+  memoryP999: float64!
+  # RX bandwidth (25th percentile)
+  rxBandwidthBpsP25: float64!
   # RX bandwidth (50th percentile)
   rxBandwidthBpsP50: float64!
+  # RX bandwidth (75th percentile)
+  rxBandwidthBpsP75: float64!
   # RX bandwidth (90th percentile)
   rxBandwidthBpsP90: float64!
+  # RX bandwidth (95th percentile)
+  rxBandwidthBpsP95: float64!
   # RX bandwidth (99th percentile)
   rxBandwidthBpsP99: float64!
+  # RX bandwidth (99.9th percentile)
+  rxBandwidthBpsP999: float64!
+  # RX bandwidth (25th percentile)
+  @Deprecated
+  rxBandwidthP25: float64!
   # RX bandwidth (50th percentile)
   @Deprecated
   rxBandwidthP50: float64!
+  # RX bandwidth (75th percentile)
+  @Deprecated
+  rxBandwidthP75: float64!
   # RX bandwidth (90th percentile)
   @Deprecated
   rxBandwidthP90: float64!
+  # RX bandwidth (95th percentile)
+  @Deprecated
+  rxBandwidthP95: float64!
   # RX bandwidth (99th percentile)
   @Deprecated
   rxBandwidthP99: float64!
+  # RX bandwidth (99.9th percentile)
+  @Deprecated
+  rxBandwidthP999: float64!
+  # TX bandwidth (25th percentile)
+  txBandwidthBpsP25: float64!
   # TX bandwidth (50th percentile)
   txBandwidthBpsP50: float64!
+  # TX bandwidth (75th percentile)
+  txBandwidthBpsP75: float64!
   # TX bandwidth (90th percentile)
   txBandwidthBpsP90: float64!
+  # TX bandwidth (95th percentile)
+  txBandwidthBpsP95: float64!
   # TX bandwidth (99th percentile)
   txBandwidthBpsP99: float64!
+  # TX bandwidth (99.9th percentile)
+  txBandwidthBpsP999: float64!
+  # TX bandwidth (25th percentile)
+  @Deprecated
+  txBandwidthP25: float64!
   # TX bandwidth (50th percentile)
   @Deprecated
   txBandwidthP50: float64!
+  # TX bandwidth (75th percentile)
+  @Deprecated
+  txBandwidthP75: float64!
   # TX bandwidth (90th percentile)
   @Deprecated
   txBandwidthP90: float64!
+  # TX bandwidth (95th percentile)
+  @Deprecated
+  txBandwidthP95: float64!
   # TX bandwidth (99th percentile)
   @Deprecated
   txBandwidthP99: float64!
+  # TX bandwidth (99.9th percentile)
+  @Deprecated
+  txBandwidthP999: float64!
 }
 
 type AccountContainersMetricsAdaptiveGroupsSum {
+  # Sum of allocated vCPU in vCPU-seconds
+  allocatedCpu: float64!
   # Sum of allocated disk in byte-seconds
   allocatedDisk: float64!
   # Sum of allocated memory in byte-seconds
@@ -12316,6 +12876,8 @@ type AccountContainersMetricsAdaptiveGroupsSum {
 
 type AccountContainersMetricsAdaptiveGroupsSumConfidence {
   # Confidence interval for the corresponding point estimate
+  allocatedCpu: Confidence!
+  # Confidence interval for the corresponding point estimate
   allocatedDisk: Confidence!
   # Confidence interval for the corresponding point estimate
   allocatedMemory: Confidence!
@@ -12327,7 +12889,7 @@ type AccountContainersMetricsAdaptiveGroupsSumConfidence {
   txBytes: Confidence!
 }
 
-# Beta. Aggregated D1 analytics with adaptive sampling
+# Aggregated D1 analytics with adaptive sampling
 type AccountD1AnalyticsAdaptiveGroups {
   # The average value for a metric per dimension
   avg: AccountD1AnalyticsAdaptiveGroupsAvg
@@ -12526,22 +13088,62 @@ enum AccountD1AnalyticsAdaptiveGroupsOrderBy {
   datetimeSixHours_ASC
   # datetimeSixHours descending
   datetimeSixHours_DESC
+  # quantiles(queryBatchResponseBytesP25) ascending
+  quantiles_queryBatchResponseBytesP25_ASC
+  # quantiles(queryBatchResponseBytesP25) descending
+  quantiles_queryBatchResponseBytesP25_DESC
   # quantiles(queryBatchResponseBytesP50) ascending
   quantiles_queryBatchResponseBytesP50_ASC
   # quantiles(queryBatchResponseBytesP50) descending
   quantiles_queryBatchResponseBytesP50_DESC
+  # quantiles(queryBatchResponseBytesP75) ascending
+  quantiles_queryBatchResponseBytesP75_ASC
+  # quantiles(queryBatchResponseBytesP75) descending
+  quantiles_queryBatchResponseBytesP75_DESC
   # quantiles(queryBatchResponseBytesP90) ascending
   quantiles_queryBatchResponseBytesP90_ASC
   # quantiles(queryBatchResponseBytesP90) descending
   quantiles_queryBatchResponseBytesP90_DESC
+  # quantiles(queryBatchResponseBytesP95) ascending
+  quantiles_queryBatchResponseBytesP95_ASC
+  # quantiles(queryBatchResponseBytesP95) descending
+  quantiles_queryBatchResponseBytesP95_DESC
+  # quantiles(queryBatchResponseBytesP999) ascending
+  quantiles_queryBatchResponseBytesP999_ASC
+  # quantiles(queryBatchResponseBytesP999) descending
+  quantiles_queryBatchResponseBytesP999_DESC
+  # quantiles(queryBatchResponseBytesP99) ascending
+  quantiles_queryBatchResponseBytesP99_ASC
+  # quantiles(queryBatchResponseBytesP99) descending
+  quantiles_queryBatchResponseBytesP99_DESC
+  # quantiles(queryBatchTimeMsP25) ascending
+  quantiles_queryBatchTimeMsP25_ASC
+  # quantiles(queryBatchTimeMsP25) descending
+  quantiles_queryBatchTimeMsP25_DESC
   # quantiles(queryBatchTimeMsP50) ascending
   quantiles_queryBatchTimeMsP50_ASC
   # quantiles(queryBatchTimeMsP50) descending
   quantiles_queryBatchTimeMsP50_DESC
+  # quantiles(queryBatchTimeMsP75) ascending
+  quantiles_queryBatchTimeMsP75_ASC
+  # quantiles(queryBatchTimeMsP75) descending
+  quantiles_queryBatchTimeMsP75_DESC
   # quantiles(queryBatchTimeMsP90) ascending
   quantiles_queryBatchTimeMsP90_ASC
   # quantiles(queryBatchTimeMsP90) descending
   quantiles_queryBatchTimeMsP90_DESC
+  # quantiles(queryBatchTimeMsP95) ascending
+  quantiles_queryBatchTimeMsP95_ASC
+  # quantiles(queryBatchTimeMsP95) descending
+  quantiles_queryBatchTimeMsP95_DESC
+  # quantiles(queryBatchTimeMsP999) ascending
+  quantiles_queryBatchTimeMsP999_ASC
+  # quantiles(queryBatchTimeMsP999) descending
+  quantiles_queryBatchTimeMsP999_DESC
+  # quantiles(queryBatchTimeMsP99) ascending
+  quantiles_queryBatchTimeMsP99_ASC
+  # quantiles(queryBatchTimeMsP99) descending
+  quantiles_queryBatchTimeMsP99_DESC
   # servedByInstance ascending
   servedByInstance_ASC
   # servedByInstance descending
@@ -12573,14 +13175,34 @@ enum AccountD1AnalyticsAdaptiveGroupsOrderBy {
 }
 
 type AccountD1AnalyticsAdaptiveGroupsQuantiles {
+  # The total number of bytes in the response, including all returned rows and metadata (25th percentile).
+  queryBatchResponseBytesP25: float64!
   # The total number of bytes in the response, including all returned rows and metadata (50th percentile).
   queryBatchResponseBytesP50: float64!
+  # The total number of bytes in the response, including all returned rows and metadata (75th percentile).
+  queryBatchResponseBytesP75: float64!
   # The total number of bytes in the response, including all returned rows and metadata (90th percentile).
   queryBatchResponseBytesP90: float64!
+  # The total number of bytes in the response, including all returned rows and metadata (95th percentile).
+  queryBatchResponseBytesP95: float64!
+  # The total number of bytes in the response, including all returned rows and metadata (99th percentile).
+  queryBatchResponseBytesP99: float64!
+  # The total number of bytes in the response, including all returned rows and metadata (99.9th percentile).
+  queryBatchResponseBytesP999: float64!
+  # Query batch response time in milliseconds (25th percentile).
+  queryBatchTimeMsP25: float64!
   # Query batch response time in milliseconds (50th percentile).
   queryBatchTimeMsP50: float64!
+  # Query batch response time in milliseconds (75th percentile).
+  queryBatchTimeMsP75: float64!
   # Query batch response time in milliseconds (90th percentile).
   queryBatchTimeMsP90: float64!
+  # Query batch response time in milliseconds (95th percentile).
+  queryBatchTimeMsP95: float64!
+  # Query batch response time in milliseconds (99th percentile).
+  queryBatchTimeMsP99: float64!
+  # Query batch response time in milliseconds (99.9th percentile).
+  queryBatchTimeMsP999: float64!
 }
 
 type AccountD1AnalyticsAdaptiveGroupsSum {
@@ -12609,7 +13231,7 @@ type AccountD1AnalyticsAdaptiveGroupsSumConfidence {
   writeQueries: Confidence!
 }
 
-# Beta. D1 query metrics with adaptive sampling
+# D1 query metrics with adaptive sampling
 type AccountD1QueriesAdaptiveGroups {
   # The average value for a metric per dimension
   avg: AccountD1QueriesAdaptiveGroupsAvg
@@ -12848,14 +13470,30 @@ enum AccountD1QueriesAdaptiveGroupsOrderBy {
   error_ASC
   # error descending
   error_DESC
+  # quantiles(queryDurationMsP25) ascending
+  quantiles_queryDurationMsP25_ASC
+  # quantiles(queryDurationMsP25) descending
+  quantiles_queryDurationMsP25_DESC
   # quantiles(queryDurationMsP50) ascending
   quantiles_queryDurationMsP50_ASC
   # quantiles(queryDurationMsP50) descending
   quantiles_queryDurationMsP50_DESC
+  # quantiles(queryDurationMsP75) ascending
+  quantiles_queryDurationMsP75_ASC
+  # quantiles(queryDurationMsP75) descending
+  quantiles_queryDurationMsP75_DESC
+  # quantiles(queryDurationMsP90) ascending
+  quantiles_queryDurationMsP90_ASC
+  # quantiles(queryDurationMsP90) descending
+  quantiles_queryDurationMsP90_DESC
   # quantiles(queryDurationMsP95) ascending
   quantiles_queryDurationMsP95_ASC
   # quantiles(queryDurationMsP95) descending
   quantiles_queryDurationMsP95_DESC
+  # quantiles(queryDurationMsP999) ascending
+  quantiles_queryDurationMsP999_ASC
+  # quantiles(queryDurationMsP999) descending
+  quantiles_queryDurationMsP999_DESC
   # quantiles(queryDurationMsP99) ascending
   quantiles_queryDurationMsP99_ASC
   # quantiles(queryDurationMsP99) descending
@@ -12891,12 +13529,20 @@ enum AccountD1QueriesAdaptiveGroupsOrderBy {
 }
 
 type AccountD1QueriesAdaptiveGroupsQuantiles {
+  # 25th percentile Query Duration (milliseconds)
+  queryDurationMsP25: float64!
   # 50th percentile Query Duration (milliseconds)
   queryDurationMsP50: float64!
+  # 75th percentile Query Duration (milliseconds)
+  queryDurationMsP75: float64!
+  # 90th percentile Query Duration (milliseconds)
+  queryDurationMsP90: float64!
   # 95th percentile Query Duration (milliseconds)
   queryDurationMsP95: float64!
   # 99th percentile Query Duration (milliseconds)
   queryDurationMsP99: float64!
+  # 99.9th percentile Query Duration (milliseconds)
+  queryDurationMsP999: float64!
 }
 
 type AccountD1QueriesAdaptiveGroupsSum {
@@ -12921,7 +13567,7 @@ type AccountD1QueriesAdaptiveGroupsSumConfidence {
   rowsWritten: Confidence!
 }
 
-# Beta. D1 storage with adaptive sampling
+# D1 storage with adaptive sampling
 type AccountD1StorageAdaptiveGroups {
   # List of dimensions to group by
   dimensions: AccountD1StorageAdaptiveGroupsDimensions
@@ -13575,14 +14221,30 @@ enum AccountDnsAnalyticsAdaptiveGroupsOrderBy {
   protocol_ASC
   # protocol descending
   protocol_DESC
+  # quantiles(processingTimeUsP25) ascending
+  quantiles_processingTimeUsP25_ASC
+  # quantiles(processingTimeUsP25) descending
+  quantiles_processingTimeUsP25_DESC
   # quantiles(processingTimeUsP50) ascending
   quantiles_processingTimeUsP50_ASC
   # quantiles(processingTimeUsP50) descending
   quantiles_processingTimeUsP50_DESC
+  # quantiles(processingTimeUsP75) ascending
+  quantiles_processingTimeUsP75_ASC
+  # quantiles(processingTimeUsP75) descending
+  quantiles_processingTimeUsP75_DESC
   # quantiles(processingTimeUsP90) ascending
   quantiles_processingTimeUsP90_ASC
   # quantiles(processingTimeUsP90) descending
   quantiles_processingTimeUsP90_DESC
+  # quantiles(processingTimeUsP95) ascending
+  quantiles_processingTimeUsP95_ASC
+  # quantiles(processingTimeUsP95) descending
+  quantiles_processingTimeUsP95_DESC
+  # quantiles(processingTimeUsP999) ascending
+  quantiles_processingTimeUsP999_ASC
+  # quantiles(processingTimeUsP999) descending
+  quantiles_processingTimeUsP999_DESC
   # quantiles(processingTimeUsP99) ascending
   quantiles_processingTimeUsP99_ASC
   # quantiles(processingTimeUsP99) descending
@@ -13630,12 +14292,20 @@ enum AccountDnsAnalyticsAdaptiveGroupsOrderBy {
 }
 
 type AccountDnsAnalyticsAdaptiveGroupsQuantiles {
+  # 25th percentile processing time in microseconds
+  processingTimeUsP25: float64!
   # 50th percentile processing time in microseconds (median)
   processingTimeUsP50: float64!
+  # 75th percentile processing time in microseconds
+  processingTimeUsP75: float64!
   # 90th percentile processing time in microseconds
   processingTimeUsP90: float64!
+  # 95th percentile processing time in microseconds
+  processingTimeUsP95: float64!
   # 99th percentile processing time in microseconds
   processingTimeUsP99: float64!
+  # 99.9th percentile processing time in microseconds
+  processingTimeUsP999: float64!
 }
 
 enum AccountDnsAnalyticsAdaptiveOrderBy {
@@ -14295,14 +14965,30 @@ enum AccountDnsFirewallAnalyticsAdaptiveGroupsOrderBy {
   protocol_ASC
   # protocol descending
   protocol_DESC
+  # quantiles(processingTimeUsP25) ascending
+  quantiles_processingTimeUsP25_ASC
+  # quantiles(processingTimeUsP25) descending
+  quantiles_processingTimeUsP25_DESC
   # quantiles(processingTimeUsP50) ascending
   quantiles_processingTimeUsP50_ASC
   # quantiles(processingTimeUsP50) descending
   quantiles_processingTimeUsP50_DESC
+  # quantiles(processingTimeUsP75) ascending
+  quantiles_processingTimeUsP75_ASC
+  # quantiles(processingTimeUsP75) descending
+  quantiles_processingTimeUsP75_DESC
   # quantiles(processingTimeUsP90) ascending
   quantiles_processingTimeUsP90_ASC
   # quantiles(processingTimeUsP90) descending
   quantiles_processingTimeUsP90_DESC
+  # quantiles(processingTimeUsP95) ascending
+  quantiles_processingTimeUsP95_ASC
+  # quantiles(processingTimeUsP95) descending
+  quantiles_processingTimeUsP95_DESC
+  # quantiles(processingTimeUsP999) ascending
+  quantiles_processingTimeUsP999_ASC
+  # quantiles(processingTimeUsP999) descending
+  quantiles_processingTimeUsP999_DESC
   # quantiles(processingTimeUsP99) ascending
   quantiles_processingTimeUsP99_ASC
   # quantiles(processingTimeUsP99) descending
@@ -14350,12 +15036,20 @@ enum AccountDnsFirewallAnalyticsAdaptiveGroupsOrderBy {
 }
 
 type AccountDnsFirewallAnalyticsAdaptiveGroupsQuantiles {
+  # 25th percentile processing time in microseconds
+  processingTimeUsP25: float64!
   # 50th percentile processing time in microseconds (median)
   processingTimeUsP50: float64!
+  # 75th percentile processing time in microseconds
+  processingTimeUsP75: float64!
   # 90th percentile processing time in microseconds
   processingTimeUsP90: float64!
+  # 95th percentile processing time in microseconds
+  processingTimeUsP95: float64!
   # 99th percentile processing time in microseconds
   processingTimeUsP99: float64!
+  # 99.9th percentile processing time in microseconds
+  processingTimeUsP999: float64!
 }
 
 enum AccountDnsFirewallAnalyticsAdaptiveOrderBy {
@@ -16626,6 +17320,10 @@ enum AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy {
   quantiles_responseBodySizeP90_ASC
   # quantiles(responseBodySizeP90) descending
   quantiles_responseBodySizeP90_DESC
+  # quantiles(responseBodySizeP95) ascending
+  quantiles_responseBodySizeP95_ASC
+  # quantiles(responseBodySizeP95) descending
+  quantiles_responseBodySizeP95_DESC
   # quantiles(responseBodySizeP999) ascending
   quantiles_responseBodySizeP999_ASC
   # quantiles(responseBodySizeP999) descending
@@ -16650,6 +17348,10 @@ enum AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy {
   quantiles_wallTimeP90_ASC
   # quantiles(wallTimeP90) descending
   quantiles_wallTimeP90_DESC
+  # quantiles(wallTimeP95) ascending
+  quantiles_wallTimeP95_ASC
+  # quantiles(wallTimeP95) descending
+  quantiles_wallTimeP95_DESC
   # quantiles(wallTimeP999) ascending
   quantiles_wallTimeP999_ASC
   # quantiles(wallTimeP999) descending
@@ -16701,6 +17403,8 @@ type AccountDurableObjectsInvocationsAdaptiveGroupsQuantiles {
   responseBodySizeP75: float32!
   # Response body size 90th percentile - bytes
   responseBodySizeP90: float32!
+  # Response body size 95th percentile - bytes
+  responseBodySizeP95: float32!
   # Response body size 99th percentile - bytes
   responseBodySizeP99: float32!
   # Response body size 99.9th percentile - bytes
@@ -16713,6 +17417,8 @@ type AccountDurableObjectsInvocationsAdaptiveGroupsQuantiles {
   wallTimeP75: float32!
   # Wall time 90th percentile - microseconds
   wallTimeP90: float32!
+  # Wall time 95th percentile - microseconds
+  wallTimeP95: float32!
   # Wall time 99th percentile - microseconds
   wallTimeP99: float32!
   # Wall time 99.9th percentile - microseconds
@@ -21797,14 +22503,62 @@ enum AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # quantiles(tokenAuthDurationUsP25) ascending
+  quantiles_tokenAuthDurationUsP25_ASC
+  # quantiles(tokenAuthDurationUsP25) descending
+  quantiles_tokenAuthDurationUsP25_DESC
   # quantiles(tokenAuthDurationUsP50) ascending
   quantiles_tokenAuthDurationUsP50_ASC
   # quantiles(tokenAuthDurationUsP50) descending
   quantiles_tokenAuthDurationUsP50_DESC
+  # quantiles(tokenAuthDurationUsP75) ascending
+  quantiles_tokenAuthDurationUsP75_ASC
+  # quantiles(tokenAuthDurationUsP75) descending
+  quantiles_tokenAuthDurationUsP75_DESC
+  # quantiles(tokenAuthDurationUsP90) ascending
+  quantiles_tokenAuthDurationUsP90_ASC
+  # quantiles(tokenAuthDurationUsP90) descending
+  quantiles_tokenAuthDurationUsP90_DESC
+  # quantiles(tokenAuthDurationUsP95) ascending
+  quantiles_tokenAuthDurationUsP95_ASC
+  # quantiles(tokenAuthDurationUsP95) descending
+  quantiles_tokenAuthDurationUsP95_DESC
+  # quantiles(tokenAuthDurationUsP999) ascending
+  quantiles_tokenAuthDurationUsP999_ASC
+  # quantiles(tokenAuthDurationUsP999) descending
+  quantiles_tokenAuthDurationUsP999_DESC
+  # quantiles(tokenAuthDurationUsP99) ascending
+  quantiles_tokenAuthDurationUsP99_ASC
+  # quantiles(tokenAuthDurationUsP99) descending
+  quantiles_tokenAuthDurationUsP99_DESC
+  # quantiles(transportHandshakeDurationUsP25) ascending
+  quantiles_transportHandshakeDurationUsP25_ASC
+  # quantiles(transportHandshakeDurationUsP25) descending
+  quantiles_transportHandshakeDurationUsP25_DESC
   # quantiles(transportHandshakeDurationUsP50) ascending
   quantiles_transportHandshakeDurationUsP50_ASC
   # quantiles(transportHandshakeDurationUsP50) descending
   quantiles_transportHandshakeDurationUsP50_DESC
+  # quantiles(transportHandshakeDurationUsP75) ascending
+  quantiles_transportHandshakeDurationUsP75_ASC
+  # quantiles(transportHandshakeDurationUsP75) descending
+  quantiles_transportHandshakeDurationUsP75_DESC
+  # quantiles(transportHandshakeDurationUsP90) ascending
+  quantiles_transportHandshakeDurationUsP90_ASC
+  # quantiles(transportHandshakeDurationUsP90) descending
+  quantiles_transportHandshakeDurationUsP90_DESC
+  # quantiles(transportHandshakeDurationUsP95) ascending
+  quantiles_transportHandshakeDurationUsP95_ASC
+  # quantiles(transportHandshakeDurationUsP95) descending
+  quantiles_transportHandshakeDurationUsP95_DESC
+  # quantiles(transportHandshakeDurationUsP999) ascending
+  quantiles_transportHandshakeDurationUsP999_ASC
+  # quantiles(transportHandshakeDurationUsP999) descending
+  quantiles_transportHandshakeDurationUsP999_DESC
+  # quantiles(transportHandshakeDurationUsP99) ascending
+  quantiles_transportHandshakeDurationUsP99_ASC
+  # quantiles(transportHandshakeDurationUsP99) descending
+  quantiles_transportHandshakeDurationUsP99_DESC
   # quicErrorCode ascending
   quicErrorCode_ASC
   # quicErrorCode descending
@@ -21868,10 +22622,34 @@ enum AccountGatewayL4DownstreamSessionsAdaptiveGroupsOrderBy {
 }
 
 type AccountGatewayL4DownstreamSessionsAdaptiveGroupsQuantiles {
-  # Time taken for Client Token Authentication in microseconds
+  # Time taken for Client Token Authentication in microseconds (25th percentile)
+  tokenAuthDurationUsP25: int64!
+  # Time taken for Client Token Authentication in microseconds (50th percentile)
   tokenAuthDurationUsP50: int64!
-  # Time taken for TCP/TLS or QUIC handshake in microseconds
+  # Time taken for Client Token Authentication in microseconds (75th percentile)
+  tokenAuthDurationUsP75: int64!
+  # Time taken for Client Token Authentication in microseconds (90th percentile)
+  tokenAuthDurationUsP90: int64!
+  # Time taken for Client Token Authentication in microseconds (95th percentile)
+  tokenAuthDurationUsP95: int64!
+  # Time taken for Client Token Authentication in microseconds (99th percentile)
+  tokenAuthDurationUsP99: int64!
+  # Time taken for Client Token Authentication in microseconds (99.9th percentile)
+  tokenAuthDurationUsP999: int64!
+  # Time taken for TCP/TLS or QUIC handshake in microseconds (25th percentile)
+  transportHandshakeDurationUsP25: int64!
+  # Time taken for TCP/TLS or QUIC handshake in microseconds (50th percentile)
   transportHandshakeDurationUsP50: int64!
+  # Time taken for TCP/TLS or QUIC handshake in microseconds (75th percentile)
+  transportHandshakeDurationUsP75: int64!
+  # Time taken for TCP/TLS or QUIC handshake in microseconds (90th percentile)
+  transportHandshakeDurationUsP90: int64!
+  # Time taken for TCP/TLS or QUIC handshake in microseconds (95th percentile)
+  transportHandshakeDurationUsP95: int64!
+  # Time taken for TCP/TLS or QUIC handshake in microseconds (99th percentile)
+  transportHandshakeDurationUsP99: int64!
+  # Time taken for TCP/TLS or QUIC handshake in microseconds (99.9th percentile)
+  transportHandshakeDurationUsP999: int64!
 }
 
 type AccountGatewayL4DownstreamSessionsAdaptiveGroupsSum {
@@ -22640,18 +23418,90 @@ enum AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy {
   httpConnectReqStatus_ASC
   # httpConnectReqStatus descending
   httpConnectReqStatus_DESC
+  # quantiles(connectReqHandlingDurationUsP25) ascending
+  quantiles_connectReqHandlingDurationUsP25_ASC
+  # quantiles(connectReqHandlingDurationUsP25) descending
+  quantiles_connectReqHandlingDurationUsP25_DESC
   # quantiles(connectReqHandlingDurationUsP50) ascending
   quantiles_connectReqHandlingDurationUsP50_ASC
   # quantiles(connectReqHandlingDurationUsP50) descending
   quantiles_connectReqHandlingDurationUsP50_DESC
+  # quantiles(connectReqHandlingDurationUsP75) ascending
+  quantiles_connectReqHandlingDurationUsP75_ASC
+  # quantiles(connectReqHandlingDurationUsP75) descending
+  quantiles_connectReqHandlingDurationUsP75_DESC
+  # quantiles(connectReqHandlingDurationUsP90) ascending
+  quantiles_connectReqHandlingDurationUsP90_ASC
+  # quantiles(connectReqHandlingDurationUsP90) descending
+  quantiles_connectReqHandlingDurationUsP90_DESC
+  # quantiles(connectReqHandlingDurationUsP95) ascending
+  quantiles_connectReqHandlingDurationUsP95_ASC
+  # quantiles(connectReqHandlingDurationUsP95) descending
+  quantiles_connectReqHandlingDurationUsP95_DESC
+  # quantiles(connectReqHandlingDurationUsP999) ascending
+  quantiles_connectReqHandlingDurationUsP999_ASC
+  # quantiles(connectReqHandlingDurationUsP999) descending
+  quantiles_connectReqHandlingDurationUsP999_DESC
+  # quantiles(connectReqHandlingDurationUsP99) ascending
+  quantiles_connectReqHandlingDurationUsP99_ASC
+  # quantiles(connectReqHandlingDurationUsP99) descending
+  quantiles_connectReqHandlingDurationUsP99_DESC
+  # quantiles(totalTunnelSetupDurationUsP25) ascending
+  quantiles_totalTunnelSetupDurationUsP25_ASC
+  # quantiles(totalTunnelSetupDurationUsP25) descending
+  quantiles_totalTunnelSetupDurationUsP25_DESC
   # quantiles(totalTunnelSetupDurationUsP50) ascending
   quantiles_totalTunnelSetupDurationUsP50_ASC
   # quantiles(totalTunnelSetupDurationUsP50) descending
   quantiles_totalTunnelSetupDurationUsP50_DESC
+  # quantiles(totalTunnelSetupDurationUsP75) ascending
+  quantiles_totalTunnelSetupDurationUsP75_ASC
+  # quantiles(totalTunnelSetupDurationUsP75) descending
+  quantiles_totalTunnelSetupDurationUsP75_DESC
+  # quantiles(totalTunnelSetupDurationUsP90) ascending
+  quantiles_totalTunnelSetupDurationUsP90_ASC
+  # quantiles(totalTunnelSetupDurationUsP90) descending
+  quantiles_totalTunnelSetupDurationUsP90_DESC
+  # quantiles(totalTunnelSetupDurationUsP95) ascending
+  quantiles_totalTunnelSetupDurationUsP95_ASC
+  # quantiles(totalTunnelSetupDurationUsP95) descending
+  quantiles_totalTunnelSetupDurationUsP95_DESC
+  # quantiles(totalTunnelSetupDurationUsP999) ascending
+  quantiles_totalTunnelSetupDurationUsP999_ASC
+  # quantiles(totalTunnelSetupDurationUsP999) descending
+  quantiles_totalTunnelSetupDurationUsP999_DESC
+  # quantiles(totalTunnelSetupDurationUsP99) ascending
+  quantiles_totalTunnelSetupDurationUsP99_ASC
+  # quantiles(totalTunnelSetupDurationUsP99) descending
+  quantiles_totalTunnelSetupDurationUsP99_DESC
+  # quantiles(tunnelSetupDurationUsP25) ascending
+  quantiles_tunnelSetupDurationUsP25_ASC
+  # quantiles(tunnelSetupDurationUsP25) descending
+  quantiles_tunnelSetupDurationUsP25_DESC
   # quantiles(tunnelSetupDurationUsP50) ascending
   quantiles_tunnelSetupDurationUsP50_ASC
   # quantiles(tunnelSetupDurationUsP50) descending
   quantiles_tunnelSetupDurationUsP50_DESC
+  # quantiles(tunnelSetupDurationUsP75) ascending
+  quantiles_tunnelSetupDurationUsP75_ASC
+  # quantiles(tunnelSetupDurationUsP75) descending
+  quantiles_tunnelSetupDurationUsP75_DESC
+  # quantiles(tunnelSetupDurationUsP90) ascending
+  quantiles_tunnelSetupDurationUsP90_ASC
+  # quantiles(tunnelSetupDurationUsP90) descending
+  quantiles_tunnelSetupDurationUsP90_DESC
+  # quantiles(tunnelSetupDurationUsP95) ascending
+  quantiles_tunnelSetupDurationUsP95_ASC
+  # quantiles(tunnelSetupDurationUsP95) descending
+  quantiles_tunnelSetupDurationUsP95_DESC
+  # quantiles(tunnelSetupDurationUsP999) ascending
+  quantiles_tunnelSetupDurationUsP999_ASC
+  # quantiles(tunnelSetupDurationUsP999) descending
+  quantiles_tunnelSetupDurationUsP999_DESC
+  # quantiles(tunnelSetupDurationUsP99) ascending
+  quantiles_tunnelSetupDurationUsP99_ASC
+  # quantiles(tunnelSetupDurationUsP99) descending
+  quantiles_tunnelSetupDurationUsP99_DESC
   # quicErrorCode ascending
   quicErrorCode_ASC
   # quicErrorCode descending
@@ -22711,12 +23561,48 @@ enum AccountGatewayL4UpstreamSessionsAdaptiveGroupsOrderBy {
 }
 
 type AccountGatewayL4UpstreamSessionsAdaptiveGroupsQuantiles {
-  # Time taken for CONNECT request handling in microseconds
+  # Time taken for CONNECT request handling in microseconds (25th percentile)
+  connectReqHandlingDurationUsP25: int64!
+  # Time taken for CONNECT request handling in microseconds (50th percentile)
   connectReqHandlingDurationUsP50: int64!
-  # Total time taken for tunnel setup in microseconds
+  # Time taken for CONNECT request handling in microseconds (75th percentile)
+  connectReqHandlingDurationUsP75: int64!
+  # Time taken for CONNECT request handling in microseconds (90th percentile)
+  connectReqHandlingDurationUsP90: int64!
+  # Time taken for CONNECT request handling in microseconds (95th percentile)
+  connectReqHandlingDurationUsP95: int64!
+  # Time taken for CONNECT request handling in microseconds (99th percentile)
+  connectReqHandlingDurationUsP99: int64!
+  # Time taken for CONNECT request handling in microseconds (99.9th percentile)
+  connectReqHandlingDurationUsP999: int64!
+  # Total time taken for tunnel setup in microseconds (25th percentile)
+  totalTunnelSetupDurationUsP25: int64!
+  # Total time taken for tunnel setup in microseconds (50th percentile)
   totalTunnelSetupDurationUsP50: int64!
-  # Time taken to setup the tunnel in microseconds
+  # Total time taken for tunnel setup in microseconds (75th percentile)
+  totalTunnelSetupDurationUsP75: int64!
+  # Total time taken for tunnel setup in microseconds (90th percentile)
+  totalTunnelSetupDurationUsP90: int64!
+  # Total time taken for tunnel setup in microseconds (95th percentile)
+  totalTunnelSetupDurationUsP95: int64!
+  # Total time taken for tunnel setup in microseconds (99th percentile)
+  totalTunnelSetupDurationUsP99: int64!
+  # Total time taken for tunnel setup in microseconds (99.9th percentile)
+  totalTunnelSetupDurationUsP999: int64!
+  # Time taken to setup the tunnel in microseconds (25th percentile)
+  tunnelSetupDurationUsP25: int64!
+  # Time taken to setup the tunnel in microseconds (50th percentile)
   tunnelSetupDurationUsP50: int64!
+  # Time taken to setup the tunnel in microseconds (75th percentile)
+  tunnelSetupDurationUsP75: int64!
+  # Time taken to setup the tunnel in microseconds (90th percentile)
+  tunnelSetupDurationUsP90: int64!
+  # Time taken to setup the tunnel in microseconds (95th percentile)
+  tunnelSetupDurationUsP95: int64!
+  # Time taken to setup the tunnel in microseconds (99th percentile)
+  tunnelSetupDurationUsP99: int64!
+  # Time taken to setup the tunnel in microseconds (99.9th percentile)
+  tunnelSetupDurationUsP999: int64!
 }
 
 type AccountGatewayL4UpstreamSessionsAdaptiveGroupsSum {
@@ -24008,6 +24894,10 @@ enum AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsOrderBy {
   quantiles_executionTimeMsP98_ASC
   # quantiles(executionTimeMsP98) descending
   quantiles_executionTimeMsP98_DESC
+  # quantiles(executionTimeMsP999) ascending
+  quantiles_executionTimeMsP999_ASC
+  # quantiles(executionTimeMsP999) descending
+  quantiles_executionTimeMsP999_DESC
   # quantiles(executionTimeMsP99) ascending
   quantiles_executionTimeMsP99_ASC
   # quantiles(executionTimeMsP99) descending
@@ -24029,6 +24919,8 @@ type AccountGatewayResolverByRuleExecutionPerformanceAdaptiveGroupsQuantiles {
   executionTimeMsP98: float64!
   # Execution time performance of 99th percentile in milliseconds
   executionTimeMsP99: float64!
+  # Execution time performance of 99.9th percentile in milliseconds
+  executionTimeMsP999: float64!
 }
 
 # BETA - Aggregate counts of Gateway Resolver queries with adaptive sampling
@@ -25470,6 +26362,10 @@ type AccountHttpRequestsAdaptive {
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
   wafXssAttackScore: uint8!
+  # Managed Web Asset Labels (Cloudflare-defined labels, e.g. cf-log-in, cf-llm)
+  webAssetsLabelsManaged: [string!]!
+  # Web Asset Operation ID
+  webAssetsOperationId: string!
   # The X-Requested-With header of the client request
   xRequestedWith: string!
   # Associated zone
@@ -26182,6 +27078,21 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   wafXssAttackScore_lt: uint8
   wafXssAttackScore_neq: uint8
   wafXssAttackScore_notin: bytes
+  webAssetsLabelsManaged_has: string
+  webAssetsLabelsManaged_hasall: [string!]
+  webAssetsLabelsManaged_hasany: [string!]
+  webAssetsLabelsManaged_isempty: bool
+  webAssetsLabelsManaged_nothas: string
+  webAssetsOperationId: string
+  webAssetsOperationId_geq: string
+  webAssetsOperationId_gt: string
+  webAssetsOperationId_in: [string!]
+  webAssetsOperationId_leq: string
+  webAssetsOperationId_like: string
+  webAssetsOperationId_lt: string
+  webAssetsOperationId_neq: string
+  webAssetsOperationId_notin: [string!]
+  webAssetsOperationId_notlike: string
   xRequestedWith: string
   xRequestedWith_geq: string
   xRequestedWith_gt: string
@@ -26407,6 +27318,10 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
   wafXssAttackScore: uint8!
+  # Managed Web Asset Labels (Cloudflare-defined labels, e.g. cf-log-in, cf-llm)
+  webAssetsLabelsManaged: [string!]!
+  # Web Asset Operation ID
+  webAssetsOperationId: string!
   # The X-Requested-With header of the client request
   xRequestedWith: string!
   # Associated zone
@@ -27127,6 +28042,21 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   wafXssAttackScore_lt: uint8
   wafXssAttackScore_neq: uint8
   wafXssAttackScore_notin: bytes
+  webAssetsLabelsManaged_has: string
+  webAssetsLabelsManaged_hasall: [string!]
+  webAssetsLabelsManaged_hasany: [string!]
+  webAssetsLabelsManaged_isempty: bool
+  webAssetsLabelsManaged_nothas: string
+  webAssetsOperationId: string
+  webAssetsOperationId_geq: string
+  webAssetsOperationId_gt: string
+  webAssetsOperationId_in: [string!]
+  webAssetsOperationId_leq: string
+  webAssetsOperationId_like: string
+  webAssetsOperationId_lt: string
+  webAssetsOperationId_neq: string
+  webAssetsOperationId_notin: [string!]
+  webAssetsOperationId_notlike: string
   xRequestedWith: string
   xRequestedWith_geq: string
   xRequestedWith_gt: string
@@ -27446,50 +28376,114 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   payPerCrawlStatus_ASC
   # payPerCrawlStatus descending
   payPerCrawlStatus_DESC
+  # quantiles(edgeDnsResponseTimeMsP25) ascending
+  quantiles_edgeDnsResponseTimeMsP25_ASC
+  # quantiles(edgeDnsResponseTimeMsP25) descending
+  quantiles_edgeDnsResponseTimeMsP25_DESC
   # quantiles(edgeDnsResponseTimeMsP50) ascending
   quantiles_edgeDnsResponseTimeMsP50_ASC
   # quantiles(edgeDnsResponseTimeMsP50) descending
   quantiles_edgeDnsResponseTimeMsP50_DESC
+  # quantiles(edgeDnsResponseTimeMsP75) ascending
+  quantiles_edgeDnsResponseTimeMsP75_ASC
+  # quantiles(edgeDnsResponseTimeMsP75) descending
+  quantiles_edgeDnsResponseTimeMsP75_DESC
+  # quantiles(edgeDnsResponseTimeMsP90) ascending
+  quantiles_edgeDnsResponseTimeMsP90_ASC
+  # quantiles(edgeDnsResponseTimeMsP90) descending
+  quantiles_edgeDnsResponseTimeMsP90_DESC
   # quantiles(edgeDnsResponseTimeMsP95) ascending
   quantiles_edgeDnsResponseTimeMsP95_ASC
   # quantiles(edgeDnsResponseTimeMsP95) descending
   quantiles_edgeDnsResponseTimeMsP95_DESC
+  # quantiles(edgeDnsResponseTimeMsP999) ascending
+  quantiles_edgeDnsResponseTimeMsP999_ASC
+  # quantiles(edgeDnsResponseTimeMsP999) descending
+  quantiles_edgeDnsResponseTimeMsP999_DESC
   # quantiles(edgeDnsResponseTimeMsP99) ascending
   quantiles_edgeDnsResponseTimeMsP99_ASC
   # quantiles(edgeDnsResponseTimeMsP99) descending
   quantiles_edgeDnsResponseTimeMsP99_DESC
+  # quantiles(edgeResponseBytesP25) ascending
+  quantiles_edgeResponseBytesP25_ASC
+  # quantiles(edgeResponseBytesP25) descending
+  quantiles_edgeResponseBytesP25_DESC
   # quantiles(edgeResponseBytesP50) ascending
   quantiles_edgeResponseBytesP50_ASC
   # quantiles(edgeResponseBytesP50) descending
   quantiles_edgeResponseBytesP50_DESC
+  # quantiles(edgeResponseBytesP75) ascending
+  quantiles_edgeResponseBytesP75_ASC
+  # quantiles(edgeResponseBytesP75) descending
+  quantiles_edgeResponseBytesP75_DESC
+  # quantiles(edgeResponseBytesP90) ascending
+  quantiles_edgeResponseBytesP90_ASC
+  # quantiles(edgeResponseBytesP90) descending
+  quantiles_edgeResponseBytesP90_DESC
   # quantiles(edgeResponseBytesP95) ascending
   quantiles_edgeResponseBytesP95_ASC
   # quantiles(edgeResponseBytesP95) descending
   quantiles_edgeResponseBytesP95_DESC
+  # quantiles(edgeResponseBytesP999) ascending
+  quantiles_edgeResponseBytesP999_ASC
+  # quantiles(edgeResponseBytesP999) descending
+  quantiles_edgeResponseBytesP999_DESC
   # quantiles(edgeResponseBytesP99) ascending
   quantiles_edgeResponseBytesP99_ASC
   # quantiles(edgeResponseBytesP99) descending
   quantiles_edgeResponseBytesP99_DESC
+  # quantiles(edgeTimeToFirstByteMsP25) ascending
+  quantiles_edgeTimeToFirstByteMsP25_ASC
+  # quantiles(edgeTimeToFirstByteMsP25) descending
+  quantiles_edgeTimeToFirstByteMsP25_DESC
   # quantiles(edgeTimeToFirstByteMsP50) ascending
   quantiles_edgeTimeToFirstByteMsP50_ASC
   # quantiles(edgeTimeToFirstByteMsP50) descending
   quantiles_edgeTimeToFirstByteMsP50_DESC
+  # quantiles(edgeTimeToFirstByteMsP75) ascending
+  quantiles_edgeTimeToFirstByteMsP75_ASC
+  # quantiles(edgeTimeToFirstByteMsP75) descending
+  quantiles_edgeTimeToFirstByteMsP75_DESC
+  # quantiles(edgeTimeToFirstByteMsP90) ascending
+  quantiles_edgeTimeToFirstByteMsP90_ASC
+  # quantiles(edgeTimeToFirstByteMsP90) descending
+  quantiles_edgeTimeToFirstByteMsP90_DESC
   # quantiles(edgeTimeToFirstByteMsP95) ascending
   quantiles_edgeTimeToFirstByteMsP95_ASC
   # quantiles(edgeTimeToFirstByteMsP95) descending
   quantiles_edgeTimeToFirstByteMsP95_DESC
+  # quantiles(edgeTimeToFirstByteMsP999) ascending
+  quantiles_edgeTimeToFirstByteMsP999_ASC
+  # quantiles(edgeTimeToFirstByteMsP999) descending
+  quantiles_edgeTimeToFirstByteMsP999_DESC
   # quantiles(edgeTimeToFirstByteMsP99) ascending
   quantiles_edgeTimeToFirstByteMsP99_ASC
   # quantiles(edgeTimeToFirstByteMsP99) descending
   quantiles_edgeTimeToFirstByteMsP99_DESC
+  # quantiles(originResponseDurationMsP25) ascending
+  quantiles_originResponseDurationMsP25_ASC
+  # quantiles(originResponseDurationMsP25) descending
+  quantiles_originResponseDurationMsP25_DESC
   # quantiles(originResponseDurationMsP50) ascending
   quantiles_originResponseDurationMsP50_ASC
   # quantiles(originResponseDurationMsP50) descending
   quantiles_originResponseDurationMsP50_DESC
+  # quantiles(originResponseDurationMsP75) ascending
+  quantiles_originResponseDurationMsP75_ASC
+  # quantiles(originResponseDurationMsP75) descending
+  quantiles_originResponseDurationMsP75_DESC
+  # quantiles(originResponseDurationMsP90) ascending
+  quantiles_originResponseDurationMsP90_ASC
+  # quantiles(originResponseDurationMsP90) descending
+  quantiles_originResponseDurationMsP90_DESC
   # quantiles(originResponseDurationMsP95) ascending
   quantiles_originResponseDurationMsP95_ASC
   # quantiles(originResponseDurationMsP95) descending
   quantiles_originResponseDurationMsP95_DESC
+  # quantiles(originResponseDurationMsP999) ascending
+  quantiles_originResponseDurationMsP999_ASC
+  # quantiles(originResponseDurationMsP999) descending
+  quantiles_originResponseDurationMsP999_DESC
   # quantiles(originResponseDurationMsP99) ascending
   quantiles_originResponseDurationMsP99_ASC
   # quantiles(originResponseDurationMsP99) descending
@@ -27622,6 +28616,14 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   wafXssAttackScore_ASC
   # wafXssAttackScore descending
   wafXssAttackScore_DESC
+  # webAssetsLabelsManaged ascending
+  webAssetsLabelsManaged_ASC
+  # webAssetsLabelsManaged descending
+  webAssetsLabelsManaged_DESC
+  # webAssetsOperationId ascending
+  webAssetsOperationId_ASC
+  # webAssetsOperationId descending
+  webAssetsOperationId_DESC
   # xRequestedWith ascending
   xRequestedWith_ASC
   # xRequestedWith descending
@@ -27637,30 +28639,62 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
 }
 
 type AccountHttpRequestsAdaptiveGroupsQuantiles {
+  # 25th percentile DNS Response Time (milliseconds)
+  edgeDnsResponseTimeMsP25: float64!
   # 50th percentile DNS Response Time (milliseconds)
   edgeDnsResponseTimeMsP50: float64!
+  # 75th percentile DNS Response Time (milliseconds)
+  edgeDnsResponseTimeMsP75: float64!
+  # 90th percentile DNS Response Time (milliseconds)
+  edgeDnsResponseTimeMsP90: float64!
   # 95th percentile DNS Response Time (milliseconds)
   edgeDnsResponseTimeMsP95: float64!
   # 99th percentile DNS Response Time (milliseconds)
   edgeDnsResponseTimeMsP99: float64!
+  # 99.9th percentile DNS Response Time (milliseconds)
+  edgeDnsResponseTimeMsP999: float64!
+  # 25th percentile Bytes returned to client
+  edgeResponseBytesP25: float64!
   # 50th percentile Bytes returned to client
   edgeResponseBytesP50: float64!
+  # 75th percentile Bytes returned to client
+  edgeResponseBytesP75: float64!
+  # 90th percentile Bytes returned to client
+  edgeResponseBytesP90: float64!
   # 95th percentile Bytes returned to client
   edgeResponseBytesP95: float64!
   # 99th percentile Bytes returned to client
   edgeResponseBytesP99: float64!
+  # 99.9th percentile Bytes returned to client
+  edgeResponseBytesP999: float64!
+  # 25th percentile Time To First Byte (milliseconds)
+  edgeTimeToFirstByteMsP25: float64!
   # 50th percentile Time To First Byte (milliseconds)
   edgeTimeToFirstByteMsP50: float64!
+  # 75th percentile Time To First Byte (milliseconds)
+  edgeTimeToFirstByteMsP75: float64!
+  # 90th percentile Time To First Byte (milliseconds)
+  edgeTimeToFirstByteMsP90: float64!
   # 95th percentile Time To First Byte (milliseconds)
   edgeTimeToFirstByteMsP95: float64!
   # 99th percentile Time To First Byte (milliseconds)
   edgeTimeToFirstByteMsP99: float64!
+  # 99.9th percentile Time To First Byte (milliseconds)
+  edgeTimeToFirstByteMsP999: float64!
+  # 25th percentile Origin Response Duration (milliseconds)
+  originResponseDurationMsP25: float64!
   # 50th percentile Origin Response Duration (milliseconds)
   originResponseDurationMsP50: float64!
+  # 75th percentile Origin Response Duration (milliseconds)
+  originResponseDurationMsP75: float64!
+  # 90th percentile Origin Response Duration (milliseconds)
+  originResponseDurationMsP90: float64!
   # 95th percentile Origin Response Duration (milliseconds)
   originResponseDurationMsP95: float64!
   # 99th percentile Origin Response Duration (milliseconds)
   originResponseDurationMsP99: float64!
+  # 99.9th percentile Origin Response Duration (milliseconds)
+  originResponseDurationMsP999: float64!
 }
 
 type AccountHttpRequestsAdaptiveGroupsRatio {
@@ -28045,6 +29079,14 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   wafXssAttackScore_ASC
   # wafXssAttackScore descending
   wafXssAttackScore_DESC
+  # webAssetsLabelsManaged ascending
+  webAssetsLabelsManaged_ASC
+  # webAssetsLabelsManaged descending
+  webAssetsLabelsManaged_DESC
+  # webAssetsOperationId ascending
+  webAssetsOperationId_ASC
+  # webAssetsOperationId descending
+  webAssetsOperationId_DESC
   # xRequestedWith ascending
   xRequestedWith_ASC
   # xRequestedWith descending
@@ -29095,6 +30137,10 @@ enum AccountKvOperationsAdaptiveGroupsOrderBy {
   quantiles_latencyMsP90_ASC
   # quantiles(latencyMsP90) descending
   quantiles_latencyMsP90_DESC
+  # quantiles(latencyMsP95) ascending
+  quantiles_latencyMsP95_ASC
+  # quantiles(latencyMsP95) descending
+  quantiles_latencyMsP95_DESC
   # quantiles(latencyMsP999) ascending
   quantiles_latencyMsP999_ASC
   # quantiles(latencyMsP999) descending
@@ -29130,6 +30176,8 @@ type AccountKvOperationsAdaptiveGroupsQuantiles {
   latencyMsP75: float32!
   # 90th percentile latency (milliseconds)
   latencyMsP90: float32!
+  # 95th percentile latency (milliseconds)
+  latencyMsP95: float32!
   # 99th percentile latency (milliseconds)
   latencyMsP99: float32!
   # 99.9th percentile latency (milliseconds)
@@ -43543,6 +44591,10 @@ enum AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # quantiles(cpuTimeP25) ascending
+  quantiles_cpuTimeP25_ASC
+  # quantiles(cpuTimeP25) descending
+  quantiles_cpuTimeP25_DESC
   # quantiles(cpuTimeP50) ascending
   quantiles_cpuTimeP50_ASC
   # quantiles(cpuTimeP50) descending
@@ -43551,6 +44603,14 @@ enum AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy {
   quantiles_cpuTimeP75_ASC
   # quantiles(cpuTimeP75) descending
   quantiles_cpuTimeP75_DESC
+  # quantiles(cpuTimeP90) ascending
+  quantiles_cpuTimeP90_ASC
+  # quantiles(cpuTimeP90) descending
+  quantiles_cpuTimeP90_DESC
+  # quantiles(cpuTimeP95) ascending
+  quantiles_cpuTimeP95_ASC
+  # quantiles(cpuTimeP95) descending
+  quantiles_cpuTimeP95_DESC
   # quantiles(cpuTimeP999) ascending
   quantiles_cpuTimeP999_ASC
   # quantiles(cpuTimeP999) descending
@@ -43559,6 +44619,10 @@ enum AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy {
   quantiles_cpuTimeP99_ASC
   # quantiles(cpuTimeP99) descending
   quantiles_cpuTimeP99_DESC
+  # quantiles(durationP25) ascending
+  quantiles_durationP25_ASC
+  # quantiles(durationP25) descending
+  quantiles_durationP25_DESC
   # quantiles(durationP50) ascending
   quantiles_durationP50_ASC
   # quantiles(durationP50) descending
@@ -43567,6 +44631,14 @@ enum AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy {
   quantiles_durationP75_ASC
   # quantiles(durationP75) descending
   quantiles_durationP75_DESC
+  # quantiles(durationP90) ascending
+  quantiles_durationP90_ASC
+  # quantiles(durationP90) descending
+  quantiles_durationP90_DESC
+  # quantiles(durationP95) ascending
+  quantiles_durationP95_ASC
+  # quantiles(durationP95) descending
+  quantiles_durationP95_DESC
   # quantiles(durationP999) ascending
   quantiles_durationP999_ASC
   # quantiles(durationP999) descending
@@ -43622,18 +44694,30 @@ enum AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy {
 }
 
 type AccountPagesFunctionsInvocationsAdaptiveGroupsQuantiles {
+  # CPU time 25th percentile - microseconds
+  cpuTimeP25: float32!
   # CPU time 50th percentile - microseconds
   cpuTimeP50: float32!
   # CPU time 75th percentile - microseconds
   cpuTimeP75: float32!
+  # CPU time 90th percentile - microseconds
+  cpuTimeP90: float32!
+  # CPU time 95th percentile - microseconds
+  cpuTimeP95: float32!
   # CPU time 99th percentile - microseconds
   cpuTimeP99: float32!
   # CPU time 99.9th percentile - microseconds
   cpuTimeP999: float32!
+  # Duration 25th percentile - GB*s
+  durationP25: float32!
   # Duration 50th percentile - GB*s
   durationP50: float32!
   # Duration 75th percentile - GB*s
   durationP75: float32!
+  # Duration 90th percentile - GB*s
+  durationP90: float32!
+  # Duration 95th percentile - GB*s
+  durationP95: float32!
   # Duration 99th percentile - GB*s
   durationP99: float32!
   # Duration 99.9th percentile - GB*s
@@ -45220,6 +46304,8 @@ type AccountProgrammableFlowProtectionNetworkAnalyticsAdaptiveGroupsDimensions {
   mitigationScope: string!
   # The action that was taken on the packet (possible values: pass, drop)
   outcome: string!
+  # The custom network analytics tag set by Programmable Flow Protection program
+  pfpCustomTag: uint64!
   # IP prefix tag associated with the packet
   prefixTag: string!
   # ABR sample interval
@@ -45773,6 +46859,14 @@ input AccountProgrammableFlowProtectionNetworkAnalyticsAdaptiveGroupsFilter_Inpu
   outcome_neq: string
   outcome_notin: [string!]
   outcome_notlike: string
+  pfpCustomTag: uint64
+  pfpCustomTag_geq: uint64
+  pfpCustomTag_gt: uint64
+  pfpCustomTag_in: [uint64!]
+  pfpCustomTag_leq: uint64
+  pfpCustomTag_lt: uint64
+  pfpCustomTag_neq: uint64
+  pfpCustomTag_notin: [uint64!]
   prefixTag: string
   prefixTag_geq: string
   prefixTag_gt: string
@@ -46280,6 +47374,10 @@ enum AccountProgrammableFlowProtectionNetworkAnalyticsAdaptiveGroupsOrderBy {
   outcome_ASC
   # outcome descending
   outcome_DESC
+  # pfpCustomTag ascending
+  pfpCustomTag_ASC
+  # pfpCustomTag descending
+  pfpCustomTag_DESC
   # prefixTag ascending
   prefixTag_ASC
   # prefixTag descending
@@ -48364,6 +49462,10 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   deviceType_ASC
   # deviceType descending
   deviceType_DESC
+  # quantiles(connectionTimeP25) ascending
+  quantiles_connectionTimeP25_ASC
+  # quantiles(connectionTimeP25) descending
+  quantiles_connectionTimeP25_DESC
   # quantiles(connectionTimeP50) ascending
   quantiles_connectionTimeP50_ASC
   # quantiles(connectionTimeP50) descending
@@ -48376,10 +49478,22 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   quantiles_connectionTimeP90_ASC
   # quantiles(connectionTimeP90) descending
   quantiles_connectionTimeP90_DESC
+  # quantiles(connectionTimeP95) ascending
+  quantiles_connectionTimeP95_ASC
+  # quantiles(connectionTimeP95) descending
+  quantiles_connectionTimeP95_DESC
+  # quantiles(connectionTimeP999) ascending
+  quantiles_connectionTimeP999_ASC
+  # quantiles(connectionTimeP999) descending
+  quantiles_connectionTimeP999_DESC
   # quantiles(connectionTimeP99) ascending
   quantiles_connectionTimeP99_ASC
   # quantiles(connectionTimeP99) descending
   quantiles_connectionTimeP99_DESC
+  # quantiles(dnsTimeP25) ascending
+  quantiles_dnsTimeP25_ASC
+  # quantiles(dnsTimeP25) descending
+  quantiles_dnsTimeP25_DESC
   # quantiles(dnsTimeP50) ascending
   quantiles_dnsTimeP50_ASC
   # quantiles(dnsTimeP50) descending
@@ -48392,10 +49506,22 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   quantiles_dnsTimeP90_ASC
   # quantiles(dnsTimeP90) descending
   quantiles_dnsTimeP90_DESC
+  # quantiles(dnsTimeP95) ascending
+  quantiles_dnsTimeP95_ASC
+  # quantiles(dnsTimeP95) descending
+  quantiles_dnsTimeP95_DESC
+  # quantiles(dnsTimeP999) ascending
+  quantiles_dnsTimeP999_ASC
+  # quantiles(dnsTimeP999) descending
+  quantiles_dnsTimeP999_DESC
   # quantiles(dnsTimeP99) ascending
   quantiles_dnsTimeP99_ASC
   # quantiles(dnsTimeP99) descending
   quantiles_dnsTimeP99_DESC
+  # quantiles(firstContentfulPaintP25) ascending
+  quantiles_firstContentfulPaintP25_ASC
+  # quantiles(firstContentfulPaintP25) descending
+  quantiles_firstContentfulPaintP25_DESC
   # quantiles(firstContentfulPaintP50) ascending
   quantiles_firstContentfulPaintP50_ASC
   # quantiles(firstContentfulPaintP50) descending
@@ -48408,10 +49534,22 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   quantiles_firstContentfulPaintP90_ASC
   # quantiles(firstContentfulPaintP90) descending
   quantiles_firstContentfulPaintP90_DESC
+  # quantiles(firstContentfulPaintP95) ascending
+  quantiles_firstContentfulPaintP95_ASC
+  # quantiles(firstContentfulPaintP95) descending
+  quantiles_firstContentfulPaintP95_DESC
+  # quantiles(firstContentfulPaintP999) ascending
+  quantiles_firstContentfulPaintP999_ASC
+  # quantiles(firstContentfulPaintP999) descending
+  quantiles_firstContentfulPaintP999_DESC
   # quantiles(firstContentfulPaintP99) ascending
   quantiles_firstContentfulPaintP99_ASC
   # quantiles(firstContentfulPaintP99) descending
   quantiles_firstContentfulPaintP99_DESC
+  # quantiles(firstPaintP25) ascending
+  quantiles_firstPaintP25_ASC
+  # quantiles(firstPaintP25) descending
+  quantiles_firstPaintP25_DESC
   # quantiles(firstPaintP50) ascending
   quantiles_firstPaintP50_ASC
   # quantiles(firstPaintP50) descending
@@ -48424,10 +49562,22 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   quantiles_firstPaintP90_ASC
   # quantiles(firstPaintP90) descending
   quantiles_firstPaintP90_DESC
+  # quantiles(firstPaintP95) ascending
+  quantiles_firstPaintP95_ASC
+  # quantiles(firstPaintP95) descending
+  quantiles_firstPaintP95_DESC
+  # quantiles(firstPaintP999) ascending
+  quantiles_firstPaintP999_ASC
+  # quantiles(firstPaintP999) descending
+  quantiles_firstPaintP999_DESC
   # quantiles(firstPaintP99) ascending
   quantiles_firstPaintP99_ASC
   # quantiles(firstPaintP99) descending
   quantiles_firstPaintP99_DESC
+  # quantiles(loadEventTimeP25) ascending
+  quantiles_loadEventTimeP25_ASC
+  # quantiles(loadEventTimeP25) descending
+  quantiles_loadEventTimeP25_DESC
   # quantiles(loadEventTimeP50) ascending
   quantiles_loadEventTimeP50_ASC
   # quantiles(loadEventTimeP50) descending
@@ -48440,10 +49590,22 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   quantiles_loadEventTimeP90_ASC
   # quantiles(loadEventTimeP90) descending
   quantiles_loadEventTimeP90_DESC
+  # quantiles(loadEventTimeP95) ascending
+  quantiles_loadEventTimeP95_ASC
+  # quantiles(loadEventTimeP95) descending
+  quantiles_loadEventTimeP95_DESC
+  # quantiles(loadEventTimeP999) ascending
+  quantiles_loadEventTimeP999_ASC
+  # quantiles(loadEventTimeP999) descending
+  quantiles_loadEventTimeP999_DESC
   # quantiles(loadEventTimeP99) ascending
   quantiles_loadEventTimeP99_ASC
   # quantiles(loadEventTimeP99) descending
   quantiles_loadEventTimeP99_DESC
+  # quantiles(pageLoadTimeP25) ascending
+  quantiles_pageLoadTimeP25_ASC
+  # quantiles(pageLoadTimeP25) descending
+  quantiles_pageLoadTimeP25_DESC
   # quantiles(pageLoadTimeP50) ascending
   quantiles_pageLoadTimeP50_ASC
   # quantiles(pageLoadTimeP50) descending
@@ -48456,10 +49618,22 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   quantiles_pageLoadTimeP90_ASC
   # quantiles(pageLoadTimeP90) descending
   quantiles_pageLoadTimeP90_DESC
+  # quantiles(pageLoadTimeP95) ascending
+  quantiles_pageLoadTimeP95_ASC
+  # quantiles(pageLoadTimeP95) descending
+  quantiles_pageLoadTimeP95_DESC
+  # quantiles(pageLoadTimeP999) ascending
+  quantiles_pageLoadTimeP999_ASC
+  # quantiles(pageLoadTimeP999) descending
+  quantiles_pageLoadTimeP999_DESC
   # quantiles(pageLoadTimeP99) ascending
   quantiles_pageLoadTimeP99_ASC
   # quantiles(pageLoadTimeP99) descending
   quantiles_pageLoadTimeP99_DESC
+  # quantiles(pageRenderTimeP25) ascending
+  quantiles_pageRenderTimeP25_ASC
+  # quantiles(pageRenderTimeP25) descending
+  quantiles_pageRenderTimeP25_DESC
   # quantiles(pageRenderTimeP50) ascending
   quantiles_pageRenderTimeP50_ASC
   # quantiles(pageRenderTimeP50) descending
@@ -48472,10 +49646,22 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   quantiles_pageRenderTimeP90_ASC
   # quantiles(pageRenderTimeP90) descending
   quantiles_pageRenderTimeP90_DESC
+  # quantiles(pageRenderTimeP95) ascending
+  quantiles_pageRenderTimeP95_ASC
+  # quantiles(pageRenderTimeP95) descending
+  quantiles_pageRenderTimeP95_DESC
+  # quantiles(pageRenderTimeP999) ascending
+  quantiles_pageRenderTimeP999_ASC
+  # quantiles(pageRenderTimeP999) descending
+  quantiles_pageRenderTimeP999_DESC
   # quantiles(pageRenderTimeP99) ascending
   quantiles_pageRenderTimeP99_ASC
   # quantiles(pageRenderTimeP99) descending
   quantiles_pageRenderTimeP99_DESC
+  # quantiles(requestTimeP25) ascending
+  quantiles_requestTimeP25_ASC
+  # quantiles(requestTimeP25) descending
+  quantiles_requestTimeP25_DESC
   # quantiles(requestTimeP50) ascending
   quantiles_requestTimeP50_ASC
   # quantiles(requestTimeP50) descending
@@ -48488,10 +49674,22 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   quantiles_requestTimeP90_ASC
   # quantiles(requestTimeP90) descending
   quantiles_requestTimeP90_DESC
+  # quantiles(requestTimeP95) ascending
+  quantiles_requestTimeP95_ASC
+  # quantiles(requestTimeP95) descending
+  quantiles_requestTimeP95_DESC
+  # quantiles(requestTimeP999) ascending
+  quantiles_requestTimeP999_ASC
+  # quantiles(requestTimeP999) descending
+  quantiles_requestTimeP999_DESC
   # quantiles(requestTimeP99) ascending
   quantiles_requestTimeP99_ASC
   # quantiles(requestTimeP99) descending
   quantiles_requestTimeP99_DESC
+  # quantiles(responseTimeP25) ascending
+  quantiles_responseTimeP25_ASC
+  # quantiles(responseTimeP25) descending
+  quantiles_responseTimeP25_DESC
   # quantiles(responseTimeP50) ascending
   quantiles_responseTimeP50_ASC
   # quantiles(responseTimeP50) descending
@@ -48504,6 +49702,14 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   quantiles_responseTimeP90_ASC
   # quantiles(responseTimeP90) descending
   quantiles_responseTimeP90_DESC
+  # quantiles(responseTimeP95) ascending
+  quantiles_responseTimeP95_ASC
+  # quantiles(responseTimeP95) descending
+  quantiles_responseTimeP95_DESC
+  # quantiles(responseTimeP999) ascending
+  quantiles_responseTimeP999_ASC
+  # quantiles(responseTimeP999) descending
+  quantiles_responseTimeP999_DESC
   # quantiles(responseTimeP99) ascending
   quantiles_responseTimeP99_ASC
   # quantiles(responseTimeP99) descending
@@ -48552,13 +49758,21 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
 
 type AccountRumPerformanceEventsAdaptiveGroupsQuantiles {
   # Connection time
+  connectionTimeP25: uint64!
+  # Connection time
   connectionTimeP50: uint64!
   # Connection time
   connectionTimeP75: uint64!
   # Connection time
   connectionTimeP90: uint64!
   # Connection time
+  connectionTimeP95: uint64!
+  # Connection time
   connectionTimeP99: uint64!
+  # Connection time
+  connectionTimeP999: uint64!
+  # Domain lookup time
+  dnsTimeP25: uint64!
   # Domain lookup time
   dnsTimeP50: uint64!
   # Domain lookup time
@@ -48566,7 +49780,13 @@ type AccountRumPerformanceEventsAdaptiveGroupsQuantiles {
   # Domain lookup time
   dnsTimeP90: uint64!
   # Domain lookup time
+  dnsTimeP95: uint64!
+  # Domain lookup time
   dnsTimeP99: uint64!
+  # Domain lookup time
+  dnsTimeP999: uint64!
+  # The time when the first content piece from the DOM is painted (i.e. some text or an image)
+  firstContentfulPaintP25: uint64!
   # The time when the first content piece from the DOM is painted (i.e. some text or an image)
   firstContentfulPaintP50: uint64!
   # The time when the first content piece from the DOM is painted (i.e. some text or an image)
@@ -48574,7 +49794,13 @@ type AccountRumPerformanceEventsAdaptiveGroupsQuantiles {
   # The time when the first content piece from the DOM is painted (i.e. some text or an image)
   firstContentfulPaintP90: uint64!
   # The time when the first content piece from the DOM is painted (i.e. some text or an image)
+  firstContentfulPaintP95: uint64!
+  # The time when the first content piece from the DOM is painted (i.e. some text or an image)
   firstContentfulPaintP99: uint64!
+  # The time when the first content piece from the DOM is painted (i.e. some text or an image)
+  firstContentfulPaintP999: uint64!
+  # The time when the first pixel is painted onto the screen (i.e. background of the page)
+  firstPaintP25: uint64!
   # The time when the first pixel is painted onto the screen (i.e. background of the page)
   firstPaintP50: uint64!
   # The time when the first pixel is painted onto the screen (i.e. background of the page)
@@ -48582,7 +49808,13 @@ type AccountRumPerformanceEventsAdaptiveGroupsQuantiles {
   # The time when the first pixel is painted onto the screen (i.e. background of the page)
   firstPaintP90: uint64!
   # The time when the first pixel is painted onto the screen (i.e. background of the page)
+  firstPaintP95: uint64!
+  # The time when the first pixel is painted onto the screen (i.e. background of the page)
   firstPaintP99: uint64!
+  # The time when the first pixel is painted onto the screen (i.e. background of the page)
+  firstPaintP999: uint64!
+  # The time taken for the load event
+  loadEventTimeP25: uint64!
   # The time taken for the load event
   loadEventTimeP50: uint64!
   # The time taken for the load event
@@ -48590,7 +49822,13 @@ type AccountRumPerformanceEventsAdaptiveGroupsQuantiles {
   # The time taken for the load event
   loadEventTimeP90: uint64!
   # The time taken for the load event
+  loadEventTimeP95: uint64!
+  # The time taken for the load event
   loadEventTimeP99: uint64!
+  # The time taken for the load event
+  loadEventTimeP999: uint64!
+  # The time to download and display the entire content of a web page in the browser window
+  pageLoadTimeP25: uint64!
   # The time to download and display the entire content of a web page in the browser window
   pageLoadTimeP50: uint64!
   # The time to download and display the entire content of a web page in the browser window
@@ -48598,7 +49836,13 @@ type AccountRumPerformanceEventsAdaptiveGroupsQuantiles {
   # The time to download and display the entire content of a web page in the browser window
   pageLoadTimeP90: uint64!
   # The time to download and display the entire content of a web page in the browser window
+  pageLoadTimeP95: uint64!
+  # The time to download and display the entire content of a web page in the browser window
   pageLoadTimeP99: uint64!
+  # The time to download and display the entire content of a web page in the browser window
+  pageLoadTimeP999: uint64!
+  # The time to download and display the entire content of a web page in the browser window
+  pageRenderTimeP25: uint64!
   # The time to download and display the entire content of a web page in the browser window
   pageRenderTimeP50: uint64!
   # The time to download and display the entire content of a web page in the browser window
@@ -48606,7 +49850,13 @@ type AccountRumPerformanceEventsAdaptiveGroupsQuantiles {
   # The time to download and display the entire content of a web page in the browser window
   pageRenderTimeP90: uint64!
   # The time to download and display the entire content of a web page in the browser window
+  pageRenderTimeP95: uint64!
+  # The time to download and display the entire content of a web page in the browser window
   pageRenderTimeP99: uint64!
+  # The time to download and display the entire content of a web page in the browser window
+  pageRenderTimeP999: uint64!
+  # The time between initiating the request and receiving the first byte of the response
+  requestTimeP25: uint64!
   # The time between initiating the request and receiving the first byte of the response
   requestTimeP50: uint64!
   # The time between initiating the request and receiving the first byte of the response
@@ -48614,7 +49864,13 @@ type AccountRumPerformanceEventsAdaptiveGroupsQuantiles {
   # The time between initiating the request and receiving the first byte of the response
   requestTimeP90: uint64!
   # The time between initiating the request and receiving the first byte of the response
+  requestTimeP95: uint64!
+  # The time between initiating the request and receiving the first byte of the response
   requestTimeP99: uint64!
+  # The time between initiating the request and receiving the first byte of the response
+  requestTimeP999: uint64!
+  # The time between receiving the first byte and the last byte of the response
+  responseTimeP25: uint64!
   # The time between receiving the first byte and the last byte of the response
   responseTimeP50: uint64!
   # The time between receiving the first byte and the last byte of the response
@@ -48622,7 +49878,11 @@ type AccountRumPerformanceEventsAdaptiveGroupsQuantiles {
   # The time between receiving the first byte and the last byte of the response
   responseTimeP90: uint64!
   # The time between receiving the first byte and the last byte of the response
+  responseTimeP95: uint64!
+  # The time between receiving the first byte and the last byte of the response
   responseTimeP99: uint64!
+  # The time between receiving the first byte and the last byte of the response
+  responseTimeP999: uint64!
 }
 
 type AccountRumPerformanceEventsAdaptiveGroupsSum {
@@ -49571,6 +50831,10 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   lcpInitiatorType_ASC
   # lcpInitiatorType descending
   lcpInitiatorType_DESC
+  # quantiles(cumulativeLayoutShiftP25) ascending
+  quantiles_cumulativeLayoutShiftP25_ASC
+  # quantiles(cumulativeLayoutShiftP25) descending
+  quantiles_cumulativeLayoutShiftP25_DESC
   # quantiles(cumulativeLayoutShiftP50) ascending
   quantiles_cumulativeLayoutShiftP50_ASC
   # quantiles(cumulativeLayoutShiftP50) descending
@@ -49583,10 +50847,22 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   quantiles_cumulativeLayoutShiftP90_ASC
   # quantiles(cumulativeLayoutShiftP90) descending
   quantiles_cumulativeLayoutShiftP90_DESC
+  # quantiles(cumulativeLayoutShiftP95) ascending
+  quantiles_cumulativeLayoutShiftP95_ASC
+  # quantiles(cumulativeLayoutShiftP95) descending
+  quantiles_cumulativeLayoutShiftP95_DESC
+  # quantiles(cumulativeLayoutShiftP999) ascending
+  quantiles_cumulativeLayoutShiftP999_ASC
+  # quantiles(cumulativeLayoutShiftP999) descending
+  quantiles_cumulativeLayoutShiftP999_DESC
   # quantiles(cumulativeLayoutShiftP99) ascending
   quantiles_cumulativeLayoutShiftP99_ASC
   # quantiles(cumulativeLayoutShiftP99) descending
   quantiles_cumulativeLayoutShiftP99_DESC
+  # quantiles(firstContentfulPaintP25) ascending
+  quantiles_firstContentfulPaintP25_ASC
+  # quantiles(firstContentfulPaintP25) descending
+  quantiles_firstContentfulPaintP25_DESC
   # quantiles(firstContentfulPaintP50) ascending
   quantiles_firstContentfulPaintP50_ASC
   # quantiles(firstContentfulPaintP50) descending
@@ -49599,10 +50875,22 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   quantiles_firstContentfulPaintP90_ASC
   # quantiles(firstContentfulPaintP90) descending
   quantiles_firstContentfulPaintP90_DESC
+  # quantiles(firstContentfulPaintP95) ascending
+  quantiles_firstContentfulPaintP95_ASC
+  # quantiles(firstContentfulPaintP95) descending
+  quantiles_firstContentfulPaintP95_DESC
+  # quantiles(firstContentfulPaintP999) ascending
+  quantiles_firstContentfulPaintP999_ASC
+  # quantiles(firstContentfulPaintP999) descending
+  quantiles_firstContentfulPaintP999_DESC
   # quantiles(firstContentfulPaintP99) ascending
   quantiles_firstContentfulPaintP99_ASC
   # quantiles(firstContentfulPaintP99) descending
   quantiles_firstContentfulPaintP99_DESC
+  # quantiles(firstInputDelayP25) ascending
+  quantiles_firstInputDelayP25_ASC
+  # quantiles(firstInputDelayP25) descending
+  quantiles_firstInputDelayP25_DESC
   # quantiles(firstInputDelayP50) ascending
   quantiles_firstInputDelayP50_ASC
   # quantiles(firstInputDelayP50) descending
@@ -49615,10 +50903,22 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   quantiles_firstInputDelayP90_ASC
   # quantiles(firstInputDelayP90) descending
   quantiles_firstInputDelayP90_DESC
+  # quantiles(firstInputDelayP95) ascending
+  quantiles_firstInputDelayP95_ASC
+  # quantiles(firstInputDelayP95) descending
+  quantiles_firstInputDelayP95_DESC
+  # quantiles(firstInputDelayP999) ascending
+  quantiles_firstInputDelayP999_ASC
+  # quantiles(firstInputDelayP999) descending
+  quantiles_firstInputDelayP999_DESC
   # quantiles(firstInputDelayP99) ascending
   quantiles_firstInputDelayP99_ASC
   # quantiles(firstInputDelayP99) descending
   quantiles_firstInputDelayP99_DESC
+  # quantiles(interactionToNextPaintP25) ascending
+  quantiles_interactionToNextPaintP25_ASC
+  # quantiles(interactionToNextPaintP25) descending
+  quantiles_interactionToNextPaintP25_DESC
   # quantiles(interactionToNextPaintP50) ascending
   quantiles_interactionToNextPaintP50_ASC
   # quantiles(interactionToNextPaintP50) descending
@@ -49631,10 +50931,22 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   quantiles_interactionToNextPaintP90_ASC
   # quantiles(interactionToNextPaintP90) descending
   quantiles_interactionToNextPaintP90_DESC
+  # quantiles(interactionToNextPaintP95) ascending
+  quantiles_interactionToNextPaintP95_ASC
+  # quantiles(interactionToNextPaintP95) descending
+  quantiles_interactionToNextPaintP95_DESC
+  # quantiles(interactionToNextPaintP999) ascending
+  quantiles_interactionToNextPaintP999_ASC
+  # quantiles(interactionToNextPaintP999) descending
+  quantiles_interactionToNextPaintP999_DESC
   # quantiles(interactionToNextPaintP99) ascending
   quantiles_interactionToNextPaintP99_ASC
   # quantiles(interactionToNextPaintP99) descending
   quantiles_interactionToNextPaintP99_DESC
+  # quantiles(largestContentfulPaintP25) ascending
+  quantiles_largestContentfulPaintP25_ASC
+  # quantiles(largestContentfulPaintP25) descending
+  quantiles_largestContentfulPaintP25_DESC
   # quantiles(largestContentfulPaintP50) ascending
   quantiles_largestContentfulPaintP50_ASC
   # quantiles(largestContentfulPaintP50) descending
@@ -49647,10 +50959,22 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   quantiles_largestContentfulPaintP90_ASC
   # quantiles(largestContentfulPaintP90) descending
   quantiles_largestContentfulPaintP90_DESC
+  # quantiles(largestContentfulPaintP95) ascending
+  quantiles_largestContentfulPaintP95_ASC
+  # quantiles(largestContentfulPaintP95) descending
+  quantiles_largestContentfulPaintP95_DESC
+  # quantiles(largestContentfulPaintP999) ascending
+  quantiles_largestContentfulPaintP999_ASC
+  # quantiles(largestContentfulPaintP999) descending
+  quantiles_largestContentfulPaintP999_DESC
   # quantiles(largestContentfulPaintP99) ascending
   quantiles_largestContentfulPaintP99_ASC
   # quantiles(largestContentfulPaintP99) descending
   quantiles_largestContentfulPaintP99_DESC
+  # quantiles(lcpElementRenderDelayP25) ascending
+  quantiles_lcpElementRenderDelayP25_ASC
+  # quantiles(lcpElementRenderDelayP25) descending
+  quantiles_lcpElementRenderDelayP25_DESC
   # quantiles(lcpElementRenderDelayP50) ascending
   quantiles_lcpElementRenderDelayP50_ASC
   # quantiles(lcpElementRenderDelayP50) descending
@@ -49663,10 +50987,22 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   quantiles_lcpElementRenderDelayP90_ASC
   # quantiles(lcpElementRenderDelayP90) descending
   quantiles_lcpElementRenderDelayP90_DESC
+  # quantiles(lcpElementRenderDelayP95) ascending
+  quantiles_lcpElementRenderDelayP95_ASC
+  # quantiles(lcpElementRenderDelayP95) descending
+  quantiles_lcpElementRenderDelayP95_DESC
+  # quantiles(lcpElementRenderDelayP999) ascending
+  quantiles_lcpElementRenderDelayP999_ASC
+  # quantiles(lcpElementRenderDelayP999) descending
+  quantiles_lcpElementRenderDelayP999_DESC
   # quantiles(lcpElementRenderDelayP99) ascending
   quantiles_lcpElementRenderDelayP99_ASC
   # quantiles(lcpElementRenderDelayP99) descending
   quantiles_lcpElementRenderDelayP99_DESC
+  # quantiles(lcpResourceLoadDelayP25) ascending
+  quantiles_lcpResourceLoadDelayP25_ASC
+  # quantiles(lcpResourceLoadDelayP25) descending
+  quantiles_lcpResourceLoadDelayP25_DESC
   # quantiles(lcpResourceLoadDelayP50) ascending
   quantiles_lcpResourceLoadDelayP50_ASC
   # quantiles(lcpResourceLoadDelayP50) descending
@@ -49679,10 +51015,22 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   quantiles_lcpResourceLoadDelayP90_ASC
   # quantiles(lcpResourceLoadDelayP90) descending
   quantiles_lcpResourceLoadDelayP90_DESC
+  # quantiles(lcpResourceLoadDelayP95) ascending
+  quantiles_lcpResourceLoadDelayP95_ASC
+  # quantiles(lcpResourceLoadDelayP95) descending
+  quantiles_lcpResourceLoadDelayP95_DESC
+  # quantiles(lcpResourceLoadDelayP999) ascending
+  quantiles_lcpResourceLoadDelayP999_ASC
+  # quantiles(lcpResourceLoadDelayP999) descending
+  quantiles_lcpResourceLoadDelayP999_DESC
   # quantiles(lcpResourceLoadDelayP99) ascending
   quantiles_lcpResourceLoadDelayP99_ASC
   # quantiles(lcpResourceLoadDelayP99) descending
   quantiles_lcpResourceLoadDelayP99_DESC
+  # quantiles(lcpResourceLoadTimeP25) ascending
+  quantiles_lcpResourceLoadTimeP25_ASC
+  # quantiles(lcpResourceLoadTimeP25) descending
+  quantiles_lcpResourceLoadTimeP25_DESC
   # quantiles(lcpResourceLoadTimeP50) ascending
   quantiles_lcpResourceLoadTimeP50_ASC
   # quantiles(lcpResourceLoadTimeP50) descending
@@ -49695,10 +51043,22 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   quantiles_lcpResourceLoadTimeP90_ASC
   # quantiles(lcpResourceLoadTimeP90) descending
   quantiles_lcpResourceLoadTimeP90_DESC
+  # quantiles(lcpResourceLoadTimeP95) ascending
+  quantiles_lcpResourceLoadTimeP95_ASC
+  # quantiles(lcpResourceLoadTimeP95) descending
+  quantiles_lcpResourceLoadTimeP95_DESC
+  # quantiles(lcpResourceLoadTimeP999) ascending
+  quantiles_lcpResourceLoadTimeP999_ASC
+  # quantiles(lcpResourceLoadTimeP999) descending
+  quantiles_lcpResourceLoadTimeP999_DESC
   # quantiles(lcpResourceLoadTimeP99) ascending
   quantiles_lcpResourceLoadTimeP99_ASC
   # quantiles(lcpResourceLoadTimeP99) descending
   quantiles_lcpResourceLoadTimeP99_DESC
+  # quantiles(timeToFirstByteP25) ascending
+  quantiles_timeToFirstByteP25_ASC
+  # quantiles(timeToFirstByteP25) descending
+  quantiles_timeToFirstByteP25_DESC
   # quantiles(timeToFirstByteP50) ascending
   quantiles_timeToFirstByteP50_ASC
   # quantiles(timeToFirstByteP50) descending
@@ -49711,6 +51071,14 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   quantiles_timeToFirstByteP90_ASC
   # quantiles(timeToFirstByteP90) descending
   quantiles_timeToFirstByteP90_DESC
+  # quantiles(timeToFirstByteP95) ascending
+  quantiles_timeToFirstByteP95_ASC
+  # quantiles(timeToFirstByteP95) descending
+  quantiles_timeToFirstByteP95_DESC
+  # quantiles(timeToFirstByteP999) ascending
+  quantiles_timeToFirstByteP999_ASC
+  # quantiles(timeToFirstByteP999) descending
+  quantiles_timeToFirstByteP999_DESC
   # quantiles(timeToFirstByteP99) ascending
   quantiles_timeToFirstByteP99_ASC
   # quantiles(timeToFirstByteP99) descending
@@ -49855,13 +51223,21 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
 
 type AccountRumWebVitalsEventsAdaptiveGroupsQuantiles {
   # Cumulative Layout Shift (Core Web Vitals) (negative value indicates N/A)
+  cumulativeLayoutShiftP25: float64!
+  # Cumulative Layout Shift (Core Web Vitals) (negative value indicates N/A)
   cumulativeLayoutShiftP50: float64!
   # Cumulative Layout Shift (Core Web Vitals) (negative value indicates N/A)
   cumulativeLayoutShiftP75: float64!
   # Cumulative Layout Shift (Core Web Vitals) (negative value indicates N/A)
   cumulativeLayoutShiftP90: float64!
   # Cumulative Layout Shift (Core Web Vitals) (negative value indicates N/A)
+  cumulativeLayoutShiftP95: float64!
+  # Cumulative Layout Shift (Core Web Vitals) (negative value indicates N/A)
   cumulativeLayoutShiftP99: float64!
+  # Cumulative Layout Shift (Core Web Vitals) (negative value indicates N/A)
+  cumulativeLayoutShiftP999: float64!
+  # First Contentful Paint in microseconds (negative value indicates N/A)
+  firstContentfulPaintP25: int64!
   # First Contentful Paint in microseconds (negative value indicates N/A)
   firstContentfulPaintP50: int64!
   # First Contentful Paint in microseconds (negative value indicates N/A)
@@ -49869,7 +51245,14 @@ type AccountRumWebVitalsEventsAdaptiveGroupsQuantiles {
   # First Contentful Paint in microseconds (negative value indicates N/A)
   firstContentfulPaintP90: int64!
   # First Contentful Paint in microseconds (negative value indicates N/A)
+  firstContentfulPaintP95: int64!
+  # First Contentful Paint in microseconds (negative value indicates N/A)
   firstContentfulPaintP99: int64!
+  # First Contentful Paint in microseconds (negative value indicates N/A)
+  firstContentfulPaintP999: int64!
+  # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
+  @Deprecated
+  firstInputDelayP25: int64!
   # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
   @Deprecated
   firstInputDelayP50: int64!
@@ -49881,7 +51264,15 @@ type AccountRumWebVitalsEventsAdaptiveGroupsQuantiles {
   firstInputDelayP90: int64!
   # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
   @Deprecated
+  firstInputDelayP95: int64!
+  # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
+  @Deprecated
   firstInputDelayP99: int64!
+  # First Input Delay (Core Web Vitals) in microseconds (negative value indicates N/A)
+  @Deprecated
+  firstInputDelayP999: int64!
+  # Interaction to Next Paint in microseconds (negative value indicates N/A)
+  interactionToNextPaintP25: int64!
   # Interaction to Next Paint in microseconds (negative value indicates N/A)
   interactionToNextPaintP50: int64!
   # Interaction to Next Paint in microseconds (negative value indicates N/A)
@@ -49889,7 +51280,13 @@ type AccountRumWebVitalsEventsAdaptiveGroupsQuantiles {
   # Interaction to Next Paint in microseconds (negative value indicates N/A)
   interactionToNextPaintP90: int64!
   # Interaction to Next Paint in microseconds (negative value indicates N/A)
+  interactionToNextPaintP95: int64!
+  # Interaction to Next Paint in microseconds (negative value indicates N/A)
   interactionToNextPaintP99: int64!
+  # Interaction to Next Paint in microseconds (negative value indicates N/A)
+  interactionToNextPaintP999: int64!
+  # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
+  largestContentfulPaintP25: int64!
   # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
   largestContentfulPaintP50: int64!
   # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
@@ -49897,7 +51294,13 @@ type AccountRumWebVitalsEventsAdaptiveGroupsQuantiles {
   # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
   largestContentfulPaintP90: int64!
   # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
+  largestContentfulPaintP95: int64!
+  # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
   largestContentfulPaintP99: int64!
+  # Largest Contentful Paint (Core Web Vitals) in microseconds (negative value indicates N/A)
+  largestContentfulPaintP999: int64!
+  # Largest Contentful Paint Attributions Element Render Delay in microseconds (negative value indicates N/A)
+  lcpElementRenderDelayP25: int64!
   # Largest Contentful Paint Attributions Element Render Delay in microseconds (negative value indicates N/A)
   lcpElementRenderDelayP50: int64!
   # Largest Contentful Paint Attributions Element Render Delay in microseconds (negative value indicates N/A)
@@ -49905,7 +51308,13 @@ type AccountRumWebVitalsEventsAdaptiveGroupsQuantiles {
   # Largest Contentful Paint Attributions Element Render Delay in microseconds (negative value indicates N/A)
   lcpElementRenderDelayP90: int64!
   # Largest Contentful Paint Attributions Element Render Delay in microseconds (negative value indicates N/A)
+  lcpElementRenderDelayP95: int64!
+  # Largest Contentful Paint Attributions Element Render Delay in microseconds (negative value indicates N/A)
   lcpElementRenderDelayP99: int64!
+  # Largest Contentful Paint Attributions Element Render Delay in microseconds (negative value indicates N/A)
+  lcpElementRenderDelayP999: int64!
+  # Largest Contentful Paint Attributions Resource Load Delay in microseconds (negative value indicates N/A)
+  lcpResourceLoadDelayP25: int64!
   # Largest Contentful Paint Attributions Resource Load Delay in microseconds (negative value indicates N/A)
   lcpResourceLoadDelayP50: int64!
   # Largest Contentful Paint Attributions Resource Load Delay in microseconds (negative value indicates N/A)
@@ -49913,7 +51322,13 @@ type AccountRumWebVitalsEventsAdaptiveGroupsQuantiles {
   # Largest Contentful Paint Attributions Resource Load Delay in microseconds (negative value indicates N/A)
   lcpResourceLoadDelayP90: int64!
   # Largest Contentful Paint Attributions Resource Load Delay in microseconds (negative value indicates N/A)
+  lcpResourceLoadDelayP95: int64!
+  # Largest Contentful Paint Attributions Resource Load Delay in microseconds (negative value indicates N/A)
   lcpResourceLoadDelayP99: int64!
+  # Largest Contentful Paint Attributions Resource Load Delay in microseconds (negative value indicates N/A)
+  lcpResourceLoadDelayP999: int64!
+  # Largest Contentful Paint Attributions Resource Load Time in microseconds (negative value indicates N/A)
+  lcpResourceLoadTimeP25: int64!
   # Largest Contentful Paint Attributions Resource Load Time in microseconds (negative value indicates N/A)
   lcpResourceLoadTimeP50: int64!
   # Largest Contentful Paint Attributions Resource Load Time in microseconds (negative value indicates N/A)
@@ -49921,7 +51336,13 @@ type AccountRumWebVitalsEventsAdaptiveGroupsQuantiles {
   # Largest Contentful Paint Attributions Resource Load Time in microseconds (negative value indicates N/A)
   lcpResourceLoadTimeP90: int64!
   # Largest Contentful Paint Attributions Resource Load Time in microseconds (negative value indicates N/A)
+  lcpResourceLoadTimeP95: int64!
+  # Largest Contentful Paint Attributions Resource Load Time in microseconds (negative value indicates N/A)
   lcpResourceLoadTimeP99: int64!
+  # Largest Contentful Paint Attributions Resource Load Time in microseconds (negative value indicates N/A)
+  lcpResourceLoadTimeP999: int64!
+  # Time to First Byte in microseconds (negative value indicates N/A)
+  timeToFirstByteP25: int64!
   # Time to First Byte in microseconds (negative value indicates N/A)
   timeToFirstByteP50: int64!
   # Time to First Byte in microseconds (negative value indicates N/A)
@@ -49929,7 +51350,11 @@ type AccountRumWebVitalsEventsAdaptiveGroupsQuantiles {
   # Time to First Byte in microseconds (negative value indicates N/A)
   timeToFirstByteP90: int64!
   # Time to First Byte in microseconds (negative value indicates N/A)
+  timeToFirstByteP95: int64!
+  # Time to First Byte in microseconds (negative value indicates N/A)
   timeToFirstByteP99: int64!
+  # Time to First Byte in microseconds (negative value indicates N/A)
+  timeToFirstByteP999: int64!
 }
 
 type AccountRumWebVitalsEventsAdaptiveGroupsSum {
@@ -52910,6 +54335,10 @@ enum AccountStreamCMCDAdaptiveGroupsOrderBy {
   playbackRate_ASC
   # playbackRate descending
   playbackRate_DESC
+  # quantiles(bufferStarvationDurationP25) ascending
+  quantiles_bufferStarvationDurationP25_ASC
+  # quantiles(bufferStarvationDurationP25) descending
+  quantiles_bufferStarvationDurationP25_DESC
   # quantiles(bufferStarvationDurationP50) ascending
   quantiles_bufferStarvationDurationP50_ASC
   # quantiles(bufferStarvationDurationP50) descending
@@ -52922,10 +54351,22 @@ enum AccountStreamCMCDAdaptiveGroupsOrderBy {
   quantiles_bufferStarvationDurationP90_ASC
   # quantiles(bufferStarvationDurationP90) descending
   quantiles_bufferStarvationDurationP90_DESC
+  # quantiles(bufferStarvationDurationP95) ascending
+  quantiles_bufferStarvationDurationP95_ASC
+  # quantiles(bufferStarvationDurationP95) descending
+  quantiles_bufferStarvationDurationP95_DESC
+  # quantiles(bufferStarvationDurationP999) ascending
+  quantiles_bufferStarvationDurationP999_ASC
+  # quantiles(bufferStarvationDurationP999) descending
+  quantiles_bufferStarvationDurationP999_DESC
   # quantiles(bufferStarvationDurationP99) ascending
   quantiles_bufferStarvationDurationP99_ASC
   # quantiles(bufferStarvationDurationP99) descending
   quantiles_bufferStarvationDurationP99_DESC
+  # quantiles(initialBufferStarvationDurationP25) ascending
+  quantiles_initialBufferStarvationDurationP25_ASC
+  # quantiles(initialBufferStarvationDurationP25) descending
+  quantiles_initialBufferStarvationDurationP25_DESC
   # quantiles(initialBufferStarvationDurationP50) ascending
   quantiles_initialBufferStarvationDurationP50_ASC
   # quantiles(initialBufferStarvationDurationP50) descending
@@ -52938,6 +54379,14 @@ enum AccountStreamCMCDAdaptiveGroupsOrderBy {
   quantiles_initialBufferStarvationDurationP90_ASC
   # quantiles(initialBufferStarvationDurationP90) descending
   quantiles_initialBufferStarvationDurationP90_DESC
+  # quantiles(initialBufferStarvationDurationP95) ascending
+  quantiles_initialBufferStarvationDurationP95_ASC
+  # quantiles(initialBufferStarvationDurationP95) descending
+  quantiles_initialBufferStarvationDurationP95_DESC
+  # quantiles(initialBufferStarvationDurationP999) ascending
+  quantiles_initialBufferStarvationDurationP999_ASC
+  # quantiles(initialBufferStarvationDurationP999) descending
+  quantiles_initialBufferStarvationDurationP999_DESC
   # quantiles(initialBufferStarvationDurationP99) ascending
   quantiles_initialBufferStarvationDurationP99_ASC
   # quantiles(initialBufferStarvationDurationP99) descending
@@ -52985,22 +54434,34 @@ enum AccountStreamCMCDAdaptiveGroupsOrderBy {
 }
 
 type AccountStreamCMCDAdaptiveGroupsQuantiles {
+  # 25th percentile buffer starvation duration in milliseconds
+  bufferStarvationDurationP25: float64!
   # 50th percentile buffer starvation duration in milliseconds
   bufferStarvationDurationP50: float64!
   # 75th percentile buffer starvation duration in milliseconds
   bufferStarvationDurationP75: float64!
   # 90th percentile buffer starvation duration in milliseconds
   bufferStarvationDurationP90: float64!
+  # 95th percentile buffer starvation duration in milliseconds
+  bufferStarvationDurationP95: float64!
   # 99th percentile buffer starvation duration in milliseconds
   bufferStarvationDurationP99: float64!
+  # 99.9th percentile buffer starvation duration in milliseconds
+  bufferStarvationDurationP999: float64!
+  # 25th percentile initial buffer starvation duration in milliseconds
+  initialBufferStarvationDurationP25: float64!
   # 50th percentile initial buffer starvation duration in milliseconds
   initialBufferStarvationDurationP50: float64!
   # 75th percentile initial buffer starvation duration in milliseconds
   initialBufferStarvationDurationP75: float64!
   # 90th percentile initial buffer starvation duration in milliseconds
   initialBufferStarvationDurationP90: float64!
+  # 95th percentile initial buffer starvation duration in milliseconds
+  initialBufferStarvationDurationP95: float64!
   # 99th percentile initial buffer starvation duration in milliseconds
   initialBufferStarvationDurationP99: float64!
+  # 99.9th percentile initial buffer starvation duration in milliseconds
+  initialBufferStarvationDurationP999: float64!
 }
 
 type AccountStreamCMCDAdaptiveGroupsSum {
@@ -54656,10 +56117,18 @@ enum AccountVectorizeV2QueriesAdaptiveGroupsOrderBy {
   quantiles_requestDurationMsP75_ASC
   # quantiles(requestDurationMsP75) descending
   quantiles_requestDurationMsP75_DESC
+  # quantiles(requestDurationMsP90) ascending
+  quantiles_requestDurationMsP90_ASC
+  # quantiles(requestDurationMsP90) descending
+  quantiles_requestDurationMsP90_DESC
   # quantiles(requestDurationMsP95) ascending
   quantiles_requestDurationMsP95_ASC
   # quantiles(requestDurationMsP95) descending
   quantiles_requestDurationMsP95_DESC
+  # quantiles(requestDurationMsP999) ascending
+  quantiles_requestDurationMsP999_ASC
+  # quantiles(requestDurationMsP999) descending
+  quantiles_requestDurationMsP999_DESC
   # quantiles(requestDurationMsP99) ascending
   quantiles_requestDurationMsP99_ASC
   # quantiles(requestDurationMsP99) descending
@@ -54689,10 +56158,14 @@ type AccountVectorizeV2QueriesAdaptiveGroupsQuantiles {
   requestDurationMsP50: float32!
   # 75th percentile latency (milliseconds)
   requestDurationMsP75: float32!
+  # 90th percentile latency (milliseconds)
+  requestDurationMsP90: float32!
   # 95th percentile latency (milliseconds)
   requestDurationMsP95: float32!
   # 99th percentile latency (milliseconds)
   requestDurationMsP99: float32!
+  # 99.9th percentile latency (milliseconds)
+  requestDurationMsP999: float32!
 }
 
 type AccountVectorizeV2QueriesAdaptiveGroupsSum {
@@ -54974,10 +56447,18 @@ enum AccountVectorizeV2WritesAdaptiveGroupsOrderBy {
   quantiles_requestDurationMsP75_ASC
   # quantiles(requestDurationMsP75) descending
   quantiles_requestDurationMsP75_DESC
+  # quantiles(requestDurationMsP90) ascending
+  quantiles_requestDurationMsP90_ASC
+  # quantiles(requestDurationMsP90) descending
+  quantiles_requestDurationMsP90_DESC
   # quantiles(requestDurationMsP95) ascending
   quantiles_requestDurationMsP95_ASC
   # quantiles(requestDurationMsP95) descending
   quantiles_requestDurationMsP95_DESC
+  # quantiles(requestDurationMsP999) ascending
+  quantiles_requestDurationMsP999_ASC
+  # quantiles(requestDurationMsP999) descending
+  quantiles_requestDurationMsP999_DESC
   # quantiles(requestDurationMsP99) ascending
   quantiles_requestDurationMsP99_ASC
   # quantiles(requestDurationMsP99) descending
@@ -55007,10 +56488,14 @@ type AccountVectorizeV2WritesAdaptiveGroupsQuantiles {
   requestDurationMsP50: float32!
   # 75th percentile latency (milliseconds)
   requestDurationMsP75: float32!
+  # 90th percentile latency (milliseconds)
+  requestDurationMsP90: float32!
   # 95th percentile latency (milliseconds)
   requestDurationMsP95: float32!
   # 99th percentile latency (milliseconds)
   requestDurationMsP99: float32!
+  # 99.9th percentile latency (milliseconds)
+  requestDurationMsP999: float32!
 }
 
 type AccountVectorizeV2WritesAdaptiveGroupsSum {
@@ -59127,6 +60612,10 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
   wafXssAttackScore: uint8!
+  # Managed Web Asset Labels (Cloudflare-defined labels, e.g. cf-log-in, cf-llm)
+  webAssetsLabelsManaged: [string!]!
+  # Web Asset Operation ID
+  webAssetsOperationId: string!
   # The X-Requested-With header of the client request
   xRequestedWith: string!
   # Associated zone
@@ -59837,6 +61326,21 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   wafXssAttackScore_lt: uint8
   wafXssAttackScore_neq: uint8
   wafXssAttackScore_notin: bytes
+  webAssetsLabelsManaged_has: string
+  webAssetsLabelsManaged_hasall: [string!]
+  webAssetsLabelsManaged_hasany: [string!]
+  webAssetsLabelsManaged_isempty: bool
+  webAssetsLabelsManaged_nothas: string
+  webAssetsOperationId: string
+  webAssetsOperationId_geq: string
+  webAssetsOperationId_gt: string
+  webAssetsOperationId_in: [string!]
+  webAssetsOperationId_leq: string
+  webAssetsOperationId_like: string
+  webAssetsOperationId_lt: string
+  webAssetsOperationId_neq: string
+  webAssetsOperationId_notin: [string!]
+  webAssetsOperationId_notlike: string
   xRequestedWith: string
   xRequestedWith_geq: string
   xRequestedWith_gt: string
@@ -60138,38 +61642,86 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   payPerCrawlStatus_ASC
   # payPerCrawlStatus descending
   payPerCrawlStatus_DESC
+  # quantiles(edgeDnsResponseTimeMsP25) ascending
+  quantiles_edgeDnsResponseTimeMsP25_ASC
+  # quantiles(edgeDnsResponseTimeMsP25) descending
+  quantiles_edgeDnsResponseTimeMsP25_DESC
   # quantiles(edgeDnsResponseTimeMsP50) ascending
   quantiles_edgeDnsResponseTimeMsP50_ASC
   # quantiles(edgeDnsResponseTimeMsP50) descending
   quantiles_edgeDnsResponseTimeMsP50_DESC
+  # quantiles(edgeDnsResponseTimeMsP75) ascending
+  quantiles_edgeDnsResponseTimeMsP75_ASC
+  # quantiles(edgeDnsResponseTimeMsP75) descending
+  quantiles_edgeDnsResponseTimeMsP75_DESC
+  # quantiles(edgeDnsResponseTimeMsP90) ascending
+  quantiles_edgeDnsResponseTimeMsP90_ASC
+  # quantiles(edgeDnsResponseTimeMsP90) descending
+  quantiles_edgeDnsResponseTimeMsP90_DESC
   # quantiles(edgeDnsResponseTimeMsP95) ascending
   quantiles_edgeDnsResponseTimeMsP95_ASC
   # quantiles(edgeDnsResponseTimeMsP95) descending
   quantiles_edgeDnsResponseTimeMsP95_DESC
+  # quantiles(edgeDnsResponseTimeMsP999) ascending
+  quantiles_edgeDnsResponseTimeMsP999_ASC
+  # quantiles(edgeDnsResponseTimeMsP999) descending
+  quantiles_edgeDnsResponseTimeMsP999_DESC
   # quantiles(edgeDnsResponseTimeMsP99) ascending
   quantiles_edgeDnsResponseTimeMsP99_ASC
   # quantiles(edgeDnsResponseTimeMsP99) descending
   quantiles_edgeDnsResponseTimeMsP99_DESC
+  # quantiles(edgeTimeToFirstByteMsP25) ascending
+  quantiles_edgeTimeToFirstByteMsP25_ASC
+  # quantiles(edgeTimeToFirstByteMsP25) descending
+  quantiles_edgeTimeToFirstByteMsP25_DESC
   # quantiles(edgeTimeToFirstByteMsP50) ascending
   quantiles_edgeTimeToFirstByteMsP50_ASC
   # quantiles(edgeTimeToFirstByteMsP50) descending
   quantiles_edgeTimeToFirstByteMsP50_DESC
+  # quantiles(edgeTimeToFirstByteMsP75) ascending
+  quantiles_edgeTimeToFirstByteMsP75_ASC
+  # quantiles(edgeTimeToFirstByteMsP75) descending
+  quantiles_edgeTimeToFirstByteMsP75_DESC
+  # quantiles(edgeTimeToFirstByteMsP90) ascending
+  quantiles_edgeTimeToFirstByteMsP90_ASC
+  # quantiles(edgeTimeToFirstByteMsP90) descending
+  quantiles_edgeTimeToFirstByteMsP90_DESC
   # quantiles(edgeTimeToFirstByteMsP95) ascending
   quantiles_edgeTimeToFirstByteMsP95_ASC
   # quantiles(edgeTimeToFirstByteMsP95) descending
   quantiles_edgeTimeToFirstByteMsP95_DESC
+  # quantiles(edgeTimeToFirstByteMsP999) ascending
+  quantiles_edgeTimeToFirstByteMsP999_ASC
+  # quantiles(edgeTimeToFirstByteMsP999) descending
+  quantiles_edgeTimeToFirstByteMsP999_DESC
   # quantiles(edgeTimeToFirstByteMsP99) ascending
   quantiles_edgeTimeToFirstByteMsP99_ASC
   # quantiles(edgeTimeToFirstByteMsP99) descending
   quantiles_edgeTimeToFirstByteMsP99_DESC
+  # quantiles(originResponseDurationMsP25) ascending
+  quantiles_originResponseDurationMsP25_ASC
+  # quantiles(originResponseDurationMsP25) descending
+  quantiles_originResponseDurationMsP25_DESC
   # quantiles(originResponseDurationMsP50) ascending
   quantiles_originResponseDurationMsP50_ASC
   # quantiles(originResponseDurationMsP50) descending
   quantiles_originResponseDurationMsP50_DESC
+  # quantiles(originResponseDurationMsP75) ascending
+  quantiles_originResponseDurationMsP75_ASC
+  # quantiles(originResponseDurationMsP75) descending
+  quantiles_originResponseDurationMsP75_DESC
+  # quantiles(originResponseDurationMsP90) ascending
+  quantiles_originResponseDurationMsP90_ASC
+  # quantiles(originResponseDurationMsP90) descending
+  quantiles_originResponseDurationMsP90_DESC
   # quantiles(originResponseDurationMsP95) ascending
   quantiles_originResponseDurationMsP95_ASC
   # quantiles(originResponseDurationMsP95) descending
   quantiles_originResponseDurationMsP95_DESC
+  # quantiles(originResponseDurationMsP999) ascending
+  quantiles_originResponseDurationMsP999_ASC
+  # quantiles(originResponseDurationMsP999) descending
+  quantiles_originResponseDurationMsP999_DESC
   # quantiles(originResponseDurationMsP99) ascending
   quantiles_originResponseDurationMsP99_ASC
   # quantiles(originResponseDurationMsP99) descending
@@ -60282,6 +61834,14 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   wafXssAttackScore_ASC
   # wafXssAttackScore descending
   wafXssAttackScore_DESC
+  # webAssetsLabelsManaged ascending
+  webAssetsLabelsManaged_ASC
+  # webAssetsLabelsManaged descending
+  webAssetsLabelsManaged_DESC
+  # webAssetsOperationId ascending
+  webAssetsOperationId_ASC
+  # webAssetsOperationId descending
+  webAssetsOperationId_DESC
   # xRequestedWith ascending
   xRequestedWith_ASC
   # xRequestedWith descending
@@ -60293,24 +61853,48 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
 }
 
 type OrganizationHttpRequestsAdaptiveGroupsQuantiles {
+  # 25th percentile DNS Response Time (milliseconds)
+  edgeDnsResponseTimeMsP25: float64!
   # 50th percentile DNS Response Time (milliseconds)
   edgeDnsResponseTimeMsP50: float64!
+  # 75th percentile DNS Response Time (milliseconds)
+  edgeDnsResponseTimeMsP75: float64!
+  # 90th percentile DNS Response Time (milliseconds)
+  edgeDnsResponseTimeMsP90: float64!
   # 95th percentile DNS Response Time (milliseconds)
   edgeDnsResponseTimeMsP95: float64!
   # 99th percentile DNS Response Time (milliseconds)
   edgeDnsResponseTimeMsP99: float64!
+  # 99.9th percentile DNS Response Time (milliseconds)
+  edgeDnsResponseTimeMsP999: float64!
+  # 25th percentile Time To First Byte (milliseconds)
+  edgeTimeToFirstByteMsP25: float64!
   # 50th percentile Time To First Byte (milliseconds)
   edgeTimeToFirstByteMsP50: float64!
+  # 75th percentile Time To First Byte (milliseconds)
+  edgeTimeToFirstByteMsP75: float64!
+  # 90th percentile Time To First Byte (milliseconds)
+  edgeTimeToFirstByteMsP90: float64!
   # 95th percentile Time To First Byte (milliseconds)
   edgeTimeToFirstByteMsP95: float64!
   # 99th percentile Time To First Byte (milliseconds)
   edgeTimeToFirstByteMsP99: float64!
+  # 99.9th percentile Time To First Byte (milliseconds)
+  edgeTimeToFirstByteMsP999: float64!
+  # 25th percentile Origin Response Duration (milliseconds)
+  originResponseDurationMsP25: float64!
   # 50th percentile Origin Response Duration (milliseconds)
   originResponseDurationMsP50: float64!
+  # 75th percentile Origin Response Duration (milliseconds)
+  originResponseDurationMsP75: float64!
+  # 90th percentile Origin Response Duration (milliseconds)
+  originResponseDurationMsP90: float64!
   # 95th percentile Origin Response Duration (milliseconds)
   originResponseDurationMsP95: float64!
   # 99th percentile Origin Response Duration (milliseconds)
   originResponseDurationMsP99: float64!
+  # 99.9th percentile Origin Response Duration (milliseconds)
+  originResponseDurationMsP999: float64!
 }
 
 type OrganizationHttpRequestsAdaptiveGroupsRatio {
@@ -63514,38 +65098,86 @@ enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
   protocol_ASC
   # protocol descending
   protocol_DESC
+  # quantiles(processingTimeUsNotCachedAndNotStaleP25) ascending
+  quantiles_processingTimeUsNotCachedAndNotStaleP25_ASC
+  # quantiles(processingTimeUsNotCachedAndNotStaleP25) descending
+  quantiles_processingTimeUsNotCachedAndNotStaleP25_DESC
   # quantiles(processingTimeUsNotCachedAndNotStaleP50) ascending
   quantiles_processingTimeUsNotCachedAndNotStaleP50_ASC
   # quantiles(processingTimeUsNotCachedAndNotStaleP50) descending
   quantiles_processingTimeUsNotCachedAndNotStaleP50_DESC
+  # quantiles(processingTimeUsNotCachedAndNotStaleP75) ascending
+  quantiles_processingTimeUsNotCachedAndNotStaleP75_ASC
+  # quantiles(processingTimeUsNotCachedAndNotStaleP75) descending
+  quantiles_processingTimeUsNotCachedAndNotStaleP75_DESC
   # quantiles(processingTimeUsNotCachedAndNotStaleP90) ascending
   quantiles_processingTimeUsNotCachedAndNotStaleP90_ASC
   # quantiles(processingTimeUsNotCachedAndNotStaleP90) descending
   quantiles_processingTimeUsNotCachedAndNotStaleP90_DESC
+  # quantiles(processingTimeUsNotCachedAndNotStaleP95) ascending
+  quantiles_processingTimeUsNotCachedAndNotStaleP95_ASC
+  # quantiles(processingTimeUsNotCachedAndNotStaleP95) descending
+  quantiles_processingTimeUsNotCachedAndNotStaleP95_DESC
+  # quantiles(processingTimeUsNotCachedAndNotStaleP999) ascending
+  quantiles_processingTimeUsNotCachedAndNotStaleP999_ASC
+  # quantiles(processingTimeUsNotCachedAndNotStaleP999) descending
+  quantiles_processingTimeUsNotCachedAndNotStaleP999_DESC
   # quantiles(processingTimeUsNotCachedAndNotStaleP99) ascending
   quantiles_processingTimeUsNotCachedAndNotStaleP99_ASC
   # quantiles(processingTimeUsNotCachedAndNotStaleP99) descending
   quantiles_processingTimeUsNotCachedAndNotStaleP99_DESC
+  # quantiles(processingTimeUsP25) ascending
+  quantiles_processingTimeUsP25_ASC
+  # quantiles(processingTimeUsP25) descending
+  quantiles_processingTimeUsP25_DESC
   # quantiles(processingTimeUsP50) ascending
   quantiles_processingTimeUsP50_ASC
   # quantiles(processingTimeUsP50) descending
   quantiles_processingTimeUsP50_DESC
+  # quantiles(processingTimeUsP75) ascending
+  quantiles_processingTimeUsP75_ASC
+  # quantiles(processingTimeUsP75) descending
+  quantiles_processingTimeUsP75_DESC
   # quantiles(processingTimeUsP90) ascending
   quantiles_processingTimeUsP90_ASC
   # quantiles(processingTimeUsP90) descending
   quantiles_processingTimeUsP90_DESC
+  # quantiles(processingTimeUsP95) ascending
+  quantiles_processingTimeUsP95_ASC
+  # quantiles(processingTimeUsP95) descending
+  quantiles_processingTimeUsP95_DESC
+  # quantiles(processingTimeUsP999) ascending
+  quantiles_processingTimeUsP999_ASC
+  # quantiles(processingTimeUsP999) descending
+  quantiles_processingTimeUsP999_DESC
   # quantiles(processingTimeUsP99) ascending
   quantiles_processingTimeUsP99_ASC
   # quantiles(processingTimeUsP99) descending
   quantiles_processingTimeUsP99_DESC
+  # quantiles(processingTimeUsStaleP25) ascending
+  quantiles_processingTimeUsStaleP25_ASC
+  # quantiles(processingTimeUsStaleP25) descending
+  quantiles_processingTimeUsStaleP25_DESC
   # quantiles(processingTimeUsStaleP50) ascending
   quantiles_processingTimeUsStaleP50_ASC
   # quantiles(processingTimeUsStaleP50) descending
   quantiles_processingTimeUsStaleP50_DESC
+  # quantiles(processingTimeUsStaleP75) ascending
+  quantiles_processingTimeUsStaleP75_ASC
+  # quantiles(processingTimeUsStaleP75) descending
+  quantiles_processingTimeUsStaleP75_DESC
   # quantiles(processingTimeUsStaleP90) ascending
   quantiles_processingTimeUsStaleP90_ASC
   # quantiles(processingTimeUsStaleP90) descending
   quantiles_processingTimeUsStaleP90_DESC
+  # quantiles(processingTimeUsStaleP95) ascending
+  quantiles_processingTimeUsStaleP95_ASC
+  # quantiles(processingTimeUsStaleP95) descending
+  quantiles_processingTimeUsStaleP95_DESC
+  # quantiles(processingTimeUsStaleP999) ascending
+  quantiles_processingTimeUsStaleP999_ASC
+  # quantiles(processingTimeUsStaleP999) descending
+  quantiles_processingTimeUsStaleP999_DESC
   # quantiles(processingTimeUsStaleP99) ascending
   quantiles_processingTimeUsStaleP99_ASC
   # quantiles(processingTimeUsStaleP99) descending
@@ -63597,24 +65229,48 @@ enum ZoneDnsAnalyticsAdaptiveGroupsOrderBy {
 }
 
 type ZoneDnsAnalyticsAdaptiveGroupsQuantiles {
+  # 25th percentile processing time in microseconds, only counting where responseCached and responseStale are zero
+  processingTimeUsNotCachedAndNotStaleP25: float64!
   # 50th percentile processing time in microseconds (median), only counting where responseCached and responseStale are zero
   processingTimeUsNotCachedAndNotStaleP50: float64!
+  # 75th percentile processing time in microseconds, only counting where responseCached and responseStale are zero
+  processingTimeUsNotCachedAndNotStaleP75: float64!
   # 90th percentile processing time in microseconds, only counting where responseCached and responseStale are zero
   processingTimeUsNotCachedAndNotStaleP90: float64!
+  # 95th percentile processing time in microseconds, only counting where responseCached and responseStale are zero
+  processingTimeUsNotCachedAndNotStaleP95: float64!
   # 99th percentile processing time in microseconds, only counting where responseCached and responseStale are zero
   processingTimeUsNotCachedAndNotStaleP99: float64!
+  # 99.9th percentile processing time in microseconds, only counting where responseCached and responseStale are zero
+  processingTimeUsNotCachedAndNotStaleP999: float64!
+  # 25th percentile processing time in microseconds
+  processingTimeUsP25: float64!
   # 50th percentile processing time in microseconds (median)
   processingTimeUsP50: float64!
+  # 75th percentile processing time in microseconds
+  processingTimeUsP75: float64!
   # 90th percentile processing time in microseconds
   processingTimeUsP90: float64!
+  # 95th percentile processing time in microseconds
+  processingTimeUsP95: float64!
   # 99th percentile processing time in microseconds
   processingTimeUsP99: float64!
+  # 99.9th percentile processing time in microseconds
+  processingTimeUsP999: float64!
+  # 25th percentile processing time in microseconds, only counting where responseStale is not zero
+  processingTimeUsStaleP25: float64!
   # 50th percentile processing time in microseconds (median), only counting where responseStale is not zero
   processingTimeUsStaleP50: float64!
+  # 75th percentile processing time in microseconds, only counting where responseStale is not zero
+  processingTimeUsStaleP75: float64!
   # 90th percentile processing time in microseconds, only counting where responseStale is not zero
   processingTimeUsStaleP90: float64!
+  # 95th percentile processing time in microseconds, only counting where responseStale is not zero
+  processingTimeUsStaleP95: float64!
   # 99th percentile processing time in microseconds, only counting where responseStale is not zero
   processingTimeUsStaleP99: float64!
+  # 99.9th percentile processing time in microseconds, only counting where responseStale is not zero
+  processingTimeUsStaleP999: float64!
 }
 
 type ZoneDnsAnalyticsAdaptiveGroupsSum {
@@ -64369,6 +66025,9 @@ type ZoneEmailSendingAdaptive {
   # DMARC check status of the source email
   dmarc: string!
   # The envelope recipient email address
+  envelopeTo: string!
+  # The envelope recipient email address
+  @Deprecated
   envelopeTos: string!
   # Error type (if any)
   errorCause: string!
@@ -64388,6 +66047,8 @@ type ZoneEmailSendingAdaptive {
   messageId: string!
   # ABR sample interval
   sampleInterval: uint32!
+  # Domain from which the email was sent
+  sendingDomain: string!
   # Unique identifier for the email log entry (note: retries for the same email may result in multiple log entries)
   sessionId: string!
   # Spam score value
@@ -64445,6 +66106,16 @@ input ZoneEmailSendingAdaptiveFilter_InputObject {
   dmarc_neq: string
   dmarc_notin: [string!]
   dmarc_notlike: string
+  envelopeTo: string
+  envelopeTo_geq: string
+  envelopeTo_gt: string
+  envelopeTo_in: [string!]
+  envelopeTo_leq: string
+  envelopeTo_like: string
+  envelopeTo_lt: string
+  envelopeTo_neq: string
+  envelopeTo_notin: [string!]
+  envelopeTo_notlike: string
   envelopeTos: string
   envelopeTos_geq: string
   envelopeTos_gt: string
@@ -64537,6 +66208,16 @@ input ZoneEmailSendingAdaptiveFilter_InputObject {
   sampleInterval_lt: uint32
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
+  sendingDomain: string
+  sendingDomain_geq: string
+  sendingDomain_gt: string
+  sendingDomain_in: [string!]
+  sendingDomain_leq: string
+  sendingDomain_like: string
+  sendingDomain_lt: string
+  sendingDomain_neq: string
+  sendingDomain_notin: [string!]
+  sendingDomain_notlike: string
   sessionId: string
   sessionId_geq: string
   sessionId_gt: string
@@ -64640,6 +66321,9 @@ type ZoneEmailSendingAdaptiveGroupsDimensions {
   # DMARC check status of the source email
   dmarc: string!
   # The envelope recipient email address
+  envelopeTo: string!
+  # The envelope recipient email address
+  @Deprecated
   envelopeTos: string!
   # Error type (if any)
   errorCause: string!
@@ -64653,6 +66337,8 @@ type ZoneEmailSendingAdaptiveGroupsDimensions {
   isSpam: uint8!
   # ABR sample interval
   sampleInterval: uint32!
+  # Domain from which the email was sent
+  sendingDomain: string!
   # Spam score value
   spamScore: uint32!
   # Spam threshold value
@@ -64736,6 +66422,16 @@ input ZoneEmailSendingAdaptiveGroupsFilter_InputObject {
   dmarc_neq: string
   dmarc_notin: [string!]
   dmarc_notlike: string
+  envelopeTo: string
+  envelopeTo_geq: string
+  envelopeTo_gt: string
+  envelopeTo_in: [string!]
+  envelopeTo_leq: string
+  envelopeTo_like: string
+  envelopeTo_lt: string
+  envelopeTo_neq: string
+  envelopeTo_notin: [string!]
+  envelopeTo_notlike: string
   envelopeTos: string
   envelopeTos_geq: string
   envelopeTos_gt: string
@@ -64798,6 +66494,16 @@ input ZoneEmailSendingAdaptiveGroupsFilter_InputObject {
   sampleInterval_lt: uint32
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
+  sendingDomain: string
+  sendingDomain_geq: string
+  sendingDomain_gt: string
+  sendingDomain_in: [string!]
+  sendingDomain_leq: string
+  sendingDomain_like: string
+  sendingDomain_lt: string
+  sendingDomain_neq: string
+  sendingDomain_notin: [string!]
+  sendingDomain_notlike: string
   spamScore: uint32
   spamScore_geq: uint32
   spamScore_gt: uint32
@@ -64873,6 +66579,10 @@ enum ZoneEmailSendingAdaptiveGroupsOrderBy {
   dmarc_ASC
   # dmarc descending
   dmarc_DESC
+  # envelopeTo ascending
+  envelopeTo_ASC
+  # envelopeTo descending
+  envelopeTo_DESC
   # envelopeTos ascending
   envelopeTos_ASC
   # envelopeTos descending
@@ -64905,6 +66615,10 @@ enum ZoneEmailSendingAdaptiveGroupsOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # sendingDomain ascending
+  sendingDomain_ASC
+  # sendingDomain descending
+  sendingDomain_DESC
   # spamScore ascending
   spamScore_ASC
   # spamScore descending
@@ -64940,6 +66654,10 @@ enum ZoneEmailSendingAdaptiveOrderBy {
   dmarc_ASC
   # dmarc descending
   dmarc_DESC
+  # envelopeTo ascending
+  envelopeTo_ASC
+  # envelopeTo descending
+  envelopeTo_DESC
   # envelopeTos ascending
   envelopeTos_ASC
   # envelopeTos descending
@@ -64984,6 +66702,10 @@ enum ZoneEmailSendingAdaptiveOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # sendingDomain ascending
+  sendingDomain_ASC
+  # sendingDomain descending
+  sendingDomain_DESC
   # sessionId ascending
   sessionId_ASC
   # sessionId descending
@@ -70134,6 +71856,10 @@ type ZoneHttpRequestsAdaptive {
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
   wafXssAttackScore: uint8!
+  # Managed Web Asset Labels (Cloudflare-defined labels, e.g. cf-log-in, cf-llm)
+  webAssetsLabelsManaged: [string!]!
+  # Web Asset Operation ID
+  webAssetsOperationId: string!
   # The X-Requested-With header of the client request
   xRequestedWith: string!
   # The version of a zone
@@ -70844,6 +72570,21 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   wafXssAttackScore_lt: uint8
   wafXssAttackScore_neq: uint8
   wafXssAttackScore_notin: bytes
+  webAssetsLabelsManaged_has: string
+  webAssetsLabelsManaged_hasall: [string!]
+  webAssetsLabelsManaged_hasany: [string!]
+  webAssetsLabelsManaged_isempty: bool
+  webAssetsLabelsManaged_nothas: string
+  webAssetsOperationId: string
+  webAssetsOperationId_geq: string
+  webAssetsOperationId_gt: string
+  webAssetsOperationId_in: [string!]
+  webAssetsOperationId_leq: string
+  webAssetsOperationId_like: string
+  webAssetsOperationId_lt: string
+  webAssetsOperationId_neq: string
+  webAssetsOperationId_notin: [string!]
+  webAssetsOperationId_notlike: string
   xRequestedWith: string
   xRequestedWith_geq: string
   xRequestedWith_gt: string
@@ -71059,6 +72800,10 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
   wafXssAttackScore: uint8!
+  # Managed Web Asset Labels (Cloudflare-defined labels, e.g. cf-log-in, cf-llm)
+  webAssetsLabelsManaged: [string!]!
+  # Web Asset Operation ID
+  webAssetsOperationId: string!
   # The X-Requested-With header of the client request
   xRequestedWith: string!
   # The version of a zone
@@ -71777,6 +73522,21 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   wafXssAttackScore_lt: uint8
   wafXssAttackScore_neq: uint8
   wafXssAttackScore_notin: bytes
+  webAssetsLabelsManaged_has: string
+  webAssetsLabelsManaged_hasall: [string!]
+  webAssetsLabelsManaged_hasany: [string!]
+  webAssetsLabelsManaged_isempty: bool
+  webAssetsLabelsManaged_nothas: string
+  webAssetsOperationId: string
+  webAssetsOperationId_geq: string
+  webAssetsOperationId_gt: string
+  webAssetsOperationId_in: [string!]
+  webAssetsOperationId_leq: string
+  webAssetsOperationId_like: string
+  webAssetsOperationId_lt: string
+  webAssetsOperationId_neq: string
+  webAssetsOperationId_notin: [string!]
+  webAssetsOperationId_notlike: string
   xRequestedWith: string
   xRequestedWith_geq: string
   xRequestedWith_gt: string
@@ -72086,50 +73846,114 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   payPerCrawlStatus_ASC
   # payPerCrawlStatus descending
   payPerCrawlStatus_DESC
+  # quantiles(edgeDnsResponseTimeMsP25) ascending
+  quantiles_edgeDnsResponseTimeMsP25_ASC
+  # quantiles(edgeDnsResponseTimeMsP25) descending
+  quantiles_edgeDnsResponseTimeMsP25_DESC
   # quantiles(edgeDnsResponseTimeMsP50) ascending
   quantiles_edgeDnsResponseTimeMsP50_ASC
   # quantiles(edgeDnsResponseTimeMsP50) descending
   quantiles_edgeDnsResponseTimeMsP50_DESC
+  # quantiles(edgeDnsResponseTimeMsP75) ascending
+  quantiles_edgeDnsResponseTimeMsP75_ASC
+  # quantiles(edgeDnsResponseTimeMsP75) descending
+  quantiles_edgeDnsResponseTimeMsP75_DESC
+  # quantiles(edgeDnsResponseTimeMsP90) ascending
+  quantiles_edgeDnsResponseTimeMsP90_ASC
+  # quantiles(edgeDnsResponseTimeMsP90) descending
+  quantiles_edgeDnsResponseTimeMsP90_DESC
   # quantiles(edgeDnsResponseTimeMsP95) ascending
   quantiles_edgeDnsResponseTimeMsP95_ASC
   # quantiles(edgeDnsResponseTimeMsP95) descending
   quantiles_edgeDnsResponseTimeMsP95_DESC
+  # quantiles(edgeDnsResponseTimeMsP999) ascending
+  quantiles_edgeDnsResponseTimeMsP999_ASC
+  # quantiles(edgeDnsResponseTimeMsP999) descending
+  quantiles_edgeDnsResponseTimeMsP999_DESC
   # quantiles(edgeDnsResponseTimeMsP99) ascending
   quantiles_edgeDnsResponseTimeMsP99_ASC
   # quantiles(edgeDnsResponseTimeMsP99) descending
   quantiles_edgeDnsResponseTimeMsP99_DESC
+  # quantiles(edgeResponseBytesP25) ascending
+  quantiles_edgeResponseBytesP25_ASC
+  # quantiles(edgeResponseBytesP25) descending
+  quantiles_edgeResponseBytesP25_DESC
   # quantiles(edgeResponseBytesP50) ascending
   quantiles_edgeResponseBytesP50_ASC
   # quantiles(edgeResponseBytesP50) descending
   quantiles_edgeResponseBytesP50_DESC
+  # quantiles(edgeResponseBytesP75) ascending
+  quantiles_edgeResponseBytesP75_ASC
+  # quantiles(edgeResponseBytesP75) descending
+  quantiles_edgeResponseBytesP75_DESC
+  # quantiles(edgeResponseBytesP90) ascending
+  quantiles_edgeResponseBytesP90_ASC
+  # quantiles(edgeResponseBytesP90) descending
+  quantiles_edgeResponseBytesP90_DESC
   # quantiles(edgeResponseBytesP95) ascending
   quantiles_edgeResponseBytesP95_ASC
   # quantiles(edgeResponseBytesP95) descending
   quantiles_edgeResponseBytesP95_DESC
+  # quantiles(edgeResponseBytesP999) ascending
+  quantiles_edgeResponseBytesP999_ASC
+  # quantiles(edgeResponseBytesP999) descending
+  quantiles_edgeResponseBytesP999_DESC
   # quantiles(edgeResponseBytesP99) ascending
   quantiles_edgeResponseBytesP99_ASC
   # quantiles(edgeResponseBytesP99) descending
   quantiles_edgeResponseBytesP99_DESC
+  # quantiles(edgeTimeToFirstByteMsP25) ascending
+  quantiles_edgeTimeToFirstByteMsP25_ASC
+  # quantiles(edgeTimeToFirstByteMsP25) descending
+  quantiles_edgeTimeToFirstByteMsP25_DESC
   # quantiles(edgeTimeToFirstByteMsP50) ascending
   quantiles_edgeTimeToFirstByteMsP50_ASC
   # quantiles(edgeTimeToFirstByteMsP50) descending
   quantiles_edgeTimeToFirstByteMsP50_DESC
+  # quantiles(edgeTimeToFirstByteMsP75) ascending
+  quantiles_edgeTimeToFirstByteMsP75_ASC
+  # quantiles(edgeTimeToFirstByteMsP75) descending
+  quantiles_edgeTimeToFirstByteMsP75_DESC
+  # quantiles(edgeTimeToFirstByteMsP90) ascending
+  quantiles_edgeTimeToFirstByteMsP90_ASC
+  # quantiles(edgeTimeToFirstByteMsP90) descending
+  quantiles_edgeTimeToFirstByteMsP90_DESC
   # quantiles(edgeTimeToFirstByteMsP95) ascending
   quantiles_edgeTimeToFirstByteMsP95_ASC
   # quantiles(edgeTimeToFirstByteMsP95) descending
   quantiles_edgeTimeToFirstByteMsP95_DESC
+  # quantiles(edgeTimeToFirstByteMsP999) ascending
+  quantiles_edgeTimeToFirstByteMsP999_ASC
+  # quantiles(edgeTimeToFirstByteMsP999) descending
+  quantiles_edgeTimeToFirstByteMsP999_DESC
   # quantiles(edgeTimeToFirstByteMsP99) ascending
   quantiles_edgeTimeToFirstByteMsP99_ASC
   # quantiles(edgeTimeToFirstByteMsP99) descending
   quantiles_edgeTimeToFirstByteMsP99_DESC
+  # quantiles(originResponseDurationMsP25) ascending
+  quantiles_originResponseDurationMsP25_ASC
+  # quantiles(originResponseDurationMsP25) descending
+  quantiles_originResponseDurationMsP25_DESC
   # quantiles(originResponseDurationMsP50) ascending
   quantiles_originResponseDurationMsP50_ASC
   # quantiles(originResponseDurationMsP50) descending
   quantiles_originResponseDurationMsP50_DESC
+  # quantiles(originResponseDurationMsP75) ascending
+  quantiles_originResponseDurationMsP75_ASC
+  # quantiles(originResponseDurationMsP75) descending
+  quantiles_originResponseDurationMsP75_DESC
+  # quantiles(originResponseDurationMsP90) ascending
+  quantiles_originResponseDurationMsP90_ASC
+  # quantiles(originResponseDurationMsP90) descending
+  quantiles_originResponseDurationMsP90_DESC
   # quantiles(originResponseDurationMsP95) ascending
   quantiles_originResponseDurationMsP95_ASC
   # quantiles(originResponseDurationMsP95) descending
   quantiles_originResponseDurationMsP95_DESC
+  # quantiles(originResponseDurationMsP999) ascending
+  quantiles_originResponseDurationMsP999_ASC
+  # quantiles(originResponseDurationMsP999) descending
+  quantiles_originResponseDurationMsP999_DESC
   # quantiles(originResponseDurationMsP99) ascending
   quantiles_originResponseDurationMsP99_ASC
   # quantiles(originResponseDurationMsP99) descending
@@ -72262,6 +74086,14 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   wafXssAttackScore_ASC
   # wafXssAttackScore descending
   wafXssAttackScore_DESC
+  # webAssetsLabelsManaged ascending
+  webAssetsLabelsManaged_ASC
+  # webAssetsLabelsManaged descending
+  webAssetsLabelsManaged_DESC
+  # webAssetsOperationId ascending
+  webAssetsOperationId_ASC
+  # webAssetsOperationId descending
+  webAssetsOperationId_DESC
   # xRequestedWith ascending
   xRequestedWith_ASC
   # xRequestedWith descending
@@ -72273,30 +74105,62 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
 }
 
 type ZoneHttpRequestsAdaptiveGroupsQuantiles {
+  # 25th percentile DNS Response Time (milliseconds)
+  edgeDnsResponseTimeMsP25: float64!
   # 50th percentile DNS Response Time (milliseconds)
   edgeDnsResponseTimeMsP50: float64!
+  # 75th percentile DNS Response Time (milliseconds)
+  edgeDnsResponseTimeMsP75: float64!
+  # 90th percentile DNS Response Time (milliseconds)
+  edgeDnsResponseTimeMsP90: float64!
   # 95th percentile DNS Response Time (milliseconds)
   edgeDnsResponseTimeMsP95: float64!
   # 99th percentile DNS Response Time (milliseconds)
   edgeDnsResponseTimeMsP99: float64!
+  # 99.9th percentile DNS Response Time (milliseconds)
+  edgeDnsResponseTimeMsP999: float64!
+  # 25th percentile Bytes returned to client
+  edgeResponseBytesP25: float64!
   # 50th percentile Bytes returned to client
   edgeResponseBytesP50: float64!
+  # 75th percentile Bytes returned to client
+  edgeResponseBytesP75: float64!
+  # 90th percentile Bytes returned to client
+  edgeResponseBytesP90: float64!
   # 95th percentile Bytes returned to client
   edgeResponseBytesP95: float64!
   # 99th percentile Bytes returned to client
   edgeResponseBytesP99: float64!
+  # 99.9th percentile Bytes returned to client
+  edgeResponseBytesP999: float64!
+  # 25th percentile Time To First Byte (milliseconds)
+  edgeTimeToFirstByteMsP25: float64!
   # 50th percentile Time To First Byte (milliseconds)
   edgeTimeToFirstByteMsP50: float64!
+  # 75th percentile Time To First Byte (milliseconds)
+  edgeTimeToFirstByteMsP75: float64!
+  # 90th percentile Time To First Byte (milliseconds)
+  edgeTimeToFirstByteMsP90: float64!
   # 95th percentile Time To First Byte (milliseconds)
   edgeTimeToFirstByteMsP95: float64!
   # 99th percentile Time To First Byte (milliseconds)
   edgeTimeToFirstByteMsP99: float64!
+  # 99.9th percentile Time To First Byte (milliseconds)
+  edgeTimeToFirstByteMsP999: float64!
+  # 25th percentile Origin Response Duration (milliseconds)
+  originResponseDurationMsP25: float64!
   # 50th percentile Origin Response Duration (milliseconds)
   originResponseDurationMsP50: float64!
+  # 75th percentile Origin Response Duration (milliseconds)
+  originResponseDurationMsP75: float64!
+  # 90th percentile Origin Response Duration (milliseconds)
+  originResponseDurationMsP90: float64!
   # 95th percentile Origin Response Duration (milliseconds)
   originResponseDurationMsP95: float64!
   # 99th percentile Origin Response Duration (milliseconds)
   originResponseDurationMsP99: float64!
+  # 99.9th percentile Origin Response Duration (milliseconds)
+  originResponseDurationMsP999: float64!
 }
 
 type ZoneHttpRequestsAdaptiveGroupsRatio {
@@ -72681,6 +74545,14 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   wafXssAttackScore_ASC
   # wafXssAttackScore descending
   wafXssAttackScore_DESC
+  # webAssetsLabelsManaged ascending
+  webAssetsLabelsManaged_ASC
+  # webAssetsLabelsManaged descending
+  webAssetsLabelsManaged_DESC
+  # webAssetsOperationId ascending
+  webAssetsOperationId_ASC
+  # webAssetsOperationId descending
+  webAssetsOperationId_DESC
   # xRequestedWith ascending
   xRequestedWith_ASC
   # xRequestedWith descending
