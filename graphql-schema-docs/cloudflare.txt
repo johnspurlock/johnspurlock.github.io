@@ -10842,6 +10842,11 @@ input AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject {
   durableObjectId_neq: string
   durableObjectId_notin: [string!]
   durableObjectId_notlike: string
+  labels_has: string
+  labels_hasall: [string!]
+  labels_hasany: [string!]
+  labels_isempty: bool
+  labels_nothas: string
   location: string
   location_geq: string
   location_gt: string
@@ -12182,6 +12187,11 @@ input AccountContainersMetricsAdaptiveGroupsFilter_InputObject {
   durableObjectId_neq: string
   durableObjectId_notin: [string!]
   durableObjectId_notlike: string
+  labels_has: string
+  labels_hasall: [string!]
+  labels_hasany: [string!]
+  labels_isempty: bool
+  labels_nothas: string
   location: string
   location_geq: string
   location_gt: string
@@ -18473,9 +18483,9 @@ input AccountFilter_InputObject {
 type AccountFirewallEventsAdaptive {
   # The code of the first-class action the Cloudflare Firewall took on this request
   action: string!
-  # API Gateway endpoint matched at the edge
+  # API Gateway (Web Assets) endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
-  # API Gateway host matched at the edge
+  # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
   # 1-D array of the categories associated with the rules ref in attackSignatureRefs
   attackSignatureCategories: [string!]!
@@ -19339,9 +19349,9 @@ type AccountFirewallEventsAdaptiveGroupsConfidence {
 type AccountFirewallEventsAdaptiveGroupsDimensions {
   # The code of the first-class action the Cloudflare Firewall took on this request
   action: string!
-  # API Gateway endpoint matched at the edge
+  # API Gateway (Web Assets) endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
-  # API Gateway host matched at the edge
+  # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
   # 1-D array of the categories associated with the rules ref in attackSignatureRefs
   attackSignatureCategories: [string!]!
@@ -26203,9 +26213,9 @@ type AccountHttpRequests1mGroupsUniq {
 
 # Raw HTTP requests with adaptive sampling
 type AccountHttpRequestsAdaptive {
-  # API Gateway endpoint matched at the edge
+  # API Gateway (Web Assets) endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
-  # API Gateway host matched at the edge
+  # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
   # 1-D array of the categories associated with the rules ref in attackSignatureRefs
   attackSignatureCategories: [string!]!
@@ -27168,9 +27178,9 @@ type AccountHttpRequestsAdaptiveGroupsConfidence {
 }
 
 type AccountHttpRequestsAdaptiveGroupsDimensions {
-  # API Gateway endpoint matched at the edge
+  # API Gateway (Web Assets) endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
-  # API Gateway host matched at the edge
+  # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
   # 1-D array of the categories associated with the rules ref in attackSignatureRefs
   attackSignatureCategories: [string!]!
@@ -60466,9 +60476,9 @@ type OrganizationHttpRequestsAdaptiveGroupsConfidence {
 type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   # Associated account
   accountTag: string!
-  # API Gateway endpoint matched at the edge
+  # API Gateway (Web Assets) endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
-  # API Gateway host matched at the edge
+  # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
   # 1-D array of the categories associated with the rules ref in attackSignatureRefs
   attackSignatureCategories: [string!]!
@@ -66746,9 +66756,9 @@ input ZoneFilter_InputObject {
 type ZoneFirewallEventsAdaptive {
   # The code of the first-class action the Cloudflare Firewall took on this request
   action: string!
-  # API Gateway endpoint matched at the edge
+  # API Gateway (Web Assets) endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
-  # API Gateway host matched at the edge
+  # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
   # 1-D array of the categories associated with the rules ref in attackSignatureRefs
   attackSignatureCategories: [string!]!
@@ -66933,9 +66943,9 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsConfidence {
 }
 
 type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
-  # API Gateway endpoint matched at the edge
+  # API Gateway (Web Assets) endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
-  # API Gateway host matched at the edge
+  # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
   # 1-D array of the categories associated with the rules ref in attackSignatureRefs
   attackSignatureCategories: [string!]!
@@ -68585,9 +68595,9 @@ type ZoneFirewallEventsAdaptiveGroupsConfidence {
 type ZoneFirewallEventsAdaptiveGroupsDimensions {
   # The code of the first-class action the Cloudflare Firewall took on this request
   action: string!
-  # API Gateway endpoint matched at the edge
+  # API Gateway (Web Assets) endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
-  # API Gateway host matched at the edge
+  # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
   # 1-D array of the categories associated with the rules ref in attackSignatureRefs
   attackSignatureCategories: [string!]!
@@ -71697,9 +71707,9 @@ type ZoneHttpRequests1mGroupsUniq {
 
 # Raw HTTP requests with adaptive sampling
 type ZoneHttpRequestsAdaptive {
-  # API Gateway endpoint matched at the edge
+  # API Gateway (Web Assets) endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
-  # API Gateway host matched at the edge
+  # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
   # 1-D array of the categories associated with the rules ref in attackSignatureRefs
   attackSignatureCategories: [string!]!
@@ -72650,9 +72660,9 @@ type ZoneHttpRequestsAdaptiveGroupsConfidence {
 }
 
 type ZoneHttpRequestsAdaptiveGroupsDimensions {
-  # API Gateway endpoint matched at the edge
+  # API Gateway (Web Assets) endpoint matched at the edge
   apiGatewayMatchedEndpoint: string!
-  # API Gateway host matched at the edge
+  # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
   # 1-D array of the categories associated with the rules ref in attackSignatureRefs
   attackSignatureCategories: [string!]!
