@@ -12,6 +12,7 @@ Account-level datasets:
 * aiInferenceAdaptiveGroups
 * aiSearchAPIAdaptiveGroups
 * aiSearchIngestedItemsAdaptiveGroups
+* artifactsEventsAdaptiveGroups
 * autoRAGConfigAPIAdaptiveGroups
 * autoRAGEngineAdaptiveGroups
 * browserIsolationSessionsAdaptiveGroups
@@ -301,6 +302,8 @@ type account {
   aiSearchAPIAdaptiveGroups(filter: AccountAiSearchAPIAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchAPIAdaptiveGroupsOrderBy!]): [AccountAiSearchAPIAdaptiveGroups!]!
   # AI Search Ingested Items Analytics
   aiSearchIngestedItemsAdaptiveGroups(filter: AccountAiSearchIngestedItemsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchIngestedItemsAdaptiveGroupsOrderBy!]): [AccountAiSearchIngestedItemsAdaptiveGroups!]!
+  # Artifacts events with adaptive sampling
+  artifactsEventsAdaptiveGroups(filter: AccountArtifactsEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountArtifactsEventsAdaptiveGroupsOrderBy!]): [AccountArtifactsEventsAdaptiveGroups!]!
   # AutoRAG Config API Search Analytics
   autoRAGConfigAPIAdaptiveGroups(filter: AccountAutoRAGConfigAPIAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAutoRAGConfigAPIAdaptiveGroupsOrderBy!]): [AccountAutoRAGConfigAPIAdaptiveGroups!]!
   # AutoRAG Engine Ingestion Analytics
@@ -6668,6 +6671,308 @@ type AccountAiSearchIngestedItemsAdaptiveGroupsSumConfidence {
   vectorizeDurationMs: Confidence!
 }
 
+# Artifacts events with adaptive sampling
+type AccountArtifactsEventsAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountArtifactsEventsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountArtifactsEventsAdaptiveGroupsConfidence!
+  # The number of artifact events
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountArtifactsEventsAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: AccountArtifactsEventsAdaptiveGroupsQuantiles
+  # The sum of values for a metric per dimension
+  sum: AccountArtifactsEventsAdaptiveGroupsSum
+}
+
+type AccountArtifactsEventsAdaptiveGroupsAvg {
+  # Average duration of artifact operations in milliseconds
+  durationMs: float64!
+}
+
+type AccountArtifactsEventsAdaptiveGroupsConfidence {
+  # The number of artifact events, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountArtifactsEventsAdaptiveGroupsSumConfidence
+}
+
+type AccountArtifactsEventsAdaptiveGroupsDimensions {
+  # The date the artifact event occurred
+  date: Date!
+  # The date and time the artifact event occurred
+  datetime: Time!
+  # The date and time the artifact event occurred truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the artifact event occurred truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the artifact event occurred truncated to the hour
+  datetimeHour: Time!
+  # The date and time the artifact event occurred truncated to the minute
+  datetimeMinute: Time!
+  # The date and time the artifact event occurred truncated to start of six hour window
+  datetimeSixHours: Time!
+  # The error message if the operation failed
+  errorMessage: string!
+  # Top-level event category: 'action' for successful operations, 'error' for failures
+  eventKind: string!
+  # Specific event type within the eventKind. For actions: create, fork, push, pull, delete. For errors: storageLimitReached, serverError, clientError, rateLimited
+  eventType: string!
+  # The fully-qualified repository path in the form '{namespace}/{name}' (max 96 chars). Filter with exact match (e.g. 'my-ns/my-repo') or use repository_like for prefix queries (e.g. 'my-ns/%').
+  repository: string!
+  # The name of the repository within its namespace
+  repositoryName: string!
+  # The namespace of the repository
+  repositoryNamespace: string!
+}
+
+input AccountArtifactsEventsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountArtifactsEventsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountArtifactsEventsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  errorMessage: string
+  errorMessage_geq: string
+  errorMessage_gt: string
+  errorMessage_in: [string!]
+  errorMessage_leq: string
+  errorMessage_like: string
+  errorMessage_lt: string
+  errorMessage_neq: string
+  errorMessage_notin: [string!]
+  errorMessage_notlike: string
+  eventKind: string
+  eventKind_geq: string
+  eventKind_gt: string
+  eventKind_in: [string!]
+  eventKind_leq: string
+  eventKind_like: string
+  eventKind_lt: string
+  eventKind_neq: string
+  eventKind_notin: [string!]
+  eventKind_notlike: string
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
+  repository: string
+  repositoryName: string
+  repositoryName_geq: string
+  repositoryName_gt: string
+  repositoryName_in: [string!]
+  repositoryName_leq: string
+  repositoryName_like: string
+  repositoryName_lt: string
+  repositoryName_neq: string
+  repositoryName_notin: [string!]
+  repositoryName_notlike: string
+  repositoryNamespace: string
+  repositoryNamespace_geq: string
+  repositoryNamespace_gt: string
+  repositoryNamespace_in: [string!]
+  repositoryNamespace_leq: string
+  repositoryNamespace_like: string
+  repositoryNamespace_lt: string
+  repositoryNamespace_neq: string
+  repositoryNamespace_notin: [string!]
+  repositoryNamespace_notlike: string
+  repository_geq: string
+  repository_gt: string
+  repository_in: [string!]
+  repository_leq: string
+  repository_like: string
+  repository_lt: string
+  repository_neq: string
+  repository_notin: [string!]
+  repository_notlike: string
+}
+
+enum AccountArtifactsEventsAdaptiveGroupsOrderBy {
+  # avg(durationMs) ascending
+  avg_durationMs_ASC
+  # avg(durationMs) descending
+  avg_durationMs_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # errorMessage ascending
+  errorMessage_ASC
+  # errorMessage descending
+  errorMessage_DESC
+  # eventKind ascending
+  eventKind_ASC
+  # eventKind descending
+  eventKind_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
+  # quantiles(durationMsP25) ascending
+  quantiles_durationMsP25_ASC
+  # quantiles(durationMsP25) descending
+  quantiles_durationMsP25_DESC
+  # quantiles(durationMsP50) ascending
+  quantiles_durationMsP50_ASC
+  # quantiles(durationMsP50) descending
+  quantiles_durationMsP50_DESC
+  # quantiles(durationMsP75) ascending
+  quantiles_durationMsP75_ASC
+  # quantiles(durationMsP75) descending
+  quantiles_durationMsP75_DESC
+  # quantiles(durationMsP90) ascending
+  quantiles_durationMsP90_ASC
+  # quantiles(durationMsP90) descending
+  quantiles_durationMsP90_DESC
+  # quantiles(durationMsP95) ascending
+  quantiles_durationMsP95_ASC
+  # quantiles(durationMsP95) descending
+  quantiles_durationMsP95_DESC
+  # quantiles(durationMsP999) ascending
+  quantiles_durationMsP999_ASC
+  # quantiles(durationMsP999) descending
+  quantiles_durationMsP999_DESC
+  # quantiles(durationMsP99) ascending
+  quantiles_durationMsP99_ASC
+  # quantiles(durationMsP99) descending
+  quantiles_durationMsP99_DESC
+  # repositoryName ascending
+  repositoryName_ASC
+  # repositoryName descending
+  repositoryName_DESC
+  # repositoryNamespace ascending
+  repositoryNamespace_ASC
+  # repositoryNamespace descending
+  repositoryNamespace_DESC
+  # repository ascending
+  repository_ASC
+  # repository descending
+  repository_DESC
+  # sum(durationMs) ascending
+  sum_durationMs_ASC
+  # sum(durationMs) descending
+  sum_durationMs_DESC
+}
+
+type AccountArtifactsEventsAdaptiveGroupsQuantiles {
+  # Duration in milliseconds (25th percentile)
+  durationMsP25: float64!
+  # Duration in milliseconds (50th percentile)
+  durationMsP50: float64!
+  # Duration in milliseconds (75th percentile)
+  durationMsP75: float64!
+  # Duration in milliseconds (90th percentile)
+  durationMsP90: float64!
+  # Duration in milliseconds (95th percentile)
+  durationMsP95: float64!
+  # Duration in milliseconds (99th percentile)
+  durationMsP99: float64!
+  # Duration in milliseconds (99.9th percentile)
+  durationMsP999: float64!
+}
+
+type AccountArtifactsEventsAdaptiveGroupsSum {
+  # Total duration of artifact operations in milliseconds
+  durationMs: float64!
+}
+
+type AccountArtifactsEventsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  durationMs: Confidence!
+}
+
 # AutoRAG Config API Search Analytics
 type AccountAutoRAGConfigAPIAdaptiveGroups {
   # ALPHA - DO NOT USE
@@ -11113,6 +11418,8 @@ type AccountCloudchamberMetricsAdaptiveGroups {
 }
 
 type AccountCloudchamberMetricsAdaptiveGroupsAvg {
+  # Average container uptime, in milliseconds
+  containerUptime: float64!
   # Average CPU load
   @Deprecated
   cpuLoad: float64!
@@ -11323,6 +11630,8 @@ input AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject {
 }
 
 type AccountCloudchamberMetricsAdaptiveGroupsMax {
+  # Maximum container uptime, in milliseconds
+  containerUptime: int64!
   # Maximum CPU load
   @Deprecated
   cpuLoad: float64!
@@ -11365,6 +11674,10 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   applicationId_ASC
   # applicationId descending
   applicationId_DESC
+  # avg(containerUptime) ascending
+  avg_containerUptime_ASC
+  # avg(containerUptime) descending
+  avg_containerUptime_DESC
   # avg(cpuLoad) ascending
   avg_cpuLoad_ASC
   # avg(cpuLoad) descending
@@ -11441,6 +11754,10 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   location_ASC
   # location descending
   location_DESC
+  # max(containerUptime) ascending
+  max_containerUptime_ASC
+  # max(containerUptime) descending
+  max_containerUptime_DESC
   # max(cpuLoad) ascending
   max_cpuLoad_ASC
   # max(cpuLoad) descending
@@ -11501,6 +11818,34 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   procType_ASC
   # procType descending
   procType_DESC
+  # quantiles(containerUptimeP25) ascending
+  quantiles_containerUptimeP25_ASC
+  # quantiles(containerUptimeP25) descending
+  quantiles_containerUptimeP25_DESC
+  # quantiles(containerUptimeP50) ascending
+  quantiles_containerUptimeP50_ASC
+  # quantiles(containerUptimeP50) descending
+  quantiles_containerUptimeP50_DESC
+  # quantiles(containerUptimeP75) ascending
+  quantiles_containerUptimeP75_ASC
+  # quantiles(containerUptimeP75) descending
+  quantiles_containerUptimeP75_DESC
+  # quantiles(containerUptimeP90) ascending
+  quantiles_containerUptimeP90_ASC
+  # quantiles(containerUptimeP90) descending
+  quantiles_containerUptimeP90_DESC
+  # quantiles(containerUptimeP95) ascending
+  quantiles_containerUptimeP95_ASC
+  # quantiles(containerUptimeP95) descending
+  quantiles_containerUptimeP95_DESC
+  # quantiles(containerUptimeP999) ascending
+  quantiles_containerUptimeP999_ASC
+  # quantiles(containerUptimeP999) descending
+  quantiles_containerUptimeP999_DESC
+  # quantiles(containerUptimeP99) ascending
+  quantiles_containerUptimeP99_ASC
+  # quantiles(containerUptimeP99) descending
+  quantiles_containerUptimeP99_DESC
   # quantiles(cpuLoadP25) ascending
   quantiles_cpuLoadP25_ASC
   # quantiles(cpuLoadP25) descending
@@ -11797,6 +12142,10 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   sum_allocatedMemory_ASC
   # sum(allocatedMemory) descending
   sum_allocatedMemory_DESC
+  # sum(containerUptime) ascending
+  sum_containerUptime_ASC
+  # sum(containerUptime) descending
+  sum_containerUptime_DESC
   # sum(cpuTimeSec) ascending
   sum_cpuTimeSec_ASC
   # sum(cpuTimeSec) descending
@@ -11812,6 +12161,20 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
 }
 
 type AccountCloudchamberMetricsAdaptiveGroupsQuantiles {
+  # Container uptime (25th percentile), in milliseconds
+  containerUptimeP25: float64!
+  # Container uptime (50th percentile), in milliseconds
+  containerUptimeP50: float64!
+  # Container uptime (75th percentile), in milliseconds
+  containerUptimeP75: float64!
+  # Container uptime (90th percentile), in milliseconds
+  containerUptimeP90: float64!
+  # Container uptime (95th percentile), in milliseconds
+  containerUptimeP95: float64!
+  # Container uptime (99th percentile), in milliseconds
+  containerUptimeP99: float64!
+  # Container uptime (99.9th percentile), in milliseconds
+  containerUptimeP999: float64!
   # CPU load (25th percentile)
   @Deprecated
   cpuLoadP25: float64!
@@ -11982,6 +12345,8 @@ type AccountCloudchamberMetricsAdaptiveGroupsSum {
   allocatedDisk: float64!
   # Sum of allocated memory in byte-seconds
   allocatedMemory: float64!
+  # Total container uptime, in milliseconds
+  containerUptime: float64!
   # Sum of CPU time in seconds
   cpuTimeSec: float64!
   # Sum of bytes received
@@ -11997,6 +12362,8 @@ type AccountCloudchamberMetricsAdaptiveGroupsSumConfidence {
   allocatedDisk: Confidence!
   # Confidence interval for the corresponding point estimate
   allocatedMemory: Confidence!
+  # Confidence interval for the corresponding point estimate
+  containerUptime: Confidence!
   # Confidence interval for the corresponding point estimate
   cpuTimeSec: Confidence!
   # Confidence interval for the corresponding point estimate
@@ -12488,6 +12855,8 @@ type AccountContainersMetricsAdaptiveGroups {
 }
 
 type AccountContainersMetricsAdaptiveGroupsAvg {
+  # Average container uptime, in milliseconds
+  containerUptime: float64!
   # Average CPU load
   @Deprecated
   cpuLoad: float64!
@@ -12698,6 +13067,8 @@ input AccountContainersMetricsAdaptiveGroupsFilter_InputObject {
 }
 
 type AccountContainersMetricsAdaptiveGroupsMax {
+  # Maximum container uptime, in milliseconds
+  containerUptime: int64!
   # Maximum CPU load
   @Deprecated
   cpuLoad: float64!
@@ -12740,6 +13111,10 @@ enum AccountContainersMetricsAdaptiveGroupsOrderBy {
   applicationId_ASC
   # applicationId descending
   applicationId_DESC
+  # avg(containerUptime) ascending
+  avg_containerUptime_ASC
+  # avg(containerUptime) descending
+  avg_containerUptime_DESC
   # avg(cpuLoad) ascending
   avg_cpuLoad_ASC
   # avg(cpuLoad) descending
@@ -12816,6 +13191,10 @@ enum AccountContainersMetricsAdaptiveGroupsOrderBy {
   location_ASC
   # location descending
   location_DESC
+  # max(containerUptime) ascending
+  max_containerUptime_ASC
+  # max(containerUptime) descending
+  max_containerUptime_DESC
   # max(cpuLoad) ascending
   max_cpuLoad_ASC
   # max(cpuLoad) descending
@@ -12876,6 +13255,34 @@ enum AccountContainersMetricsAdaptiveGroupsOrderBy {
   procType_ASC
   # procType descending
   procType_DESC
+  # quantiles(containerUptimeP25) ascending
+  quantiles_containerUptimeP25_ASC
+  # quantiles(containerUptimeP25) descending
+  quantiles_containerUptimeP25_DESC
+  # quantiles(containerUptimeP50) ascending
+  quantiles_containerUptimeP50_ASC
+  # quantiles(containerUptimeP50) descending
+  quantiles_containerUptimeP50_DESC
+  # quantiles(containerUptimeP75) ascending
+  quantiles_containerUptimeP75_ASC
+  # quantiles(containerUptimeP75) descending
+  quantiles_containerUptimeP75_DESC
+  # quantiles(containerUptimeP90) ascending
+  quantiles_containerUptimeP90_ASC
+  # quantiles(containerUptimeP90) descending
+  quantiles_containerUptimeP90_DESC
+  # quantiles(containerUptimeP95) ascending
+  quantiles_containerUptimeP95_ASC
+  # quantiles(containerUptimeP95) descending
+  quantiles_containerUptimeP95_DESC
+  # quantiles(containerUptimeP999) ascending
+  quantiles_containerUptimeP999_ASC
+  # quantiles(containerUptimeP999) descending
+  quantiles_containerUptimeP999_DESC
+  # quantiles(containerUptimeP99) ascending
+  quantiles_containerUptimeP99_ASC
+  # quantiles(containerUptimeP99) descending
+  quantiles_containerUptimeP99_DESC
   # quantiles(cpuLoadP25) ascending
   quantiles_cpuLoadP25_ASC
   # quantiles(cpuLoadP25) descending
@@ -13172,6 +13579,10 @@ enum AccountContainersMetricsAdaptiveGroupsOrderBy {
   sum_allocatedMemory_ASC
   # sum(allocatedMemory) descending
   sum_allocatedMemory_DESC
+  # sum(containerUptime) ascending
+  sum_containerUptime_ASC
+  # sum(containerUptime) descending
+  sum_containerUptime_DESC
   # sum(cpuTimeSec) ascending
   sum_cpuTimeSec_ASC
   # sum(cpuTimeSec) descending
@@ -13187,6 +13598,20 @@ enum AccountContainersMetricsAdaptiveGroupsOrderBy {
 }
 
 type AccountContainersMetricsAdaptiveGroupsQuantiles {
+  # Container uptime (25th percentile), in milliseconds
+  containerUptimeP25: float64!
+  # Container uptime (50th percentile), in milliseconds
+  containerUptimeP50: float64!
+  # Container uptime (75th percentile), in milliseconds
+  containerUptimeP75: float64!
+  # Container uptime (90th percentile), in milliseconds
+  containerUptimeP90: float64!
+  # Container uptime (95th percentile), in milliseconds
+  containerUptimeP95: float64!
+  # Container uptime (99th percentile), in milliseconds
+  containerUptimeP99: float64!
+  # Container uptime (99.9th percentile), in milliseconds
+  containerUptimeP999: float64!
   # CPU load (25th percentile)
   @Deprecated
   cpuLoadP25: float64!
@@ -13357,6 +13782,8 @@ type AccountContainersMetricsAdaptiveGroupsSum {
   allocatedDisk: float64!
   # Sum of allocated memory in byte-seconds
   allocatedMemory: float64!
+  # Total container uptime, in milliseconds
+  containerUptime: float64!
   # Sum of CPU time in seconds
   cpuTimeSec: float64!
   # Sum of bytes received
@@ -13372,6 +13799,8 @@ type AccountContainersMetricsAdaptiveGroupsSumConfidence {
   allocatedDisk: Confidence!
   # Confidence interval for the corresponding point estimate
   allocatedMemory: Confidence!
+  # Confidence interval for the corresponding point estimate
+  containerUptime: Confidence!
   # Confidence interval for the corresponding point estimate
   cpuTimeSec: Confidence!
   # Confidence interval for the corresponding point estimate
@@ -17623,10 +18052,14 @@ type AccountDurableObjectsInvocationsAdaptiveGroupsDimensions {
   datetimeSixHours: Time!
   # The name of the script environment
   environmentName: string!
+  # Whether this invocation is for a preview. 1 if preview, 0 if not.
+  isPreview: uint8!
   # Durable Object namespace ID
   namespaceId: string!
   # Durable Object ID as a hex string
   objectId: string!
+  # The name (slug) of the preview script
+  previewSlug: string!
   # The name of the script
   scriptName: string!
   # Status of the worker invocation
@@ -17704,6 +18137,14 @@ input AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject {
   environmentName_neq: string
   environmentName_notin: [string!]
   environmentName_notlike: string
+  isPreview: uint8
+  isPreview_geq: uint8
+  isPreview_gt: uint8
+  isPreview_in: bytes
+  isPreview_leq: uint8
+  isPreview_lt: uint8
+  isPreview_neq: uint8
+  isPreview_notin: bytes
   namespaceId: string
   namespaceId_geq: string
   namespaceId_gt: string
@@ -17724,6 +18165,16 @@ input AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject {
   objectId_neq: string
   objectId_notin: [string!]
   objectId_notlike: string
+  previewSlug: string
+  previewSlug_geq: string
+  previewSlug_gt: string
+  previewSlug_in: [string!]
+  previewSlug_leq: string
+  previewSlug_like: string
+  previewSlug_lt: string
+  previewSlug_neq: string
+  previewSlug_notin: [string!]
+  previewSlug_notlike: string
   scriptName: string
   scriptName_geq: string
   scriptName_gt: string
@@ -17777,6 +18228,10 @@ enum AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # constantScriptId ascending
+  constantScriptId_ASC
+  # constantScriptId descending
+  constantScriptId_DESC
   # date ascending
   date_ASC
   # date descending
@@ -17809,6 +18264,10 @@ enum AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy {
   environmentName_ASC
   # environmentName descending
   environmentName_DESC
+  # isPreview ascending
+  isPreview_ASC
+  # isPreview descending
+  isPreview_DESC
   # max(datetime) ascending
   max_datetime_ASC
   # max(datetime) descending
@@ -17837,6 +18296,14 @@ enum AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy {
   objectId_ASC
   # objectId descending
   objectId_DESC
+  # previewConstantScriptId ascending
+  previewConstantScriptId_ASC
+  # previewConstantScriptId descending
+  previewConstantScriptId_DESC
+  # previewSlug ascending
+  previewSlug_ASC
+  # previewSlug descending
+  previewSlug_DESC
   # quantiles(responseBodySizeP25) ascending
   quantiles_responseBodySizeP25_ASC
   # quantiles(responseBodySizeP25) descending
@@ -18671,6 +19138,10 @@ input AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy {
+  # constantScriptId ascending
+  constantScriptId_ASC
+  # constantScriptId descending
+  constantScriptId_DESC
   # date ascending
   date_ASC
   # date descending
@@ -54492,6 +54963,7 @@ type AccountSettings {
   aiInferenceAdaptiveGroups: Settings!
   aiSearchAPIAdaptiveGroups: Settings!
   aiSearchIngestedItemsAdaptiveGroups: Settings!
+  artifactsEventsAdaptiveGroups: Settings!
   autoRAGConfigAPIAdaptiveGroups: Settings!
   autoRAGEngineAdaptiveGroups: Settings!
   browserIsolationSessionsAdaptiveGroups: Settings!
@@ -61263,6 +61735,10 @@ type AccountWorkersInvocationsAdaptiveDimensions {
   environmentName: string!
   # Whether the request is from a Dispatch Worker. Non-zero if true
   isDispatcher: uint8!
+  # Whether this invocation is for a preview. 1 if preview, 0 if not.
+  isPreview: uint8!
+  # The name (slug) of the preview script
+  previewSlug: string!
   # The name of the script
   scriptName: string!
   # The unique tag of the script
@@ -61372,6 +61848,24 @@ input AccountWorkersInvocationsAdaptiveFilter_InputObject {
   isDispatcher_lt: uint8
   isDispatcher_neq: uint8
   isDispatcher_notin: bytes
+  isPreview: uint8
+  isPreview_geq: uint8
+  isPreview_gt: uint8
+  isPreview_in: bytes
+  isPreview_leq: uint8
+  isPreview_lt: uint8
+  isPreview_neq: uint8
+  isPreview_notin: bytes
+  previewSlug: string
+  previewSlug_geq: string
+  previewSlug_gt: string
+  previewSlug_in: [string!]
+  previewSlug_leq: string
+  previewSlug_like: string
+  previewSlug_lt: string
+  previewSlug_neq: string
+  previewSlug_notin: [string!]
+  previewSlug_notlike: string
   scriptName: string
   scriptName_geq: string
   scriptName_gt: string
@@ -61507,6 +62001,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   isDispatcher_ASC
   # isDispatcher descending
   isDispatcher_DESC
+  # isPreview ascending
+  isPreview_ASC
+  # isPreview descending
+  isPreview_DESC
   # max(cpuTime) ascending
   max_cpuTime_ASC
   # max(cpuTime) descending
@@ -61547,6 +62045,14 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   min_wallTime_ASC
   # min(wallTime) descending
   min_wallTime_DESC
+  # previewConstantScriptId ascending
+  previewConstantScriptId_ASC
+  # previewConstantScriptId descending
+  previewConstantScriptId_DESC
+  # previewSlug ascending
+  previewSlug_ASC
+  # previewSlug descending
+  previewSlug_DESC
   # quantiles(cpuTimeP25) ascending
   quantiles_cpuTimeP25_ASC
   # quantiles(cpuTimeP25) descending
@@ -62318,6 +62824,10 @@ type AccountWorkersSubrequestsAdaptiveGroupsDimensions {
   hostname: string!
   # Origin HTTP response code
   httpResponseStatus: uint64!
+  # Whether this invocation is for a preview. 1 if preview, 0 if not.
+  isPreview: uint8!
+  # The name (slug) of the preview script
+  previewSlug: string!
   # The outcome of the subrequest
   requestOutcome: string!
   # The name of the script
@@ -62423,6 +62933,24 @@ input AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject {
   httpResponseStatus_lt: uint64
   httpResponseStatus_neq: uint64
   httpResponseStatus_notin: [uint64!]
+  isPreview: uint8
+  isPreview_geq: uint8
+  isPreview_gt: uint8
+  isPreview_in: bytes
+  isPreview_leq: uint8
+  isPreview_lt: uint8
+  isPreview_neq: uint8
+  isPreview_notin: bytes
+  previewSlug: string
+  previewSlug_geq: string
+  previewSlug_gt: string
+  previewSlug_in: [string!]
+  previewSlug_leq: string
+  previewSlug_like: string
+  previewSlug_lt: string
+  previewSlug_neq: string
+  previewSlug_notin: [string!]
+  previewSlug_notlike: string
   requestOutcome: string
   requestOutcome_geq: string
   requestOutcome_gt: string
@@ -62514,6 +63042,18 @@ enum AccountWorkersSubrequestsAdaptiveGroupsOrderBy {
   httpResponseStatus_ASC
   # httpResponseStatus descending
   httpResponseStatus_DESC
+  # isPreview ascending
+  isPreview_ASC
+  # isPreview descending
+  isPreview_DESC
+  # previewConstantScriptId ascending
+  previewConstantScriptId_ASC
+  # previewConstantScriptId descending
+  previewConstantScriptId_DESC
+  # previewSlug ascending
+  previewSlug_ASC
+  # previewSlug descending
+  previewSlug_DESC
   # quantiles(timeToResponseDrainedUsP25) ascending
   quantiles_timeToResponseDrainedUsP25_ASC
   # quantiles(timeToResponseDrainedUsP25) descending
@@ -62908,6 +63448,8 @@ type AccountWorkersVpcConnectionAdaptiveGroupsSumConfidence {
 
 # Workflows analytics
 type AccountWorkflowsAdaptive {
+  # Number of operations across all step types during the timestamp interval
+  allStepCount: uint32!
   # CPU time in timestamp (ms)
   cpuTime: uint32!
   # The date when trigger was triggered
@@ -62926,7 +63468,7 @@ type AccountWorkflowsAdaptive {
   sampleInterval: uint32!
   # Instance start timestamp(seconds)
   startTimestamp: uint64!
-  # Steps ran in timestamp
+  # Number of step.do operations during the timestamp interval
   stepCount: uint32!
   # Instance storage size growth in timestamp (bytes)
   storageRate: uint32!
@@ -62939,6 +63481,14 @@ type AccountWorkflowsAdaptive {
 input AccountWorkflowsAdaptiveFilter_InputObject {
   AND: [AccountWorkflowsAdaptiveFilter_InputObject!]
   OR: [AccountWorkflowsAdaptiveFilter_InputObject!]
+  allStepCount: uint32
+  allStepCount_geq: uint32
+  allStepCount_gt: uint32
+  allStepCount_in: [uint32!]
+  allStepCount_leq: uint32
+  allStepCount_lt: uint32
+  allStepCount_neq: uint32
+  allStepCount_notin: [uint32!]
   cpuTime: uint32
   cpuTime_geq: uint32
   cpuTime_gt: uint32
@@ -63227,6 +63777,10 @@ enum AccountWorkflowsAdaptiveGroupsOrderBy {
   instanceId_ASC
   # instanceId descending
   instanceId_DESC
+  # sum(allStepCount) ascending
+  sum_allStepCount_ASC
+  # sum(allStepCount) descending
+  sum_allStepCount_DESC
   # sum(cpuTime) ascending
   sum_cpuTime_ASC
   # sum(cpuTime) descending
@@ -63258,13 +63812,15 @@ enum AccountWorkflowsAdaptiveGroupsOrderBy {
 }
 
 type AccountWorkflowsAdaptiveGroupsSum {
+  # Total operations across all step types per dimension
+  allStepCount: uint32!
   # CPU time per dimension (ms)
   cpuTime: uint32!
   # Execution duration per dimension (GB*s)
   executionDuration: uint32!
   # Number of retries per dimension
   retryCount: uint32!
-  # Total steps per dimension
+  # Total step.do operations per dimension
   stepCount: uint32!
   # Total instance storage growth rate per dimension
   storageRate: uint64!
@@ -63273,6 +63829,8 @@ type AccountWorkflowsAdaptiveGroupsSum {
 }
 
 type AccountWorkflowsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  allStepCount: Confidence!
   # Confidence interval for the corresponding point estimate
   cpuTime: Confidence!
   # Confidence interval for the corresponding point estimate
@@ -63288,6 +63846,10 @@ type AccountWorkflowsAdaptiveGroupsSumConfidence {
 }
 
 enum AccountWorkflowsAdaptiveOrderBy {
+  # allStepCount ascending
+  allStepCount_ASC
+  # allStepCount descending
+  allStepCount_DESC
   # cpuTime ascending
   cpuTime_ASC
   # cpuTime descending
