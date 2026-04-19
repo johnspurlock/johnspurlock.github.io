@@ -27,9 +27,14 @@ Account-level datasets:
 * callsTurnUsageAdaptiveGroups
 * callsUsageAdaptiveGroups
   cdnNetworkAnalyticsAdaptiveGroups
+* cf1GatewayDns1dGroups
+* cf1GatewayDns1hGroups
+* cf1GatewayDnsRawGroups
 * cloudchamberMetricsAdaptiveGroups
 * cloudflareTunnelsAnalyticsAdaptiveGroups
+* cloudforceOneDetectionsAdaptiveGroups
 * containersMetricsAdaptiveGroups
+* containersUsageAdaptiveGroups
 * d1AnalyticsAdaptiveGroups
 * d1QueriesAdaptiveGroups
 * d1StorageAdaptiveGroups
@@ -109,6 +114,9 @@ Account-level datasets:
   nelReportsAdaptiveGroups
 * ohttpMetricsAdaptive
 * ohttpMetricsAdaptiveGroups
+* ohttpRelayEgressConnMetricsAdaptiveGroups
+* ohttpRelayIngressConnMetricsAdaptiveGroups
+* ohttpRelayRequestMetricsAdaptiveGroups
 * pagesFunctionsInvocationsAdaptiveGroups
 * pipelinesDeliveryAdaptiveGroups
 * pipelinesIngestionAdaptiveGroups
@@ -332,12 +340,22 @@ type account {
   callsUsageAdaptiveGroups(filter: AccountCallsUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCallsUsageAdaptiveGroupsOrderBy!]): [AccountCallsUsageAdaptiveGroups!]!
   # Network analytics data for Cloudflare CDN traffic
   cdnNetworkAnalyticsAdaptiveGroups(filter: AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountCdnNetworkAnalyticsAdaptiveGroups!]!
+  # CF1 Gateway DNS analytics - 1 day rollup
+  cf1GatewayDns1dGroups(filter: AccountCf1GatewayDns1dGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayDns1dGroupsOrderBy!]): [AccountCf1GatewayDns1dGroups!]!
+  # CF1 Gateway DNS analytics - 1 hour rollup
+  cf1GatewayDns1hGroups(filter: AccountCf1GatewayDns1hGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayDns1hGroupsOrderBy!]): [AccountCf1GatewayDns1hGroups!]!
+  # CF1 Gateway DNS analytics - raw data (max 3h query window). Use cf1GatewayDns1hGroups for longer ranges, or cf1GatewayDns1dGroups for 10d+
+  cf1GatewayDnsRawGroups(filter: AccountCf1GatewayDnsRawGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayDnsRawGroupsOrderBy!]): [AccountCf1GatewayDnsRawGroups!]!
   # Metrics for Cloudchamber applications and deployments
   cloudchamberMetricsAdaptiveGroups(filter: AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCloudchamberMetricsAdaptiveGroupsOrderBy!]): [AccountCloudchamberMetricsAdaptiveGroups!]!
   # Cloudflare tunnel Device Analytics
   cloudflareTunnelsAnalyticsAdaptiveGroups(filter: AccountCloudflareTunnelsAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCloudflareTunnelsAnalyticsAdaptiveGroupsOrderBy!]): [AccountCloudflareTunnelsAnalyticsAdaptiveGroups!]!
+  # Cloudforce One detection events for Workers scripts with adaptive sampling. Each row represents a single detection rule hit.
+  cloudforceOneDetectionsAdaptiveGroups(filter: AccountCloudforceOneDetectionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCloudforceOneDetectionsAdaptiveGroupsOrderBy!]): [AccountCloudforceOneDetectionsAdaptiveGroups!]!
   # Metrics for Cloudchamber applications and deployments
   containersMetricsAdaptiveGroups(filter: AccountContainersMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountContainersMetricsAdaptiveGroupsOrderBy!]): [AccountContainersMetricsAdaptiveGroups!]!
+  # Used to compute usage queries for billing estimates in Dash
+  containersUsageAdaptiveGroups(filter: AccountContainersUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountContainersUsageAdaptiveGroupsOrderBy!]): [AccountContainersUsageAdaptiveGroups!]!
   # Aggregated D1 analytics with adaptive sampling
   d1AnalyticsAdaptiveGroups(filter: AccountD1AnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1AnalyticsAdaptiveGroupsOrderBy!]): [AccountD1AnalyticsAdaptiveGroups!]!
   # D1 query metrics with adaptive sampling
@@ -497,6 +515,12 @@ type account {
   ohttpMetricsAdaptive(filter: AccountOhttpMetricsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountOhttpMetricsAdaptiveOrderBy!]): [AccountOhttpMetricsAdaptive!]!
   # Aggregated oHTTP request metrics with adaptive sampling
   ohttpMetricsAdaptiveGroups(filter: AccountOhttpMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountOhttpMetricsAdaptiveGroupsOrderBy!]): [AccountOhttpMetricsAdaptiveGroups!]!
+  # Aggregated OHTTP relay egress (relay-to-gateway) connection metrics with adaptive sampling
+  ohttpRelayEgressConnMetricsAdaptiveGroups(filter: AccountOhttpRelayEgressConnMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountOhttpRelayEgressConnMetricsAdaptiveGroupsOrderBy!]): [AccountOhttpRelayEgressConnMetricsAdaptiveGroups!]!
+  # Aggregated OHTTP relay ingress (client-to-relay) connection metrics with adaptive sampling
+  ohttpRelayIngressConnMetricsAdaptiveGroups(filter: AccountOhttpRelayIngressConnMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountOhttpRelayIngressConnMetricsAdaptiveGroupsOrderBy!]): [AccountOhttpRelayIngressConnMetricsAdaptiveGroups!]!
+  # Aggregated OHTTP relay request metrics with adaptive sampling
+  ohttpRelayRequestMetricsAdaptiveGroups(filter: AccountOhttpRelayRequestMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountOhttpRelayRequestMetricsAdaptiveGroupsOrderBy!]): [AccountOhttpRelayRequestMetricsAdaptiveGroups!]!
   # Pages Functions invocations with adaptive sampling
   pagesFunctionsInvocationsAdaptiveGroups(filter: AccountPagesFunctionsInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy!]): [AccountPagesFunctionsInvocationsAdaptiveGroups!]!
   # Beta. Data delivered via Workers Pipelines
@@ -11399,6 +11423,709 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsSumConfidence {
   packets: Confidence!
 }
 
+# CF1 Gateway DNS analytics - 1 day rollup
+type AccountCf1GatewayDns1dGroups {
+  # List of dimensions to group by
+  dimensions: AccountCf1GatewayDns1dGroupsDimensions
+  sum: AccountCf1GatewayDns1dGroupsSum
+  uniq: AccountCf1GatewayDns1dGroupsUniq
+}
+
+type AccountCf1GatewayDns1dGroupsDimensions {
+  # Cloudflare colo code
+  coloName: string!
+  # Source country code
+  country: string!
+  # Day start timestamp (daily granularity)
+  datetime: Time!
+  # Query name (destination domain)
+  destination: string!
+  # Gateway location ID
+  location: string!
+  # Policy ID
+  policyId: string!
+  # DNS protocol
+  protocol: string!
+  # DNS query type
+  queryType: string!
+  # DNS response code
+  rcode: string!
+  # Gateway resolver decision
+  resolverDecision: string!
+}
+
+input AccountCf1GatewayDns1dGroupsFilter_InputObject {
+  AND: [AccountCf1GatewayDns1dGroupsFilter_InputObject!]
+  OR: [AccountCf1GatewayDns1dGroupsFilter_InputObject!]
+  coloName: string
+  coloName_geq: string
+  coloName_gt: string
+  coloName_in: [string!]
+  coloName_leq: string
+  coloName_like: string
+  coloName_lt: string
+  coloName_neq: string
+  coloName_notin: [string!]
+  coloName_notlike: string
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destination: string
+  destination_geq: string
+  destination_gt: string
+  destination_in: [string!]
+  destination_leq: string
+  destination_like: string
+  destination_lt: string
+  destination_neq: string
+  destination_notin: [string!]
+  destination_notlike: string
+  location: string
+  location_geq: string
+  location_gt: string
+  location_in: [string!]
+  location_leq: string
+  location_like: string
+  location_lt: string
+  location_neq: string
+  location_notin: [string!]
+  location_notlike: string
+  policyId: string
+  policyId_geq: string
+  policyId_gt: string
+  policyId_in: [string!]
+  policyId_leq: string
+  policyId_like: string
+  policyId_lt: string
+  policyId_neq: string
+  policyId_notin: [string!]
+  policyId_notlike: string
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  queryType: string
+  queryType_geq: string
+  queryType_gt: string
+  queryType_in: [string!]
+  queryType_leq: string
+  queryType_like: string
+  queryType_lt: string
+  queryType_neq: string
+  queryType_notin: [string!]
+  queryType_notlike: string
+  rcode: string
+  rcode_geq: string
+  rcode_gt: string
+  rcode_in: [string!]
+  rcode_leq: string
+  rcode_like: string
+  rcode_lt: string
+  rcode_neq: string
+  rcode_notin: [string!]
+  rcode_notlike: string
+  resolverDecision: string
+  resolverDecision_geq: string
+  resolverDecision_gt: string
+  resolverDecision_in: [string!]
+  resolverDecision_leq: string
+  resolverDecision_like: string
+  resolverDecision_lt: string
+  resolverDecision_neq: string
+  resolverDecision_notin: [string!]
+  resolverDecision_notlike: string
+}
+
+enum AccountCf1GatewayDns1dGroupsOrderBy {
+  # coloName ascending
+  coloName_ASC
+  # coloName descending
+  coloName_DESC
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destination ascending
+  destination_ASC
+  # destination descending
+  destination_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # location ascending
+  location_ASC
+  # location descending
+  location_DESC
+  # policyId ascending
+  policyId_ASC
+  # policyId descending
+  policyId_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # queryType ascending
+  queryType_ASC
+  # queryType descending
+  queryType_DESC
+  # rcode ascending
+  rcode_ASC
+  # rcode descending
+  rcode_DESC
+  # resolverDecision ascending
+  resolverDecision_ASC
+  # resolverDecision descending
+  resolverDecision_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sum(queries) ascending
+  sum_queries_ASC
+  # sum(queries) descending
+  sum_queries_DESC
+  # sum(queryBytes) ascending
+  sum_queryBytes_ASC
+  # sum(queryBytes) descending
+  sum_queryBytes_DESC
+  # sum(responseBytes) ascending
+  sum_responseBytes_ASC
+  # sum(responseBytes) descending
+  sum_responseBytes_DESC
+  # uniq(devices) ascending
+  uniq_devices_ASC
+  # uniq(devices) descending
+  uniq_devices_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+}
+
+type AccountCf1GatewayDns1dGroupsSum {
+  # Total DNS queries
+  queries: uint64!
+  # Total query bytes
+  queryBytes: uint64!
+  # Total response bytes
+  responseBytes: uint64!
+}
+
+type AccountCf1GatewayDns1dGroupsUniq {
+  # Unique devices
+  devices: uint64!
+  # Unique users
+  users: uint64!
+}
+
+# CF1 Gateway DNS analytics - 1 hour rollup
+type AccountCf1GatewayDns1hGroups {
+  # List of dimensions to group by
+  dimensions: AccountCf1GatewayDns1hGroupsDimensions
+  sum: AccountCf1GatewayDns1hGroupsSum
+  uniq: AccountCf1GatewayDns1hGroupsUniq
+}
+
+type AccountCf1GatewayDns1hGroupsDimensions {
+  # Cloudflare colo code
+  coloName: string!
+  # Source country code
+  country: string!
+  # Hour start timestamp (hourly granularity)
+  datetime: Time!
+  # Query name (destination domain)
+  destination: string!
+  # Gateway location ID
+  location: string!
+  # Policy ID
+  policyId: string!
+  # DNS protocol
+  protocol: string!
+  # DNS query type
+  queryType: string!
+  # DNS response code
+  rcode: string!
+  # Gateway resolver decision
+  resolverDecision: string!
+}
+
+input AccountCf1GatewayDns1hGroupsFilter_InputObject {
+  AND: [AccountCf1GatewayDns1hGroupsFilter_InputObject!]
+  OR: [AccountCf1GatewayDns1hGroupsFilter_InputObject!]
+  coloName: string
+  coloName_geq: string
+  coloName_gt: string
+  coloName_in: [string!]
+  coloName_leq: string
+  coloName_like: string
+  coloName_lt: string
+  coloName_neq: string
+  coloName_notin: [string!]
+  coloName_notlike: string
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destination: string
+  destination_geq: string
+  destination_gt: string
+  destination_in: [string!]
+  destination_leq: string
+  destination_like: string
+  destination_lt: string
+  destination_neq: string
+  destination_notin: [string!]
+  destination_notlike: string
+  location: string
+  location_geq: string
+  location_gt: string
+  location_in: [string!]
+  location_leq: string
+  location_like: string
+  location_lt: string
+  location_neq: string
+  location_notin: [string!]
+  location_notlike: string
+  policyId: string
+  policyId_geq: string
+  policyId_gt: string
+  policyId_in: [string!]
+  policyId_leq: string
+  policyId_like: string
+  policyId_lt: string
+  policyId_neq: string
+  policyId_notin: [string!]
+  policyId_notlike: string
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  queryType: string
+  queryType_geq: string
+  queryType_gt: string
+  queryType_in: [string!]
+  queryType_leq: string
+  queryType_like: string
+  queryType_lt: string
+  queryType_neq: string
+  queryType_notin: [string!]
+  queryType_notlike: string
+  rcode: string
+  rcode_geq: string
+  rcode_gt: string
+  rcode_in: [string!]
+  rcode_leq: string
+  rcode_like: string
+  rcode_lt: string
+  rcode_neq: string
+  rcode_notin: [string!]
+  rcode_notlike: string
+  resolverDecision: string
+  resolverDecision_geq: string
+  resolverDecision_gt: string
+  resolverDecision_in: [string!]
+  resolverDecision_leq: string
+  resolverDecision_like: string
+  resolverDecision_lt: string
+  resolverDecision_neq: string
+  resolverDecision_notin: [string!]
+  resolverDecision_notlike: string
+}
+
+enum AccountCf1GatewayDns1hGroupsOrderBy {
+  # coloName ascending
+  coloName_ASC
+  # coloName descending
+  coloName_DESC
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destination ascending
+  destination_ASC
+  # destination descending
+  destination_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # location ascending
+  location_ASC
+  # location descending
+  location_DESC
+  # policyId ascending
+  policyId_ASC
+  # policyId descending
+  policyId_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # queryType ascending
+  queryType_ASC
+  # queryType descending
+  queryType_DESC
+  # rcode ascending
+  rcode_ASC
+  # rcode descending
+  rcode_DESC
+  # resolverDecision ascending
+  resolverDecision_ASC
+  # resolverDecision descending
+  resolverDecision_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sum(queries) ascending
+  sum_queries_ASC
+  # sum(queries) descending
+  sum_queries_DESC
+  # sum(queryBytes) ascending
+  sum_queryBytes_ASC
+  # sum(queryBytes) descending
+  sum_queryBytes_DESC
+  # sum(responseBytes) ascending
+  sum_responseBytes_ASC
+  # sum(responseBytes) descending
+  sum_responseBytes_DESC
+  # uniq(devices) ascending
+  uniq_devices_ASC
+  # uniq(devices) descending
+  uniq_devices_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+}
+
+type AccountCf1GatewayDns1hGroupsSum {
+  # Total DNS queries
+  queries: uint64!
+  # Total query bytes
+  queryBytes: uint64!
+  # Total response bytes
+  responseBytes: uint64!
+}
+
+type AccountCf1GatewayDns1hGroupsUniq {
+  # Unique devices
+  devices: uint64!
+  # Unique users
+  users: uint64!
+}
+
+# CF1 Gateway DNS analytics - raw data (max 3h query window). Use cf1GatewayDns1hGroups for longer ranges, or cf1GatewayDns1dGroups for 10d+
+type AccountCf1GatewayDnsRawGroups {
+  # List of dimensions to group by
+  dimensions: AccountCf1GatewayDnsRawGroupsDimensions
+  sum: AccountCf1GatewayDnsRawGroupsSum
+  uniq: AccountCf1GatewayDnsRawGroupsUniq
+}
+
+type AccountCf1GatewayDnsRawGroupsDimensions {
+  # Cloudflare colo code
+  coloName: string!
+  # Source country code
+  country: string!
+  # Query timestamp
+  datetime: Time!
+  # Query timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Query timestamp truncated to hour
+  datetimeHour: Time!
+  # Query name (destination domain)
+  destination: string!
+  # Gateway location ID
+  location: string!
+  # Policy ID
+  policyId: string!
+  # DNS protocol
+  protocol: string!
+  # DNS query type
+  queryType: string!
+  # DNS response code
+  rcode: string!
+  # Gateway resolver decision
+  resolverDecision: string!
+}
+
+input AccountCf1GatewayDnsRawGroupsFilter_InputObject {
+  AND: [AccountCf1GatewayDnsRawGroupsFilter_InputObject!]
+  OR: [AccountCf1GatewayDnsRawGroupsFilter_InputObject!]
+  coloName: string
+  coloName_geq: string
+  coloName_gt: string
+  coloName_in: [string!]
+  coloName_leq: string
+  coloName_like: string
+  coloName_lt: string
+  coloName_neq: string
+  coloName_notin: [string!]
+  coloName_notlike: string
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
+  datetime: Time
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destination: string
+  destination_geq: string
+  destination_gt: string
+  destination_in: [string!]
+  destination_leq: string
+  destination_like: string
+  destination_lt: string
+  destination_neq: string
+  destination_notin: [string!]
+  destination_notlike: string
+  location: string
+  location_geq: string
+  location_gt: string
+  location_in: [string!]
+  location_leq: string
+  location_like: string
+  location_lt: string
+  location_neq: string
+  location_notin: [string!]
+  location_notlike: string
+  policyId: string
+  policyId_geq: string
+  policyId_gt: string
+  policyId_in: [string!]
+  policyId_leq: string
+  policyId_like: string
+  policyId_lt: string
+  policyId_neq: string
+  policyId_notin: [string!]
+  policyId_notlike: string
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  queryType: string
+  queryType_geq: string
+  queryType_gt: string
+  queryType_in: [string!]
+  queryType_leq: string
+  queryType_like: string
+  queryType_lt: string
+  queryType_neq: string
+  queryType_notin: [string!]
+  queryType_notlike: string
+  rcode: string
+  rcode_geq: string
+  rcode_gt: string
+  rcode_in: [string!]
+  rcode_leq: string
+  rcode_like: string
+  rcode_lt: string
+  rcode_neq: string
+  rcode_notin: [string!]
+  rcode_notlike: string
+  resolverDecision: string
+  resolverDecision_geq: string
+  resolverDecision_gt: string
+  resolverDecision_in: [string!]
+  resolverDecision_leq: string
+  resolverDecision_like: string
+  resolverDecision_lt: string
+  resolverDecision_neq: string
+  resolverDecision_notin: [string!]
+  resolverDecision_notlike: string
+}
+
+enum AccountCf1GatewayDnsRawGroupsOrderBy {
+  # coloName ascending
+  coloName_ASC
+  # coloName descending
+  coloName_DESC
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destination ascending
+  destination_ASC
+  # destination descending
+  destination_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # location ascending
+  location_ASC
+  # location descending
+  location_DESC
+  # policyId ascending
+  policyId_ASC
+  # policyId descending
+  policyId_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # queryType ascending
+  queryType_ASC
+  # queryType descending
+  queryType_DESC
+  # rcode ascending
+  rcode_ASC
+  # rcode descending
+  rcode_DESC
+  # resolverDecision ascending
+  resolverDecision_ASC
+  # resolverDecision descending
+  resolverDecision_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sum(queries) ascending
+  sum_queries_ASC
+  # sum(queries) descending
+  sum_queries_DESC
+  # sum(queryBytes) ascending
+  sum_queryBytes_ASC
+  # sum(queryBytes) descending
+  sum_queryBytes_DESC
+  # sum(responseBytes) ascending
+  sum_responseBytes_ASC
+  # sum(responseBytes) descending
+  sum_responseBytes_DESC
+  # uniq(devices) ascending
+  uniq_devices_ASC
+  # uniq(devices) descending
+  uniq_devices_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+}
+
+type AccountCf1GatewayDnsRawGroupsSum {
+  # Total DNS queries
+  queries: uint64!
+  # Total query bytes
+  queryBytes: uint64!
+  # Total response bytes
+  responseBytes: uint64!
+}
+
+type AccountCf1GatewayDnsRawGroupsUniq {
+  # Unique devices
+  devices: uint64!
+  # Unique users
+  users: uint64!
+}
+
 # Metrics for Cloudchamber applications and deployments
 type AccountCloudchamberMetricsAdaptiveGroups {
   # The average value of a metric per dimension
@@ -12836,6 +13563,150 @@ type AccountCloudflareTunnelsAnalyticsAdaptiveGroupsSumConfidence {
   egressBits: Confidence!
 }
 
+# Cloudforce One detection events for Workers scripts with adaptive sampling. Each row represents a single detection rule hit.
+type AccountCloudforceOneDetectionsAdaptiveGroups {
+  avg: AccountCloudforceOneDetectionsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountCloudforceOneDetectionsAdaptiveGroupsConfidence!
+  # Total number of detection rule hits
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountCloudforceOneDetectionsAdaptiveGroupsDimensions
+}
+
+type AccountCloudforceOneDetectionsAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountCloudforceOneDetectionsAdaptiveGroupsConfidence {
+  # Total number of detection rule hits, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type AccountCloudforceOneDetectionsAdaptiveGroupsDimensions {
+  # Detection event date
+  date: Date!
+  # Detection event timestamp
+  datetime: Time!
+  # Detection event timestamp, truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Detection event timestamp, truncated to hour
+  datetimeHour: Time!
+  # Detection event timestamp, truncated to minute
+  datetimeMinute: Time!
+  # Name of the detection rule that was triggered
+  detection: string!
+  # The name of the Workers script
+  workerName: string!
+}
+
+input AccountCloudforceOneDetectionsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountCloudforceOneDetectionsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountCloudforceOneDetectionsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  detection: string
+  detection_geq: string
+  detection_gt: string
+  detection_in: [string!]
+  detection_leq: string
+  detection_like: string
+  detection_lt: string
+  detection_neq: string
+  detection_notin: [string!]
+  detection_notlike: string
+  workerName: string
+  workerName_geq: string
+  workerName_gt: string
+  workerName_in: [string!]
+  workerName_leq: string
+  workerName_like: string
+  workerName_lt: string
+  workerName_neq: string
+  workerName_notin: [string!]
+  workerName_notlike: string
+}
+
+enum AccountCloudforceOneDetectionsAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # detection ascending
+  detection_ASC
+  # detection descending
+  detection_DESC
+  # workerName ascending
+  workerName_ASC
+  # workerName descending
+  workerName_DESC
+}
+
 # Metrics for Cloudchamber applications and deployments
 type AccountContainersMetricsAdaptiveGroups {
   # The average value of a metric per dimension
@@ -13805,6 +14676,86 @@ type AccountContainersMetricsAdaptiveGroupsSumConfidence {
   cpuTimeSec: Confidence!
   # Confidence interval for the corresponding point estimate
   rxBytes: Confidence!
+  # Confidence interval for the corresponding point estimate
+  txBytes: Confidence!
+}
+
+# Used to compute usage queries for billing estimates in Dash
+type AccountContainersUsageAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountContainersUsageAdaptiveGroupsConfidence!
+  # List of dimensions to group by
+  dimensions: AccountContainersUsageAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountContainersUsageAdaptiveGroupsSum
+}
+
+type AccountContainersUsageAdaptiveGroupsConfidence {
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountContainersUsageAdaptiveGroupsSumConfidence
+}
+
+type AccountContainersUsageAdaptiveGroupsDimensions {
+  # The date the metric was received
+  date: Date!
+}
+
+input AccountContainersUsageAdaptiveGroupsFilter_InputObject {
+  AND: [AccountContainersUsageAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountContainersUsageAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+}
+
+enum AccountContainersUsageAdaptiveGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # sum(allocatedDisk) ascending
+  sum_allocatedDisk_ASC
+  # sum(allocatedDisk) descending
+  sum_allocatedDisk_DESC
+  # sum(allocatedMemory) ascending
+  sum_allocatedMemory_ASC
+  # sum(allocatedMemory) descending
+  sum_allocatedMemory_DESC
+  # sum(cpuTimeSec) ascending
+  sum_cpuTimeSec_ASC
+  # sum(cpuTimeSec) descending
+  sum_cpuTimeSec_DESC
+  # sum(txBytes) ascending
+  sum_txBytes_ASC
+  # sum(txBytes) descending
+  sum_txBytes_DESC
+}
+
+type AccountContainersUsageAdaptiveGroupsSum {
+  # Sum of allocated disk in byte-seconds
+  allocatedDisk: float64!
+  # Sum of allocated memory in byte-seconds
+  allocatedMemory: float64!
+  # Sum of CPU time in seconds
+  cpuTimeSec: float64!
+  # Sum of bytes transmitted
+  txBytes: uint64!
+}
+
+type AccountContainersUsageAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  allocatedDisk: Confidence!
+  # Confidence interval for the corresponding point estimate
+  allocatedMemory: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cpuTimeSec: Confidence!
   # Confidence interval for the corresponding point estimate
   txBytes: Confidence!
 }
@@ -27638,9 +28589,9 @@ type AccountHttpRequestsAdaptive {
   clientIP: string!
   # The referrer host
   clientRefererHost: string!
-  # List of MIME content type extension names explicitly accepted by the visitor
+  # List of MIME content type extension names accepted by the visitor (including wildcards)
   clientRequestAcceptContentTypeNames: [string!]!
-  # List of MIME content types explicitly accepted by the visitor
+  # List of MIME content types accepted by the visitor (including wildcards)
   clientRequestAcceptContentTypes: [string!]!
   # The HTTP hostname requested by the visitor
   clientRequestHTTPHost: string!
@@ -27687,8 +28638,10 @@ type AccountHttpRequestsAdaptive {
   edgeDnsResponseTimeMs: uint16!
   # MIME type of the response
   edgeResponseContentType: string!
-  # 1 if the MIME type of the response is one of the MIME content types explicitly accepted by the visitor, 0 otherwise
+  # 1 if the MIME type of the response is one of the MIME content types accepted by the visitor (including wildcards), 0 otherwise
   edgeResponseContentTypeMatched: uint8!
+  # 1 if the MIME type of the response matched only via a wildcard in the content types accepted by the visitor (not an exact match), 0 otherwise
+  edgeResponseContentTypeMatchedByWildcard: uint8!
   edgeResponseContentTypeName: string!
   # HTTP response status code returned to browser
   edgeResponseStatus: uint16!
@@ -28136,6 +29089,14 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   edgeDnsResponseTimeMs_notin: [uint16!]
   edgeResponseContentType: string
   edgeResponseContentTypeMatched: uint8
+  edgeResponseContentTypeMatchedByWildcard: uint8
+  edgeResponseContentTypeMatchedByWildcard_geq: uint8
+  edgeResponseContentTypeMatchedByWildcard_gt: uint8
+  edgeResponseContentTypeMatchedByWildcard_in: bytes
+  edgeResponseContentTypeMatchedByWildcard_leq: uint8
+  edgeResponseContentTypeMatchedByWildcard_lt: uint8
+  edgeResponseContentTypeMatchedByWildcard_neq: uint8
+  edgeResponseContentTypeMatchedByWildcard_notin: bytes
   edgeResponseContentTypeMatched_geq: uint8
   edgeResponseContentTypeMatched_gt: uint8
   edgeResponseContentTypeMatched_in: bytes
@@ -28636,9 +29597,9 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   clientIP: string!
   # The referrer host
   clientRefererHost: string!
-  # List of MIME content type extension names explicitly accepted by the client
+  # List of MIME content type extension names accepted by the client (including wildcards)
   clientRequestAcceptContentTypeNames: [string!]!
-  # List of MIME content types explicitly accepted by the client
+  # List of MIME content types accepted by the client (including wildcards)
   clientRequestAcceptContentTypes: [string!]!
   # Host requested by the client
   clientRequestHTTPHost: string!
@@ -28685,8 +29646,10 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   edgeDnsResponseTimeMs: uint16!
   # MIME type of the response
   edgeResponseContentType: string!
-  # 1 if the MIME type of the response is one of the MIME content types explicitly accepted by the client, 0 otherwise
+  # 1 if the MIME type of the response is one of the MIME content types accepted by the client (including wildcards), 0 otherwise
   edgeResponseContentTypeMatched: uint8!
+  # 1 if the MIME type of the response matched only via a wildcard in the content types accepted by the client (not an exact match), 0 otherwise
+  edgeResponseContentTypeMatchedByWildcard: uint8!
   edgeResponseContentTypeName: string!
   edgeResponseStatus: uint16!
   # The time elapsed between processing the first byte of the request until when we started sending a response
@@ -29128,6 +30091,14 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   edgeDnsResponseTimeMs_notin: [uint16!]
   edgeResponseContentType: string
   edgeResponseContentTypeMatched: uint8
+  edgeResponseContentTypeMatchedByWildcard: uint8
+  edgeResponseContentTypeMatchedByWildcard_geq: uint8
+  edgeResponseContentTypeMatchedByWildcard_gt: uint8
+  edgeResponseContentTypeMatchedByWildcard_in: bytes
+  edgeResponseContentTypeMatchedByWildcard_leq: uint8
+  edgeResponseContentTypeMatchedByWildcard_lt: uint8
+  edgeResponseContentTypeMatchedByWildcard_neq: uint8
+  edgeResponseContentTypeMatchedByWildcard_notin: bytes
   edgeResponseContentTypeMatched_geq: uint8
   edgeResponseContentTypeMatched_gt: uint8
   edgeResponseContentTypeMatched_in: bytes
@@ -29752,6 +30723,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   edgeDnsResponseTimeMs_ASC
   # edgeDnsResponseTimeMs descending
   edgeDnsResponseTimeMs_DESC
+  # edgeResponseContentTypeMatchedByWildcard ascending
+  edgeResponseContentTypeMatchedByWildcard_ASC
+  # edgeResponseContentTypeMatchedByWildcard descending
+  edgeResponseContentTypeMatchedByWildcard_DESC
   # edgeResponseContentTypeMatched ascending
   edgeResponseContentTypeMatched_ASC
   # edgeResponseContentTypeMatched descending
@@ -30411,6 +31386,10 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   edgeDnsResponseTimeMs_ASC
   # edgeDnsResponseTimeMs descending
   edgeDnsResponseTimeMs_DESC
+  # edgeResponseContentTypeMatchedByWildcard ascending
+  edgeResponseContentTypeMatchedByWildcard_ASC
+  # edgeResponseContentTypeMatchedByWildcard descending
+  edgeResponseContentTypeMatchedByWildcard_DESC
   # edgeResponseContentTypeMatched ascending
   edgeResponseContentTypeMatched_ASC
   # edgeResponseContentTypeMatched descending
@@ -46603,6 +47582,730 @@ enum AccountOhttpMetricsAdaptiveOrderBy {
   relayStatusCode_DESC
 }
 
+# Aggregated OHTTP relay egress (relay-to-gateway) connection metrics with adaptive sampling
+type AccountOhttpRelayEgressConnMetricsAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountOhttpRelayEgressConnMetricsAdaptiveGroupsConfidence!
+  # The number of egress connections
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountOhttpRelayEgressConnMetricsAdaptiveGroupsDimensions
+  quantiles: AccountOhttpRelayEgressConnMetricsAdaptiveGroupsQuantiles
+  # Sum of values for a metric per dimension
+  sum: AccountOhttpRelayEgressConnMetricsAdaptiveGroupsSum
+}
+
+type AccountOhttpRelayEgressConnMetricsAdaptiveGroupsConfidence {
+  # The number of egress connections, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # Sum of values for a metric per dimension, with confidence intervals
+  sum: AccountOhttpRelayEgressConnMetricsAdaptiveGroupsSumConfidence
+}
+
+type AccountOhttpRelayEgressConnMetricsAdaptiveGroupsDimensions {
+  # IATA airport code of the Cloudflare data center that handled the connection
+  coloCode: string!
+  # Connection date
+  date: Date!
+  # Connection timestamp truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Connection timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Connection timestamp truncated to the hour
+  datetimeHour: Time!
+  # Connection timestamp truncated to the minute
+  datetimeMinute: Time!
+  # The endpoint that generated traffic
+  endpoint: string!
+  # Transport protocol on the relay-to-gateway connection (TCP, UDP, QUIC)
+  transport: string!
+}
+
+input AccountOhttpRelayEgressConnMetricsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountOhttpRelayEgressConnMetricsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountOhttpRelayEgressConnMetricsAdaptiveGroupsFilter_InputObject!]
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  endpoint: string
+  endpoint_geq: string
+  endpoint_gt: string
+  endpoint_in: [string!]
+  endpoint_leq: string
+  endpoint_like: string
+  endpoint_lt: string
+  endpoint_neq: string
+  endpoint_notin: [string!]
+  endpoint_notlike: string
+  transport: string
+  transport_geq: string
+  transport_gt: string
+  transport_in: [string!]
+  transport_leq: string
+  transport_like: string
+  transport_lt: string
+  transport_neq: string
+  transport_notin: [string!]
+  transport_notlike: string
+}
+
+enum AccountOhttpRelayEgressConnMetricsAdaptiveGroupsOrderBy {
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # endpoint ascending
+  endpoint_ASC
+  # endpoint descending
+  endpoint_DESC
+  # quantiles(durationMsP25) ascending
+  quantiles_durationMsP25_ASC
+  # quantiles(durationMsP25) descending
+  quantiles_durationMsP25_DESC
+  # quantiles(durationMsP50) ascending
+  quantiles_durationMsP50_ASC
+  # quantiles(durationMsP50) descending
+  quantiles_durationMsP50_DESC
+  # quantiles(durationMsP75) ascending
+  quantiles_durationMsP75_ASC
+  # quantiles(durationMsP75) descending
+  quantiles_durationMsP75_DESC
+  # quantiles(durationMsP90) ascending
+  quantiles_durationMsP90_ASC
+  # quantiles(durationMsP90) descending
+  quantiles_durationMsP90_DESC
+  # quantiles(durationMsP95) ascending
+  quantiles_durationMsP95_ASC
+  # quantiles(durationMsP95) descending
+  quantiles_durationMsP95_DESC
+  # quantiles(durationMsP999) ascending
+  quantiles_durationMsP999_ASC
+  # quantiles(durationMsP999) descending
+  quantiles_durationMsP999_DESC
+  # quantiles(durationMsP99) ascending
+  quantiles_durationMsP99_ASC
+  # quantiles(durationMsP99) descending
+  quantiles_durationMsP99_DESC
+  # quantiles(handshakeDurationUsP25) ascending
+  quantiles_handshakeDurationUsP25_ASC
+  # quantiles(handshakeDurationUsP25) descending
+  quantiles_handshakeDurationUsP25_DESC
+  # quantiles(handshakeDurationUsP50) ascending
+  quantiles_handshakeDurationUsP50_ASC
+  # quantiles(handshakeDurationUsP50) descending
+  quantiles_handshakeDurationUsP50_DESC
+  # quantiles(handshakeDurationUsP75) ascending
+  quantiles_handshakeDurationUsP75_ASC
+  # quantiles(handshakeDurationUsP75) descending
+  quantiles_handshakeDurationUsP75_DESC
+  # quantiles(handshakeDurationUsP90) ascending
+  quantiles_handshakeDurationUsP90_ASC
+  # quantiles(handshakeDurationUsP90) descending
+  quantiles_handshakeDurationUsP90_DESC
+  # quantiles(handshakeDurationUsP95) ascending
+  quantiles_handshakeDurationUsP95_ASC
+  # quantiles(handshakeDurationUsP95) descending
+  quantiles_handshakeDurationUsP95_DESC
+  # quantiles(handshakeDurationUsP999) ascending
+  quantiles_handshakeDurationUsP999_ASC
+  # quantiles(handshakeDurationUsP999) descending
+  quantiles_handshakeDurationUsP999_DESC
+  # quantiles(handshakeDurationUsP99) ascending
+  quantiles_handshakeDurationUsP99_ASC
+  # quantiles(handshakeDurationUsP99) descending
+  quantiles_handshakeDurationUsP99_DESC
+  # sum(bytesRecvdFromGateway) ascending
+  sum_bytesRecvdFromGateway_ASC
+  # sum(bytesRecvdFromGateway) descending
+  sum_bytesRecvdFromGateway_DESC
+  # sum(bytesSentToGateway) ascending
+  sum_bytesSentToGateway_ASC
+  # sum(bytesSentToGateway) descending
+  sum_bytesSentToGateway_DESC
+  # sum(packetsRecvdFromGateway) ascending
+  sum_packetsRecvdFromGateway_ASC
+  # sum(packetsRecvdFromGateway) descending
+  sum_packetsRecvdFromGateway_DESC
+  # sum(packetsSentToGateway) ascending
+  sum_packetsSentToGateway_ASC
+  # sum(packetsSentToGateway) descending
+  sum_packetsSentToGateway_DESC
+  # transport ascending
+  transport_ASC
+  # transport descending
+  transport_DESC
+}
+
+type AccountOhttpRelayEgressConnMetricsAdaptiveGroupsQuantiles {
+  # Connection lifetime in milliseconds (25th percentile)
+  durationMsP25: float64!
+  # Connection lifetime in milliseconds (50th percentile)
+  durationMsP50: float64!
+  # Connection lifetime in milliseconds (75th percentile)
+  durationMsP75: float64!
+  # Connection lifetime in milliseconds (90th percentile)
+  durationMsP90: float64!
+  # Connection lifetime in milliseconds (95th percentile)
+  durationMsP95: float64!
+  # Connection lifetime in milliseconds (99th percentile)
+  durationMsP99: float64!
+  # Connection lifetime in milliseconds (99.9th percentile)
+  durationMsP999: float64!
+  # TCP/TLS or QUIC handshake time in microseconds (25th percentile)
+  handshakeDurationUsP25: float64!
+  # TCP/TLS or QUIC handshake time in microseconds (50th percentile)
+  handshakeDurationUsP50: float64!
+  # TCP/TLS or QUIC handshake time in microseconds (75th percentile)
+  handshakeDurationUsP75: float64!
+  # TCP/TLS or QUIC handshake time in microseconds (90th percentile)
+  handshakeDurationUsP90: float64!
+  # TCP/TLS or QUIC handshake time in microseconds (95th percentile)
+  handshakeDurationUsP95: float64!
+  # TCP/TLS or QUIC handshake time in microseconds (99th percentile)
+  handshakeDurationUsP99: float64!
+  # TCP/TLS or QUIC handshake time in microseconds (99.9th percentile)
+  handshakeDurationUsP999: float64!
+}
+
+type AccountOhttpRelayEgressConnMetricsAdaptiveGroupsSum {
+  # Total bytes received by the relay from the gateway
+  bytesRecvdFromGateway: uint64!
+  # Total bytes sent from the relay to the gateway
+  bytesSentToGateway: uint64!
+  # Total packets received by the relay from the gateway
+  packetsRecvdFromGateway: uint64!
+  # Total packets sent from the relay to the gateway
+  packetsSentToGateway: uint64!
+}
+
+type AccountOhttpRelayEgressConnMetricsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  bytesRecvdFromGateway: Confidence!
+  # Confidence interval for the corresponding point estimate
+  bytesSentToGateway: Confidence!
+  # Confidence interval for the corresponding point estimate
+  packetsRecvdFromGateway: Confidence!
+  # Confidence interval for the corresponding point estimate
+  packetsSentToGateway: Confidence!
+}
+
+# Aggregated OHTTP relay ingress (client-to-relay) connection metrics with adaptive sampling
+type AccountOhttpRelayIngressConnMetricsAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountOhttpRelayIngressConnMetricsAdaptiveGroupsConfidence!
+  # The number of ingress connections
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountOhttpRelayIngressConnMetricsAdaptiveGroupsDimensions
+  quantiles: AccountOhttpRelayIngressConnMetricsAdaptiveGroupsQuantiles
+  # Sum of values for a metric per dimension
+  sum: AccountOhttpRelayIngressConnMetricsAdaptiveGroupsSum
+}
+
+type AccountOhttpRelayIngressConnMetricsAdaptiveGroupsConfidence {
+  # The number of ingress connections, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # Sum of values for a metric per dimension, with confidence intervals
+  sum: AccountOhttpRelayIngressConnMetricsAdaptiveGroupsSumConfidence
+}
+
+type AccountOhttpRelayIngressConnMetricsAdaptiveGroupsDimensions {
+  # IATA airport code of the Cloudflare data center that handled the connection
+  coloCode: string!
+  # Connection date
+  date: Date!
+  # Connection timestamp truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Connection timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Connection timestamp truncated to the hour
+  datetimeHour: Time!
+  # Connection timestamp truncated to the minute
+  datetimeMinute: Time!
+  # The endpoint that generated traffic
+  endpoint: string!
+  # Transport protocol on the client-to-relay connection (TCP, UDP, QUIC)
+  transport: string!
+}
+
+input AccountOhttpRelayIngressConnMetricsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountOhttpRelayIngressConnMetricsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountOhttpRelayIngressConnMetricsAdaptiveGroupsFilter_InputObject!]
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  endpoint: string
+  endpoint_geq: string
+  endpoint_gt: string
+  endpoint_in: [string!]
+  endpoint_leq: string
+  endpoint_like: string
+  endpoint_lt: string
+  endpoint_neq: string
+  endpoint_notin: [string!]
+  endpoint_notlike: string
+  transport: string
+  transport_geq: string
+  transport_gt: string
+  transport_in: [string!]
+  transport_leq: string
+  transport_like: string
+  transport_lt: string
+  transport_neq: string
+  transport_notin: [string!]
+  transport_notlike: string
+}
+
+enum AccountOhttpRelayIngressConnMetricsAdaptiveGroupsOrderBy {
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # endpoint ascending
+  endpoint_ASC
+  # endpoint descending
+  endpoint_DESC
+  # quantiles(durationMsP25) ascending
+  quantiles_durationMsP25_ASC
+  # quantiles(durationMsP25) descending
+  quantiles_durationMsP25_DESC
+  # quantiles(durationMsP50) ascending
+  quantiles_durationMsP50_ASC
+  # quantiles(durationMsP50) descending
+  quantiles_durationMsP50_DESC
+  # quantiles(durationMsP75) ascending
+  quantiles_durationMsP75_ASC
+  # quantiles(durationMsP75) descending
+  quantiles_durationMsP75_DESC
+  # quantiles(durationMsP90) ascending
+  quantiles_durationMsP90_ASC
+  # quantiles(durationMsP90) descending
+  quantiles_durationMsP90_DESC
+  # quantiles(durationMsP95) ascending
+  quantiles_durationMsP95_ASC
+  # quantiles(durationMsP95) descending
+  quantiles_durationMsP95_DESC
+  # quantiles(durationMsP999) ascending
+  quantiles_durationMsP999_ASC
+  # quantiles(durationMsP999) descending
+  quantiles_durationMsP999_DESC
+  # quantiles(durationMsP99) ascending
+  quantiles_durationMsP99_ASC
+  # quantiles(durationMsP99) descending
+  quantiles_durationMsP99_DESC
+  # quantiles(handshakeDurationUsP25) ascending
+  quantiles_handshakeDurationUsP25_ASC
+  # quantiles(handshakeDurationUsP25) descending
+  quantiles_handshakeDurationUsP25_DESC
+  # quantiles(handshakeDurationUsP50) ascending
+  quantiles_handshakeDurationUsP50_ASC
+  # quantiles(handshakeDurationUsP50) descending
+  quantiles_handshakeDurationUsP50_DESC
+  # quantiles(handshakeDurationUsP75) ascending
+  quantiles_handshakeDurationUsP75_ASC
+  # quantiles(handshakeDurationUsP75) descending
+  quantiles_handshakeDurationUsP75_DESC
+  # quantiles(handshakeDurationUsP90) ascending
+  quantiles_handshakeDurationUsP90_ASC
+  # quantiles(handshakeDurationUsP90) descending
+  quantiles_handshakeDurationUsP90_DESC
+  # quantiles(handshakeDurationUsP95) ascending
+  quantiles_handshakeDurationUsP95_ASC
+  # quantiles(handshakeDurationUsP95) descending
+  quantiles_handshakeDurationUsP95_DESC
+  # quantiles(handshakeDurationUsP999) ascending
+  quantiles_handshakeDurationUsP999_ASC
+  # quantiles(handshakeDurationUsP999) descending
+  quantiles_handshakeDurationUsP999_DESC
+  # quantiles(handshakeDurationUsP99) ascending
+  quantiles_handshakeDurationUsP99_ASC
+  # quantiles(handshakeDurationUsP99) descending
+  quantiles_handshakeDurationUsP99_DESC
+  # sum(bytesRecvdFromClient) ascending
+  sum_bytesRecvdFromClient_ASC
+  # sum(bytesRecvdFromClient) descending
+  sum_bytesRecvdFromClient_DESC
+  # sum(bytesSentToClient) ascending
+  sum_bytesSentToClient_ASC
+  # sum(bytesSentToClient) descending
+  sum_bytesSentToClient_DESC
+  # sum(packetsRecvdFromClient) ascending
+  sum_packetsRecvdFromClient_ASC
+  # sum(packetsRecvdFromClient) descending
+  sum_packetsRecvdFromClient_DESC
+  # sum(packetsSentToClient) ascending
+  sum_packetsSentToClient_ASC
+  # sum(packetsSentToClient) descending
+  sum_packetsSentToClient_DESC
+  # transport ascending
+  transport_ASC
+  # transport descending
+  transport_DESC
+}
+
+type AccountOhttpRelayIngressConnMetricsAdaptiveGroupsQuantiles {
+  # Connection lifetime in milliseconds (25th percentile)
+  durationMsP25: float64!
+  # Connection lifetime in milliseconds (50th percentile)
+  durationMsP50: float64!
+  # Connection lifetime in milliseconds (75th percentile)
+  durationMsP75: float64!
+  # Connection lifetime in milliseconds (90th percentile)
+  durationMsP90: float64!
+  # Connection lifetime in milliseconds (95th percentile)
+  durationMsP95: float64!
+  # Connection lifetime in milliseconds (99th percentile)
+  durationMsP99: float64!
+  # Connection lifetime in milliseconds (99.9th percentile)
+  durationMsP999: float64!
+  # TCP/TLS or QUIC handshake time in microseconds (25th percentile)
+  handshakeDurationUsP25: float64!
+  # TCP/TLS or QUIC handshake time in microseconds (50th percentile)
+  handshakeDurationUsP50: float64!
+  # TCP/TLS or QUIC handshake time in microseconds (75th percentile)
+  handshakeDurationUsP75: float64!
+  # TCP/TLS or QUIC handshake time in microseconds (90th percentile)
+  handshakeDurationUsP90: float64!
+  # TCP/TLS or QUIC handshake time in microseconds (95th percentile)
+  handshakeDurationUsP95: float64!
+  # TCP/TLS or QUIC handshake time in microseconds (99th percentile)
+  handshakeDurationUsP99: float64!
+  # TCP/TLS or QUIC handshake time in microseconds (99.9th percentile)
+  handshakeDurationUsP999: float64!
+}
+
+type AccountOhttpRelayIngressConnMetricsAdaptiveGroupsSum {
+  # Total bytes received by the relay from the client
+  bytesRecvdFromClient: uint64!
+  # Total bytes sent from the relay to the client
+  bytesSentToClient: uint64!
+  # Total packets received by the relay from the client
+  packetsRecvdFromClient: uint64!
+  # Total packets sent from the relay to the client
+  packetsSentToClient: uint64!
+}
+
+type AccountOhttpRelayIngressConnMetricsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  bytesRecvdFromClient: Confidence!
+  # Confidence interval for the corresponding point estimate
+  bytesSentToClient: Confidence!
+  # Confidence interval for the corresponding point estimate
+  packetsRecvdFromClient: Confidence!
+  # Confidence interval for the corresponding point estimate
+  packetsSentToClient: Confidence!
+}
+
+# Aggregated OHTTP relay request metrics with adaptive sampling
+type AccountOhttpRelayRequestMetricsAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountOhttpRelayRequestMetricsAdaptiveGroupsConfidence!
+  # The number of OHTTP relay requests
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountOhttpRelayRequestMetricsAdaptiveGroupsDimensions
+}
+
+type AccountOhttpRelayRequestMetricsAdaptiveGroupsConfidence {
+  # The number of OHTTP relay requests, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type AccountOhttpRelayRequestMetricsAdaptiveGroupsDimensions {
+  # IATA airport code of the Cloudflare data center that handled the request
+  coloCode: string!
+  # Request date
+  date: Date!
+  # Request timestamp truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Request timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Request timestamp truncated to the hour
+  datetimeHour: Time!
+  # Request timestamp truncated to the minute
+  datetimeMinute: Time!
+  # The endpoint that generated traffic
+  endpoint: string!
+  # Proxy-level error classification, empty when no proxy-level error occurred
+  proxyStatus: string!
+  # HTTP status code returned by the relay
+  relayStatusCode: uint16!
+}
+
+input AccountOhttpRelayRequestMetricsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountOhttpRelayRequestMetricsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountOhttpRelayRequestMetricsAdaptiveGroupsFilter_InputObject!]
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  endpoint: string
+  endpoint_geq: string
+  endpoint_gt: string
+  endpoint_in: [string!]
+  endpoint_leq: string
+  endpoint_like: string
+  endpoint_lt: string
+  endpoint_neq: string
+  endpoint_notin: [string!]
+  endpoint_notlike: string
+  proxyStatus: string
+  proxyStatus_geq: string
+  proxyStatus_gt: string
+  proxyStatus_in: [string!]
+  proxyStatus_leq: string
+  proxyStatus_like: string
+  proxyStatus_lt: string
+  proxyStatus_neq: string
+  proxyStatus_notin: [string!]
+  proxyStatus_notlike: string
+  relayStatusCode: uint16
+  relayStatusCode_geq: uint16
+  relayStatusCode_gt: uint16
+  relayStatusCode_in: [uint16!]
+  relayStatusCode_leq: uint16
+  relayStatusCode_lt: uint16
+  relayStatusCode_neq: uint16
+  relayStatusCode_notin: [uint16!]
+}
+
+enum AccountOhttpRelayRequestMetricsAdaptiveGroupsOrderBy {
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # endpoint ascending
+  endpoint_ASC
+  # endpoint descending
+  endpoint_DESC
+  # proxyStatus ascending
+  proxyStatus_ASC
+  # proxyStatus descending
+  proxyStatus_DESC
+  # relayStatusCode ascending
+  relayStatusCode_ASC
+  # relayStatusCode descending
+  relayStatusCode_DESC
+}
+
 # Pages Functions invocations with adaptive sampling
 type AccountPagesFunctionsInvocationsAdaptiveGroups {
   avg: AccountPagesFunctionsInvocationsAdaptiveGroupsAvg
@@ -49272,7 +50975,7 @@ type AccountPrivacyProxyRequestMetricsAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # The proxy endpoint that generated traffic
   endpoint: string!
-  # Proxy-level error classification, null when no proxy-level error occurred
+  # Proxy-level error classification, empty when no proxy-level error occurred
   proxyStatus: string!
   # HTTP status code returned by the proxy to the client
   statusCode: uint16!
@@ -52173,8 +53876,12 @@ type AccountRumPageloadEventsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Request datetime from browser, truncated to the minute
   datetimeMinute: Time!
+  # Delivery type of the request
+  deliveryType: string!
   # Device type used for view the page
   deviceType: string!
+  # Navigation type of the request
+  navigationType: string!
   # Host of the HTTP request referer
   refererHost: string!
   # Path of the HTTP request referer
@@ -52282,6 +53989,16 @@ input AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  deliveryType: string
+  deliveryType_geq: string
+  deliveryType_gt: string
+  deliveryType_in: [string!]
+  deliveryType_leq: string
+  deliveryType_like: string
+  deliveryType_lt: string
+  deliveryType_neq: string
+  deliveryType_notin: [string!]
+  deliveryType_notlike: string
   deviceType: string
   deviceType_geq: string
   deviceType_gt: string
@@ -52292,6 +54009,16 @@ input AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject {
   deviceType_neq: string
   deviceType_notin: [string!]
   deviceType_notlike: string
+  navigationType: string
+  navigationType_geq: string
+  navigationType_gt: string
+  navigationType_in: [string!]
+  navigationType_leq: string
+  navigationType_like: string
+  navigationType_lt: string
+  navigationType_neq: string
+  navigationType_notin: [string!]
+  navigationType_notlike: string
   refererHost: string
   refererHost_geq: string
   refererHost_gt: string
@@ -52429,10 +54156,18 @@ enum AccountRumPageloadEventsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # deliveryType ascending
+  deliveryType_ASC
+  # deliveryType descending
+  deliveryType_DESC
   # deviceType ascending
   deviceType_ASC
   # deviceType descending
   deviceType_DESC
+  # navigationType ascending
+  navigationType_ASC
+  # navigationType descending
+  navigationType_DESC
   # refererHost ascending
   refererHost_ASC
   # refererHost descending
@@ -52548,8 +54283,12 @@ type AccountRumPerformanceEventsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Request datetime from browser, truncated to the minute
   datetimeMinute: Time!
+  # Delivery type of the request
+  deliveryType: string!
   # Device type used for view the page
   deviceType: string!
+  # Navigation type of the request
+  navigationType: string!
   # Host of the HTTP request referer
   refererHost: string!
   # Path of the HTTP request referer
@@ -52657,6 +54396,16 @@ input AccountRumPerformanceEventsAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  deliveryType: string
+  deliveryType_geq: string
+  deliveryType_gt: string
+  deliveryType_in: [string!]
+  deliveryType_leq: string
+  deliveryType_like: string
+  deliveryType_lt: string
+  deliveryType_neq: string
+  deliveryType_notin: [string!]
+  deliveryType_notlike: string
   deviceType: string
   deviceType_geq: string
   deviceType_gt: string
@@ -52667,6 +54416,16 @@ input AccountRumPerformanceEventsAdaptiveGroupsFilter_InputObject {
   deviceType_neq: string
   deviceType_notin: [string!]
   deviceType_notlike: string
+  navigationType: string
+  navigationType_geq: string
+  navigationType_gt: string
+  navigationType_in: [string!]
+  navigationType_leq: string
+  navigationType_like: string
+  navigationType_lt: string
+  navigationType_neq: string
+  navigationType_notin: [string!]
+  navigationType_notlike: string
   refererHost: string
   refererHost_geq: string
   refererHost_gt: string
@@ -52840,10 +54599,18 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # deliveryType ascending
+  deliveryType_ASC
+  # deliveryType descending
+  deliveryType_DESC
   # deviceType ascending
   deviceType_ASC
   # deviceType descending
   deviceType_DESC
+  # navigationType ascending
+  navigationType_ASC
+  # navigationType descending
+  navigationType_DESC
   # quantiles(connectionTimeP25) ascending
   quantiles_connectionTimeP25_ASC
   # quantiles(connectionTimeP25) descending
@@ -53309,8 +55076,12 @@ type AccountRumWebVitalsEventsAdaptive {
   datetimeHour: Time!
   # Request datetime from browser, truncated to the minute
   datetimeMinute: Time!
+  # Delivery type of the request
+  deliveryType: string!
   # Device type used for view the page
   deviceType: string!
+  # Navigation type of the request
+  navigationType: string!
   # Host of the HTTP request referer
   refererHost: string!
   # Path of the HTTP request referer
@@ -53468,6 +55239,16 @@ input AccountRumWebVitalsEventsAdaptiveFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  deliveryType: string
+  deliveryType_geq: string
+  deliveryType_gt: string
+  deliveryType_in: [string!]
+  deliveryType_leq: string
+  deliveryType_like: string
+  deliveryType_lt: string
+  deliveryType_neq: string
+  deliveryType_notin: [string!]
+  deliveryType_notlike: string
   deviceType: string
   deviceType_geq: string
   deviceType_gt: string
@@ -53478,6 +55259,16 @@ input AccountRumWebVitalsEventsAdaptiveFilter_InputObject {
   deviceType_neq: string
   deviceType_notin: [string!]
   deviceType_notlike: string
+  navigationType: string
+  navigationType_geq: string
+  navigationType_gt: string
+  navigationType_in: [string!]
+  navigationType_leq: string
+  navigationType_like: string
+  navigationType_lt: string
+  navigationType_neq: string
+  navigationType_notin: [string!]
+  navigationType_notlike: string
   refererHost: string
   refererHost_geq: string
   refererHost_gt: string
@@ -53646,6 +55437,8 @@ type AccountRumWebVitalsEventsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Request datetime from browser, truncated to the minute
   datetimeMinute: Time!
+  # Delivery type of the request
+  deliveryType: string!
   # Device type used for view the page
   deviceType: string!
   # DOM selector name of the input delay
@@ -53677,6 +55470,8 @@ type AccountRumWebVitalsEventsAdaptiveGroupsDimensions {
   lcpFetchPriority: string!
   # Initiator type of the LCP element.
   lcpInitiatorType: string!
+  # Navigation type of the request
+  navigationType: string!
   # Host of the HTTP request referer
   refererHost: string!
   # Path of the HTTP request referer
@@ -53812,6 +55607,16 @@ input AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  deliveryType: string
+  deliveryType_geq: string
+  deliveryType_gt: string
+  deliveryType_in: [string!]
+  deliveryType_leq: string
+  deliveryType_like: string
+  deliveryType_lt: string
+  deliveryType_neq: string
+  deliveryType_notin: [string!]
+  deliveryType_notlike: string
   deviceType: string
   deviceType_geq: string
   deviceType_gt: string
@@ -53976,6 +55781,16 @@ input AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject {
   lcpInitiatorType_neq: string
   lcpInitiatorType_notin: [string!]
   lcpInitiatorType_notlike: string
+  navigationType: string
+  navigationType_geq: string
+  navigationType_gt: string
+  navigationType_in: [string!]
+  navigationType_leq: string
+  navigationType_like: string
+  navigationType_lt: string
+  navigationType_neq: string
+  navigationType_notin: [string!]
+  navigationType_notlike: string
   refererHost: string
   refererHost_geq: string
   refererHost_gt: string
@@ -54157,6 +55972,10 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   datetimeMinute_ASC
   # datetimeMinute descending
   datetimeMinute_DESC
+  # deliveryType ascending
+  deliveryType_ASC
+  # deliveryType descending
+  deliveryType_DESC
   # deviceType ascending
   deviceType_ASC
   # deviceType descending
@@ -54213,6 +56032,10 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   lcpInitiatorType_ASC
   # lcpInitiatorType descending
   lcpInitiatorType_DESC
+  # navigationType ascending
+  navigationType_ASC
+  # navigationType descending
+  navigationType_DESC
   # quantiles(cumulativeLayoutShiftP25) ascending
   quantiles_cumulativeLayoutShiftP25_ASC
   # quantiles(cumulativeLayoutShiftP25) descending
@@ -54902,10 +56725,18 @@ enum AccountRumWebVitalsEventsAdaptiveOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # deliveryType ascending
+  deliveryType_ASC
+  # deliveryType descending
+  deliveryType_DESC
   # deviceType ascending
   deviceType_ASC
   # deviceType descending
   deviceType_DESC
+  # navigationType ascending
+  navigationType_ASC
+  # navigationType descending
+  navigationType_DESC
   # refererHost ascending
   refererHost_ASC
   # refererHost descending
@@ -54978,9 +56809,14 @@ type AccountSettings {
   callsTurnUsageAdaptiveGroups: Settings!
   callsUsageAdaptiveGroups: Settings!
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
+  cf1GatewayDns1dGroups: Settings!
+  cf1GatewayDns1hGroups: Settings!
+  cf1GatewayDnsRawGroups: Settings!
   cloudchamberMetricsAdaptiveGroups: Settings!
   cloudflareTunnelsAnalyticsAdaptiveGroups: Settings!
+  cloudforceOneDetectionsAdaptiveGroups: Settings!
   containersMetricsAdaptiveGroups: Settings!
+  containersUsageAdaptiveGroups: Settings!
   d1AnalyticsAdaptiveGroups: Settings!
   d1QueriesAdaptiveGroups: Settings!
   d1StorageAdaptiveGroups: Settings!
@@ -55060,6 +56896,9 @@ type AccountSettings {
   nelReportsAdaptiveGroups: Settings!
   ohttpMetricsAdaptive: Settings!
   ohttpMetricsAdaptiveGroups: Settings!
+  ohttpRelayEgressConnMetricsAdaptiveGroups: Settings!
+  ohttpRelayIngressConnMetricsAdaptiveGroups: Settings!
+  ohttpRelayRequestMetricsAdaptiveGroups: Settings!
   pagesFunctionsInvocationsAdaptiveGroups: Settings!
   pipelinesDeliveryAdaptiveGroups: Settings!
   pipelinesIngestionAdaptiveGroups: Settings!
@@ -64462,9 +66301,9 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   clientIP: string!
   # The referrer host
   clientRefererHost: string!
-  # List of MIME content type extension names explicitly accepted by the client
+  # List of MIME content type extension names accepted by the client (including wildcards)
   clientRequestAcceptContentTypeNames: [string!]!
-  # List of MIME content types explicitly accepted by the client
+  # List of MIME content types accepted by the client (including wildcards)
   clientRequestAcceptContentTypes: [string!]!
   # Host requested by the client
   clientRequestHTTPHost: string!
@@ -64511,8 +66350,10 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   edgeDnsResponseTimeMs: uint16!
   # MIME type of the response
   edgeResponseContentType: string!
-  # 1 if the MIME type of the response is one of the MIME content types explicitly accepted by the client, 0 otherwise
+  # 1 if the MIME type of the response is one of the MIME content types accepted by the client (including wildcards), 0 otherwise
   edgeResponseContentTypeMatched: uint8!
+  # 1 if the MIME type of the response matched only via a wildcard in the content types accepted by the client (not an exact match), 0 otherwise
+  edgeResponseContentTypeMatchedByWildcard: uint8!
   edgeResponseContentTypeName: string!
   edgeResponseStatus: uint16!
   # The time elapsed between processing the first byte of the request until when we started sending a response
@@ -64944,6 +66785,14 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   edgeDnsResponseTimeMs_notin: [uint16!]
   edgeResponseContentType: string
   edgeResponseContentTypeMatched: uint8
+  edgeResponseContentTypeMatchedByWildcard: uint8
+  edgeResponseContentTypeMatchedByWildcard_geq: uint8
+  edgeResponseContentTypeMatchedByWildcard_gt: uint8
+  edgeResponseContentTypeMatchedByWildcard_in: bytes
+  edgeResponseContentTypeMatchedByWildcard_leq: uint8
+  edgeResponseContentTypeMatchedByWildcard_lt: uint8
+  edgeResponseContentTypeMatchedByWildcard_neq: uint8
+  edgeResponseContentTypeMatchedByWildcard_notin: bytes
   edgeResponseContentTypeMatched_geq: uint8
   edgeResponseContentTypeMatched_gt: uint8
   edgeResponseContentTypeMatched_in: bytes
@@ -65550,6 +67399,10 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   edgeDnsResponseTimeMs_ASC
   # edgeDnsResponseTimeMs descending
   edgeDnsResponseTimeMs_DESC
+  # edgeResponseContentTypeMatchedByWildcard ascending
+  edgeResponseContentTypeMatchedByWildcard_ASC
+  # edgeResponseContentTypeMatchedByWildcard descending
+  edgeResponseContentTypeMatchedByWildcard_DESC
   # edgeResponseContentTypeMatched ascending
   edgeResponseContentTypeMatched_ASC
   # edgeResponseContentTypeMatched descending
@@ -75902,9 +77755,9 @@ type ZoneHttpRequestsAdaptive {
   clientIP: string!
   # The referrer host
   clientRefererHost: string!
-  # List of MIME content type extension names explicitly accepted by the visitor
+  # List of MIME content type extension names accepted by the visitor (including wildcards)
   clientRequestAcceptContentTypeNames: [string!]!
-  # List of MIME content types explicitly accepted by the visitor
+  # List of MIME content types accepted by the visitor (including wildcards)
   clientRequestAcceptContentTypes: [string!]!
   # The HTTP hostname requested by the visitor
   clientRequestHTTPHost: string!
@@ -75951,8 +77804,10 @@ type ZoneHttpRequestsAdaptive {
   edgeDnsResponseTimeMs: uint16!
   # MIME type of the response
   edgeResponseContentType: string!
-  # 1 if the MIME type of the response is one of the MIME content types explicitly accepted by the visitor, 0 otherwise
+  # 1 if the MIME type of the response is one of the MIME content types accepted by the visitor (including wildcards), 0 otherwise
   edgeResponseContentTypeMatched: uint8!
+  # 1 if the MIME type of the response matched only via a wildcard in the content types accepted by the visitor (not an exact match), 0 otherwise
+  edgeResponseContentTypeMatchedByWildcard: uint8!
   edgeResponseContentTypeName: string!
   # HTTP response status code returned to browser
   edgeResponseStatus: uint16!
@@ -76398,6 +78253,14 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   edgeDnsResponseTimeMs_notin: [uint16!]
   edgeResponseContentType: string
   edgeResponseContentTypeMatched: uint8
+  edgeResponseContentTypeMatchedByWildcard: uint8
+  edgeResponseContentTypeMatchedByWildcard_geq: uint8
+  edgeResponseContentTypeMatchedByWildcard_gt: uint8
+  edgeResponseContentTypeMatchedByWildcard_in: bytes
+  edgeResponseContentTypeMatchedByWildcard_leq: uint8
+  edgeResponseContentTypeMatchedByWildcard_lt: uint8
+  edgeResponseContentTypeMatchedByWildcard_neq: uint8
+  edgeResponseContentTypeMatchedByWildcard_notin: bytes
   edgeResponseContentTypeMatched_geq: uint8
   edgeResponseContentTypeMatched_gt: uint8
   edgeResponseContentTypeMatched_in: bytes
@@ -76888,9 +78751,9 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   clientIP: string!
   # The referrer host
   clientRefererHost: string!
-  # List of MIME content type extension names explicitly accepted by the client
+  # List of MIME content type extension names accepted by the client (including wildcards)
   clientRequestAcceptContentTypeNames: [string!]!
-  # List of MIME content types explicitly accepted by the client
+  # List of MIME content types accepted by the client (including wildcards)
   clientRequestAcceptContentTypes: [string!]!
   # Host requested by the client
   clientRequestHTTPHost: string!
@@ -76937,8 +78800,10 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   edgeDnsResponseTimeMs: uint16!
   # MIME type of the response
   edgeResponseContentType: string!
-  # 1 if the MIME type of the response is one of the MIME content types explicitly accepted by the client, 0 otherwise
+  # 1 if the MIME type of the response is one of the MIME content types accepted by the client (including wildcards), 0 otherwise
   edgeResponseContentTypeMatched: uint8!
+  # 1 if the MIME type of the response matched only via a wildcard in the content types accepted by the client (not an exact match), 0 otherwise
+  edgeResponseContentTypeMatchedByWildcard: uint8!
   edgeResponseContentTypeName: string!
   edgeResponseStatus: uint16!
   # The time elapsed between processing the first byte of the request until when we started sending a response
@@ -77378,6 +79243,14 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   edgeDnsResponseTimeMs_notin: [uint16!]
   edgeResponseContentType: string
   edgeResponseContentTypeMatched: uint8
+  edgeResponseContentTypeMatchedByWildcard: uint8
+  edgeResponseContentTypeMatchedByWildcard_geq: uint8
+  edgeResponseContentTypeMatchedByWildcard_gt: uint8
+  edgeResponseContentTypeMatchedByWildcard_in: bytes
+  edgeResponseContentTypeMatchedByWildcard_leq: uint8
+  edgeResponseContentTypeMatchedByWildcard_lt: uint8
+  edgeResponseContentTypeMatchedByWildcard_neq: uint8
+  edgeResponseContentTypeMatchedByWildcard_notin: bytes
   edgeResponseContentTypeMatched_geq: uint8
   edgeResponseContentTypeMatched_gt: uint8
   edgeResponseContentTypeMatched_in: bytes
@@ -77992,6 +79865,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   edgeDnsResponseTimeMs_ASC
   # edgeDnsResponseTimeMs descending
   edgeDnsResponseTimeMs_DESC
+  # edgeResponseContentTypeMatchedByWildcard ascending
+  edgeResponseContentTypeMatchedByWildcard_ASC
+  # edgeResponseContentTypeMatchedByWildcard descending
+  edgeResponseContentTypeMatchedByWildcard_DESC
   # edgeResponseContentTypeMatched ascending
   edgeResponseContentTypeMatched_ASC
   # edgeResponseContentTypeMatched descending
@@ -78647,6 +80524,10 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   edgeDnsResponseTimeMs_ASC
   # edgeDnsResponseTimeMs descending
   edgeDnsResponseTimeMs_DESC
+  # edgeResponseContentTypeMatchedByWildcard ascending
+  edgeResponseContentTypeMatchedByWildcard_ASC
+  # edgeResponseContentTypeMatchedByWildcard descending
+  edgeResponseContentTypeMatchedByWildcard_DESC
   # edgeResponseContentTypeMatched ascending
   edgeResponseContentTypeMatched_ASC
   # edgeResponseContentTypeMatched descending
