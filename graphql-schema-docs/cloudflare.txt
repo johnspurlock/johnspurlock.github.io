@@ -12197,9 +12197,13 @@ type AccountCloudchamberMetricsAdaptiveGroupsDimensions {
   # The date and time the metric was received, truncated to six hours
   datetimeSixHours: Time!
   # The deployment ID
+  @Deprecated
   deploymentId: string!
   # If set, this metric was emitted while assigned to a durable object
+  @Deprecated
   durableObjectId: string!
+  # The ID of the container
+  instanceId: string!
   # Value of a specific container label. Requires the name argument.
   label(name: string): string!
   # Location
@@ -12309,6 +12313,16 @@ input AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject {
   durableObjectId_neq: string
   durableObjectId_notin: [string!]
   durableObjectId_notlike: string
+  instanceId: string
+  instanceId_geq: string
+  instanceId_gt: string
+  instanceId_in: [string!]
+  instanceId_leq: string
+  instanceId_like: string
+  instanceId_lt: string
+  instanceId_neq: string
+  instanceId_notin: [string!]
+  instanceId_notlike: string
   labels_has: string
   labels_hasall: [string!]
   labels_hasany: [string!]
@@ -12477,6 +12491,10 @@ enum AccountCloudchamberMetricsAdaptiveGroupsOrderBy {
   durableObjectId_ASC
   # durableObjectId descending
   durableObjectId_DESC
+  # instanceId ascending
+  instanceId_ASC
+  # instanceId descending
+  instanceId_DESC
   # location ascending
   location_ASC
   # location descending
@@ -13778,9 +13796,13 @@ type AccountContainersMetricsAdaptiveGroupsDimensions {
   # The date and time the metric was received, truncated to six hours
   datetimeSixHours: Time!
   # The deployment ID
+  @Deprecated
   deploymentId: string!
   # If set, this metric was emitted while assigned to a durable object
+  @Deprecated
   durableObjectId: string!
+  # The ID of the container
+  instanceId: string!
   # Value of a specific container label. Requires the name argument.
   label(name: string): string!
   # Location
@@ -13890,6 +13912,16 @@ input AccountContainersMetricsAdaptiveGroupsFilter_InputObject {
   durableObjectId_neq: string
   durableObjectId_notin: [string!]
   durableObjectId_notlike: string
+  instanceId: string
+  instanceId_geq: string
+  instanceId_gt: string
+  instanceId_in: [string!]
+  instanceId_leq: string
+  instanceId_like: string
+  instanceId_lt: string
+  instanceId_neq: string
+  instanceId_notin: [string!]
+  instanceId_notlike: string
   labels_has: string
   labels_hasall: [string!]
   labels_hasany: [string!]
@@ -14058,6 +14090,10 @@ enum AccountContainersMetricsAdaptiveGroupsOrderBy {
   durableObjectId_ASC
   # durableObjectId descending
   durableObjectId_DESC
+  # instanceId ascending
+  instanceId_ASC
+  # instanceId descending
+  instanceId_DESC
   # location ascending
   location_ASC
   # location descending
@@ -14698,13 +14734,47 @@ type AccountContainersUsageAdaptiveGroupsConfidence {
 }
 
 type AccountContainersUsageAdaptiveGroupsDimensions {
+  # The application ID
+  applicationId: string!
   # The date the metric was received
   date: Date!
+  # The date and time the metric was received
+  datetime: Time!
+  # The date and time the metric was received, truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the metric was received, truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the metric was received, truncated to one hour
+  datetimeHour: Time!
+  # The date and time the metric was received, truncated to one minute
+  datetimeMinute: Time!
+  # The date and time the metric was received, truncated to six hours
+  datetimeSixHours: Time!
+  # The ID of the container
+  instanceId: string!
+  # Value of a specific container label. Requires the name argument.
+  label(name: string): string!
+  # Location
+  location: string!
+  # The placement ID
+  placementId: string!
+  # Region
+  region: string!
 }
 
 input AccountContainersUsageAdaptiveGroupsFilter_InputObject {
   AND: [AccountContainersUsageAdaptiveGroupsFilter_InputObject!]
   OR: [AccountContainersUsageAdaptiveGroupsFilter_InputObject!]
+  applicationId: string
+  applicationId_geq: string
+  applicationId_gt: string
+  applicationId_in: [string!]
+  applicationId_leq: string
+  applicationId_like: string
+  applicationId_lt: string
+  applicationId_neq: string
+  applicationId_notin: [string!]
+  applicationId_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -14713,13 +14783,150 @@ input AccountContainersUsageAdaptiveGroupsFilter_InputObject {
   date_lt: Date
   date_neq: Date
   date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  instanceId: string
+  instanceId_geq: string
+  instanceId_gt: string
+  instanceId_in: [string!]
+  instanceId_leq: string
+  instanceId_like: string
+  instanceId_lt: string
+  instanceId_neq: string
+  instanceId_notin: [string!]
+  instanceId_notlike: string
+  labels_has: string
+  labels_hasall: [string!]
+  labels_hasany: [string!]
+  labels_isempty: bool
+  labels_nothas: string
+  location: string
+  location_geq: string
+  location_gt: string
+  location_in: [string!]
+  location_leq: string
+  location_like: string
+  location_lt: string
+  location_neq: string
+  location_notin: [string!]
+  location_notlike: string
+  placementId: string
+  placementId_geq: string
+  placementId_gt: string
+  placementId_in: [string!]
+  placementId_leq: string
+  placementId_like: string
+  placementId_lt: string
+  placementId_neq: string
+  placementId_notin: [string!]
+  placementId_notlike: string
+  region: string
+  region_geq: string
+  region_gt: string
+  region_in: [string!]
+  region_leq: string
+  region_like: string
+  region_lt: string
+  region_neq: string
+  region_notin: [string!]
+  region_notlike: string
 }
 
 enum AccountContainersUsageAdaptiveGroupsOrderBy {
+  # applicationId ascending
+  applicationId_ASC
+  # applicationId descending
+  applicationId_DESC
   # date ascending
   date_ASC
   # date descending
   date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # instanceId ascending
+  instanceId_ASC
+  # instanceId descending
+  instanceId_DESC
+  # location ascending
+  location_ASC
+  # location descending
+  location_DESC
+  # placementId ascending
+  placementId_ASC
+  # placementId descending
+  placementId_DESC
+  # region ascending
+  region_ASC
+  # region descending
+  region_DESC
   # sum(allocatedDisk) ascending
   sum_allocatedDisk_ASC
   # sum(allocatedDisk) descending
@@ -28691,8 +28898,14 @@ type AccountHttpRequestsAdaptive {
   originASNDescription: string!
   originIP: string!
   originResponseDurationMs: uint64!
+  # The time elapsed between completing the TLS handshake and receiving the origin response headers
+  originResponseHeaderReceiveDurationMs: uint32!
   # HTTP origin response status code returned to browser
   originResponseStatus: uint16!
+  # The time elapsed between the start and completion of the TCP handshake with the origin
+  originTcpHandshakeDurationMs: uint16!
+  # The time elapsed between the start and completion of the TLS handshake with the origin
+  originTlsHandshakeDurationMs: uint16!
   # Pay Per Crawl outcome, when applicable (e.g. request enabled for charging and not blocked by a WAF rule)
   payPerCrawlStatus: string!
   # The RayId of the request
@@ -29315,6 +29528,14 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   originResponseDurationMs_lt: uint64
   originResponseDurationMs_neq: uint64
   originResponseDurationMs_notin: [uint64!]
+  originResponseHeaderReceiveDurationMs: uint32
+  originResponseHeaderReceiveDurationMs_geq: uint32
+  originResponseHeaderReceiveDurationMs_gt: uint32
+  originResponseHeaderReceiveDurationMs_in: [uint32!]
+  originResponseHeaderReceiveDurationMs_leq: uint32
+  originResponseHeaderReceiveDurationMs_lt: uint32
+  originResponseHeaderReceiveDurationMs_neq: uint32
+  originResponseHeaderReceiveDurationMs_notin: [uint32!]
   originResponseStatus: uint16
   originResponseStatus_geq: uint16
   originResponseStatus_gt: uint16
@@ -29323,6 +29544,22 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   originResponseStatus_lt: uint16
   originResponseStatus_neq: uint16
   originResponseStatus_notin: [uint16!]
+  originTcpHandshakeDurationMs: uint16
+  originTcpHandshakeDurationMs_geq: uint16
+  originTcpHandshakeDurationMs_gt: uint16
+  originTcpHandshakeDurationMs_in: [uint16!]
+  originTcpHandshakeDurationMs_leq: uint16
+  originTcpHandshakeDurationMs_lt: uint16
+  originTcpHandshakeDurationMs_neq: uint16
+  originTcpHandshakeDurationMs_notin: [uint16!]
+  originTlsHandshakeDurationMs: uint16
+  originTlsHandshakeDurationMs_geq: uint16
+  originTlsHandshakeDurationMs_gt: uint16
+  originTlsHandshakeDurationMs_in: [uint16!]
+  originTlsHandshakeDurationMs_leq: uint16
+  originTlsHandshakeDurationMs_lt: uint16
+  originTlsHandshakeDurationMs_neq: uint16
+  originTlsHandshakeDurationMs_notin: [uint16!]
   payPerCrawlStatus: string
   payPerCrawlStatus_geq: string
   payPerCrawlStatus_gt: string
@@ -29552,6 +29789,12 @@ type AccountHttpRequestsAdaptiveGroupsAvg {
   edgeTimeToFirstByteMs: float64!
   # The average originResponseDuration, in milliseconds, excluding 0 values (i.e. cached ones)
   originResponseDurationMs: float64!
+  # The average originResponseHeaderReceiveDuration, in milliseconds, excluding 0 values
+  originResponseHeaderReceiveDurationMs: float64!
+  # The average originTcpHandshakeDuration, in milliseconds, excluding 0 values
+  originTcpHandshakeDurationMs: float64!
+  # The average originTlsHandshakeDuration, in milliseconds, excluding 0 values
+  originTlsHandshakeDurationMs: float64!
   sampleInterval: float64!
 }
 
@@ -29694,8 +29937,14 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   originASNDescription: string!
   originIP: string!
   originResponseDurationMs: uint64!
+  # The time elapsed between completing the TLS handshake and receiving the origin response headers
+  originResponseHeaderReceiveDurationMs: uint32!
   # HTTP response status code returned by the origin
   originResponseStatus: uint16!
+  # The time elapsed between the start and completion of the TCP handshake with the origin
+  originTcpHandshakeDurationMs: uint16!
+  # The time elapsed between the start and completion of the TLS handshake with the origin
+  originTlsHandshakeDurationMs: uint16!
   # Pay Per Crawl outcome, when applicable (e.g. request enabled for charging and not blocked by a WAF rule)
   payPerCrawlStatus: string!
   requestSource: string!
@@ -30317,6 +30566,14 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   originResponseDurationMs_lt: uint64
   originResponseDurationMs_neq: uint64
   originResponseDurationMs_notin: [uint64!]
+  originResponseHeaderReceiveDurationMs: uint32
+  originResponseHeaderReceiveDurationMs_geq: uint32
+  originResponseHeaderReceiveDurationMs_gt: uint32
+  originResponseHeaderReceiveDurationMs_in: [uint32!]
+  originResponseHeaderReceiveDurationMs_leq: uint32
+  originResponseHeaderReceiveDurationMs_lt: uint32
+  originResponseHeaderReceiveDurationMs_neq: uint32
+  originResponseHeaderReceiveDurationMs_notin: [uint32!]
   originResponseStatus: uint16
   originResponseStatus_geq: uint16
   originResponseStatus_gt: uint16
@@ -30325,6 +30582,22 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   originResponseStatus_lt: uint16
   originResponseStatus_neq: uint16
   originResponseStatus_notin: [uint16!]
+  originTcpHandshakeDurationMs: uint16
+  originTcpHandshakeDurationMs_geq: uint16
+  originTcpHandshakeDurationMs_gt: uint16
+  originTcpHandshakeDurationMs_in: [uint16!]
+  originTcpHandshakeDurationMs_leq: uint16
+  originTcpHandshakeDurationMs_lt: uint16
+  originTcpHandshakeDurationMs_neq: uint16
+  originTcpHandshakeDurationMs_notin: [uint16!]
+  originTlsHandshakeDurationMs: uint16
+  originTlsHandshakeDurationMs_geq: uint16
+  originTlsHandshakeDurationMs_gt: uint16
+  originTlsHandshakeDurationMs_in: [uint16!]
+  originTlsHandshakeDurationMs_leq: uint16
+  originTlsHandshakeDurationMs_lt: uint16
+  originTlsHandshakeDurationMs_neq: uint16
+  originTlsHandshakeDurationMs_notin: [uint16!]
   payPerCrawlStatus: string
   payPerCrawlStatus_geq: string
   payPerCrawlStatus_gt: string
@@ -30563,6 +30836,18 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   avg_originResponseDurationMs_ASC
   # avg(originResponseDurationMs) descending
   avg_originResponseDurationMs_DESC
+  # avg(originResponseHeaderReceiveDurationMs) ascending
+  avg_originResponseHeaderReceiveDurationMs_ASC
+  # avg(originResponseHeaderReceiveDurationMs) descending
+  avg_originResponseHeaderReceiveDurationMs_DESC
+  # avg(originTcpHandshakeDurationMs) ascending
+  avg_originTcpHandshakeDurationMs_ASC
+  # avg(originTcpHandshakeDurationMs) descending
+  avg_originTcpHandshakeDurationMs_DESC
+  # avg(originTlsHandshakeDurationMs) ascending
+  avg_originTlsHandshakeDurationMs_ASC
+  # avg(originTlsHandshakeDurationMs) descending
+  avg_originTlsHandshakeDurationMs_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -30831,10 +31116,22 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   originResponseDurationMs_ASC
   # originResponseDurationMs descending
   originResponseDurationMs_DESC
+  # originResponseHeaderReceiveDurationMs ascending
+  originResponseHeaderReceiveDurationMs_ASC
+  # originResponseHeaderReceiveDurationMs descending
+  originResponseHeaderReceiveDurationMs_DESC
   # originResponseStatus ascending
   originResponseStatus_ASC
   # originResponseStatus descending
   originResponseStatus_DESC
+  # originTcpHandshakeDurationMs ascending
+  originTcpHandshakeDurationMs_ASC
+  # originTcpHandshakeDurationMs descending
+  originTcpHandshakeDurationMs_DESC
+  # originTlsHandshakeDurationMs ascending
+  originTlsHandshakeDurationMs_ASC
+  # originTlsHandshakeDurationMs descending
+  originTlsHandshakeDurationMs_DESC
   # payPerCrawlStatus ascending
   payPerCrawlStatus_ASC
   # payPerCrawlStatus descending
@@ -30951,6 +31248,90 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   quantiles_originResponseDurationMsP99_ASC
   # quantiles(originResponseDurationMsP99) descending
   quantiles_originResponseDurationMsP99_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP25) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP25_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP25) descending
+  quantiles_originResponseHeaderReceiveDurationMsP25_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP50) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP50_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP50) descending
+  quantiles_originResponseHeaderReceiveDurationMsP50_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP75) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP75_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP75) descending
+  quantiles_originResponseHeaderReceiveDurationMsP75_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP90) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP90_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP90) descending
+  quantiles_originResponseHeaderReceiveDurationMsP90_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP95) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP95_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP95) descending
+  quantiles_originResponseHeaderReceiveDurationMsP95_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP999) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP999_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP999) descending
+  quantiles_originResponseHeaderReceiveDurationMsP999_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP99) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP99_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP99) descending
+  quantiles_originResponseHeaderReceiveDurationMsP99_DESC
+  # quantiles(originTcpHandshakeDurationMsP25) ascending
+  quantiles_originTcpHandshakeDurationMsP25_ASC
+  # quantiles(originTcpHandshakeDurationMsP25) descending
+  quantiles_originTcpHandshakeDurationMsP25_DESC
+  # quantiles(originTcpHandshakeDurationMsP50) ascending
+  quantiles_originTcpHandshakeDurationMsP50_ASC
+  # quantiles(originTcpHandshakeDurationMsP50) descending
+  quantiles_originTcpHandshakeDurationMsP50_DESC
+  # quantiles(originTcpHandshakeDurationMsP75) ascending
+  quantiles_originTcpHandshakeDurationMsP75_ASC
+  # quantiles(originTcpHandshakeDurationMsP75) descending
+  quantiles_originTcpHandshakeDurationMsP75_DESC
+  # quantiles(originTcpHandshakeDurationMsP90) ascending
+  quantiles_originTcpHandshakeDurationMsP90_ASC
+  # quantiles(originTcpHandshakeDurationMsP90) descending
+  quantiles_originTcpHandshakeDurationMsP90_DESC
+  # quantiles(originTcpHandshakeDurationMsP95) ascending
+  quantiles_originTcpHandshakeDurationMsP95_ASC
+  # quantiles(originTcpHandshakeDurationMsP95) descending
+  quantiles_originTcpHandshakeDurationMsP95_DESC
+  # quantiles(originTcpHandshakeDurationMsP999) ascending
+  quantiles_originTcpHandshakeDurationMsP999_ASC
+  # quantiles(originTcpHandshakeDurationMsP999) descending
+  quantiles_originTcpHandshakeDurationMsP999_DESC
+  # quantiles(originTcpHandshakeDurationMsP99) ascending
+  quantiles_originTcpHandshakeDurationMsP99_ASC
+  # quantiles(originTcpHandshakeDurationMsP99) descending
+  quantiles_originTcpHandshakeDurationMsP99_DESC
+  # quantiles(originTlsHandshakeDurationMsP25) ascending
+  quantiles_originTlsHandshakeDurationMsP25_ASC
+  # quantiles(originTlsHandshakeDurationMsP25) descending
+  quantiles_originTlsHandshakeDurationMsP25_DESC
+  # quantiles(originTlsHandshakeDurationMsP50) ascending
+  quantiles_originTlsHandshakeDurationMsP50_ASC
+  # quantiles(originTlsHandshakeDurationMsP50) descending
+  quantiles_originTlsHandshakeDurationMsP50_DESC
+  # quantiles(originTlsHandshakeDurationMsP75) ascending
+  quantiles_originTlsHandshakeDurationMsP75_ASC
+  # quantiles(originTlsHandshakeDurationMsP75) descending
+  quantiles_originTlsHandshakeDurationMsP75_DESC
+  # quantiles(originTlsHandshakeDurationMsP90) ascending
+  quantiles_originTlsHandshakeDurationMsP90_ASC
+  # quantiles(originTlsHandshakeDurationMsP90) descending
+  quantiles_originTlsHandshakeDurationMsP90_DESC
+  # quantiles(originTlsHandshakeDurationMsP95) ascending
+  quantiles_originTlsHandshakeDurationMsP95_ASC
+  # quantiles(originTlsHandshakeDurationMsP95) descending
+  quantiles_originTlsHandshakeDurationMsP95_DESC
+  # quantiles(originTlsHandshakeDurationMsP999) ascending
+  quantiles_originTlsHandshakeDurationMsP999_ASC
+  # quantiles(originTlsHandshakeDurationMsP999) descending
+  quantiles_originTlsHandshakeDurationMsP999_DESC
+  # quantiles(originTlsHandshakeDurationMsP99) ascending
+  quantiles_originTlsHandshakeDurationMsP99_ASC
+  # quantiles(originTlsHandshakeDurationMsP99) descending
+  quantiles_originTlsHandshakeDurationMsP99_DESC
   # ratio(status4xx) ascending
   ratio_status4xx_ASC
   # ratio(status4xx) descending
@@ -31035,6 +31416,18 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   sum_originResponseDurationMs_ASC
   # sum(originResponseDurationMs) descending
   sum_originResponseDurationMs_DESC
+  # sum(originResponseHeaderReceiveDurationMs) ascending
+  sum_originResponseHeaderReceiveDurationMs_ASC
+  # sum(originResponseHeaderReceiveDurationMs) descending
+  sum_originResponseHeaderReceiveDurationMs_DESC
+  # sum(originTcpHandshakeDurationMs) ascending
+  sum_originTcpHandshakeDurationMs_ASC
+  # sum(originTcpHandshakeDurationMs) descending
+  sum_originTcpHandshakeDurationMs_DESC
+  # sum(originTlsHandshakeDurationMs) ascending
+  sum_originTlsHandshakeDurationMs_ASC
+  # sum(originTlsHandshakeDurationMs) descending
+  sum_originTlsHandshakeDurationMs_DESC
   # sum(visits) ascending
   sum_visits_ASC
   # sum(visits) descending
@@ -31158,6 +31551,48 @@ type AccountHttpRequestsAdaptiveGroupsQuantiles {
   originResponseDurationMsP99: float64!
   # 99.9th percentile Origin Response Duration (milliseconds)
   originResponseDurationMsP999: float64!
+  # 25th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP25: float64!
+  # 50th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP50: float64!
+  # 75th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP75: float64!
+  # 90th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP90: float64!
+  # 95th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP95: float64!
+  # 99th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP99: float64!
+  # 99.9th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP999: float64!
+  # 25th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP25: float64!
+  # 50th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP50: float64!
+  # 75th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP75: float64!
+  # 90th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP90: float64!
+  # 95th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP95: float64!
+  # 99th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP99: float64!
+  # 99.9th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP999: float64!
+  # 25th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP25: float64!
+  # 50th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP50: float64!
+  # 75th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP75: float64!
+  # 90th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP90: float64!
+  # 95th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP95: float64!
+  # 99th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP99: float64!
+  # 99.9th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP999: float64!
 }
 
 type AccountHttpRequestsAdaptiveGroupsRatio {
@@ -31189,6 +31624,12 @@ type AccountHttpRequestsAdaptiveGroupsSum {
   # Count array of fraud detection tags. Elements in this array correspond to elements in fraudDetectionTagArray by index.
   fraudDetectionTagCountArray: [uint32!]!
   originResponseDurationMs: uint64!
+  # The sum of originResponseHeaderReceiveDuration, in milliseconds
+  originResponseHeaderReceiveDurationMs: uint64!
+  # The sum of originTcpHandshakeDuration, in milliseconds
+  originTcpHandshakeDurationMs: uint64!
+  # The sum of originTlsHandshakeDuration, in milliseconds
+  originTlsHandshakeDurationMs: uint64!
   # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
   visits: uint64!
 }
@@ -31206,6 +31647,12 @@ type AccountHttpRequestsAdaptiveGroupsSumConfidence {
   edgeTimeToFirstByteMs: Confidence!
   # Confidence interval for the corresponding point estimate
   originResponseDurationMs: Confidence!
+  # Confidence interval for the corresponding point estimate
+  originResponseHeaderReceiveDurationMs: Confidence!
+  # Confidence interval for the corresponding point estimate
+  originTcpHandshakeDurationMs: Confidence!
+  # Confidence interval for the corresponding point estimate
+  originTlsHandshakeDurationMs: Confidence!
   # Confidence interval for the corresponding point estimate
   visits: Confidence!
 }
@@ -31494,10 +31941,22 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   originResponseDurationMs_ASC
   # originResponseDurationMs descending
   originResponseDurationMs_DESC
+  # originResponseHeaderReceiveDurationMs ascending
+  originResponseHeaderReceiveDurationMs_ASC
+  # originResponseHeaderReceiveDurationMs descending
+  originResponseHeaderReceiveDurationMs_DESC
   # originResponseStatus ascending
   originResponseStatus_ASC
   # originResponseStatus descending
   originResponseStatus_DESC
+  # originTcpHandshakeDurationMs ascending
+  originTcpHandshakeDurationMs_ASC
+  # originTcpHandshakeDurationMs descending
+  originTcpHandshakeDurationMs_DESC
+  # originTlsHandshakeDurationMs ascending
+  originTlsHandshakeDurationMs_ASC
+  # originTlsHandshakeDurationMs descending
+  originTlsHandshakeDurationMs_DESC
   # payPerCrawlStatus ascending
   payPerCrawlStatus_ASC
   # payPerCrawlStatus descending
@@ -31601,6 +32060,12 @@ type AccountHttpRequestsOverviewAdaptiveGroups {
 type AccountHttpRequestsOverviewAdaptiveGroupsAvg {
   # The average originResponseDuration, in milliseconds, excluding 0 values (i.e. cached ones)
   originResponseDurationMs: float64!
+  # The average originResponseHeaderReceiveDuration, in milliseconds, excluding 0 values
+  originResponseHeaderReceiveDurationMs: float64!
+  # The average originTcpHandshakeDuration, in milliseconds, excluding 0 values
+  originTcpHandshakeDurationMs: float64!
+  # The average originTlsHandshakeDuration, in milliseconds, excluding 0 values
+  originTlsHandshakeDurationMs: float64!
   # Average sample interval
   sampleInterval: float64!
 }
@@ -31798,6 +32263,18 @@ enum AccountHttpRequestsOverviewAdaptiveGroupsOrderBy {
   avg_originResponseDurationMs_ASC
   # avg(originResponseDurationMs) descending
   avg_originResponseDurationMs_DESC
+  # avg(originResponseHeaderReceiveDurationMs) ascending
+  avg_originResponseHeaderReceiveDurationMs_ASC
+  # avg(originResponseHeaderReceiveDurationMs) descending
+  avg_originResponseHeaderReceiveDurationMs_DESC
+  # avg(originTcpHandshakeDurationMs) ascending
+  avg_originTcpHandshakeDurationMs_ASC
+  # avg(originTcpHandshakeDurationMs) descending
+  avg_originTcpHandshakeDurationMs_DESC
+  # avg(originTlsHandshakeDurationMs) ascending
+  avg_originTlsHandshakeDurationMs_ASC
+  # avg(originTlsHandshakeDurationMs) descending
+  avg_originTlsHandshakeDurationMs_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -51309,6 +51786,12 @@ type AccountProgrammableFlowProtectionNetworkAnalyticsAdaptiveGroupsDimensions {
   pfpCustomTag: uint64!
   # IP prefix tag associated with the packet
   prefixTag: string!
+  # Unique identifier of the program that executed on the packet, if any
+  programId: string!
+  # Human readable name of program that executed on the packet, if any
+  programName: string!
+  # Unique identifier of the rule that matched the packet, if any
+  ruleId: string!
   # ABR sample interval
   sampleInterval: uint32!
   # ASN associated with the source IP of the packet, or 0 if there was no mapping available
@@ -51878,6 +52361,36 @@ input AccountProgrammableFlowProtectionNetworkAnalyticsAdaptiveGroupsFilter_Inpu
   prefixTag_neq: string
   prefixTag_notin: [string!]
   prefixTag_notlike: string
+  programId: string
+  programId_geq: string
+  programId_gt: string
+  programId_in: [string!]
+  programId_leq: string
+  programId_like: string
+  programId_lt: string
+  programId_neq: string
+  programId_notin: [string!]
+  programId_notlike: string
+  programName: string
+  programName_geq: string
+  programName_gt: string
+  programName_in: [string!]
+  programName_leq: string
+  programName_like: string
+  programName_lt: string
+  programName_neq: string
+  programName_notin: [string!]
+  programName_notlike: string
+  ruleId: string
+  ruleId_geq: string
+  ruleId_gt: string
+  ruleId_in: [string!]
+  ruleId_leq: string
+  ruleId_like: string
+  ruleId_lt: string
+  ruleId_neq: string
+  ruleId_notin: [string!]
+  ruleId_notlike: string
   sampleInterval: uint32
   sampleInterval_geq: uint32
   sampleInterval_gt: uint32
@@ -52383,6 +52896,18 @@ enum AccountProgrammableFlowProtectionNetworkAnalyticsAdaptiveGroupsOrderBy {
   prefixTag_ASC
   # prefixTag descending
   prefixTag_DESC
+  # programId ascending
+  programId_ASC
+  # programId descending
+  programId_DESC
+  # programName ascending
+  programName_ASC
+  # programName descending
+  programName_DESC
+  # ruleId ascending
+  ruleId_ASC
+  # ruleId descending
+  ruleId_DESC
   # sampleInterval ascending
   sampleInterval_ASC
   # sampleInterval descending
@@ -66258,6 +66783,12 @@ type OrganizationHttpRequestsAdaptiveGroupsAvg {
   edgeTimeToFirstByteMs: float64!
   # The average originResponseDuration, in milliseconds, excluding 0 values (i.e. cached ones)
   originResponseDurationMs: float64!
+  # The average originResponseHeaderReceiveDuration, in milliseconds, excluding 0 values
+  originResponseHeaderReceiveDurationMs: float64!
+  # The average originTcpHandshakeDuration, in milliseconds, excluding 0 values
+  originTcpHandshakeDurationMs: float64!
+  # The average originTlsHandshakeDuration, in milliseconds, excluding 0 values
+  originTlsHandshakeDurationMs: float64!
   sampleInterval: float64!
 }
 
@@ -66398,8 +66929,14 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   originASNDescription: string!
   originIP: string!
   originResponseDurationMs: uint64!
+  # The time elapsed between completing the TLS handshake and receiving the origin response headers
+  originResponseHeaderReceiveDurationMs: uint32!
   # HTTP response status code returned by the origin
   originResponseStatus: uint16!
+  # The time elapsed between the start and completion of the TCP handshake with the origin
+  originTcpHandshakeDurationMs: uint16!
+  # The time elapsed between the start and completion of the TLS handshake with the origin
+  originTlsHandshakeDurationMs: uint16!
   # Pay Per Crawl outcome, when applicable (e.g. request enabled for charging and not blocked by a WAF rule)
   payPerCrawlStatus: string!
   requestSource: string!
@@ -67011,6 +67548,14 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   originResponseDurationMs_lt: uint64
   originResponseDurationMs_neq: uint64
   originResponseDurationMs_notin: [uint64!]
+  originResponseHeaderReceiveDurationMs: uint32
+  originResponseHeaderReceiveDurationMs_geq: uint32
+  originResponseHeaderReceiveDurationMs_gt: uint32
+  originResponseHeaderReceiveDurationMs_in: [uint32!]
+  originResponseHeaderReceiveDurationMs_leq: uint32
+  originResponseHeaderReceiveDurationMs_lt: uint32
+  originResponseHeaderReceiveDurationMs_neq: uint32
+  originResponseHeaderReceiveDurationMs_notin: [uint32!]
   originResponseStatus: uint16
   originResponseStatus_geq: uint16
   originResponseStatus_gt: uint16
@@ -67019,6 +67564,22 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   originResponseStatus_lt: uint16
   originResponseStatus_neq: uint16
   originResponseStatus_notin: [uint16!]
+  originTcpHandshakeDurationMs: uint16
+  originTcpHandshakeDurationMs_geq: uint16
+  originTcpHandshakeDurationMs_gt: uint16
+  originTcpHandshakeDurationMs_in: [uint16!]
+  originTcpHandshakeDurationMs_leq: uint16
+  originTcpHandshakeDurationMs_lt: uint16
+  originTcpHandshakeDurationMs_neq: uint16
+  originTcpHandshakeDurationMs_notin: [uint16!]
+  originTlsHandshakeDurationMs: uint16
+  originTlsHandshakeDurationMs_geq: uint16
+  originTlsHandshakeDurationMs_gt: uint16
+  originTlsHandshakeDurationMs_in: [uint16!]
+  originTlsHandshakeDurationMs_leq: uint16
+  originTlsHandshakeDurationMs_lt: uint16
+  originTlsHandshakeDurationMs_neq: uint16
+  originTlsHandshakeDurationMs_notin: [uint16!]
   payPerCrawlStatus: string
   payPerCrawlStatus_geq: string
   payPerCrawlStatus_gt: string
@@ -67247,6 +67808,18 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   avg_originResponseDurationMs_ASC
   # avg(originResponseDurationMs) descending
   avg_originResponseDurationMs_DESC
+  # avg(originResponseHeaderReceiveDurationMs) ascending
+  avg_originResponseHeaderReceiveDurationMs_ASC
+  # avg(originResponseHeaderReceiveDurationMs) descending
+  avg_originResponseHeaderReceiveDurationMs_DESC
+  # avg(originTcpHandshakeDurationMs) ascending
+  avg_originTcpHandshakeDurationMs_ASC
+  # avg(originTcpHandshakeDurationMs) descending
+  avg_originTcpHandshakeDurationMs_DESC
+  # avg(originTlsHandshakeDurationMs) ascending
+  avg_originTlsHandshakeDurationMs_ASC
+  # avg(originTlsHandshakeDurationMs) descending
+  avg_originTlsHandshakeDurationMs_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -67507,10 +68080,22 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   originResponseDurationMs_ASC
   # originResponseDurationMs descending
   originResponseDurationMs_DESC
+  # originResponseHeaderReceiveDurationMs ascending
+  originResponseHeaderReceiveDurationMs_ASC
+  # originResponseHeaderReceiveDurationMs descending
+  originResponseHeaderReceiveDurationMs_DESC
   # originResponseStatus ascending
   originResponseStatus_ASC
   # originResponseStatus descending
   originResponseStatus_DESC
+  # originTcpHandshakeDurationMs ascending
+  originTcpHandshakeDurationMs_ASC
+  # originTcpHandshakeDurationMs descending
+  originTcpHandshakeDurationMs_DESC
+  # originTlsHandshakeDurationMs ascending
+  originTlsHandshakeDurationMs_ASC
+  # originTlsHandshakeDurationMs descending
+  originTlsHandshakeDurationMs_DESC
   # payPerCrawlStatus ascending
   payPerCrawlStatus_ASC
   # payPerCrawlStatus descending
@@ -67599,6 +68184,90 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   quantiles_originResponseDurationMsP99_ASC
   # quantiles(originResponseDurationMsP99) descending
   quantiles_originResponseDurationMsP99_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP25) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP25_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP25) descending
+  quantiles_originResponseHeaderReceiveDurationMsP25_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP50) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP50_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP50) descending
+  quantiles_originResponseHeaderReceiveDurationMsP50_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP75) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP75_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP75) descending
+  quantiles_originResponseHeaderReceiveDurationMsP75_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP90) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP90_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP90) descending
+  quantiles_originResponseHeaderReceiveDurationMsP90_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP95) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP95_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP95) descending
+  quantiles_originResponseHeaderReceiveDurationMsP95_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP999) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP999_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP999) descending
+  quantiles_originResponseHeaderReceiveDurationMsP999_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP99) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP99_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP99) descending
+  quantiles_originResponseHeaderReceiveDurationMsP99_DESC
+  # quantiles(originTcpHandshakeDurationMsP25) ascending
+  quantiles_originTcpHandshakeDurationMsP25_ASC
+  # quantiles(originTcpHandshakeDurationMsP25) descending
+  quantiles_originTcpHandshakeDurationMsP25_DESC
+  # quantiles(originTcpHandshakeDurationMsP50) ascending
+  quantiles_originTcpHandshakeDurationMsP50_ASC
+  # quantiles(originTcpHandshakeDurationMsP50) descending
+  quantiles_originTcpHandshakeDurationMsP50_DESC
+  # quantiles(originTcpHandshakeDurationMsP75) ascending
+  quantiles_originTcpHandshakeDurationMsP75_ASC
+  # quantiles(originTcpHandshakeDurationMsP75) descending
+  quantiles_originTcpHandshakeDurationMsP75_DESC
+  # quantiles(originTcpHandshakeDurationMsP90) ascending
+  quantiles_originTcpHandshakeDurationMsP90_ASC
+  # quantiles(originTcpHandshakeDurationMsP90) descending
+  quantiles_originTcpHandshakeDurationMsP90_DESC
+  # quantiles(originTcpHandshakeDurationMsP95) ascending
+  quantiles_originTcpHandshakeDurationMsP95_ASC
+  # quantiles(originTcpHandshakeDurationMsP95) descending
+  quantiles_originTcpHandshakeDurationMsP95_DESC
+  # quantiles(originTcpHandshakeDurationMsP999) ascending
+  quantiles_originTcpHandshakeDurationMsP999_ASC
+  # quantiles(originTcpHandshakeDurationMsP999) descending
+  quantiles_originTcpHandshakeDurationMsP999_DESC
+  # quantiles(originTcpHandshakeDurationMsP99) ascending
+  quantiles_originTcpHandshakeDurationMsP99_ASC
+  # quantiles(originTcpHandshakeDurationMsP99) descending
+  quantiles_originTcpHandshakeDurationMsP99_DESC
+  # quantiles(originTlsHandshakeDurationMsP25) ascending
+  quantiles_originTlsHandshakeDurationMsP25_ASC
+  # quantiles(originTlsHandshakeDurationMsP25) descending
+  quantiles_originTlsHandshakeDurationMsP25_DESC
+  # quantiles(originTlsHandshakeDurationMsP50) ascending
+  quantiles_originTlsHandshakeDurationMsP50_ASC
+  # quantiles(originTlsHandshakeDurationMsP50) descending
+  quantiles_originTlsHandshakeDurationMsP50_DESC
+  # quantiles(originTlsHandshakeDurationMsP75) ascending
+  quantiles_originTlsHandshakeDurationMsP75_ASC
+  # quantiles(originTlsHandshakeDurationMsP75) descending
+  quantiles_originTlsHandshakeDurationMsP75_DESC
+  # quantiles(originTlsHandshakeDurationMsP90) ascending
+  quantiles_originTlsHandshakeDurationMsP90_ASC
+  # quantiles(originTlsHandshakeDurationMsP90) descending
+  quantiles_originTlsHandshakeDurationMsP90_DESC
+  # quantiles(originTlsHandshakeDurationMsP95) ascending
+  quantiles_originTlsHandshakeDurationMsP95_ASC
+  # quantiles(originTlsHandshakeDurationMsP95) descending
+  quantiles_originTlsHandshakeDurationMsP95_DESC
+  # quantiles(originTlsHandshakeDurationMsP999) ascending
+  quantiles_originTlsHandshakeDurationMsP999_ASC
+  # quantiles(originTlsHandshakeDurationMsP999) descending
+  quantiles_originTlsHandshakeDurationMsP999_DESC
+  # quantiles(originTlsHandshakeDurationMsP99) ascending
+  quantiles_originTlsHandshakeDurationMsP99_ASC
+  # quantiles(originTlsHandshakeDurationMsP99) descending
+  quantiles_originTlsHandshakeDurationMsP99_DESC
   # ratio(status4xx) ascending
   ratio_status4xx_ASC
   # ratio(status4xx) descending
@@ -67663,6 +68332,18 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   sum_originResponseDurationMs_ASC
   # sum(originResponseDurationMs) descending
   sum_originResponseDurationMs_DESC
+  # sum(originResponseHeaderReceiveDurationMs) ascending
+  sum_originResponseHeaderReceiveDurationMs_ASC
+  # sum(originResponseHeaderReceiveDurationMs) descending
+  sum_originResponseHeaderReceiveDurationMs_DESC
+  # sum(originTcpHandshakeDurationMs) ascending
+  sum_originTcpHandshakeDurationMs_ASC
+  # sum(originTcpHandshakeDurationMs) descending
+  sum_originTcpHandshakeDurationMs_DESC
+  # sum(originTlsHandshakeDurationMs) ascending
+  sum_originTlsHandshakeDurationMs_ASC
+  # sum(originTlsHandshakeDurationMs) descending
+  sum_originTlsHandshakeDurationMs_DESC
   # sum(visits) ascending
   sum_visits_ASC
   # sum(visits) descending
@@ -67768,6 +68449,48 @@ type OrganizationHttpRequestsAdaptiveGroupsQuantiles {
   originResponseDurationMsP99: float64!
   # 99.9th percentile Origin Response Duration (milliseconds)
   originResponseDurationMsP999: float64!
+  # 25th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP25: float64!
+  # 50th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP50: float64!
+  # 75th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP75: float64!
+  # 90th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP90: float64!
+  # 95th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP95: float64!
+  # 99th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP99: float64!
+  # 99.9th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP999: float64!
+  # 25th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP25: float64!
+  # 50th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP50: float64!
+  # 75th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP75: float64!
+  # 90th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP90: float64!
+  # 95th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP95: float64!
+  # 99th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP99: float64!
+  # 99.9th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP999: float64!
+  # 25th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP25: float64!
+  # 50th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP50: float64!
+  # 75th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP75: float64!
+  # 90th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP90: float64!
+  # 95th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP95: float64!
+  # 99th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP99: float64!
+  # 99.9th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP999: float64!
 }
 
 type OrganizationHttpRequestsAdaptiveGroupsRatio {
@@ -67790,6 +68513,12 @@ type OrganizationHttpRequestsAdaptiveGroupsSum {
   # Count array of fraud detection tags. Elements in this array correspond to elements in fraudDetectionTagArray by index.
   fraudDetectionTagCountArray: [uint32!]!
   originResponseDurationMs: uint64!
+  # The sum of originResponseHeaderReceiveDuration, in milliseconds
+  originResponseHeaderReceiveDurationMs: uint64!
+  # The sum of originTcpHandshakeDuration, in milliseconds
+  originTcpHandshakeDurationMs: uint64!
+  # The sum of originTlsHandshakeDuration, in milliseconds
+  originTlsHandshakeDurationMs: uint64!
   # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
   visits: uint64!
 }
@@ -67805,6 +68534,12 @@ type OrganizationHttpRequestsAdaptiveGroupsSumConfidence {
   edgeTimeToFirstByteMs: Confidence!
   # Confidence interval for the corresponding point estimate
   originResponseDurationMs: Confidence!
+  # Confidence interval for the corresponding point estimate
+  originResponseHeaderReceiveDurationMs: Confidence!
+  # Confidence interval for the corresponding point estimate
+  originTcpHandshakeDurationMs: Confidence!
+  # Confidence interval for the corresponding point estimate
+  originTlsHandshakeDurationMs: Confidence!
   # Confidence interval for the corresponding point estimate
   visits: Confidence!
 }
@@ -77857,8 +78592,14 @@ type ZoneHttpRequestsAdaptive {
   originASNDescription: string!
   originIP: string!
   originResponseDurationMs: uint64!
+  # The time elapsed between completing the TLS handshake and receiving the origin response headers
+  originResponseHeaderReceiveDurationMs: uint32!
   # HTTP origin response status code returned to browser
   originResponseStatus: uint16!
+  # The time elapsed between the start and completion of the TCP handshake with the origin
+  originTcpHandshakeDurationMs: uint16!
+  # The time elapsed between the start and completion of the TLS handshake with the origin
+  originTlsHandshakeDurationMs: uint16!
   # Pay Per Crawl outcome, when applicable (e.g. request enabled for charging and not blocked by a WAF rule)
   payPerCrawlStatus: string!
   # The RayId of the request
@@ -78479,6 +79220,14 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   originResponseDurationMs_lt: uint64
   originResponseDurationMs_neq: uint64
   originResponseDurationMs_notin: [uint64!]
+  originResponseHeaderReceiveDurationMs: uint32
+  originResponseHeaderReceiveDurationMs_geq: uint32
+  originResponseHeaderReceiveDurationMs_gt: uint32
+  originResponseHeaderReceiveDurationMs_in: [uint32!]
+  originResponseHeaderReceiveDurationMs_leq: uint32
+  originResponseHeaderReceiveDurationMs_lt: uint32
+  originResponseHeaderReceiveDurationMs_neq: uint32
+  originResponseHeaderReceiveDurationMs_notin: [uint32!]
   originResponseStatus: uint16
   originResponseStatus_geq: uint16
   originResponseStatus_gt: uint16
@@ -78487,6 +79236,22 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   originResponseStatus_lt: uint16
   originResponseStatus_neq: uint16
   originResponseStatus_notin: [uint16!]
+  originTcpHandshakeDurationMs: uint16
+  originTcpHandshakeDurationMs_geq: uint16
+  originTcpHandshakeDurationMs_gt: uint16
+  originTcpHandshakeDurationMs_in: [uint16!]
+  originTcpHandshakeDurationMs_leq: uint16
+  originTcpHandshakeDurationMs_lt: uint16
+  originTcpHandshakeDurationMs_neq: uint16
+  originTcpHandshakeDurationMs_notin: [uint16!]
+  originTlsHandshakeDurationMs: uint16
+  originTlsHandshakeDurationMs_geq: uint16
+  originTlsHandshakeDurationMs_gt: uint16
+  originTlsHandshakeDurationMs_in: [uint16!]
+  originTlsHandshakeDurationMs_leq: uint16
+  originTlsHandshakeDurationMs_lt: uint16
+  originTlsHandshakeDurationMs_neq: uint16
+  originTlsHandshakeDurationMs_notin: [uint16!]
   payPerCrawlStatus: string
   payPerCrawlStatus_geq: string
   payPerCrawlStatus_gt: string
@@ -78706,6 +79471,12 @@ type ZoneHttpRequestsAdaptiveGroupsAvg {
   edgeTimeToFirstByteMs: float64!
   # The average originResponseDuration, in milliseconds, excluding 0 values (i.e. cached ones)
   originResponseDurationMs: float64!
+  # The average originResponseHeaderReceiveDuration, in milliseconds, excluding 0 values
+  originResponseHeaderReceiveDurationMs: float64!
+  # The average originTcpHandshakeDuration, in milliseconds, excluding 0 values
+  originTcpHandshakeDurationMs: float64!
+  # The average originTlsHandshakeDuration, in milliseconds, excluding 0 values
+  originTlsHandshakeDurationMs: float64!
   sampleInterval: float64!
 }
 
@@ -78848,8 +79619,14 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   originASNDescription: string!
   originIP: string!
   originResponseDurationMs: uint64!
+  # The time elapsed between completing the TLS handshake and receiving the origin response headers
+  originResponseHeaderReceiveDurationMs: uint32!
   # HTTP response status code returned by the origin
   originResponseStatus: uint16!
+  # The time elapsed between the start and completion of the TCP handshake with the origin
+  originTcpHandshakeDurationMs: uint16!
+  # The time elapsed between the start and completion of the TLS handshake with the origin
+  originTlsHandshakeDurationMs: uint16!
   # Pay Per Crawl outcome, when applicable (e.g. request enabled for charging and not blocked by a WAF rule)
   payPerCrawlStatus: string!
   requestSource: string!
@@ -79469,6 +80246,14 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   originResponseDurationMs_lt: uint64
   originResponseDurationMs_neq: uint64
   originResponseDurationMs_notin: [uint64!]
+  originResponseHeaderReceiveDurationMs: uint32
+  originResponseHeaderReceiveDurationMs_geq: uint32
+  originResponseHeaderReceiveDurationMs_gt: uint32
+  originResponseHeaderReceiveDurationMs_in: [uint32!]
+  originResponseHeaderReceiveDurationMs_leq: uint32
+  originResponseHeaderReceiveDurationMs_lt: uint32
+  originResponseHeaderReceiveDurationMs_neq: uint32
+  originResponseHeaderReceiveDurationMs_notin: [uint32!]
   originResponseStatus: uint16
   originResponseStatus_geq: uint16
   originResponseStatus_gt: uint16
@@ -79477,6 +80262,22 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   originResponseStatus_lt: uint16
   originResponseStatus_neq: uint16
   originResponseStatus_notin: [uint16!]
+  originTcpHandshakeDurationMs: uint16
+  originTcpHandshakeDurationMs_geq: uint16
+  originTcpHandshakeDurationMs_gt: uint16
+  originTcpHandshakeDurationMs_in: [uint16!]
+  originTcpHandshakeDurationMs_leq: uint16
+  originTcpHandshakeDurationMs_lt: uint16
+  originTcpHandshakeDurationMs_neq: uint16
+  originTcpHandshakeDurationMs_notin: [uint16!]
+  originTlsHandshakeDurationMs: uint16
+  originTlsHandshakeDurationMs_geq: uint16
+  originTlsHandshakeDurationMs_gt: uint16
+  originTlsHandshakeDurationMs_in: [uint16!]
+  originTlsHandshakeDurationMs_leq: uint16
+  originTlsHandshakeDurationMs_lt: uint16
+  originTlsHandshakeDurationMs_neq: uint16
+  originTlsHandshakeDurationMs_notin: [uint16!]
   payPerCrawlStatus: string
   payPerCrawlStatus_geq: string
   payPerCrawlStatus_gt: string
@@ -79705,6 +80506,18 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   avg_originResponseDurationMs_ASC
   # avg(originResponseDurationMs) descending
   avg_originResponseDurationMs_DESC
+  # avg(originResponseHeaderReceiveDurationMs) ascending
+  avg_originResponseHeaderReceiveDurationMs_ASC
+  # avg(originResponseHeaderReceiveDurationMs) descending
+  avg_originResponseHeaderReceiveDurationMs_DESC
+  # avg(originTcpHandshakeDurationMs) ascending
+  avg_originTcpHandshakeDurationMs_ASC
+  # avg(originTcpHandshakeDurationMs) descending
+  avg_originTcpHandshakeDurationMs_DESC
+  # avg(originTlsHandshakeDurationMs) ascending
+  avg_originTlsHandshakeDurationMs_ASC
+  # avg(originTlsHandshakeDurationMs) descending
+  avg_originTlsHandshakeDurationMs_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -79973,10 +80786,22 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   originResponseDurationMs_ASC
   # originResponseDurationMs descending
   originResponseDurationMs_DESC
+  # originResponseHeaderReceiveDurationMs ascending
+  originResponseHeaderReceiveDurationMs_ASC
+  # originResponseHeaderReceiveDurationMs descending
+  originResponseHeaderReceiveDurationMs_DESC
   # originResponseStatus ascending
   originResponseStatus_ASC
   # originResponseStatus descending
   originResponseStatus_DESC
+  # originTcpHandshakeDurationMs ascending
+  originTcpHandshakeDurationMs_ASC
+  # originTcpHandshakeDurationMs descending
+  originTcpHandshakeDurationMs_DESC
+  # originTlsHandshakeDurationMs ascending
+  originTlsHandshakeDurationMs_ASC
+  # originTlsHandshakeDurationMs descending
+  originTlsHandshakeDurationMs_DESC
   # payPerCrawlStatus ascending
   payPerCrawlStatus_ASC
   # payPerCrawlStatus descending
@@ -80093,6 +80918,90 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   quantiles_originResponseDurationMsP99_ASC
   # quantiles(originResponseDurationMsP99) descending
   quantiles_originResponseDurationMsP99_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP25) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP25_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP25) descending
+  quantiles_originResponseHeaderReceiveDurationMsP25_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP50) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP50_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP50) descending
+  quantiles_originResponseHeaderReceiveDurationMsP50_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP75) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP75_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP75) descending
+  quantiles_originResponseHeaderReceiveDurationMsP75_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP90) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP90_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP90) descending
+  quantiles_originResponseHeaderReceiveDurationMsP90_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP95) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP95_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP95) descending
+  quantiles_originResponseHeaderReceiveDurationMsP95_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP999) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP999_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP999) descending
+  quantiles_originResponseHeaderReceiveDurationMsP999_DESC
+  # quantiles(originResponseHeaderReceiveDurationMsP99) ascending
+  quantiles_originResponseHeaderReceiveDurationMsP99_ASC
+  # quantiles(originResponseHeaderReceiveDurationMsP99) descending
+  quantiles_originResponseHeaderReceiveDurationMsP99_DESC
+  # quantiles(originTcpHandshakeDurationMsP25) ascending
+  quantiles_originTcpHandshakeDurationMsP25_ASC
+  # quantiles(originTcpHandshakeDurationMsP25) descending
+  quantiles_originTcpHandshakeDurationMsP25_DESC
+  # quantiles(originTcpHandshakeDurationMsP50) ascending
+  quantiles_originTcpHandshakeDurationMsP50_ASC
+  # quantiles(originTcpHandshakeDurationMsP50) descending
+  quantiles_originTcpHandshakeDurationMsP50_DESC
+  # quantiles(originTcpHandshakeDurationMsP75) ascending
+  quantiles_originTcpHandshakeDurationMsP75_ASC
+  # quantiles(originTcpHandshakeDurationMsP75) descending
+  quantiles_originTcpHandshakeDurationMsP75_DESC
+  # quantiles(originTcpHandshakeDurationMsP90) ascending
+  quantiles_originTcpHandshakeDurationMsP90_ASC
+  # quantiles(originTcpHandshakeDurationMsP90) descending
+  quantiles_originTcpHandshakeDurationMsP90_DESC
+  # quantiles(originTcpHandshakeDurationMsP95) ascending
+  quantiles_originTcpHandshakeDurationMsP95_ASC
+  # quantiles(originTcpHandshakeDurationMsP95) descending
+  quantiles_originTcpHandshakeDurationMsP95_DESC
+  # quantiles(originTcpHandshakeDurationMsP999) ascending
+  quantiles_originTcpHandshakeDurationMsP999_ASC
+  # quantiles(originTcpHandshakeDurationMsP999) descending
+  quantiles_originTcpHandshakeDurationMsP999_DESC
+  # quantiles(originTcpHandshakeDurationMsP99) ascending
+  quantiles_originTcpHandshakeDurationMsP99_ASC
+  # quantiles(originTcpHandshakeDurationMsP99) descending
+  quantiles_originTcpHandshakeDurationMsP99_DESC
+  # quantiles(originTlsHandshakeDurationMsP25) ascending
+  quantiles_originTlsHandshakeDurationMsP25_ASC
+  # quantiles(originTlsHandshakeDurationMsP25) descending
+  quantiles_originTlsHandshakeDurationMsP25_DESC
+  # quantiles(originTlsHandshakeDurationMsP50) ascending
+  quantiles_originTlsHandshakeDurationMsP50_ASC
+  # quantiles(originTlsHandshakeDurationMsP50) descending
+  quantiles_originTlsHandshakeDurationMsP50_DESC
+  # quantiles(originTlsHandshakeDurationMsP75) ascending
+  quantiles_originTlsHandshakeDurationMsP75_ASC
+  # quantiles(originTlsHandshakeDurationMsP75) descending
+  quantiles_originTlsHandshakeDurationMsP75_DESC
+  # quantiles(originTlsHandshakeDurationMsP90) ascending
+  quantiles_originTlsHandshakeDurationMsP90_ASC
+  # quantiles(originTlsHandshakeDurationMsP90) descending
+  quantiles_originTlsHandshakeDurationMsP90_DESC
+  # quantiles(originTlsHandshakeDurationMsP95) ascending
+  quantiles_originTlsHandshakeDurationMsP95_ASC
+  # quantiles(originTlsHandshakeDurationMsP95) descending
+  quantiles_originTlsHandshakeDurationMsP95_DESC
+  # quantiles(originTlsHandshakeDurationMsP999) ascending
+  quantiles_originTlsHandshakeDurationMsP999_ASC
+  # quantiles(originTlsHandshakeDurationMsP999) descending
+  quantiles_originTlsHandshakeDurationMsP999_DESC
+  # quantiles(originTlsHandshakeDurationMsP99) ascending
+  quantiles_originTlsHandshakeDurationMsP99_ASC
+  # quantiles(originTlsHandshakeDurationMsP99) descending
+  quantiles_originTlsHandshakeDurationMsP99_DESC
   # ratio(status4xx) ascending
   ratio_status4xx_ASC
   # ratio(status4xx) descending
@@ -80177,6 +81086,18 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   sum_originResponseDurationMs_ASC
   # sum(originResponseDurationMs) descending
   sum_originResponseDurationMs_DESC
+  # sum(originResponseHeaderReceiveDurationMs) ascending
+  sum_originResponseHeaderReceiveDurationMs_ASC
+  # sum(originResponseHeaderReceiveDurationMs) descending
+  sum_originResponseHeaderReceiveDurationMs_DESC
+  # sum(originTcpHandshakeDurationMs) ascending
+  sum_originTcpHandshakeDurationMs_ASC
+  # sum(originTcpHandshakeDurationMs) descending
+  sum_originTcpHandshakeDurationMs_DESC
+  # sum(originTlsHandshakeDurationMs) ascending
+  sum_originTlsHandshakeDurationMs_ASC
+  # sum(originTlsHandshakeDurationMs) descending
+  sum_originTlsHandshakeDurationMs_DESC
   # sum(visits) ascending
   sum_visits_ASC
   # sum(visits) descending
@@ -80296,6 +81217,48 @@ type ZoneHttpRequestsAdaptiveGroupsQuantiles {
   originResponseDurationMsP99: float64!
   # 99.9th percentile Origin Response Duration (milliseconds)
   originResponseDurationMsP999: float64!
+  # 25th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP25: float64!
+  # 50th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP50: float64!
+  # 75th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP75: float64!
+  # 90th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP90: float64!
+  # 95th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP95: float64!
+  # 99th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP99: float64!
+  # 99.9th percentile Origin Response Header Receive Duration (milliseconds)
+  originResponseHeaderReceiveDurationMsP999: float64!
+  # 25th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP25: float64!
+  # 50th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP50: float64!
+  # 75th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP75: float64!
+  # 90th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP90: float64!
+  # 95th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP95: float64!
+  # 99th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP99: float64!
+  # 99.9th percentile Origin TCP Handshake Duration (milliseconds)
+  originTcpHandshakeDurationMsP999: float64!
+  # 25th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP25: float64!
+  # 50th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP50: float64!
+  # 75th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP75: float64!
+  # 90th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP90: float64!
+  # 95th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP95: float64!
+  # 99th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP99: float64!
+  # 99.9th percentile Origin TLS Handshake Duration (milliseconds)
+  originTlsHandshakeDurationMsP999: float64!
 }
 
 type ZoneHttpRequestsAdaptiveGroupsRatio {
@@ -80327,6 +81290,12 @@ type ZoneHttpRequestsAdaptiveGroupsSum {
   # Count array of fraud detection tags. Elements in this array correspond to elements in fraudDetectionTagArray by index.
   fraudDetectionTagCountArray: [uint32!]!
   originResponseDurationMs: uint64!
+  # The sum of originResponseHeaderReceiveDuration, in milliseconds
+  originResponseHeaderReceiveDurationMs: uint64!
+  # The sum of originTcpHandshakeDuration, in milliseconds
+  originTcpHandshakeDurationMs: uint64!
+  # The sum of originTlsHandshakeDuration, in milliseconds
+  originTlsHandshakeDurationMs: uint64!
   # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
   visits: uint64!
 }
@@ -80344,6 +81313,12 @@ type ZoneHttpRequestsAdaptiveGroupsSumConfidence {
   edgeTimeToFirstByteMs: Confidence!
   # Confidence interval for the corresponding point estimate
   originResponseDurationMs: Confidence!
+  # Confidence interval for the corresponding point estimate
+  originResponseHeaderReceiveDurationMs: Confidence!
+  # Confidence interval for the corresponding point estimate
+  originTcpHandshakeDurationMs: Confidence!
+  # Confidence interval for the corresponding point estimate
+  originTlsHandshakeDurationMs: Confidence!
   # Confidence interval for the corresponding point estimate
   visits: Confidence!
 }
@@ -80632,10 +81607,22 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   originResponseDurationMs_ASC
   # originResponseDurationMs descending
   originResponseDurationMs_DESC
+  # originResponseHeaderReceiveDurationMs ascending
+  originResponseHeaderReceiveDurationMs_ASC
+  # originResponseHeaderReceiveDurationMs descending
+  originResponseHeaderReceiveDurationMs_DESC
   # originResponseStatus ascending
   originResponseStatus_ASC
   # originResponseStatus descending
   originResponseStatus_DESC
+  # originTcpHandshakeDurationMs ascending
+  originTcpHandshakeDurationMs_ASC
+  # originTcpHandshakeDurationMs descending
+  originTcpHandshakeDurationMs_DESC
+  # originTlsHandshakeDurationMs ascending
+  originTlsHandshakeDurationMs_ASC
+  # originTlsHandshakeDurationMs descending
+  originTlsHandshakeDurationMs_DESC
   # payPerCrawlStatus ascending
   payPerCrawlStatus_ASC
   # payPerCrawlStatus descending
@@ -80735,6 +81722,12 @@ type ZoneHttpRequestsOverviewAdaptiveGroups {
 type ZoneHttpRequestsOverviewAdaptiveGroupsAvg {
   # The average originResponseDuration, in milliseconds, excluding 0 values (i.e. cached ones)
   originResponseDurationMs: float64!
+  # The average originResponseHeaderReceiveDuration, in milliseconds, excluding 0 values
+  originResponseHeaderReceiveDurationMs: float64!
+  # The average originTcpHandshakeDuration, in milliseconds, excluding 0 values
+  originTcpHandshakeDurationMs: float64!
+  # The average originTlsHandshakeDuration, in milliseconds, excluding 0 values
+  originTlsHandshakeDurationMs: float64!
   # Average sample interval
   sampleInterval: float64!
 }
@@ -80920,6 +81913,18 @@ enum ZoneHttpRequestsOverviewAdaptiveGroupsOrderBy {
   avg_originResponseDurationMs_ASC
   # avg(originResponseDurationMs) descending
   avg_originResponseDurationMs_DESC
+  # avg(originResponseHeaderReceiveDurationMs) ascending
+  avg_originResponseHeaderReceiveDurationMs_ASC
+  # avg(originResponseHeaderReceiveDurationMs) descending
+  avg_originResponseHeaderReceiveDurationMs_DESC
+  # avg(originTcpHandshakeDurationMs) ascending
+  avg_originTcpHandshakeDurationMs_ASC
+  # avg(originTcpHandshakeDurationMs) descending
+  avg_originTcpHandshakeDurationMs_DESC
+  # avg(originTlsHandshakeDurationMs) ascending
+  avg_originTlsHandshakeDurationMs_ASC
+  # avg(originTlsHandshakeDurationMs) descending
+  avg_originTlsHandshakeDurationMs_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
