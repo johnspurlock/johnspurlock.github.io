@@ -27,9 +27,21 @@ Account-level datasets:
 * callsTurnUsageAdaptiveGroups
 * callsUsageAdaptiveGroups
   cdnNetworkAnalyticsAdaptiveGroups
+* cf1AccessLogins1dGroups
+* cf1AccessLogins1hGroups
+* cf1AccessLoginsRawGroups
 * cf1GatewayDns1dGroups
 * cf1GatewayDns1hGroups
 * cf1GatewayDnsRawGroups
+* cf1GatewayHttp1dGroups
+* cf1GatewayHttp1hGroups
+* cf1GatewayHttpRawGroups
+* cf1GatewayNetwork1dGroups
+* cf1GatewayNetwork1hGroups
+* cf1GatewayNetworkRawGroups
+* cf1GatewayNetworkSession1dGroups
+* cf1GatewayNetworkSession1hGroups
+* cf1GatewayNetworkSessionRawGroups
 * cloudchamberMetricsAdaptiveGroups
 * cloudflareTunnelsAnalyticsAdaptiveGroups
 * cloudforceOneDetectionsAdaptiveGroups
@@ -65,7 +77,7 @@ Account-level datasets:
 * httpRequests1hGroups
   httpRequests1mGroups
   httpRequestsAdaptive
-  httpRequestsAdaptiveGroups
+* httpRequestsAdaptiveGroups
 * httpRequestsOverviewAdaptiveGroups
 * hyperdrivePoolSizesAdaptiveGroups
 * hyperdriveQueriesAdaptiveGroups
@@ -137,6 +149,8 @@ Account-level datasets:
 * queueConsumerMetricsAdaptiveGroups
 * queueDelayedBacklogAdaptiveGroups
 * queueMessageOperationsAdaptiveGroups
+* r2CatalogDataOperationsAdaptiveGroups
+* r2CatalogTableMaintenanceAdaptiveGroups
 * r2OperationsAdaptiveGroups
 * r2StorageAdaptiveGroups
 * realtimeKitUsageAdaptiveGroups
@@ -340,17 +354,41 @@ type account {
   callsUsageAdaptiveGroups(filter: AccountCallsUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCallsUsageAdaptiveGroupsOrderBy!]): [AccountCallsUsageAdaptiveGroups!]!
   # Network analytics data for Cloudflare CDN traffic
   cdnNetworkAnalyticsAdaptiveGroups(filter: AccountCdnNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCdnNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountCdnNetworkAnalyticsAdaptiveGroups!]!
+  # CF1 Access login analytics - 1 day rollup (up to 90d window, 365d back)
+  cf1AccessLogins1dGroups(filter: AccountCf1AccessLogins1dGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1AccessLogins1dGroupsOrderBy!]): [AccountCf1AccessLogins1dGroups!]!
+  # CF1 Access login analytics - 1 hour rollup (up to 31d window, 62d back). Use cf1AccessLogins1dGroups for 10d+ ranges.
+  cf1AccessLogins1hGroups(filter: AccountCf1AccessLogins1hGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1AccessLogins1hGroupsOrderBy!]): [AccountCf1AccessLogins1hGroups!]!
+  # CF1 Access login analytics - raw data (max 3h window, up to 31d back). Supports unique user counts. Use cf1AccessLogins1hGroups for longer ranges.
+  cf1AccessLoginsRawGroups(filter: AccountCf1AccessLoginsRawGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1AccessLoginsRawGroupsOrderBy!]): [AccountCf1AccessLoginsRawGroups!]!
   # CF1 Gateway DNS analytics - 1 day rollup
   cf1GatewayDns1dGroups(filter: AccountCf1GatewayDns1dGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayDns1dGroupsOrderBy!]): [AccountCf1GatewayDns1dGroups!]!
   # CF1 Gateway DNS analytics - 1 hour rollup
   cf1GatewayDns1hGroups(filter: AccountCf1GatewayDns1hGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayDns1hGroupsOrderBy!]): [AccountCf1GatewayDns1hGroups!]!
   # CF1 Gateway DNS analytics - raw data (max 3h query window). Use cf1GatewayDns1hGroups for longer ranges, or cf1GatewayDns1dGroups for 10d+
   cf1GatewayDnsRawGroups(filter: AccountCf1GatewayDnsRawGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayDnsRawGroupsOrderBy!]): [AccountCf1GatewayDnsRawGroups!]!
+  # CF1 Gateway HTTP analytics - 1 day rollup (up to 90d window, 365d back)
+  cf1GatewayHttp1dGroups(filter: AccountCf1GatewayHttp1dGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayHttp1dGroupsOrderBy!]): [AccountCf1GatewayHttp1dGroups!]!
+  # CF1 Gateway HTTP analytics - 1 hour rollup (up to 31d window, 62d back)
+  cf1GatewayHttp1hGroups(filter: AccountCf1GatewayHttp1hGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayHttp1hGroupsOrderBy!]): [AccountCf1GatewayHttp1hGroups!]!
+  # CF1 Gateway HTTP analytics - raw data (max 3h query window, 4d lookback). Use cf1GatewayHttp1hGroups for longer ranges, or cf1GatewayHttp1dGroups for 10d+
+  cf1GatewayHttpRawGroups(filter: AccountCf1GatewayHttpRawGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayHttpRawGroupsOrderBy!]): [AccountCf1GatewayHttpRawGroups!]!
+  # CF1 Gateway Network analytics (L4 firewall events) - 1 day rollup (up to 90d window, 365d back)
+  cf1GatewayNetwork1dGroups(filter: AccountCf1GatewayNetwork1dGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayNetwork1dGroupsOrderBy!]): [AccountCf1GatewayNetwork1dGroups!]!
+  # CF1 Gateway Network analytics (L4 firewall events) - 1 hour rollup (up to 31d window, 62d back)
+  cf1GatewayNetwork1hGroups(filter: AccountCf1GatewayNetwork1hGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayNetwork1hGroupsOrderBy!]): [AccountCf1GatewayNetwork1hGroups!]!
+  # CF1 Gateway Network analytics (L4 firewall events) - raw data (max 3h query window, 4d lookback). Use cf1GatewayNetwork1hGroups for longer ranges, or cf1GatewayNetwork1dGroups for 10d+
+  cf1GatewayNetworkRawGroups(filter: AccountCf1GatewayNetworkRawGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayNetworkRawGroupsOrderBy!]): [AccountCf1GatewayNetworkRawGroups!]!
+  # CF1 Gateway Network Session Log analytics - 1 day rollup (up to 90d window, 365d back)
+  cf1GatewayNetworkSession1dGroups(filter: AccountCf1GatewayNetworkSession1dGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayNetworkSession1dGroupsOrderBy!]): [AccountCf1GatewayNetworkSession1dGroups!]!
+  # CF1 Gateway Network Session Log analytics - 1 hour rollup (up to 31d window, 62d back)
+  cf1GatewayNetworkSession1hGroups(filter: AccountCf1GatewayNetworkSession1hGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayNetworkSession1hGroupsOrderBy!]): [AccountCf1GatewayNetworkSession1hGroups!]!
+  # CF1 Gateway Network Session Log (L4 sessions with bandwidth) - raw data (max 3h query window, 4d lookback). Use cf1GatewayNetworkSession1hGroups for longer ranges, or cf1GatewayNetworkSession1dGroups for 10d+
+  cf1GatewayNetworkSessionRawGroups(filter: AccountCf1GatewayNetworkSessionRawGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayNetworkSessionRawGroupsOrderBy!]): [AccountCf1GatewayNetworkSessionRawGroups!]!
   # Metrics for Cloudchamber applications and deployments
   cloudchamberMetricsAdaptiveGroups(filter: AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCloudchamberMetricsAdaptiveGroupsOrderBy!]): [AccountCloudchamberMetricsAdaptiveGroups!]!
   # Cloudflare tunnel Device Analytics
   cloudflareTunnelsAnalyticsAdaptiveGroups(filter: AccountCloudflareTunnelsAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCloudflareTunnelsAnalyticsAdaptiveGroupsOrderBy!]): [AccountCloudflareTunnelsAnalyticsAdaptiveGroups!]!
-  # Cloudforce One detection events for Workers scripts with adaptive sampling. Each row represents a single detection rule hit.
+  # Cloudforce One detection events for Workers for Platforms scripts with adaptive sampling. Each row represents a single detection rule hit.
   cloudforceOneDetectionsAdaptiveGroups(filter: AccountCloudforceOneDetectionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCloudforceOneDetectionsAdaptiveGroupsOrderBy!]): [AccountCloudforceOneDetectionsAdaptiveGroups!]!
   # Metrics for Cloudchamber applications and deployments
   containersMetricsAdaptiveGroups(filter: AccountContainersMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountContainersMetricsAdaptiveGroupsOrderBy!]): [AccountContainersMetricsAdaptiveGroups!]!
@@ -561,6 +599,10 @@ type account {
   queueDelayedBacklogAdaptiveGroups(filter: AccountQueueDelayedBacklogAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueDelayedBacklogAdaptiveGroupsOrderBy!]): [AccountQueueDelayedBacklogAdaptiveGroups!]!
   # Beta. Queue message operation data with adaptive sampling
   queueMessageOperationsAdaptiveGroups(filter: AccountQueueMessageOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueMessageOperationsAdaptiveGroupsOrderBy!]): [AccountQueueMessageOperationsAdaptiveGroups!]!
+  # R2 Data Catalog data plane operations (Iceberg REST API requests) with adaptive sampling
+  r2CatalogDataOperationsAdaptiveGroups(filter: AccountR2CatalogDataOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2CatalogDataOperationsAdaptiveGroupsOrderBy!]): [AccountR2CatalogDataOperationsAdaptiveGroups!]!
+  # R2 Data Catalog table maintenance job metrics (compaction, snapshot expiration) with adaptive sampling
+  r2CatalogTableMaintenanceAdaptiveGroups(filter: AccountR2CatalogTableMaintenanceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2CatalogTableMaintenanceAdaptiveGroupsOrderBy!]): [AccountR2CatalogTableMaintenanceAdaptiveGroups!]!
   # Beta. R2 operations with adaptive sampling
   r2OperationsAdaptiveGroups(filter: AccountR2OperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2OperationsAdaptiveGroupsOrderBy!]): [AccountR2OperationsAdaptiveGroups!]!
   # Beta. R2 storage with adaptive sampling
@@ -11423,6 +11465,499 @@ type AccountCdnNetworkAnalyticsAdaptiveGroupsSumConfidence {
   packets: Confidence!
 }
 
+# CF1 Access login analytics - 1 day rollup (up to 90d window, 365d back)
+type AccountCf1AccessLogins1dGroups {
+  # List of dimensions to group by
+  dimensions: AccountCf1AccessLogins1dGroupsDimensions
+  sum: AccountCf1AccessLogins1dGroupsSum
+  uniq: AccountCf1AccessLogins1dGroupsUniq
+}
+
+type AccountCf1AccessLogins1dGroupsDimensions {
+  # Whether the login was allowed or denied
+  allowed: string!
+  # Application name
+  appName: string!
+  # Application type
+  appType: string!
+  # Source country code
+  country: string!
+  # Day start timestamp (daily granularity)
+  datetime: Time!
+  # Identity provider
+  idp: string!
+  # Login event type (login, logout, sso)
+  loginType: string!
+}
+
+input AccountCf1AccessLogins1dGroupsFilter_InputObject {
+  AND: [AccountCf1AccessLogins1dGroupsFilter_InputObject!]
+  OR: [AccountCf1AccessLogins1dGroupsFilter_InputObject!]
+  allowed: string
+  allowed_geq: string
+  allowed_gt: string
+  allowed_in: [string!]
+  allowed_leq: string
+  allowed_like: string
+  allowed_lt: string
+  allowed_neq: string
+  allowed_notin: [string!]
+  allowed_notlike: string
+  appName: string
+  appName_geq: string
+  appName_gt: string
+  appName_in: [string!]
+  appName_leq: string
+  appName_like: string
+  appName_lt: string
+  appName_neq: string
+  appName_notin: [string!]
+  appName_notlike: string
+  appType: string
+  appType_geq: string
+  appType_gt: string
+  appType_in: [string!]
+  appType_leq: string
+  appType_like: string
+  appType_lt: string
+  appType_neq: string
+  appType_notin: [string!]
+  appType_notlike: string
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  idp: string
+  idp_geq: string
+  idp_gt: string
+  idp_in: [string!]
+  idp_leq: string
+  idp_like: string
+  idp_lt: string
+  idp_neq: string
+  idp_notin: [string!]
+  idp_notlike: string
+  loginType: string
+  loginType_geq: string
+  loginType_gt: string
+  loginType_in: [string!]
+  loginType_leq: string
+  loginType_like: string
+  loginType_lt: string
+  loginType_neq: string
+  loginType_notin: [string!]
+  loginType_notlike: string
+}
+
+enum AccountCf1AccessLogins1dGroupsOrderBy {
+  # allowed ascending
+  allowed_ASC
+  # allowed descending
+  allowed_DESC
+  # appName ascending
+  appName_ASC
+  # appName descending
+  appName_DESC
+  # appType ascending
+  appType_ASC
+  # appType descending
+  appType_DESC
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # idp ascending
+  idp_ASC
+  # idp descending
+  idp_DESC
+  # loginType ascending
+  loginType_ASC
+  # loginType descending
+  loginType_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sum(logins) ascending
+  sum_logins_ASC
+  # sum(logins) descending
+  sum_logins_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+}
+
+type AccountCf1AccessLogins1dGroupsSum {
+  # Total login attempts
+  logins: uint64!
+}
+
+type AccountCf1AccessLogins1dGroupsUniq {
+  # Unique users
+  users: uint64!
+}
+
+# CF1 Access login analytics - 1 hour rollup (up to 31d window, 62d back). Use cf1AccessLogins1dGroups for 10d+ ranges.
+type AccountCf1AccessLogins1hGroups {
+  # List of dimensions to group by
+  dimensions: AccountCf1AccessLogins1hGroupsDimensions
+  sum: AccountCf1AccessLogins1hGroupsSum
+  uniq: AccountCf1AccessLogins1hGroupsUniq
+}
+
+type AccountCf1AccessLogins1hGroupsDimensions {
+  # Whether the login was allowed or denied
+  allowed: string!
+  # Application name
+  appName: string!
+  # Application type
+  appType: string!
+  # Source country code
+  country: string!
+  # Hour start timestamp (hourly granularity)
+  datetime: Time!
+  # Identity provider
+  idp: string!
+  # Login event type (login, logout, sso)
+  loginType: string!
+}
+
+input AccountCf1AccessLogins1hGroupsFilter_InputObject {
+  AND: [AccountCf1AccessLogins1hGroupsFilter_InputObject!]
+  OR: [AccountCf1AccessLogins1hGroupsFilter_InputObject!]
+  allowed: string
+  allowed_geq: string
+  allowed_gt: string
+  allowed_in: [string!]
+  allowed_leq: string
+  allowed_like: string
+  allowed_lt: string
+  allowed_neq: string
+  allowed_notin: [string!]
+  allowed_notlike: string
+  appName: string
+  appName_geq: string
+  appName_gt: string
+  appName_in: [string!]
+  appName_leq: string
+  appName_like: string
+  appName_lt: string
+  appName_neq: string
+  appName_notin: [string!]
+  appName_notlike: string
+  appType: string
+  appType_geq: string
+  appType_gt: string
+  appType_in: [string!]
+  appType_leq: string
+  appType_like: string
+  appType_lt: string
+  appType_neq: string
+  appType_notin: [string!]
+  appType_notlike: string
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  idp: string
+  idp_geq: string
+  idp_gt: string
+  idp_in: [string!]
+  idp_leq: string
+  idp_like: string
+  idp_lt: string
+  idp_neq: string
+  idp_notin: [string!]
+  idp_notlike: string
+  loginType: string
+  loginType_geq: string
+  loginType_gt: string
+  loginType_in: [string!]
+  loginType_leq: string
+  loginType_like: string
+  loginType_lt: string
+  loginType_neq: string
+  loginType_notin: [string!]
+  loginType_notlike: string
+}
+
+enum AccountCf1AccessLogins1hGroupsOrderBy {
+  # allowed ascending
+  allowed_ASC
+  # allowed descending
+  allowed_DESC
+  # appName ascending
+  appName_ASC
+  # appName descending
+  appName_DESC
+  # appType ascending
+  appType_ASC
+  # appType descending
+  appType_DESC
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # idp ascending
+  idp_ASC
+  # idp descending
+  idp_DESC
+  # loginType ascending
+  loginType_ASC
+  # loginType descending
+  loginType_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sum(logins) ascending
+  sum_logins_ASC
+  # sum(logins) descending
+  sum_logins_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+}
+
+type AccountCf1AccessLogins1hGroupsSum {
+  # Total login attempts
+  logins: uint64!
+}
+
+type AccountCf1AccessLogins1hGroupsUniq {
+  # Unique users
+  users: uint64!
+}
+
+# CF1 Access login analytics - raw data (max 3h window, up to 31d back). Supports unique user counts. Use cf1AccessLogins1hGroups for longer ranges.
+type AccountCf1AccessLoginsRawGroups {
+  # List of dimensions to group by
+  dimensions: AccountCf1AccessLoginsRawGroupsDimensions
+  sum: AccountCf1AccessLoginsRawGroupsSum
+  uniq: AccountCf1AccessLoginsRawGroupsUniq
+}
+
+type AccountCf1AccessLoginsRawGroupsDimensions {
+  # Whether the login was allowed or denied
+  allowed: string!
+  # Application name
+  appName: string!
+  # Application type
+  appType: string!
+  # Source country code
+  country: string!
+  # Login timestamp
+  datetime: Time!
+  # Login timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Login timestamp truncated to hour
+  datetimeHour: Time!
+  # Identity provider
+  idp: string!
+  # Login event type (login, logout, sso)
+  loginType: string!
+}
+
+input AccountCf1AccessLoginsRawGroupsFilter_InputObject {
+  AND: [AccountCf1AccessLoginsRawGroupsFilter_InputObject!]
+  OR: [AccountCf1AccessLoginsRawGroupsFilter_InputObject!]
+  allowed: string
+  allowed_geq: string
+  allowed_gt: string
+  allowed_in: [string!]
+  allowed_leq: string
+  allowed_like: string
+  allowed_lt: string
+  allowed_neq: string
+  allowed_notin: [string!]
+  allowed_notlike: string
+  appName: string
+  appName_geq: string
+  appName_gt: string
+  appName_in: [string!]
+  appName_leq: string
+  appName_like: string
+  appName_lt: string
+  appName_neq: string
+  appName_notin: [string!]
+  appName_notlike: string
+  appType: string
+  appType_geq: string
+  appType_gt: string
+  appType_in: [string!]
+  appType_leq: string
+  appType_like: string
+  appType_lt: string
+  appType_neq: string
+  appType_notin: [string!]
+  appType_notlike: string
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
+  datetime: Time
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  idp: string
+  idp_geq: string
+  idp_gt: string
+  idp_in: [string!]
+  idp_leq: string
+  idp_like: string
+  idp_lt: string
+  idp_neq: string
+  idp_notin: [string!]
+  idp_notlike: string
+  loginType: string
+  loginType_geq: string
+  loginType_gt: string
+  loginType_in: [string!]
+  loginType_leq: string
+  loginType_like: string
+  loginType_lt: string
+  loginType_neq: string
+  loginType_notin: [string!]
+  loginType_notlike: string
+}
+
+enum AccountCf1AccessLoginsRawGroupsOrderBy {
+  # allowed ascending
+  allowed_ASC
+  # allowed descending
+  allowed_DESC
+  # appName ascending
+  appName_ASC
+  # appName descending
+  appName_DESC
+  # appType ascending
+  appType_ASC
+  # appType descending
+  appType_DESC
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # idp ascending
+  idp_ASC
+  # idp descending
+  idp_DESC
+  # loginType ascending
+  loginType_ASC
+  # loginType descending
+  loginType_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sum(logins) ascending
+  sum_logins_ASC
+  # sum(logins) descending
+  sum_logins_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+}
+
+type AccountCf1AccessLoginsRawGroupsSum {
+  # Total login attempts
+  logins: uint64!
+}
+
+type AccountCf1AccessLoginsRawGroupsUniq {
+  # Unique users
+  users: uint64!
+}
+
 # CF1 Gateway DNS analytics - 1 day rollup
 type AccountCf1GatewayDns1dGroups {
   # List of dimensions to group by
@@ -12120,6 +12655,1845 @@ type AccountCf1GatewayDnsRawGroupsSum {
 }
 
 type AccountCf1GatewayDnsRawGroupsUniq {
+  # Unique devices
+  devices: uint64!
+  # Unique users
+  users: uint64!
+}
+
+# CF1 Gateway HTTP analytics - 1 day rollup (up to 90d window, 365d back)
+type AccountCf1GatewayHttp1dGroups {
+  # List of dimensions to group by
+  dimensions: AccountCf1GatewayHttp1dGroupsDimensions
+  sum: AccountCf1GatewayHttp1dGroupsSum
+  uniq: AccountCf1GatewayHttp1dGroupsUniq
+}
+
+type AccountCf1GatewayHttp1dGroupsDimensions {
+  # Gateway action taken
+  action: string!
+  # Source country code
+  country: string!
+  # Day start timestamp (daily granularity)
+  datetime: Time!
+  # HTTP hostname
+  httpHost: string!
+}
+
+input AccountCf1GatewayHttp1dGroupsFilter_InputObject {
+  AND: [AccountCf1GatewayHttp1dGroupsFilter_InputObject!]
+  OR: [AccountCf1GatewayHttp1dGroupsFilter_InputObject!]
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  httpHost: string
+  httpHost_geq: string
+  httpHost_gt: string
+  httpHost_in: [string!]
+  httpHost_leq: string
+  httpHost_like: string
+  httpHost_lt: string
+  httpHost_neq: string
+  httpHost_notin: [string!]
+  httpHost_notlike: string
+}
+
+enum AccountCf1GatewayHttp1dGroupsOrderBy {
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # httpHost ascending
+  httpHost_ASC
+  # httpHost descending
+  httpHost_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sum(bodyBytesRcvd) ascending
+  sum_bodyBytesRcvd_ASC
+  # sum(bodyBytesRcvd) descending
+  sum_bodyBytesRcvd_DESC
+  # sum(bodyBytesSent) ascending
+  sum_bodyBytesSent_ASC
+  # sum(bodyBytesSent) descending
+  sum_bodyBytesSent_DESC
+  # sum(httpHostBytesRcvd) ascending
+  sum_httpHostBytesRcvd_ASC
+  # sum(httpHostBytesRcvd) descending
+  sum_httpHostBytesRcvd_DESC
+  # sum(httpHostBytesSent) ascending
+  sum_httpHostBytesSent_ASC
+  # sum(httpHostBytesSent) descending
+  sum_httpHostBytesSent_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+}
+
+type AccountCf1GatewayHttp1dGroupsSum {
+  # Total body bytes received
+  bodyBytesRcvd: uint64!
+  # Total body bytes sent
+  bodyBytesSent: uint64!
+  # Total bytes received per host
+  httpHostBytesRcvd: uint64!
+  # Total bytes sent per host
+  httpHostBytesSent: uint64!
+  # Total HTTP requests
+  requests: uint64!
+}
+
+type AccountCf1GatewayHttp1dGroupsUniq {
+  # Unique users
+  users: uint64!
+}
+
+# CF1 Gateway HTTP analytics - 1 hour rollup (up to 31d window, 62d back)
+type AccountCf1GatewayHttp1hGroups {
+  # List of dimensions to group by
+  dimensions: AccountCf1GatewayHttp1hGroupsDimensions
+  sum: AccountCf1GatewayHttp1hGroupsSum
+  uniq: AccountCf1GatewayHttp1hGroupsUniq
+}
+
+type AccountCf1GatewayHttp1hGroupsDimensions {
+  # Gateway action taken
+  action: string!
+  # Source country code
+  country: string!
+  # Hour start timestamp (hourly granularity)
+  datetime: Time!
+  # HTTP hostname
+  httpHost: string!
+}
+
+input AccountCf1GatewayHttp1hGroupsFilter_InputObject {
+  AND: [AccountCf1GatewayHttp1hGroupsFilter_InputObject!]
+  OR: [AccountCf1GatewayHttp1hGroupsFilter_InputObject!]
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  httpHost: string
+  httpHost_geq: string
+  httpHost_gt: string
+  httpHost_in: [string!]
+  httpHost_leq: string
+  httpHost_like: string
+  httpHost_lt: string
+  httpHost_neq: string
+  httpHost_notin: [string!]
+  httpHost_notlike: string
+}
+
+enum AccountCf1GatewayHttp1hGroupsOrderBy {
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # httpHost ascending
+  httpHost_ASC
+  # httpHost descending
+  httpHost_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sum(bodyBytesRcvd) ascending
+  sum_bodyBytesRcvd_ASC
+  # sum(bodyBytesRcvd) descending
+  sum_bodyBytesRcvd_DESC
+  # sum(bodyBytesSent) ascending
+  sum_bodyBytesSent_ASC
+  # sum(bodyBytesSent) descending
+  sum_bodyBytesSent_DESC
+  # sum(httpHostBytesRcvd) ascending
+  sum_httpHostBytesRcvd_ASC
+  # sum(httpHostBytesRcvd) descending
+  sum_httpHostBytesRcvd_DESC
+  # sum(httpHostBytesSent) ascending
+  sum_httpHostBytesSent_ASC
+  # sum(httpHostBytesSent) descending
+  sum_httpHostBytesSent_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+}
+
+type AccountCf1GatewayHttp1hGroupsSum {
+  # Total body bytes received
+  bodyBytesRcvd: uint64!
+  # Total body bytes sent
+  bodyBytesSent: uint64!
+  # Total bytes received per host
+  httpHostBytesRcvd: uint64!
+  # Total bytes sent per host
+  httpHostBytesSent: uint64!
+  # Total HTTP requests
+  requests: uint64!
+}
+
+type AccountCf1GatewayHttp1hGroupsUniq {
+  # Unique users
+  users: uint64!
+}
+
+# CF1 Gateway HTTP analytics - raw data (max 3h query window, 4d lookback). Use cf1GatewayHttp1hGroups for longer ranges, or cf1GatewayHttp1dGroups for 10d+
+type AccountCf1GatewayHttpRawGroups {
+  # List of dimensions to group by
+  dimensions: AccountCf1GatewayHttpRawGroupsDimensions
+  sum: AccountCf1GatewayHttpRawGroupsSum
+  uniq: AccountCf1GatewayHttpRawGroupsUniq
+}
+
+type AccountCf1GatewayHttpRawGroupsDimensions {
+  # Gateway action taken
+  action: string!
+  # Source country code
+  country: string!
+  # Request timestamp
+  datetime: Time!
+  # Request timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Request timestamp truncated to hour
+  datetimeHour: Time!
+  # HTTP hostname
+  httpHost: string!
+}
+
+input AccountCf1GatewayHttpRawGroupsFilter_InputObject {
+  AND: [AccountCf1GatewayHttpRawGroupsFilter_InputObject!]
+  OR: [AccountCf1GatewayHttpRawGroupsFilter_InputObject!]
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
+  datetime: Time
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  httpHost: string
+  httpHost_geq: string
+  httpHost_gt: string
+  httpHost_in: [string!]
+  httpHost_leq: string
+  httpHost_like: string
+  httpHost_lt: string
+  httpHost_neq: string
+  httpHost_notin: [string!]
+  httpHost_notlike: string
+}
+
+enum AccountCf1GatewayHttpRawGroupsOrderBy {
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # httpHost ascending
+  httpHost_ASC
+  # httpHost descending
+  httpHost_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sum(bodyBytesRcvd) ascending
+  sum_bodyBytesRcvd_ASC
+  # sum(bodyBytesRcvd) descending
+  sum_bodyBytesRcvd_DESC
+  # sum(bodyBytesSent) ascending
+  sum_bodyBytesSent_ASC
+  # sum(bodyBytesSent) descending
+  sum_bodyBytesSent_DESC
+  # sum(httpHostBytesRcvd) ascending
+  sum_httpHostBytesRcvd_ASC
+  # sum(httpHostBytesRcvd) descending
+  sum_httpHostBytesRcvd_DESC
+  # sum(httpHostBytesSent) ascending
+  sum_httpHostBytesSent_ASC
+  # sum(httpHostBytesSent) descending
+  sum_httpHostBytesSent_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+}
+
+type AccountCf1GatewayHttpRawGroupsSum {
+  # Total body bytes received
+  bodyBytesRcvd: uint64!
+  # Total body bytes sent
+  bodyBytesSent: uint64!
+  # Total bytes received per host
+  httpHostBytesRcvd: uint64!
+  # Total bytes sent per host
+  httpHostBytesSent: uint64!
+  # Total HTTP requests
+  requests: uint64!
+}
+
+type AccountCf1GatewayHttpRawGroupsUniq {
+  # Unique users
+  users: uint64!
+}
+
+# CF1 Gateway Network analytics (L4 firewall events) - 1 day rollup (up to 90d window, 365d back)
+type AccountCf1GatewayNetwork1dGroups {
+  # List of dimensions to group by
+  dimensions: AccountCf1GatewayNetwork1dGroupsDimensions
+  sum: AccountCf1GatewayNetwork1dGroupsSum
+  uniq: AccountCf1GatewayNetwork1dGroupsUniq
+}
+
+type AccountCf1GatewayNetwork1dGroupsDimensions {
+  # Gateway firewall decision
+  action: string!
+  # Cloudflare colo code
+  coloName: string!
+  # Day start timestamp (daily granularity)
+  datetime: Time!
+  # Destination country code (ISO 3166-1 alpha-2)
+  destinationCountry: string!
+  # Policy rule ID
+  ruleId: string!
+  # Server Name Indication from TLS handshake
+  sni: string!
+  # Source country code (ISO 3166-1 alpha-2)
+  sourceCountry: string!
+  # Transport protocol
+  transport: string!
+}
+
+input AccountCf1GatewayNetwork1dGroupsFilter_InputObject {
+  AND: [AccountCf1GatewayNetwork1dGroupsFilter_InputObject!]
+  OR: [AccountCf1GatewayNetwork1dGroupsFilter_InputObject!]
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
+  coloName: string
+  coloName_geq: string
+  coloName_gt: string
+  coloName_in: [string!]
+  coloName_leq: string
+  coloName_like: string
+  coloName_lt: string
+  coloName_neq: string
+  coloName_notin: [string!]
+  coloName_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationCountry: string
+  destinationCountry_geq: string
+  destinationCountry_gt: string
+  destinationCountry_in: [string!]
+  destinationCountry_leq: string
+  destinationCountry_like: string
+  destinationCountry_lt: string
+  destinationCountry_neq: string
+  destinationCountry_notin: [string!]
+  destinationCountry_notlike: string
+  ruleId: string
+  ruleId_geq: string
+  ruleId_gt: string
+  ruleId_in: [string!]
+  ruleId_leq: string
+  ruleId_like: string
+  ruleId_lt: string
+  ruleId_neq: string
+  ruleId_notin: [string!]
+  ruleId_notlike: string
+  sni: string
+  sni_geq: string
+  sni_gt: string
+  sni_in: [string!]
+  sni_leq: string
+  sni_like: string
+  sni_lt: string
+  sni_neq: string
+  sni_notin: [string!]
+  sni_notlike: string
+  sourceCountry: string
+  sourceCountry_geq: string
+  sourceCountry_gt: string
+  sourceCountry_in: [string!]
+  sourceCountry_leq: string
+  sourceCountry_like: string
+  sourceCountry_lt: string
+  sourceCountry_neq: string
+  sourceCountry_notin: [string!]
+  sourceCountry_notlike: string
+  transport: string
+  transport_geq: string
+  transport_gt: string
+  transport_in: [string!]
+  transport_leq: string
+  transport_like: string
+  transport_lt: string
+  transport_neq: string
+  transport_notin: [string!]
+  transport_notlike: string
+}
+
+enum AccountCf1GatewayNetwork1dGroupsOrderBy {
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # coloName ascending
+  coloName_ASC
+  # coloName descending
+  coloName_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationCountry ascending
+  destinationCountry_ASC
+  # destinationCountry descending
+  destinationCountry_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # ruleId ascending
+  ruleId_ASC
+  # ruleId descending
+  ruleId_DESC
+  # sni ascending
+  sni_ASC
+  # sni descending
+  sni_DESC
+  # sourceCountry ascending
+  sourceCountry_ASC
+  # sourceCountry descending
+  sourceCountry_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # transport ascending
+  transport_ASC
+  # transport descending
+  transport_DESC
+  # uniq(devices) ascending
+  uniq_devices_ASC
+  # uniq(devices) descending
+  uniq_devices_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+}
+
+type AccountCf1GatewayNetwork1dGroupsSum {
+  # Total network firewall events
+  requests: uint64!
+}
+
+type AccountCf1GatewayNetwork1dGroupsUniq {
+  # Unique devices
+  devices: uint64!
+  # Unique users
+  users: uint64!
+}
+
+# CF1 Gateway Network analytics (L4 firewall events) - 1 hour rollup (up to 31d window, 62d back)
+type AccountCf1GatewayNetwork1hGroups {
+  # List of dimensions to group by
+  dimensions: AccountCf1GatewayNetwork1hGroupsDimensions
+  sum: AccountCf1GatewayNetwork1hGroupsSum
+  uniq: AccountCf1GatewayNetwork1hGroupsUniq
+}
+
+type AccountCf1GatewayNetwork1hGroupsDimensions {
+  # Gateway firewall decision
+  action: string!
+  # Cloudflare colo code
+  coloName: string!
+  # Hour start timestamp (hourly granularity)
+  datetime: Time!
+  # Destination country code (ISO 3166-1 alpha-2)
+  destinationCountry: string!
+  # Policy rule ID
+  ruleId: string!
+  # Server Name Indication from TLS handshake
+  sni: string!
+  # Source country code (ISO 3166-1 alpha-2)
+  sourceCountry: string!
+  # Transport protocol
+  transport: string!
+}
+
+input AccountCf1GatewayNetwork1hGroupsFilter_InputObject {
+  AND: [AccountCf1GatewayNetwork1hGroupsFilter_InputObject!]
+  OR: [AccountCf1GatewayNetwork1hGroupsFilter_InputObject!]
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
+  coloName: string
+  coloName_geq: string
+  coloName_gt: string
+  coloName_in: [string!]
+  coloName_leq: string
+  coloName_like: string
+  coloName_lt: string
+  coloName_neq: string
+  coloName_notin: [string!]
+  coloName_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationCountry: string
+  destinationCountry_geq: string
+  destinationCountry_gt: string
+  destinationCountry_in: [string!]
+  destinationCountry_leq: string
+  destinationCountry_like: string
+  destinationCountry_lt: string
+  destinationCountry_neq: string
+  destinationCountry_notin: [string!]
+  destinationCountry_notlike: string
+  ruleId: string
+  ruleId_geq: string
+  ruleId_gt: string
+  ruleId_in: [string!]
+  ruleId_leq: string
+  ruleId_like: string
+  ruleId_lt: string
+  ruleId_neq: string
+  ruleId_notin: [string!]
+  ruleId_notlike: string
+  sni: string
+  sni_geq: string
+  sni_gt: string
+  sni_in: [string!]
+  sni_leq: string
+  sni_like: string
+  sni_lt: string
+  sni_neq: string
+  sni_notin: [string!]
+  sni_notlike: string
+  sourceCountry: string
+  sourceCountry_geq: string
+  sourceCountry_gt: string
+  sourceCountry_in: [string!]
+  sourceCountry_leq: string
+  sourceCountry_like: string
+  sourceCountry_lt: string
+  sourceCountry_neq: string
+  sourceCountry_notin: [string!]
+  sourceCountry_notlike: string
+  transport: string
+  transport_geq: string
+  transport_gt: string
+  transport_in: [string!]
+  transport_leq: string
+  transport_like: string
+  transport_lt: string
+  transport_neq: string
+  transport_notin: [string!]
+  transport_notlike: string
+}
+
+enum AccountCf1GatewayNetwork1hGroupsOrderBy {
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # coloName ascending
+  coloName_ASC
+  # coloName descending
+  coloName_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationCountry ascending
+  destinationCountry_ASC
+  # destinationCountry descending
+  destinationCountry_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # ruleId ascending
+  ruleId_ASC
+  # ruleId descending
+  ruleId_DESC
+  # sni ascending
+  sni_ASC
+  # sni descending
+  sni_DESC
+  # sourceCountry ascending
+  sourceCountry_ASC
+  # sourceCountry descending
+  sourceCountry_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # transport ascending
+  transport_ASC
+  # transport descending
+  transport_DESC
+  # uniq(devices) ascending
+  uniq_devices_ASC
+  # uniq(devices) descending
+  uniq_devices_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+}
+
+type AccountCf1GatewayNetwork1hGroupsSum {
+  # Total network firewall events
+  requests: uint64!
+}
+
+type AccountCf1GatewayNetwork1hGroupsUniq {
+  # Unique devices
+  devices: uint64!
+  # Unique users
+  users: uint64!
+}
+
+# CF1 Gateway Network analytics (L4 firewall events) - raw data (max 3h query window, 4d lookback). Use cf1GatewayNetwork1hGroups for longer ranges, or cf1GatewayNetwork1dGroups for 10d+
+type AccountCf1GatewayNetworkRawGroups {
+  # List of dimensions to group by
+  dimensions: AccountCf1GatewayNetworkRawGroupsDimensions
+  sum: AccountCf1GatewayNetworkRawGroupsSum
+  uniq: AccountCf1GatewayNetworkRawGroupsUniq
+}
+
+type AccountCf1GatewayNetworkRawGroupsDimensions {
+  # Gateway firewall decision
+  action: string!
+  # Cloudflare colo code
+  coloName: string!
+  # Event timestamp
+  datetime: Time!
+  # Event timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Event timestamp truncated to hour
+  datetimeHour: Time!
+  # Destination country code (ISO 3166-1 alpha-2)
+  destinationCountry: string!
+  # Policy rule ID
+  ruleId: string!
+  # Server Name Indication from TLS handshake
+  sni: string!
+  # Source country code (ISO 3166-1 alpha-2)
+  sourceCountry: string!
+  # Transport protocol
+  transport: string!
+}
+
+input AccountCf1GatewayNetworkRawGroupsFilter_InputObject {
+  AND: [AccountCf1GatewayNetworkRawGroupsFilter_InputObject!]
+  OR: [AccountCf1GatewayNetworkRawGroupsFilter_InputObject!]
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
+  coloName: string
+  coloName_geq: string
+  coloName_gt: string
+  coloName_in: [string!]
+  coloName_leq: string
+  coloName_like: string
+  coloName_lt: string
+  coloName_neq: string
+  coloName_notin: [string!]
+  coloName_notlike: string
+  datetime: Time
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationCountry: string
+  destinationCountry_geq: string
+  destinationCountry_gt: string
+  destinationCountry_in: [string!]
+  destinationCountry_leq: string
+  destinationCountry_like: string
+  destinationCountry_lt: string
+  destinationCountry_neq: string
+  destinationCountry_notin: [string!]
+  destinationCountry_notlike: string
+  ruleId: string
+  ruleId_geq: string
+  ruleId_gt: string
+  ruleId_in: [string!]
+  ruleId_leq: string
+  ruleId_like: string
+  ruleId_lt: string
+  ruleId_neq: string
+  ruleId_notin: [string!]
+  ruleId_notlike: string
+  sni: string
+  sni_geq: string
+  sni_gt: string
+  sni_in: [string!]
+  sni_leq: string
+  sni_like: string
+  sni_lt: string
+  sni_neq: string
+  sni_notin: [string!]
+  sni_notlike: string
+  sourceCountry: string
+  sourceCountry_geq: string
+  sourceCountry_gt: string
+  sourceCountry_in: [string!]
+  sourceCountry_leq: string
+  sourceCountry_like: string
+  sourceCountry_lt: string
+  sourceCountry_neq: string
+  sourceCountry_notin: [string!]
+  sourceCountry_notlike: string
+  transport: string
+  transport_geq: string
+  transport_gt: string
+  transport_in: [string!]
+  transport_leq: string
+  transport_like: string
+  transport_lt: string
+  transport_neq: string
+  transport_notin: [string!]
+  transport_notlike: string
+}
+
+enum AccountCf1GatewayNetworkRawGroupsOrderBy {
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # coloName ascending
+  coloName_ASC
+  # coloName descending
+  coloName_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationCountry ascending
+  destinationCountry_ASC
+  # destinationCountry descending
+  destinationCountry_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # ruleId ascending
+  ruleId_ASC
+  # ruleId descending
+  ruleId_DESC
+  # sni ascending
+  sni_ASC
+  # sni descending
+  sni_DESC
+  # sourceCountry ascending
+  sourceCountry_ASC
+  # sourceCountry descending
+  sourceCountry_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # transport ascending
+  transport_ASC
+  # transport descending
+  transport_DESC
+  # uniq(devices) ascending
+  uniq_devices_ASC
+  # uniq(devices) descending
+  uniq_devices_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+}
+
+type AccountCf1GatewayNetworkRawGroupsSum {
+  # Total network firewall events
+  requests: uint64!
+}
+
+type AccountCf1GatewayNetworkRawGroupsUniq {
+  # Unique devices
+  devices: uint64!
+  # Unique users
+  users: uint64!
+}
+
+# CF1 Gateway Network Session Log analytics - 1 day rollup (up to 90d window, 365d back)
+type AccountCf1GatewayNetworkSession1dGroups {
+  avg: AccountCf1GatewayNetworkSession1dGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountCf1GatewayNetworkSession1dGroupsDimensions
+  sum: AccountCf1GatewayNetworkSession1dGroupsSum
+  uniq: AccountCf1GatewayNetworkSession1dGroupsUniq
+}
+
+type AccountCf1GatewayNetworkSession1dGroupsAvg {
+  # Average client TCP handshake duration in milliseconds
+  tcpHandshakeMs: float64!
+}
+
+type AccountCf1GatewayNetworkSession1dGroupsDimensions {
+  # Reason the connection was closed
+  connectionCloseReason: string!
+  # Day start timestamp (daily granularity)
+  datetime: Time!
+  # Destination port number
+  destinationPort: string!
+  # Destination tunnel ID
+  destinationTunnelId: string!
+  # Egress Cloudflare colo code
+  egressColoName: string!
+  # Egress policy rule ID
+  egressRuleId: string!
+  # Ingress Cloudflare colo code
+  ingressColoName: string!
+  # Egress offramp type
+  offramp: string!
+  # Ingress onramp type (derived from flowPath)
+  onRamp: string!
+  # L4 protocol
+  protocol: string!
+  # Server Name Indication from TLS handshake
+  sni: string!
+  # Source country code (ISO 3166-1 alpha-2)
+  sourceCountry: string!
+}
+
+input AccountCf1GatewayNetworkSession1dGroupsFilter_InputObject {
+  AND: [AccountCf1GatewayNetworkSession1dGroupsFilter_InputObject!]
+  OR: [AccountCf1GatewayNetworkSession1dGroupsFilter_InputObject!]
+  connectionCloseReason: string
+  connectionCloseReason_geq: string
+  connectionCloseReason_gt: string
+  connectionCloseReason_in: [string!]
+  connectionCloseReason_leq: string
+  connectionCloseReason_like: string
+  connectionCloseReason_lt: string
+  connectionCloseReason_neq: string
+  connectionCloseReason_notin: [string!]
+  connectionCloseReason_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationPort: string
+  destinationPort_geq: string
+  destinationPort_gt: string
+  destinationPort_in: [string!]
+  destinationPort_leq: string
+  destinationPort_like: string
+  destinationPort_lt: string
+  destinationPort_neq: string
+  destinationPort_notin: [string!]
+  destinationPort_notlike: string
+  destinationTunnelId: string
+  destinationTunnelId_geq: string
+  destinationTunnelId_gt: string
+  destinationTunnelId_in: [string!]
+  destinationTunnelId_leq: string
+  destinationTunnelId_like: string
+  destinationTunnelId_lt: string
+  destinationTunnelId_neq: string
+  destinationTunnelId_notin: [string!]
+  destinationTunnelId_notlike: string
+  egressColoName: string
+  egressColoName_geq: string
+  egressColoName_gt: string
+  egressColoName_in: [string!]
+  egressColoName_leq: string
+  egressColoName_like: string
+  egressColoName_lt: string
+  egressColoName_neq: string
+  egressColoName_notin: [string!]
+  egressColoName_notlike: string
+  egressRuleId: string
+  egressRuleId_geq: string
+  egressRuleId_gt: string
+  egressRuleId_in: [string!]
+  egressRuleId_leq: string
+  egressRuleId_like: string
+  egressRuleId_lt: string
+  egressRuleId_neq: string
+  egressRuleId_notin: [string!]
+  egressRuleId_notlike: string
+  ingressColoName: string
+  ingressColoName_geq: string
+  ingressColoName_gt: string
+  ingressColoName_in: [string!]
+  ingressColoName_leq: string
+  ingressColoName_like: string
+  ingressColoName_lt: string
+  ingressColoName_neq: string
+  ingressColoName_notin: [string!]
+  ingressColoName_notlike: string
+  offramp: string
+  offramp_geq: string
+  offramp_gt: string
+  offramp_in: [string!]
+  offramp_leq: string
+  offramp_like: string
+  offramp_lt: string
+  offramp_neq: string
+  offramp_notin: [string!]
+  offramp_notlike: string
+  onRamp: string
+  onRamp_geq: string
+  onRamp_gt: string
+  onRamp_in: [string!]
+  onRamp_leq: string
+  onRamp_like: string
+  onRamp_lt: string
+  onRamp_neq: string
+  onRamp_notin: [string!]
+  onRamp_notlike: string
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  sni: string
+  sni_geq: string
+  sni_gt: string
+  sni_in: [string!]
+  sni_leq: string
+  sni_like: string
+  sni_lt: string
+  sni_neq: string
+  sni_notin: [string!]
+  sni_notlike: string
+  sourceCountry: string
+  sourceCountry_geq: string
+  sourceCountry_gt: string
+  sourceCountry_in: [string!]
+  sourceCountry_leq: string
+  sourceCountry_like: string
+  sourceCountry_lt: string
+  sourceCountry_neq: string
+  sourceCountry_notin: [string!]
+  sourceCountry_notlike: string
+}
+
+enum AccountCf1GatewayNetworkSession1dGroupsOrderBy {
+  # avg(tcpHandshakeMs) ascending
+  avg_tcpHandshakeMs_ASC
+  # avg(tcpHandshakeMs) descending
+  avg_tcpHandshakeMs_DESC
+  # connectionCloseReason ascending
+  connectionCloseReason_ASC
+  # connectionCloseReason descending
+  connectionCloseReason_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationPort ascending
+  destinationPort_ASC
+  # destinationPort descending
+  destinationPort_DESC
+  # destinationTunnelId ascending
+  destinationTunnelId_ASC
+  # destinationTunnelId descending
+  destinationTunnelId_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # egressColoName ascending
+  egressColoName_ASC
+  # egressColoName descending
+  egressColoName_DESC
+  # egressRuleId ascending
+  egressRuleId_ASC
+  # egressRuleId descending
+  egressRuleId_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # ingressColoName ascending
+  ingressColoName_ASC
+  # ingressColoName descending
+  ingressColoName_DESC
+  # offramp ascending
+  offramp_ASC
+  # offramp descending
+  offramp_DESC
+  # onRamp ascending
+  onRamp_ASC
+  # onRamp descending
+  onRamp_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # sni ascending
+  sni_ASC
+  # sni descending
+  sni_DESC
+  # sourceCountry ascending
+  sourceCountry_ASC
+  # sourceCountry descending
+  sourceCountry_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sum(bytesDownload) ascending
+  sum_bytesDownload_ASC
+  # sum(bytesDownload) descending
+  sum_bytesDownload_DESC
+  # sum(bytesTotal) ascending
+  sum_bytesTotal_ASC
+  # sum(bytesTotal) descending
+  sum_bytesTotal_DESC
+  # sum(bytesUpload) ascending
+  sum_bytesUpload_ASC
+  # sum(bytesUpload) descending
+  sum_bytesUpload_DESC
+  # sum(sessions) ascending
+  sum_sessions_ASC
+  # sum(sessions) descending
+  sum_sessions_DESC
+  # uniq(devices) ascending
+  uniq_devices_ASC
+  # uniq(devices) descending
+  uniq_devices_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+}
+
+type AccountCf1GatewayNetworkSession1dGroupsSum {
+  # Total bytes downloaded (origin to client)
+  bytesDownload: uint64!
+  # Total bytes transferred (upload + download)
+  bytesTotal: uint64!
+  # Total bytes uploaded (client to origin)
+  bytesUpload: uint64!
+  # Total network sessions
+  sessions: uint64!
+}
+
+type AccountCf1GatewayNetworkSession1dGroupsUniq {
+  # Unique devices
+  devices: uint64!
+  # Unique users
+  users: uint64!
+}
+
+# CF1 Gateway Network Session Log analytics - 1 hour rollup (up to 31d window, 62d back)
+type AccountCf1GatewayNetworkSession1hGroups {
+  avg: AccountCf1GatewayNetworkSession1hGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountCf1GatewayNetworkSession1hGroupsDimensions
+  sum: AccountCf1GatewayNetworkSession1hGroupsSum
+  uniq: AccountCf1GatewayNetworkSession1hGroupsUniq
+}
+
+type AccountCf1GatewayNetworkSession1hGroupsAvg {
+  # Average client TCP handshake duration in milliseconds
+  tcpHandshakeMs: float64!
+}
+
+type AccountCf1GatewayNetworkSession1hGroupsDimensions {
+  # Reason the connection was closed
+  connectionCloseReason: string!
+  # Hour start timestamp (hourly granularity)
+  datetime: Time!
+  # Destination port number
+  destinationPort: string!
+  # Destination tunnel ID
+  destinationTunnelId: string!
+  # Egress Cloudflare colo code
+  egressColoName: string!
+  # Egress policy rule ID
+  egressRuleId: string!
+  # Ingress Cloudflare colo code
+  ingressColoName: string!
+  # Egress offramp type
+  offramp: string!
+  # Ingress onramp type (derived from flowPath)
+  onRamp: string!
+  # L4 protocol
+  protocol: string!
+  # Server Name Indication from TLS handshake
+  sni: string!
+  # Source country code (ISO 3166-1 alpha-2)
+  sourceCountry: string!
+}
+
+input AccountCf1GatewayNetworkSession1hGroupsFilter_InputObject {
+  AND: [AccountCf1GatewayNetworkSession1hGroupsFilter_InputObject!]
+  OR: [AccountCf1GatewayNetworkSession1hGroupsFilter_InputObject!]
+  connectionCloseReason: string
+  connectionCloseReason_geq: string
+  connectionCloseReason_gt: string
+  connectionCloseReason_in: [string!]
+  connectionCloseReason_leq: string
+  connectionCloseReason_like: string
+  connectionCloseReason_lt: string
+  connectionCloseReason_neq: string
+  connectionCloseReason_notin: [string!]
+  connectionCloseReason_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationPort: string
+  destinationPort_geq: string
+  destinationPort_gt: string
+  destinationPort_in: [string!]
+  destinationPort_leq: string
+  destinationPort_like: string
+  destinationPort_lt: string
+  destinationPort_neq: string
+  destinationPort_notin: [string!]
+  destinationPort_notlike: string
+  destinationTunnelId: string
+  destinationTunnelId_geq: string
+  destinationTunnelId_gt: string
+  destinationTunnelId_in: [string!]
+  destinationTunnelId_leq: string
+  destinationTunnelId_like: string
+  destinationTunnelId_lt: string
+  destinationTunnelId_neq: string
+  destinationTunnelId_notin: [string!]
+  destinationTunnelId_notlike: string
+  egressColoName: string
+  egressColoName_geq: string
+  egressColoName_gt: string
+  egressColoName_in: [string!]
+  egressColoName_leq: string
+  egressColoName_like: string
+  egressColoName_lt: string
+  egressColoName_neq: string
+  egressColoName_notin: [string!]
+  egressColoName_notlike: string
+  egressRuleId: string
+  egressRuleId_geq: string
+  egressRuleId_gt: string
+  egressRuleId_in: [string!]
+  egressRuleId_leq: string
+  egressRuleId_like: string
+  egressRuleId_lt: string
+  egressRuleId_neq: string
+  egressRuleId_notin: [string!]
+  egressRuleId_notlike: string
+  ingressColoName: string
+  ingressColoName_geq: string
+  ingressColoName_gt: string
+  ingressColoName_in: [string!]
+  ingressColoName_leq: string
+  ingressColoName_like: string
+  ingressColoName_lt: string
+  ingressColoName_neq: string
+  ingressColoName_notin: [string!]
+  ingressColoName_notlike: string
+  offramp: string
+  offramp_geq: string
+  offramp_gt: string
+  offramp_in: [string!]
+  offramp_leq: string
+  offramp_like: string
+  offramp_lt: string
+  offramp_neq: string
+  offramp_notin: [string!]
+  offramp_notlike: string
+  onRamp: string
+  onRamp_geq: string
+  onRamp_gt: string
+  onRamp_in: [string!]
+  onRamp_leq: string
+  onRamp_like: string
+  onRamp_lt: string
+  onRamp_neq: string
+  onRamp_notin: [string!]
+  onRamp_notlike: string
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  sni: string
+  sni_geq: string
+  sni_gt: string
+  sni_in: [string!]
+  sni_leq: string
+  sni_like: string
+  sni_lt: string
+  sni_neq: string
+  sni_notin: [string!]
+  sni_notlike: string
+  sourceCountry: string
+  sourceCountry_geq: string
+  sourceCountry_gt: string
+  sourceCountry_in: [string!]
+  sourceCountry_leq: string
+  sourceCountry_like: string
+  sourceCountry_lt: string
+  sourceCountry_neq: string
+  sourceCountry_notin: [string!]
+  sourceCountry_notlike: string
+}
+
+enum AccountCf1GatewayNetworkSession1hGroupsOrderBy {
+  # avg(tcpHandshakeMs) ascending
+  avg_tcpHandshakeMs_ASC
+  # avg(tcpHandshakeMs) descending
+  avg_tcpHandshakeMs_DESC
+  # connectionCloseReason ascending
+  connectionCloseReason_ASC
+  # connectionCloseReason descending
+  connectionCloseReason_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationPort ascending
+  destinationPort_ASC
+  # destinationPort descending
+  destinationPort_DESC
+  # destinationTunnelId ascending
+  destinationTunnelId_ASC
+  # destinationTunnelId descending
+  destinationTunnelId_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # egressColoName ascending
+  egressColoName_ASC
+  # egressColoName descending
+  egressColoName_DESC
+  # egressRuleId ascending
+  egressRuleId_ASC
+  # egressRuleId descending
+  egressRuleId_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # ingressColoName ascending
+  ingressColoName_ASC
+  # ingressColoName descending
+  ingressColoName_DESC
+  # offramp ascending
+  offramp_ASC
+  # offramp descending
+  offramp_DESC
+  # onRamp ascending
+  onRamp_ASC
+  # onRamp descending
+  onRamp_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # sni ascending
+  sni_ASC
+  # sni descending
+  sni_DESC
+  # sourceCountry ascending
+  sourceCountry_ASC
+  # sourceCountry descending
+  sourceCountry_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sum(bytesDownload) ascending
+  sum_bytesDownload_ASC
+  # sum(bytesDownload) descending
+  sum_bytesDownload_DESC
+  # sum(bytesTotal) ascending
+  sum_bytesTotal_ASC
+  # sum(bytesTotal) descending
+  sum_bytesTotal_DESC
+  # sum(bytesUpload) ascending
+  sum_bytesUpload_ASC
+  # sum(bytesUpload) descending
+  sum_bytesUpload_DESC
+  # sum(sessions) ascending
+  sum_sessions_ASC
+  # sum(sessions) descending
+  sum_sessions_DESC
+  # uniq(devices) ascending
+  uniq_devices_ASC
+  # uniq(devices) descending
+  uniq_devices_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+}
+
+type AccountCf1GatewayNetworkSession1hGroupsSum {
+  # Total bytes downloaded (origin to client)
+  bytesDownload: uint64!
+  # Total bytes transferred (upload + download)
+  bytesTotal: uint64!
+  # Total bytes uploaded (client to origin)
+  bytesUpload: uint64!
+  # Total network sessions
+  sessions: uint64!
+}
+
+type AccountCf1GatewayNetworkSession1hGroupsUniq {
+  # Unique devices
+  devices: uint64!
+  # Unique users
+  users: uint64!
+}
+
+# CF1 Gateway Network Session Log (L4 sessions with bandwidth) - raw data (max 3h query window, 4d lookback). Use cf1GatewayNetworkSession1hGroups for longer ranges, or cf1GatewayNetworkSession1dGroups for 10d+
+type AccountCf1GatewayNetworkSessionRawGroups {
+  avg: AccountCf1GatewayNetworkSessionRawGroupsAvg
+  # List of dimensions to group by
+  dimensions: AccountCf1GatewayNetworkSessionRawGroupsDimensions
+  sum: AccountCf1GatewayNetworkSessionRawGroupsSum
+  uniq: AccountCf1GatewayNetworkSessionRawGroupsUniq
+}
+
+type AccountCf1GatewayNetworkSessionRawGroupsAvg {
+  # Average client TCP handshake duration in milliseconds
+  tcpHandshakeMs: float64!
+}
+
+type AccountCf1GatewayNetworkSessionRawGroupsDimensions {
+  # Reason the connection was closed
+  connectionCloseReason: string!
+  # Session close timestamp
+  datetime: Time!
+  # Session close timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Session close timestamp truncated to hour
+  datetimeHour: Time!
+  # Destination port number
+  destinationPort: string!
+  # Destination tunnel ID
+  destinationTunnelId: string!
+  # Egress Cloudflare colo code
+  egressColoName: string!
+  # Egress policy rule ID
+  egressRuleId: string!
+  # Ingress Cloudflare colo code
+  ingressColoName: string!
+  # Egress offramp type
+  offramp: string!
+  # Ingress onramp type (derived from flowPath)
+  onRamp: string!
+  # L4 protocol
+  protocol: string!
+  # Server Name Indication from TLS handshake
+  sni: string!
+  # Source country code (ISO 3166-1 alpha-2)
+  sourceCountry: string!
+}
+
+input AccountCf1GatewayNetworkSessionRawGroupsFilter_InputObject {
+  AND: [AccountCf1GatewayNetworkSessionRawGroupsFilter_InputObject!]
+  OR: [AccountCf1GatewayNetworkSessionRawGroupsFilter_InputObject!]
+  connectionCloseReason: string
+  connectionCloseReason_geq: string
+  connectionCloseReason_gt: string
+  connectionCloseReason_in: [string!]
+  connectionCloseReason_leq: string
+  connectionCloseReason_like: string
+  connectionCloseReason_lt: string
+  connectionCloseReason_neq: string
+  connectionCloseReason_notin: [string!]
+  connectionCloseReason_notlike: string
+  datetime: Time
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  destinationPort: string
+  destinationPort_geq: string
+  destinationPort_gt: string
+  destinationPort_in: [string!]
+  destinationPort_leq: string
+  destinationPort_like: string
+  destinationPort_lt: string
+  destinationPort_neq: string
+  destinationPort_notin: [string!]
+  destinationPort_notlike: string
+  destinationTunnelId: string
+  destinationTunnelId_geq: string
+  destinationTunnelId_gt: string
+  destinationTunnelId_in: [string!]
+  destinationTunnelId_leq: string
+  destinationTunnelId_like: string
+  destinationTunnelId_lt: string
+  destinationTunnelId_neq: string
+  destinationTunnelId_notin: [string!]
+  destinationTunnelId_notlike: string
+  egressColoName: string
+  egressColoName_geq: string
+  egressColoName_gt: string
+  egressColoName_in: [string!]
+  egressColoName_leq: string
+  egressColoName_like: string
+  egressColoName_lt: string
+  egressColoName_neq: string
+  egressColoName_notin: [string!]
+  egressColoName_notlike: string
+  egressRuleId: string
+  egressRuleId_geq: string
+  egressRuleId_gt: string
+  egressRuleId_in: [string!]
+  egressRuleId_leq: string
+  egressRuleId_like: string
+  egressRuleId_lt: string
+  egressRuleId_neq: string
+  egressRuleId_notin: [string!]
+  egressRuleId_notlike: string
+  ingressColoName: string
+  ingressColoName_geq: string
+  ingressColoName_gt: string
+  ingressColoName_in: [string!]
+  ingressColoName_leq: string
+  ingressColoName_like: string
+  ingressColoName_lt: string
+  ingressColoName_neq: string
+  ingressColoName_notin: [string!]
+  ingressColoName_notlike: string
+  offramp: string
+  offramp_geq: string
+  offramp_gt: string
+  offramp_in: [string!]
+  offramp_leq: string
+  offramp_like: string
+  offramp_lt: string
+  offramp_neq: string
+  offramp_notin: [string!]
+  offramp_notlike: string
+  onRamp: string
+  onRamp_geq: string
+  onRamp_gt: string
+  onRamp_in: [string!]
+  onRamp_leq: string
+  onRamp_like: string
+  onRamp_lt: string
+  onRamp_neq: string
+  onRamp_notin: [string!]
+  onRamp_notlike: string
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  sni: string
+  sni_geq: string
+  sni_gt: string
+  sni_in: [string!]
+  sni_leq: string
+  sni_like: string
+  sni_lt: string
+  sni_neq: string
+  sni_notin: [string!]
+  sni_notlike: string
+  sourceCountry: string
+  sourceCountry_geq: string
+  sourceCountry_gt: string
+  sourceCountry_in: [string!]
+  sourceCountry_leq: string
+  sourceCountry_like: string
+  sourceCountry_lt: string
+  sourceCountry_neq: string
+  sourceCountry_notin: [string!]
+  sourceCountry_notlike: string
+}
+
+enum AccountCf1GatewayNetworkSessionRawGroupsOrderBy {
+  # avg(tcpHandshakeMs) ascending
+  avg_tcpHandshakeMs_ASC
+  # avg(tcpHandshakeMs) descending
+  avg_tcpHandshakeMs_DESC
+  # connectionCloseReason ascending
+  connectionCloseReason_ASC
+  # connectionCloseReason descending
+  connectionCloseReason_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # destinationPort ascending
+  destinationPort_ASC
+  # destinationPort descending
+  destinationPort_DESC
+  # destinationTunnelId ascending
+  destinationTunnelId_ASC
+  # destinationTunnelId descending
+  destinationTunnelId_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # egressColoName ascending
+  egressColoName_ASC
+  # egressColoName descending
+  egressColoName_DESC
+  # egressRuleId ascending
+  egressRuleId_ASC
+  # egressRuleId descending
+  egressRuleId_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # ingressColoName ascending
+  ingressColoName_ASC
+  # ingressColoName descending
+  ingressColoName_DESC
+  # offramp ascending
+  offramp_ASC
+  # offramp descending
+  offramp_DESC
+  # onRamp ascending
+  onRamp_ASC
+  # onRamp descending
+  onRamp_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # sni ascending
+  sni_ASC
+  # sni descending
+  sni_DESC
+  # sourceCountry ascending
+  sourceCountry_ASC
+  # sourceCountry descending
+  sourceCountry_DESC
+  # sourceIP ascending
+  sourceIP_ASC
+  # sourceIP descending
+  sourceIP_DESC
+  # sum(bytesDownload) ascending
+  sum_bytesDownload_ASC
+  # sum(bytesDownload) descending
+  sum_bytesDownload_DESC
+  # sum(bytesTotal) ascending
+  sum_bytesTotal_ASC
+  # sum(bytesTotal) descending
+  sum_bytesTotal_DESC
+  # sum(bytesUpload) ascending
+  sum_bytesUpload_ASC
+  # sum(bytesUpload) descending
+  sum_bytesUpload_DESC
+  # sum(sessions) ascending
+  sum_sessions_ASC
+  # sum(sessions) descending
+  sum_sessions_DESC
+  # uniq(devices) ascending
+  uniq_devices_ASC
+  # uniq(devices) descending
+  uniq_devices_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+}
+
+type AccountCf1GatewayNetworkSessionRawGroupsSum {
+  # Total bytes downloaded (origin to client)
+  bytesDownload: uint64!
+  # Total bytes transferred (upload + download)
+  bytesTotal: uint64!
+  # Total bytes uploaded (client to origin)
+  bytesUpload: uint64!
+  # Total network sessions
+  sessions: uint64!
+}
+
+type AccountCf1GatewayNetworkSessionRawGroupsUniq {
   # Unique devices
   devices: uint64!
   # Unique users
@@ -13581,7 +15955,7 @@ type AccountCloudflareTunnelsAnalyticsAdaptiveGroupsSumConfidence {
   egressBits: Confidence!
 }
 
-# Cloudforce One detection events for Workers scripts with adaptive sampling. Each row represents a single detection rule hit.
+# Cloudforce One detection events for Workers for Platforms scripts with adaptive sampling. Each row represents a single detection rule hit.
 type AccountCloudforceOneDetectionsAdaptiveGroups {
   avg: AccountCloudforceOneDetectionsAdaptiveGroupsAvg
   # ALPHA - DO NOT USE
@@ -13617,8 +15991,12 @@ type AccountCloudforceOneDetectionsAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # Name of the detection rule that was triggered
   detection: string!
+  # Workers for Platforms dispatch namespace name
+  dispatchNamespace: string!
   # The name of the Workers script
-  workerName: string!
+  resource: string!
+  # Detection rule source: 'managed' for Cloudflare-authored rules, 'custom' for customer-created rules
+  source: string!
 }
 
 input AccountCloudforceOneDetectionsAdaptiveGroupsFilter_InputObject {
@@ -13674,16 +16052,36 @@ input AccountCloudforceOneDetectionsAdaptiveGroupsFilter_InputObject {
   detection_neq: string
   detection_notin: [string!]
   detection_notlike: string
-  workerName: string
-  workerName_geq: string
-  workerName_gt: string
-  workerName_in: [string!]
-  workerName_leq: string
-  workerName_like: string
-  workerName_lt: string
-  workerName_neq: string
-  workerName_notin: [string!]
-  workerName_notlike: string
+  dispatchNamespace: string
+  dispatchNamespace_geq: string
+  dispatchNamespace_gt: string
+  dispatchNamespace_in: [string!]
+  dispatchNamespace_leq: string
+  dispatchNamespace_like: string
+  dispatchNamespace_lt: string
+  dispatchNamespace_neq: string
+  dispatchNamespace_notin: [string!]
+  dispatchNamespace_notlike: string
+  resource: string
+  resource_geq: string
+  resource_gt: string
+  resource_in: [string!]
+  resource_leq: string
+  resource_like: string
+  resource_lt: string
+  resource_neq: string
+  resource_notin: [string!]
+  resource_notlike: string
+  source: string
+  source_geq: string
+  source_gt: string
+  source_in: [string!]
+  source_leq: string
+  source_like: string
+  source_lt: string
+  source_neq: string
+  source_notin: [string!]
+  source_notlike: string
 }
 
 enum AccountCloudforceOneDetectionsAdaptiveGroupsOrderBy {
@@ -13719,10 +16117,18 @@ enum AccountCloudforceOneDetectionsAdaptiveGroupsOrderBy {
   detection_ASC
   # detection descending
   detection_DESC
-  # workerName ascending
-  workerName_ASC
-  # workerName descending
-  workerName_DESC
+  # dispatchNamespace ascending
+  dispatchNamespace_ASC
+  # dispatchNamespace descending
+  dispatchNamespace_DESC
+  # resource ascending
+  resource_ASC
+  # resource descending
+  resource_DESC
+  # source ascending
+  source_ASC
+  # source descending
+  source_DESC
 }
 
 # Metrics for Cloudchamber applications and deployments
@@ -28917,6 +31323,10 @@ type AccountHttpRequestsAdaptive {
   securitySource: string!
   # API Security Session ID hash
   sessionIdHash: string!
+  # Threat Intelligence dataset(s) that matched the visitor IP address (e.g. ddos, waf)
+  threatIntelIpDatasets: [string!]!
+  # UUIDv4 identifiers linking to Threat Intelligence events that matched the visitor IP address
+  threatIntelIpEventIds: [string!]!
   upperTierColoName: string!
   # visitor's user-agent string
   userAgent: string!
@@ -29620,6 +32030,16 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   sessionIdHash_neq: string
   sessionIdHash_notin: [string!]
   sessionIdHash_notlike: string
+  threatIntelIpDatasets_has: string
+  threatIntelIpDatasets_hasall: [string!]
+  threatIntelIpDatasets_hasany: [string!]
+  threatIntelIpDatasets_isempty: bool
+  threatIntelIpDatasets_nothas: string
+  threatIntelIpEventIds_has: string
+  threatIntelIpEventIds_hasall: [string!]
+  threatIntelIpEventIds_hasany: [string!]
+  threatIntelIpEventIds_isempty: bool
+  threatIntelIpEventIds_nothas: string
   upperTierColoName: string
   upperTierColoName_geq: string
   upperTierColoName_gt: string
@@ -29956,6 +32376,10 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   securitySource: string!
   # API Security Session ID hash
   sessionIdHash: string!
+  # Threat Intelligence dataset(s) that matched the visitor IP address (e.g. ddos, waf)
+  threatIntelIpDatasets: [string!]!
+  # UUIDv4 identifiers linking to Threat Intelligence events that matched the visitor IP address
+  threatIntelIpEventIds: [string!]!
   upperTierColoName: string!
   userAgent: string!
   # Browser parsed from the user agent
@@ -30666,6 +33090,16 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   sessionIdHash_neq: string
   sessionIdHash_notin: [string!]
   sessionIdHash_notlike: string
+  threatIntelIpDatasets_has: string
+  threatIntelIpDatasets_hasall: [string!]
+  threatIntelIpDatasets_hasany: [string!]
+  threatIntelIpDatasets_isempty: bool
+  threatIntelIpDatasets_nothas: string
+  threatIntelIpEventIds_has: string
+  threatIntelIpEventIds_hasall: [string!]
+  threatIntelIpEventIds_hasany: [string!]
+  threatIntelIpEventIds_isempty: bool
+  threatIntelIpEventIds_nothas: string
   upperTierColoName: string
   upperTierColoName_geq: string
   upperTierColoName_gt: string
@@ -31084,6 +33518,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   isCrossZoneSubrequest_ASC
   # isCrossZoneSubrequest descending
   isCrossZoneSubrequest_DESC
+  # isSpeedBrainPrefetch ascending
+  isSpeedBrainPrefetch_ASC
+  # isSpeedBrainPrefetch descending
+  isSpeedBrainPrefetch_DESC
   # ja3Hash ascending
   ja3Hash_ASC
   # ja3Hash descending
@@ -31432,6 +33870,14 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   sum_visits_ASC
   # sum(visits) descending
   sum_visits_DESC
+  # threatIntelIpDatasets ascending
+  threatIntelIpDatasets_ASC
+  # threatIntelIpDatasets descending
+  threatIntelIpDatasets_DESC
+  # threatIntelIpEventIds ascending
+  threatIntelIpEventIds_ASC
+  # threatIntelIpEventIds descending
+  threatIntelIpEventIds_DESC
   # upperTierColoName ascending
   upperTierColoName_ASC
   # upperTierColoName descending
@@ -31909,6 +34355,10 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   isCrossZoneSubrequest_ASC
   # isCrossZoneSubrequest descending
   isCrossZoneSubrequest_DESC
+  # isSpeedBrainPrefetch ascending
+  isSpeedBrainPrefetch_ASC
+  # isSpeedBrainPrefetch descending
+  isSpeedBrainPrefetch_DESC
   # ja3Hash ascending
   ja3Hash_ASC
   # ja3Hash descending
@@ -31981,6 +34431,14 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   sessionIdHash_ASC
   # sessionIdHash descending
   sessionIdHash_DESC
+  # threatIntelIpDatasets ascending
+  threatIntelIpDatasets_ASC
+  # threatIntelIpDatasets descending
+  threatIntelIpDatasets_DESC
+  # threatIntelIpEventIds ascending
+  threatIntelIpEventIds_ASC
+  # threatIntelIpEventIds descending
+  threatIntelIpEventIds_DESC
   # upperTierColoName ascending
   upperTierColoName_ASC
   # upperTierColoName descending
@@ -53740,6 +56198,598 @@ type AccountQueueMessageOperationsAdaptiveGroupsSumConfidence {
   bytes: Confidence!
 }
 
+# R2 Data Catalog data plane operations (Iceberg REST API requests) with adaptive sampling
+type AccountR2CatalogDataOperationsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountR2CatalogDataOperationsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountR2CatalogDataOperationsAdaptiveGroupsConfidence!
+  # Total number of catalog data plane requests
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountR2CatalogDataOperationsAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: AccountR2CatalogDataOperationsAdaptiveGroupsQuantiles
+  # The sum of values for a metric per dimension
+  sum: AccountR2CatalogDataOperationsAdaptiveGroupsSum
+}
+
+type AccountR2CatalogDataOperationsAdaptiveGroupsAvg {
+  # Average request duration in milliseconds
+  requestDurationMs: uint64!
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountR2CatalogDataOperationsAdaptiveGroupsConfidence {
+  # Total number of catalog data plane requests, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountR2CatalogDataOperationsAdaptiveGroupsSumConfidence
+}
+
+type AccountR2CatalogDataOperationsAdaptiveGroupsDimensions {
+  # Request timestamp, truncated to start of a day
+  date: Date!
+  # Request timestamp
+  datetime: Time!
+  # Request timestamp, truncated to start of fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Request timestamp, truncated to start of five minutes
+  datetimeFiveMinutes: Time!
+  # Request timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Request timestamp, truncated to start of a minute
+  datetimeMinute: Time!
+  # HTTP response status code
+  httpStatus: uint16!
+  # The Iceberg namespace targeted by the request, if applicable
+  namespaceName: string!
+  # The Iceberg REST API operation name (e.g. load-table, list-namespaces)
+  operation: string!
+  # The Iceberg table targeted by the request, if applicable
+  tableName: string!
+  # The name of the R2 Data Catalog warehouse
+  warehouseName: string!
+}
+
+input AccountR2CatalogDataOperationsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountR2CatalogDataOperationsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountR2CatalogDataOperationsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  httpStatus: uint16
+  httpStatus_geq: uint16
+  httpStatus_gt: uint16
+  httpStatus_in: [uint16!]
+  httpStatus_leq: uint16
+  httpStatus_lt: uint16
+  httpStatus_neq: uint16
+  httpStatus_notin: [uint16!]
+  namespaceName: string
+  namespaceName_geq: string
+  namespaceName_gt: string
+  namespaceName_in: [string!]
+  namespaceName_leq: string
+  namespaceName_like: string
+  namespaceName_lt: string
+  namespaceName_neq: string
+  namespaceName_notin: [string!]
+  namespaceName_notlike: string
+  operation: string
+  operation_geq: string
+  operation_gt: string
+  operation_in: [string!]
+  operation_leq: string
+  operation_like: string
+  operation_lt: string
+  operation_neq: string
+  operation_notin: [string!]
+  operation_notlike: string
+  tableName: string
+  tableName_geq: string
+  tableName_gt: string
+  tableName_in: [string!]
+  tableName_leq: string
+  tableName_like: string
+  tableName_lt: string
+  tableName_neq: string
+  tableName_notin: [string!]
+  tableName_notlike: string
+  warehouseName: string
+  warehouseName_geq: string
+  warehouseName_gt: string
+  warehouseName_in: [string!]
+  warehouseName_leq: string
+  warehouseName_like: string
+  warehouseName_lt: string
+  warehouseName_neq: string
+  warehouseName_notin: [string!]
+  warehouseName_notlike: string
+}
+
+enum AccountR2CatalogDataOperationsAdaptiveGroupsOrderBy {
+  # avg(requestDurationMs) ascending
+  avg_requestDurationMs_ASC
+  # avg(requestDurationMs) descending
+  avg_requestDurationMs_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # httpStatus ascending
+  httpStatus_ASC
+  # httpStatus descending
+  httpStatus_DESC
+  # namespaceName ascending
+  namespaceName_ASC
+  # namespaceName descending
+  namespaceName_DESC
+  # operation ascending
+  operation_ASC
+  # operation descending
+  operation_DESC
+  # quantiles(requestDurationMsP25) ascending
+  quantiles_requestDurationMsP25_ASC
+  # quantiles(requestDurationMsP25) descending
+  quantiles_requestDurationMsP25_DESC
+  # quantiles(requestDurationMsP50) ascending
+  quantiles_requestDurationMsP50_ASC
+  # quantiles(requestDurationMsP50) descending
+  quantiles_requestDurationMsP50_DESC
+  # quantiles(requestDurationMsP75) ascending
+  quantiles_requestDurationMsP75_ASC
+  # quantiles(requestDurationMsP75) descending
+  quantiles_requestDurationMsP75_DESC
+  # quantiles(requestDurationMsP90) ascending
+  quantiles_requestDurationMsP90_ASC
+  # quantiles(requestDurationMsP90) descending
+  quantiles_requestDurationMsP90_DESC
+  # quantiles(requestDurationMsP95) ascending
+  quantiles_requestDurationMsP95_ASC
+  # quantiles(requestDurationMsP95) descending
+  quantiles_requestDurationMsP95_DESC
+  # quantiles(requestDurationMsP999) ascending
+  quantiles_requestDurationMsP999_ASC
+  # quantiles(requestDurationMsP999) descending
+  quantiles_requestDurationMsP999_DESC
+  # quantiles(requestDurationMsP99) ascending
+  quantiles_requestDurationMsP99_ASC
+  # quantiles(requestDurationMsP99) descending
+  quantiles_requestDurationMsP99_DESC
+  # sum(requestBodyBytes) ascending
+  sum_requestBodyBytes_ASC
+  # sum(requestBodyBytes) descending
+  sum_requestBodyBytes_DESC
+  # sum(requestDurationMs) ascending
+  sum_requestDurationMs_ASC
+  # sum(requestDurationMs) descending
+  sum_requestDurationMs_DESC
+  # tableName ascending
+  tableName_ASC
+  # tableName descending
+  tableName_DESC
+  # warehouseName ascending
+  warehouseName_ASC
+  # warehouseName descending
+  warehouseName_DESC
+}
+
+type AccountR2CatalogDataOperationsAdaptiveGroupsQuantiles {
+  # 25th percentile request duration (milliseconds)
+  requestDurationMsP25: float32!
+  # 50th percentile request duration (milliseconds)
+  requestDurationMsP50: float32!
+  # 75th percentile request duration (milliseconds)
+  requestDurationMsP75: float32!
+  # 90th percentile request duration (milliseconds)
+  requestDurationMsP90: float32!
+  # 95th percentile request duration (milliseconds)
+  requestDurationMsP95: float32!
+  # 99th percentile request duration (milliseconds)
+  requestDurationMsP99: float32!
+  # 99.9th percentile request duration (milliseconds)
+  requestDurationMsP999: float32!
+}
+
+type AccountR2CatalogDataOperationsAdaptiveGroupsSum {
+  # Sum of request body bytes
+  requestBodyBytes: uint64!
+  # Total request duration in milliseconds
+  requestDurationMs: uint64!
+}
+
+type AccountR2CatalogDataOperationsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  requestBodyBytes: Confidence!
+  # Confidence interval for the corresponding point estimate
+  requestDurationMs: Confidence!
+}
+
+# R2 Data Catalog table maintenance job metrics (compaction, snapshot expiration) with adaptive sampling
+type AccountR2CatalogTableMaintenanceAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountR2CatalogTableMaintenanceAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountR2CatalogTableMaintenanceAdaptiveGroupsConfidence!
+  # Total number of table maintenance jobs
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountR2CatalogTableMaintenanceAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: AccountR2CatalogTableMaintenanceAdaptiveGroupsQuantiles
+  # The sum of values for a metric per dimension
+  sum: AccountR2CatalogTableMaintenanceAdaptiveGroupsSum
+}
+
+type AccountR2CatalogTableMaintenanceAdaptiveGroupsAvg {
+  # Average job duration in milliseconds
+  jobDurationMs: uint64!
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountR2CatalogTableMaintenanceAdaptiveGroupsConfidence {
+  # Total number of table maintenance jobs, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountR2CatalogTableMaintenanceAdaptiveGroupsSumConfidence
+}
+
+type AccountR2CatalogTableMaintenanceAdaptiveGroupsDimensions {
+  # Job timestamp, truncated to start of a day
+  date: Date!
+  # Job timestamp
+  datetime: Time!
+  # Job timestamp, truncated to start of fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Job timestamp, truncated to start of five minutes
+  datetimeFiveMinutes: Time!
+  # Job timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Job timestamp, truncated to start of a minute
+  datetimeMinute: Time!
+  # The type of maintenance job (compaction, snapshot-expiration)
+  jobType: string!
+  # The Iceberg namespace containing the table
+  namespaceName: string!
+  # Whether the job succeeded (1) or failed (0)
+  success: uint8!
+  # The Iceberg table that was maintained
+  tableName: string!
+  # The name of the R2 Data Catalog warehouse
+  warehouseName: string!
+}
+
+input AccountR2CatalogTableMaintenanceAdaptiveGroupsFilter_InputObject {
+  AND: [AccountR2CatalogTableMaintenanceAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountR2CatalogTableMaintenanceAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  jobType: string
+  jobType_geq: string
+  jobType_gt: string
+  jobType_in: [string!]
+  jobType_leq: string
+  jobType_like: string
+  jobType_lt: string
+  jobType_neq: string
+  jobType_notin: [string!]
+  jobType_notlike: string
+  namespaceName: string
+  namespaceName_geq: string
+  namespaceName_gt: string
+  namespaceName_in: [string!]
+  namespaceName_leq: string
+  namespaceName_like: string
+  namespaceName_lt: string
+  namespaceName_neq: string
+  namespaceName_notin: [string!]
+  namespaceName_notlike: string
+  success: uint8
+  success_geq: uint8
+  success_gt: uint8
+  success_in: bytes
+  success_leq: uint8
+  success_lt: uint8
+  success_neq: uint8
+  success_notin: bytes
+  tableName: string
+  tableName_geq: string
+  tableName_gt: string
+  tableName_in: [string!]
+  tableName_leq: string
+  tableName_like: string
+  tableName_lt: string
+  tableName_neq: string
+  tableName_notin: [string!]
+  tableName_notlike: string
+  warehouseName: string
+  warehouseName_geq: string
+  warehouseName_gt: string
+  warehouseName_in: [string!]
+  warehouseName_leq: string
+  warehouseName_like: string
+  warehouseName_lt: string
+  warehouseName_neq: string
+  warehouseName_notin: [string!]
+  warehouseName_notlike: string
+}
+
+enum AccountR2CatalogTableMaintenanceAdaptiveGroupsOrderBy {
+  # avg(jobDurationMs) ascending
+  avg_jobDurationMs_ASC
+  # avg(jobDurationMs) descending
+  avg_jobDurationMs_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # jobType ascending
+  jobType_ASC
+  # jobType descending
+  jobType_DESC
+  # namespaceName ascending
+  namespaceName_ASC
+  # namespaceName descending
+  namespaceName_DESC
+  # quantiles(jobDurationMsP25) ascending
+  quantiles_jobDurationMsP25_ASC
+  # quantiles(jobDurationMsP25) descending
+  quantiles_jobDurationMsP25_DESC
+  # quantiles(jobDurationMsP50) ascending
+  quantiles_jobDurationMsP50_ASC
+  # quantiles(jobDurationMsP50) descending
+  quantiles_jobDurationMsP50_DESC
+  # quantiles(jobDurationMsP75) ascending
+  quantiles_jobDurationMsP75_ASC
+  # quantiles(jobDurationMsP75) descending
+  quantiles_jobDurationMsP75_DESC
+  # quantiles(jobDurationMsP90) ascending
+  quantiles_jobDurationMsP90_ASC
+  # quantiles(jobDurationMsP90) descending
+  quantiles_jobDurationMsP90_DESC
+  # quantiles(jobDurationMsP95) ascending
+  quantiles_jobDurationMsP95_ASC
+  # quantiles(jobDurationMsP95) descending
+  quantiles_jobDurationMsP95_DESC
+  # quantiles(jobDurationMsP999) ascending
+  quantiles_jobDurationMsP999_ASC
+  # quantiles(jobDurationMsP999) descending
+  quantiles_jobDurationMsP999_DESC
+  # quantiles(jobDurationMsP99) ascending
+  quantiles_jobDurationMsP99_ASC
+  # quantiles(jobDurationMsP99) descending
+  quantiles_jobDurationMsP99_DESC
+  # success ascending
+  success_ASC
+  # success descending
+  success_DESC
+  # sum(filesOutput) ascending
+  sum_filesOutput_ASC
+  # sum(filesOutput) descending
+  sum_filesOutput_DESC
+  # sum(filesProcessed) ascending
+  sum_filesProcessed_ASC
+  # sum(filesProcessed) descending
+  sum_filesProcessed_DESC
+  # sum(inputBytes) ascending
+  sum_inputBytes_ASC
+  # sum(inputBytes) descending
+  sum_inputBytes_DESC
+  # sum(jobDurationMs) ascending
+  sum_jobDurationMs_ASC
+  # sum(jobDurationMs) descending
+  sum_jobDurationMs_DESC
+  # sum(outputBytes) ascending
+  sum_outputBytes_ASC
+  # sum(outputBytes) descending
+  sum_outputBytes_DESC
+  # tableName ascending
+  tableName_ASC
+  # tableName descending
+  tableName_DESC
+  # warehouseName ascending
+  warehouseName_ASC
+  # warehouseName descending
+  warehouseName_DESC
+}
+
+type AccountR2CatalogTableMaintenanceAdaptiveGroupsQuantiles {
+  # 25th percentile job duration (milliseconds)
+  jobDurationMsP25: float32!
+  # 50th percentile job duration (milliseconds)
+  jobDurationMsP50: float32!
+  # 75th percentile job duration (milliseconds)
+  jobDurationMsP75: float32!
+  # 90th percentile job duration (milliseconds)
+  jobDurationMsP90: float32!
+  # 95th percentile job duration (milliseconds)
+  jobDurationMsP95: float32!
+  # 99th percentile job duration (milliseconds)
+  jobDurationMsP99: float32!
+  # 99.9th percentile job duration (milliseconds)
+  jobDurationMsP999: float32!
+}
+
+type AccountR2CatalogTableMaintenanceAdaptiveGroupsSum {
+  # Sum of output files created by maintenance jobs
+  filesOutput: uint64!
+  # Sum of input files processed by maintenance jobs
+  filesProcessed: uint64!
+  # Sum of bytes read/scanned by maintenance jobs
+  inputBytes: uint64!
+  # Total job duration in milliseconds
+  jobDurationMs: uint64!
+  # Sum of bytes written by maintenance jobs
+  outputBytes: uint64!
+}
+
+type AccountR2CatalogTableMaintenanceAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  filesOutput: Confidence!
+  # Confidence interval for the corresponding point estimate
+  filesProcessed: Confidence!
+  # Confidence interval for the corresponding point estimate
+  inputBytes: Confidence!
+  # Confidence interval for the corresponding point estimate
+  jobDurationMs: Confidence!
+  # Confidence interval for the corresponding point estimate
+  outputBytes: Confidence!
+}
+
 # Beta. R2 operations with adaptive sampling
 type AccountR2OperationsAdaptiveGroups {
   # ALPHA - DO NOT USE
@@ -57334,9 +60384,21 @@ type AccountSettings {
   callsTurnUsageAdaptiveGroups: Settings!
   callsUsageAdaptiveGroups: Settings!
   cdnNetworkAnalyticsAdaptiveGroups: Settings!
+  cf1AccessLogins1dGroups: Settings!
+  cf1AccessLogins1hGroups: Settings!
+  cf1AccessLoginsRawGroups: Settings!
   cf1GatewayDns1dGroups: Settings!
   cf1GatewayDns1hGroups: Settings!
   cf1GatewayDnsRawGroups: Settings!
+  cf1GatewayHttp1dGroups: Settings!
+  cf1GatewayHttp1hGroups: Settings!
+  cf1GatewayHttpRawGroups: Settings!
+  cf1GatewayNetwork1dGroups: Settings!
+  cf1GatewayNetwork1hGroups: Settings!
+  cf1GatewayNetworkRawGroups: Settings!
+  cf1GatewayNetworkSession1dGroups: Settings!
+  cf1GatewayNetworkSession1hGroups: Settings!
+  cf1GatewayNetworkSessionRawGroups: Settings!
   cloudchamberMetricsAdaptiveGroups: Settings!
   cloudflareTunnelsAnalyticsAdaptiveGroups: Settings!
   cloudforceOneDetectionsAdaptiveGroups: Settings!
@@ -57444,6 +60506,8 @@ type AccountSettings {
   queueConsumerMetricsAdaptiveGroups: Settings!
   queueDelayedBacklogAdaptiveGroups: Settings!
   queueMessageOperationsAdaptiveGroups: Settings!
+  r2CatalogDataOperationsAdaptiveGroups: Settings!
+  r2CatalogTableMaintenanceAdaptiveGroups: Settings!
   r2OperationsAdaptiveGroups: Settings!
   r2StorageAdaptiveGroups: Settings!
   realtimeKitUsageAdaptiveGroups: Settings!
@@ -66948,6 +70012,10 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   securitySource: string!
   # API Security Session ID hash
   sessionIdHash: string!
+  # Threat Intelligence dataset(s) that matched the visitor IP address (e.g. ddos, waf)
+  threatIntelIpDatasets: [string!]!
+  # UUIDv4 identifiers linking to Threat Intelligence events that matched the visitor IP address
+  threatIntelIpEventIds: [string!]!
   upperTierColoName: string!
   userAgent: string!
   # Browser parsed from the user agent
@@ -67648,6 +70716,16 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   sessionIdHash_neq: string
   sessionIdHash_notin: [string!]
   sessionIdHash_notlike: string
+  threatIntelIpDatasets_has: string
+  threatIntelIpDatasets_hasall: [string!]
+  threatIntelIpDatasets_hasany: [string!]
+  threatIntelIpDatasets_isempty: bool
+  threatIntelIpDatasets_nothas: string
+  threatIntelIpEventIds_has: string
+  threatIntelIpEventIds_hasall: [string!]
+  threatIntelIpEventIds_hasany: [string!]
+  threatIntelIpEventIds_isempty: bool
+  threatIntelIpEventIds_nothas: string
   upperTierColoName: string
   upperTierColoName_geq: string
   upperTierColoName_gt: string
@@ -68048,6 +71126,10 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   isCrossZoneSubrequest_ASC
   # isCrossZoneSubrequest descending
   isCrossZoneSubrequest_DESC
+  # isSpeedBrainPrefetch ascending
+  isSpeedBrainPrefetch_ASC
+  # isSpeedBrainPrefetch descending
+  isSpeedBrainPrefetch_DESC
   # ja3Hash ascending
   ja3Hash_ASC
   # ja3Hash descending
@@ -68348,6 +71430,14 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   sum_visits_ASC
   # sum(visits) descending
   sum_visits_DESC
+  # threatIntelIpDatasets ascending
+  threatIntelIpDatasets_ASC
+  # threatIntelIpDatasets descending
+  threatIntelIpDatasets_DESC
+  # threatIntelIpEventIds ascending
+  threatIntelIpEventIds_ASC
+  # threatIntelIpEventIds descending
+  threatIntelIpEventIds_DESC
   # upperTierColoName ascending
   upperTierColoName_ASC
   # upperTierColoName descending
@@ -78611,6 +81701,10 @@ type ZoneHttpRequestsAdaptive {
   securitySource: string!
   # API Security Session ID hash
   sessionIdHash: string!
+  # Threat Intelligence dataset(s) that matched the visitor IP address (e.g. ddos, waf)
+  threatIntelIpDatasets: [string!]!
+  # UUIDv4 identifiers linking to Threat Intelligence events that matched the visitor IP address
+  threatIntelIpEventIds: [string!]!
   upperTierColoName: string!
   # visitor's user-agent string
   userAgent: string!
@@ -79312,6 +82406,16 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   sessionIdHash_neq: string
   sessionIdHash_notin: [string!]
   sessionIdHash_notlike: string
+  threatIntelIpDatasets_has: string
+  threatIntelIpDatasets_hasall: [string!]
+  threatIntelIpDatasets_hasany: [string!]
+  threatIntelIpDatasets_isempty: bool
+  threatIntelIpDatasets_nothas: string
+  threatIntelIpEventIds_has: string
+  threatIntelIpEventIds_hasall: [string!]
+  threatIntelIpEventIds_hasany: [string!]
+  threatIntelIpEventIds_isempty: bool
+  threatIntelIpEventIds_nothas: string
   upperTierColoName: string
   upperTierColoName_geq: string
   upperTierColoName_gt: string
@@ -79638,6 +82742,10 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   securitySource: string!
   # API Security Session ID hash
   sessionIdHash: string!
+  # Threat Intelligence dataset(s) that matched the visitor IP address (e.g. ddos, waf)
+  threatIntelIpDatasets: [string!]!
+  # UUIDv4 identifiers linking to Threat Intelligence events that matched the visitor IP address
+  threatIntelIpEventIds: [string!]!
   upperTierColoName: string!
   userAgent: string!
   # Browser parsed from the user agent
@@ -80346,6 +83454,16 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   sessionIdHash_neq: string
   sessionIdHash_notin: [string!]
   sessionIdHash_notlike: string
+  threatIntelIpDatasets_has: string
+  threatIntelIpDatasets_hasall: [string!]
+  threatIntelIpDatasets_hasany: [string!]
+  threatIntelIpDatasets_isempty: bool
+  threatIntelIpDatasets_nothas: string
+  threatIntelIpEventIds_has: string
+  threatIntelIpEventIds_hasall: [string!]
+  threatIntelIpEventIds_hasany: [string!]
+  threatIntelIpEventIds_isempty: bool
+  threatIntelIpEventIds_nothas: string
   upperTierColoName: string
   upperTierColoName_geq: string
   upperTierColoName_gt: string
@@ -80754,6 +83872,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   isCrossZoneSubrequest_ASC
   # isCrossZoneSubrequest descending
   isCrossZoneSubrequest_DESC
+  # isSpeedBrainPrefetch ascending
+  isSpeedBrainPrefetch_ASC
+  # isSpeedBrainPrefetch descending
+  isSpeedBrainPrefetch_DESC
   # ja3Hash ascending
   ja3Hash_ASC
   # ja3Hash descending
@@ -81102,6 +84224,14 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   sum_visits_ASC
   # sum(visits) descending
   sum_visits_DESC
+  # threatIntelIpDatasets ascending
+  threatIntelIpDatasets_ASC
+  # threatIntelIpDatasets descending
+  threatIntelIpDatasets_DESC
+  # threatIntelIpEventIds ascending
+  threatIntelIpEventIds_ASC
+  # threatIntelIpEventIds descending
+  threatIntelIpEventIds_DESC
   # upperTierColoName ascending
   upperTierColoName_ASC
   # upperTierColoName descending
@@ -81575,6 +84705,10 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   isCrossZoneSubrequest_ASC
   # isCrossZoneSubrequest descending
   isCrossZoneSubrequest_DESC
+  # isSpeedBrainPrefetch ascending
+  isSpeedBrainPrefetch_ASC
+  # isSpeedBrainPrefetch descending
+  isSpeedBrainPrefetch_DESC
   # ja3Hash ascending
   ja3Hash_ASC
   # ja3Hash descending
@@ -81647,6 +84781,14 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   sessionIdHash_ASC
   # sessionIdHash descending
   sessionIdHash_DESC
+  # threatIntelIpDatasets ascending
+  threatIntelIpDatasets_ASC
+  # threatIntelIpDatasets descending
+  threatIntelIpDatasets_DESC
+  # threatIntelIpEventIds ascending
+  threatIntelIpEventIds_ASC
+  # threatIntelIpEventIds descending
+  threatIntelIpEventIds_DESC
   # upperTierColoName ascending
   upperTierColoName_ASC
   # upperTierColoName descending
@@ -83877,6 +87019,7 @@ type ZoneSettings {
 type ZoneUserProfilesAdaptiveGroups {
   # List of dimensions to group by
   dimensions: ZoneUserProfilesAdaptiveGroupsDimensions
+  max: ZoneUserProfilesAdaptiveGroupsMax
   sum: ZoneUserProfilesAdaptiveGroupsSum
   uniq: ZoneUserProfilesAdaptiveGroupsUniq
 }
@@ -83884,6 +87027,8 @@ type ZoneUserProfilesAdaptiveGroups {
 type ZoneUserProfilesAdaptiveGroupsDimensions {
   # Profile aggregates for a given date.
   date: Date!
+  # Type of the event. Possible values are login or signup.
+  eventType: string!
   # Unique identifier for a user. 128-bit hash.
   userId: string!
 }
@@ -83899,6 +87044,16 @@ input ZoneUserProfilesAdaptiveGroupsFilter_InputObject {
   date_lt: Date
   date_neq: Date
   date_notin: [Date!]
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
   userId: string
   userId_geq: string
   userId_gt: string
@@ -83911,15 +87066,44 @@ input ZoneUserProfilesAdaptiveGroupsFilter_InputObject {
   userId_notlike: string
 }
 
+type ZoneUserProfilesAdaptiveGroupsMax {
+  # Timestamp of the most recent event for a user id.
+  lastSeen: Time!
+}
+
 enum ZoneUserProfilesAdaptiveGroupsOrderBy {
   # date ascending
   date_ASC
   # date descending
   date_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
+  # max(lastSeen) ascending
+  max_lastSeen_ASC
+  # max(lastSeen) descending
+  max_lastSeen_DESC
+  # sum(lccFailures) ascending
+  sum_lccFailures_ASC
+  # sum(lccFailures) descending
+  sum_lccFailures_DESC
+  # sum(topASNs) ascending
+  sum_topASNs_ASC
+  # sum(topASNs) descending
+  sum_topASNs_DESC
   # sum(topCountries) ascending
   sum_topCountries_ASC
   # sum(topCountries) descending
   sum_topCountries_DESC
+  # sum(topIPs) ascending
+  sum_topIPs_ASC
+  # sum(topIPs) descending
+  sum_topIPs_DESC
+  # sum(topUserAgents) ascending
+  sum_topUserAgents_ASC
+  # sum(topUserAgents) descending
+  sum_topUserAgents_DESC
   # uniq(ipCount) ascending
   uniq_ipCount_ASC
   # uniq(ipCount) descending
@@ -83931,8 +87115,16 @@ enum ZoneUserProfilesAdaptiveGroupsOrderBy {
 }
 
 type ZoneUserProfilesAdaptiveGroupsSum {
+  # Number of leaked credential check failures for a user id.
+  lccFailures: uint64!
+  # Array of top 5 ASNs for a user id.
+  topASNs: [uint32!]!
   # Array of top 5 country codes (alpha2) for a user id.
   topCountries: [string!]!
+  # Array of top 5 IP addresses for a user id.
+  topIPs: [string!]!
+  # Array of top 5 user agents for a user id.
+  topUserAgents: [string!]!
 }
 
 type ZoneUserProfilesAdaptiveGroupsUniq {
