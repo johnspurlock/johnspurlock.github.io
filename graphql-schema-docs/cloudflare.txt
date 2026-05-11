@@ -45,6 +45,7 @@ Account-level datasets:
 * cloudchamberMetricsAdaptiveGroups
 * cloudflareTunnelsAnalyticsAdaptiveGroups
 * cloudforceOneDetectionsAdaptiveGroups
+* cloudforceOneDetectionsStagingAdaptiveGroups
 * containersMetricsAdaptiveGroups
 * containersUsageAdaptiveGroups
 * d1AnalyticsAdaptiveGroups
@@ -64,6 +65,8 @@ Account-level datasets:
   fbmAttackAnalyticsGroups
 * firewallEventsAdaptive
   firewallEventsAdaptiveGroups
+* flagshipFlagEvaluationsAdaptive
+* flagshipFlagEvaluationsAdaptiveGroups
   flowtrackdNetworkAnalyticsAdaptiveGroups
   gatewayL4DownstreamSessionsAdaptiveGroups
 * gatewayL4SessionsAdaptiveGroups
@@ -90,6 +93,7 @@ Account-level datasets:
 * liveInputEventsAdaptiveGroups
 * logExplorerIngestionAdaptiveGroups
 * logpushHealthAdaptiveGroups
+* logpushTransformersAdaptiveGroups
   magicEndpointHealthCheckAdaptiveGroups
   magicFirewallNetworkAnalyticsAdaptiveGroups
   magicFirewallRateLimitNetworkAnalyticsAdaptiveGroups
@@ -227,6 +231,7 @@ Zone-level datasets:
   loadBalancingRequestsAdaptive
   loadBalancingRequestsAdaptiveGroups
 * logpushHealthAdaptiveGroups
+* logpushTransformersAdaptiveGroups
   nelReportsAdaptiveGroups
   pageShieldReportsAdaptiveGroups
 * userProfilesAdaptiveGroups
@@ -258,7 +263,7 @@ scalar bytes
 # Scalar type types.Date
 scalar Date
 
-# Scalar type float32
+# Scalar type types.Float32
 scalar float32
 
 # Scalar type float64
@@ -390,6 +395,8 @@ type account {
   cloudflareTunnelsAnalyticsAdaptiveGroups(filter: AccountCloudflareTunnelsAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCloudflareTunnelsAnalyticsAdaptiveGroupsOrderBy!]): [AccountCloudflareTunnelsAnalyticsAdaptiveGroups!]!
   # Cloudforce One detection events for Workers for Platforms scripts with adaptive sampling. Each row represents a single detection rule hit.
   cloudforceOneDetectionsAdaptiveGroups(filter: AccountCloudforceOneDetectionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCloudforceOneDetectionsAdaptiveGroupsOrderBy!]): [AccountCloudforceOneDetectionsAdaptiveGroups!]!
+  # Cloudforce One detection events for Workers for Platforms scripts with adaptive sampling (staging). Each row represents a single detection rule hit.
+  cloudforceOneDetectionsStagingAdaptiveGroups(filter: AccountCloudforceOneDetectionsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCloudforceOneDetectionsStagingAdaptiveGroupsOrderBy!]): [AccountCloudforceOneDetectionsStagingAdaptiveGroups!]!
   # Metrics for Cloudchamber applications and deployments
   containersMetricsAdaptiveGroups(filter: AccountContainersMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountContainersMetricsAdaptiveGroupsOrderBy!]): [AccountContainersMetricsAdaptiveGroups!]!
   # Used to compute usage queries for billing estimates in Dash
@@ -428,6 +435,10 @@ type account {
   firewallEventsAdaptive(filter: AccountFirewallEventsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountFirewallEventsAdaptiveOrderBy!]): [AccountFirewallEventsAdaptive!]!
   # Aggregated Firewall events with adaptive sampling
   firewallEventsAdaptiveGroups(filter: AccountFirewallEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountFirewallEventsAdaptiveGroupsOrderBy!]): [AccountFirewallEventsAdaptiveGroups!]!
+  # Flagship feature flag evaluations with adaptive sampling. Each row represents an individual flag evaluation.
+  flagshipFlagEvaluationsAdaptive(filter: AccountFlagshipFlagEvaluationsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountFlagshipFlagEvaluationsAdaptiveOrderBy!]): [AccountFlagshipFlagEvaluationsAdaptive!]!
+  # Aggregated Flagship feature flag evaluations with adaptive sampling. Use this to build dashboards over evaluation volume, latency, and error rates.
+  flagshipFlagEvaluationsAdaptiveGroups(filter: AccountFlagshipFlagEvaluationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountFlagshipFlagEvaluationsAdaptiveGroupsOrderBy!]): [AccountFlagshipFlagEvaluationsAdaptiveGroups!]!
   # Network analytics data for flowtrackd
   @Deprecated
   flowtrackdNetworkAnalyticsAdaptiveGroups(filter: AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountFlowtrackdNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountFlowtrackdNetworkAnalyticsAdaptiveGroups!]!
@@ -481,6 +492,8 @@ type account {
   logExplorerIngestionAdaptiveGroups(filter: AccountLogExplorerIngestionAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogExplorerIngestionAdaptiveGroupsOrderBy!]): [AccountLogExplorerIngestionAdaptiveGroups!]!
   # Beta. Logpush job health metrics
   logpushHealthAdaptiveGroups(filter: AccountLogpushHealthAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogpushHealthAdaptiveGroupsOrderBy!]): [AccountLogpushHealthAdaptiveGroups!]!
+  # Beta. Logpush transformer health metrics
+  logpushTransformersAdaptiveGroups(filter: AccountLogpushTransformersAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogpushTransformersAdaptiveGroupsOrderBy!]): [AccountLogpushTransformersAdaptiveGroups!]!
   # Magic Endpoint Healthcheck events with adaptive sampling.
   magicEndpointHealthCheckAdaptiveGroups(filter: AccountMagicEndpointHealthCheckAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicEndpointHealthCheckAdaptiveGroupsOrderBy!]): [AccountMagicEndpointHealthCheckAdaptiveGroups!]!
   # Network analytics data for Magic Firewall
@@ -14553,6 +14566,7 @@ type AccountCloudchamberMetricsAdaptiveGroupsConfidence {
 
 type AccountCloudchamberMetricsAdaptiveGroupsDimensions {
   # Whether the container is active or not
+  @Deprecated
   active: uint8!
   # The application ID
   applicationId: string!
@@ -14585,6 +14599,7 @@ type AccountCloudchamberMetricsAdaptiveGroupsDimensions {
   # The placement ID
   placementId: string!
   # Process type
+  @Deprecated
   procType: string!
   # Region
   region: string!
@@ -15991,6 +16006,8 @@ type AccountCloudforceOneDetectionsAdaptiveGroupsDimensions {
   datetimeMinute: Time!
   # Name of the detection rule that was triggered
   detection: string!
+  # Detection type: 'static' for workers/customer_workers_scans and 'dynamic' for worker_invocations
+  detectionType: string!
   # Workers for Platforms dispatch namespace name
   dispatchNamespace: string!
   # The name of the Workers script
@@ -16043,6 +16060,16 @@ input AccountCloudforceOneDetectionsAdaptiveGroupsFilter_InputObject {
   datetime_neq: Time
   datetime_notin: [Time!]
   detection: string
+  detectionType: string
+  detectionType_geq: string
+  detectionType_gt: string
+  detectionType_in: [string!]
+  detectionType_leq: string
+  detectionType_like: string
+  detectionType_lt: string
+  detectionType_neq: string
+  detectionType_notin: [string!]
+  detectionType_notlike: string
   detection_geq: string
   detection_gt: string
   detection_in: [string!]
@@ -16113,6 +16140,202 @@ enum AccountCloudforceOneDetectionsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # detectionType ascending
+  detectionType_ASC
+  # detectionType descending
+  detectionType_DESC
+  # detection ascending
+  detection_ASC
+  # detection descending
+  detection_DESC
+  # dispatchNamespace ascending
+  dispatchNamespace_ASC
+  # dispatchNamespace descending
+  dispatchNamespace_DESC
+  # resource ascending
+  resource_ASC
+  # resource descending
+  resource_DESC
+  # source ascending
+  source_ASC
+  # source descending
+  source_DESC
+}
+
+# Cloudforce One detection events for Workers for Platforms scripts with adaptive sampling (staging). Each row represents a single detection rule hit.
+type AccountCloudforceOneDetectionsStagingAdaptiveGroups {
+  avg: AccountCloudforceOneDetectionsStagingAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountCloudforceOneDetectionsStagingAdaptiveGroupsConfidence!
+  # Total number of detection rule hits
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountCloudforceOneDetectionsStagingAdaptiveGroupsDimensions
+}
+
+type AccountCloudforceOneDetectionsStagingAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountCloudforceOneDetectionsStagingAdaptiveGroupsConfidence {
+  # Total number of detection rule hits, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type AccountCloudforceOneDetectionsStagingAdaptiveGroupsDimensions {
+  # Detection event date
+  date: Date!
+  # Detection event timestamp
+  datetime: Time!
+  # Detection event timestamp, truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Detection event timestamp, truncated to hour
+  datetimeHour: Time!
+  # Detection event timestamp, truncated to minute
+  datetimeMinute: Time!
+  # Name of the detection rule that was triggered
+  detection: string!
+  # Detection type: 'static' for workers/customer_workers_scans and 'dynamic' for worker_invocations
+  detectionType: string!
+  # Workers for Platforms dispatch namespace name
+  dispatchNamespace: string!
+  # The name of the Workers script
+  resource: string!
+  # Detection rule source: 'managed' for Cloudflare-authored rules, 'custom' for customer-created rules
+  source: string!
+}
+
+input AccountCloudforceOneDetectionsStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountCloudforceOneDetectionsStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountCloudforceOneDetectionsStagingAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  detection: string
+  detectionType: string
+  detectionType_geq: string
+  detectionType_gt: string
+  detectionType_in: [string!]
+  detectionType_leq: string
+  detectionType_like: string
+  detectionType_lt: string
+  detectionType_neq: string
+  detectionType_notin: [string!]
+  detectionType_notlike: string
+  detection_geq: string
+  detection_gt: string
+  detection_in: [string!]
+  detection_leq: string
+  detection_like: string
+  detection_lt: string
+  detection_neq: string
+  detection_notin: [string!]
+  detection_notlike: string
+  dispatchNamespace: string
+  dispatchNamespace_geq: string
+  dispatchNamespace_gt: string
+  dispatchNamespace_in: [string!]
+  dispatchNamespace_leq: string
+  dispatchNamespace_like: string
+  dispatchNamespace_lt: string
+  dispatchNamespace_neq: string
+  dispatchNamespace_notin: [string!]
+  dispatchNamespace_notlike: string
+  resource: string
+  resource_geq: string
+  resource_gt: string
+  resource_in: [string!]
+  resource_leq: string
+  resource_like: string
+  resource_lt: string
+  resource_neq: string
+  resource_notin: [string!]
+  resource_notlike: string
+  source: string
+  source_geq: string
+  source_gt: string
+  source_in: [string!]
+  source_leq: string
+  source_like: string
+  source_lt: string
+  source_neq: string
+  source_notin: [string!]
+  source_notlike: string
+}
+
+enum AccountCloudforceOneDetectionsStagingAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # detectionType ascending
+  detectionType_ASC
+  # detectionType descending
+  detectionType_DESC
   # detection ascending
   detection_ASC
   # detection descending
@@ -16184,6 +16407,7 @@ type AccountContainersMetricsAdaptiveGroupsConfidence {
 
 type AccountContainersMetricsAdaptiveGroupsDimensions {
   # Whether the container is active or not
+  @Deprecated
   active: uint8!
   # The application ID
   applicationId: string!
@@ -16216,6 +16440,7 @@ type AccountContainersMetricsAdaptiveGroupsDimensions {
   # The placement ID
   placementId: string!
   # Process type
+  @Deprecated
   procType: string!
   # Region
   region: string!
@@ -25558,6 +25783,551 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   zoneVersion_ASC
   # zoneVersion descending
   zoneVersion_DESC
+}
+
+# Flagship feature flag evaluations with adaptive sampling. Each row represents an individual flag evaluation.
+type AccountFlagshipFlagEvaluationsAdaptive {
+  # The Flagship application identifier the evaluation belongs to
+  appId: string!
+  # The Cloudflare colo that served the evaluation
+  colo: string!
+  # The time the flag evaluation occurred
+  datetime: Time!
+  # End-to-end evaluation duration in milliseconds
+  durationMs: uint64!
+  # The evaluation context (per-evaluation attributes supplied by the caller)
+  evaluationContext: string!
+  # The reason the flag resolved to this value (for example: targeting match, default, fallback)
+  evaluationReason: string!
+  # Whether the flag was enabled for this evaluation ('true' or 'false')
+  flagEnabled: string!
+  # The key of the feature flag that was evaluated
+  flagKey: string!
+  # The value returned by the flag evaluation. Note: high-cardinality - prefer filtering over grouping for large time windows
+  flagValue: string!
+  # Priority of the targeting rule that matched (NaN if no rule matched)
+  matchedRulePriority: float64!
+  # ABR sample interval used for this row
+  sampleInterval: uint32!
+  # The variant returned by the evaluation (for multi-variant flags)
+  variant: string!
+}
+
+input AccountFlagshipFlagEvaluationsAdaptiveFilter_InputObject {
+  AND: [AccountFlagshipFlagEvaluationsAdaptiveFilter_InputObject!]
+  OR: [AccountFlagshipFlagEvaluationsAdaptiveFilter_InputObject!]
+  appId: string
+  appId_geq: string
+  appId_gt: string
+  appId_in: [string!]
+  appId_leq: string
+  appId_like: string
+  appId_lt: string
+  appId_neq: string
+  appId_notin: [string!]
+  appId_notlike: string
+  colo: string
+  colo_geq: string
+  colo_gt: string
+  colo_in: [string!]
+  colo_leq: string
+  colo_like: string
+  colo_lt: string
+  colo_neq: string
+  colo_notin: [string!]
+  colo_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  durationMs: uint64
+  durationMs_geq: uint64
+  durationMs_gt: uint64
+  durationMs_in: [uint64!]
+  durationMs_leq: uint64
+  durationMs_lt: uint64
+  durationMs_neq: uint64
+  durationMs_notin: [uint64!]
+  evaluationContext: string
+  evaluationContext_geq: string
+  evaluationContext_gt: string
+  evaluationContext_in: [string!]
+  evaluationContext_leq: string
+  evaluationContext_like: string
+  evaluationContext_lt: string
+  evaluationContext_neq: string
+  evaluationContext_notin: [string!]
+  evaluationContext_notlike: string
+  evaluationReason: string
+  evaluationReason_geq: string
+  evaluationReason_gt: string
+  evaluationReason_in: [string!]
+  evaluationReason_leq: string
+  evaluationReason_like: string
+  evaluationReason_lt: string
+  evaluationReason_neq: string
+  evaluationReason_notin: [string!]
+  evaluationReason_notlike: string
+  flagEnabled: string
+  flagEnabled_geq: string
+  flagEnabled_gt: string
+  flagEnabled_in: [string!]
+  flagEnabled_leq: string
+  flagEnabled_like: string
+  flagEnabled_lt: string
+  flagEnabled_neq: string
+  flagEnabled_notin: [string!]
+  flagEnabled_notlike: string
+  flagKey: string
+  flagKey_geq: string
+  flagKey_gt: string
+  flagKey_in: [string!]
+  flagKey_leq: string
+  flagKey_like: string
+  flagKey_lt: string
+  flagKey_neq: string
+  flagKey_notin: [string!]
+  flagKey_notlike: string
+  flagValue: string
+  flagValue_geq: string
+  flagValue_gt: string
+  flagValue_in: [string!]
+  flagValue_leq: string
+  flagValue_like: string
+  flagValue_lt: string
+  flagValue_neq: string
+  flagValue_notin: [string!]
+  flagValue_notlike: string
+  matchedRulePriority: float64
+  matchedRulePriority_geq: float64
+  matchedRulePriority_gt: float64
+  matchedRulePriority_in: [float64!]
+  matchedRulePriority_leq: float64
+  matchedRulePriority_lt: float64
+  matchedRulePriority_neq: float64
+  matchedRulePriority_notin: [float64!]
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  variant: string
+  variant_geq: string
+  variant_gt: string
+  variant_in: [string!]
+  variant_leq: string
+  variant_like: string
+  variant_lt: string
+  variant_neq: string
+  variant_notin: [string!]
+  variant_notlike: string
+}
+
+# Aggregated Flagship feature flag evaluations with adaptive sampling. Use this to build dashboards over evaluation volume, latency, and error rates.
+type AccountFlagshipFlagEvaluationsAdaptiveGroups {
+  # The average value for a metric per dimension
+  avg: AccountFlagshipFlagEvaluationsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountFlagshipFlagEvaluationsAdaptiveGroupsConfidence!
+  # The number of flag evaluations
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountFlagshipFlagEvaluationsAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: AccountFlagshipFlagEvaluationsAdaptiveGroupsQuantiles
+  # The sum of values for a metric per dimension
+  sum: AccountFlagshipFlagEvaluationsAdaptiveGroupsSum
+  # Exact count of unique values per dimension
+  uniq: AccountFlagshipFlagEvaluationsAdaptiveGroupsUniq
+}
+
+type AccountFlagshipFlagEvaluationsAdaptiveGroupsAvg {
+  # The average end-to-end evaluation duration in milliseconds
+  durationMs: float64!
+  # The average value used for sample interval
+  sampleInterval: float64!
+}
+
+type AccountFlagshipFlagEvaluationsAdaptiveGroupsConfidence {
+  # The number of flag evaluations, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountFlagshipFlagEvaluationsAdaptiveGroupsSumConfidence
+}
+
+type AccountFlagshipFlagEvaluationsAdaptiveGroupsDimensions {
+  # The Flagship application identifier the evaluation belongs to
+  appId: string!
+  # The Cloudflare colo that served the evaluation
+  colo: string!
+  # The date the flag evaluation occurred
+  date: Date!
+  # The date and time the flag evaluation occurred
+  datetime: Time!
+  # The date and time the flag evaluation occurred truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the flag evaluation occurred truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the flag evaluation occurred truncated to the hour
+  datetimeHour: Time!
+  # The date and time the flag evaluation occurred truncated to the minute
+  datetimeMinute: Time!
+  # The date and time the flag evaluation occurred truncated to start of six hour window
+  datetimeSixHours: Time!
+  # The reason the flag resolved to this value (for example: targeting match, default, fallback)
+  evaluationReason: string!
+  # Whether the flag was enabled for this evaluation ('true' or 'false')
+  flagEnabled: string!
+  # The key of the feature flag that was evaluated
+  flagKey: string!
+  # The value returned by the flag evaluation. Note: high-cardinality - prefer filtering over grouping for large time windows
+  flagValue: string!
+  # The variant returned by the evaluation (for multi-variant flags)
+  variant: string!
+}
+
+input AccountFlagshipFlagEvaluationsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountFlagshipFlagEvaluationsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountFlagshipFlagEvaluationsAdaptiveGroupsFilter_InputObject!]
+  appId: string
+  appId_geq: string
+  appId_gt: string
+  appId_in: [string!]
+  appId_leq: string
+  appId_like: string
+  appId_lt: string
+  appId_neq: string
+  appId_notin: [string!]
+  appId_notlike: string
+  colo: string
+  colo_geq: string
+  colo_gt: string
+  colo_in: [string!]
+  colo_leq: string
+  colo_like: string
+  colo_lt: string
+  colo_neq: string
+  colo_notin: [string!]
+  colo_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  evaluationReason: string
+  evaluationReason_geq: string
+  evaluationReason_gt: string
+  evaluationReason_in: [string!]
+  evaluationReason_leq: string
+  evaluationReason_like: string
+  evaluationReason_lt: string
+  evaluationReason_neq: string
+  evaluationReason_notin: [string!]
+  evaluationReason_notlike: string
+  flagEnabled: string
+  flagEnabled_geq: string
+  flagEnabled_gt: string
+  flagEnabled_in: [string!]
+  flagEnabled_leq: string
+  flagEnabled_like: string
+  flagEnabled_lt: string
+  flagEnabled_neq: string
+  flagEnabled_notin: [string!]
+  flagEnabled_notlike: string
+  flagKey: string
+  flagKey_geq: string
+  flagKey_gt: string
+  flagKey_in: [string!]
+  flagKey_leq: string
+  flagKey_like: string
+  flagKey_lt: string
+  flagKey_neq: string
+  flagKey_notin: [string!]
+  flagKey_notlike: string
+  flagValue: string
+  flagValue_geq: string
+  flagValue_gt: string
+  flagValue_in: [string!]
+  flagValue_leq: string
+  flagValue_like: string
+  flagValue_lt: string
+  flagValue_neq: string
+  flagValue_notin: [string!]
+  flagValue_notlike: string
+  variant: string
+  variant_geq: string
+  variant_gt: string
+  variant_in: [string!]
+  variant_leq: string
+  variant_like: string
+  variant_lt: string
+  variant_neq: string
+  variant_notin: [string!]
+  variant_notlike: string
+}
+
+enum AccountFlagshipFlagEvaluationsAdaptiveGroupsOrderBy {
+  # appId ascending
+  appId_ASC
+  # appId descending
+  appId_DESC
+  # avg(durationMs) ascending
+  avg_durationMs_ASC
+  # avg(durationMs) descending
+  avg_durationMs_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # colo ascending
+  colo_ASC
+  # colo descending
+  colo_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # evaluationReason ascending
+  evaluationReason_ASC
+  # evaluationReason descending
+  evaluationReason_DESC
+  # flagEnabled ascending
+  flagEnabled_ASC
+  # flagEnabled descending
+  flagEnabled_DESC
+  # flagKey ascending
+  flagKey_ASC
+  # flagKey descending
+  flagKey_DESC
+  # flagValue ascending
+  flagValue_ASC
+  # flagValue descending
+  flagValue_DESC
+  # quantiles(durationMsP25) ascending
+  quantiles_durationMsP25_ASC
+  # quantiles(durationMsP25) descending
+  quantiles_durationMsP25_DESC
+  # quantiles(durationMsP50) ascending
+  quantiles_durationMsP50_ASC
+  # quantiles(durationMsP50) descending
+  quantiles_durationMsP50_DESC
+  # quantiles(durationMsP75) ascending
+  quantiles_durationMsP75_ASC
+  # quantiles(durationMsP75) descending
+  quantiles_durationMsP75_DESC
+  # quantiles(durationMsP90) ascending
+  quantiles_durationMsP90_ASC
+  # quantiles(durationMsP90) descending
+  quantiles_durationMsP90_DESC
+  # quantiles(durationMsP95) ascending
+  quantiles_durationMsP95_ASC
+  # quantiles(durationMsP95) descending
+  quantiles_durationMsP95_DESC
+  # quantiles(durationMsP999) ascending
+  quantiles_durationMsP999_ASC
+  # quantiles(durationMsP999) descending
+  quantiles_durationMsP999_DESC
+  # quantiles(durationMsP99) ascending
+  quantiles_durationMsP99_ASC
+  # quantiles(durationMsP99) descending
+  quantiles_durationMsP99_DESC
+  # sum(durationMs) ascending
+  sum_durationMs_ASC
+  # sum(durationMs) descending
+  sum_durationMs_DESC
+  # sum(errors) ascending
+  sum_errors_ASC
+  # sum(errors) descending
+  sum_errors_DESC
+  # uniq(appId) ascending
+  uniq_appId_ASC
+  # uniq(appId) descending
+  uniq_appId_DESC
+  # uniq(flagKey) ascending
+  uniq_flagKey_ASC
+  # uniq(flagKey) descending
+  uniq_flagKey_DESC
+  # variant ascending
+  variant_ASC
+  # variant descending
+  variant_DESC
+}
+
+type AccountFlagshipFlagEvaluationsAdaptiveGroupsQuantiles {
+  # Evaluation duration in milliseconds (25th percentile)
+  durationMsP25: float64!
+  # Evaluation duration in milliseconds (50th percentile)
+  durationMsP50: float64!
+  # Evaluation duration in milliseconds (75th percentile)
+  durationMsP75: float64!
+  # Evaluation duration in milliseconds (90th percentile)
+  durationMsP90: float64!
+  # Evaluation duration in milliseconds (95th percentile)
+  durationMsP95: float64!
+  # Evaluation duration in milliseconds (99th percentile)
+  durationMsP99: float64!
+  # Evaluation duration in milliseconds (99.9th percentile)
+  durationMsP999: float64!
+}
+
+type AccountFlagshipFlagEvaluationsAdaptiveGroupsSum {
+  # The total end-to-end evaluation duration in milliseconds
+  durationMs: uint64!
+  # The number of flag evaluations that resulted in an error
+  errors: uint64!
+}
+
+type AccountFlagshipFlagEvaluationsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  durationMs: Confidence!
+  # Confidence interval for the corresponding point estimate
+  errors: Confidence!
+}
+
+type AccountFlagshipFlagEvaluationsAdaptiveGroupsUniq {
+  # The number of distinct Flagship applications
+  appId: uint64!
+  # The number of distinct flag keys evaluated
+  flagKey: uint64!
+}
+
+enum AccountFlagshipFlagEvaluationsAdaptiveOrderBy {
+  # appId ascending
+  appId_ASC
+  # appId descending
+  appId_DESC
+  # colo ascending
+  colo_ASC
+  # colo descending
+  colo_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # durationMs ascending
+  durationMs_ASC
+  # durationMs descending
+  durationMs_DESC
+  # evaluationContext ascending
+  evaluationContext_ASC
+  # evaluationContext descending
+  evaluationContext_DESC
+  # evaluationReason ascending
+  evaluationReason_ASC
+  # evaluationReason descending
+  evaluationReason_DESC
+  # flagEnabled ascending
+  flagEnabled_ASC
+  # flagEnabled descending
+  flagEnabled_DESC
+  # flagKey ascending
+  flagKey_ASC
+  # flagKey descending
+  flagKey_DESC
+  # flagValue ascending
+  flagValue_ASC
+  # flagValue descending
+  flagValue_DESC
+  # matchedRulePriority ascending
+  matchedRulePriority_ASC
+  # matchedRulePriority descending
+  matchedRulePriority_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # variant ascending
+  variant_ASC
+  # variant descending
+  variant_DESC
 }
 
 # Network analytics data for flowtrackd
@@ -36803,6 +37573,263 @@ type AccountLogpushHealthAdaptiveGroupsSumConfidence {
   records: Confidence!
   # Confidence interval for the corresponding point estimate
   uploads: Confidence!
+}
+
+# Beta. Logpush transformer health metrics
+type AccountLogpushTransformersAdaptiveGroups {
+  avg: AccountLogpushTransformersAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountLogpushTransformersAdaptiveGroupsConfidence!
+  # The number of transformer executions
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountLogpushTransformersAdaptiveGroupsDimensions
+  # Maximum value of a metric per dimension
+  max: AccountLogpushTransformersAdaptiveGroupsMax
+  # The sum of values for a metric per dimension
+  sum: AccountLogpushTransformersAdaptiveGroupsSum
+}
+
+type AccountLogpushTransformersAdaptiveGroupsAvg {
+  # Average transformer execution duration in seconds
+  durationSeconds: float64!
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountLogpushTransformersAdaptiveGroupsConfidence {
+  # The number of transformer executions, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountLogpushTransformersAdaptiveGroupsSumConfidence
+}
+
+type AccountLogpushTransformersAdaptiveGroupsDimensions {
+  # Date of the transformer execution
+  date: Date!
+  # Datetime of the transformer execution
+  datetime: Time!
+  # Datetime of the transformer execution, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Datetime of the transformer execution, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # Datetime of the transformer execution, truncated to the hour
+  datetimeHour: Time!
+  # Datetime of the transformer execution, truncated to the minute
+  datetimeMinute: Time!
+  # Error code. 0 = success, 1300+ = transformer error codes
+  errorCode: uint16!
+  # The Logpush Job ID
+  jobId: uint64!
+  # Product being transformed (e.g. http_requests)
+  product: string!
+  # 1 when the transformer executed successfully, otherwise 0
+  success: uint8!
+  # The Transformer ID
+  transformerId: uint64!
+}
+
+input AccountLogpushTransformersAdaptiveGroupsFilter_InputObject {
+  AND: [AccountLogpushTransformersAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountLogpushTransformersAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  errorCode: uint16
+  errorCode_geq: uint16
+  errorCode_gt: uint16
+  errorCode_in: [uint16!]
+  errorCode_leq: uint16
+  errorCode_lt: uint16
+  errorCode_neq: uint16
+  errorCode_notin: [uint16!]
+  jobId: uint64
+  jobId_geq: uint64
+  jobId_gt: uint64
+  jobId_in: [uint64!]
+  jobId_leq: uint64
+  jobId_lt: uint64
+  jobId_neq: uint64
+  jobId_notin: [uint64!]
+  product: string
+  product_geq: string
+  product_gt: string
+  product_in: [string!]
+  product_leq: string
+  product_like: string
+  product_lt: string
+  product_neq: string
+  product_notin: [string!]
+  product_notlike: string
+  success: uint8
+  success_geq: uint8
+  success_gt: uint8
+  success_in: bytes
+  success_leq: uint8
+  success_lt: uint8
+  success_neq: uint8
+  success_notin: bytes
+  transformerId: uint64
+  transformerId_geq: uint64
+  transformerId_gt: uint64
+  transformerId_in: [uint64!]
+  transformerId_leq: uint64
+  transformerId_lt: uint64
+  transformerId_neq: uint64
+  transformerId_notin: [uint64!]
+}
+
+type AccountLogpushTransformersAdaptiveGroupsMax {
+  # Latest timestamp of transformer executions
+  timestamp: Time!
+}
+
+enum AccountLogpushTransformersAdaptiveGroupsOrderBy {
+  # accountId ascending
+  accountId_ASC
+  # accountId descending
+  accountId_DESC
+  # avg(durationSeconds) ascending
+  avg_durationSeconds_ASC
+  # avg(durationSeconds) descending
+  avg_durationSeconds_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # errorCode ascending
+  errorCode_ASC
+  # errorCode descending
+  errorCode_DESC
+  # jobId ascending
+  jobId_ASC
+  # jobId descending
+  jobId_DESC
+  # max(timestamp) ascending
+  max_timestamp_ASC
+  # max(timestamp) descending
+  max_timestamp_DESC
+  # objectType ascending
+  objectType_ASC
+  # objectType descending
+  objectType_DESC
+  # product ascending
+  product_ASC
+  # product descending
+  product_DESC
+  # success ascending
+  success_ASC
+  # success descending
+  success_DESC
+  # sum(bytesIn) ascending
+  sum_bytesIn_ASC
+  # sum(bytesIn) descending
+  sum_bytesIn_DESC
+  # sum(bytesOut) ascending
+  sum_bytesOut_ASC
+  # sum(bytesOut) descending
+  sum_bytesOut_DESC
+  # sum(records) ascending
+  sum_records_ASC
+  # sum(records) descending
+  sum_records_DESC
+  # transformerId ascending
+  transformerId_ASC
+  # transformerId descending
+  transformerId_DESC
+}
+
+type AccountLogpushTransformersAdaptiveGroupsSum {
+  # Input bytes before transformation
+  bytesIn: uint64!
+  # Output bytes after transformation
+  bytesOut: uint64!
+  # Number of records processed by transformer
+  records: uint64!
+}
+
+type AccountLogpushTransformersAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  bytesIn: Confidence!
+  # Confidence interval for the corresponding point estimate
+  bytesOut: Confidence!
+  # Confidence interval for the corresponding point estimate
+  records: Confidence!
 }
 
 # Magic Endpoint Healthcheck events with adaptive sampling.
@@ -60402,6 +61429,7 @@ type AccountSettings {
   cloudchamberMetricsAdaptiveGroups: Settings!
   cloudflareTunnelsAnalyticsAdaptiveGroups: Settings!
   cloudforceOneDetectionsAdaptiveGroups: Settings!
+  cloudforceOneDetectionsStagingAdaptiveGroups: Settings!
   containersMetricsAdaptiveGroups: Settings!
   containersUsageAdaptiveGroups: Settings!
   d1AnalyticsAdaptiveGroups: Settings!
@@ -60421,6 +61449,8 @@ type AccountSettings {
   fbmAttackAnalyticsGroups: Settings!
   firewallEventsAdaptive: Settings!
   firewallEventsAdaptiveGroups: Settings!
+  flagshipFlagEvaluationsAdaptive: Settings!
+  flagshipFlagEvaluationsAdaptiveGroups: Settings!
   flowtrackdNetworkAnalyticsAdaptiveGroups: Settings!
   gatewayL4DownstreamSessionsAdaptiveGroups: Settings!
   gatewayL4SessionsAdaptiveGroups: Settings!
@@ -60447,6 +61477,7 @@ type AccountSettings {
   liveInputEventsAdaptiveGroups: Settings!
   logExplorerIngestionAdaptiveGroups: Settings!
   logpushHealthAdaptiveGroups: Settings!
+  logpushTransformersAdaptiveGroups: Settings!
   magicEndpointHealthCheckAdaptiveGroups: Settings!
   magicFirewallNetworkAnalyticsAdaptiveGroups: Settings!
   magicFirewallRateLimitNetworkAnalyticsAdaptiveGroups: Settings!
@@ -71735,6 +72766,8 @@ type zone {
   loadBalancingRequestsAdaptiveGroups(filter: ZoneLoadBalancingRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneLoadBalancingRequestsAdaptiveGroupsOrderBy!]): [ZoneLoadBalancingRequestsAdaptiveGroups!]!
   # Beta. Logpush job health metrics
   logpushHealthAdaptiveGroups(filter: ZoneLogpushHealthAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneLogpushHealthAdaptiveGroupsOrderBy!]): [ZoneLogpushHealthAdaptiveGroups!]!
+  # Beta. Logpush transformer health metrics
+  logpushTransformersAdaptiveGroups(filter: ZoneLogpushTransformersAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneLogpushTransformersAdaptiveGroupsOrderBy!]): [ZoneLogpushTransformersAdaptiveGroups!]!
   # Data to visualize network error logs
   nelReportsAdaptiveGroups(filter: ZoneNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneNelReportsAdaptiveGroupsOrderBy!]): [ZoneNelReportsAdaptiveGroups!]!
   # Page Shield CSP reports
@@ -86412,6 +87445,263 @@ type ZoneLogpushHealthAdaptiveGroupsSumConfidence {
   uploads: Confidence!
 }
 
+# Beta. Logpush transformer health metrics
+type ZoneLogpushTransformersAdaptiveGroups {
+  avg: ZoneLogpushTransformersAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): ZoneLogpushTransformersAdaptiveGroupsConfidence!
+  # The number of transformer executions
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneLogpushTransformersAdaptiveGroupsDimensions
+  # Maximum value of a metric per dimension
+  max: ZoneLogpushTransformersAdaptiveGroupsMax
+  # The sum of values for a metric per dimension
+  sum: ZoneLogpushTransformersAdaptiveGroupsSum
+}
+
+type ZoneLogpushTransformersAdaptiveGroupsAvg {
+  # Average transformer execution duration in seconds
+  durationSeconds: float64!
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type ZoneLogpushTransformersAdaptiveGroupsConfidence {
+  # The number of transformer executions, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: ZoneLogpushTransformersAdaptiveGroupsSumConfidence
+}
+
+type ZoneLogpushTransformersAdaptiveGroupsDimensions {
+  # Date of the transformer execution
+  date: Date!
+  # Datetime of the transformer execution
+  datetime: Time!
+  # Datetime of the transformer execution, truncated to multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # Datetime of the transformer execution, truncated to multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # Datetime of the transformer execution, truncated to the hour
+  datetimeHour: Time!
+  # Datetime of the transformer execution, truncated to the minute
+  datetimeMinute: Time!
+  # Error code. 0 = success, 1300+ = transformer error codes
+  errorCode: uint16!
+  # The Logpush Job ID
+  jobId: uint64!
+  # Product being transformed (e.g. http_requests)
+  product: string!
+  # 1 when the transformer executed successfully, otherwise 0
+  success: uint8!
+  # The Transformer ID
+  transformerId: uint64!
+}
+
+input ZoneLogpushTransformersAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneLogpushTransformersAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneLogpushTransformersAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  errorCode: uint16
+  errorCode_geq: uint16
+  errorCode_gt: uint16
+  errorCode_in: [uint16!]
+  errorCode_leq: uint16
+  errorCode_lt: uint16
+  errorCode_neq: uint16
+  errorCode_notin: [uint16!]
+  jobId: uint64
+  jobId_geq: uint64
+  jobId_gt: uint64
+  jobId_in: [uint64!]
+  jobId_leq: uint64
+  jobId_lt: uint64
+  jobId_neq: uint64
+  jobId_notin: [uint64!]
+  product: string
+  product_geq: string
+  product_gt: string
+  product_in: [string!]
+  product_leq: string
+  product_like: string
+  product_lt: string
+  product_neq: string
+  product_notin: [string!]
+  product_notlike: string
+  success: uint8
+  success_geq: uint8
+  success_gt: uint8
+  success_in: bytes
+  success_leq: uint8
+  success_lt: uint8
+  success_neq: uint8
+  success_notin: bytes
+  transformerId: uint64
+  transformerId_geq: uint64
+  transformerId_gt: uint64
+  transformerId_in: [uint64!]
+  transformerId_leq: uint64
+  transformerId_lt: uint64
+  transformerId_neq: uint64
+  transformerId_notin: [uint64!]
+}
+
+type ZoneLogpushTransformersAdaptiveGroupsMax {
+  # Latest timestamp of transformer executions
+  timestamp: Time!
+}
+
+enum ZoneLogpushTransformersAdaptiveGroupsOrderBy {
+  # accountId ascending
+  accountId_ASC
+  # accountId descending
+  accountId_DESC
+  # avg(durationSeconds) ascending
+  avg_durationSeconds_ASC
+  # avg(durationSeconds) descending
+  avg_durationSeconds_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # errorCode ascending
+  errorCode_ASC
+  # errorCode descending
+  errorCode_DESC
+  # jobId ascending
+  jobId_ASC
+  # jobId descending
+  jobId_DESC
+  # max(timestamp) ascending
+  max_timestamp_ASC
+  # max(timestamp) descending
+  max_timestamp_DESC
+  # objectType ascending
+  objectType_ASC
+  # objectType descending
+  objectType_DESC
+  # product ascending
+  product_ASC
+  # product descending
+  product_DESC
+  # success ascending
+  success_ASC
+  # success descending
+  success_DESC
+  # sum(bytesIn) ascending
+  sum_bytesIn_ASC
+  # sum(bytesIn) descending
+  sum_bytesIn_DESC
+  # sum(bytesOut) ascending
+  sum_bytesOut_ASC
+  # sum(bytesOut) descending
+  sum_bytesOut_DESC
+  # sum(records) ascending
+  sum_records_ASC
+  # sum(records) descending
+  sum_records_DESC
+  # transformerId ascending
+  transformerId_ASC
+  # transformerId descending
+  transformerId_DESC
+}
+
+type ZoneLogpushTransformersAdaptiveGroupsSum {
+  # Input bytes before transformation
+  bytesIn: uint64!
+  # Output bytes after transformation
+  bytesOut: uint64!
+  # Number of records processed by transformer
+  records: uint64!
+}
+
+type ZoneLogpushTransformersAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  bytesIn: Confidence!
+  # Confidence interval for the corresponding point estimate
+  bytesOut: Confidence!
+  # Confidence interval for the corresponding point estimate
+  records: Confidence!
+}
+
 # Data to visualize network error logs
 type ZoneNelReportsAdaptiveGroups {
   avg: ZoneNelReportsAdaptiveGroupsAvg
@@ -86994,6 +88284,7 @@ type ZoneSettings {
   loadBalancingRequestsAdaptive: Settings!
   loadBalancingRequestsAdaptiveGroups: Settings!
   logpushHealthAdaptiveGroups: Settings!
+  logpushTransformersAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   pageShieldReportsAdaptiveGroups: Settings!
   userProfilesAdaptiveGroups: Settings!
@@ -87134,22 +88425,50 @@ type ZoneUserProfilesAdaptiveGroupsUniq {
 
 # Historical login and signup events per user.
 type ZoneUserProfilesRawEventsGroups {
+  # The identity provider used for SSO authentication.
+  authenticationIdentityProvider: string!
+  # The authentication method used in the event.
+  authenticationMethod: string!
+  # The authentication status of the event.
+  authenticationStatus: string!
   # Abuse detections.
   bmDetectionTags: [string!]!
+  # The final score originated from bot management detections.
+  botScore: uint8!
+  # The ASN number associated with the event.
+  clientASN: uint32!
   # City name.
   clientCity: string!
   # Country code (alpha2).
   clientCountry: string!
+  # The visitor's IP address (IPv4 or IPv6).
+  clientIP: string!
+  # The HTTP hostname associated with the event.
+  clientRequestHTTPHost: string!
   # Date of the event.
   date: Date!
+  # Array of detection IDs that matched this event.
+  detectionIds: [uint32!]!
   # Device browser name.
   deviceBrowser: string!
   # Device OS name.
   deviceOS: string!
+  # The type of device associated with the event. Possible values are Mobile, Desktop, Tablet, Bot, Other, Unknown.
+  deviceType: string!
   # When the event happened.
   eventTimestamp: Time!
   # Type of the event. Possible values are signup or login.
   eventType: string!
+  # Risk level of the email address in the event.
+  fraudEmailRisk: string!
+  # JA4 TLS fingerprint associated with the event.
+  ja4: string!
+  # The distinct result of checking for leaked credentials. Possible values are clean, username_leaked, username_password_similar, username_and_password_leaked, password_leaked, none.
+  leakedCredentialCheckResult: string!
+  # The RayId of the event.
+  rayId: uint64!
+  # The first-class action the Cloudflare Firewall took on this event.
+  securityAction: string!
   # Unique identifier for a user.
   userId: string!
 }
@@ -87157,11 +88476,57 @@ type ZoneUserProfilesRawEventsGroups {
 input ZoneUserProfilesRawEventsGroupsFilter_InputObject {
   AND: [ZoneUserProfilesRawEventsGroupsFilter_InputObject!]
   OR: [ZoneUserProfilesRawEventsGroupsFilter_InputObject!]
+  authenticationIdentityProvider: string
+  authenticationIdentityProvider_geq: string
+  authenticationIdentityProvider_gt: string
+  authenticationIdentityProvider_in: [string!]
+  authenticationIdentityProvider_leq: string
+  authenticationIdentityProvider_like: string
+  authenticationIdentityProvider_lt: string
+  authenticationIdentityProvider_neq: string
+  authenticationIdentityProvider_notin: [string!]
+  authenticationIdentityProvider_notlike: string
+  authenticationMethod: string
+  authenticationMethod_geq: string
+  authenticationMethod_gt: string
+  authenticationMethod_in: [string!]
+  authenticationMethod_leq: string
+  authenticationMethod_like: string
+  authenticationMethod_lt: string
+  authenticationMethod_neq: string
+  authenticationMethod_notin: [string!]
+  authenticationMethod_notlike: string
+  authenticationStatus: string
+  authenticationStatus_geq: string
+  authenticationStatus_gt: string
+  authenticationStatus_in: [string!]
+  authenticationStatus_leq: string
+  authenticationStatus_like: string
+  authenticationStatus_lt: string
+  authenticationStatus_neq: string
+  authenticationStatus_notin: [string!]
+  authenticationStatus_notlike: string
   bmDetectionTags_has: string
   bmDetectionTags_hasall: [string!]
   bmDetectionTags_hasany: [string!]
   bmDetectionTags_isempty: bool
   bmDetectionTags_nothas: string
+  botScore: uint8
+  botScore_geq: uint8
+  botScore_gt: uint8
+  botScore_in: bytes
+  botScore_leq: uint8
+  botScore_lt: uint8
+  botScore_neq: uint8
+  botScore_notin: bytes
+  clientASN: uint32
+  clientASN_geq: uint32
+  clientASN_gt: uint32
+  clientASN_in: [uint32!]
+  clientASN_leq: uint32
+  clientASN_lt: uint32
+  clientASN_neq: uint32
+  clientASN_notin: [uint32!]
   clientCity: string
   clientCity_geq: string
   clientCity_gt: string
@@ -87182,6 +88547,26 @@ input ZoneUserProfilesRawEventsGroupsFilter_InputObject {
   clientCountry_neq: string
   clientCountry_notin: [string!]
   clientCountry_notlike: string
+  clientIP: string
+  clientIP_geq: string
+  clientIP_gt: string
+  clientIP_in: [string!]
+  clientIP_leq: string
+  clientIP_like: string
+  clientIP_lt: string
+  clientIP_neq: string
+  clientIP_notin: [string!]
+  clientIP_notlike: string
+  clientRequestHTTPHost: string
+  clientRequestHTTPHost_geq: string
+  clientRequestHTTPHost_gt: string
+  clientRequestHTTPHost_in: [string!]
+  clientRequestHTTPHost_leq: string
+  clientRequestHTTPHost_like: string
+  clientRequestHTTPHost_lt: string
+  clientRequestHTTPHost_neq: string
+  clientRequestHTTPHost_notin: [string!]
+  clientRequestHTTPHost_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -87190,6 +88575,11 @@ input ZoneUserProfilesRawEventsGroupsFilter_InputObject {
   date_lt: Date
   date_neq: Date
   date_notin: [Date!]
+  detectionIds_has: uint32
+  detectionIds_hasall: [uint32!]
+  detectionIds_hasany: [uint32!]
+  detectionIds_isempty: bool
+  detectionIds_nothas: uint32
   deviceBrowser: string
   deviceBrowser_geq: string
   deviceBrowser_gt: string
@@ -87210,6 +88600,16 @@ input ZoneUserProfilesRawEventsGroupsFilter_InputObject {
   deviceOS_neq: string
   deviceOS_notin: [string!]
   deviceOS_notlike: string
+  deviceType: string
+  deviceType_geq: string
+  deviceType_gt: string
+  deviceType_in: [string!]
+  deviceType_leq: string
+  deviceType_like: string
+  deviceType_lt: string
+  deviceType_neq: string
+  deviceType_notin: [string!]
+  deviceType_notlike: string
   eventTimestamp: Time
   eventTimestamp_geq: Time
   eventTimestamp_gt: Time
@@ -87228,6 +88628,54 @@ input ZoneUserProfilesRawEventsGroupsFilter_InputObject {
   eventType_neq: string
   eventType_notin: [string!]
   eventType_notlike: string
+  fraudEmailRisk: string
+  fraudEmailRisk_geq: string
+  fraudEmailRisk_gt: string
+  fraudEmailRisk_in: [string!]
+  fraudEmailRisk_leq: string
+  fraudEmailRisk_like: string
+  fraudEmailRisk_lt: string
+  fraudEmailRisk_neq: string
+  fraudEmailRisk_notin: [string!]
+  fraudEmailRisk_notlike: string
+  ja4: string
+  ja4_geq: string
+  ja4_gt: string
+  ja4_in: [string!]
+  ja4_leq: string
+  ja4_like: string
+  ja4_lt: string
+  ja4_neq: string
+  ja4_notin: [string!]
+  ja4_notlike: string
+  leakedCredentialCheckResult: string
+  leakedCredentialCheckResult_geq: string
+  leakedCredentialCheckResult_gt: string
+  leakedCredentialCheckResult_in: [string!]
+  leakedCredentialCheckResult_leq: string
+  leakedCredentialCheckResult_like: string
+  leakedCredentialCheckResult_lt: string
+  leakedCredentialCheckResult_neq: string
+  leakedCredentialCheckResult_notin: [string!]
+  leakedCredentialCheckResult_notlike: string
+  rayId: uint64
+  rayId_geq: uint64
+  rayId_gt: uint64
+  rayId_in: [uint64!]
+  rayId_leq: uint64
+  rayId_lt: uint64
+  rayId_neq: uint64
+  rayId_notin: [uint64!]
+  securityAction: string
+  securityAction_geq: string
+  securityAction_gt: string
+  securityAction_in: [string!]
+  securityAction_leq: string
+  securityAction_like: string
+  securityAction_lt: string
+  securityAction_neq: string
+  securityAction_notin: [string!]
+  securityAction_notlike: string
   userId: string
   userId_geq: string
   userId_gt: string
@@ -87241,10 +88689,30 @@ input ZoneUserProfilesRawEventsGroupsFilter_InputObject {
 }
 
 enum ZoneUserProfilesRawEventsGroupsOrderBy {
+  # authenticationIdentityProvider ascending
+  authenticationIdentityProvider_ASC
+  # authenticationIdentityProvider descending
+  authenticationIdentityProvider_DESC
+  # authenticationMethod ascending
+  authenticationMethod_ASC
+  # authenticationMethod descending
+  authenticationMethod_DESC
+  # authenticationStatus ascending
+  authenticationStatus_ASC
+  # authenticationStatus descending
+  authenticationStatus_DESC
   # bmDetectionTags ascending
   bmDetectionTags_ASC
   # bmDetectionTags descending
   bmDetectionTags_DESC
+  # botScore ascending
+  botScore_ASC
+  # botScore descending
+  botScore_DESC
+  # clientASN ascending
+  clientASN_ASC
+  # clientASN descending
+  clientASN_DESC
   # clientCity ascending
   clientCity_ASC
   # clientCity descending
@@ -87253,10 +88721,22 @@ enum ZoneUserProfilesRawEventsGroupsOrderBy {
   clientCountry_ASC
   # clientCountry descending
   clientCountry_DESC
+  # clientIP ascending
+  clientIP_ASC
+  # clientIP descending
+  clientIP_DESC
+  # clientRequestHTTPHost ascending
+  clientRequestHTTPHost_ASC
+  # clientRequestHTTPHost descending
+  clientRequestHTTPHost_DESC
   # date ascending
   date_ASC
   # date descending
   date_DESC
+  # detectionIds ascending
+  detectionIds_ASC
+  # detectionIds descending
+  detectionIds_DESC
   # deviceBrowser ascending
   deviceBrowser_ASC
   # deviceBrowser descending
@@ -87265,6 +88745,10 @@ enum ZoneUserProfilesRawEventsGroupsOrderBy {
   deviceOS_ASC
   # deviceOS descending
   deviceOS_DESC
+  # deviceType ascending
+  deviceType_ASC
+  # deviceType descending
+  deviceType_DESC
   # eventTimestamp ascending
   eventTimestamp_ASC
   # eventTimestamp descending
@@ -87273,6 +88757,26 @@ enum ZoneUserProfilesRawEventsGroupsOrderBy {
   eventType_ASC
   # eventType descending
   eventType_DESC
+  # fraudEmailRisk ascending
+  fraudEmailRisk_ASC
+  # fraudEmailRisk descending
+  fraudEmailRisk_DESC
+  # ja4 ascending
+  ja4_ASC
+  # ja4 descending
+  ja4_DESC
+  # leakedCredentialCheckResult ascending
+  leakedCredentialCheckResult_ASC
+  # leakedCredentialCheckResult descending
+  leakedCredentialCheckResult_DESC
+  # rayId ascending
+  rayId_ASC
+  # rayId descending
+  rayId_DESC
+  # securityAction ascending
+  securityAction_ASC
+  # securityAction descending
+  securityAction_DESC
   # userId ascending
   userId_ASC
   # userId descending
