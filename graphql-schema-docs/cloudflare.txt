@@ -12033,6 +12033,10 @@ type AccountCf1GatewayDns1dGroupsDimensions {
   datetime: Time!
   # Query name (destination domain)
   destination: string!
+  # Device ID. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  deviceId: string!
+  # User email address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  email: string!
   # Gateway location ID
   location: string!
   # Policy ID
@@ -12045,6 +12049,8 @@ type AccountCf1GatewayDns1dGroupsDimensions {
   rcode: string!
   # Gateway resolver decision
   resolverDecision: string!
+  # Source IP address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  sourceIP: string!
 }
 
 input AccountCf1GatewayDns1dGroupsFilter_InputObject {
@@ -12088,6 +12094,26 @@ input AccountCf1GatewayDns1dGroupsFilter_InputObject {
   destination_neq: string
   destination_notin: [string!]
   destination_notlike: string
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  email: string
+  email_geq: string
+  email_gt: string
+  email_in: [string!]
+  email_leq: string
+  email_like: string
+  email_lt: string
+  email_neq: string
+  email_notin: [string!]
+  email_notlike: string
   location: string
   location_geq: string
   location_gt: string
@@ -12148,6 +12174,16 @@ input AccountCf1GatewayDns1dGroupsFilter_InputObject {
   resolverDecision_neq: string
   resolverDecision_notin: [string!]
   resolverDecision_notlike: string
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
 }
 
 enum AccountCf1GatewayDns1dGroupsOrderBy {
@@ -12258,6 +12294,10 @@ type AccountCf1GatewayDns1hGroupsDimensions {
   datetime: Time!
   # Query name (destination domain)
   destination: string!
+  # Device ID. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  deviceId: string!
+  # User email address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  email: string!
   # Gateway location ID
   location: string!
   # Policy ID
@@ -12270,6 +12310,8 @@ type AccountCf1GatewayDns1hGroupsDimensions {
   rcode: string!
   # Gateway resolver decision
   resolverDecision: string!
+  # Source IP address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  sourceIP: string!
 }
 
 input AccountCf1GatewayDns1hGroupsFilter_InputObject {
@@ -12313,6 +12355,26 @@ input AccountCf1GatewayDns1hGroupsFilter_InputObject {
   destination_neq: string
   destination_notin: [string!]
   destination_notlike: string
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  email: string
+  email_geq: string
+  email_gt: string
+  email_in: [string!]
+  email_leq: string
+  email_like: string
+  email_lt: string
+  email_neq: string
+  email_notin: [string!]
+  email_notlike: string
   location: string
   location_geq: string
   location_gt: string
@@ -12373,6 +12435,16 @@ input AccountCf1GatewayDns1hGroupsFilter_InputObject {
   resolverDecision_neq: string
   resolverDecision_notin: [string!]
   resolverDecision_notlike: string
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
 }
 
 enum AccountCf1GatewayDns1hGroupsOrderBy {
@@ -12487,6 +12559,10 @@ type AccountCf1GatewayDnsRawGroupsDimensions {
   datetimeHour: Time!
   # Query name (destination domain)
   destination: string!
+  # Device ID. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  deviceId: string!
+  # User email address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  email: string!
   # Gateway location ID
   location: string!
   # Policy ID
@@ -12499,6 +12575,8 @@ type AccountCf1GatewayDnsRawGroupsDimensions {
   rcode: string!
   # Gateway resolver decision
   resolverDecision: string!
+  # Source IP address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  sourceIP: string!
 }
 
 input AccountCf1GatewayDnsRawGroupsFilter_InputObject {
@@ -12558,6 +12636,26 @@ input AccountCf1GatewayDnsRawGroupsFilter_InputObject {
   destination_neq: string
   destination_notin: [string!]
   destination_notlike: string
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  email: string
+  email_geq: string
+  email_gt: string
+  email_in: [string!]
+  email_leq: string
+  email_like: string
+  email_lt: string
+  email_neq: string
+  email_notin: [string!]
+  email_notlike: string
   location: string
   location_geq: string
   location_gt: string
@@ -12618,6 +12716,16 @@ input AccountCf1GatewayDnsRawGroupsFilter_InputObject {
   resolverDecision_neq: string
   resolverDecision_notin: [string!]
   resolverDecision_notlike: string
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
 }
 
 enum AccountCf1GatewayDnsRawGroupsOrderBy {
