@@ -183,6 +183,7 @@ Account-level datasets:
 * videoPlaybackEventsAdaptiveGroups
 * videoQualityEventsAdaptiveGroups
 * warpDeviceAdaptiveGroups
+* webSearchRequestsAdaptiveGroups
 * workerPlacementAdaptiveGroups
 * workersAnalyticsEngineAdaptiveGroups
 * workersBuildsBuildMinutesAdaptiveGroups
@@ -267,7 +268,7 @@ scalar Date
 # Scalar type types.Float32
 scalar float32
 
-# Scalar type types.Float64
+# Scalar type float64
 scalar float64
 
 # Scalar type int16
@@ -674,6 +675,8 @@ type account {
   videoQualityEventsAdaptiveGroups(filter: AccountVideoQualityEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVideoQualityEventsAdaptiveGroupsOrderBy!]): [AccountVideoQualityEventsAdaptiveGroups!]!
   # Beta. Warp device health events with adaptive sampling
   warpDeviceAdaptiveGroups(filter: AccountWarpDeviceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWarpDeviceAdaptiveGroupsOrderBy!]): [AccountWarpDeviceAdaptiveGroups!]!
+  # Web Search Requests Analytics
+  webSearchRequestsAdaptiveGroups(filter: AccountWebSearchRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWebSearchRequestsAdaptiveGroupsOrderBy!]): [AccountWebSearchRequestsAdaptiveGroups!]!
   # Worker placement metrics
   workerPlacementAdaptiveGroups(filter: AccountWorkerPlacementAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkerPlacementAdaptiveGroupsOrderBy!]): [AccountWorkerPlacementAdaptiveGroups!]!
   # Beta. Custom Events with adaptive sampling
@@ -12035,19 +12038,27 @@ type AccountCf1GatewayDns1dGroupsDimensions {
   destination: string!
   # Device ID. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
   deviceId: string!
+  # Union of EDE codes observed in the group (rollup of raw edeErrors via groupUniqArrayArray; sorted ascending for deterministic output)
+  edeErrors: [uint16!]!
   # User email address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
   email: string!
   # Gateway location ID
   location: string!
+  # Union of matched categories observed in the group (rollup of raw matchedCategoryIds via groupUniqArrayArray; sorted ascending for deterministic output)
+  matchedCategoryIds: [uint16!]!
   # Policy ID
   policyId: string!
   # DNS protocol
   protocol: string!
+  # Union of application IDs observed in the group (rollup of raw queryApplicationIds via groupUniqArrayArray; sorted ascending for deterministic output)
+  queryApplicationIds: [uint32!]!
+  # Union of query categories observed in the group (rollup of raw queryCategoryIds via groupUniqArrayArray; sorted ascending for deterministic output)
+  queryCategoryIds: [uint16!]!
   # DNS query type
   queryType: string!
   # DNS response code
   rcode: string!
-  # Gateway resolver decision
+  # Gateway resolver decision. To filter for all "block" outcomes, use resolverDecision_in with ["blockedRule", "blockedByQueryName", "blockedByCategory"]. Other values: allowedOnNoPolicyMatch, allowedOnPolicyMatch, allowedByQueryName, overrideRule, safesearchRule, ytRestrictedModeRule, allowedOnNoLocation, allowedOnNoRule, overrideOnlyRule.
   resolverDecision: string!
   # Source IP address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
   sourceIP: string!
@@ -12296,19 +12307,27 @@ type AccountCf1GatewayDns1hGroupsDimensions {
   destination: string!
   # Device ID. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
   deviceId: string!
+  # Union of EDE codes observed in the group (rollup of raw edeErrors via groupUniqArrayArray; sorted ascending for deterministic output)
+  edeErrors: [uint16!]!
   # User email address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
   email: string!
   # Gateway location ID
   location: string!
+  # Union of matched categories observed in the group (rollup of raw matchedCategoryIds via groupUniqArrayArray; sorted ascending for deterministic output)
+  matchedCategoryIds: [uint16!]!
   # Policy ID
   policyId: string!
   # DNS protocol
   protocol: string!
+  # Union of application IDs observed in the group (rollup of raw queryApplicationIds via groupUniqArrayArray; sorted ascending for deterministic output)
+  queryApplicationIds: [uint32!]!
+  # Union of query categories observed in the group (rollup of raw queryCategoryIds via groupUniqArrayArray; sorted ascending for deterministic output)
+  queryCategoryIds: [uint16!]!
   # DNS query type
   queryType: string!
   # DNS response code
   rcode: string!
-  # Gateway resolver decision
+  # Gateway resolver decision. To filter for all "block" outcomes, use resolverDecision_in with ["blockedRule", "blockedByQueryName", "blockedByCategory"]. Other values: allowedOnNoPolicyMatch, allowedOnPolicyMatch, allowedByQueryName, overrideRule, safesearchRule, ytRestrictedModeRule, allowedOnNoLocation, allowedOnNoRule, overrideOnlyRule.
   resolverDecision: string!
   # Source IP address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
   sourceIP: string!
@@ -12561,19 +12580,29 @@ type AccountCf1GatewayDnsRawGroupsDimensions {
   destination: string!
   # Device ID. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
   deviceId: string!
+  # Extended DNS Error (EDE) codes returned in the response
+  edeErrors: [uint16!]!
   # User email address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
   email: string!
   # Gateway location ID
   location: string!
+  # Categories that matched the applied policy (subset of queryCategoryIds)
+  matchedCategoryIds: [uint16!]!
   # Policy ID
   policyId: string!
   # DNS protocol
   protocol: string!
+  # Application IDs associated with the query name
+  queryApplicationIds: [uint32!]!
+  # Application names associated with the query name (raw node only)
+  queryApplicationNames: [string!]!
+  # Categories that the query name belongs to, as Cloudflare category taxonomy IDs
+  queryCategoryIds: [uint16!]!
   # DNS query type
   queryType: string!
   # DNS response code
   rcode: string!
-  # Gateway resolver decision
+  # Gateway resolver decision. To filter for all "block" outcomes, use resolverDecision_in with ["blockedRule", "blockedByQueryName", "blockedByCategory"]. Other values: allowedOnNoPolicyMatch, allowedOnPolicyMatch, allowedByQueryName, overrideRule, safesearchRule, ytRestrictedModeRule, allowedOnNoLocation, allowedOnNoRule, overrideOnlyRule.
   resolverDecision: string!
   # Source IP address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
   sourceIP: string!
@@ -12646,6 +12675,11 @@ input AccountCf1GatewayDnsRawGroupsFilter_InputObject {
   deviceId_neq: string
   deviceId_notin: [string!]
   deviceId_notlike: string
+  edeErrors_has: uint16
+  edeErrors_hasall: [uint16!]
+  edeErrors_hasany: [uint16!]
+  edeErrors_isempty: bool
+  edeErrors_nothas: uint16
   email: string
   email_geq: string
   email_gt: string
@@ -12666,6 +12700,11 @@ input AccountCf1GatewayDnsRawGroupsFilter_InputObject {
   location_neq: string
   location_notin: [string!]
   location_notlike: string
+  matchedCategoryIds_has: uint16
+  matchedCategoryIds_hasall: [uint16!]
+  matchedCategoryIds_hasany: [uint16!]
+  matchedCategoryIds_isempty: bool
+  matchedCategoryIds_nothas: uint16
   policyId: string
   policyId_geq: string
   policyId_gt: string
@@ -12686,6 +12725,21 @@ input AccountCf1GatewayDnsRawGroupsFilter_InputObject {
   protocol_neq: string
   protocol_notin: [string!]
   protocol_notlike: string
+  queryApplicationIds_has: uint32
+  queryApplicationIds_hasall: [uint32!]
+  queryApplicationIds_hasany: [uint32!]
+  queryApplicationIds_isempty: bool
+  queryApplicationIds_nothas: uint32
+  queryApplicationNames_has: string
+  queryApplicationNames_hasall: [string!]
+  queryApplicationNames_hasany: [string!]
+  queryApplicationNames_isempty: bool
+  queryApplicationNames_nothas: string
+  queryCategoryIds_has: uint16
+  queryCategoryIds_hasall: [uint16!]
+  queryCategoryIds_hasany: [uint16!]
+  queryCategoryIds_isempty: bool
+  queryCategoryIds_nothas: uint16
   queryType: string
   queryType_geq: string
   queryType_gt: string
@@ -12757,6 +12811,10 @@ enum AccountCf1GatewayDnsRawGroupsOrderBy {
   deviceId_ASC
   # deviceId descending
   deviceId_DESC
+  # edeErrors ascending
+  edeErrors_ASC
+  # edeErrors descending
+  edeErrors_DESC
   # email ascending
   email_ASC
   # email descending
@@ -12765,6 +12823,10 @@ enum AccountCf1GatewayDnsRawGroupsOrderBy {
   location_ASC
   # location descending
   location_DESC
+  # matchedCategoryIds ascending
+  matchedCategoryIds_ASC
+  # matchedCategoryIds descending
+  matchedCategoryIds_DESC
   # policyId ascending
   policyId_ASC
   # policyId descending
@@ -12773,6 +12835,18 @@ enum AccountCf1GatewayDnsRawGroupsOrderBy {
   protocol_ASC
   # protocol descending
   protocol_DESC
+  # queryApplicationIds ascending
+  queryApplicationIds_ASC
+  # queryApplicationIds descending
+  queryApplicationIds_DESC
+  # queryApplicationNames ascending
+  queryApplicationNames_ASC
+  # queryApplicationNames descending
+  queryApplicationNames_DESC
+  # queryCategoryIds ascending
+  queryCategoryIds_ASC
+  # queryCategoryIds descending
+  queryCategoryIds_DESC
   # queryType ascending
   queryType_ASC
   # queryType descending
@@ -12842,8 +12916,14 @@ type AccountCf1GatewayHttp1dGroupsDimensions {
   country: string!
   # Day start timestamp (daily granularity)
   datetime: Time!
+  # Device ID. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  deviceId: string!
+  # User email address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  email: string!
   # HTTP hostname
   httpHost: string!
+  # Source IP address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  sourceIP: string!
 }
 
 input AccountCf1GatewayHttp1dGroupsFilter_InputObject {
@@ -12877,6 +12957,26 @@ input AccountCf1GatewayHttp1dGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  email: string
+  email_geq: string
+  email_gt: string
+  email_in: [string!]
+  email_leq: string
+  email_like: string
+  email_lt: string
+  email_neq: string
+  email_notin: [string!]
+  email_notlike: string
   httpHost: string
   httpHost_geq: string
   httpHost_gt: string
@@ -12887,6 +12987,16 @@ input AccountCf1GatewayHttp1dGroupsFilter_InputObject {
   httpHost_neq: string
   httpHost_notin: [string!]
   httpHost_notlike: string
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
 }
 
 enum AccountCf1GatewayHttp1dGroupsOrderBy {
@@ -12902,6 +13012,10 @@ enum AccountCf1GatewayHttp1dGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
   # email ascending
   email_ASC
   # email descending
@@ -12973,8 +13087,14 @@ type AccountCf1GatewayHttp1hGroupsDimensions {
   country: string!
   # Hour start timestamp (hourly granularity)
   datetime: Time!
+  # Device ID. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  deviceId: string!
+  # User email address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  email: string!
   # HTTP hostname
   httpHost: string!
+  # Source IP address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  sourceIP: string!
 }
 
 input AccountCf1GatewayHttp1hGroupsFilter_InputObject {
@@ -13008,6 +13128,26 @@ input AccountCf1GatewayHttp1hGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  email: string
+  email_geq: string
+  email_gt: string
+  email_in: [string!]
+  email_leq: string
+  email_like: string
+  email_lt: string
+  email_neq: string
+  email_notin: [string!]
+  email_notlike: string
   httpHost: string
   httpHost_geq: string
   httpHost_gt: string
@@ -13018,6 +13158,16 @@ input AccountCf1GatewayHttp1hGroupsFilter_InputObject {
   httpHost_neq: string
   httpHost_notin: [string!]
   httpHost_notlike: string
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
 }
 
 enum AccountCf1GatewayHttp1hGroupsOrderBy {
@@ -13033,6 +13183,10 @@ enum AccountCf1GatewayHttp1hGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
   # email ascending
   email_ASC
   # email descending
@@ -13108,8 +13262,14 @@ type AccountCf1GatewayHttpRawGroupsDimensions {
   datetimeFiveMinutes: Time!
   # Request timestamp truncated to hour
   datetimeHour: Time!
+  # Device ID. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  deviceId: string!
+  # User email address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  email: string!
   # HTTP hostname
   httpHost: string!
+  # Source IP address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  sourceIP: string!
 }
 
 input AccountCf1GatewayHttpRawGroupsFilter_InputObject {
@@ -13159,6 +13319,26 @@ input AccountCf1GatewayHttpRawGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  email: string
+  email_geq: string
+  email_gt: string
+  email_in: [string!]
+  email_leq: string
+  email_like: string
+  email_lt: string
+  email_neq: string
+  email_notin: [string!]
+  email_notlike: string
   httpHost: string
   httpHost_geq: string
   httpHost_gt: string
@@ -13169,6 +13349,16 @@ input AccountCf1GatewayHttpRawGroupsFilter_InputObject {
   httpHost_neq: string
   httpHost_notin: [string!]
   httpHost_notlike: string
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
 }
 
 enum AccountCf1GatewayHttpRawGroupsOrderBy {
@@ -13192,6 +13382,10 @@ enum AccountCf1GatewayHttpRawGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
   # email ascending
   email_ASC
   # email descending
@@ -13834,6 +14028,8 @@ type AccountCf1GatewayNetworkSession1dGroupsAvg {
 }
 
 type AccountCf1GatewayNetworkSession1dGroupsDimensions {
+  # TLS version negotiated with client
+  clientTlsVersion: string!
   # Reason the connection was closed
   connectionCloseReason: string!
   # Day start timestamp (daily granularity)
@@ -13844,6 +14040,10 @@ type AccountCf1GatewayNetworkSession1dGroupsDimensions {
   destinationTunnelId: string!
   # Egress Cloudflare colo code
   egressColoName: string!
+  # Egress IPv4 address
+  egressIPv4: string!
+  # Egress IPv6 address
+  egressIPv6: string!
   # Egress policy rule ID
   egressRuleId: string!
   # Ingress Cloudflare colo code
@@ -13852,6 +14052,10 @@ type AccountCf1GatewayNetworkSession1dGroupsDimensions {
   offramp: string!
   # Ingress onramp type (derived from flowPath)
   onRamp: string!
+  # Result of origin TLS certificate validation
+  originTlsCertificateValidationResult: string!
+  # TLS cipher used to connect to origin
+  originTlsCipher: string!
   # L4 protocol
   protocol: string!
   # Server Name Indication from TLS handshake
@@ -13863,6 +14067,16 @@ type AccountCf1GatewayNetworkSession1dGroupsDimensions {
 input AccountCf1GatewayNetworkSession1dGroupsFilter_InputObject {
   AND: [AccountCf1GatewayNetworkSession1dGroupsFilter_InputObject!]
   OR: [AccountCf1GatewayNetworkSession1dGroupsFilter_InputObject!]
+  clientTlsVersion: string
+  clientTlsVersion_geq: string
+  clientTlsVersion_gt: string
+  clientTlsVersion_in: [string!]
+  clientTlsVersion_leq: string
+  clientTlsVersion_like: string
+  clientTlsVersion_lt: string
+  clientTlsVersion_neq: string
+  clientTlsVersion_notin: [string!]
+  clientTlsVersion_notlike: string
   connectionCloseReason: string
   connectionCloseReason_geq: string
   connectionCloseReason_gt: string
@@ -13911,6 +14125,26 @@ input AccountCf1GatewayNetworkSession1dGroupsFilter_InputObject {
   egressColoName_neq: string
   egressColoName_notin: [string!]
   egressColoName_notlike: string
+  egressIPv4: string
+  egressIPv4_geq: string
+  egressIPv4_gt: string
+  egressIPv4_in: [string!]
+  egressIPv4_leq: string
+  egressIPv4_like: string
+  egressIPv4_lt: string
+  egressIPv4_neq: string
+  egressIPv4_notin: [string!]
+  egressIPv4_notlike: string
+  egressIPv6: string
+  egressIPv6_geq: string
+  egressIPv6_gt: string
+  egressIPv6_in: [string!]
+  egressIPv6_leq: string
+  egressIPv6_like: string
+  egressIPv6_lt: string
+  egressIPv6_neq: string
+  egressIPv6_notin: [string!]
+  egressIPv6_notlike: string
   egressRuleId: string
   egressRuleId_geq: string
   egressRuleId_gt: string
@@ -13951,6 +14185,26 @@ input AccountCf1GatewayNetworkSession1dGroupsFilter_InputObject {
   onRamp_neq: string
   onRamp_notin: [string!]
   onRamp_notlike: string
+  originTlsCertificateValidationResult: string
+  originTlsCertificateValidationResult_geq: string
+  originTlsCertificateValidationResult_gt: string
+  originTlsCertificateValidationResult_in: [string!]
+  originTlsCertificateValidationResult_leq: string
+  originTlsCertificateValidationResult_like: string
+  originTlsCertificateValidationResult_lt: string
+  originTlsCertificateValidationResult_neq: string
+  originTlsCertificateValidationResult_notin: [string!]
+  originTlsCertificateValidationResult_notlike: string
+  originTlsCipher: string
+  originTlsCipher_geq: string
+  originTlsCipher_gt: string
+  originTlsCipher_in: [string!]
+  originTlsCipher_leq: string
+  originTlsCipher_like: string
+  originTlsCipher_lt: string
+  originTlsCipher_neq: string
+  originTlsCipher_notin: [string!]
+  originTlsCipher_notlike: string
   protocol: string
   protocol_geq: string
   protocol_gt: string
@@ -13988,6 +14242,10 @@ enum AccountCf1GatewayNetworkSession1dGroupsOrderBy {
   avg_tcpHandshakeMs_ASC
   # avg(tcpHandshakeMs) descending
   avg_tcpHandshakeMs_DESC
+  # clientTlsVersion ascending
+  clientTlsVersion_ASC
+  # clientTlsVersion descending
+  clientTlsVersion_DESC
   # connectionCloseReason ascending
   connectionCloseReason_ASC
   # connectionCloseReason descending
@@ -14012,6 +14270,14 @@ enum AccountCf1GatewayNetworkSession1dGroupsOrderBy {
   egressColoName_ASC
   # egressColoName descending
   egressColoName_DESC
+  # egressIPv4 ascending
+  egressIPv4_ASC
+  # egressIPv4 descending
+  egressIPv4_DESC
+  # egressIPv6 ascending
+  egressIPv6_ASC
+  # egressIPv6 descending
+  egressIPv6_DESC
   # egressRuleId ascending
   egressRuleId_ASC
   # egressRuleId descending
@@ -14032,6 +14298,14 @@ enum AccountCf1GatewayNetworkSession1dGroupsOrderBy {
   onRamp_ASC
   # onRamp descending
   onRamp_DESC
+  # originTlsCertificateValidationResult ascending
+  originTlsCertificateValidationResult_ASC
+  # originTlsCertificateValidationResult descending
+  originTlsCertificateValidationResult_DESC
+  # originTlsCipher ascending
+  originTlsCipher_ASC
+  # originTlsCipher descending
+  originTlsCipher_DESC
   # protocol ascending
   protocol_ASC
   # protocol descending
@@ -14107,6 +14381,8 @@ type AccountCf1GatewayNetworkSession1hGroupsAvg {
 }
 
 type AccountCf1GatewayNetworkSession1hGroupsDimensions {
+  # TLS version negotiated with client
+  clientTlsVersion: string!
   # Reason the connection was closed
   connectionCloseReason: string!
   # Hour start timestamp (hourly granularity)
@@ -14117,6 +14393,10 @@ type AccountCf1GatewayNetworkSession1hGroupsDimensions {
   destinationTunnelId: string!
   # Egress Cloudflare colo code
   egressColoName: string!
+  # Egress IPv4 address
+  egressIPv4: string!
+  # Egress IPv6 address
+  egressIPv6: string!
   # Egress policy rule ID
   egressRuleId: string!
   # Ingress Cloudflare colo code
@@ -14125,6 +14405,10 @@ type AccountCf1GatewayNetworkSession1hGroupsDimensions {
   offramp: string!
   # Ingress onramp type (derived from flowPath)
   onRamp: string!
+  # Result of origin TLS certificate validation
+  originTlsCertificateValidationResult: string!
+  # TLS cipher used to connect to origin
+  originTlsCipher: string!
   # L4 protocol
   protocol: string!
   # Server Name Indication from TLS handshake
@@ -14136,6 +14420,16 @@ type AccountCf1GatewayNetworkSession1hGroupsDimensions {
 input AccountCf1GatewayNetworkSession1hGroupsFilter_InputObject {
   AND: [AccountCf1GatewayNetworkSession1hGroupsFilter_InputObject!]
   OR: [AccountCf1GatewayNetworkSession1hGroupsFilter_InputObject!]
+  clientTlsVersion: string
+  clientTlsVersion_geq: string
+  clientTlsVersion_gt: string
+  clientTlsVersion_in: [string!]
+  clientTlsVersion_leq: string
+  clientTlsVersion_like: string
+  clientTlsVersion_lt: string
+  clientTlsVersion_neq: string
+  clientTlsVersion_notin: [string!]
+  clientTlsVersion_notlike: string
   connectionCloseReason: string
   connectionCloseReason_geq: string
   connectionCloseReason_gt: string
@@ -14184,6 +14478,26 @@ input AccountCf1GatewayNetworkSession1hGroupsFilter_InputObject {
   egressColoName_neq: string
   egressColoName_notin: [string!]
   egressColoName_notlike: string
+  egressIPv4: string
+  egressIPv4_geq: string
+  egressIPv4_gt: string
+  egressIPv4_in: [string!]
+  egressIPv4_leq: string
+  egressIPv4_like: string
+  egressIPv4_lt: string
+  egressIPv4_neq: string
+  egressIPv4_notin: [string!]
+  egressIPv4_notlike: string
+  egressIPv6: string
+  egressIPv6_geq: string
+  egressIPv6_gt: string
+  egressIPv6_in: [string!]
+  egressIPv6_leq: string
+  egressIPv6_like: string
+  egressIPv6_lt: string
+  egressIPv6_neq: string
+  egressIPv6_notin: [string!]
+  egressIPv6_notlike: string
   egressRuleId: string
   egressRuleId_geq: string
   egressRuleId_gt: string
@@ -14224,6 +14538,26 @@ input AccountCf1GatewayNetworkSession1hGroupsFilter_InputObject {
   onRamp_neq: string
   onRamp_notin: [string!]
   onRamp_notlike: string
+  originTlsCertificateValidationResult: string
+  originTlsCertificateValidationResult_geq: string
+  originTlsCertificateValidationResult_gt: string
+  originTlsCertificateValidationResult_in: [string!]
+  originTlsCertificateValidationResult_leq: string
+  originTlsCertificateValidationResult_like: string
+  originTlsCertificateValidationResult_lt: string
+  originTlsCertificateValidationResult_neq: string
+  originTlsCertificateValidationResult_notin: [string!]
+  originTlsCertificateValidationResult_notlike: string
+  originTlsCipher: string
+  originTlsCipher_geq: string
+  originTlsCipher_gt: string
+  originTlsCipher_in: [string!]
+  originTlsCipher_leq: string
+  originTlsCipher_like: string
+  originTlsCipher_lt: string
+  originTlsCipher_neq: string
+  originTlsCipher_notin: [string!]
+  originTlsCipher_notlike: string
   protocol: string
   protocol_geq: string
   protocol_gt: string
@@ -14261,6 +14595,10 @@ enum AccountCf1GatewayNetworkSession1hGroupsOrderBy {
   avg_tcpHandshakeMs_ASC
   # avg(tcpHandshakeMs) descending
   avg_tcpHandshakeMs_DESC
+  # clientTlsVersion ascending
+  clientTlsVersion_ASC
+  # clientTlsVersion descending
+  clientTlsVersion_DESC
   # connectionCloseReason ascending
   connectionCloseReason_ASC
   # connectionCloseReason descending
@@ -14285,6 +14623,14 @@ enum AccountCf1GatewayNetworkSession1hGroupsOrderBy {
   egressColoName_ASC
   # egressColoName descending
   egressColoName_DESC
+  # egressIPv4 ascending
+  egressIPv4_ASC
+  # egressIPv4 descending
+  egressIPv4_DESC
+  # egressIPv6 ascending
+  egressIPv6_ASC
+  # egressIPv6 descending
+  egressIPv6_DESC
   # egressRuleId ascending
   egressRuleId_ASC
   # egressRuleId descending
@@ -14305,6 +14651,14 @@ enum AccountCf1GatewayNetworkSession1hGroupsOrderBy {
   onRamp_ASC
   # onRamp descending
   onRamp_DESC
+  # originTlsCertificateValidationResult ascending
+  originTlsCertificateValidationResult_ASC
+  # originTlsCertificateValidationResult descending
+  originTlsCertificateValidationResult_DESC
+  # originTlsCipher ascending
+  originTlsCipher_ASC
+  # originTlsCipher descending
+  originTlsCipher_DESC
   # protocol ascending
   protocol_ASC
   # protocol descending
@@ -14380,6 +14734,8 @@ type AccountCf1GatewayNetworkSessionRawGroupsAvg {
 }
 
 type AccountCf1GatewayNetworkSessionRawGroupsDimensions {
+  # TLS version negotiated with client
+  clientTlsVersion: string!
   # Reason the connection was closed
   connectionCloseReason: string!
   # Session close timestamp
@@ -14394,6 +14750,10 @@ type AccountCf1GatewayNetworkSessionRawGroupsDimensions {
   destinationTunnelId: string!
   # Egress Cloudflare colo code
   egressColoName: string!
+  # Egress IPv4 address
+  egressIPv4: string!
+  # Egress IPv6 address
+  egressIPv6: string!
   # Egress policy rule ID
   egressRuleId: string!
   # Ingress Cloudflare colo code
@@ -14402,6 +14762,10 @@ type AccountCf1GatewayNetworkSessionRawGroupsDimensions {
   offramp: string!
   # Ingress onramp type (derived from flowPath)
   onRamp: string!
+  # Result of origin TLS certificate validation
+  originTlsCertificateValidationResult: string!
+  # TLS cipher used to connect to origin
+  originTlsCipher: string!
   # L4 protocol
   protocol: string!
   # Server Name Indication from TLS handshake
@@ -14413,6 +14777,16 @@ type AccountCf1GatewayNetworkSessionRawGroupsDimensions {
 input AccountCf1GatewayNetworkSessionRawGroupsFilter_InputObject {
   AND: [AccountCf1GatewayNetworkSessionRawGroupsFilter_InputObject!]
   OR: [AccountCf1GatewayNetworkSessionRawGroupsFilter_InputObject!]
+  clientTlsVersion: string
+  clientTlsVersion_geq: string
+  clientTlsVersion_gt: string
+  clientTlsVersion_in: [string!]
+  clientTlsVersion_leq: string
+  clientTlsVersion_like: string
+  clientTlsVersion_lt: string
+  clientTlsVersion_neq: string
+  clientTlsVersion_notin: [string!]
+  clientTlsVersion_notlike: string
   connectionCloseReason: string
   connectionCloseReason_geq: string
   connectionCloseReason_gt: string
@@ -14477,6 +14851,26 @@ input AccountCf1GatewayNetworkSessionRawGroupsFilter_InputObject {
   egressColoName_neq: string
   egressColoName_notin: [string!]
   egressColoName_notlike: string
+  egressIPv4: string
+  egressIPv4_geq: string
+  egressIPv4_gt: string
+  egressIPv4_in: [string!]
+  egressIPv4_leq: string
+  egressIPv4_like: string
+  egressIPv4_lt: string
+  egressIPv4_neq: string
+  egressIPv4_notin: [string!]
+  egressIPv4_notlike: string
+  egressIPv6: string
+  egressIPv6_geq: string
+  egressIPv6_gt: string
+  egressIPv6_in: [string!]
+  egressIPv6_leq: string
+  egressIPv6_like: string
+  egressIPv6_lt: string
+  egressIPv6_neq: string
+  egressIPv6_notin: [string!]
+  egressIPv6_notlike: string
   egressRuleId: string
   egressRuleId_geq: string
   egressRuleId_gt: string
@@ -14517,6 +14911,26 @@ input AccountCf1GatewayNetworkSessionRawGroupsFilter_InputObject {
   onRamp_neq: string
   onRamp_notin: [string!]
   onRamp_notlike: string
+  originTlsCertificateValidationResult: string
+  originTlsCertificateValidationResult_geq: string
+  originTlsCertificateValidationResult_gt: string
+  originTlsCertificateValidationResult_in: [string!]
+  originTlsCertificateValidationResult_leq: string
+  originTlsCertificateValidationResult_like: string
+  originTlsCertificateValidationResult_lt: string
+  originTlsCertificateValidationResult_neq: string
+  originTlsCertificateValidationResult_notin: [string!]
+  originTlsCertificateValidationResult_notlike: string
+  originTlsCipher: string
+  originTlsCipher_geq: string
+  originTlsCipher_gt: string
+  originTlsCipher_in: [string!]
+  originTlsCipher_leq: string
+  originTlsCipher_like: string
+  originTlsCipher_lt: string
+  originTlsCipher_neq: string
+  originTlsCipher_notin: [string!]
+  originTlsCipher_notlike: string
   protocol: string
   protocol_geq: string
   protocol_gt: string
@@ -14554,6 +14968,10 @@ enum AccountCf1GatewayNetworkSessionRawGroupsOrderBy {
   avg_tcpHandshakeMs_ASC
   # avg(tcpHandshakeMs) descending
   avg_tcpHandshakeMs_DESC
+  # clientTlsVersion ascending
+  clientTlsVersion_ASC
+  # clientTlsVersion descending
+  clientTlsVersion_DESC
   # connectionCloseReason ascending
   connectionCloseReason_ASC
   # connectionCloseReason descending
@@ -14586,6 +15004,14 @@ enum AccountCf1GatewayNetworkSessionRawGroupsOrderBy {
   egressColoName_ASC
   # egressColoName descending
   egressColoName_DESC
+  # egressIPv4 ascending
+  egressIPv4_ASC
+  # egressIPv4 descending
+  egressIPv4_DESC
+  # egressIPv6 ascending
+  egressIPv6_ASC
+  # egressIPv6 descending
+  egressIPv6_DESC
   # egressRuleId ascending
   egressRuleId_ASC
   # egressRuleId descending
@@ -14606,6 +15032,14 @@ enum AccountCf1GatewayNetworkSessionRawGroupsOrderBy {
   onRamp_ASC
   # onRamp descending
   onRamp_DESC
+  # originTlsCertificateValidationResult ascending
+  originTlsCertificateValidationResult_ASC
+  # originTlsCertificateValidationResult descending
+  originTlsCertificateValidationResult_DESC
+  # originTlsCipher ascending
+  originTlsCipher_ASC
+  # originTlsCipher descending
+  originTlsCipher_DESC
   # protocol ascending
   protocol_ASC
   # protocol descending
@@ -62550,6 +62984,7 @@ type AccountSettings {
   videoPlaybackEventsAdaptiveGroups: Settings!
   videoQualityEventsAdaptiveGroups: Settings!
   warpDeviceAdaptiveGroups: Settings!
+  webSearchRequestsAdaptiveGroups: Settings!
   workerPlacementAdaptiveGroups: Settings!
   workersAnalyticsEngineAdaptiveGroups: Settings!
   workersBuildsBuildMinutesAdaptiveGroups: Settings!
@@ -68561,6 +68996,458 @@ type AccountWarpDeviceAdaptiveGroupsUniq {
   deviceIds: uint64!
 }
 
+# Web Search Requests Analytics
+type AccountWebSearchRequestsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountWebSearchRequestsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountWebSearchRequestsAdaptiveGroupsConfidence!
+  # Total number of web search request events
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountWebSearchRequestsAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: AccountWebSearchRequestsAdaptiveGroupsQuantiles
+  # The sum of values for a metric per dimension
+  sum: AccountWebSearchRequestsAdaptiveGroupsSum
+}
+
+type AccountWebSearchRequestsAdaptiveGroupsAvg {
+  # Average number of results requested
+  requestedCount: float64!
+  # Average sample interval
+  sampleInterval: float64!
+  # Average request duration in milliseconds
+  totalDurationMs: float64!
+}
+
+type AccountWebSearchRequestsAdaptiveGroupsConfidence {
+  # Total number of web search request events, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountWebSearchRequestsAdaptiveGroupsSumConfidence
+}
+
+type AccountWebSearchRequestsAdaptiveGroupsDimensions {
+  # Whether the request is billable (0 = false, 1 = true)
+  billable: uint8!
+  # The country of the client that made the request
+  clientCountry: string!
+  # The date of the web search request
+  date: Date!
+  # The date and time the event occurred
+  datetime: Time!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # The error code returned, if any
+  errorCode: string!
+  # The stage at which an error occurred, if any
+  errorStage: string!
+  # The verbatim search query (truncated to 1024 characters)
+  query: string!
+  # The SHA-256 hex hash of the search query
+  queryHash: string!
+  # The length of the search query in characters
+  queryLength: uint32!
+  # The region the request was served from
+  region: string!
+  # The unique identifier for the web search request
+  requestId: string!
+  # The number of results requested
+  requestedCount: uint16!
+  # The high-level outcome of the request
+  result: string!
+  # The source of the request
+  source: string!
+  # The total duration of the request in milliseconds
+  totalDurationMs: float64!
+  # The user agent string of the inbound request
+  userAgent: string!
+}
+
+input AccountWebSearchRequestsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountWebSearchRequestsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountWebSearchRequestsAdaptiveGroupsFilter_InputObject!]
+  billable: uint8
+  billable_geq: uint8
+  billable_gt: uint8
+  billable_in: bytes
+  billable_leq: uint8
+  billable_lt: uint8
+  billable_neq: uint8
+  billable_notin: bytes
+  clientCountry: string
+  clientCountry_geq: string
+  clientCountry_gt: string
+  clientCountry_in: [string!]
+  clientCountry_leq: string
+  clientCountry_like: string
+  clientCountry_lt: string
+  clientCountry_neq: string
+  clientCountry_notin: [string!]
+  clientCountry_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  errorCode: string
+  errorCode_geq: string
+  errorCode_gt: string
+  errorCode_in: [string!]
+  errorCode_leq: string
+  errorCode_like: string
+  errorCode_lt: string
+  errorCode_neq: string
+  errorCode_notin: [string!]
+  errorCode_notlike: string
+  errorStage: string
+  errorStage_geq: string
+  errorStage_gt: string
+  errorStage_in: [string!]
+  errorStage_leq: string
+  errorStage_like: string
+  errorStage_lt: string
+  errorStage_neq: string
+  errorStage_notin: [string!]
+  errorStage_notlike: string
+  query: string
+  queryHash: string
+  queryHash_geq: string
+  queryHash_gt: string
+  queryHash_in: [string!]
+  queryHash_leq: string
+  queryHash_like: string
+  queryHash_lt: string
+  queryHash_neq: string
+  queryHash_notin: [string!]
+  queryHash_notlike: string
+  queryLength: uint32
+  queryLength_geq: uint32
+  queryLength_gt: uint32
+  queryLength_in: [uint32!]
+  queryLength_leq: uint32
+  queryLength_lt: uint32
+  queryLength_neq: uint32
+  queryLength_notin: [uint32!]
+  query_geq: string
+  query_gt: string
+  query_in: [string!]
+  query_leq: string
+  query_like: string
+  query_lt: string
+  query_neq: string
+  query_notin: [string!]
+  query_notlike: string
+  region: string
+  region_geq: string
+  region_gt: string
+  region_in: [string!]
+  region_leq: string
+  region_like: string
+  region_lt: string
+  region_neq: string
+  region_notin: [string!]
+  region_notlike: string
+  requestId: string
+  requestId_geq: string
+  requestId_gt: string
+  requestId_in: [string!]
+  requestId_leq: string
+  requestId_like: string
+  requestId_lt: string
+  requestId_neq: string
+  requestId_notin: [string!]
+  requestId_notlike: string
+  requestedCount: uint16
+  requestedCount_geq: uint16
+  requestedCount_gt: uint16
+  requestedCount_in: [uint16!]
+  requestedCount_leq: uint16
+  requestedCount_lt: uint16
+  requestedCount_neq: uint16
+  requestedCount_notin: [uint16!]
+  result: string
+  result_geq: string
+  result_gt: string
+  result_in: [string!]
+  result_leq: string
+  result_like: string
+  result_lt: string
+  result_neq: string
+  result_notin: [string!]
+  result_notlike: string
+  source: string
+  source_geq: string
+  source_gt: string
+  source_in: [string!]
+  source_leq: string
+  source_like: string
+  source_lt: string
+  source_neq: string
+  source_notin: [string!]
+  source_notlike: string
+  totalDurationMs: float64
+  totalDurationMs_geq: float64
+  totalDurationMs_gt: float64
+  totalDurationMs_in: [float64!]
+  totalDurationMs_leq: float64
+  totalDurationMs_lt: float64
+  totalDurationMs_neq: float64
+  totalDurationMs_notin: [float64!]
+  userAgent: string
+  userAgent_geq: string
+  userAgent_gt: string
+  userAgent_in: [string!]
+  userAgent_leq: string
+  userAgent_like: string
+  userAgent_lt: string
+  userAgent_neq: string
+  userAgent_notin: [string!]
+  userAgent_notlike: string
+}
+
+enum AccountWebSearchRequestsAdaptiveGroupsOrderBy {
+  # avg(requestedCount) ascending
+  avg_requestedCount_ASC
+  # avg(requestedCount) descending
+  avg_requestedCount_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # avg(totalDurationMs) ascending
+  avg_totalDurationMs_ASC
+  # avg(totalDurationMs) descending
+  avg_totalDurationMs_DESC
+  # billable ascending
+  billable_ASC
+  # billable descending
+  billable_DESC
+  # clientCountry ascending
+  clientCountry_ASC
+  # clientCountry descending
+  clientCountry_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # environment ascending
+  environment_ASC
+  # environment descending
+  environment_DESC
+  # errorCode ascending
+  errorCode_ASC
+  # errorCode descending
+  errorCode_DESC
+  # errorStage ascending
+  errorStage_ASC
+  # errorStage descending
+  errorStage_DESC
+  # quantiles(totalDurationMsP25) ascending
+  quantiles_totalDurationMsP25_ASC
+  # quantiles(totalDurationMsP25) descending
+  quantiles_totalDurationMsP25_DESC
+  # quantiles(totalDurationMsP50) ascending
+  quantiles_totalDurationMsP50_ASC
+  # quantiles(totalDurationMsP50) descending
+  quantiles_totalDurationMsP50_DESC
+  # quantiles(totalDurationMsP75) ascending
+  quantiles_totalDurationMsP75_ASC
+  # quantiles(totalDurationMsP75) descending
+  quantiles_totalDurationMsP75_DESC
+  # quantiles(totalDurationMsP90) ascending
+  quantiles_totalDurationMsP90_ASC
+  # quantiles(totalDurationMsP90) descending
+  quantiles_totalDurationMsP90_DESC
+  # quantiles(totalDurationMsP95) ascending
+  quantiles_totalDurationMsP95_ASC
+  # quantiles(totalDurationMsP95) descending
+  quantiles_totalDurationMsP95_DESC
+  # quantiles(totalDurationMsP999) ascending
+  quantiles_totalDurationMsP999_ASC
+  # quantiles(totalDurationMsP999) descending
+  quantiles_totalDurationMsP999_DESC
+  # quantiles(totalDurationMsP99) ascending
+  quantiles_totalDurationMsP99_ASC
+  # quantiles(totalDurationMsP99) descending
+  quantiles_totalDurationMsP99_DESC
+  # queryHash ascending
+  queryHash_ASC
+  # queryHash descending
+  queryHash_DESC
+  # queryLength ascending
+  queryLength_ASC
+  # queryLength descending
+  queryLength_DESC
+  # query ascending
+  query_ASC
+  # query descending
+  query_DESC
+  # region ascending
+  region_ASC
+  # region descending
+  region_DESC
+  # requestId ascending
+  requestId_ASC
+  # requestId descending
+  requestId_DESC
+  # requestedCount ascending
+  requestedCount_ASC
+  # requestedCount descending
+  requestedCount_DESC
+  # result ascending
+  result_ASC
+  # result descending
+  result_DESC
+  # source ascending
+  source_ASC
+  # source descending
+  source_DESC
+  # sum(billableCount) ascending
+  sum_billableCount_ASC
+  # sum(billableCount) descending
+  sum_billableCount_DESC
+  # sum(queryLength) ascending
+  sum_queryLength_ASC
+  # sum(queryLength) descending
+  sum_queryLength_DESC
+  # sum(requestedCount) ascending
+  sum_requestedCount_ASC
+  # sum(requestedCount) descending
+  sum_requestedCount_DESC
+  # sum(totalDurationMs) ascending
+  sum_totalDurationMs_ASC
+  # sum(totalDurationMs) descending
+  sum_totalDurationMs_DESC
+  # totalDurationMs ascending
+  totalDurationMs_ASC
+  # totalDurationMs descending
+  totalDurationMs_DESC
+  # userAgent ascending
+  userAgent_ASC
+  # userAgent descending
+  userAgent_DESC
+  # version ascending
+  version_ASC
+  # version descending
+  version_DESC
+}
+
+type AccountWebSearchRequestsAdaptiveGroupsQuantiles {
+  # Request duration in milliseconds (25th percentile)
+  totalDurationMsP25: float64!
+  # Request duration in milliseconds (50th percentile)
+  totalDurationMsP50: float64!
+  # Request duration in milliseconds (75th percentile)
+  totalDurationMsP75: float64!
+  # Request duration in milliseconds (90th percentile)
+  totalDurationMsP90: float64!
+  # Request duration in milliseconds (95th percentile)
+  totalDurationMsP95: float64!
+  # Request duration in milliseconds (99th percentile)
+  totalDurationMsP99: float64!
+  # Request duration in milliseconds (99.9th percentile)
+  totalDurationMsP999: float64!
+}
+
+type AccountWebSearchRequestsAdaptiveGroupsSum {
+  # Total number of billable requests
+  billableCount: uint64!
+  # Total query length in characters
+  queryLength: uint64!
+  # Total number of results requested
+  requestedCount: uint64!
+  # Total request duration in milliseconds
+  totalDurationMs: float64!
+}
+
+type AccountWebSearchRequestsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  billableCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  queryLength: Confidence!
+  # Confidence interval for the corresponding point estimate
+  requestedCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  totalDurationMs: Confidence!
+}
+
 # Worker placement metrics
 type AccountWorkerPlacementAdaptiveGroups {
   # ALPHA - DO NOT USE
@@ -70171,6 +71058,8 @@ type AccountWorkersOverviewRequestsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Request datetime, truncated to start of a minute
   datetimeMinute: Time!
+  # The name of the script
+  scriptName: string!
   # Status of the worker invocation
   status: uint8!
   # Usage model of the worker invocation
@@ -70228,6 +71117,16 @@ input AccountWorkersOverviewRequestsAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  scriptName: string
+  scriptName_geq: string
+  scriptName_gt: string
+  scriptName_in: [string!]
+  scriptName_leq: string
+  scriptName_like: string
+  scriptName_lt: string
+  scriptName_neq: string
+  scriptName_notin: [string!]
+  scriptName_notlike: string
   status: uint8
   status_geq: uint8
   status_gt: uint8
@@ -70283,6 +71182,10 @@ enum AccountWorkersOverviewRequestsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # scriptName ascending
+  scriptName_ASC
+  # scriptName descending
+  scriptName_DESC
   # stableId ascending
   stableId_ASC
   # stableId descending
