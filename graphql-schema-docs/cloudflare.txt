@@ -188,6 +188,7 @@ Account-level datasets:
 * workersAnalyticsEngineAdaptiveGroups
 * workersBuildsBuildMinutesAdaptiveGroups
 * workersInvocationsAdaptive
+* workersInvocationsByOwnerAndScriptGroups
 * workersInvocationsScheduled
 * workersOverviewDataAdaptiveGroups
 * workersOverviewRequestsAdaptiveGroups
@@ -685,6 +686,8 @@ type account {
   workersBuildsBuildMinutesAdaptiveGroups(filter: AccountWorkersBuildsBuildMinutesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersBuildsBuildMinutesAdaptiveGroupsOrderBy!]): [AccountWorkersBuildsBuildMinutesAdaptiveGroups!]!
   # Beta. Workers invocations with adaptive sampling
   workersInvocationsAdaptive(filter: AccountWorkersInvocationsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersInvocationsAdaptiveOrderBy!]): [AccountWorkersInvocationsAdaptive!]!
+  # Workers dynamic worker invocations. Used for exact distinct dynamic worker counts.
+  workersInvocationsByOwnerAndScriptGroups(filter: AccountWorkersInvocationsByOwnerAndScriptGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersInvocationsByOwnerAndScriptGroupsOrderBy!]): [AccountWorkersInvocationsByOwnerAndScriptGroups!]!
   # Workers scheduled invocations
   workersInvocationsScheduled(filter: AccountWorkersInvocationsScheduledFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersInvocationsScheduledOrderBy!]): [AccountWorkersInvocationsScheduled!]!
   # Beta. Workers account overview invocation data with adaptive sampling
@@ -12036,11 +12039,11 @@ type AccountCf1GatewayDns1dGroupsDimensions {
   datetime: Time!
   # Query name (destination domain)
   destination: string!
-  # Device ID. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   deviceId: string!
   # Union of EDE codes observed in the group (rollup of raw edeErrors via groupUniqArrayArray; sorted ascending for deterministic output)
   edeErrors: [uint16!]!
-  # User email address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   email: string!
   # Gateway location ID
   location: string!
@@ -12060,7 +12063,7 @@ type AccountCf1GatewayDns1dGroupsDimensions {
   rcode: string!
   # Gateway resolver decision. To filter for all "block" outcomes, use resolverDecision_in with ["blockedRule", "blockedByQueryName", "blockedByCategory"]. Other values: allowedOnNoPolicyMatch, allowedOnPolicyMatch, allowedByQueryName, overrideRule, safesearchRule, ytRestrictedModeRule, allowedOnNoLocation, allowedOnNoRule, overrideOnlyRule.
   resolverDecision: string!
-  # Source IP address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   sourceIP: string!
 }
 
@@ -12305,11 +12308,11 @@ type AccountCf1GatewayDns1hGroupsDimensions {
   datetime: Time!
   # Query name (destination domain)
   destination: string!
-  # Device ID. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   deviceId: string!
   # Union of EDE codes observed in the group (rollup of raw edeErrors via groupUniqArrayArray; sorted ascending for deterministic output)
   edeErrors: [uint16!]!
-  # User email address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   email: string!
   # Gateway location ID
   location: string!
@@ -12329,7 +12332,7 @@ type AccountCf1GatewayDns1hGroupsDimensions {
   rcode: string!
   # Gateway resolver decision. To filter for all "block" outcomes, use resolverDecision_in with ["blockedRule", "blockedByQueryName", "blockedByCategory"]. Other values: allowedOnNoPolicyMatch, allowedOnPolicyMatch, allowedByQueryName, overrideRule, safesearchRule, ytRestrictedModeRule, allowedOnNoLocation, allowedOnNoRule, overrideOnlyRule.
   resolverDecision: string!
-  # Source IP address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   sourceIP: string!
 }
 
@@ -12578,11 +12581,11 @@ type AccountCf1GatewayDnsRawGroupsDimensions {
   datetimeHour: Time!
   # Query name (destination domain)
   destination: string!
-  # Device ID. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   deviceId: string!
   # Extended DNS Error (EDE) codes returned in the response
   edeErrors: [uint16!]!
-  # User email address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   email: string!
   # Gateway location ID
   location: string!
@@ -12604,7 +12607,7 @@ type AccountCf1GatewayDnsRawGroupsDimensions {
   rcode: string!
   # Gateway resolver decision. To filter for all "block" outcomes, use resolverDecision_in with ["blockedRule", "blockedByQueryName", "blockedByCategory"]. Other values: allowedOnNoPolicyMatch, allowedOnPolicyMatch, allowedByQueryName, overrideRule, safesearchRule, ytRestrictedModeRule, allowedOnNoLocation, allowedOnNoRule, overrideOnlyRule.
   resolverDecision: string!
-  # Source IP address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   sourceIP: string!
 }
 
@@ -12916,13 +12919,13 @@ type AccountCf1GatewayHttp1dGroupsDimensions {
   country: string!
   # Day start timestamp (daily granularity)
   datetime: Time!
-  # Device ID. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   deviceId: string!
-  # User email address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   email: string!
   # HTTP hostname
   httpHost: string!
-  # Source IP address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   sourceIP: string!
 }
 
@@ -13087,13 +13090,13 @@ type AccountCf1GatewayHttp1hGroupsDimensions {
   country: string!
   # Hour start timestamp (hourly granularity)
   datetime: Time!
-  # Device ID. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   deviceId: string!
-  # User email address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   email: string!
   # HTTP hostname
   httpHost: string!
-  # Source IP address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   sourceIP: string!
 }
 
@@ -13262,13 +13265,13 @@ type AccountCf1GatewayHttpRawGroupsDimensions {
   datetimeFiveMinutes: Time!
   # Request timestamp truncated to hour
   datetimeHour: Time!
-  # Device ID. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   deviceId: string!
-  # User email address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   email: string!
   # HTTP hostname
   httpHost: string!
-  # Source IP address. Requires the #teams:pii permission; otherwise returned as the literal "REDACTED"
+  # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   sourceIP: string!
 }
 
@@ -13453,18 +13456,30 @@ type AccountCf1GatewayNetwork1dGroups {
 type AccountCf1GatewayNetwork1dGroupsDimensions {
   # Gateway firewall decision
   action: string!
+  # Union of application IDs observed in the group (rollup of raw applicationIds via groupUniqArrayArray; sorted ascending for deterministic output)
+  applicationIds: [uint32!]!
+  # Union of application type IDs observed in the group (rollup of raw applicationTypeIds via groupUniqArrayArray; sorted ascending for deterministic output)
+  applicationTypeIds: [uint32!]!
+  # Union of category IDs observed in the group (rollup of raw categoryIds via groupUniqArrayArray; sorted ascending for deterministic output)
+  categoryIds: [uint16!]!
   # Cloudflare colo code
   coloName: string!
   # Day start timestamp (daily granularity)
   datetime: Time!
   # Destination country code (ISO 3166-1 alpha-2)
   destinationCountry: string!
+  # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
+  deviceId: string!
+  # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
+  email: string!
   # Policy rule ID
   ruleId: string!
   # Server Name Indication from TLS handshake
   sni: string!
   # Source country code (ISO 3166-1 alpha-2)
   sourceCountry: string!
+  # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
+  sourceIP: string!
   # Transport protocol
   transport: string!
 }
@@ -13510,6 +13525,26 @@ input AccountCf1GatewayNetwork1dGroupsFilter_InputObject {
   destinationCountry_neq: string
   destinationCountry_notin: [string!]
   destinationCountry_notlike: string
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  email: string
+  email_geq: string
+  email_gt: string
+  email_in: [string!]
+  email_leq: string
+  email_like: string
+  email_lt: string
+  email_neq: string
+  email_notin: [string!]
+  email_notlike: string
   ruleId: string
   ruleId_geq: string
   ruleId_gt: string
@@ -13540,6 +13575,16 @@ input AccountCf1GatewayNetwork1dGroupsFilter_InputObject {
   sourceCountry_neq: string
   sourceCountry_notin: [string!]
   sourceCountry_notlike: string
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
   transport: string
   transport_geq: string
   transport_gt: string
@@ -13605,6 +13650,10 @@ enum AccountCf1GatewayNetwork1dGroupsOrderBy {
   uniq_devices_ASC
   # uniq(devices) descending
   uniq_devices_DESC
+  # uniq(sessions) ascending
+  uniq_sessions_ASC
+  # uniq(sessions) descending
+  uniq_sessions_DESC
   # uniq(users) ascending
   uniq_users_ASC
   # uniq(users) descending
@@ -13619,6 +13668,8 @@ type AccountCf1GatewayNetwork1dGroupsSum {
 type AccountCf1GatewayNetwork1dGroupsUniq {
   # Unique devices
   devices: uint64!
+  # Unique Gateway sessions (deduplicated across firewall-decision re-evaluations and across rollup buckets when not grouped by datetime)
+  sessions: uint64!
   # Unique users
   users: uint64!
 }
@@ -13634,18 +13685,30 @@ type AccountCf1GatewayNetwork1hGroups {
 type AccountCf1GatewayNetwork1hGroupsDimensions {
   # Gateway firewall decision
   action: string!
+  # Union of application IDs observed in the group (rollup of raw applicationIds via groupUniqArrayArray; sorted ascending for deterministic output)
+  applicationIds: [uint32!]!
+  # Union of application type IDs observed in the group (rollup of raw applicationTypeIds via groupUniqArrayArray; sorted ascending for deterministic output)
+  applicationTypeIds: [uint32!]!
+  # Union of category IDs observed in the group (rollup of raw categoryIds via groupUniqArrayArray; sorted ascending for deterministic output)
+  categoryIds: [uint16!]!
   # Cloudflare colo code
   coloName: string!
   # Hour start timestamp (hourly granularity)
   datetime: Time!
   # Destination country code (ISO 3166-1 alpha-2)
   destinationCountry: string!
+  # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
+  deviceId: string!
+  # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
+  email: string!
   # Policy rule ID
   ruleId: string!
   # Server Name Indication from TLS handshake
   sni: string!
   # Source country code (ISO 3166-1 alpha-2)
   sourceCountry: string!
+  # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
+  sourceIP: string!
   # Transport protocol
   transport: string!
 }
@@ -13691,6 +13754,26 @@ input AccountCf1GatewayNetwork1hGroupsFilter_InputObject {
   destinationCountry_neq: string
   destinationCountry_notin: [string!]
   destinationCountry_notlike: string
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  email: string
+  email_geq: string
+  email_gt: string
+  email_in: [string!]
+  email_leq: string
+  email_like: string
+  email_lt: string
+  email_neq: string
+  email_notin: [string!]
+  email_notlike: string
   ruleId: string
   ruleId_geq: string
   ruleId_gt: string
@@ -13721,6 +13804,16 @@ input AccountCf1GatewayNetwork1hGroupsFilter_InputObject {
   sourceCountry_neq: string
   sourceCountry_notin: [string!]
   sourceCountry_notlike: string
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
   transport: string
   transport_geq: string
   transport_gt: string
@@ -13786,6 +13879,10 @@ enum AccountCf1GatewayNetwork1hGroupsOrderBy {
   uniq_devices_ASC
   # uniq(devices) descending
   uniq_devices_DESC
+  # uniq(sessions) ascending
+  uniq_sessions_ASC
+  # uniq(sessions) descending
+  uniq_sessions_DESC
   # uniq(users) ascending
   uniq_users_ASC
   # uniq(users) descending
@@ -13800,6 +13897,8 @@ type AccountCf1GatewayNetwork1hGroupsSum {
 type AccountCf1GatewayNetwork1hGroupsUniq {
   # Unique devices
   devices: uint64!
+  # Unique Gateway sessions (deduplicated across firewall-decision re-evaluations and across rollup buckets when not grouped by datetime)
+  sessions: uint64!
   # Unique users
   users: uint64!
 }
@@ -13815,6 +13914,12 @@ type AccountCf1GatewayNetworkRawGroups {
 type AccountCf1GatewayNetworkRawGroupsDimensions {
   # Gateway firewall decision
   action: string!
+  # Application IDs detected on the session (Cloudflare application taxonomy)
+  applicationIds: [uint32!]!
+  # Application Type IDs detected on the session (Cloudflare application-type taxonomy)
+  applicationTypeIds: [uint32!]!
+  # Category IDs detected on the session (Cloudflare category taxonomy)
+  categoryIds: [uint16!]!
   # Cloudflare colo code
   coloName: string!
   # Event timestamp
@@ -13825,12 +13930,26 @@ type AccountCf1GatewayNetworkRawGroupsDimensions {
   datetimeHour: Time!
   # Destination country code (ISO 3166-1 alpha-2)
   destinationCountry: string!
+  # Destination TCP/UDP port
+  destinationPort: string!
+  # Detected L7 protocol (Citadel). Note: column is sparse — empty when detection inconclusive.
+  detectedProtocol: string!
+  # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
+  deviceId: string!
+  # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
+  email: string!
+  # Host application ID associated with the session (empty when unknown). Complements applicationIds.
+  hostApplicationId: string!
+  # Gateway proxy endpoint that received the session
+  proxyEndpoint: string!
   # Policy rule ID
   ruleId: string!
   # Server Name Indication from TLS handshake
   sni: string!
   # Source country code (ISO 3166-1 alpha-2)
   sourceCountry: string!
+  # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
+  sourceIP: string!
   # Transport protocol
   transport: string!
 }
@@ -13848,6 +13967,21 @@ input AccountCf1GatewayNetworkRawGroupsFilter_InputObject {
   action_neq: string
   action_notin: [string!]
   action_notlike: string
+  applicationIds_has: uint32
+  applicationIds_hasall: [uint32!]
+  applicationIds_hasany: [uint32!]
+  applicationIds_isempty: bool
+  applicationIds_nothas: uint32
+  applicationTypeIds_has: uint32
+  applicationTypeIds_hasall: [uint32!]
+  applicationTypeIds_hasany: [uint32!]
+  applicationTypeIds_isempty: bool
+  applicationTypeIds_nothas: uint32
+  categoryIds_has: uint16
+  categoryIds_hasall: [uint16!]
+  categoryIds_hasany: [uint16!]
+  categoryIds_isempty: bool
+  categoryIds_nothas: uint16
   coloName: string
   coloName_geq: string
   coloName_gt: string
@@ -13892,6 +14026,66 @@ input AccountCf1GatewayNetworkRawGroupsFilter_InputObject {
   destinationCountry_neq: string
   destinationCountry_notin: [string!]
   destinationCountry_notlike: string
+  destinationPort: string
+  destinationPort_geq: string
+  destinationPort_gt: string
+  destinationPort_in: [string!]
+  destinationPort_leq: string
+  destinationPort_like: string
+  destinationPort_lt: string
+  destinationPort_neq: string
+  destinationPort_notin: [string!]
+  destinationPort_notlike: string
+  detectedProtocol: string
+  detectedProtocol_geq: string
+  detectedProtocol_gt: string
+  detectedProtocol_in: [string!]
+  detectedProtocol_leq: string
+  detectedProtocol_like: string
+  detectedProtocol_lt: string
+  detectedProtocol_neq: string
+  detectedProtocol_notin: [string!]
+  detectedProtocol_notlike: string
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  email: string
+  email_geq: string
+  email_gt: string
+  email_in: [string!]
+  email_leq: string
+  email_like: string
+  email_lt: string
+  email_neq: string
+  email_notin: [string!]
+  email_notlike: string
+  hostApplicationId: string
+  hostApplicationId_geq: string
+  hostApplicationId_gt: string
+  hostApplicationId_in: [string!]
+  hostApplicationId_leq: string
+  hostApplicationId_like: string
+  hostApplicationId_lt: string
+  hostApplicationId_neq: string
+  hostApplicationId_notin: [string!]
+  hostApplicationId_notlike: string
+  proxyEndpoint: string
+  proxyEndpoint_geq: string
+  proxyEndpoint_gt: string
+  proxyEndpoint_in: [string!]
+  proxyEndpoint_leq: string
+  proxyEndpoint_like: string
+  proxyEndpoint_lt: string
+  proxyEndpoint_neq: string
+  proxyEndpoint_notin: [string!]
+  proxyEndpoint_notlike: string
   ruleId: string
   ruleId_geq: string
   ruleId_gt: string
@@ -13922,6 +14116,16 @@ input AccountCf1GatewayNetworkRawGroupsFilter_InputObject {
   sourceCountry_neq: string
   sourceCountry_notin: [string!]
   sourceCountry_notlike: string
+  sourceIP: string
+  sourceIP_geq: string
+  sourceIP_gt: string
+  sourceIP_in: [string!]
+  sourceIP_leq: string
+  sourceIP_like: string
+  sourceIP_lt: string
+  sourceIP_neq: string
+  sourceIP_notin: [string!]
+  sourceIP_notlike: string
   transport: string
   transport_geq: string
   transport_gt: string
@@ -13939,6 +14143,18 @@ enum AccountCf1GatewayNetworkRawGroupsOrderBy {
   action_ASC
   # action descending
   action_DESC
+  # applicationIds ascending
+  applicationIds_ASC
+  # applicationIds descending
+  applicationIds_DESC
+  # applicationTypeIds ascending
+  applicationTypeIds_ASC
+  # applicationTypeIds descending
+  applicationTypeIds_DESC
+  # categoryIds ascending
+  categoryIds_ASC
+  # categoryIds descending
+  categoryIds_DESC
   # coloName ascending
   coloName_ASC
   # coloName descending
@@ -13959,6 +14175,14 @@ enum AccountCf1GatewayNetworkRawGroupsOrderBy {
   destinationCountry_ASC
   # destinationCountry descending
   destinationCountry_DESC
+  # destinationPort ascending
+  destinationPort_ASC
+  # destinationPort descending
+  destinationPort_DESC
+  # detectedProtocol ascending
+  detectedProtocol_ASC
+  # detectedProtocol descending
+  detectedProtocol_DESC
   # deviceId ascending
   deviceId_ASC
   # deviceId descending
@@ -13967,6 +14191,14 @@ enum AccountCf1GatewayNetworkRawGroupsOrderBy {
   email_ASC
   # email descending
   email_DESC
+  # hostApplicationId ascending
+  hostApplicationId_ASC
+  # hostApplicationId descending
+  hostApplicationId_DESC
+  # proxyEndpoint ascending
+  proxyEndpoint_ASC
+  # proxyEndpoint descending
+  proxyEndpoint_DESC
   # ruleId ascending
   ruleId_ASC
   # ruleId descending
@@ -13995,6 +14227,10 @@ enum AccountCf1GatewayNetworkRawGroupsOrderBy {
   uniq_devices_ASC
   # uniq(devices) descending
   uniq_devices_DESC
+  # uniq(sessions) ascending
+  uniq_sessions_ASC
+  # uniq(sessions) descending
+  uniq_sessions_DESC
   # uniq(users) ascending
   uniq_users_ASC
   # uniq(users) descending
@@ -14009,6 +14245,8 @@ type AccountCf1GatewayNetworkRawGroupsSum {
 type AccountCf1GatewayNetworkRawGroupsUniq {
   # Unique devices
   devices: uint64!
+  # Unique Gateway sessions (deduplicated across firewall-decision re-evaluations within a session)
+  sessions: uint64!
   # Unique users
   users: uint64!
 }
@@ -35318,6 +35556,14 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   sum_botDetectionTagCountArray_ASC
   # sum(botDetectionTagCountArray) descending
   sum_botDetectionTagCountArray_DESC
+  # sum(clientRequestAcceptContentTypeCategoryArray) ascending
+  sum_clientRequestAcceptContentTypeCategoryArray_ASC
+  # sum(clientRequestAcceptContentTypeCategoryArray) descending
+  sum_clientRequestAcceptContentTypeCategoryArray_DESC
+  # sum(clientRequestAcceptContentTypeCategoryCountArray) ascending
+  sum_clientRequestAcceptContentTypeCategoryCountArray_ASC
+  # sum(clientRequestAcceptContentTypeCategoryCountArray) descending
+  sum_clientRequestAcceptContentTypeCategoryCountArray_DESC
   # sum(crossZoneSubrequests) ascending
   sum_crossZoneSubrequests_ASC
   # sum(crossZoneSubrequests) descending
@@ -35587,6 +35833,10 @@ type AccountHttpRequestsAdaptiveGroupsSum {
   botDetectionTagArray: [string!]!
   # Count array of bot management detection tags. Elements in this array correspond to elements in botDetectionTagArray by index.
   botDetectionTagCountArray: [uint32!]!
+  # Array of Accept content type category slugs (e.g. html, json, images) aggregated independently across requests, ordered by request count descending and capped at 50 entries. Each category is counted separately — a request accepting both text/html and application/json contributes to both html and json totals.
+  clientRequestAcceptContentTypeCategoryArray: [string!]!
+  # Count array of per-category Accept content type aggregations, ordered by request count descending and capped at 50 entries. Elements correspond to clientRequestAcceptContentTypeCategoryArray by index. Each count represents the total number of requests that included any MIME type belonging to that category in their Accept header.
+  clientRequestAcceptContentTypeCategoryCountArray: [uint32!]!
   # The number of requests that were inititiated by a Cloudflare Worker on another zone
   crossZoneSubrequests: uint64!
   edgeDnsResponseTimeMs: uint64!
@@ -46074,6 +46324,8 @@ type AccountMconnTelemetryEventsAdaptiveGroupsDimensions {
   datetimeSixHours: Time!
   # Event kind
   kind: string!
+  # JSON-encoded data extracted from the event
+  payload: string!
 }
 
 input AccountMconnTelemetryEventsAdaptiveGroupsFilter_InputObject {
@@ -46155,6 +46407,16 @@ input AccountMconnTelemetryEventsAdaptiveGroupsFilter_InputObject {
   kind_neq: string
   kind_notin: [string!]
   kind_notlike: string
+  payload: string
+  payload_geq: string
+  payload_gt: string
+  payload_in: [string!]
+  payload_leq: string
+  payload_like: string
+  payload_lt: string
+  payload_neq: string
+  payload_notin: [string!]
+  payload_notlike: string
 }
 
 enum AccountMconnTelemetryEventsAdaptiveGroupsOrderBy {
@@ -46198,6 +46460,10 @@ enum AccountMconnTelemetryEventsAdaptiveGroupsOrderBy {
   kind_ASC
   # kind descending
   kind_DESC
+  # payload ascending
+  payload_ASC
+  # payload descending
+  payload_DESC
 }
 
 # Aggregated Magic WAN Connector events with adaptive sampling
@@ -46236,6 +46502,8 @@ type AccountMconnTelemetryEventsStagingAdaptiveGroupsDimensions {
   datetimeSixHours: Time!
   # Event kind
   kind: string!
+  # JSON-encoded data extracted from the event
+  payload: string!
 }
 
 input AccountMconnTelemetryEventsStagingAdaptiveGroupsFilter_InputObject {
@@ -46317,6 +46585,16 @@ input AccountMconnTelemetryEventsStagingAdaptiveGroupsFilter_InputObject {
   kind_neq: string
   kind_notin: [string!]
   kind_notlike: string
+  payload: string
+  payload_geq: string
+  payload_gt: string
+  payload_in: [string!]
+  payload_leq: string
+  payload_like: string
+  payload_lt: string
+  payload_neq: string
+  payload_notin: [string!]
+  payload_notlike: string
 }
 
 enum AccountMconnTelemetryEventsStagingAdaptiveGroupsOrderBy {
@@ -46360,6 +46638,10 @@ enum AccountMconnTelemetryEventsStagingAdaptiveGroupsOrderBy {
   kind_ASC
   # kind descending
   kind_DESC
+  # payload ascending
+  payload_ASC
+  # payload descending
+  payload_DESC
 }
 
 # Aggregated Magic WAN Connector snapshots of DHCP leases with adaptive sampling
@@ -62989,6 +63271,7 @@ type AccountSettings {
   workersAnalyticsEngineAdaptiveGroups: Settings!
   workersBuildsBuildMinutesAdaptiveGroups: Settings!
   workersInvocationsAdaptive: Settings!
+  workersInvocationsByOwnerAndScriptGroups: Settings!
   workersInvocationsScheduled: Settings!
   workersOverviewDataAdaptiveGroups: Settings!
   workersOverviewRequestsAdaptiveGroups: Settings!
@@ -70758,6 +71041,126 @@ type AccountWorkersInvocationsAdaptiveSumConfidence {
   wallTime: Confidence!
 }
 
+# Workers dynamic worker invocations. Used for exact distinct dynamic worker counts.
+type AccountWorkersInvocationsByOwnerAndScriptGroups {
+  # List of dimensions to group by
+  dimensions: AccountWorkersInvocationsByOwnerAndScriptGroupsDimensions
+  # Unique count metrics
+  uniq: AccountWorkersInvocationsByOwnerAndScriptGroupsUniq
+}
+
+type AccountWorkersInvocationsByOwnerAndScriptGroupsDimensions {
+  # Request datetime, truncated to start of a day
+  date: Date!
+  # Request datetime
+  datetime: Time!
+  # Request datetime, truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Request datetime, truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Request datetime, truncated to start of an hour
+  datetimeHour: Time!
+  # Request datetime, truncated to start of a minute
+  datetimeMinute: Time!
+}
+
+input AccountWorkersInvocationsByOwnerAndScriptGroupsFilter_InputObject {
+  AND: [AccountWorkersInvocationsByOwnerAndScriptGroupsFilter_InputObject!]
+  OR: [AccountWorkersInvocationsByOwnerAndScriptGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+}
+
+enum AccountWorkersInvocationsByOwnerAndScriptGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # dynamicWorkerIdHash ascending
+  dynamicWorkerIdHash_ASC
+  # dynamicWorkerIdHash descending
+  dynamicWorkerIdHash_DESC
+  # scriptContentId ascending
+  scriptContentId_ASC
+  # scriptContentId descending
+  scriptContentId_DESC
+  # uniq(distinctDynamicWorkerCount) ascending
+  uniq_distinctDynamicWorkerCount_ASC
+  # uniq(distinctDynamicWorkerCount) descending
+  uniq_distinctDynamicWorkerCount_DESC
+}
+
+type AccountWorkersInvocationsByOwnerAndScriptGroupsUniq {
+  # Count of distinct dynamic workers in given timeframe
+  distinctDynamicWorkerCount: uint64!
+}
+
 # Workers scheduled invocations
 type AccountWorkersInvocationsScheduled {
   # CPU time - microseconds
@@ -74392,6 +74795,14 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   sessionIdHash_ASC
   # sessionIdHash descending
   sessionIdHash_DESC
+  # sum(clientRequestAcceptContentTypeCategoryArray) ascending
+  sum_clientRequestAcceptContentTypeCategoryArray_ASC
+  # sum(clientRequestAcceptContentTypeCategoryArray) descending
+  sum_clientRequestAcceptContentTypeCategoryArray_DESC
+  # sum(clientRequestAcceptContentTypeCategoryCountArray) ascending
+  sum_clientRequestAcceptContentTypeCategoryCountArray_ASC
+  # sum(clientRequestAcceptContentTypeCategoryCountArray) descending
+  sum_clientRequestAcceptContentTypeCategoryCountArray_DESC
   # sum(crossZoneSubrequests) ascending
   sum_crossZoneSubrequests_ASC
   # sum(crossZoneSubrequests) descending
@@ -74607,6 +75018,10 @@ type OrganizationHttpRequestsAdaptiveGroupsRatio {
 }
 
 type OrganizationHttpRequestsAdaptiveGroupsSum {
+  # Array of Accept content type category slugs (e.g. html, json, images) aggregated independently across requests, ordered by request count descending and capped at 50 entries. Each category is counted separately — a request accepting both text/html and application/json contributes to both html and json totals.
+  clientRequestAcceptContentTypeCategoryArray: [string!]!
+  # Count array of per-category Accept content type aggregations, ordered by request count descending and capped at 50 entries. Elements correspond to clientRequestAcceptContentTypeCategoryArray by index. Each count represents the total number of requests that included any MIME type belonging to that category in their Accept header.
+  clientRequestAcceptContentTypeCategoryCountArray: [uint32!]!
   # The number of requests that were inititiated by a Cloudflare Worker on another zone
   crossZoneSubrequests: uint64!
   edgeDnsResponseTimeMs: uint64!
@@ -87265,6 +87680,14 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   sum_botDetectionTagCountArray_ASC
   # sum(botDetectionTagCountArray) descending
   sum_botDetectionTagCountArray_DESC
+  # sum(clientRequestAcceptContentTypeCategoryArray) ascending
+  sum_clientRequestAcceptContentTypeCategoryArray_ASC
+  # sum(clientRequestAcceptContentTypeCategoryArray) descending
+  sum_clientRequestAcceptContentTypeCategoryArray_DESC
+  # sum(clientRequestAcceptContentTypeCategoryCountArray) ascending
+  sum_clientRequestAcceptContentTypeCategoryCountArray_ASC
+  # sum(clientRequestAcceptContentTypeCategoryCountArray) descending
+  sum_clientRequestAcceptContentTypeCategoryCountArray_DESC
   # sum(crossZoneSubrequests) ascending
   sum_crossZoneSubrequests_ASC
   # sum(crossZoneSubrequests) descending
@@ -87530,6 +87953,10 @@ type ZoneHttpRequestsAdaptiveGroupsSum {
   botDetectionTagArray: [string!]!
   # Count array of bot management detection tags. Elements in this array correspond to elements in botDetectionTagArray by index.
   botDetectionTagCountArray: [uint32!]!
+  # Array of Accept content type category slugs (e.g. html, json, images) aggregated independently across requests, ordered by request count descending and capped at 50 entries. Each category is counted separately — a request accepting both text/html and application/json contributes to both html and json totals.
+  clientRequestAcceptContentTypeCategoryArray: [string!]!
+  # Count array of per-category Accept content type aggregations, ordered by request count descending and capped at 50 entries. Elements correspond to clientRequestAcceptContentTypeCategoryArray by index. Each count represents the total number of requests that included any MIME type belonging to that category in their Accept header.
+  clientRequestAcceptContentTypeCategoryCountArray: [uint32!]!
   # The number of requests that were inititiated by a Cloudflare Worker on another zone
   crossZoneSubrequests: uint64!
   edgeDnsResponseTimeMs: uint64!
