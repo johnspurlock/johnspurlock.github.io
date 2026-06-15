@@ -163,6 +163,7 @@ Account-level datasets:
 * rumPerformanceEventsAdaptiveGroups
 * rumWebVitalsEventsAdaptive
 * rumWebVitalsEventsAdaptiveGroups
+* shadowIt1hGroups
   sinkholeRequestLogsAdaptive
   sinkholeRequestLogsAdaptiveGroups
 * sippyOperationsAdaptiveGroups
@@ -269,7 +270,7 @@ scalar Date
 # Scalar type types.Float32
 scalar float32
 
-# Scalar type float64
+# Scalar type types.Float64
 scalar float64
 
 # Scalar type int16
@@ -636,6 +637,8 @@ type account {
   # Beta. Aggregated RUM Web Vitals event metrics with adaptive sampling
   rumWebVitalsEventsAdaptiveGroups(filter: AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountRumWebVitalsEventsAdaptiveGroupsOrderBy!]): [AccountRumWebVitalsEventsAdaptiveGroups!]!
   settings: AccountSettings
+  # Shadow IT analytics - applications seen in Gateway HTTP traffic, 1 hour rollup (up to 90d window, 365d back)
+  shadowIt1hGroups(filter: AccountShadowIt1hGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountShadowIt1hGroupsOrderBy!]): [AccountShadowIt1hGroups!]!
   # Sinkhole Request Logs
   sinkholeRequestLogsAdaptive(filter: AccountSinkholeRequestLogsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountSinkholeRequestLogsAdaptiveOrderBy!]): [AccountSinkholeRequestLogsAdaptive!]!
   # Sinkhole Request Logs
@@ -4532,6 +4535,8 @@ type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
   tokensIn: uint64!
   # Number of tokens in the response
   tokensOut: uint64!
+  # User-Agent header value sent by the calling SDK or client
+  userAgent: string!
   # Was the request use wholesale: 1 = applied, 0 = not applied
   wholesale: uint8!
 }
@@ -4713,6 +4718,16 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   tokensOut_lt: uint64
   tokensOut_neq: uint64
   tokensOut_notin: [uint64!]
+  userAgent: string
+  userAgent_geq: string
+  userAgent_gt: string
+  userAgent_in: [string!]
+  userAgent_leq: string
+  userAgent_like: string
+  userAgent_lt: string
+  userAgent_neq: string
+  userAgent_notin: [string!]
+  userAgent_notlike: string
   wholesale: uint8
   wholesale_geq: uint8
   wholesale_gt: uint8
@@ -4844,6 +4859,10 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   tokensOut_ASC
   # tokensOut descending
   tokensOut_DESC
+  # userAgent ascending
+  userAgent_ASC
+  # userAgent descending
+  userAgent_DESC
   # wholesale ascending
   wholesale_ASC
   # wholesale descending
@@ -12037,8 +12056,6 @@ type AccountCf1GatewayDns1dGroupsDimensions {
   country: string!
   # Day start timestamp (daily granularity)
   datetime: Time!
-  # Query name (destination domain)
-  destination: string!
   # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   deviceId: string!
   # Union of EDE codes observed in the group (rollup of raw edeErrors via groupUniqArrayArray; sorted ascending for deterministic output)
@@ -12098,16 +12115,6 @@ input AccountCf1GatewayDns1dGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
-  destination: string
-  destination_geq: string
-  destination_gt: string
-  destination_in: [string!]
-  destination_leq: string
-  destination_like: string
-  destination_lt: string
-  destination_neq: string
-  destination_notin: [string!]
-  destination_notlike: string
   deviceId: string
   deviceId_geq: string
   deviceId_gt: string
@@ -12213,10 +12220,6 @@ enum AccountCf1GatewayDns1dGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
-  # destination ascending
-  destination_ASC
-  # destination descending
-  destination_DESC
   # deviceId ascending
   deviceId_ASC
   # deviceId descending
@@ -12253,18 +12256,50 @@ enum AccountCf1GatewayDns1dGroupsOrderBy {
   sourceIP_ASC
   # sourceIP descending
   sourceIP_DESC
+  # sum(edeErrorArray) ascending
+  sum_edeErrorArray_ASC
+  # sum(edeErrorArray) descending
+  sum_edeErrorArray_DESC
+  # sum(edeErrorCountArray) ascending
+  sum_edeErrorCountArray_ASC
+  # sum(edeErrorCountArray) descending
+  sum_edeErrorCountArray_DESC
   # sum(queries) ascending
   sum_queries_ASC
   # sum(queries) descending
   sum_queries_DESC
+  # sum(queryApplicationIdArray) ascending
+  sum_queryApplicationIdArray_ASC
+  # sum(queryApplicationIdArray) descending
+  sum_queryApplicationIdArray_DESC
+  # sum(queryApplicationIdCountArray) ascending
+  sum_queryApplicationIdCountArray_ASC
+  # sum(queryApplicationIdCountArray) descending
+  sum_queryApplicationIdCountArray_DESC
   # sum(queryBytes) ascending
   sum_queryBytes_ASC
   # sum(queryBytes) descending
   sum_queryBytes_DESC
+  # sum(queryCategoryIdArray) ascending
+  sum_queryCategoryIdArray_ASC
+  # sum(queryCategoryIdArray) descending
+  sum_queryCategoryIdArray_DESC
+  # sum(queryCategoryIdCountArray) ascending
+  sum_queryCategoryIdCountArray_ASC
+  # sum(queryCategoryIdCountArray) descending
+  sum_queryCategoryIdCountArray_DESC
   # sum(responseBytes) ascending
   sum_responseBytes_ASC
   # sum(responseBytes) descending
   sum_responseBytes_DESC
+  # sum(topQueryNameCounts) ascending
+  sum_topQueryNameCounts_ASC
+  # sum(topQueryNameCounts) descending
+  sum_topQueryNameCounts_DESC
+  # sum(topQueryNames) ascending
+  sum_topQueryNames_ASC
+  # sum(topQueryNames) descending
+  sum_topQueryNames_DESC
   # uniq(devices) ascending
   uniq_devices_ASC
   # uniq(devices) descending
@@ -12276,12 +12311,28 @@ enum AccountCf1GatewayDns1dGroupsOrderBy {
 }
 
 type AccountCf1GatewayDns1dGroupsSum {
+  # EDE codes observed in the group, for EDE Codes Over Time. Elements correspond to edeErrorCountArray by index.
+  edeErrorArray: [uint16!]!
+  # Query counts per EDE code. Elements correspond to edeErrorArray by index.
+  edeErrorCountArray: [uint64!]!
   # Total DNS queries
   queries: uint64!
+  # Application IDs observed in the group, for Top Apps by query count. Elements correspond to queryApplicationIdCountArray by index.
+  queryApplicationIdArray: [uint32!]!
+  # Query counts per application ID. Elements correspond to queryApplicationIdArray by index.
+  queryApplicationIdCountArray: [uint64!]!
   # Total query bytes
   queryBytes: uint64!
+  # Query-category IDs observed in the group, for DNS Queries by Category. Elements correspond to queryCategoryIdCountArray by index.
+  queryCategoryIdArray: [uint16!]!
+  # Query counts per query-category ID. Elements correspond to queryCategoryIdArray by index.
+  queryCategoryIdCountArray: [uint64!]!
   # Total response bytes
   responseBytes: uint64!
+  # Query counts for topQueryNames, most frequent first. Elements correspond to topQueryNames by index.
+  topQueryNameCounts: [uint64!]!
+  # Top query names (hostnames) by query count, most frequent first (up to 100; backed by a stored top-1000 approx_top_k for merge accuracy). Elements correspond to topQueryNameCounts by index.
+  topQueryNames: [string!]!
 }
 
 type AccountCf1GatewayDns1dGroupsUniq {
@@ -12306,8 +12357,6 @@ type AccountCf1GatewayDns1hGroupsDimensions {
   country: string!
   # Hour start timestamp (hourly granularity)
   datetime: Time!
-  # Query name (destination domain)
-  destination: string!
   # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   deviceId: string!
   # Union of EDE codes observed in the group (rollup of raw edeErrors via groupUniqArrayArray; sorted ascending for deterministic output)
@@ -12367,16 +12416,6 @@ input AccountCf1GatewayDns1hGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
-  destination: string
-  destination_geq: string
-  destination_gt: string
-  destination_in: [string!]
-  destination_leq: string
-  destination_like: string
-  destination_lt: string
-  destination_neq: string
-  destination_notin: [string!]
-  destination_notlike: string
   deviceId: string
   deviceId_geq: string
   deviceId_gt: string
@@ -12482,10 +12521,6 @@ enum AccountCf1GatewayDns1hGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
-  # destination ascending
-  destination_ASC
-  # destination descending
-  destination_DESC
   # deviceId ascending
   deviceId_ASC
   # deviceId descending
@@ -12522,18 +12557,50 @@ enum AccountCf1GatewayDns1hGroupsOrderBy {
   sourceIP_ASC
   # sourceIP descending
   sourceIP_DESC
+  # sum(edeErrorArray) ascending
+  sum_edeErrorArray_ASC
+  # sum(edeErrorArray) descending
+  sum_edeErrorArray_DESC
+  # sum(edeErrorCountArray) ascending
+  sum_edeErrorCountArray_ASC
+  # sum(edeErrorCountArray) descending
+  sum_edeErrorCountArray_DESC
   # sum(queries) ascending
   sum_queries_ASC
   # sum(queries) descending
   sum_queries_DESC
+  # sum(queryApplicationIdArray) ascending
+  sum_queryApplicationIdArray_ASC
+  # sum(queryApplicationIdArray) descending
+  sum_queryApplicationIdArray_DESC
+  # sum(queryApplicationIdCountArray) ascending
+  sum_queryApplicationIdCountArray_ASC
+  # sum(queryApplicationIdCountArray) descending
+  sum_queryApplicationIdCountArray_DESC
   # sum(queryBytes) ascending
   sum_queryBytes_ASC
   # sum(queryBytes) descending
   sum_queryBytes_DESC
+  # sum(queryCategoryIdArray) ascending
+  sum_queryCategoryIdArray_ASC
+  # sum(queryCategoryIdArray) descending
+  sum_queryCategoryIdArray_DESC
+  # sum(queryCategoryIdCountArray) ascending
+  sum_queryCategoryIdCountArray_ASC
+  # sum(queryCategoryIdCountArray) descending
+  sum_queryCategoryIdCountArray_DESC
   # sum(responseBytes) ascending
   sum_responseBytes_ASC
   # sum(responseBytes) descending
   sum_responseBytes_DESC
+  # sum(topQueryNameCounts) ascending
+  sum_topQueryNameCounts_ASC
+  # sum(topQueryNameCounts) descending
+  sum_topQueryNameCounts_DESC
+  # sum(topQueryNames) ascending
+  sum_topQueryNames_ASC
+  # sum(topQueryNames) descending
+  sum_topQueryNames_DESC
   # uniq(devices) ascending
   uniq_devices_ASC
   # uniq(devices) descending
@@ -12545,12 +12612,28 @@ enum AccountCf1GatewayDns1hGroupsOrderBy {
 }
 
 type AccountCf1GatewayDns1hGroupsSum {
+  # EDE codes observed in the group, for EDE Codes Over Time. Elements correspond to edeErrorCountArray by index.
+  edeErrorArray: [uint16!]!
+  # Query counts per EDE code. Elements correspond to edeErrorArray by index.
+  edeErrorCountArray: [uint64!]!
   # Total DNS queries
   queries: uint64!
+  # Application IDs observed in the group, for Top Apps by query count. Elements correspond to queryApplicationIdCountArray by index.
+  queryApplicationIdArray: [uint32!]!
+  # Query counts per application ID. Elements correspond to queryApplicationIdArray by index.
+  queryApplicationIdCountArray: [uint64!]!
   # Total query bytes
   queryBytes: uint64!
+  # Query-category IDs observed in the group, for DNS Queries by Category. Elements correspond to queryCategoryIdCountArray by index.
+  queryCategoryIdArray: [uint16!]!
+  # Query counts per query-category ID. Elements correspond to queryCategoryIdArray by index.
+  queryCategoryIdCountArray: [uint64!]!
   # Total response bytes
   responseBytes: uint64!
+  # Query counts for topQueryNames, most frequent first. Elements correspond to topQueryNames by index.
+  topQueryNameCounts: [uint64!]!
+  # Top query names (hostnames) by query count, most frequent first (up to 100; backed by a stored top-1000 approx_top_k for merge accuracy). Elements correspond to topQueryNameCounts by index.
+  topQueryNames: [string!]!
 }
 
 type AccountCf1GatewayDns1hGroupsUniq {
@@ -12915,16 +12998,48 @@ type AccountCf1GatewayHttp1dGroups {
 type AccountCf1GatewayHttp1dGroupsDimensions {
   # Gateway action taken
   action: string!
+  # SHA-256 (hex) set of files blocked by Gateway AV in the window
+  avBlockedFileHashes: [string!]!
+  # AV outcome: blocked, scannedClean, or notScanned
+  avResult: string!
+  # Reason a file was blocked: avscan, sandboxScan, or none (no file blocked)
+  blockedFileReason: string!
   # Source country code
   country: string!
   # Day start timestamp (daily granularity)
   datetime: Time!
   # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   deviceId: string!
+  # Application IDs seen in the window
+  directApplicationIds: [uint32!]!
+  # Application approval statuses seen in the window
+  directApplicationStatuses: [string!]!
+  # Application type IDs seen in the window
+  directApplicationTypeIds: [uint32!]!
   # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   email: string!
   # HTTP hostname
   httpHost: string!
+  # Whether the request was served through Browser Isolation (1 = yes)
+  isIsolated: uint8!
+  # Isolated request counts per application (index-aligned with isolatedApplicationIds)
+  isolatedApplicationCounts: [uint64!]!
+  # Application IDs for isolated requests (index-aligned with isolatedApplicationNames and isolatedApplicationCounts)
+  isolatedApplicationIds: [uint32!]!
+  # Application names for isolated requests (index-aligned with isolatedApplicationIds and isolatedApplicationCounts)
+  isolatedApplicationNames: [string!]!
+  # Isolated request counts per category (index-aligned with isolatedCategoryIds)
+  isolatedCategoryCounts: [uint64!]!
+  # URL category IDs for isolated requests, sorted ascending (index-aligned with isolatedCategoryCounts)
+  isolatedCategoryIds: [uint16!]!
+  # Whether the request body was scanned by Gateway AV (1 = scanned)
+  requestAntivirusScanned: uint8!
+  # Whether the response body was scanned by Gateway AV (1 = scanned)
+  responseAntivirusScanned: uint8!
+  # Sandbox outcome: blocked, scanned, or notScanned
+  sandboxResult: string!
+  # Whether the request was submitted to Gateway sandbox detonation (1 = yes)
+  sandboxScanned: uint8!
   # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   sourceIP: string!
 }
@@ -12942,6 +13057,26 @@ input AccountCf1GatewayHttp1dGroupsFilter_InputObject {
   action_neq: string
   action_notin: [string!]
   action_notlike: string
+  avResult: string
+  avResult_geq: string
+  avResult_gt: string
+  avResult_in: [string!]
+  avResult_leq: string
+  avResult_like: string
+  avResult_lt: string
+  avResult_neq: string
+  avResult_notin: [string!]
+  avResult_notlike: string
+  blockedFileReason: string
+  blockedFileReason_geq: string
+  blockedFileReason_gt: string
+  blockedFileReason_in: [string!]
+  blockedFileReason_leq: string
+  blockedFileReason_like: string
+  blockedFileReason_lt: string
+  blockedFileReason_neq: string
+  blockedFileReason_notin: [string!]
+  blockedFileReason_notlike: string
   country: string
   country_geq: string
   country_gt: string
@@ -12990,6 +13125,48 @@ input AccountCf1GatewayHttp1dGroupsFilter_InputObject {
   httpHost_neq: string
   httpHost_notin: [string!]
   httpHost_notlike: string
+  isIsolated: uint8
+  isIsolated_geq: uint8
+  isIsolated_gt: uint8
+  isIsolated_in: bytes
+  isIsolated_leq: uint8
+  isIsolated_lt: uint8
+  isIsolated_neq: uint8
+  isIsolated_notin: bytes
+  requestAntivirusScanned: uint8
+  requestAntivirusScanned_geq: uint8
+  requestAntivirusScanned_gt: uint8
+  requestAntivirusScanned_in: bytes
+  requestAntivirusScanned_leq: uint8
+  requestAntivirusScanned_lt: uint8
+  requestAntivirusScanned_neq: uint8
+  requestAntivirusScanned_notin: bytes
+  responseAntivirusScanned: uint8
+  responseAntivirusScanned_geq: uint8
+  responseAntivirusScanned_gt: uint8
+  responseAntivirusScanned_in: bytes
+  responseAntivirusScanned_leq: uint8
+  responseAntivirusScanned_lt: uint8
+  responseAntivirusScanned_neq: uint8
+  responseAntivirusScanned_notin: bytes
+  sandboxResult: string
+  sandboxResult_geq: string
+  sandboxResult_gt: string
+  sandboxResult_in: [string!]
+  sandboxResult_leq: string
+  sandboxResult_like: string
+  sandboxResult_lt: string
+  sandboxResult_neq: string
+  sandboxResult_notin: [string!]
+  sandboxResult_notlike: string
+  sandboxScanned: uint8
+  sandboxScanned_geq: uint8
+  sandboxScanned_gt: uint8
+  sandboxScanned_in: bytes
+  sandboxScanned_leq: uint8
+  sandboxScanned_lt: uint8
+  sandboxScanned_neq: uint8
+  sandboxScanned_notin: bytes
   sourceIP: string
   sourceIP_geq: string
   sourceIP_gt: string
@@ -13007,6 +13184,14 @@ enum AccountCf1GatewayHttp1dGroupsOrderBy {
   action_ASC
   # action descending
   action_DESC
+  # avResult ascending
+  avResult_ASC
+  # avResult descending
+  avResult_DESC
+  # blockedFileReason ascending
+  blockedFileReason_ASC
+  # blockedFileReason descending
+  blockedFileReason_DESC
   # country ascending
   country_ASC
   # country descending
@@ -13027,10 +13212,42 @@ enum AccountCf1GatewayHttp1dGroupsOrderBy {
   httpHost_ASC
   # httpHost descending
   httpHost_DESC
+  # isIsolated ascending
+  isIsolated_ASC
+  # isIsolated descending
+  isIsolated_DESC
+  # requestAntivirusScanned ascending
+  requestAntivirusScanned_ASC
+  # requestAntivirusScanned descending
+  requestAntivirusScanned_DESC
+  # responseAntivirusScanned ascending
+  responseAntivirusScanned_ASC
+  # responseAntivirusScanned descending
+  responseAntivirusScanned_DESC
+  # sandboxResult ascending
+  sandboxResult_ASC
+  # sandboxResult descending
+  sandboxResult_DESC
+  # sandboxScanned ascending
+  sandboxScanned_ASC
+  # sandboxScanned descending
+  sandboxScanned_DESC
   # sourceIP ascending
   sourceIP_ASC
   # sourceIP descending
   sourceIP_DESC
+  # sum(antivirusRequestScans) ascending
+  sum_antivirusRequestScans_ASC
+  # sum(antivirusRequestScans) descending
+  sum_antivirusRequestScans_DESC
+  # sum(antivirusResponseScans) ascending
+  sum_antivirusResponseScans_ASC
+  # sum(antivirusResponseScans) descending
+  sum_antivirusResponseScans_DESC
+  # sum(avBlockedFiles) ascending
+  sum_avBlockedFiles_ASC
+  # sum(avBlockedFiles) descending
+  sum_avBlockedFiles_DESC
   # sum(bodyBytesRcvd) ascending
   sum_bodyBytesRcvd_ASC
   # sum(bodyBytesRcvd) descending
@@ -13039,6 +13256,14 @@ enum AccountCf1GatewayHttp1dGroupsOrderBy {
   sum_bodyBytesSent_ASC
   # sum(bodyBytesSent) descending
   sum_bodyBytesSent_DESC
+  # sum(dlpProfileMatchesTotal) ascending
+  sum_dlpProfileMatchesTotal_ASC
+  # sum(dlpProfileMatchesTotal) descending
+  sum_dlpProfileMatchesTotal_DESC
+  # sum(filesScanned) ascending
+  sum_filesScanned_ASC
+  # sum(filesScanned) descending
+  sum_filesScanned_DESC
   # sum(httpHostBytesRcvd) ascending
   sum_httpHostBytesRcvd_ASC
   # sum(httpHostBytesRcvd) descending
@@ -13047,10 +13272,34 @@ enum AccountCf1GatewayHttp1dGroupsOrderBy {
   sum_httpHostBytesSent_ASC
   # sum(httpHostBytesSent) descending
   sum_httpHostBytesSent_DESC
+  # sum(isolatedRequests) ascending
+  sum_isolatedRequests_ASC
+  # sum(isolatedRequests) descending
+  sum_isolatedRequests_DESC
+  # sum(mcpUrlCountTotal) ascending
+  sum_mcpUrlCountTotal_ASC
+  # sum(mcpUrlCountTotal) descending
+  sum_mcpUrlCountTotal_DESC
   # sum(requests) ascending
   sum_requests_ASC
   # sum(requests) descending
   sum_requests_DESC
+  # sum(sandboxBlocks) ascending
+  sum_sandboxBlocks_ASC
+  # sum(sandboxBlocks) descending
+  sum_sandboxBlocks_DESC
+  # sum(sandboxScans) ascending
+  sum_sandboxScans_ASC
+  # sum(sandboxScans) descending
+  sum_sandboxScans_DESC
+  # uniq(applications) ascending
+  uniq_applications_ASC
+  # uniq(applications) descending
+  uniq_applications_DESC
+  # uniq(mcpDistinctUsers) ascending
+  uniq_mcpDistinctUsers_ASC
+  # uniq(mcpDistinctUsers) descending
+  uniq_mcpDistinctUsers_DESC
   # uniq(users) ascending
   uniq_users_ASC
   # uniq(users) descending
@@ -13058,19 +13307,41 @@ enum AccountCf1GatewayHttp1dGroupsOrderBy {
 }
 
 type AccountCf1GatewayHttp1dGroupsSum {
+  # Requests with request-body AV scanning
+  antivirusRequestScans: uint64!
+  # Requests with response-body AV scanning
+  antivirusResponseScans: uint64!
+  # Files blocked by Gateway AV
+  avBlockedFiles: uint64!
   # Total body bytes received
   bodyBytesRcvd: uint64!
   # Total body bytes sent
   bodyBytesSent: uint64!
+  # Total DLP profile matches
+  dlpProfileMatchesTotal: uint64!
+  # Total files scanned by Gateway AV
+  filesScanned: uint64!
   # Total bytes received per host
   httpHostBytesRcvd: uint64!
   # Total bytes sent per host
   httpHostBytesSent: uint64!
+  # Total requests served through Browser Isolation
+  isolatedRequests: uint64!
+  # Total MCP-path URL accesses across requests
+  mcpUrlCountTotal: uint64!
   # Total HTTP requests
   requests: uint64!
+  # Files blocked by Gateway sandbox
+  sandboxBlocks: uint64!
+  # Requests submitted to Gateway sandbox detonation
+  sandboxScans: uint64!
 }
 
 type AccountCf1GatewayHttp1dGroupsUniq {
+  # Unique applications
+  applications: uint64!
+  # Unique users with MCP activity
+  mcpDistinctUsers: uint64!
   # Unique users
   users: uint64!
 }
@@ -13086,16 +13357,48 @@ type AccountCf1GatewayHttp1hGroups {
 type AccountCf1GatewayHttp1hGroupsDimensions {
   # Gateway action taken
   action: string!
+  # SHA-256 (hex) set of files blocked by Gateway AV in the window
+  avBlockedFileHashes: [string!]!
+  # AV outcome: blocked, scannedClean, or notScanned
+  avResult: string!
+  # Reason a file was blocked: avscan, sandboxScan, or none (no file blocked)
+  blockedFileReason: string!
   # Source country code
   country: string!
   # Hour start timestamp (hourly granularity)
   datetime: Time!
   # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   deviceId: string!
+  # Application IDs seen in the window
+  directApplicationIds: [uint32!]!
+  # Application approval statuses seen in the window
+  directApplicationStatuses: [string!]!
+  # Application type IDs seen in the window
+  directApplicationTypeIds: [uint32!]!
   # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   email: string!
   # HTTP hostname
   httpHost: string!
+  # Whether the request was served through Browser Isolation (1 = yes)
+  isIsolated: uint8!
+  # Isolated request counts per application (index-aligned with isolatedApplicationIds)
+  isolatedApplicationCounts: [uint64!]!
+  # Application IDs for isolated requests (index-aligned with isolatedApplicationNames and isolatedApplicationCounts)
+  isolatedApplicationIds: [uint32!]!
+  # Application names for isolated requests (index-aligned with isolatedApplicationIds and isolatedApplicationCounts)
+  isolatedApplicationNames: [string!]!
+  # Isolated request counts per category (index-aligned with isolatedCategoryIds)
+  isolatedCategoryCounts: [uint64!]!
+  # URL category IDs for isolated requests, sorted ascending (index-aligned with isolatedCategoryCounts)
+  isolatedCategoryIds: [uint16!]!
+  # Whether the request body was scanned by Gateway AV (1 = scanned)
+  requestAntivirusScanned: uint8!
+  # Whether the response body was scanned by Gateway AV (1 = scanned)
+  responseAntivirusScanned: uint8!
+  # Sandbox outcome: blocked, scanned, or notScanned
+  sandboxResult: string!
+  # Whether the request was submitted to Gateway sandbox detonation (1 = yes)
+  sandboxScanned: uint8!
   # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   sourceIP: string!
 }
@@ -13113,6 +13416,26 @@ input AccountCf1GatewayHttp1hGroupsFilter_InputObject {
   action_neq: string
   action_notin: [string!]
   action_notlike: string
+  avResult: string
+  avResult_geq: string
+  avResult_gt: string
+  avResult_in: [string!]
+  avResult_leq: string
+  avResult_like: string
+  avResult_lt: string
+  avResult_neq: string
+  avResult_notin: [string!]
+  avResult_notlike: string
+  blockedFileReason: string
+  blockedFileReason_geq: string
+  blockedFileReason_gt: string
+  blockedFileReason_in: [string!]
+  blockedFileReason_leq: string
+  blockedFileReason_like: string
+  blockedFileReason_lt: string
+  blockedFileReason_neq: string
+  blockedFileReason_notin: [string!]
+  blockedFileReason_notlike: string
   country: string
   country_geq: string
   country_gt: string
@@ -13161,6 +13484,48 @@ input AccountCf1GatewayHttp1hGroupsFilter_InputObject {
   httpHost_neq: string
   httpHost_notin: [string!]
   httpHost_notlike: string
+  isIsolated: uint8
+  isIsolated_geq: uint8
+  isIsolated_gt: uint8
+  isIsolated_in: bytes
+  isIsolated_leq: uint8
+  isIsolated_lt: uint8
+  isIsolated_neq: uint8
+  isIsolated_notin: bytes
+  requestAntivirusScanned: uint8
+  requestAntivirusScanned_geq: uint8
+  requestAntivirusScanned_gt: uint8
+  requestAntivirusScanned_in: bytes
+  requestAntivirusScanned_leq: uint8
+  requestAntivirusScanned_lt: uint8
+  requestAntivirusScanned_neq: uint8
+  requestAntivirusScanned_notin: bytes
+  responseAntivirusScanned: uint8
+  responseAntivirusScanned_geq: uint8
+  responseAntivirusScanned_gt: uint8
+  responseAntivirusScanned_in: bytes
+  responseAntivirusScanned_leq: uint8
+  responseAntivirusScanned_lt: uint8
+  responseAntivirusScanned_neq: uint8
+  responseAntivirusScanned_notin: bytes
+  sandboxResult: string
+  sandboxResult_geq: string
+  sandboxResult_gt: string
+  sandboxResult_in: [string!]
+  sandboxResult_leq: string
+  sandboxResult_like: string
+  sandboxResult_lt: string
+  sandboxResult_neq: string
+  sandboxResult_notin: [string!]
+  sandboxResult_notlike: string
+  sandboxScanned: uint8
+  sandboxScanned_geq: uint8
+  sandboxScanned_gt: uint8
+  sandboxScanned_in: bytes
+  sandboxScanned_leq: uint8
+  sandboxScanned_lt: uint8
+  sandboxScanned_neq: uint8
+  sandboxScanned_notin: bytes
   sourceIP: string
   sourceIP_geq: string
   sourceIP_gt: string
@@ -13178,6 +13543,14 @@ enum AccountCf1GatewayHttp1hGroupsOrderBy {
   action_ASC
   # action descending
   action_DESC
+  # avResult ascending
+  avResult_ASC
+  # avResult descending
+  avResult_DESC
+  # blockedFileReason ascending
+  blockedFileReason_ASC
+  # blockedFileReason descending
+  blockedFileReason_DESC
   # country ascending
   country_ASC
   # country descending
@@ -13198,10 +13571,42 @@ enum AccountCf1GatewayHttp1hGroupsOrderBy {
   httpHost_ASC
   # httpHost descending
   httpHost_DESC
+  # isIsolated ascending
+  isIsolated_ASC
+  # isIsolated descending
+  isIsolated_DESC
+  # requestAntivirusScanned ascending
+  requestAntivirusScanned_ASC
+  # requestAntivirusScanned descending
+  requestAntivirusScanned_DESC
+  # responseAntivirusScanned ascending
+  responseAntivirusScanned_ASC
+  # responseAntivirusScanned descending
+  responseAntivirusScanned_DESC
+  # sandboxResult ascending
+  sandboxResult_ASC
+  # sandboxResult descending
+  sandboxResult_DESC
+  # sandboxScanned ascending
+  sandboxScanned_ASC
+  # sandboxScanned descending
+  sandboxScanned_DESC
   # sourceIP ascending
   sourceIP_ASC
   # sourceIP descending
   sourceIP_DESC
+  # sum(antivirusRequestScans) ascending
+  sum_antivirusRequestScans_ASC
+  # sum(antivirusRequestScans) descending
+  sum_antivirusRequestScans_DESC
+  # sum(antivirusResponseScans) ascending
+  sum_antivirusResponseScans_ASC
+  # sum(antivirusResponseScans) descending
+  sum_antivirusResponseScans_DESC
+  # sum(avBlockedFiles) ascending
+  sum_avBlockedFiles_ASC
+  # sum(avBlockedFiles) descending
+  sum_avBlockedFiles_DESC
   # sum(bodyBytesRcvd) ascending
   sum_bodyBytesRcvd_ASC
   # sum(bodyBytesRcvd) descending
@@ -13210,6 +13615,14 @@ enum AccountCf1GatewayHttp1hGroupsOrderBy {
   sum_bodyBytesSent_ASC
   # sum(bodyBytesSent) descending
   sum_bodyBytesSent_DESC
+  # sum(dlpProfileMatchesTotal) ascending
+  sum_dlpProfileMatchesTotal_ASC
+  # sum(dlpProfileMatchesTotal) descending
+  sum_dlpProfileMatchesTotal_DESC
+  # sum(filesScanned) ascending
+  sum_filesScanned_ASC
+  # sum(filesScanned) descending
+  sum_filesScanned_DESC
   # sum(httpHostBytesRcvd) ascending
   sum_httpHostBytesRcvd_ASC
   # sum(httpHostBytesRcvd) descending
@@ -13218,10 +13631,34 @@ enum AccountCf1GatewayHttp1hGroupsOrderBy {
   sum_httpHostBytesSent_ASC
   # sum(httpHostBytesSent) descending
   sum_httpHostBytesSent_DESC
+  # sum(isolatedRequests) ascending
+  sum_isolatedRequests_ASC
+  # sum(isolatedRequests) descending
+  sum_isolatedRequests_DESC
+  # sum(mcpUrlCountTotal) ascending
+  sum_mcpUrlCountTotal_ASC
+  # sum(mcpUrlCountTotal) descending
+  sum_mcpUrlCountTotal_DESC
   # sum(requests) ascending
   sum_requests_ASC
   # sum(requests) descending
   sum_requests_DESC
+  # sum(sandboxBlocks) ascending
+  sum_sandboxBlocks_ASC
+  # sum(sandboxBlocks) descending
+  sum_sandboxBlocks_DESC
+  # sum(sandboxScans) ascending
+  sum_sandboxScans_ASC
+  # sum(sandboxScans) descending
+  sum_sandboxScans_DESC
+  # uniq(applications) ascending
+  uniq_applications_ASC
+  # uniq(applications) descending
+  uniq_applications_DESC
+  # uniq(mcpDistinctUsers) ascending
+  uniq_mcpDistinctUsers_ASC
+  # uniq(mcpDistinctUsers) descending
+  uniq_mcpDistinctUsers_DESC
   # uniq(users) ascending
   uniq_users_ASC
   # uniq(users) descending
@@ -13229,19 +13666,41 @@ enum AccountCf1GatewayHttp1hGroupsOrderBy {
 }
 
 type AccountCf1GatewayHttp1hGroupsSum {
+  # Requests with request-body AV scanning
+  antivirusRequestScans: uint64!
+  # Requests with response-body AV scanning
+  antivirusResponseScans: uint64!
+  # Files blocked by Gateway AV
+  avBlockedFiles: uint64!
   # Total body bytes received
   bodyBytesRcvd: uint64!
   # Total body bytes sent
   bodyBytesSent: uint64!
+  # Total DLP profile matches
+  dlpProfileMatchesTotal: uint64!
+  # Total files scanned by Gateway AV
+  filesScanned: uint64!
   # Total bytes received per host
   httpHostBytesRcvd: uint64!
   # Total bytes sent per host
   httpHostBytesSent: uint64!
+  # Total requests served through Browser Isolation
+  isolatedRequests: uint64!
+  # Total MCP-path URL accesses across requests
+  mcpUrlCountTotal: uint64!
   # Total HTTP requests
   requests: uint64!
+  # Files blocked by Gateway sandbox
+  sandboxBlocks: uint64!
+  # Requests submitted to Gateway sandbox detonation
+  sandboxScans: uint64!
 }
 
 type AccountCf1GatewayHttp1hGroupsUniq {
+  # Unique applications
+  applications: uint64!
+  # Unique users with MCP activity
+  mcpDistinctUsers: uint64!
   # Unique users
   users: uint64!
 }
@@ -13257,6 +13716,16 @@ type AccountCf1GatewayHttpRawGroups {
 type AccountCf1GatewayHttpRawGroupsDimensions {
   # Gateway action taken
   action: string!
+  # SHA-256 (hex) of the file blocked by Gateway AV; empty when no AV-blocked file hash is available
+  avBlockedFileHash: string!
+  # AV outcome: blocked, scannedClean, or notScanned
+  avResult: string!
+  # Reason a file was blocked: avscan, sandboxScan, or none (no file blocked)
+  blockedFileReason: string!
+  # URL category IDs matched by the request
+  categoryIds: [uint16!]!
+  # URL category names
+  categoryNames: [string!]!
   # Source country code
   country: string!
   # Request timestamp
@@ -13267,10 +13736,34 @@ type AccountCf1GatewayHttpRawGroupsDimensions {
   datetimeHour: Time!
   # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   deviceId: string!
+  # Application IDs matched on the request hostname
+  directApplicationIds: [uint32!]!
+  # Application names for the matched applications
+  directApplicationNames: [string!]!
+  # Approval statuses for the matched applications
+  directApplicationStatuses: [string!]!
+  # Application type IDs for the matched applications
+  directApplicationTypeIds: [uint32!]!
   # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   email: string!
+  # Whether the request had any DLP scans (1 = yes)
+  hasDlpScans: uint8!
   # HTTP hostname
   httpHost: string!
+  # Whether the request was served through Browser Isolation (1 = yes)
+  isIsolated: uint8!
+  # Number of MCP URLs in the request
+  mcpUrlCount: uint64!
+  # Proxy endpoint through which the request was forwarded
+  proxyEndpoint: string!
+  # Whether the request body was scanned by Gateway AV (1 = scanned)
+  requestAntivirusScanned: uint8!
+  # Whether the response body was scanned by Gateway AV (1 = scanned)
+  responseAntivirusScanned: uint8!
+  # Sandbox outcome: blocked, scanned, or notScanned
+  sandboxResult: string!
+  # Whether the request was submitted to Gateway sandbox detonation (1 = yes)
+  sandboxScanned: uint8!
   # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   sourceIP: string!
 }
@@ -13288,6 +13781,46 @@ input AccountCf1GatewayHttpRawGroupsFilter_InputObject {
   action_neq: string
   action_notin: [string!]
   action_notlike: string
+  avBlockedFileHash: string
+  avBlockedFileHash_geq: string
+  avBlockedFileHash_gt: string
+  avBlockedFileHash_in: [string!]
+  avBlockedFileHash_leq: string
+  avBlockedFileHash_like: string
+  avBlockedFileHash_lt: string
+  avBlockedFileHash_neq: string
+  avBlockedFileHash_notin: [string!]
+  avBlockedFileHash_notlike: string
+  avResult: string
+  avResult_geq: string
+  avResult_gt: string
+  avResult_in: [string!]
+  avResult_leq: string
+  avResult_like: string
+  avResult_lt: string
+  avResult_neq: string
+  avResult_notin: [string!]
+  avResult_notlike: string
+  blockedFileReason: string
+  blockedFileReason_geq: string
+  blockedFileReason_gt: string
+  blockedFileReason_in: [string!]
+  blockedFileReason_leq: string
+  blockedFileReason_like: string
+  blockedFileReason_lt: string
+  blockedFileReason_neq: string
+  blockedFileReason_notin: [string!]
+  blockedFileReason_notlike: string
+  categoryIds_has: uint16
+  categoryIds_hasall: [uint16!]
+  categoryIds_hasany: [uint16!]
+  categoryIds_isempty: bool
+  categoryIds_nothas: uint16
+  categoryNames_has: string
+  categoryNames_hasall: [string!]
+  categoryNames_hasany: [string!]
+  categoryNames_isempty: bool
+  categoryNames_nothas: string
   country: string
   country_geq: string
   country_gt: string
@@ -13332,6 +13865,26 @@ input AccountCf1GatewayHttpRawGroupsFilter_InputObject {
   deviceId_neq: string
   deviceId_notin: [string!]
   deviceId_notlike: string
+  directApplicationIds_has: uint32
+  directApplicationIds_hasall: [uint32!]
+  directApplicationIds_hasany: [uint32!]
+  directApplicationIds_isempty: bool
+  directApplicationIds_nothas: uint32
+  directApplicationNames_has: string
+  directApplicationNames_hasall: [string!]
+  directApplicationNames_hasany: [string!]
+  directApplicationNames_isempty: bool
+  directApplicationNames_nothas: string
+  directApplicationStatuses_has: string
+  directApplicationStatuses_hasall: [string!]
+  directApplicationStatuses_hasany: [string!]
+  directApplicationStatuses_isempty: bool
+  directApplicationStatuses_nothas: string
+  directApplicationTypeIds_has: uint32
+  directApplicationTypeIds_hasall: [uint32!]
+  directApplicationTypeIds_hasany: [uint32!]
+  directApplicationTypeIds_isempty: bool
+  directApplicationTypeIds_nothas: uint32
   email: string
   email_geq: string
   email_gt: string
@@ -13342,6 +13895,14 @@ input AccountCf1GatewayHttpRawGroupsFilter_InputObject {
   email_neq: string
   email_notin: [string!]
   email_notlike: string
+  hasDlpScans: uint8
+  hasDlpScans_geq: uint8
+  hasDlpScans_gt: uint8
+  hasDlpScans_in: bytes
+  hasDlpScans_leq: uint8
+  hasDlpScans_lt: uint8
+  hasDlpScans_neq: uint8
+  hasDlpScans_notin: bytes
   httpHost: string
   httpHost_geq: string
   httpHost_gt: string
@@ -13352,6 +13913,66 @@ input AccountCf1GatewayHttpRawGroupsFilter_InputObject {
   httpHost_neq: string
   httpHost_notin: [string!]
   httpHost_notlike: string
+  isIsolated: uint8
+  isIsolated_geq: uint8
+  isIsolated_gt: uint8
+  isIsolated_in: bytes
+  isIsolated_leq: uint8
+  isIsolated_lt: uint8
+  isIsolated_neq: uint8
+  isIsolated_notin: bytes
+  mcpUrlCount: uint64
+  mcpUrlCount_geq: uint64
+  mcpUrlCount_gt: uint64
+  mcpUrlCount_in: [uint64!]
+  mcpUrlCount_leq: uint64
+  mcpUrlCount_lt: uint64
+  mcpUrlCount_neq: uint64
+  mcpUrlCount_notin: [uint64!]
+  proxyEndpoint: string
+  proxyEndpoint_geq: string
+  proxyEndpoint_gt: string
+  proxyEndpoint_in: [string!]
+  proxyEndpoint_leq: string
+  proxyEndpoint_like: string
+  proxyEndpoint_lt: string
+  proxyEndpoint_neq: string
+  proxyEndpoint_notin: [string!]
+  proxyEndpoint_notlike: string
+  requestAntivirusScanned: uint8
+  requestAntivirusScanned_geq: uint8
+  requestAntivirusScanned_gt: uint8
+  requestAntivirusScanned_in: bytes
+  requestAntivirusScanned_leq: uint8
+  requestAntivirusScanned_lt: uint8
+  requestAntivirusScanned_neq: uint8
+  requestAntivirusScanned_notin: bytes
+  responseAntivirusScanned: uint8
+  responseAntivirusScanned_geq: uint8
+  responseAntivirusScanned_gt: uint8
+  responseAntivirusScanned_in: bytes
+  responseAntivirusScanned_leq: uint8
+  responseAntivirusScanned_lt: uint8
+  responseAntivirusScanned_neq: uint8
+  responseAntivirusScanned_notin: bytes
+  sandboxResult: string
+  sandboxResult_geq: string
+  sandboxResult_gt: string
+  sandboxResult_in: [string!]
+  sandboxResult_leq: string
+  sandboxResult_like: string
+  sandboxResult_lt: string
+  sandboxResult_neq: string
+  sandboxResult_notin: [string!]
+  sandboxResult_notlike: string
+  sandboxScanned: uint8
+  sandboxScanned_geq: uint8
+  sandboxScanned_gt: uint8
+  sandboxScanned_in: bytes
+  sandboxScanned_leq: uint8
+  sandboxScanned_lt: uint8
+  sandboxScanned_neq: uint8
+  sandboxScanned_notin: bytes
   sourceIP: string
   sourceIP_geq: string
   sourceIP_gt: string
@@ -13369,6 +13990,26 @@ enum AccountCf1GatewayHttpRawGroupsOrderBy {
   action_ASC
   # action descending
   action_DESC
+  # avBlockedFileHash ascending
+  avBlockedFileHash_ASC
+  # avBlockedFileHash descending
+  avBlockedFileHash_DESC
+  # avResult ascending
+  avResult_ASC
+  # avResult descending
+  avResult_DESC
+  # blockedFileReason ascending
+  blockedFileReason_ASC
+  # blockedFileReason descending
+  blockedFileReason_DESC
+  # categoryIds ascending
+  categoryIds_ASC
+  # categoryIds descending
+  categoryIds_DESC
+  # categoryNames ascending
+  categoryNames_ASC
+  # categoryNames descending
+  categoryNames_DESC
   # country ascending
   country_ASC
   # country descending
@@ -13389,18 +14030,78 @@ enum AccountCf1GatewayHttpRawGroupsOrderBy {
   deviceId_ASC
   # deviceId descending
   deviceId_DESC
+  # directApplicationIds ascending
+  directApplicationIds_ASC
+  # directApplicationIds descending
+  directApplicationIds_DESC
+  # directApplicationNames ascending
+  directApplicationNames_ASC
+  # directApplicationNames descending
+  directApplicationNames_DESC
+  # directApplicationStatuses ascending
+  directApplicationStatuses_ASC
+  # directApplicationStatuses descending
+  directApplicationStatuses_DESC
+  # directApplicationTypeIds ascending
+  directApplicationTypeIds_ASC
+  # directApplicationTypeIds descending
+  directApplicationTypeIds_DESC
   # email ascending
   email_ASC
   # email descending
   email_DESC
+  # hasDlpScans ascending
+  hasDlpScans_ASC
+  # hasDlpScans descending
+  hasDlpScans_DESC
   # httpHost ascending
   httpHost_ASC
   # httpHost descending
   httpHost_DESC
+  # isIsolated ascending
+  isIsolated_ASC
+  # isIsolated descending
+  isIsolated_DESC
+  # mcpUrlCount ascending
+  mcpUrlCount_ASC
+  # mcpUrlCount descending
+  mcpUrlCount_DESC
+  # proxyEndpoint ascending
+  proxyEndpoint_ASC
+  # proxyEndpoint descending
+  proxyEndpoint_DESC
+  # requestAntivirusScanned ascending
+  requestAntivirusScanned_ASC
+  # requestAntivirusScanned descending
+  requestAntivirusScanned_DESC
+  # responseAntivirusScanned ascending
+  responseAntivirusScanned_ASC
+  # responseAntivirusScanned descending
+  responseAntivirusScanned_DESC
+  # sandboxResult ascending
+  sandboxResult_ASC
+  # sandboxResult descending
+  sandboxResult_DESC
+  # sandboxScanned ascending
+  sandboxScanned_ASC
+  # sandboxScanned descending
+  sandboxScanned_DESC
   # sourceIP ascending
   sourceIP_ASC
   # sourceIP descending
   sourceIP_DESC
+  # sum(antivirusRequestScans) ascending
+  sum_antivirusRequestScans_ASC
+  # sum(antivirusRequestScans) descending
+  sum_antivirusRequestScans_DESC
+  # sum(antivirusResponseScans) ascending
+  sum_antivirusResponseScans_ASC
+  # sum(antivirusResponseScans) descending
+  sum_antivirusResponseScans_DESC
+  # sum(avBlockedFiles) ascending
+  sum_avBlockedFiles_ASC
+  # sum(avBlockedFiles) descending
+  sum_avBlockedFiles_DESC
   # sum(bodyBytesRcvd) ascending
   sum_bodyBytesRcvd_ASC
   # sum(bodyBytesRcvd) descending
@@ -13409,6 +14110,14 @@ enum AccountCf1GatewayHttpRawGroupsOrderBy {
   sum_bodyBytesSent_ASC
   # sum(bodyBytesSent) descending
   sum_bodyBytesSent_DESC
+  # sum(dlpProfileMatchesTotal) ascending
+  sum_dlpProfileMatchesTotal_ASC
+  # sum(dlpProfileMatchesTotal) descending
+  sum_dlpProfileMatchesTotal_DESC
+  # sum(filesScanned) ascending
+  sum_filesScanned_ASC
+  # sum(filesScanned) descending
+  sum_filesScanned_DESC
   # sum(httpHostBytesRcvd) ascending
   sum_httpHostBytesRcvd_ASC
   # sum(httpHostBytesRcvd) descending
@@ -13417,10 +14126,30 @@ enum AccountCf1GatewayHttpRawGroupsOrderBy {
   sum_httpHostBytesSent_ASC
   # sum(httpHostBytesSent) descending
   sum_httpHostBytesSent_DESC
+  # sum(isolatedRequests) ascending
+  sum_isolatedRequests_ASC
+  # sum(isolatedRequests) descending
+  sum_isolatedRequests_DESC
+  # sum(mcpUrlCountTotal) ascending
+  sum_mcpUrlCountTotal_ASC
+  # sum(mcpUrlCountTotal) descending
+  sum_mcpUrlCountTotal_DESC
   # sum(requests) ascending
   sum_requests_ASC
   # sum(requests) descending
   sum_requests_DESC
+  # sum(sandboxBlocks) ascending
+  sum_sandboxBlocks_ASC
+  # sum(sandboxBlocks) descending
+  sum_sandboxBlocks_DESC
+  # sum(sandboxScans) ascending
+  sum_sandboxScans_ASC
+  # sum(sandboxScans) descending
+  sum_sandboxScans_DESC
+  # uniq(mcpDistinctUsers) ascending
+  uniq_mcpDistinctUsers_ASC
+  # uniq(mcpDistinctUsers) descending
+  uniq_mcpDistinctUsers_DESC
   # uniq(users) ascending
   uniq_users_ASC
   # uniq(users) descending
@@ -13428,19 +14157,39 @@ enum AccountCf1GatewayHttpRawGroupsOrderBy {
 }
 
 type AccountCf1GatewayHttpRawGroupsSum {
+  # Requests with request-body AV scanning
+  antivirusRequestScans: uint64!
+  # Requests with response-body AV scanning
+  antivirusResponseScans: uint64!
+  # Files blocked by Gateway AV
+  avBlockedFiles: uint64!
   # Total body bytes received
   bodyBytesRcvd: uint64!
   # Total body bytes sent
   bodyBytesSent: uint64!
+  # Total DLP profile matches across uploaded and downloaded content
+  dlpProfileMatchesTotal: uint64!
+  # Total files scanned by Gateway AV
+  filesScanned: uint64!
   # Total bytes received per host
   httpHostBytesRcvd: uint64!
   # Total bytes sent per host
   httpHostBytesSent: uint64!
+  # Total requests served through Browser Isolation
+  isolatedRequests: uint64!
+  # Total MCP-path URL accesses across requests
+  mcpUrlCountTotal: uint64!
   # Total HTTP requests
   requests: uint64!
+  # Files blocked by Gateway sandbox
+  sandboxBlocks: uint64!
+  # Requests submitted to Gateway sandbox detonation
+  sandboxScans: uint64!
 }
 
 type AccountCf1GatewayHttpRawGroupsUniq {
+  # Unique users with MCP activity
+  mcpDistinctUsers: uint64!
   # Unique users
   users: uint64!
 }
@@ -13930,6 +14679,8 @@ type AccountCf1GatewayNetworkRawGroupsDimensions {
   datetimeHour: Time!
   # Destination country code (ISO 3166-1 alpha-2)
   destinationCountry: string!
+  # Destination IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
+  destinationIP: string!
   # Destination TCP/UDP port
   destinationPort: string!
   # Detected L7 protocol (Citadel). Note: column is sparse — empty when detection inconclusive.
@@ -14026,6 +14777,16 @@ input AccountCf1GatewayNetworkRawGroupsFilter_InputObject {
   destinationCountry_neq: string
   destinationCountry_notin: [string!]
   destinationCountry_notlike: string
+  destinationIP: string
+  destinationIP_geq: string
+  destinationIP_gt: string
+  destinationIP_in: [string!]
+  destinationIP_leq: string
+  destinationIP_like: string
+  destinationIP_lt: string
+  destinationIP_neq: string
+  destinationIP_notin: [string!]
+  destinationIP_notlike: string
   destinationPort: string
   destinationPort_geq: string
   destinationPort_gt: string
@@ -14175,6 +14936,10 @@ enum AccountCf1GatewayNetworkRawGroupsOrderBy {
   destinationCountry_ASC
   # destinationCountry descending
   destinationCountry_DESC
+  # destinationIP ascending
+  destinationIP_ASC
+  # destinationIP descending
+  destinationIP_DESC
   # destinationPort ascending
   destinationPort_ASC
   # destinationPort descending
@@ -22622,7 +23387,7 @@ type AccountDosdNetworkAnalyticsAdaptiveGroupsSumConfidence {
 
 # Durable Objects invocations with adaptive sampling
 type AccountDurableObjectsInvocationsAdaptiveGroups {
-  # The average value used for sample interval
+  # The average value for a metric
   avg: AccountDurableObjectsInvocationsAdaptiveGroupsAvg
   # ALPHA - DO NOT USE
   confidence(level: float64!): AccountDurableObjectsInvocationsAdaptiveGroupsConfidence!
@@ -22639,6 +23404,7 @@ type AccountDurableObjectsInvocationsAdaptiveGroups {
 }
 
 type AccountDurableObjectsInvocationsAdaptiveGroupsAvg {
+  # Average sample interval
   sampleInterval: float64!
 }
 
@@ -22668,6 +23434,8 @@ type AccountDurableObjectsInvocationsAdaptiveGroupsDimensions {
   environmentName: string!
   # Whether this invocation is for a preview. 1 if preview, 0 if not.
   isPreview: uint8!
+  # The name the Durable Object was created with
+  name: string!
   # Durable Object namespace ID
   namespaceId: string!
   # Durable Object ID as a hex string
@@ -22759,6 +23527,16 @@ input AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject {
   isPreview_lt: uint8
   isPreview_neq: uint8
   isPreview_notin: bytes
+  name: string
+  name_geq: string
+  name_gt: string
+  name_in: [string!]
+  name_leq: string
+  name_like: string
+  name_lt: string
+  name_neq: string
+  name_notin: [string!]
+  name_notlike: string
   namespaceId: string
   namespaceId_geq: string
   namespaceId_gt: string
@@ -22902,6 +23680,10 @@ enum AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy {
   min_wallTime_ASC
   # min(wallTime) descending
   min_wallTime_DESC
+  # name ascending
+  name_ASC
+  # name descending
+  name_DESC
   # namespaceId ascending
   namespaceId_ASC
   # namespaceId descending
@@ -23063,6 +23845,8 @@ type AccountDurableObjectsInvocationsAdaptiveGroupsSumConfidence {
 
 # Durable Objects periodic metrics
 type AccountDurableObjectsPeriodicGroups {
+  # The average value for a metric
+  avg: AccountDurableObjectsPeriodicGroupsAvg
   # ALPHA - DO NOT USE
   confidence(level: float64!): AccountDurableObjectsPeriodicGroupsConfidence!
   # Count of periodic metric events
@@ -23073,6 +23857,11 @@ type AccountDurableObjectsPeriodicGroups {
   max: AccountDurableObjectsPeriodicGroupsMax
   # The sum of values for a metric per dimension
   sum: AccountDurableObjectsPeriodicGroupsSum
+}
+
+type AccountDurableObjectsPeriodicGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
 }
 
 type AccountDurableObjectsPeriodicGroupsConfidence {
@@ -23099,6 +23888,8 @@ type AccountDurableObjectsPeriodicGroupsDimensions {
   datetimeMinute: Time!
   # Datetime the metrics period started, truncated to start of six hour window
   datetimeSixHours: Time!
+  # The name the Durable Object was created with
+  name: string!
   # Durable Object namespace ID
   namespaceId: string!
   # Durable Object ID as a hex string
@@ -23164,6 +23955,16 @@ input AccountDurableObjectsPeriodicGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  name: string
+  name_geq: string
+  name_gt: string
+  name_in: [string!]
+  name_leq: string
+  name_like: string
+  name_lt: string
+  name_neq: string
+  name_notin: [string!]
+  name_notlike: string
   namespaceId: string
   namespaceId_geq: string
   namespaceId_gt: string
@@ -23192,6 +23993,10 @@ type AccountDurableObjectsPeriodicGroupsMax {
 }
 
 enum AccountDurableObjectsPeriodicGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -23228,6 +24033,10 @@ enum AccountDurableObjectsPeriodicGroupsOrderBy {
   max_activeWebsocketConnections_ASC
   # max(activeWebsocketConnections) descending
   max_activeWebsocketConnections_DESC
+  # name ascending
+  name_ASC
+  # name descending
+  name_DESC
   # namespaceId ascending
   namespaceId_ASC
   # namespaceId descending
@@ -23348,6 +24157,8 @@ type AccountDurableObjectsPeriodicGroupsSumConfidence {
   rowsWritten: Confidence!
   # Confidence interval for the corresponding point estimate
   storageDeletes: Confidence!
+  # Confidence interval for the corresponding point estimate
+  storageReadUnits: Confidence!
   # Confidence interval for the corresponding point estimate
   storageWriteUnits: Confidence!
   # Confidence interval for the corresponding point estimate
@@ -23642,6 +24453,8 @@ type AccountDurableObjectsSubrequestsAdaptiveGroupsDimensions {
   datetimeSixHours: Time!
   # The name of the script environment
   environmentName: string!
+  # The name the Durable Object was created with
+  name: string!
   # Durable Object namespace ID
   namespaceId: string!
   # Durable Object ID as a hex string
@@ -23719,6 +24532,16 @@ input AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject {
   environmentName_neq: string
   environmentName_notin: [string!]
   environmentName_notlike: string
+  name: string
+  name_geq: string
+  name_gt: string
+  name_in: [string!]
+  name_leq: string
+  name_like: string
+  name_lt: string
+  name_neq: string
+  name_notin: [string!]
+  name_notlike: string
   namespaceId: string
   namespaceId_geq: string
   namespaceId_gt: string
@@ -23788,6 +24611,10 @@ enum AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy {
   environmentName_ASC
   # environmentName descending
   environmentName_DESC
+  # name ascending
+  name_ASC
+  # name descending
+  name_DESC
   # namespaceId ascending
   namespaceId_ASC
   # namespaceId descending
@@ -33981,6 +34808,10 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   clientIP: string!
   # The referrer host
   clientRefererHost: string!
+  # List of high-level content type categories (e.g. html, json, images, javascript) accepted by the client, grouped from the Accept request header's MIME types.
+  clientRequestAcceptContentTypeCategories: [string!]!
+  # High-level content type category (e.g. html, json, images, javascript) accepted by the client, grouped from the Accept request header's MIME types. A request that accepts multiple categories is counted under each.
+  clientRequestAcceptContentTypeCategory: string!
   # List of MIME content type extension names accepted by the client (including wildcards)
   clientRequestAcceptContentTypeNames: [string!]!
   # List of MIME content types accepted by the client (including wildcards)
@@ -34292,6 +35123,11 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   clientRefererHost_neq: string
   clientRefererHost_notin: [string!]
   clientRefererHost_notlike: string
+  clientRequestAcceptContentTypeCategories_has: string
+  clientRequestAcceptContentTypeCategories_hasall: [string!]
+  clientRequestAcceptContentTypeCategories_hasany: [string!]
+  clientRequestAcceptContentTypeCategories_isempty: bool
+  clientRequestAcceptContentTypeCategories_nothas: string
   clientRequestAcceptContentTypeNames_has: string
   clientRequestAcceptContentTypeNames_hasall: [string!]
   clientRequestAcceptContentTypeNames_hasany: [string!]
@@ -35080,6 +35916,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   clientRefererHost_ASC
   # clientRefererHost descending
   clientRefererHost_DESC
+  # clientRequestAcceptContentTypeCategories ascending
+  clientRequestAcceptContentTypeCategories_ASC
+  # clientRequestAcceptContentTypeCategories descending
+  clientRequestAcceptContentTypeCategories_DESC
   # clientRequestAcceptContentTypeNames ascending
   clientRequestAcceptContentTypeNames_ASC
   # clientRequestAcceptContentTypeNames descending
@@ -45209,6 +46049,14 @@ enum AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy {
   count_ASC
   # count() descending
   count_DESC
+  # count(okResultCount) ascending
+  count_okResultCount_ASC
+  # count(okResultCount) descending
+  count_okResultCount_DESC
+  # count(timeoutResultCount) ascending
+  count_timeoutResultCount_ASC
+  # count(timeoutResultCount) descending
+  count_timeoutResultCount_DESC
   # date ascending
   date_ASC
   # date descending
@@ -63246,6 +64094,7 @@ type AccountSettings {
   rumPerformanceEventsAdaptiveGroups: Settings!
   rumWebVitalsEventsAdaptive: Settings!
   rumWebVitalsEventsAdaptiveGroups: Settings!
+  shadowIt1hGroups: Settings!
   sinkholeRequestLogsAdaptive: Settings!
   sinkholeRequestLogsAdaptiveGroups: Settings!
   sippyOperationsAdaptiveGroups: Settings!
@@ -63282,6 +64131,195 @@ type AccountSettings {
   zarazTrackAdaptiveGroups: Settings!
   zarazTriggersAdaptiveGroups: Settings!
   zeroTrustPrivateNetworkDiscoveryGroups: Settings!
+}
+
+# Shadow IT analytics - applications seen in Gateway HTTP traffic, 1 hour rollup (up to 90d window, 365d back)
+type AccountShadowIt1hGroups {
+  # List of dimensions to group by
+  dimensions: AccountShadowIt1hGroupsDimensions
+  sum: AccountShadowIt1hGroupsSum
+  uniq: AccountShadowIt1hGroupsUniq
+}
+
+type AccountShadowIt1hGroupsDimensions {
+  # Application ID
+  applicationId: uint32!
+  # Application approval status
+  applicationStatus: string!
+  # Application type ID
+  applicationTypeId: uint32!
+  # Source country code
+  country: string!
+  # Hour start timestamp (hourly granularity)
+  datetime: Time!
+  # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
+  deviceId: string!
+  # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
+  email: string!
+  # HTTP hostname
+  httpHost: string!
+}
+
+input AccountShadowIt1hGroupsFilter_InputObject {
+  AND: [AccountShadowIt1hGroupsFilter_InputObject!]
+  OR: [AccountShadowIt1hGroupsFilter_InputObject!]
+  applicationId: uint32
+  applicationId_geq: uint32
+  applicationId_gt: uint32
+  applicationId_in: [uint32!]
+  applicationId_leq: uint32
+  applicationId_lt: uint32
+  applicationId_neq: uint32
+  applicationId_notin: [uint32!]
+  applicationStatus: string
+  applicationStatus_geq: string
+  applicationStatus_gt: string
+  applicationStatus_in: [string!]
+  applicationStatus_leq: string
+  applicationStatus_like: string
+  applicationStatus_lt: string
+  applicationStatus_neq: string
+  applicationStatus_notin: [string!]
+  applicationStatus_notlike: string
+  applicationTypeId: uint32
+  applicationTypeId_geq: uint32
+  applicationTypeId_gt: uint32
+  applicationTypeId_in: [uint32!]
+  applicationTypeId_leq: uint32
+  applicationTypeId_lt: uint32
+  applicationTypeId_neq: uint32
+  applicationTypeId_notin: [uint32!]
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  email: string
+  email_geq: string
+  email_gt: string
+  email_in: [string!]
+  email_leq: string
+  email_like: string
+  email_lt: string
+  email_neq: string
+  email_notin: [string!]
+  email_notlike: string
+  httpHost: string
+  httpHost_geq: string
+  httpHost_gt: string
+  httpHost_in: [string!]
+  httpHost_leq: string
+  httpHost_like: string
+  httpHost_lt: string
+  httpHost_neq: string
+  httpHost_notin: [string!]
+  httpHost_notlike: string
+}
+
+enum AccountShadowIt1hGroupsOrderBy {
+  # applicationId ascending
+  applicationId_ASC
+  # applicationId descending
+  applicationId_DESC
+  # applicationStatus ascending
+  applicationStatus_ASC
+  # applicationStatus descending
+  applicationStatus_DESC
+  # applicationTypeId ascending
+  applicationTypeId_ASC
+  # applicationTypeId descending
+  applicationTypeId_DESC
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # email ascending
+  email_ASC
+  # email descending
+  email_DESC
+  # httpHost ascending
+  httpHost_ASC
+  # httpHost descending
+  httpHost_DESC
+  # sum(bodyBytesRcvd) ascending
+  sum_bodyBytesRcvd_ASC
+  # sum(bodyBytesRcvd) descending
+  sum_bodyBytesRcvd_DESC
+  # sum(bodyBytesSent) ascending
+  sum_bodyBytesSent_ASC
+  # sum(bodyBytesSent) descending
+  sum_bodyBytesSent_DESC
+  # sum(httpHostBytesRcvd) ascending
+  sum_httpHostBytesRcvd_ASC
+  # sum(httpHostBytesRcvd) descending
+  sum_httpHostBytesRcvd_DESC
+  # sum(httpHostBytesSent) ascending
+  sum_httpHostBytesSent_ASC
+  # sum(httpHostBytesSent) descending
+  sum_httpHostBytesSent_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # uniq(applications) ascending
+  uniq_applications_ASC
+  # uniq(applications) descending
+  uniq_applications_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+}
+
+type AccountShadowIt1hGroupsSum {
+  # Total body bytes received
+  bodyBytesRcvd: uint64!
+  # Total body bytes sent
+  bodyBytesSent: uint64!
+  # Total bytes received per host
+  httpHostBytesRcvd: uint64!
+  # Total bytes sent per host
+  httpHostBytesSent: uint64!
+  # Total HTTP requests
+  requests: uint64!
+}
+
+type AccountShadowIt1hGroupsUniq {
+  # Unique applications
+  applications: uint64!
+  # Unique users
+  users: uint64!
 }
 
 # Sinkhole Request Logs
@@ -70590,12 +71628,16 @@ type AccountWorkersInvocationsAdaptiveMax {
   cpuTime: float64!
   # Maximum duration of one request - GB*s
   duration: float64!
+  # Maximum V8 isolate memory usage across Worker invocations - bytes
+  memoryUsageBytes: float64!
   # Maximum Request Duration in microseconds
   requestDuration: float64!
   # Maximum response body size for one request - bytes
   responseBodySize: float64!
   # Maximum wall time for one request - microseconds
   wallTime: float64!
+  # Maximum WebAssembly linear memory usage across Worker invocations - bytes
+  wasmMemoryBytes: float64!
 }
 
 type AccountWorkersInvocationsAdaptiveMin {
@@ -70684,6 +71726,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   max_duration_ASC
   # max(duration) descending
   max_duration_DESC
+  # max(memoryUsageBytes) ascending
+  max_memoryUsageBytes_ASC
+  # max(memoryUsageBytes) descending
+  max_memoryUsageBytes_DESC
   # max(requestDuration) ascending
   max_requestDuration_ASC
   # max(requestDuration) descending
@@ -70696,6 +71742,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   max_wallTime_ASC
   # max(wallTime) descending
   max_wallTime_DESC
+  # max(wasmMemoryBytes) ascending
+  max_wasmMemoryBytes_ASC
+  # max(wasmMemoryBytes) descending
+  max_wasmMemoryBytes_DESC
   # min(cpuTime) ascending
   min_cpuTime_ASC
   # min(cpuTime) descending
@@ -70780,6 +71830,34 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   quantiles_durationP99_ASC
   # quantiles(durationP99) descending
   quantiles_durationP99_DESC
+  # quantiles(memoryUsageBytesP25) ascending
+  quantiles_memoryUsageBytesP25_ASC
+  # quantiles(memoryUsageBytesP25) descending
+  quantiles_memoryUsageBytesP25_DESC
+  # quantiles(memoryUsageBytesP50) ascending
+  quantiles_memoryUsageBytesP50_ASC
+  # quantiles(memoryUsageBytesP50) descending
+  quantiles_memoryUsageBytesP50_DESC
+  # quantiles(memoryUsageBytesP75) ascending
+  quantiles_memoryUsageBytesP75_ASC
+  # quantiles(memoryUsageBytesP75) descending
+  quantiles_memoryUsageBytesP75_DESC
+  # quantiles(memoryUsageBytesP90) ascending
+  quantiles_memoryUsageBytesP90_ASC
+  # quantiles(memoryUsageBytesP90) descending
+  quantiles_memoryUsageBytesP90_DESC
+  # quantiles(memoryUsageBytesP95) ascending
+  quantiles_memoryUsageBytesP95_ASC
+  # quantiles(memoryUsageBytesP95) descending
+  quantiles_memoryUsageBytesP95_DESC
+  # quantiles(memoryUsageBytesP999) ascending
+  quantiles_memoryUsageBytesP999_ASC
+  # quantiles(memoryUsageBytesP999) descending
+  quantiles_memoryUsageBytesP999_DESC
+  # quantiles(memoryUsageBytesP99) ascending
+  quantiles_memoryUsageBytesP99_ASC
+  # quantiles(memoryUsageBytesP99) descending
+  quantiles_memoryUsageBytesP99_DESC
   # quantiles(requestDurationP25) ascending
   quantiles_requestDurationP25_ASC
   # quantiles(requestDurationP25) descending
@@ -70864,6 +71942,34 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   quantiles_wallTimeP99_ASC
   # quantiles(wallTimeP99) descending
   quantiles_wallTimeP99_DESC
+  # quantiles(wasmMemoryBytesP25) ascending
+  quantiles_wasmMemoryBytesP25_ASC
+  # quantiles(wasmMemoryBytesP25) descending
+  quantiles_wasmMemoryBytesP25_DESC
+  # quantiles(wasmMemoryBytesP50) ascending
+  quantiles_wasmMemoryBytesP50_ASC
+  # quantiles(wasmMemoryBytesP50) descending
+  quantiles_wasmMemoryBytesP50_DESC
+  # quantiles(wasmMemoryBytesP75) ascending
+  quantiles_wasmMemoryBytesP75_ASC
+  # quantiles(wasmMemoryBytesP75) descending
+  quantiles_wasmMemoryBytesP75_DESC
+  # quantiles(wasmMemoryBytesP90) ascending
+  quantiles_wasmMemoryBytesP90_ASC
+  # quantiles(wasmMemoryBytesP90) descending
+  quantiles_wasmMemoryBytesP90_DESC
+  # quantiles(wasmMemoryBytesP95) ascending
+  quantiles_wasmMemoryBytesP95_ASC
+  # quantiles(wasmMemoryBytesP95) descending
+  quantiles_wasmMemoryBytesP95_DESC
+  # quantiles(wasmMemoryBytesP999) ascending
+  quantiles_wasmMemoryBytesP999_ASC
+  # quantiles(wasmMemoryBytesP999) descending
+  quantiles_wasmMemoryBytesP999_DESC
+  # quantiles(wasmMemoryBytesP99) ascending
+  quantiles_wasmMemoryBytesP99_ASC
+  # quantiles(wasmMemoryBytesP99) descending
+  quantiles_wasmMemoryBytesP99_DESC
   # scriptName ascending
   scriptName_ASC
   # scriptName descending
@@ -70955,6 +72061,20 @@ type AccountWorkersInvocationsAdaptiveQuantiles {
   durationP99: float32!
   # Duration 99.9th percentile - GB*s
   durationP999: float32!
+  # V8 isolate memory usage 25th percentile across Worker invocations - bytes
+  memoryUsageBytesP25: float32!
+  # V8 isolate memory usage 50th percentile across Worker invocations - bytes
+  memoryUsageBytesP50: float32!
+  # V8 isolate memory usage 75th percentile across Worker invocations - bytes
+  memoryUsageBytesP75: float32!
+  # V8 isolate memory usage 90th percentile across Worker invocations - bytes
+  memoryUsageBytesP90: float32!
+  # V8 isolate memory usage 95th percentile across Worker invocations - bytes
+  memoryUsageBytesP95: float32!
+  # V8 isolate memory usage 99th percentile across Worker invocations - bytes
+  memoryUsageBytesP99: float32!
+  # V8 isolate memory usage 99.9th percentile across Worker invocations - bytes
+  memoryUsageBytesP999: float32!
   # Request duration 25th percentile - microseconds
   requestDurationP25: float32!
   # Request duration 50th percentile - microseconds
@@ -70997,6 +72117,20 @@ type AccountWorkersInvocationsAdaptiveQuantiles {
   wallTimeP99: float32!
   # Wall time 99.9th percentile - microseconds
   wallTimeP999: float32!
+  # WebAssembly linear memory usage 25th percentile across Worker invocations - bytes
+  wasmMemoryBytesP25: float32!
+  # WebAssembly linear memory usage 50th percentile across Worker invocations - bytes
+  wasmMemoryBytesP50: float32!
+  # WebAssembly linear memory usage 75th percentile across Worker invocations - bytes
+  wasmMemoryBytesP75: float32!
+  # WebAssembly linear memory usage 90th percentile across Worker invocations - bytes
+  wasmMemoryBytesP90: float32!
+  # WebAssembly linear memory usage 95th percentile across Worker invocations - bytes
+  wasmMemoryBytesP95: float32!
+  # WebAssembly linear memory usage 99th percentile across Worker invocations - bytes
+  wasmMemoryBytesP99: float32!
+  # WebAssembly linear memory usage 99.9th percentile across Worker invocations - bytes
+  wasmMemoryBytesP999: float32!
 }
 
 type AccountWorkersInvocationsAdaptiveSum {
@@ -73303,6 +74437,10 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   clientIP: string!
   # The referrer host
   clientRefererHost: string!
+  # List of high-level content type categories (e.g. html, json, images, javascript) accepted by the client, grouped from the Accept request header's MIME types.
+  clientRequestAcceptContentTypeCategories: [string!]!
+  # High-level content type category (e.g. html, json, images, javascript) accepted by the client, grouped from the Accept request header's MIME types. A request that accepts multiple categories is counted under each.
+  clientRequestAcceptContentTypeCategory: string!
   # List of MIME content type extension names accepted by the client (including wildcards)
   clientRequestAcceptContentTypeNames: [string!]!
   # List of MIME content types accepted by the client (including wildcards)
@@ -73602,6 +74740,11 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   clientRefererHost_neq: string
   clientRefererHost_notin: [string!]
   clientRefererHost_notlike: string
+  clientRequestAcceptContentTypeCategories_has: string
+  clientRequestAcceptContentTypeCategories_hasall: [string!]
+  clientRequestAcceptContentTypeCategories_hasany: [string!]
+  clientRequestAcceptContentTypeCategories_isempty: bool
+  clientRequestAcceptContentTypeCategories_nothas: string
   clientRequestAcceptContentTypeNames_has: string
   clientRequestAcceptContentTypeNames_hasall: [string!]
   clientRequestAcceptContentTypeNames_hasany: [string!]
@@ -74367,6 +75510,10 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   clientRefererHost_ASC
   # clientRefererHost descending
   clientRefererHost_DESC
+  # clientRequestAcceptContentTypeCategories ascending
+  clientRequestAcceptContentTypeCategories_ASC
+  # clientRequestAcceptContentTypeCategories descending
+  clientRequestAcceptContentTypeCategories_DESC
   # clientRequestAcceptContentTypeNames ascending
   clientRequestAcceptContentTypeNames_ASC
   # clientRequestAcceptContentTypeNames descending
@@ -86117,6 +87264,10 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   clientIP: string!
   # The referrer host
   clientRefererHost: string!
+  # List of high-level content type categories (e.g. html, json, images, javascript) accepted by the client, grouped from the Accept request header's MIME types.
+  clientRequestAcceptContentTypeCategories: [string!]!
+  # High-level content type category (e.g. html, json, images, javascript) accepted by the client, grouped from the Accept request header's MIME types. A request that accepts multiple categories is counted under each.
+  clientRequestAcceptContentTypeCategory: string!
   # List of MIME content type extension names accepted by the client (including wildcards)
   clientRequestAcceptContentTypeNames: [string!]!
   # List of MIME content types accepted by the client (including wildcards)
@@ -86426,6 +87577,11 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   clientRefererHost_neq: string
   clientRefererHost_notin: [string!]
   clientRefererHost_notlike: string
+  clientRequestAcceptContentTypeCategories_has: string
+  clientRequestAcceptContentTypeCategories_hasall: [string!]
+  clientRequestAcceptContentTypeCategories_hasany: [string!]
+  clientRequestAcceptContentTypeCategories_isempty: bool
+  clientRequestAcceptContentTypeCategories_nothas: string
   clientRequestAcceptContentTypeNames_has: string
   clientRequestAcceptContentTypeNames_hasall: [string!]
   clientRequestAcceptContentTypeNames_hasany: [string!]
@@ -87204,6 +88360,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   clientRefererHost_ASC
   # clientRefererHost descending
   clientRefererHost_DESC
+  # clientRequestAcceptContentTypeCategories ascending
+  clientRequestAcceptContentTypeCategories_ASC
+  # clientRequestAcceptContentTypeCategories descending
+  clientRequestAcceptContentTypeCategories_DESC
   # clientRequestAcceptContentTypeNames ascending
   clientRequestAcceptContentTypeNames_ASC
   # clientRequestAcceptContentTypeNames descending
