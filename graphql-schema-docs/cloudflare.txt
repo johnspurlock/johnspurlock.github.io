@@ -191,6 +191,7 @@ Account-level datasets:
 * webSearchRequestsAdaptiveGroups
 * workerPlacementAdaptiveGroups
 * workersAnalyticsEngineAdaptiveGroups
+* workersAssetsRequestsAdaptiveGroups
 * workersBuildsBuildMinutesAdaptiveGroups
 * workersInvocationsAdaptive
 * workersInvocationsByOwnerAndScriptGroups
@@ -275,7 +276,7 @@ scalar Date
 # Scalar type types.Float32
 scalar float32
 
-# Scalar type types.Float64
+# Scalar type float64
 scalar float64
 
 # Scalar type int16
@@ -698,6 +699,8 @@ type account {
   workerPlacementAdaptiveGroups(filter: AccountWorkerPlacementAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkerPlacementAdaptiveGroupsOrderBy!]): [AccountWorkerPlacementAdaptiveGroups!]!
   # Beta. Custom Events with adaptive sampling
   workersAnalyticsEngineAdaptiveGroups(filter: AccountWorkersAnalyticsEngineAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersAnalyticsEngineAdaptiveGroupsOrderBy!]): [AccountWorkersAnalyticsEngineAdaptiveGroups!]!
+  # Workers Assets requests with adaptive sampling
+  workersAssetsRequestsAdaptiveGroups(filter: AccountWorkersAssetsRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersAssetsRequestsAdaptiveGroupsOrderBy!]): [AccountWorkersAssetsRequestsAdaptiveGroups!]!
   # Workers Builds build minute overview data with adaptive sampling
   workersBuildsBuildMinutesAdaptiveGroups(filter: AccountWorkersBuildsBuildMinutesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersBuildsBuildMinutesAdaptiveGroupsOrderBy!]): [AccountWorkersBuildsBuildMinutesAdaptiveGroups!]!
   # Beta. Workers invocations with adaptive sampling
@@ -24679,6 +24682,8 @@ type AccountDurableObjectsPeriodicGroups {
   dimensions: AccountDurableObjectsPeriodicGroupsDimensions
   # The max value for a metric
   max: AccountDurableObjectsPeriodicGroupsMax
+  # Quantiles of a metric per dimension
+  quantiles: AccountDurableObjectsPeriodicGroupsQuantiles
   # The sum of values for a metric per dimension
   sum: AccountDurableObjectsPeriodicGroupsSum
 }
@@ -24814,6 +24819,8 @@ input AccountDurableObjectsPeriodicGroupsFilter_InputObject {
 type AccountDurableObjectsPeriodicGroupsMax {
   # Maximum active websocket connections in the time window
   activeWebsocketConnections: uint16!
+  # Maximum isolate memory usage reported by Durable Object periodic metrics - bytes
+  memoryUsageBytes: float64!
 }
 
 enum AccountDurableObjectsPeriodicGroupsOrderBy {
@@ -24857,6 +24864,10 @@ enum AccountDurableObjectsPeriodicGroupsOrderBy {
   max_activeWebsocketConnections_ASC
   # max(activeWebsocketConnections) descending
   max_activeWebsocketConnections_DESC
+  # max(memoryUsageBytes) ascending
+  max_memoryUsageBytes_ASC
+  # max(memoryUsageBytes) descending
+  max_memoryUsageBytes_DESC
   # name ascending
   name_ASC
   # name descending
@@ -24869,6 +24880,34 @@ enum AccountDurableObjectsPeriodicGroupsOrderBy {
   objectId_ASC
   # objectId descending
   objectId_DESC
+  # quantiles(memoryUsageBytesP25) ascending
+  quantiles_memoryUsageBytesP25_ASC
+  # quantiles(memoryUsageBytesP25) descending
+  quantiles_memoryUsageBytesP25_DESC
+  # quantiles(memoryUsageBytesP50) ascending
+  quantiles_memoryUsageBytesP50_ASC
+  # quantiles(memoryUsageBytesP50) descending
+  quantiles_memoryUsageBytesP50_DESC
+  # quantiles(memoryUsageBytesP75) ascending
+  quantiles_memoryUsageBytesP75_ASC
+  # quantiles(memoryUsageBytesP75) descending
+  quantiles_memoryUsageBytesP75_DESC
+  # quantiles(memoryUsageBytesP90) ascending
+  quantiles_memoryUsageBytesP90_ASC
+  # quantiles(memoryUsageBytesP90) descending
+  quantiles_memoryUsageBytesP90_DESC
+  # quantiles(memoryUsageBytesP95) ascending
+  quantiles_memoryUsageBytesP95_ASC
+  # quantiles(memoryUsageBytesP95) descending
+  quantiles_memoryUsageBytesP95_DESC
+  # quantiles(memoryUsageBytesP999) ascending
+  quantiles_memoryUsageBytesP999_ASC
+  # quantiles(memoryUsageBytesP999) descending
+  quantiles_memoryUsageBytesP999_DESC
+  # quantiles(memoryUsageBytesP99) ascending
+  quantiles_memoryUsageBytesP99_ASC
+  # quantiles(memoryUsageBytesP99) descending
+  quantiles_memoryUsageBytesP99_DESC
   # sum(activeTime) ascending
   sum_activeTime_ASC
   # sum(activeTime) descending
@@ -24925,6 +24964,23 @@ enum AccountDurableObjectsPeriodicGroupsOrderBy {
   sum_subrequests_ASC
   # sum(subrequests) descending
   sum_subrequests_DESC
+}
+
+type AccountDurableObjectsPeriodicGroupsQuantiles {
+  # Isolate memory usage 25th percentile across Durable Object periodic metrics - bytes
+  memoryUsageBytesP25: float32!
+  # Isolate memory usage 50th percentile across Durable Object periodic metrics - bytes
+  memoryUsageBytesP50: float32!
+  # Isolate memory usage 75th percentile across Durable Object periodic metrics - bytes
+  memoryUsageBytesP75: float32!
+  # Isolate memory usage 90th percentile across Durable Object periodic metrics - bytes
+  memoryUsageBytesP90: float32!
+  # Isolate memory usage 95th percentile across Durable Object periodic metrics - bytes
+  memoryUsageBytesP95: float32!
+  # Isolate memory usage 99th percentile across Durable Object periodic metrics - bytes
+  memoryUsageBytesP99: float32!
+  # Isolate memory usage 99.9th percentile across Durable Object periodic metrics - bytes
+  memoryUsageBytesP999: float32!
 }
 
 type AccountDurableObjectsPeriodicGroupsSum {
@@ -65282,6 +65338,7 @@ type AccountSettings {
   webSearchRequestsAdaptiveGroups: Settings!
   workerPlacementAdaptiveGroups: Settings!
   workersAnalyticsEngineAdaptiveGroups: Settings!
+  workersAssetsRequestsAdaptiveGroups: Settings!
   workersBuildsBuildMinutesAdaptiveGroups: Settings!
   workersInvocationsAdaptive: Settings!
   workersInvocationsByOwnerAndScriptGroups: Settings!
@@ -72412,6 +72469,218 @@ enum AccountWorkersAnalyticsEngineAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+}
+
+# Workers Assets requests with adaptive sampling
+type AccountWorkersAssetsRequestsAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountWorkersAssetsRequestsAdaptiveGroupsConfidence!
+  # List of dimensions to group by
+  dimensions: AccountWorkersAssetsRequestsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountWorkersAssetsRequestsAdaptiveGroupsSum
+}
+
+type AccountWorkersAssetsRequestsAdaptiveGroupsConfidence {
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountWorkersAssetsRequestsAdaptiveGroupsSumConfidence
+}
+
+type AccountWorkersAssetsRequestsAdaptiveGroupsDimensions {
+  # The cache status for the asset request
+  cacheStatus: string!
+  # IATA airport code for the Cloudflare datacenter that served the asset request
+  coloCode: string!
+  # Asset request timestamp, truncated to start of a day
+  date: Date!
+  # Asset request timestamp
+  datetime: Time!
+  # Asset request timestamp, truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Asset request timestamp, truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Asset request timestamp, truncated to start of an hour
+  datetimeHour: Time!
+  # Asset request timestamp, truncated to start of a minute
+  datetimeMinute: Time!
+  # Asset request timestamp, truncated to start of six hour window
+  datetimeSixHours: Time!
+  # The request hostname
+  hostname: string!
+  # HTTP response status code
+  statusCode: uint16!
+}
+
+input AccountWorkersAssetsRequestsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountWorkersAssetsRequestsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountWorkersAssetsRequestsAdaptiveGroupsFilter_InputObject!]
+  cacheStatus: string
+  cacheStatus_geq: string
+  cacheStatus_gt: string
+  cacheStatus_in: [string!]
+  cacheStatus_leq: string
+  cacheStatus_like: string
+  cacheStatus_lt: string
+  cacheStatus_neq: string
+  cacheStatus_notin: [string!]
+  cacheStatus_notlike: string
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  hostname: string
+  hostname_geq: string
+  hostname_gt: string
+  hostname_in: [string!]
+  hostname_leq: string
+  hostname_like: string
+  hostname_lt: string
+  hostname_neq: string
+  hostname_notin: [string!]
+  hostname_notlike: string
+  scriptName: string
+  scriptName_geq: string
+  scriptName_gt: string
+  scriptName_in: [string!]
+  scriptName_leq: string
+  scriptName_like: string
+  scriptName_lt: string
+  scriptName_neq: string
+  scriptName_notin: [string!]
+  scriptName_notlike: string
+  statusCode: uint16
+  statusCode_geq: uint16
+  statusCode_gt: uint16
+  statusCode_in: [uint16!]
+  statusCode_leq: uint16
+  statusCode_lt: uint16
+  statusCode_neq: uint16
+  statusCode_notin: [uint16!]
+}
+
+enum AccountWorkersAssetsRequestsAdaptiveGroupsOrderBy {
+  # cacheStatus ascending
+  cacheStatus_ASC
+  # cacheStatus descending
+  cacheStatus_DESC
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # hostname ascending
+  hostname_ASC
+  # hostname descending
+  hostname_DESC
+  # statusCode ascending
+  statusCode_ASC
+  # statusCode descending
+  statusCode_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+}
+
+type AccountWorkersAssetsRequestsAdaptiveGroupsSum {
+  # Total number of asset requests
+  requests: uint64!
+}
+
+type AccountWorkersAssetsRequestsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  requests: Confidence!
 }
 
 # Workers Builds build minute overview data with adaptive sampling
