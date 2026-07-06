@@ -45,6 +45,7 @@ Account-level datasets:
 * cf1GatewayNetworkSession1dGroups
 * cf1GatewayNetworkSession1hGroups
 * cf1GatewayNetworkSessionRawGroups
+* cf1McpHost1dGroups
 * cloudchamberMetricsAdaptiveGroups
 * cloudflareTunnelsAnalyticsAdaptiveGroups
 * cloudforceOneDetectionsAdaptiveGroups
@@ -148,6 +149,7 @@ Account-level datasets:
 * pipelinesUserErrorsAdaptiveGroups
 * pipelinesUserErrorsStagingAdaptive
 * pipelinesUserErrorsStagingAdaptiveGroups
+* precursorEventsAdaptiveGroups
 * privacyProxyAuthMetricsAdaptiveGroups
 * privacyProxyEgressConnMetricsAdaptiveGroups
 * privacyProxyIngressConnMetricsAdaptiveGroups
@@ -193,6 +195,7 @@ Account-level datasets:
 * workersAnalyticsEngineAdaptiveGroups
 * workersAssetsRequestsAdaptiveGroups
 * workersBuildsBuildMinutesAdaptiveGroups
+* workersCacheRequestsAdaptiveGroups
 * workersInvocationsAdaptive
 * workersInvocationsByOwnerAndScriptGroups
 * workersInvocationsScheduled
@@ -276,7 +279,7 @@ scalar Date
 # Scalar type types.Float32
 scalar float32
 
-# Scalar type float64
+# Scalar type types.Float64
 scalar float64
 
 # Scalar type int16
@@ -405,6 +408,8 @@ type account {
   cf1GatewayNetworkSession1hGroups(filter: AccountCf1GatewayNetworkSession1hGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayNetworkSession1hGroupsOrderBy!]): [AccountCf1GatewayNetworkSession1hGroups!]!
   # CF1 Gateway Network Session Log (L4 sessions with bandwidth) - raw data (max 3h query window, 4d lookback). Use cf1GatewayNetworkSession1hGroups for longer ranges, or cf1GatewayNetworkSession1dGroups for 10d+
   cf1GatewayNetworkSessionRawGroups(filter: AccountCf1GatewayNetworkSessionRawGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayNetworkSessionRawGroupsOrderBy!]): [AccountCf1GatewayNetworkSessionRawGroups!]!
+  # CF1 MCP host analytics - 1 day rollup (up to 90d window, 365d back). Groups MCP URL activity by host and source country per day.
+  cf1McpHost1dGroups(filter: AccountCf1McpHost1dGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1McpHost1dGroupsOrderBy!]): [AccountCf1McpHost1dGroups!]!
   # Metrics for Cloudchamber applications and deployments
   cloudchamberMetricsAdaptiveGroups(filter: AccountCloudchamberMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCloudchamberMetricsAdaptiveGroupsOrderBy!]): [AccountCloudchamberMetricsAdaptiveGroups!]!
   # Cloudflare tunnel Device Analytics
@@ -612,6 +617,8 @@ type account {
   pipelinesUserErrorsStagingAdaptive(filter: AccountPipelinesUserErrorsStagingAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesUserErrorsStagingAdaptiveOrderBy!]): [AccountPipelinesUserErrorsStagingAdaptive!]!
   # User errors from Workers Pipelines (staging)
   pipelinesUserErrorsStagingAdaptiveGroups(filter: AccountPipelinesUserErrorsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesUserErrorsStagingAdaptiveGroupsOrderBy!]): [AccountPipelinesUserErrorsStagingAdaptiveGroups!]!
+  # Beta. Cloudflare Precursor aggregated validation events with adaptive sampling
+  precursorEventsAdaptiveGroups(filter: AccountPrecursorEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPrecursorEventsAdaptiveGroupsOrderBy!]): [AccountPrecursorEventsAdaptiveGroups!]!
   # Aggregated Privacy Proxy authentication metrics with adaptive sampling
   privacyProxyAuthMetricsAdaptiveGroups(filter: AccountPrivacyProxyAuthMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPrivacyProxyAuthMetricsAdaptiveGroupsOrderBy!]): [AccountPrivacyProxyAuthMetricsAdaptiveGroups!]!
   # Aggregated Privacy Proxy egress (proxy-to-origin) connection metrics with adaptive sampling
@@ -703,6 +710,8 @@ type account {
   workersAssetsRequestsAdaptiveGroups(filter: AccountWorkersAssetsRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersAssetsRequestsAdaptiveGroupsOrderBy!]): [AccountWorkersAssetsRequestsAdaptiveGroups!]!
   # Workers Builds build minute overview data with adaptive sampling
   workersBuildsBuildMinutesAdaptiveGroups(filter: AccountWorkersBuildsBuildMinutesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersBuildsBuildMinutesAdaptiveGroupsOrderBy!]): [AccountWorkersBuildsBuildMinutesAdaptiveGroups!]!
+  # Beta. Cache-enabled Workers request events with adaptive sampling
+  workersCacheRequestsAdaptiveGroups(filter: AccountWorkersCacheRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersCacheRequestsAdaptiveGroupsOrderBy!]): [AccountWorkersCacheRequestsAdaptiveGroups!]!
   # Beta. Workers invocations with adaptive sampling
   workersInvocationsAdaptive(filter: AccountWorkersInvocationsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkersInvocationsAdaptiveOrderBy!]): [AccountWorkersInvocationsAdaptive!]!
   # Workers dynamic worker invocations. Used for exact distinct dynamic worker counts.
@@ -12674,8 +12683,6 @@ type AccountCf1GatewayDnsLuga1dGroupsDimensions {
   country: string!
   # Day start timestamp (daily granularity)
   datetime: Time!
-  # Query name (destination domain)
-  destination: string!
   # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
   deviceId: string!
   # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
@@ -12727,16 +12734,6 @@ input AccountCf1GatewayDnsLuga1dGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
-  destination: string
-  destination_geq: string
-  destination_gt: string
-  destination_in: [string!]
-  destination_leq: string
-  destination_like: string
-  destination_lt: string
-  destination_neq: string
-  destination_notin: [string!]
-  destination_notlike: string
   deviceId: string
   deviceId_geq: string
   deviceId_gt: string
@@ -12842,10 +12839,6 @@ enum AccountCf1GatewayDnsLuga1dGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
-  # destination ascending
-  destination_ASC
-  # destination descending
-  destination_DESC
   # deviceId ascending
   deviceId_ASC
   # deviceId descending
@@ -12935,8 +12928,6 @@ type AccountCf1GatewayDnsLuga1hGroupsDimensions {
   country: string!
   # Hour start timestamp (hourly granularity)
   datetime: Time!
-  # Query name (destination domain)
-  destination: string!
   # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
   deviceId: string!
   # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
@@ -12988,16 +12979,6 @@ input AccountCf1GatewayDnsLuga1hGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
-  destination: string
-  destination_geq: string
-  destination_gt: string
-  destination_in: [string!]
-  destination_leq: string
-  destination_like: string
-  destination_lt: string
-  destination_neq: string
-  destination_notin: [string!]
-  destination_notlike: string
   deviceId: string
   deviceId_geq: string
   deviceId_gt: string
@@ -13103,10 +13084,6 @@ enum AccountCf1GatewayDnsLuga1hGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
-  # destination ascending
-  destination_ASC
-  # destination descending
-  destination_DESC
   # deviceId ascending
   deviceId_ASC
   # deviceId descending
@@ -16928,6 +16905,89 @@ type AccountCf1GatewayNetworkSessionRawGroupsUniq {
   devices: uint64!
   # Unique users
   users: uint64!
+}
+
+# CF1 MCP host analytics - 1 day rollup (up to 90d window, 365d back). Groups MCP URL activity by host and source country per day.
+type AccountCf1McpHost1dGroups {
+  # List of dimensions to group by
+  dimensions: AccountCf1McpHost1dGroupsDimensions
+  sum: AccountCf1McpHost1dGroupsSum
+  uniq: AccountCf1McpHost1dGroupsUniq
+}
+
+type AccountCf1McpHost1dGroupsDimensions {
+  # Source country code
+  country: string!
+  # Day start timestamp (daily granularity)
+  datetime: Time!
+  # HTTP hostname
+  httpHost: string!
+}
+
+input AccountCf1McpHost1dGroupsFilter_InputObject {
+  AND: [AccountCf1McpHost1dGroupsFilter_InputObject!]
+  OR: [AccountCf1McpHost1dGroupsFilter_InputObject!]
+  country: string
+  country_geq: string
+  country_gt: string
+  country_in: [string!]
+  country_leq: string
+  country_like: string
+  country_lt: string
+  country_neq: string
+  country_notin: [string!]
+  country_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  httpHost: string
+  httpHost_geq: string
+  httpHost_gt: string
+  httpHost_in: [string!]
+  httpHost_leq: string
+  httpHost_like: string
+  httpHost_lt: string
+  httpHost_neq: string
+  httpHost_notin: [string!]
+  httpHost_notlike: string
+}
+
+enum AccountCf1McpHost1dGroupsOrderBy {
+  # country ascending
+  country_ASC
+  # country descending
+  country_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # httpHost ascending
+  httpHost_ASC
+  # httpHost descending
+  httpHost_DESC
+  # sum(mcpUrlCount) ascending
+  sum_mcpUrlCount_ASC
+  # sum(mcpUrlCount) descending
+  sum_mcpUrlCount_DESC
+  # uniq(mcpDistinctUsers) ascending
+  uniq_mcpDistinctUsers_ASC
+  # uniq(mcpDistinctUsers) descending
+  uniq_mcpDistinctUsers_DESC
+}
+
+type AccountCf1McpHost1dGroupsSum {
+  # Total MCP-path URL accesses across requests
+  mcpUrlCount: uint64!
+}
+
+type AccountCf1McpHost1dGroupsUniq {
+  # Unique users with MCP activity
+  mcpDistinctUsers: uint64!
 }
 
 # Metrics for Cloudchamber applications and deployments
@@ -25942,10 +26002,6 @@ type AccountFirewallEventsAdaptive {
   apiGatewayMatchedEndpoint: string!
   # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
-  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
-  attackSignatureCategories: [string!]!
-  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
-  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -26094,6 +26150,10 @@ type AccountFirewallEventsAdaptive {
   wafPathTraversalAttackScore: uint8!
   # Beta. WAF score for a RCE attack
   wafRceAttackScore: uint8!
+  # 1-D array of the categories associated with the rules ref in wafRequestSignatureRefs
+  wafRequestSignatureCategories: [string!]!
+  # cf.waf.signature.request.refs Ruleset field truncated to maximum 10 elements.
+  wafRequestSignatureRefs: [string!]!
   # Beta. WAF score for a SQLi attack
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
@@ -26137,16 +26197,6 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
-  attackSignatureCategories_has: string
-  attackSignatureCategories_hasall: [string!]
-  attackSignatureCategories_hasany: [string!]
-  attackSignatureCategories_isempty: bool
-  attackSignatureCategories_nothas: string
-  attackSignatureRefs_has: string
-  attackSignatureRefs_hasall: [string!]
-  attackSignatureRefs_hasany: [string!]
-  attackSignatureRefs_isempty: bool
-  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -26744,6 +26794,16 @@ input AccountFirewallEventsAdaptiveFilter_InputObject {
   wafRceAttackScore_lt: uint8
   wafRceAttackScore_neq: uint8
   wafRceAttackScore_notin: bytes
+  wafRequestSignatureCategories_has: string
+  wafRequestSignatureCategories_hasall: [string!]
+  wafRequestSignatureCategories_hasany: [string!]
+  wafRequestSignatureCategories_isempty: bool
+  wafRequestSignatureCategories_nothas: string
+  wafRequestSignatureRefs_has: string
+  wafRequestSignatureRefs_hasall: [string!]
+  wafRequestSignatureRefs_hasany: [string!]
+  wafRequestSignatureRefs_isempty: bool
+  wafRequestSignatureRefs_nothas: string
   wafSqliAttackScore: uint8
   wafSqliAttackScore_geq: uint8
   wafSqliAttackScore_gt: uint8
@@ -26818,10 +26878,6 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
-  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
-  attackSignatureCategories: [string!]!
-  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
-  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -26962,6 +27018,10 @@ type AccountFirewallEventsAdaptiveGroupsDimensions {
   wafPathTraversalAttackScore: uint8!
   # Beta. WAF score for a RCE attack
   wafRceAttackScore: uint8!
+  # 1-D array of the categories associated with the rules ref in wafRequestSignatureRefs
+  wafRequestSignatureCategories: [string!]!
+  # cf.waf.signature.request.refs Ruleset field truncated to maximum 10 elements.
+  wafRequestSignatureRefs: [string!]!
   # Beta. WAF score for a SQLi attack
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
@@ -27005,16 +27065,6 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
-  attackSignatureCategories_has: string
-  attackSignatureCategories_hasall: [string!]
-  attackSignatureCategories_hasany: [string!]
-  attackSignatureCategories_isempty: bool
-  attackSignatureCategories_nothas: string
-  attackSignatureRefs_has: string
-  attackSignatureRefs_hasall: [string!]
-  attackSignatureRefs_hasany: [string!]
-  attackSignatureRefs_isempty: bool
-  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -27602,6 +27652,16 @@ input AccountFirewallEventsAdaptiveGroupsFilter_InputObject {
   wafRceAttackScore_lt: uint8
   wafRceAttackScore_neq: uint8
   wafRceAttackScore_notin: bytes
+  wafRequestSignatureCategories_has: string
+  wafRequestSignatureCategories_hasall: [string!]
+  wafRequestSignatureCategories_hasany: [string!]
+  wafRequestSignatureCategories_isempty: bool
+  wafRequestSignatureCategories_nothas: string
+  wafRequestSignatureRefs_has: string
+  wafRequestSignatureRefs_hasall: [string!]
+  wafRequestSignatureRefs_hasany: [string!]
+  wafRequestSignatureRefs_isempty: bool
+  wafRequestSignatureRefs_nothas: string
   wafSqliAttackScore: uint8
   wafSqliAttackScore_geq: uint8
   wafSqliAttackScore_gt: uint8
@@ -27651,14 +27711,6 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
-  # attackSignatureCategories ascending
-  attackSignatureCategories_ASC
-  # attackSignatureCategories descending
-  attackSignatureCategories_DESC
-  # attackSignatureRefs ascending
-  attackSignatureRefs_ASC
-  # attackSignatureRefs descending
-  attackSignatureRefs_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -27975,6 +28027,14 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   wafRceAttackScore_ASC
   # wafRceAttackScore descending
   wafRceAttackScore_DESC
+  # wafRequestSignatureCategories ascending
+  wafRequestSignatureCategories_ASC
+  # wafRequestSignatureCategories descending
+  wafRequestSignatureCategories_DESC
+  # wafRequestSignatureRefs ascending
+  wafRequestSignatureRefs_ASC
+  # wafRequestSignatureRefs descending
+  wafRequestSignatureRefs_DESC
   # wafSqliAttackScore ascending
   wafSqliAttackScore_ASC
   # wafSqliAttackScore descending
@@ -28039,14 +28099,6 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
-  # attackSignatureCategories ascending
-  attackSignatureCategories_ASC
-  # attackSignatureCategories descending
-  attackSignatureCategories_DESC
-  # attackSignatureRefs ascending
-  attackSignatureRefs_ASC
-  # attackSignatureRefs descending
-  attackSignatureRefs_DESC
   # botDetectionIds ascending
   botDetectionIds_ASC
   # botDetectionIds descending
@@ -28327,6 +28379,14 @@ enum AccountFirewallEventsAdaptiveOrderBy {
   wafRceAttackScore_ASC
   # wafRceAttackScore descending
   wafRceAttackScore_DESC
+  # wafRequestSignatureCategories ascending
+  wafRequestSignatureCategories_ASC
+  # wafRequestSignatureCategories descending
+  wafRequestSignatureCategories_DESC
+  # wafRequestSignatureRefs ascending
+  wafRequestSignatureRefs_ASC
+  # wafRequestSignatureRefs descending
+  wafRequestSignatureRefs_DESC
   # wafSqliAttackScore ascending
   wafSqliAttackScore_ASC
   # wafSqliAttackScore descending
@@ -34585,10 +34645,6 @@ type AccountHttpRequestsAdaptive {
   apiGatewayMatchedEndpoint: string!
   # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
-  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
-  attackSignatureCategories: [string!]!
-  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
-  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -34735,6 +34791,14 @@ type AccountHttpRequestsAdaptive {
   requestSource: string!
   # Key-value metadata annotations attached to rules that matched this request
   rulesMetadata: [AccountHttpRequestsAdaptiveRulesMetadataElem!]!
+  # The outcome of running API Shield Managed Schema Validation for this request against the Cloudflare-learned schema (e.g. valid or violated; empty when managed schema validation did not run for the request)
+  schemaValidationLearnedOutcome: string!
+  # Schema Validation violations recorded for this request against the Cloudflare-learned schema. Each entry describes a single violation.
+  schemaValidationLearnedViolations: [AccountHttpRequestsAdaptiveSchemaValidationLearnedViolationsElem!]!
+  # The outcome of running API Shield Schema Validation for this request against the customer-uploaded schema (e.g. valid or violated; empty when schema validation did not run for the request)
+  schemaValidationUploadedOutcome: string!
+  # Schema Validation violations recorded for this request against the customer-uploaded schema. Each entry describes a single violation.
+  schemaValidationUploadedViolations: [AccountHttpRequestsAdaptiveSchemaValidationUploadedViolationsElem!]!
   # The code of the first-class action the Cloudflare Firewall took on this request
   securityAction: string!
   # The Cloudflare security product triggered by this request
@@ -34762,6 +34826,10 @@ type AccountHttpRequestsAdaptive {
   wafPathTraversalAttackScore: uint8!
   # Beta. WAF score for a RCE attack
   wafRceAttackScore: uint8!
+  # 1-D array of the categories associated with the rules ref in wafRequestSignatureRefs
+  wafRequestSignatureCategories: [string!]!
+  # cf.waf.signature.request.refs Ruleset field truncated to maximum 10 elements.
+  wafRequestSignatureRefs: [string!]!
   # Beta. WAF score for a SQLi attack
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
@@ -34801,16 +34869,6 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
-  attackSignatureCategories_has: string
-  attackSignatureCategories_hasall: [string!]
-  attackSignatureCategories_hasany: [string!]
-  attackSignatureCategories_isempty: bool
-  attackSignatureCategories_nothas: string
-  attackSignatureRefs_has: string
-  attackSignatureRefs_hasall: [string!]
-  attackSignatureRefs_hasany: [string!]
-  attackSignatureRefs_isempty: bool
-  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -35420,6 +35478,26 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   requestSource_neq: string
   requestSource_notin: [string!]
   requestSource_notlike: string
+  schemaValidationLearnedOutcome: string
+  schemaValidationLearnedOutcome_geq: string
+  schemaValidationLearnedOutcome_gt: string
+  schemaValidationLearnedOutcome_in: [string!]
+  schemaValidationLearnedOutcome_leq: string
+  schemaValidationLearnedOutcome_like: string
+  schemaValidationLearnedOutcome_lt: string
+  schemaValidationLearnedOutcome_neq: string
+  schemaValidationLearnedOutcome_notin: [string!]
+  schemaValidationLearnedOutcome_notlike: string
+  schemaValidationUploadedOutcome: string
+  schemaValidationUploadedOutcome_geq: string
+  schemaValidationUploadedOutcome_gt: string
+  schemaValidationUploadedOutcome_in: [string!]
+  schemaValidationUploadedOutcome_leq: string
+  schemaValidationUploadedOutcome_like: string
+  schemaValidationUploadedOutcome_lt: string
+  schemaValidationUploadedOutcome_neq: string
+  schemaValidationUploadedOutcome_notin: [string!]
+  schemaValidationUploadedOutcome_notlike: string
   securityAction: string
   securityAction_geq: string
   securityAction_gt: string
@@ -35544,6 +35622,16 @@ input AccountHttpRequestsAdaptiveFilter_InputObject {
   wafRceAttackScore_lt: uint8
   wafRceAttackScore_neq: uint8
   wafRceAttackScore_notin: bytes
+  wafRequestSignatureCategories_has: string
+  wafRequestSignatureCategories_hasall: [string!]
+  wafRequestSignatureCategories_hasany: [string!]
+  wafRequestSignatureCategories_isempty: bool
+  wafRequestSignatureCategories_nothas: string
+  wafRequestSignatureRefs_has: string
+  wafRequestSignatureRefs_hasall: [string!]
+  wafRequestSignatureRefs_hasany: [string!]
+  wafRequestSignatureRefs_isempty: bool
+  wafRequestSignatureRefs_nothas: string
   wafSqliAttackScore: uint8
   wafSqliAttackScore_geq: uint8
   wafSqliAttackScore_gt: uint8
@@ -35660,10 +35748,6 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
-  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
-  attackSignatureCategories: [string!]!
-  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
-  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -35804,6 +35888,10 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   requestSource: string!
   # ABR sample interval
   sampleInterval: uint32!
+  # The outcome of running API Shield Managed Schema Validation for this request against the Cloudflare-learned schema (e.g. valid or violated; empty when managed schema validation did not run for the request)
+  schemaValidationLearnedOutcome: string!
+  # The outcome of running API Shield Schema Validation for this request against the customer-uploaded schema (e.g. valid or violated; empty when schema validation did not run for the request)
+  schemaValidationUploadedOutcome: string!
   # The code of the first-class action the Cloudflare Firewall took on this request
   securityAction: string!
   # The Cloudflare security product triggered by this request
@@ -35830,6 +35918,10 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   wafPathTraversalAttackScore: uint8!
   # Beta. WAF score for a RCE attack
   wafRceAttackScore: uint8!
+  # 1-D array of the categories associated with the rules ref in wafRequestSignatureRefs
+  wafRequestSignatureCategories: [string!]!
+  # cf.waf.signature.request.refs Ruleset field truncated to maximum 10 elements.
+  wafRequestSignatureRefs: [string!]!
   # Beta. WAF score for a SQLi attack
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
@@ -35869,16 +35961,6 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
-  attackSignatureCategories_has: string
-  attackSignatureCategories_hasall: [string!]
-  attackSignatureCategories_hasany: [string!]
-  attackSignatureCategories_isempty: bool
-  attackSignatureCategories_nothas: string
-  attackSignatureRefs_has: string
-  attackSignatureRefs_hasall: [string!]
-  attackSignatureRefs_hasany: [string!]
-  attackSignatureRefs_isempty: bool
-  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -36506,6 +36588,26 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   sampleInterval_lt: uint32
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
+  schemaValidationLearnedOutcome: string
+  schemaValidationLearnedOutcome_geq: string
+  schemaValidationLearnedOutcome_gt: string
+  schemaValidationLearnedOutcome_in: [string!]
+  schemaValidationLearnedOutcome_leq: string
+  schemaValidationLearnedOutcome_like: string
+  schemaValidationLearnedOutcome_lt: string
+  schemaValidationLearnedOutcome_neq: string
+  schemaValidationLearnedOutcome_notin: [string!]
+  schemaValidationLearnedOutcome_notlike: string
+  schemaValidationUploadedOutcome: string
+  schemaValidationUploadedOutcome_geq: string
+  schemaValidationUploadedOutcome_gt: string
+  schemaValidationUploadedOutcome_in: [string!]
+  schemaValidationUploadedOutcome_leq: string
+  schemaValidationUploadedOutcome_like: string
+  schemaValidationUploadedOutcome_lt: string
+  schemaValidationUploadedOutcome_neq: string
+  schemaValidationUploadedOutcome_notin: [string!]
+  schemaValidationUploadedOutcome_notlike: string
   securityAction: string
   securityAction_geq: string
   securityAction_gt: string
@@ -36630,6 +36732,16 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   wafRceAttackScore_lt: uint8
   wafRceAttackScore_neq: uint8
   wafRceAttackScore_notin: bytes
+  wafRequestSignatureCategories_has: string
+  wafRequestSignatureCategories_hasall: [string!]
+  wafRequestSignatureCategories_hasany: [string!]
+  wafRequestSignatureCategories_isempty: bool
+  wafRequestSignatureCategories_nothas: string
+  wafRequestSignatureRefs_has: string
+  wafRequestSignatureRefs_hasall: [string!]
+  wafRequestSignatureRefs_hasany: [string!]
+  wafRequestSignatureRefs_isempty: bool
+  wafRequestSignatureRefs_nothas: string
   wafSqliAttackScore: uint8
   wafSqliAttackScore_geq: uint8
   wafSqliAttackScore_gt: uint8
@@ -36700,14 +36812,6 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
-  # attackSignatureCategories ascending
-  attackSignatureCategories_ASC
-  # attackSignatureCategories descending
-  attackSignatureCategories_DESC
-  # attackSignatureRefs ascending
-  attackSignatureRefs_ASC
-  # attackSignatureRefs descending
-  attackSignatureRefs_DESC
   # avg(crossZoneSubrequests) ascending
   avg_crossZoneSubrequests_ASC
   # avg(crossZoneSubrequests) descending
@@ -37248,6 +37352,14 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # schemaValidationLearnedOutcome ascending
+  schemaValidationLearnedOutcome_ASC
+  # schemaValidationLearnedOutcome descending
+  schemaValidationLearnedOutcome_DESC
+  # schemaValidationUploadedOutcome ascending
+  schemaValidationUploadedOutcome_ASC
+  # schemaValidationUploadedOutcome descending
+  schemaValidationUploadedOutcome_DESC
   # securityAction ascending
   securityAction_ASC
   # securityAction descending
@@ -37408,6 +37520,14 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   wafRceAttackScore_ASC
   # wafRceAttackScore descending
   wafRceAttackScore_DESC
+  # wafRequestSignatureCategories ascending
+  wafRequestSignatureCategories_ASC
+  # wafRequestSignatureCategories descending
+  wafRequestSignatureCategories_DESC
+  # wafRequestSignatureRefs ascending
+  wafRequestSignatureRefs_ASC
+  # wafRequestSignatureRefs descending
+  wafRequestSignatureRefs_DESC
   # wafSqliAttackScore ascending
   wafSqliAttackScore_ASC
   # wafSqliAttackScore descending
@@ -37633,14 +37753,6 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
-  # attackSignatureCategories ascending
-  attackSignatureCategories_ASC
-  # attackSignatureCategories descending
-  attackSignatureCategories_DESC
-  # attackSignatureRefs ascending
-  attackSignatureRefs_ASC
-  # attackSignatureRefs descending
-  attackSignatureRefs_DESC
   # botDetectionIds ascending
   botDetectionIds_ASC
   # botDetectionIds descending
@@ -37933,6 +38045,14 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   requestSource_ASC
   # requestSource descending
   requestSource_DESC
+  # schemaValidationLearnedOutcome ascending
+  schemaValidationLearnedOutcome_ASC
+  # schemaValidationLearnedOutcome descending
+  schemaValidationLearnedOutcome_DESC
+  # schemaValidationUploadedOutcome ascending
+  schemaValidationUploadedOutcome_ASC
+  # schemaValidationUploadedOutcome descending
+  schemaValidationUploadedOutcome_DESC
   # securityAction ascending
   securityAction_ASC
   # securityAction descending
@@ -37989,6 +38109,14 @@ enum AccountHttpRequestsAdaptiveOrderBy {
   wafRceAttackScore_ASC
   # wafRceAttackScore descending
   wafRceAttackScore_DESC
+  # wafRequestSignatureCategories ascending
+  wafRequestSignatureCategories_ASC
+  # wafRequestSignatureCategories descending
+  wafRequestSignatureCategories_DESC
+  # wafRequestSignatureRefs ascending
+  wafRequestSignatureRefs_ASC
+  # wafRequestSignatureRefs descending
+  wafRequestSignatureRefs_DESC
   # wafSqliAttackScore ascending
   wafSqliAttackScore_ASC
   # wafSqliAttackScore descending
@@ -38037,6 +38165,28 @@ type AccountHttpRequestsAdaptiveRulesMetadataElem {
   metadataValue: string!
   # Hex-encoded UUID of the rule this metadata entry belongs to
   ruleId: string!
+}
+
+type AccountHttpRequestsAdaptiveSchemaValidationLearnedViolationsElem {
+  # The class/category of the schema validation violation error
+  errorClass: string!
+  # Finer grained detail describing the schema validation violation error
+  errorDetail: string!
+  # Where in the request the violation was detected (e.g. path)
+  location: string!
+  # The schema element or parameter targeted by the violated rule
+  target: string!
+}
+
+type AccountHttpRequestsAdaptiveSchemaValidationUploadedViolationsElem {
+  # The class/category of the schema validation violation error
+  errorClass: string!
+  # Finer grained detail describing the schema validation violation error
+  errorDetail: string!
+  # Where in the request the violation was detected (e.g. path)
+  location: string!
+  # The schema element or parameter targeted by the violated rule
+  target: string!
 }
 
 # A high-level summary of HTTP requests made by end users.
@@ -38473,6 +38623,8 @@ type AccountHyperdrivePoolSizesAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Pool size snapshot timestamp, truncated to start of minute
   datetimeMinute: Time!
+  # Opaque per-query identifier for a pool shard. Use only as a GROUP BY dimension; values are not stable across queries.
+  poolShardId: string!
 }
 
 input AccountHyperdrivePoolSizesAdaptiveGroupsFilter_InputObject {
@@ -38540,6 +38692,16 @@ input AccountHyperdrivePoolSizesAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  poolShardId: string
+  poolShardId_geq: string
+  poolShardId_gt: string
+  poolShardId_in: [string!]
+  poolShardId_leq: string
+  poolShardId_like: string
+  poolShardId_lt: string
+  poolShardId_neq: string
+  poolShardId_notin: [string!]
+  poolShardId_notlike: string
 }
 
 type AccountHyperdrivePoolSizesAdaptiveGroupsMax {
@@ -38612,6 +38774,10 @@ enum AccountHyperdrivePoolSizesAdaptiveGroupsOrderBy {
   max_waitingClients_ASC
   # max(waitingClients) descending
   max_waitingClients_DESC
+  # poolShardId ascending
+  poolShardId_ASC
+  # poolShardId descending
+  poolShardId_DESC
 }
 
 # Hyperdrive query events with adaptive sampling.
@@ -51977,6 +52143,10 @@ type AccountMconnTelemetrySnapshotTunnelsAdaptiveGroupsDimensions {
   datetimeSixHours: Time!
   # The tunnel interface name (i.e. xfrm1, xfrm3.99, etc.)
   interfaceName: string!
+  # Public socket address returned by the NAT detector
+  natdResult: string!
+  # Target socket address probed by the NAT detector, using the detector source port
+  natdTarget: string!
   # Tunnel identifier
   tunnelId: string!
 }
@@ -52060,6 +52230,26 @@ input AccountMconnTelemetrySnapshotTunnelsAdaptiveGroupsFilter_InputObject {
   interfaceName_neq: string
   interfaceName_notin: [string!]
   interfaceName_notlike: string
+  natdResult: string
+  natdResult_geq: string
+  natdResult_gt: string
+  natdResult_in: [string!]
+  natdResult_leq: string
+  natdResult_like: string
+  natdResult_lt: string
+  natdResult_neq: string
+  natdResult_notin: [string!]
+  natdResult_notlike: string
+  natdTarget: string
+  natdTarget_geq: string
+  natdTarget_gt: string
+  natdTarget_in: [string!]
+  natdTarget_leq: string
+  natdTarget_like: string
+  natdTarget_lt: string
+  natdTarget_neq: string
+  natdTarget_notin: [string!]
+  natdTarget_notlike: string
   tunnelId: string
   tunnelId_geq: string
   tunnelId_gt: string
@@ -52075,6 +52265,8 @@ input AccountMconnTelemetrySnapshotTunnelsAdaptiveGroupsFilter_InputObject {
 type AccountMconnTelemetrySnapshotTunnelsAdaptiveGroupsMax {
   # Numeric value associated with tunnel state (0 = unknown, 1 = healthy, 2 = degraded, 3 = down)
   healthValue: float64!
+  # Numeric NAT detector state (0 = detected, 1 = missing result, 2 = stale result)
+  natdState: float64!
 }
 
 enum AccountMconnTelemetrySnapshotTunnelsAdaptiveGroupsOrderBy {
@@ -52122,6 +52314,18 @@ enum AccountMconnTelemetrySnapshotTunnelsAdaptiveGroupsOrderBy {
   max_healthValue_ASC
   # max(healthValue) descending
   max_healthValue_DESC
+  # max(natdState) ascending
+  max_natdState_ASC
+  # max(natdState) descending
+  max_natdState_DESC
+  # natdResult ascending
+  natdResult_ASC
+  # natdResult descending
+  natdResult_DESC
+  # natdTarget ascending
+  natdTarget_ASC
+  # natdTarget descending
+  natdTarget_DESC
   # tunnelId ascending
   tunnelId_ASC
   # tunnelId descending
@@ -52165,6 +52369,10 @@ type AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsDimensions {
   datetimeSixHours: Time!
   # The tunnel interface name (i.e. xfrm1, xfrm3.99, etc.)
   interfaceName: string!
+  # Public socket address returned by the NAT detector
+  natdResult: string!
+  # Target socket address probed by the NAT detector, using the detector source port
+  natdTarget: string!
   # Tunnel identifier
   tunnelId: string!
 }
@@ -52248,6 +52456,26 @@ input AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsFilter_InputObjec
   interfaceName_neq: string
   interfaceName_notin: [string!]
   interfaceName_notlike: string
+  natdResult: string
+  natdResult_geq: string
+  natdResult_gt: string
+  natdResult_in: [string!]
+  natdResult_leq: string
+  natdResult_like: string
+  natdResult_lt: string
+  natdResult_neq: string
+  natdResult_notin: [string!]
+  natdResult_notlike: string
+  natdTarget: string
+  natdTarget_geq: string
+  natdTarget_gt: string
+  natdTarget_in: [string!]
+  natdTarget_leq: string
+  natdTarget_like: string
+  natdTarget_lt: string
+  natdTarget_neq: string
+  natdTarget_notin: [string!]
+  natdTarget_notlike: string
   tunnelId: string
   tunnelId_geq: string
   tunnelId_gt: string
@@ -52263,6 +52491,8 @@ input AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsFilter_InputObjec
 type AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsMax {
   # Numeric value associated with tunnel state (0 = unknown, 1 = healthy, 2 = degraded, 3 = down)
   healthValue: float64!
+  # Numeric NAT detector state (0 = detected, 1 = missing result, 2 = stale result)
+  natdState: float64!
 }
 
 enum AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsOrderBy {
@@ -52310,6 +52540,18 @@ enum AccountMconnTelemetrySnapshotTunnelsStagingAdaptiveGroupsOrderBy {
   max_healthValue_ASC
   # max(healthValue) descending
   max_healthValue_DESC
+  # max(natdState) ascending
+  max_natdState_ASC
+  # max(natdState) descending
+  max_natdState_DESC
+  # natdResult ascending
+  natdResult_ASC
+  # natdResult descending
+  natdResult_DESC
+  # natdTarget ascending
+  natdTarget_ASC
+  # natdTarget descending
+  natdTarget_DESC
   # tunnelId ascending
   tunnelId_ASC
   # tunnelId descending
@@ -57604,6 +57846,360 @@ enum AccountPipelinesUserErrorsStagingAdaptiveOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+}
+
+# Beta. Cloudflare Precursor aggregated validation events with adaptive sampling
+type AccountPrecursorEventsAdaptiveGroups {
+  avg: AccountPrecursorEventsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountPrecursorEventsAdaptiveGroupsConfidence!
+  # Number of Cloudflare Precursor validation events processed
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountPrecursorEventsAdaptiveGroupsDimensions
+  sum: AccountPrecursorEventsAdaptiveGroupsSum
+}
+
+type AccountPrecursorEventsAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountPrecursorEventsAdaptiveGroupsConfidence {
+  # Number of Cloudflare Precursor validation events processed, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  sum: AccountPrecursorEventsAdaptiveGroupsSumConfidence
+}
+
+type AccountPrecursorEventsAdaptiveGroupsDimensions {
+  # ASN tied to that Precursor validation event
+  asn: uint32!
+  # Major version of the browser tied to that Precursor validation event
+  browserMajor: uint16!
+  # Browser name tied to that Precursor validation event
+  browserName: string!
+  # 2 character country code tied to that Precursor validation event
+  countryCode: string!
+  # The date the Precursor validation event was emitted
+  date: Date!
+  # The date and time the Precursor validation event was emitted
+  datetime: Time!
+  # The date and time the Precursor validation event was emitted truncated to the day
+  datetimeDay: Time!
+  # The date and time the Precursor validation event was emitted truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the Precursor validation event was emitted truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the Precursor validation event was emitted truncated to a multiple of 30 minutes
+  datetimeHalfOfHour: Time!
+  # The date and time the Precursor validation event was emitted truncated to the hour
+  datetimeHour: Time!
+  # The date and time the Precursor validation event was emitted truncated to the minute
+  datetimeMinute: Time!
+  # The type of the Cloudflare Precursor event
+  eventType: string!
+  # Hostname tied to that Precursor validation event
+  hostname: string!
+  # IPv4 tied to that Precursor validation event
+  ipv4: string!
+  # IPv6 tied to that Precursor validation event
+  ipv6: string!
+  # Major version of the OS tied to that Precursor validation event
+  osMajor: uint16!
+  # OS name tied to that Precursor validation event
+  osName: string!
+  # User agent tied to that Precursor validation event
+  userAgent: string!
+  # Zone ID tied to that Precursor validation event
+  zoneId: uint32!
+}
+
+input AccountPrecursorEventsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountPrecursorEventsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountPrecursorEventsAdaptiveGroupsFilter_InputObject!]
+  asn: uint32
+  asn_geq: uint32
+  asn_gt: uint32
+  asn_in: [uint32!]
+  asn_leq: uint32
+  asn_lt: uint32
+  asn_neq: uint32
+  asn_notin: [uint32!]
+  browserMajor: uint16
+  browserMajor_geq: uint16
+  browserMajor_gt: uint16
+  browserMajor_in: [uint16!]
+  browserMajor_leq: uint16
+  browserMajor_lt: uint16
+  browserMajor_neq: uint16
+  browserMajor_notin: [uint16!]
+  browserName: string
+  browserName_geq: string
+  browserName_gt: string
+  browserName_in: [string!]
+  browserName_leq: string
+  browserName_like: string
+  browserName_lt: string
+  browserName_neq: string
+  browserName_notin: [string!]
+  browserName_notlike: string
+  countryCode: string
+  countryCode_geq: string
+  countryCode_gt: string
+  countryCode_in: [string!]
+  countryCode_leq: string
+  countryCode_like: string
+  countryCode_lt: string
+  countryCode_neq: string
+  countryCode_notin: [string!]
+  countryCode_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeDay: Time
+  datetimeDay_geq: Time
+  datetimeDay_gt: Time
+  datetimeDay_in: [Time!]
+  datetimeDay_leq: Time
+  datetimeDay_lt: Time
+  datetimeDay_neq: Time
+  datetimeDay_notin: [Time!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHalfOfHour: Time
+  datetimeHalfOfHour_geq: Time
+  datetimeHalfOfHour_gt: Time
+  datetimeHalfOfHour_in: [Time!]
+  datetimeHalfOfHour_leq: Time
+  datetimeHalfOfHour_lt: Time
+  datetimeHalfOfHour_neq: Time
+  datetimeHalfOfHour_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
+  hostname: string
+  hostname_geq: string
+  hostname_gt: string
+  hostname_in: [string!]
+  hostname_leq: string
+  hostname_like: string
+  hostname_lt: string
+  hostname_neq: string
+  hostname_notin: [string!]
+  hostname_notlike: string
+  ipv4: string
+  ipv4_geq: string
+  ipv4_gt: string
+  ipv4_in: [string!]
+  ipv4_leq: string
+  ipv4_like: string
+  ipv4_lt: string
+  ipv4_neq: string
+  ipv4_notin: [string!]
+  ipv4_notlike: string
+  ipv6: string
+  ipv6_geq: string
+  ipv6_gt: string
+  ipv6_in: [string!]
+  ipv6_leq: string
+  ipv6_like: string
+  ipv6_lt: string
+  ipv6_neq: string
+  ipv6_notin: [string!]
+  ipv6_notlike: string
+  osMajor: uint16
+  osMajor_geq: uint16
+  osMajor_gt: uint16
+  osMajor_in: [uint16!]
+  osMajor_leq: uint16
+  osMajor_lt: uint16
+  osMajor_neq: uint16
+  osMajor_notin: [uint16!]
+  osName: string
+  osName_geq: string
+  osName_gt: string
+  osName_in: [string!]
+  osName_leq: string
+  osName_like: string
+  osName_lt: string
+  osName_neq: string
+  osName_notin: [string!]
+  osName_notlike: string
+  userAgent: string
+  userAgent_geq: string
+  userAgent_gt: string
+  userAgent_in: [string!]
+  userAgent_leq: string
+  userAgent_like: string
+  userAgent_lt: string
+  userAgent_neq: string
+  userAgent_notin: [string!]
+  userAgent_notlike: string
+  zoneId: uint32
+  zoneId_geq: uint32
+  zoneId_gt: uint32
+  zoneId_in: [uint32!]
+  zoneId_leq: uint32
+  zoneId_lt: uint32
+  zoneId_neq: uint32
+  zoneId_notin: [uint32!]
+}
+
+enum AccountPrecursorEventsAdaptiveGroupsOrderBy {
+  # asn ascending
+  asn_ASC
+  # asn descending
+  asn_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # browserMajor ascending
+  browserMajor_ASC
+  # browserMajor descending
+  browserMajor_DESC
+  # browserName ascending
+  browserName_ASC
+  # browserName descending
+  browserName_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # countryCode ascending
+  countryCode_ASC
+  # countryCode descending
+  countryCode_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeDay ascending
+  datetimeDay_ASC
+  # datetimeDay descending
+  datetimeDay_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHalfOfHour ascending
+  datetimeHalfOfHour_ASC
+  # datetimeHalfOfHour descending
+  datetimeHalfOfHour_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
+  # hostname ascending
+  hostname_ASC
+  # hostname descending
+  hostname_DESC
+  # ipv4 ascending
+  ipv4_ASC
+  # ipv4 descending
+  ipv4_DESC
+  # ipv6 ascending
+  ipv6_ASC
+  # ipv6 descending
+  ipv6_DESC
+  # osMajor ascending
+  osMajor_ASC
+  # osMajor descending
+  osMajor_DESC
+  # osName ascending
+  osName_ASC
+  # osName descending
+  osName_DESC
+  # sum(sessionsStarted) ascending
+  sum_sessionsStarted_ASC
+  # sum(sessionsStarted) descending
+  sum_sessionsStarted_DESC
+  # userAgent ascending
+  userAgent_ASC
+  # userAgent descending
+  userAgent_DESC
+  # zoneId ascending
+  zoneId_ASC
+  # zoneId descending
+  zoneId_DESC
+}
+
+type AccountPrecursorEventsAdaptiveGroupsSum {
+  # Estimated number of Cloudflare Precursor sessions whose first validation was observed
+  sessionsStarted: uint64!
+}
+
+type AccountPrecursorEventsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  sessionsStarted: Confidence!
 }
 
 # Aggregated Privacy Proxy authentication metrics with adaptive sampling
@@ -65192,6 +65788,7 @@ type AccountSettings {
   cf1GatewayNetworkSession1dGroups: Settings!
   cf1GatewayNetworkSession1hGroups: Settings!
   cf1GatewayNetworkSessionRawGroups: Settings!
+  cf1McpHost1dGroups: Settings!
   cloudchamberMetricsAdaptiveGroups: Settings!
   cloudflareTunnelsAnalyticsAdaptiveGroups: Settings!
   cloudforceOneDetectionsAdaptiveGroups: Settings!
@@ -65295,6 +65892,7 @@ type AccountSettings {
   pipelinesUserErrorsAdaptiveGroups: Settings!
   pipelinesUserErrorsStagingAdaptive: Settings!
   pipelinesUserErrorsStagingAdaptiveGroups: Settings!
+  precursorEventsAdaptiveGroups: Settings!
   privacyProxyAuthMetricsAdaptiveGroups: Settings!
   privacyProxyEgressConnMetricsAdaptiveGroups: Settings!
   privacyProxyIngressConnMetricsAdaptiveGroups: Settings!
@@ -65340,6 +65938,7 @@ type AccountSettings {
   workersAnalyticsEngineAdaptiveGroups: Settings!
   workersAssetsRequestsAdaptiveGroups: Settings!
   workersBuildsBuildMinutesAdaptiveGroups: Settings!
+  workersCacheRequestsAdaptiveGroups: Settings!
   workersInvocationsAdaptive: Settings!
   workersInvocationsByOwnerAndScriptGroups: Settings!
   workersInvocationsScheduled: Settings!
@@ -72809,6 +73408,360 @@ type AccountWorkersBuildsBuildMinutesAdaptiveGroupsSumConfidence {
   buildMinutes: Confidence!
 }
 
+# Beta. Cache-enabled Workers request events with adaptive sampling
+type AccountWorkersCacheRequestsAdaptiveGroups {
+  # The average value used for sample interval
+  avg: AccountWorkersCacheRequestsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountWorkersCacheRequestsAdaptiveGroupsConfidence!
+  # List of dimensions to group by
+  dimensions: AccountWorkersCacheRequestsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountWorkersCacheRequestsAdaptiveGroupsSum
+}
+
+type AccountWorkersCacheRequestsAdaptiveGroupsAvg {
+  sampleInterval: float64!
+}
+
+type AccountWorkersCacheRequestsAdaptiveGroupsConfidence {
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountWorkersCacheRequestsAdaptiveGroupsSumConfidence
+}
+
+type AccountWorkersCacheRequestsAdaptiveGroupsDimensions {
+  # Cache status for the cache-side Worker request event
+  cacheStatus: string!
+  # IATA airport code for the Cloudflare datacenter where the request was handled.
+  coloCode: string!
+  # Request datetime, truncated to start of a day
+  date: Date!
+  # Request datetime
+  datetime: Time!
+  # The date and time of the event truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time of the event truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Request datetime, truncated to start of an hour
+  datetimeHour: Time!
+  # Request datetime, truncated to start of a minute
+  datetimeMinute: Time!
+  # Request datetime, truncated to start of six hour window
+  datetimeSixHours: Time!
+  # The name of the script's dispatch namespace
+  dispatchNamespaceName: string!
+  # The name of the script environment
+  environmentName: string!
+  # Whether the request is from a Dispatch Worker. Non-zero if true
+  isDispatcher: uint8!
+  # Whether this request is for a preview. 1 if preview, 0 if not.
+  isPreview: uint8!
+  # The name (slug) of the preview script
+  previewSlug: string!
+  # The name of the script
+  scriptName: string!
+  # The unique tag of the script
+  scriptTag: string!
+  # The version of the Worker
+  scriptVersion: string!
+  # Status of the worker request event
+  status: string!
+  # Usage model of the worker request
+  usageModel: string!
+}
+
+input AccountWorkersCacheRequestsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountWorkersCacheRequestsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountWorkersCacheRequestsAdaptiveGroupsFilter_InputObject!]
+  cacheStatus: string
+  cacheStatus_geq: string
+  cacheStatus_gt: string
+  cacheStatus_in: [string!]
+  cacheStatus_leq: string
+  cacheStatus_like: string
+  cacheStatus_lt: string
+  cacheStatus_neq: string
+  cacheStatus_notin: [string!]
+  cacheStatus_notlike: string
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  dispatchNamespaceName: string
+  dispatchNamespaceName_geq: string
+  dispatchNamespaceName_gt: string
+  dispatchNamespaceName_in: [string!]
+  dispatchNamespaceName_leq: string
+  dispatchNamespaceName_like: string
+  dispatchNamespaceName_lt: string
+  dispatchNamespaceName_neq: string
+  dispatchNamespaceName_notin: [string!]
+  dispatchNamespaceName_notlike: string
+  environmentName: string
+  environmentName_geq: string
+  environmentName_gt: string
+  environmentName_in: [string!]
+  environmentName_leq: string
+  environmentName_like: string
+  environmentName_lt: string
+  environmentName_neq: string
+  environmentName_notin: [string!]
+  environmentName_notlike: string
+  isDispatcher: uint8
+  isDispatcher_geq: uint8
+  isDispatcher_gt: uint8
+  isDispatcher_in: bytes
+  isDispatcher_leq: uint8
+  isDispatcher_lt: uint8
+  isDispatcher_neq: uint8
+  isDispatcher_notin: bytes
+  isPreview: uint8
+  isPreview_geq: uint8
+  isPreview_gt: uint8
+  isPreview_in: bytes
+  isPreview_leq: uint8
+  isPreview_lt: uint8
+  isPreview_neq: uint8
+  isPreview_notin: bytes
+  previewSlug: string
+  previewSlug_geq: string
+  previewSlug_gt: string
+  previewSlug_in: [string!]
+  previewSlug_leq: string
+  previewSlug_like: string
+  previewSlug_lt: string
+  previewSlug_neq: string
+  previewSlug_notin: [string!]
+  previewSlug_notlike: string
+  scriptName: string
+  scriptName_geq: string
+  scriptName_gt: string
+  scriptName_in: [string!]
+  scriptName_leq: string
+  scriptName_like: string
+  scriptName_lt: string
+  scriptName_neq: string
+  scriptName_notin: [string!]
+  scriptName_notlike: string
+  scriptTag: string
+  scriptTag_geq: string
+  scriptTag_gt: string
+  scriptTag_in: [string!]
+  scriptTag_leq: string
+  scriptTag_like: string
+  scriptTag_lt: string
+  scriptTag_neq: string
+  scriptTag_notin: [string!]
+  scriptTag_notlike: string
+  scriptVersion: string
+  scriptVersion_geq: string
+  scriptVersion_gt: string
+  scriptVersion_in: [string!]
+  scriptVersion_leq: string
+  scriptVersion_like: string
+  scriptVersion_lt: string
+  scriptVersion_neq: string
+  scriptVersion_notin: [string!]
+  scriptVersion_notlike: string
+  status: string
+  status_geq: string
+  status_gt: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
+  usageModel: string
+  usageModel_geq: string
+  usageModel_gt: string
+  usageModel_in: [string!]
+  usageModel_leq: string
+  usageModel_like: string
+  usageModel_lt: string
+  usageModel_neq: string
+  usageModel_notin: [string!]
+  usageModel_notlike: string
+}
+
+enum AccountWorkersCacheRequestsAdaptiveGroupsOrderBy {
+  # actorNamespaceId ascending
+  actorNamespaceId_ASC
+  # actorNamespaceId descending
+  actorNamespaceId_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # cacheStatus ascending
+  cacheStatus_ASC
+  # cacheStatus descending
+  cacheStatus_DESC
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
+  # constantScriptId ascending
+  constantScriptId_ASC
+  # constantScriptId descending
+  constantScriptId_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # dispatchNamespaceName ascending
+  dispatchNamespaceName_ASC
+  # dispatchNamespaceName descending
+  dispatchNamespaceName_DESC
+  # environmentName ascending
+  environmentName_ASC
+  # environmentName descending
+  environmentName_DESC
+  # isDispatcher ascending
+  isDispatcher_ASC
+  # isDispatcher descending
+  isDispatcher_DESC
+  # isPreview ascending
+  isPreview_ASC
+  # isPreview descending
+  isPreview_DESC
+  # previewConstantScriptId ascending
+  previewConstantScriptId_ASC
+  # previewConstantScriptId descending
+  previewConstantScriptId_DESC
+  # previewSlug ascending
+  previewSlug_ASC
+  # previewSlug descending
+  previewSlug_DESC
+  # scriptName ascending
+  scriptName_ASC
+  # scriptName descending
+  scriptName_DESC
+  # scriptTag ascending
+  scriptTag_ASC
+  # scriptTag descending
+  scriptTag_DESC
+  # scriptVersion ascending
+  scriptVersion_ASC
+  # scriptVersion descending
+  scriptVersion_DESC
+  # stableId ascending
+  stableId_ASC
+  # stableId descending
+  stableId_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # usageModel ascending
+  usageModel_ASC
+  # usageModel descending
+  usageModel_DESC
+}
+
+type AccountWorkersCacheRequestsAdaptiveGroupsSum {
+  # Sum of cache-side requests
+  requests: uint64!
+}
+
+type AccountWorkersCacheRequestsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  requests: Confidence!
+}
+
 # Beta. Workers invocations with adaptive sampling
 type AccountWorkersInvocationsAdaptive {
   # The average value used for sample interval
@@ -75879,10 +76832,6 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
-  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
-  attackSignatureCategories: [string!]!
-  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
-  attackSignatureRefs: [string!]!
   # Judgement of the bot management system
   botManagementDecision: string!
   # The final score originated from bot management detections.
@@ -76017,6 +76966,10 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   requestSource: string!
   # ABR sample interval
   sampleInterval: uint32!
+  # The outcome of running API Shield Managed Schema Validation for this request against the Cloudflare-learned schema (e.g. valid or violated; empty when managed schema validation did not run for the request)
+  schemaValidationLearnedOutcome: string!
+  # The outcome of running API Shield Schema Validation for this request against the customer-uploaded schema (e.g. valid or violated; empty when schema validation did not run for the request)
+  schemaValidationUploadedOutcome: string!
   # The code of the first-class action the Cloudflare Firewall took on this request
   securityAction: string!
   # The Cloudflare security product triggered by this request
@@ -76043,6 +76996,10 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   wafPathTraversalAttackScore: uint8!
   # Beta. WAF score for a RCE attack
   wafRceAttackScore: uint8!
+  # 1-D array of the categories associated with the rules ref in wafRequestSignatureRefs
+  wafRequestSignatureCategories: [string!]!
+  # cf.waf.signature.request.refs Ruleset field truncated to maximum 10 elements.
+  wafRequestSignatureRefs: [string!]!
   # Beta. WAF score for a SQLi attack
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
@@ -76082,16 +77039,6 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
-  attackSignatureCategories_has: string
-  attackSignatureCategories_hasall: [string!]
-  attackSignatureCategories_hasany: [string!]
-  attackSignatureCategories_isempty: bool
-  attackSignatureCategories_nothas: string
-  attackSignatureRefs_has: string
-  attackSignatureRefs_hasall: [string!]
-  attackSignatureRefs_hasany: [string!]
-  attackSignatureRefs_isempty: bool
-  attackSignatureRefs_nothas: string
   botManagementDecision: string
   botManagementDecision_geq: string
   botManagementDecision_gt: string
@@ -76704,6 +77651,26 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   sampleInterval_lt: uint32
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
+  schemaValidationLearnedOutcome: string
+  schemaValidationLearnedOutcome_geq: string
+  schemaValidationLearnedOutcome_gt: string
+  schemaValidationLearnedOutcome_in: [string!]
+  schemaValidationLearnedOutcome_leq: string
+  schemaValidationLearnedOutcome_like: string
+  schemaValidationLearnedOutcome_lt: string
+  schemaValidationLearnedOutcome_neq: string
+  schemaValidationLearnedOutcome_notin: [string!]
+  schemaValidationLearnedOutcome_notlike: string
+  schemaValidationUploadedOutcome: string
+  schemaValidationUploadedOutcome_geq: string
+  schemaValidationUploadedOutcome_gt: string
+  schemaValidationUploadedOutcome_in: [string!]
+  schemaValidationUploadedOutcome_leq: string
+  schemaValidationUploadedOutcome_like: string
+  schemaValidationUploadedOutcome_lt: string
+  schemaValidationUploadedOutcome_neq: string
+  schemaValidationUploadedOutcome_notin: [string!]
+  schemaValidationUploadedOutcome_notlike: string
   securityAction: string
   securityAction_geq: string
   securityAction_gt: string
@@ -76828,6 +77795,16 @@ input OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject {
   wafRceAttackScore_lt: uint8
   wafRceAttackScore_neq: uint8
   wafRceAttackScore_notin: bytes
+  wafRequestSignatureCategories_has: string
+  wafRequestSignatureCategories_hasall: [string!]
+  wafRequestSignatureCategories_hasany: [string!]
+  wafRequestSignatureCategories_isempty: bool
+  wafRequestSignatureCategories_nothas: string
+  wafRequestSignatureRefs_has: string
+  wafRequestSignatureRefs_hasall: [string!]
+  wafRequestSignatureRefs_hasany: [string!]
+  wafRequestSignatureRefs_isempty: bool
+  wafRequestSignatureRefs_nothas: string
   wafSqliAttackScore: uint8
   wafSqliAttackScore_geq: uint8
   wafSqliAttackScore_gt: uint8
@@ -76888,14 +77865,6 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
-  # attackSignatureCategories ascending
-  attackSignatureCategories_ASC
-  # attackSignatureCategories descending
-  attackSignatureCategories_DESC
-  # attackSignatureRefs ascending
-  attackSignatureRefs_ASC
-  # attackSignatureRefs descending
-  attackSignatureRefs_DESC
   # avg(crossZoneSubrequests) ascending
   avg_crossZoneSubrequests_ASC
   # avg(crossZoneSubrequests) descending
@@ -77396,6 +78365,14 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # schemaValidationLearnedOutcome ascending
+  schemaValidationLearnedOutcome_ASC
+  # schemaValidationLearnedOutcome descending
+  schemaValidationLearnedOutcome_DESC
+  # schemaValidationUploadedOutcome ascending
+  schemaValidationUploadedOutcome_ASC
+  # schemaValidationUploadedOutcome descending
+  schemaValidationUploadedOutcome_DESC
   # securityAction ascending
   securityAction_ASC
   # securityAction descending
@@ -77512,6 +78489,14 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   wafRceAttackScore_ASC
   # wafRceAttackScore descending
   wafRceAttackScore_DESC
+  # wafRequestSignatureCategories ascending
+  wafRequestSignatureCategories_ASC
+  # wafRequestSignatureCategories descending
+  wafRequestSignatureCategories_DESC
+  # wafRequestSignatureRefs ascending
+  wafRequestSignatureRefs_ASC
+  # wafRequestSignatureRefs descending
+  wafRequestSignatureRefs_DESC
   # wafSqliAttackScore ascending
   wafSqliAttackScore_ASC
   # wafSqliAttackScore descending
@@ -82648,10 +83633,6 @@ type ZoneFirewallEventsAdaptive {
   apiGatewayMatchedEndpoint: string!
   # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
-  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
-  attackSignatureCategories: [string!]!
-  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
-  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -82800,6 +83781,10 @@ type ZoneFirewallEventsAdaptive {
   wafPathTraversalAttackScore: uint8!
   # Beta. WAF score for a RCE attack
   wafRceAttackScore: uint8!
+  # 1-D array of the categories associated with the rules ref in wafRequestSignatureRefs
+  wafRequestSignatureCategories: [string!]!
+  # cf.waf.signature.request.refs Ruleset field truncated to maximum 10 elements.
+  wafRequestSignatureRefs: [string!]!
   # Beta. WAF score for a SQLi attack
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
@@ -82837,10 +83822,6 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
-  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
-  attackSignatureCategories: [string!]!
-  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
-  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -82913,6 +83894,10 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsDimensions {
   wafPathTraversalAttackScore: uint8!
   # Beta. WAF score for a RCE attack
   wafRceAttackScore: uint8!
+  # 1-D array of the categories associated with the rules ref in wafRequestSignatureRefs
+  wafRequestSignatureCategories: [string!]!
+  # cf.waf.signature.request.refs Ruleset field truncated to maximum 10 elements.
+  wafRequestSignatureRefs: [string!]!
   # Beta. WAF score for a SQLi attack
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
@@ -82954,16 +83939,6 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
-  attackSignatureCategories_has: string
-  attackSignatureCategories_hasall: [string!]
-  attackSignatureCategories_hasany: [string!]
-  attackSignatureCategories_isempty: bool
-  attackSignatureCategories_nothas: string
-  attackSignatureRefs_has: string
-  attackSignatureRefs_hasall: [string!]
-  attackSignatureRefs_hasany: [string!]
-  attackSignatureRefs_isempty: bool
-  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -83551,6 +84526,16 @@ input ZoneFirewallEventsAdaptiveByTimeGroupsFilter_InputObject {
   wafRceAttackScore_lt: uint8
   wafRceAttackScore_neq: uint8
   wafRceAttackScore_notin: bytes
+  wafRequestSignatureCategories_has: string
+  wafRequestSignatureCategories_hasall: [string!]
+  wafRequestSignatureCategories_hasany: [string!]
+  wafRequestSignatureCategories_isempty: bool
+  wafRequestSignatureCategories_nothas: string
+  wafRequestSignatureRefs_has: string
+  wafRequestSignatureRefs_hasall: [string!]
+  wafRequestSignatureRefs_hasany: [string!]
+  wafRequestSignatureRefs_isempty: bool
+  wafRequestSignatureRefs_nothas: string
   wafSqliAttackScore: uint8
   wafSqliAttackScore_geq: uint8
   wafSqliAttackScore_gt: uint8
@@ -83586,14 +84571,6 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
-  # attackSignatureCategories ascending
-  attackSignatureCategories_ASC
-  # attackSignatureCategories descending
-  attackSignatureCategories_DESC
-  # attackSignatureRefs ascending
-  attackSignatureRefs_ASC
-  # attackSignatureRefs descending
-  attackSignatureRefs_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -83774,6 +84751,14 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   wafRceAttackScore_ASC
   # wafRceAttackScore descending
   wafRceAttackScore_DESC
+  # wafRequestSignatureCategories ascending
+  wafRequestSignatureCategories_ASC
+  # wafRequestSignatureCategories descending
+  wafRequestSignatureCategories_DESC
+  # wafRequestSignatureRefs ascending
+  wafRequestSignatureRefs_ASC
+  # wafRequestSignatureRefs descending
+  wafRequestSignatureRefs_DESC
   # wafSqliAttackScore ascending
   wafSqliAttackScore_ASC
   # wafSqliAttackScore descending
@@ -83840,16 +84825,6 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
-  attackSignatureCategories_has: string
-  attackSignatureCategories_hasall: [string!]
-  attackSignatureCategories_hasany: [string!]
-  attackSignatureCategories_isempty: bool
-  attackSignatureCategories_nothas: string
-  attackSignatureRefs_has: string
-  attackSignatureRefs_hasall: [string!]
-  attackSignatureRefs_hasany: [string!]
-  attackSignatureRefs_isempty: bool
-  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -84447,6 +85422,16 @@ input ZoneFirewallEventsAdaptiveFilter_InputObject {
   wafRceAttackScore_lt: uint8
   wafRceAttackScore_neq: uint8
   wafRceAttackScore_notin: bytes
+  wafRequestSignatureCategories_has: string
+  wafRequestSignatureCategories_hasall: [string!]
+  wafRequestSignatureCategories_hasany: [string!]
+  wafRequestSignatureCategories_isempty: bool
+  wafRequestSignatureCategories_nothas: string
+  wafRequestSignatureRefs_has: string
+  wafRequestSignatureRefs_hasall: [string!]
+  wafRequestSignatureRefs_hasany: [string!]
+  wafRequestSignatureRefs_isempty: bool
+  wafRequestSignatureRefs_nothas: string
   wafSqliAttackScore: uint8
   wafSqliAttackScore_geq: uint8
   wafSqliAttackScore_gt: uint8
@@ -84511,10 +85496,6 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
-  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
-  attackSignatureCategories: [string!]!
-  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
-  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -84655,6 +85636,10 @@ type ZoneFirewallEventsAdaptiveGroupsDimensions {
   wafPathTraversalAttackScore: uint8!
   # Beta. WAF score for a RCE attack
   wafRceAttackScore: uint8!
+  # 1-D array of the categories associated with the rules ref in wafRequestSignatureRefs
+  wafRequestSignatureCategories: [string!]!
+  # cf.waf.signature.request.refs Ruleset field truncated to maximum 10 elements.
+  wafRequestSignatureRefs: [string!]!
   # Beta. WAF score for a SQLi attack
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
@@ -84696,16 +85681,6 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
-  attackSignatureCategories_has: string
-  attackSignatureCategories_hasall: [string!]
-  attackSignatureCategories_hasany: [string!]
-  attackSignatureCategories_isempty: bool
-  attackSignatureCategories_nothas: string
-  attackSignatureRefs_has: string
-  attackSignatureRefs_hasall: [string!]
-  attackSignatureRefs_hasany: [string!]
-  attackSignatureRefs_isempty: bool
-  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -85293,6 +86268,16 @@ input ZoneFirewallEventsAdaptiveGroupsFilter_InputObject {
   wafRceAttackScore_lt: uint8
   wafRceAttackScore_neq: uint8
   wafRceAttackScore_notin: bytes
+  wafRequestSignatureCategories_has: string
+  wafRequestSignatureCategories_hasall: [string!]
+  wafRequestSignatureCategories_hasany: [string!]
+  wafRequestSignatureCategories_isempty: bool
+  wafRequestSignatureCategories_nothas: string
+  wafRequestSignatureRefs_has: string
+  wafRequestSignatureRefs_hasall: [string!]
+  wafRequestSignatureRefs_hasany: [string!]
+  wafRequestSignatureRefs_isempty: bool
+  wafRequestSignatureRefs_nothas: string
   wafSqliAttackScore: uint8
   wafSqliAttackScore_geq: uint8
   wafSqliAttackScore_gt: uint8
@@ -85332,14 +86317,6 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
-  # attackSignatureCategories ascending
-  attackSignatureCategories_ASC
-  # attackSignatureCategories descending
-  attackSignatureCategories_DESC
-  # attackSignatureRefs ascending
-  attackSignatureRefs_ASC
-  # attackSignatureRefs descending
-  attackSignatureRefs_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -85656,6 +86633,14 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   wafRceAttackScore_ASC
   # wafRceAttackScore descending
   wafRceAttackScore_DESC
+  # wafRequestSignatureCategories ascending
+  wafRequestSignatureCategories_ASC
+  # wafRequestSignatureCategories descending
+  wafRequestSignatureCategories_DESC
+  # wafRequestSignatureRefs ascending
+  wafRequestSignatureRefs_ASC
+  # wafRequestSignatureRefs descending
+  wafRequestSignatureRefs_DESC
   # wafSqliAttackScore ascending
   wafSqliAttackScore_ASC
   # wafSqliAttackScore descending
@@ -85716,14 +86701,6 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
-  # attackSignatureCategories ascending
-  attackSignatureCategories_ASC
-  # attackSignatureCategories descending
-  attackSignatureCategories_DESC
-  # attackSignatureRefs ascending
-  attackSignatureRefs_ASC
-  # attackSignatureRefs descending
-  attackSignatureRefs_DESC
   # botDetectionIds ascending
   botDetectionIds_ASC
   # botDetectionIds descending
@@ -86004,6 +86981,14 @@ enum ZoneFirewallEventsAdaptiveOrderBy {
   wafRceAttackScore_ASC
   # wafRceAttackScore descending
   wafRceAttackScore_DESC
+  # wafRequestSignatureCategories ascending
+  wafRequestSignatureCategories_ASC
+  # wafRequestSignatureCategories descending
+  wafRequestSignatureCategories_DESC
+  # wafRequestSignatureRefs ascending
+  wafRequestSignatureRefs_ASC
+  # wafRequestSignatureRefs descending
+  wafRequestSignatureRefs_DESC
   # wafSqliAttackScore ascending
   wafSqliAttackScore_ASC
   # wafSqliAttackScore descending
@@ -87641,10 +88626,6 @@ type ZoneHttpRequestsAdaptive {
   apiGatewayMatchedEndpoint: string!
   # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
-  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
-  attackSignatureCategories: [string!]!
-  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
-  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -87791,6 +88772,14 @@ type ZoneHttpRequestsAdaptive {
   requestSource: string!
   # Key-value metadata annotations attached to rules that matched this request
   rulesMetadata: [ZoneHttpRequestsAdaptiveRulesMetadataElem!]!
+  # The outcome of running API Shield Managed Schema Validation for this request against the Cloudflare-learned schema (e.g. valid or violated; empty when managed schema validation did not run for the request)
+  schemaValidationLearnedOutcome: string!
+  # Schema Validation violations recorded for this request against the Cloudflare-learned schema. Each entry describes a single violation.
+  schemaValidationLearnedViolations: [ZoneHttpRequestsAdaptiveSchemaValidationLearnedViolationsElem!]!
+  # The outcome of running API Shield Schema Validation for this request against the customer-uploaded schema (e.g. valid or violated; empty when schema validation did not run for the request)
+  schemaValidationUploadedOutcome: string!
+  # Schema Validation violations recorded for this request against the customer-uploaded schema. Each entry describes a single violation.
+  schemaValidationUploadedViolations: [ZoneHttpRequestsAdaptiveSchemaValidationUploadedViolationsElem!]!
   # The code of the first-class action the Cloudflare Firewall took on this request
   securityAction: string!
   # The Cloudflare security product triggered by this request
@@ -87818,6 +88807,10 @@ type ZoneHttpRequestsAdaptive {
   wafPathTraversalAttackScore: uint8!
   # Beta. WAF score for a RCE attack
   wafRceAttackScore: uint8!
+  # 1-D array of the categories associated with the rules ref in wafRequestSignatureRefs
+  wafRequestSignatureCategories: [string!]!
+  # cf.waf.signature.request.refs Ruleset field truncated to maximum 10 elements.
+  wafRequestSignatureRefs: [string!]!
   # Beta. WAF score for a SQLi attack
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
@@ -87855,16 +88848,6 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
-  attackSignatureCategories_has: string
-  attackSignatureCategories_hasall: [string!]
-  attackSignatureCategories_hasany: [string!]
-  attackSignatureCategories_isempty: bool
-  attackSignatureCategories_nothas: string
-  attackSignatureRefs_has: string
-  attackSignatureRefs_hasall: [string!]
-  attackSignatureRefs_hasany: [string!]
-  attackSignatureRefs_isempty: bool
-  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -88474,6 +89457,26 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   requestSource_neq: string
   requestSource_notin: [string!]
   requestSource_notlike: string
+  schemaValidationLearnedOutcome: string
+  schemaValidationLearnedOutcome_geq: string
+  schemaValidationLearnedOutcome_gt: string
+  schemaValidationLearnedOutcome_in: [string!]
+  schemaValidationLearnedOutcome_leq: string
+  schemaValidationLearnedOutcome_like: string
+  schemaValidationLearnedOutcome_lt: string
+  schemaValidationLearnedOutcome_neq: string
+  schemaValidationLearnedOutcome_notin: [string!]
+  schemaValidationLearnedOutcome_notlike: string
+  schemaValidationUploadedOutcome: string
+  schemaValidationUploadedOutcome_geq: string
+  schemaValidationUploadedOutcome_gt: string
+  schemaValidationUploadedOutcome_in: [string!]
+  schemaValidationUploadedOutcome_leq: string
+  schemaValidationUploadedOutcome_like: string
+  schemaValidationUploadedOutcome_lt: string
+  schemaValidationUploadedOutcome_neq: string
+  schemaValidationUploadedOutcome_notin: [string!]
+  schemaValidationUploadedOutcome_notlike: string
   securityAction: string
   securityAction_geq: string
   securityAction_gt: string
@@ -88598,6 +89601,16 @@ input ZoneHttpRequestsAdaptiveFilter_InputObject {
   wafRceAttackScore_lt: uint8
   wafRceAttackScore_neq: uint8
   wafRceAttackScore_notin: bytes
+  wafRequestSignatureCategories_has: string
+  wafRequestSignatureCategories_hasall: [string!]
+  wafRequestSignatureCategories_hasany: [string!]
+  wafRequestSignatureCategories_isempty: bool
+  wafRequestSignatureCategories_nothas: string
+  wafRequestSignatureRefs_has: string
+  wafRequestSignatureRefs_hasall: [string!]
+  wafRequestSignatureRefs_hasany: [string!]
+  wafRequestSignatureRefs_isempty: bool
+  wafRequestSignatureRefs_nothas: string
   wafSqliAttackScore: uint8
   wafSqliAttackScore_geq: uint8
   wafSqliAttackScore_gt: uint8
@@ -88704,10 +89717,6 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   apiGatewayMatchedEndpoint: string!
   # API Gateway (Web Assets) host matched at the edge
   apiGatewayMatchedHost: string!
-  # 1-D array of the categories associated with the rules ref in attackSignatureRefs
-  attackSignatureCategories: [string!]!
-  # cf.waf.attack_signature.refs Ruleset field truncated to maximum 10 elements.
-  attackSignatureRefs: [string!]!
   # Array of detections ids that matched this request
   botDetectionIds: [uint32!]!
   # Array of detections tags that matched this request
@@ -88848,6 +89857,10 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   requestSource: string!
   # ABR sample interval
   sampleInterval: uint32!
+  # The outcome of running API Shield Managed Schema Validation for this request against the Cloudflare-learned schema (e.g. valid or violated; empty when managed schema validation did not run for the request)
+  schemaValidationLearnedOutcome: string!
+  # The outcome of running API Shield Schema Validation for this request against the customer-uploaded schema (e.g. valid or violated; empty when schema validation did not run for the request)
+  schemaValidationUploadedOutcome: string!
   # The code of the first-class action the Cloudflare Firewall took on this request
   securityAction: string!
   # The Cloudflare security product triggered by this request
@@ -88874,6 +89887,10 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   wafPathTraversalAttackScore: uint8!
   # Beta. WAF score for a RCE attack
   wafRceAttackScore: uint8!
+  # 1-D array of the categories associated with the rules ref in wafRequestSignatureRefs
+  wafRequestSignatureCategories: [string!]!
+  # cf.waf.signature.request.refs Ruleset field truncated to maximum 10 elements.
+  wafRequestSignatureRefs: [string!]!
   # Beta. WAF score for a SQLi attack
   wafSqliAttackScore: uint8!
   # Beta. WAF score for a XSS attack
@@ -88911,16 +89928,6 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   apiGatewayMatchedHost_neq: string
   apiGatewayMatchedHost_notin: [string!]
   apiGatewayMatchedHost_notlike: string
-  attackSignatureCategories_has: string
-  attackSignatureCategories_hasall: [string!]
-  attackSignatureCategories_hasany: [string!]
-  attackSignatureCategories_isempty: bool
-  attackSignatureCategories_nothas: string
-  attackSignatureRefs_has: string
-  attackSignatureRefs_hasall: [string!]
-  attackSignatureRefs_hasany: [string!]
-  attackSignatureRefs_isempty: bool
-  attackSignatureRefs_nothas: string
   botDetectionIds_has: uint32
   botDetectionIds_hasall: [uint32!]
   botDetectionIds_hasany: [uint32!]
@@ -89548,6 +90555,26 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   sampleInterval_lt: uint32
   sampleInterval_neq: uint32
   sampleInterval_notin: [uint32!]
+  schemaValidationLearnedOutcome: string
+  schemaValidationLearnedOutcome_geq: string
+  schemaValidationLearnedOutcome_gt: string
+  schemaValidationLearnedOutcome_in: [string!]
+  schemaValidationLearnedOutcome_leq: string
+  schemaValidationLearnedOutcome_like: string
+  schemaValidationLearnedOutcome_lt: string
+  schemaValidationLearnedOutcome_neq: string
+  schemaValidationLearnedOutcome_notin: [string!]
+  schemaValidationLearnedOutcome_notlike: string
+  schemaValidationUploadedOutcome: string
+  schemaValidationUploadedOutcome_geq: string
+  schemaValidationUploadedOutcome_gt: string
+  schemaValidationUploadedOutcome_in: [string!]
+  schemaValidationUploadedOutcome_leq: string
+  schemaValidationUploadedOutcome_like: string
+  schemaValidationUploadedOutcome_lt: string
+  schemaValidationUploadedOutcome_neq: string
+  schemaValidationUploadedOutcome_notin: [string!]
+  schemaValidationUploadedOutcome_notlike: string
   securityAction: string
   securityAction_geq: string
   securityAction_gt: string
@@ -89672,6 +90699,16 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   wafRceAttackScore_lt: uint8
   wafRceAttackScore_neq: uint8
   wafRceAttackScore_notin: bytes
+  wafRequestSignatureCategories_has: string
+  wafRequestSignatureCategories_hasall: [string!]
+  wafRequestSignatureCategories_hasany: [string!]
+  wafRequestSignatureCategories_isempty: bool
+  wafRequestSignatureCategories_nothas: string
+  wafRequestSignatureRefs_has: string
+  wafRequestSignatureRefs_hasall: [string!]
+  wafRequestSignatureRefs_hasany: [string!]
+  wafRequestSignatureRefs_isempty: bool
+  wafRequestSignatureRefs_nothas: string
   wafSqliAttackScore: uint8
   wafSqliAttackScore_geq: uint8
   wafSqliAttackScore_gt: uint8
@@ -89732,14 +90769,6 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
-  # attackSignatureCategories ascending
-  attackSignatureCategories_ASC
-  # attackSignatureCategories descending
-  attackSignatureCategories_DESC
-  # attackSignatureRefs ascending
-  attackSignatureRefs_ASC
-  # attackSignatureRefs descending
-  attackSignatureRefs_DESC
   # avg(crossZoneSubrequests) ascending
   avg_crossZoneSubrequests_ASC
   # avg(crossZoneSubrequests) descending
@@ -90280,6 +91309,14 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   sampleInterval_ASC
   # sampleInterval descending
   sampleInterval_DESC
+  # schemaValidationLearnedOutcome ascending
+  schemaValidationLearnedOutcome_ASC
+  # schemaValidationLearnedOutcome descending
+  schemaValidationLearnedOutcome_DESC
+  # schemaValidationUploadedOutcome ascending
+  schemaValidationUploadedOutcome_ASC
+  # schemaValidationUploadedOutcome descending
+  schemaValidationUploadedOutcome_DESC
   # securityAction ascending
   securityAction_ASC
   # securityAction descending
@@ -90440,6 +91477,14 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   wafRceAttackScore_ASC
   # wafRceAttackScore descending
   wafRceAttackScore_DESC
+  # wafRequestSignatureCategories ascending
+  wafRequestSignatureCategories_ASC
+  # wafRequestSignatureCategories descending
+  wafRequestSignatureCategories_DESC
+  # wafRequestSignatureRefs ascending
+  wafRequestSignatureRefs_ASC
+  # wafRequestSignatureRefs descending
+  wafRequestSignatureRefs_DESC
   # wafSqliAttackScore ascending
   wafSqliAttackScore_ASC
   # wafSqliAttackScore descending
@@ -90661,14 +91706,6 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   apiGatewayMatchedHost_ASC
   # apiGatewayMatchedHost descending
   apiGatewayMatchedHost_DESC
-  # attackSignatureCategories ascending
-  attackSignatureCategories_ASC
-  # attackSignatureCategories descending
-  attackSignatureCategories_DESC
-  # attackSignatureRefs ascending
-  attackSignatureRefs_ASC
-  # attackSignatureRefs descending
-  attackSignatureRefs_DESC
   # botDetectionIds ascending
   botDetectionIds_ASC
   # botDetectionIds descending
@@ -90961,6 +91998,14 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   requestSource_ASC
   # requestSource descending
   requestSource_DESC
+  # schemaValidationLearnedOutcome ascending
+  schemaValidationLearnedOutcome_ASC
+  # schemaValidationLearnedOutcome descending
+  schemaValidationLearnedOutcome_DESC
+  # schemaValidationUploadedOutcome ascending
+  schemaValidationUploadedOutcome_ASC
+  # schemaValidationUploadedOutcome descending
+  schemaValidationUploadedOutcome_DESC
   # securityAction ascending
   securityAction_ASC
   # securityAction descending
@@ -91017,6 +92062,14 @@ enum ZoneHttpRequestsAdaptiveOrderBy {
   wafRceAttackScore_ASC
   # wafRceAttackScore descending
   wafRceAttackScore_DESC
+  # wafRequestSignatureCategories ascending
+  wafRequestSignatureCategories_ASC
+  # wafRequestSignatureCategories descending
+  wafRequestSignatureCategories_DESC
+  # wafRequestSignatureRefs ascending
+  wafRequestSignatureRefs_ASC
+  # wafRequestSignatureRefs descending
+  wafRequestSignatureRefs_DESC
   # wafSqliAttackScore ascending
   wafSqliAttackScore_ASC
   # wafSqliAttackScore descending
@@ -91061,6 +92114,28 @@ type ZoneHttpRequestsAdaptiveRulesMetadataElem {
   metadataValue: string!
   # Hex-encoded UUID of the rule this metadata entry belongs to
   ruleId: string!
+}
+
+type ZoneHttpRequestsAdaptiveSchemaValidationLearnedViolationsElem {
+  # The class/category of the schema validation violation error
+  errorClass: string!
+  # Finer grained detail describing the schema validation violation error
+  errorDetail: string!
+  # Where in the request the violation was detected (e.g. path)
+  location: string!
+  # The schema element or parameter targeted by the violated rule
+  target: string!
+}
+
+type ZoneHttpRequestsAdaptiveSchemaValidationUploadedViolationsElem {
+  # The class/category of the schema validation violation error
+  errorClass: string!
+  # Finer grained detail describing the schema validation violation error
+  errorDetail: string!
+  # Where in the request the violation was detected (e.g. path)
+  location: string!
+  # The schema element or parameter targeted by the violated rule
+  target: string!
 }
 
 # A high-level summary of HTTP requests made by end users.
@@ -91621,6 +92696,8 @@ type ZoneLoadBalancingRequestsAdaptive {
   proxied: uint8!
   # Load balancing region where request originated
   region: string!
+  # Custom rules that were evaluated for this request
+  rules: [ZoneLoadBalancingRequestsAdaptiveRulesElem!]!
   # ABR sample interval
   sampleInterval: uint32!
   # Index of the selected origin from the list of all origins. If multiple origins were selected, this is the index of the first origin in that list
@@ -91821,6 +92898,8 @@ type ZoneLoadBalancingRequestsAdaptiveGroups {
   count: uint64!
   # List of dimensions to group by
   dimensions: ZoneLoadBalancingRequestsAdaptiveGroupsDimensions
+  ratio: ZoneLoadBalancingRequestsAdaptiveGroupsRatio
+  sum: ZoneLoadBalancingRequestsAdaptiveGroupsSum
 }
 
 type ZoneLoadBalancingRequestsAdaptiveGroupsAvg {
@@ -91833,6 +92912,7 @@ type ZoneLoadBalancingRequestsAdaptiveGroupsConfidence {
   count: Confidence!
   # Confidence level that was requested
   level: float64!
+  sum: ZoneLoadBalancingRequestsAdaptiveGroupsSumConfidence
 }
 
 type ZoneLoadBalancingRequestsAdaptiveGroupsDimensions {
@@ -91864,6 +92944,10 @@ type ZoneLoadBalancingRequestsAdaptiveGroupsDimensions {
   proxied: uint8!
   # Load balancing region where request originated
   region: string!
+  # Name of the custom rule
+  ruleName: string!
+  # Priority of the custom rule
+  rulePriority: uint32!
   # ABR sample interval
   sampleInterval: uint32!
   # Index of the selected origin from the list of all origins. If multiple origins were selected, this is the index of the first origin in that list
@@ -92015,6 +93099,24 @@ input ZoneLoadBalancingRequestsAdaptiveGroupsFilter_InputObject {
   region_neq: string
   region_notin: [string!]
   region_notlike: string
+  ruleName: string
+  ruleName_geq: string
+  ruleName_gt: string
+  ruleName_in: [string!]
+  ruleName_leq: string
+  ruleName_like: string
+  ruleName_lt: string
+  ruleName_neq: string
+  ruleName_notin: [string!]
+  ruleName_notlike: string
+  rulePriority: uint32
+  rulePriority_geq: uint32
+  rulePriority_gt: uint32
+  rulePriority_in: [uint32!]
+  rulePriority_leq: uint32
+  rulePriority_lt: uint32
+  rulePriority_neq: uint32
+  rulePriority_notin: [uint32!]
   sampleInterval: uint32
   sampleInterval_geq: uint32
   sampleInterval_gt: uint32
@@ -92196,10 +93298,22 @@ enum ZoneLoadBalancingRequestsAdaptiveGroupsOrderBy {
   proxied_ASC
   # proxied descending
   proxied_DESC
+  # ratio(ruleMatchPercentage) ascending
+  ratio_ruleMatchPercentage_ASC
+  # ratio(ruleMatchPercentage) descending
+  ratio_ruleMatchPercentage_DESC
   # region ascending
   region_ASC
   # region descending
   region_DESC
+  # ruleName ascending
+  ruleName_ASC
+  # ruleName descending
+  ruleName_DESC
+  # rulePriority ascending
+  rulePriority_ASC
+  # rulePriority descending
+  rulePriority_DESC
   # sampleInterval ascending
   sampleInterval_ASC
   # sampleInterval descending
@@ -92252,6 +93366,31 @@ enum ZoneLoadBalancingRequestsAdaptiveGroupsOrderBy {
   steeringPolicy_ASC
   # steeringPolicy descending
   steeringPolicy_DESC
+  # sum(ruleMatches) ascending
+  sum_ruleMatches_ASC
+  # sum(ruleMatches) descending
+  sum_ruleMatches_DESC
+  # sum(totalRequestsWithRule) ascending
+  sum_totalRequestsWithRule_ASC
+  # sum(totalRequestsWithRule) descending
+  sum_totalRequestsWithRule_DESC
+}
+
+type ZoneLoadBalancingRequestsAdaptiveGroupsRatio {
+  # Percentage of requests where this rule matched, ranging from 0 (never matched) to 100 (always matched). WARNING: This field MUST be queried with the ruleName dimension; querying without ruleName will produce incorrect results (aggregated percentage across all rules instead of per-rule match rates).
+  ruleMatchPercentage: float64!
+}
+
+type ZoneLoadBalancingRequestsAdaptiveGroupsSum {
+  # Number of times this specific rule matched, weighted by sample interval. WARNING: This field MUST be queried with the ruleName dimension; querying without ruleName will produce incorrect results (sum across all rules instead of per-rule values).
+  ruleMatches: uint64!
+  # The number of requests that evaluated this rule (including both matches and non-matches), weighted by sample interval. Must be used with ruleName dimension.
+  totalRequestsWithRule: uint64!
+}
+
+type ZoneLoadBalancingRequestsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  totalRequestsWithRule: Confidence!
 }
 
 enum ZoneLoadBalancingRequestsAdaptiveOrderBy {
@@ -92359,6 +93498,15 @@ type ZoneLoadBalancingRequestsAdaptivePoolsElem {
   id: string!
   # Pool name
   poolName: string!
+}
+
+type ZoneLoadBalancingRequestsAdaptiveRulesElem {
+  # Whether the rule matched (1) or not (0)
+  matched: uint8!
+  # The configured priority value for this rule at the time of evaluation
+  priority: uint32!
+  # Rule name
+  ruleName: string!
 }
 
 # Beta. Logpush job health metrics
