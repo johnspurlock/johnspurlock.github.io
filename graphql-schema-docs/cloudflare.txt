@@ -30838,6 +30838,8 @@ type AccountGatewayL4SessionsAdaptiveGroupsDimensions {
   email: string!
   # The proxy endpoint used on this session
   proxyEndpoint: string!
+  # The ID of the Gateway rule (policy) that matched the session, if any
+  ruleId: string!
   # The network session unique identifier
   sessionId: string!
   # The SNI pulled from the session tls handshake, if present
@@ -31036,6 +31038,16 @@ input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
   proxyEndpoint_neq: string
   proxyEndpoint_notin: [string!]
   proxyEndpoint_notlike: string
+  ruleId: string
+  ruleId_geq: string
+  ruleId_gt: string
+  ruleId_in: [string!]
+  ruleId_leq: string
+  ruleId_like: string
+  ruleId_lt: string
+  ruleId_neq: string
+  ruleId_notin: [string!]
+  ruleId_notlike: string
   sessionId: string
   sessionId_geq: string
   sessionId_gt: string
@@ -31247,6 +31259,10 @@ enum AccountGatewayL4SessionsAdaptiveGroupsOrderBy {
   proxyEndpoint_ASC
   # proxyEndpoint descending
   proxyEndpoint_DESC
+  # ruleId ascending
+  ruleId_ASC
+  # ruleId descending
+  ruleId_DESC
   # sessionId ascending
   sessionId_ASC
   # sessionId descending
@@ -31865,6 +31881,8 @@ type AccountGatewayL7RequestsAdaptiveGroupsDimensions {
   redirectTargetURI: string!
   # The request unique identifier
   requestId: string!
+  # The ID of the Gateway rule (policy) that matched the request, if any
+  ruleId: string!
   # Local LAN IP of the device. Only available when connected via a GRE/IPsec tunnel on-ramp
   sourceInternalIp: string!
   # Continent code of the request source IP address
@@ -32090,6 +32108,16 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   requestId_neq: string
   requestId_notin: [string!]
   requestId_notlike: string
+  ruleId: string
+  ruleId_geq: string
+  ruleId_gt: string
+  ruleId_in: [string!]
+  ruleId_leq: string
+  ruleId_like: string
+  ruleId_lt: string
+  ruleId_neq: string
+  ruleId_notin: [string!]
+  ruleId_notlike: string
   sourceInternalIp: string
   sourceInternalIp_geq: string
   sourceInternalIp_gt: string
@@ -32283,6 +32311,10 @@ enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
   requestId_ASC
   # requestId descending
   requestId_DESC
+  # ruleId ascending
+  ruleId_ASC
+  # ruleId descending
+  ruleId_DESC
   # sourceInternalIp ascending
   sourceInternalIp_ASC
   # sourceInternalIp descending
@@ -37380,6 +37412,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   sum_botDetectionIdCountArray_ASC
   # sum(botDetectionIdCountArray) descending
   sum_botDetectionIdCountArray_DESC
+  # sum(botDetectionIdResponseBytesArray) ascending
+  sum_botDetectionIdResponseBytesArray_ASC
+  # sum(botDetectionIdResponseBytesArray) descending
+  sum_botDetectionIdResponseBytesArray_DESC
   # sum(botDetectionTagArray) ascending
   sum_botDetectionTagArray_ASC
   # sum(botDetectionTagArray) descending
@@ -37669,6 +37705,8 @@ type AccountHttpRequestsAdaptiveGroupsSum {
   botDetectionIdArray: [uint32!]!
   # Count array of bot management detection ids. Elements in this array correspond to elements in botDetectionIdArray by index.
   botDetectionIdCountArray: [uint32!]!
+  # Bytes array of bot management detection ids. Elements in this array correspond to elements in botDetectionIdArray by index.
+  botDetectionIdResponseBytesArray: [uint64!]!
   # Array of bot management detection tags
   botDetectionTagArray: [string!]!
   # Count array of bot management detection tags. Elements in this array correspond to elements in botDetectionTagArray by index.
@@ -75192,6 +75230,8 @@ type AccountWorkersSubrequestsAdaptiveGroupsConfidence {
 type AccountWorkersSubrequestsAdaptiveGroupsDimensions {
   # Cache status
   cacheStatus: uint64!
+  # IATA airport code for the Cloudflare datacenter where the subrequest was handled.
+  coloCode: string!
   # Request datetime, truncated to start of a day
   date: Date!
   # Request datetime
@@ -75237,6 +75277,16 @@ input AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject {
   cacheStatus_lt: uint64
   cacheStatus_neq: uint64
   cacheStatus_notin: [uint64!]
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -75386,6 +75436,10 @@ enum AccountWorkersSubrequestsAdaptiveGroupsOrderBy {
   cacheStatus_ASC
   # cacheStatus descending
   cacheStatus_DESC
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
   # constantScriptId ascending
   constantScriptId_ASC
   # constantScriptId descending
@@ -91337,6 +91391,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   sum_botDetectionIdCountArray_ASC
   # sum(botDetectionIdCountArray) descending
   sum_botDetectionIdCountArray_DESC
+  # sum(botDetectionIdResponseBytesArray) ascending
+  sum_botDetectionIdResponseBytesArray_ASC
+  # sum(botDetectionIdResponseBytesArray) descending
+  sum_botDetectionIdResponseBytesArray_DESC
   # sum(botDetectionTagArray) ascending
   sum_botDetectionTagArray_ASC
   # sum(botDetectionTagArray) descending
@@ -91622,6 +91680,8 @@ type ZoneHttpRequestsAdaptiveGroupsSum {
   botDetectionIdArray: [uint32!]!
   # Count array of bot management detection ids. Elements in this array correspond to elements in botDetectionIdArray by index.
   botDetectionIdCountArray: [uint32!]!
+  # Bytes array of bot management detection ids. Elements in this array correspond to elements in botDetectionIdArray by index.
+  botDetectionIdResponseBytesArray: [uint64!]!
   # Array of bot management detection tags
   botDetectionTagArray: [string!]!
   # Count array of bot management detection tags. Elements in this array correspond to elements in botDetectionTagArray by index.

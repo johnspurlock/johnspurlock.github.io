@@ -30578,6 +30578,8 @@
 &nbsp;&nbsp;email: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The proxy endpoint used on this session</span><br />
 &nbsp;&nbsp;proxyEndpoint: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The ID of the Gateway rule (policy) that matched the session, if any</span><br />
+&nbsp;&nbsp;ruleId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The network session unique identifier</span><br />
 &nbsp;&nbsp;sessionId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The SNI pulled from the session tls handshake, if present</span><br />
@@ -30776,6 +30778,16 @@
 &nbsp;&nbsp;proxyEndpoint_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;proxyEndpoint_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;proxyEndpoint_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ruleId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ruleId_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;sessionId: <a href="#string">string</a><br />
 &nbsp;&nbsp;sessionId_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;sessionId_gt: <a href="#string">string</a><br />
@@ -30987,6 +30999,10 @@
 &nbsp;&nbsp;proxyEndpoint_ASC<br />
 &nbsp;&nbsp;<span class="c"># proxyEndpoint descending</span><br />
 &nbsp;&nbsp;proxyEndpoint_DESC<br />
+&nbsp;&nbsp;<span class="c"># ruleId ascending</span><br />
+&nbsp;&nbsp;ruleId_ASC<br />
+&nbsp;&nbsp;<span class="c"># ruleId descending</span><br />
+&nbsp;&nbsp;ruleId_DESC<br />
 &nbsp;&nbsp;<span class="c"># sessionId ascending</span><br />
 &nbsp;&nbsp;sessionId_ASC<br />
 &nbsp;&nbsp;<span class="c"># sessionId descending</span><br />
@@ -31605,6 +31621,8 @@
 &nbsp;&nbsp;redirectTargetURI: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># The request unique identifier</span><br />
 &nbsp;&nbsp;requestId: <a href="#string">string!</a><br />
+&nbsp;&nbsp;<span class="c"># The ID of the Gateway rule (policy) that matched the request, if any</span><br />
+&nbsp;&nbsp;ruleId: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Local LAN IP of the device. Only available when connected via a GRE/IPsec tunnel on-ramp</span><br />
 &nbsp;&nbsp;sourceInternalIp: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Continent code of the request source IP address</span><br />
@@ -31830,6 +31848,16 @@
 &nbsp;&nbsp;requestId_neq: <a href="#string">string</a><br />
 &nbsp;&nbsp;requestId_notin: <a href="#string">[string!]</a><br />
 &nbsp;&nbsp;requestId_notlike: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ruleId_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;ruleId_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;ruleId_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;sourceInternalIp: <a href="#string">string</a><br />
 &nbsp;&nbsp;sourceInternalIp_geq: <a href="#string">string</a><br />
 &nbsp;&nbsp;sourceInternalIp_gt: <a href="#string">string</a><br />
@@ -32023,6 +32051,10 @@
 &nbsp;&nbsp;requestId_ASC<br />
 &nbsp;&nbsp;<span class="c"># requestId descending</span><br />
 &nbsp;&nbsp;requestId_DESC<br />
+&nbsp;&nbsp;<span class="c"># ruleId ascending</span><br />
+&nbsp;&nbsp;ruleId_ASC<br />
+&nbsp;&nbsp;<span class="c"># ruleId descending</span><br />
+&nbsp;&nbsp;ruleId_DESC<br />
 &nbsp;&nbsp;<span class="c"># sourceInternalIp ascending</span><br />
 &nbsp;&nbsp;sourceInternalIp_ASC<br />
 &nbsp;&nbsp;<span class="c"># sourceInternalIp descending</span><br />
@@ -37120,6 +37152,10 @@
 &nbsp;&nbsp;sum_botDetectionIdCountArray_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(botDetectionIdCountArray) descending</span><br />
 &nbsp;&nbsp;sum_botDetectionIdCountArray_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(botDetectionIdResponseBytesArray) ascending</span><br />
+&nbsp;&nbsp;sum_botDetectionIdResponseBytesArray_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(botDetectionIdResponseBytesArray) descending</span><br />
+&nbsp;&nbsp;sum_botDetectionIdResponseBytesArray_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(botDetectionTagArray) ascending</span><br />
 &nbsp;&nbsp;sum_botDetectionTagArray_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(botDetectionTagArray) descending</span><br />
@@ -37409,6 +37445,8 @@
 &nbsp;&nbsp;botDetectionIdArray: <a href="#uint32">[uint32!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Count array of bot management detection ids. Elements in this array correspond to elements in botDetectionIdArray by index.</span><br />
 &nbsp;&nbsp;botDetectionIdCountArray: <a href="#uint32">[uint32!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Bytes array of bot management detection ids. Elements in this array correspond to elements in botDetectionIdArray by index.</span><br />
+&nbsp;&nbsp;botDetectionIdResponseBytesArray: <a href="#uint64">[uint64!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Array of bot management detection tags</span><br />
 &nbsp;&nbsp;botDetectionTagArray: <a href="#string">[string!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Count array of bot management detection tags. Elements in this array correspond to elements in botDetectionTagArray by index.</span><br />
@@ -74932,6 +74970,8 @@
 <span class="k">type</span> <a id="AccountWorkersSubrequestsAdaptiveGroupsDimensions" href="#AccountWorkersSubrequestsAdaptiveGroupsDimensions">AccountWorkersSubrequestsAdaptiveGroupsDimensions</a> {<br />
 &nbsp;&nbsp;<span class="c"># Cache status</span><br />
 &nbsp;&nbsp;cacheStatus: <a href="#uint64">uint64!</a><br />
+&nbsp;&nbsp;<span class="c"># IATA airport code for the Cloudflare datacenter where the subrequest was handled.</span><br />
+&nbsp;&nbsp;coloCode: <a href="#string">string!</a><br />
 &nbsp;&nbsp;<span class="c"># Request datetime, truncated to start of a day</span><br />
 &nbsp;&nbsp;date: <a href="#Date">Date!</a><br />
 &nbsp;&nbsp;<span class="c"># Request datetime</span><br />
@@ -74977,6 +75017,16 @@
 &nbsp;&nbsp;cacheStatus_lt: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;cacheStatus_neq: <a href="#uint64">uint64</a><br />
 &nbsp;&nbsp;cacheStatus_notin: <a href="#uint64">[uint64!]</a><br />
+&nbsp;&nbsp;coloCode: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_geq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_gt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_in: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCode_leq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_like: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_lt: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_neq: <a href="#string">string</a><br />
+&nbsp;&nbsp;coloCode_notin: <a href="#string">[string!]</a><br />
+&nbsp;&nbsp;coloCode_notlike: <a href="#string">string</a><br />
 &nbsp;&nbsp;date: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_geq: <a href="#Date">Date</a><br />
 &nbsp;&nbsp;date_gt: <a href="#Date">Date</a><br />
@@ -75126,6 +75176,10 @@
 &nbsp;&nbsp;cacheStatus_ASC<br />
 &nbsp;&nbsp;<span class="c"># cacheStatus descending</span><br />
 &nbsp;&nbsp;cacheStatus_DESC<br />
+&nbsp;&nbsp;<span class="c"># coloCode ascending</span><br />
+&nbsp;&nbsp;coloCode_ASC<br />
+&nbsp;&nbsp;<span class="c"># coloCode descending</span><br />
+&nbsp;&nbsp;coloCode_DESC<br />
 &nbsp;&nbsp;<span class="c"># constantScriptId ascending</span><br />
 &nbsp;&nbsp;constantScriptId_ASC<br />
 &nbsp;&nbsp;<span class="c"># constantScriptId descending</span><br />
@@ -91077,6 +91131,10 @@
 &nbsp;&nbsp;sum_botDetectionIdCountArray_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(botDetectionIdCountArray) descending</span><br />
 &nbsp;&nbsp;sum_botDetectionIdCountArray_DESC<br />
+&nbsp;&nbsp;<span class="c"># sum(botDetectionIdResponseBytesArray) ascending</span><br />
+&nbsp;&nbsp;sum_botDetectionIdResponseBytesArray_ASC<br />
+&nbsp;&nbsp;<span class="c"># sum(botDetectionIdResponseBytesArray) descending</span><br />
+&nbsp;&nbsp;sum_botDetectionIdResponseBytesArray_DESC<br />
 &nbsp;&nbsp;<span class="c"># sum(botDetectionTagArray) ascending</span><br />
 &nbsp;&nbsp;sum_botDetectionTagArray_ASC<br />
 &nbsp;&nbsp;<span class="c"># sum(botDetectionTagArray) descending</span><br />
@@ -91362,6 +91420,8 @@
 &nbsp;&nbsp;botDetectionIdArray: <a href="#uint32">[uint32!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Count array of bot management detection ids. Elements in this array correspond to elements in botDetectionIdArray by index.</span><br />
 &nbsp;&nbsp;botDetectionIdCountArray: <a href="#uint32">[uint32!]!</a><br />
+&nbsp;&nbsp;<span class="c"># Bytes array of bot management detection ids. Elements in this array correspond to elements in botDetectionIdArray by index.</span><br />
+&nbsp;&nbsp;botDetectionIdResponseBytesArray: <a href="#uint64">[uint64!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Array of bot management detection tags</span><br />
 &nbsp;&nbsp;botDetectionTagArray: <a href="#string">[string!]!</a><br />
 &nbsp;&nbsp;<span class="c"># Count array of bot management detection tags. Elements in this array correspond to elements in botDetectionTagArray by index.</span><br />
