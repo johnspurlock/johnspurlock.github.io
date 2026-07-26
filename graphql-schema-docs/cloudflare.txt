@@ -4,6 +4,7 @@ Account-level datasets:
   advancedDnsProtectionNetworkAnalyticsAdaptiveGroups
   advancedTcpProtectionNetworkAnalyticsAdaptiveGroups
 * aegisIpUtilizationAdaptiveGroups
+* agentMemoryOperationsAdaptiveGroups
 * aiGatewayCacheAdaptiveGroups
 * aiGatewayErrorsAdaptiveGroups
 * aiGatewayRequestsAdaptiveGroups
@@ -279,7 +280,7 @@ scalar Date
 # Scalar type types.Float32
 scalar float32
 
-# Scalar type types.Float64
+# Scalar type float64
 scalar float64
 
 # Scalar type int16
@@ -326,6 +327,8 @@ type account {
   advancedTcpProtectionNetworkAnalyticsAdaptiveGroups(filter: AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountAdvancedTcpProtectionNetworkAnalyticsAdaptiveGroups!]!
   # Beta. Aegis IP utilization metrics
   aegisIpUtilizationAdaptiveGroups(filter: AccountAegisIpUtilizationAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAegisIpUtilizationAdaptiveGroupsOrderBy!]): [AccountAegisIpUtilizationAdaptiveGroups!]!
+  # Agent Memory operations with adaptive sampling
+  agentMemoryOperationsAdaptiveGroups(filter: AccountAgentMemoryOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAgentMemoryOperationsAdaptiveGroupsOrderBy!]): [AccountAgentMemoryOperationsAdaptiveGroups!]!
   # AI Gateway Cache
   aiGatewayCacheAdaptiveGroups(filter: AccountAiGatewayCacheAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayCacheAdaptiveGroupsOrderBy!]): [AccountAiGatewayCacheAdaptiveGroups!]!
   # AI Gateway Errors
@@ -4124,6 +4127,200 @@ enum AccountAegisIpUtilizationAdaptiveGroupsOrderBy {
   popUtilizationKey_DESC
 }
 
+# Agent Memory operations with adaptive sampling
+type AccountAgentMemoryOperationsAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountAgentMemoryOperationsAdaptiveGroupsConfidence!
+  # Number of Agent Memory operations processed
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAgentMemoryOperationsAdaptiveGroupsDimensions
+}
+
+type AccountAgentMemoryOperationsAdaptiveGroupsConfidence {
+  # Number of Agent Memory operations processed, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type AccountAgentMemoryOperationsAdaptiveGroupsDimensions {
+  # Operation sample timestamp
+  date: Date!
+  # Operation sample timestamp
+  datetime: Time!
+  # Operation sample timestamp, truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Operation sample timestamp, truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Operation sample timestamp, truncated to the hour
+  datetimeHour: Time!
+  # Operation sample timestamp, truncated to the minute
+  datetimeMinute: Time!
+  # Operation sample timestamp, truncated to start of six hour window
+  datetimeSixHours: Time!
+  # Agent Memory namespace id
+  namespaceId: string!
+  # The Agent Memory operation (ingest, recall, remember, delete, get, list, getSummary, deleteSession)
+  operation: string!
+  # Agent Memory profile
+  profile: string!
+  # Operation outcome: success or error
+  status: string!
+}
+
+input AccountAgentMemoryOperationsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAgentMemoryOperationsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAgentMemoryOperationsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  namespaceId: string
+  namespaceId_geq: string
+  namespaceId_gt: string
+  namespaceId_in: [string!]
+  namespaceId_leq: string
+  namespaceId_like: string
+  namespaceId_lt: string
+  namespaceId_neq: string
+  namespaceId_notin: [string!]
+  namespaceId_notlike: string
+  operation: string
+  operation_geq: string
+  operation_gt: string
+  operation_in: [string!]
+  operation_leq: string
+  operation_like: string
+  operation_lt: string
+  operation_neq: string
+  operation_notin: [string!]
+  operation_notlike: string
+  profile: string
+  profile_geq: string
+  profile_gt: string
+  profile_in: [string!]
+  profile_leq: string
+  profile_like: string
+  profile_lt: string
+  profile_neq: string
+  profile_notin: [string!]
+  profile_notlike: string
+  status: string
+  status_geq: string
+  status_gt: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
+}
+
+enum AccountAgentMemoryOperationsAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # namespaceId ascending
+  namespaceId_ASC
+  # namespaceId descending
+  namespaceId_DESC
+  # operation ascending
+  operation_ASC
+  # operation descending
+  operation_DESC
+  # profile ascending
+  profile_ASC
+  # profile descending
+  profile_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+}
+
 # AI Gateway Cache
 type AccountAiGatewayCacheAdaptiveGroups {
   # ALPHA - DO NOT USE
@@ -4502,8 +4699,15 @@ type AccountAiGatewayRequestsAdaptiveGroups {
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountAiGatewayRequestsAdaptiveGroupsDimensions
+  # Maximum values for AI Gateway request metadata per result group
+  max: AccountAiGatewayRequestsAdaptiveGroupsMax
+  # Minimum values and first-request metrics for AI Gateway request groups
+  min: AccountAiGatewayRequestsAdaptiveGroupsMin
+  # Percentage ratios for AI Gateway request metadata coverage and cache efficiency
+  ratio: AccountAiGatewayRequestsAdaptiveGroupsRatio
   # The sum of values for a metric per dimension
   sum: AccountAiGatewayRequestsAdaptiveGroupsSum
+  uniq: AccountAiGatewayRequestsAdaptiveGroupsUniq
 }
 
 type AccountAiGatewayRequestsAdaptiveGroupsConfidence {
@@ -4516,8 +4720,14 @@ type AccountAiGatewayRequestsAdaptiveGroupsConfidence {
 }
 
 type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
+  # Input tokens read from provider prompt cache
+  cacheReadTokens: float64!
+  # Input tokens written to provider prompt cache
+  cacheWriteTokens: float64!
   # Was the response served from cache?: 1 = cache hit, 0 = cache misss
   cached: uint8!
+  # Cache read, cache write, and fresh input tokens for this request
+  contextTokens: float64!
   # Cost per request
   cost: float64!
   # The date when trigger was triggered
@@ -4532,14 +4742,28 @@ type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time truncated to the minute
   datetimeMinute: Time!
+  # Request duration in milliseconds
+  durationMs: float64!
   # Was the response an error: 1 , 0 for no error
   error: uint8!
+  # Fresh uncached input tokens, falling back to tokens_in when usage metadata is unavailable
+  freshInputTokens: float64!
   # Gateway name
   gateway: string!
+  # MCP server count from request metadata
+  mcpServerCount: float64!
+  # MCP tool count from request metadata
+  mcpToolCount: float64!
+  # Access service principal name extracted from request metadata
+  metadataCommonName: string!
   # Metadata keys saved on ai-gateway request
   metadataKeys: [string!]!
   # Metadata saved in on ai-gateway request
   metadataRaw: string!
+  # Framework session ID extracted from request metadata (opt-in per gateway)
+  metadataSessionId: string!
+  # Access user ID (JWT sub claim) extracted from request metadata
+  metadataUserId: string!
   # Metadata values saved on ai-gateway request
   metadataValues: [string!]!
   # Which models was the request sent to
@@ -4554,12 +4778,16 @@ type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
   provider: string!
   # Was the request rate limited?: 1 = rate limit applied, 0 = rate limit not applied
   rateLimited: uint8!
+  # ABR sample interval
+  sampleInterval: uint32!
   # HTTP Status Code of provider response
   statusCode: uint16!
   # Number of tokens in the request
   tokensIn: uint64!
   # Number of tokens in the response
   tokensOut: uint64!
+  # Raw provider usage metadata saved on the AI Gateway request
+  usageMetadataRaw: string!
   # User-Agent header value sent by the calling SDK or client
   userAgent: string!
   # Was the request use wholesale: 1 = applied, 0 = not applied
@@ -4569,6 +4797,22 @@ type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
 input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   AND: [AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject!]
+  cacheReadTokens: float64
+  cacheReadTokens_geq: float64
+  cacheReadTokens_gt: float64
+  cacheReadTokens_in: [float64!]
+  cacheReadTokens_leq: float64
+  cacheReadTokens_lt: float64
+  cacheReadTokens_neq: float64
+  cacheReadTokens_notin: [float64!]
+  cacheWriteTokens: float64
+  cacheWriteTokens_geq: float64
+  cacheWriteTokens_gt: float64
+  cacheWriteTokens_in: [float64!]
+  cacheWriteTokens_leq: float64
+  cacheWriteTokens_lt: float64
+  cacheWriteTokens_neq: float64
+  cacheWriteTokens_notin: [float64!]
   cached: uint8
   cached_geq: uint8
   cached_gt: uint8
@@ -4577,6 +4821,14 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   cached_lt: uint8
   cached_neq: uint8
   cached_notin: bytes
+  contextTokens: float64
+  contextTokens_geq: float64
+  contextTokens_gt: float64
+  contextTokens_in: [float64!]
+  contextTokens_leq: float64
+  contextTokens_lt: float64
+  contextTokens_neq: float64
+  contextTokens_notin: [float64!]
   cost: float64
   cost_geq: float64
   cost_gt: float64
@@ -4633,6 +4885,14 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  durationMs: float64
+  durationMs_geq: float64
+  durationMs_gt: float64
+  durationMs_in: [float64!]
+  durationMs_leq: float64
+  durationMs_lt: float64
+  durationMs_neq: float64
+  durationMs_notin: [float64!]
   error: uint8
   error_geq: uint8
   error_gt: uint8
@@ -4641,6 +4901,14 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   error_lt: uint8
   error_neq: uint8
   error_notin: bytes
+  freshInputTokens: float64
+  freshInputTokens_geq: float64
+  freshInputTokens_gt: float64
+  freshInputTokens_in: [float64!]
+  freshInputTokens_leq: float64
+  freshInputTokens_lt: float64
+  freshInputTokens_neq: float64
+  freshInputTokens_notin: [float64!]
   gateway: string
   gateway_geq: string
   gateway_gt: string
@@ -4651,6 +4919,32 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   gateway_neq: string
   gateway_notin: [string!]
   gateway_notlike: string
+  mcpServerCount: float64
+  mcpServerCount_geq: float64
+  mcpServerCount_gt: float64
+  mcpServerCount_in: [float64!]
+  mcpServerCount_leq: float64
+  mcpServerCount_lt: float64
+  mcpServerCount_neq: float64
+  mcpServerCount_notin: [float64!]
+  mcpToolCount: float64
+  mcpToolCount_geq: float64
+  mcpToolCount_gt: float64
+  mcpToolCount_in: [float64!]
+  mcpToolCount_leq: float64
+  mcpToolCount_lt: float64
+  mcpToolCount_neq: float64
+  mcpToolCount_notin: [float64!]
+  metadataCommonName: string
+  metadataCommonName_geq: string
+  metadataCommonName_gt: string
+  metadataCommonName_in: [string!]
+  metadataCommonName_leq: string
+  metadataCommonName_like: string
+  metadataCommonName_lt: string
+  metadataCommonName_neq: string
+  metadataCommonName_notin: [string!]
+  metadataCommonName_notlike: string
   metadataKeys_has: string
   metadataKeys_hasall: [string!]
   metadataKeys_hasany: [string!]
@@ -4666,6 +4960,26 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   metadataRaw_neq: string
   metadataRaw_notin: [string!]
   metadataRaw_notlike: string
+  metadataSessionId: string
+  metadataSessionId_geq: string
+  metadataSessionId_gt: string
+  metadataSessionId_in: [string!]
+  metadataSessionId_leq: string
+  metadataSessionId_like: string
+  metadataSessionId_lt: string
+  metadataSessionId_neq: string
+  metadataSessionId_notin: [string!]
+  metadataSessionId_notlike: string
+  metadataUserId: string
+  metadataUserId_geq: string
+  metadataUserId_gt: string
+  metadataUserId_in: [string!]
+  metadataUserId_leq: string
+  metadataUserId_like: string
+  metadataUserId_lt: string
+  metadataUserId_neq: string
+  metadataUserId_notin: [string!]
+  metadataUserId_notlike: string
   metadataValues_has: string
   metadataValues_hasall: [string!]
   metadataValues_hasany: [string!]
@@ -4719,6 +5033,14 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   rateLimited_lt: uint8
   rateLimited_neq: uint8
   rateLimited_notin: bytes
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
   statusCode: uint16
   statusCode_geq: uint16
   statusCode_gt: uint16
@@ -4743,6 +5065,16 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   tokensOut_lt: uint64
   tokensOut_neq: uint64
   tokensOut_notin: [uint64!]
+  usageMetadataRaw: string
+  usageMetadataRaw_geq: string
+  usageMetadataRaw_gt: string
+  usageMetadataRaw_in: [string!]
+  usageMetadataRaw_leq: string
+  usageMetadataRaw_like: string
+  usageMetadataRaw_lt: string
+  usageMetadataRaw_neq: string
+  usageMetadataRaw_notin: [string!]
+  usageMetadataRaw_notlike: string
   userAgent: string
   userAgent_geq: string
   userAgent_gt: string
@@ -4763,11 +5095,39 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   wholesale_notin: bytes
 }
 
+type AccountAiGatewayRequestsAdaptiveGroupsMax {
+  # Maximum MCP server count
+  mcpServerCount: float64!
+  # Maximum MCP tool count
+  mcpToolCount: float64!
+}
+
+type AccountAiGatewayRequestsAdaptiveGroupsMin {
+  # Context tokens from the first request in the result group
+  firstContextTokens: float64!
+  # MCP tool count from the first request in the result group
+  firstMcpToolCount: float64!
+  # Earliest request timestamp in the result group
+  sessionStart: Time!
+}
+
 enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
+  # cacheReadTokens ascending
+  cacheReadTokens_ASC
+  # cacheReadTokens descending
+  cacheReadTokens_DESC
+  # cacheWriteTokens ascending
+  cacheWriteTokens_ASC
+  # cacheWriteTokens descending
+  cacheWriteTokens_DESC
   # cached ascending
   cached_ASC
   # cached descending
   cached_DESC
+  # contextTokens ascending
+  contextTokens_ASC
+  # contextTokens descending
+  contextTokens_DESC
   # cost ascending
   cost_ASC
   # cost descending
@@ -4800,14 +5160,42 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # durationMs ascending
+  durationMs_ASC
+  # durationMs descending
+  durationMs_DESC
   # error ascending
   error_ASC
   # error descending
   error_DESC
+  # freshInputTokens ascending
+  freshInputTokens_ASC
+  # freshInputTokens descending
+  freshInputTokens_DESC
   # gateway ascending
   gateway_ASC
   # gateway descending
   gateway_DESC
+  # max(mcpServerCount) ascending
+  max_mcpServerCount_ASC
+  # max(mcpServerCount) descending
+  max_mcpServerCount_DESC
+  # max(mcpToolCount) ascending
+  max_mcpToolCount_ASC
+  # max(mcpToolCount) descending
+  max_mcpToolCount_DESC
+  # mcpServerCount ascending
+  mcpServerCount_ASC
+  # mcpServerCount descending
+  mcpServerCount_DESC
+  # mcpToolCount ascending
+  mcpToolCount_ASC
+  # mcpToolCount descending
+  mcpToolCount_DESC
+  # metadataCommonName ascending
+  metadataCommonName_ASC
+  # metadataCommonName descending
+  metadataCommonName_DESC
   # metadataKeys ascending
   metadataKeys_ASC
   # metadataKeys descending
@@ -4816,10 +5204,30 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   metadataRaw_ASC
   # metadataRaw descending
   metadataRaw_DESC
+  # metadataSessionId ascending
+  metadataSessionId_ASC
+  # metadataSessionId descending
+  metadataSessionId_DESC
+  # metadataUserId ascending
+  metadataUserId_ASC
+  # metadataUserId descending
+  metadataUserId_DESC
   # metadataValues ascending
   metadataValues_ASC
   # metadataValues descending
   metadataValues_DESC
+  # min(firstContextTokens) ascending
+  min_firstContextTokens_ASC
+  # min(firstContextTokens) descending
+  min_firstContextTokens_DESC
+  # min(firstMcpToolCount) ascending
+  min_firstMcpToolCount_ASC
+  # min(firstMcpToolCount) descending
+  min_firstMcpToolCount_DESC
+  # min(sessionStart) ascending
+  min_sessionStart_ASC
+  # min(sessionStart) descending
+  min_sessionStart_DESC
   # model ascending
   model_ASC
   # model descending
@@ -4844,10 +5252,42 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   rateLimited_ASC
   # rateLimited descending
   rateLimited_DESC
+  # ratio(cacheHitPct) ascending
+  ratio_cacheHitPct_ASC
+  # ratio(cacheHitPct) descending
+  ratio_cacheHitPct_DESC
+  # ratio(mcpMetadataCoveragePct) ascending
+  ratio_mcpMetadataCoveragePct_ASC
+  # ratio(mcpMetadataCoveragePct) descending
+  ratio_mcpMetadataCoveragePct_DESC
+  # ratio(rowsWithCacheReadPct) ascending
+  ratio_rowsWithCacheReadPct_ASC
+  # ratio(rowsWithCacheReadPct) descending
+  ratio_rowsWithCacheReadPct_DESC
+  # ratio(rowsWithCacheWritePct) ascending
+  ratio_rowsWithCacheWritePct_ASC
+  # ratio(rowsWithCacheWritePct) descending
+  ratio_rowsWithCacheWritePct_DESC
+  # ratio(rowsWithSessionIdPct) ascending
+  ratio_rowsWithSessionIdPct_ASC
+  # ratio(rowsWithSessionIdPct) descending
+  ratio_rowsWithSessionIdPct_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
   # statusCode ascending
   statusCode_ASC
   # statusCode descending
   statusCode_DESC
+  # sum(cacheReadTokens) ascending
+  sum_cacheReadTokens_ASC
+  # sum(cacheReadTokens) descending
+  sum_cacheReadTokens_DESC
+  # sum(cacheWriteTokens) ascending
+  sum_cacheWriteTokens_ASC
+  # sum(cacheWriteTokens) descending
+  sum_cacheWriteTokens_DESC
   # sum(cachedRequests) ascending
   sum_cachedRequests_ASC
   # sum(cachedRequests) descending
@@ -4860,6 +5300,10 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   sum_cachedTokensOut_ASC
   # sum(cachedTokensOut) descending
   sum_cachedTokensOut_DESC
+  # sum(contextTokens) ascending
+  sum_contextTokens_ASC
+  # sum(contextTokens) descending
+  sum_contextTokens_DESC
   # sum(cost) ascending
   sum_cost_ASC
   # sum(cost) descending
@@ -4868,6 +5312,42 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   sum_erroredRequests_ASC
   # sum(erroredRequests) descending
   sum_erroredRequests_DESC
+  # sum(freshInputTokens) ascending
+  sum_freshInputTokens_ASC
+  # sum(freshInputTokens) descending
+  sum_freshInputTokens_DESC
+  # sum(freshPlusWriteTokens) ascending
+  sum_freshPlusWriteTokens_ASC
+  # sum(freshPlusWriteTokens) descending
+  sum_freshPlusWriteTokens_DESC
+  # sum(requestsWithCacheRead) ascending
+  sum_requestsWithCacheRead_ASC
+  # sum(requestsWithCacheRead) descending
+  sum_requestsWithCacheRead_DESC
+  # sum(requestsWithCacheWrite) ascending
+  sum_requestsWithCacheWrite_ASC
+  # sum(requestsWithCacheWrite) descending
+  sum_requestsWithCacheWrite_DESC
+  # sum(requestsWithMcpCount) ascending
+  sum_requestsWithMcpCount_ASC
+  # sum(requestsWithMcpCount) descending
+  sum_requestsWithMcpCount_DESC
+  # sum(requestsWithSessionId) ascending
+  sum_requestsWithSessionId_ASC
+  # sum(requestsWithSessionId) descending
+  sum_requestsWithSessionId_DESC
+  # sum(tokensIn) ascending
+  sum_tokensIn_ASC
+  # sum(tokensIn) descending
+  sum_tokensIn_DESC
+  # sum(tokensOut) ascending
+  sum_tokensOut_ASC
+  # sum(tokensOut) descending
+  sum_tokensOut_DESC
+  # sum(totalTokens) ascending
+  sum_totalTokens_ASC
+  # sum(totalTokens) descending
+  sum_totalTokens_DESC
   # sum(uncachedTokensIn) ascending
   sum_uncachedTokensIn_ASC
   # sum(uncachedTokensIn) descending
@@ -4884,6 +5364,18 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   tokensOut_ASC
   # tokensOut descending
   tokensOut_DESC
+  # uniq(sessions) ascending
+  uniq_sessions_ASC
+  # uniq(sessions) descending
+  uniq_sessions_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+  # usageMetadataRaw ascending
+  usageMetadataRaw_ASC
+  # usageMetadataRaw descending
+  usageMetadataRaw_DESC
   # userAgent ascending
   userAgent_ASC
   # userAgent descending
@@ -4894,17 +5386,54 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   wholesale_DESC
 }
 
+type AccountAiGatewayRequestsAdaptiveGroupsRatio {
+  # Percentage of context tokens read from provider prompt cache
+  cacheHitPct: float64!
+  # Percentage of requests with MCP tool or server count metadata present
+  mcpMetadataCoveragePct: float64!
+  # Percentage of requests with cache read tokens present
+  rowsWithCacheReadPct: float64!
+  # Percentage of requests with cache write tokens present
+  rowsWithCacheWritePct: float64!
+  # Percentage of requests with a session ID in metadata
+  rowsWithSessionIdPct: float64!
+}
+
 type AccountAiGatewayRequestsAdaptiveGroupsSum {
+  # Sum of input tokens read from provider prompt cache
+  cacheReadTokens: float64!
+  # Sum of input tokens written to provider prompt cache
+  cacheWriteTokens: float64!
   # Sum of cached requests
   cachedRequests: uint64!
   # Sum of cached tokens in
   cachedTokensIn: uint64!
   # Sum of cached tokens out
   cachedTokensOut: uint64!
+  # Sum of cache read, cache write, and fresh input tokens
+  contextTokens: float64!
   # Total cost"
   cost: float64!
   # Sum of errored requests
   erroredRequests: uint64!
+  # Sum of fresh uncached input tokens, falling back to tokens_in when usage metadata is unavailable
+  freshInputTokens: float64!
+  # Sum of fresh input tokens plus cache write tokens
+  freshPlusWriteTokens: float64!
+  # Sum of requests with cache read tokens present
+  requestsWithCacheRead: uint64!
+  # Sum of requests with cache write tokens present
+  requestsWithCacheWrite: uint64!
+  # Sum of requests with MCP tool or server count metadata present
+  requestsWithMcpCount: uint64!
+  # Sum of requests with a session ID in metadata
+  requestsWithSessionId: uint64!
+  # Sum of input tokens
+  tokensIn: uint64!
+  # Sum of output tokens
+  tokensOut: uint64!
+  # Sum of input and output tokens
+  totalTokens: uint64!
   # Sum of uncached tokens in
   uncachedTokensIn: uint64!
   # Sum of uncached tokens out
@@ -4913,19 +5442,50 @@ type AccountAiGatewayRequestsAdaptiveGroupsSum {
 
 type AccountAiGatewayRequestsAdaptiveGroupsSumConfidence {
   # Confidence interval for the corresponding point estimate
+  cacheReadTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cacheWriteTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
   cachedRequests: Confidence!
   # Confidence interval for the corresponding point estimate
   cachedTokensIn: Confidence!
   # Confidence interval for the corresponding point estimate
   cachedTokensOut: Confidence!
   # Confidence interval for the corresponding point estimate
+  contextTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
   cost: Confidence!
   # Confidence interval for the corresponding point estimate
   erroredRequests: Confidence!
   # Confidence interval for the corresponding point estimate
+  freshInputTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  freshPlusWriteTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  requestsWithCacheRead: Confidence!
+  # Confidence interval for the corresponding point estimate
+  requestsWithCacheWrite: Confidence!
+  # Confidence interval for the corresponding point estimate
+  requestsWithMcpCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  requestsWithSessionId: Confidence!
+  # Confidence interval for the corresponding point estimate
+  tokensIn: Confidence!
+  # Confidence interval for the corresponding point estimate
+  tokensOut: Confidence!
+  # Confidence interval for the corresponding point estimate
+  totalTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
   uncachedTokensIn: Confidence!
   # Confidence interval for the corresponding point estimate
   uncachedTokensOut: Confidence!
+}
+
+type AccountAiGatewayRequestsAdaptiveGroupsUniq {
+  # Approximate count of unique sessions
+  sessions: uint64!
+  # Approximate count of unique authenticated users
+  users: uint64!
 }
 
 # AI Gateway Stored Rows
@@ -12087,6 +12647,8 @@ type AccountCf1GatewayDns1dGroupsDimensions {
   edeErrors: [uint16!]!
   # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
   email: string!
+  # Whether the email is a non-identity email address
+  isNonidentity: uint8!
   # Gateway location ID
   location: string!
   # Union of matched categories observed in the group (rollup of raw matchedCategoryIds via groupUniqArrayArray; sorted ascending for deterministic output)
@@ -12160,6 +12722,14 @@ input AccountCf1GatewayDns1dGroupsFilter_InputObject {
   email_neq: string
   email_notin: [string!]
   email_notlike: string
+  isNonidentity: uint8
+  isNonidentity_geq: uint8
+  isNonidentity_gt: uint8
+  isNonidentity_in: bytes
+  isNonidentity_leq: uint8
+  isNonidentity_lt: uint8
+  isNonidentity_neq: uint8
+  isNonidentity_notin: bytes
   location: string
   location_geq: string
   location_gt: string
@@ -12253,6 +12823,10 @@ enum AccountCf1GatewayDns1dGroupsOrderBy {
   email_ASC
   # email descending
   email_DESC
+  # isNonidentity ascending
+  isNonidentity_ASC
+  # isNonidentity descending
+  isNonidentity_DESC
   # location ascending
   location_ASC
   # location descending
@@ -12388,6 +12962,8 @@ type AccountCf1GatewayDns1hGroupsDimensions {
   edeErrors: [uint16!]!
   # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   email: string!
+  # Whether the email is a non-identity email address
+  isNonidentity: uint8!
   # Gateway location ID
   location: string!
   # Union of matched categories observed in the group (rollup of raw matchedCategoryIds via groupUniqArrayArray; sorted ascending for deterministic output)
@@ -12461,6 +13037,14 @@ input AccountCf1GatewayDns1hGroupsFilter_InputObject {
   email_neq: string
   email_notin: [string!]
   email_notlike: string
+  isNonidentity: uint8
+  isNonidentity_geq: uint8
+  isNonidentity_gt: uint8
+  isNonidentity_in: bytes
+  isNonidentity_leq: uint8
+  isNonidentity_lt: uint8
+  isNonidentity_neq: uint8
+  isNonidentity_notin: bytes
   location: string
   location_geq: string
   location_gt: string
@@ -12554,6 +13138,10 @@ enum AccountCf1GatewayDns1hGroupsOrderBy {
   email_ASC
   # email descending
   email_DESC
+  # isNonidentity ascending
+  isNonidentity_ASC
+  # isNonidentity descending
+  isNonidentity_DESC
   # location ascending
   location_ASC
   # location descending
@@ -12687,6 +13275,8 @@ type AccountCf1GatewayDnsLuga1dGroupsDimensions {
   deviceId: string!
   # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
   email: string!
+  # Whether the email is a non-identity email address
+  isNonidentity: uint8!
   # Gateway location ID
   location: string!
   # Policy ID
@@ -12754,6 +13344,14 @@ input AccountCf1GatewayDnsLuga1dGroupsFilter_InputObject {
   email_neq: string
   email_notin: [string!]
   email_notlike: string
+  isNonidentity: uint8
+  isNonidentity_geq: uint8
+  isNonidentity_gt: uint8
+  isNonidentity_in: bytes
+  isNonidentity_leq: uint8
+  isNonidentity_lt: uint8
+  isNonidentity_neq: uint8
+  isNonidentity_notin: bytes
   location: string
   location_geq: string
   location_gt: string
@@ -12847,6 +13445,10 @@ enum AccountCf1GatewayDnsLuga1dGroupsOrderBy {
   email_ASC
   # email descending
   email_DESC
+  # isNonidentity ascending
+  isNonidentity_ASC
+  # isNonidentity descending
+  isNonidentity_DESC
   # location ascending
   location_ASC
   # location descending
@@ -12932,6 +13534,8 @@ type AccountCf1GatewayDnsLuga1hGroupsDimensions {
   deviceId: string!
   # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
   email: string!
+  # Whether the email is a non-identity email address
+  isNonidentity: uint8!
   # Gateway location ID
   location: string!
   # Policy ID
@@ -12999,6 +13603,14 @@ input AccountCf1GatewayDnsLuga1hGroupsFilter_InputObject {
   email_neq: string
   email_notin: [string!]
   email_notlike: string
+  isNonidentity: uint8
+  isNonidentity_geq: uint8
+  isNonidentity_gt: uint8
+  isNonidentity_in: bytes
+  isNonidentity_leq: uint8
+  isNonidentity_lt: uint8
+  isNonidentity_neq: uint8
+  isNonidentity_notin: bytes
   location: string
   location_geq: string
   location_gt: string
@@ -13092,6 +13704,10 @@ enum AccountCf1GatewayDnsLuga1hGroupsOrderBy {
   email_ASC
   # email descending
   email_DESC
+  # isNonidentity ascending
+  isNonidentity_ASC
+  # isNonidentity descending
+  isNonidentity_DESC
   # location ascending
   location_ASC
   # location descending
@@ -13183,6 +13799,8 @@ type AccountCf1GatewayDnsLugaRawGroupsDimensions {
   deviceId: string!
   # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
   email: string!
+  # Whether the email is a non-identity email address
+  isNonidentity: uint8!
   # Gateway location ID
   location: string!
   # Policy ID
@@ -13276,6 +13894,14 @@ input AccountCf1GatewayDnsLugaRawGroupsFilter_InputObject {
   email_neq: string
   email_notin: [string!]
   email_notlike: string
+  isNonidentity: uint8
+  isNonidentity_geq: uint8
+  isNonidentity_gt: uint8
+  isNonidentity_in: bytes
+  isNonidentity_leq: uint8
+  isNonidentity_lt: uint8
+  isNonidentity_neq: uint8
+  isNonidentity_notin: bytes
   location: string
   location_geq: string
   location_gt: string
@@ -13381,6 +14007,10 @@ enum AccountCf1GatewayDnsLugaRawGroupsOrderBy {
   email_ASC
   # email descending
   email_DESC
+  # isNonidentity ascending
+  isNonidentity_ASC
+  # isNonidentity descending
+  isNonidentity_DESC
   # location ascending
   location_ASC
   # location descending
@@ -13474,6 +14104,8 @@ type AccountCf1GatewayDnsRawGroupsDimensions {
   edeErrors: [uint16!]!
   # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   email: string!
+  # Whether the email is a non-identity email address
+  isNonidentity: uint8!
   # Gateway location ID
   location: string!
   # Categories that matched the applied policy (subset of queryCategoryIds)
@@ -13580,6 +14212,14 @@ input AccountCf1GatewayDnsRawGroupsFilter_InputObject {
   email_neq: string
   email_notin: [string!]
   email_notlike: string
+  isNonidentity: uint8
+  isNonidentity_geq: uint8
+  isNonidentity_gt: uint8
+  isNonidentity_in: bytes
+  isNonidentity_leq: uint8
+  isNonidentity_lt: uint8
+  isNonidentity_neq: uint8
+  isNonidentity_notin: bytes
   location: string
   location_geq: string
   location_gt: string
@@ -13709,6 +14349,10 @@ enum AccountCf1GatewayDnsRawGroupsOrderBy {
   email_ASC
   # email descending
   email_DESC
+  # isNonidentity ascending
+  isNonidentity_ASC
+  # isNonidentity descending
+  isNonidentity_DESC
   # location ascending
   location_ASC
   # location descending
@@ -24331,6 +24975,8 @@ type AccountDurableObjectsInvocationsAdaptiveGroupsDimensions {
   previewSlug: string!
   # The name of the script
   scriptName: string!
+  # The version of the Worker
+  scriptVersion: string!
   # Status of the worker invocation
   status: string!
   # Type of invocation
@@ -24464,6 +25110,16 @@ input AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject {
   scriptName_neq: string
   scriptName_notin: [string!]
   scriptName_notlike: string
+  scriptVersion: string
+  scriptVersion_geq: string
+  scriptVersion_gt: string
+  scriptVersion_in: [string!]
+  scriptVersion_leq: string
+  scriptVersion_like: string
+  scriptVersion_lt: string
+  scriptVersion_neq: string
+  scriptVersion_notin: [string!]
+  scriptVersion_notlike: string
   status: string
   status_geq: string
   status_gt: string
@@ -24647,6 +25303,10 @@ enum AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy {
   scriptName_ASC
   # scriptName descending
   scriptName_DESC
+  # scriptVersion ascending
+  scriptVersion_ASC
+  # scriptVersion descending
+  scriptVersion_DESC
   # stableId ascending
   stableId_ASC
   # stableId descending
@@ -65785,6 +66445,7 @@ type AccountSettings {
   advancedDnsProtectionNetworkAnalyticsAdaptiveGroups: Settings!
   advancedTcpProtectionNetworkAnalyticsAdaptiveGroups: Settings!
   aegisIpUtilizationAdaptiveGroups: Settings!
+  agentMemoryOperationsAdaptiveGroups: Settings!
   aiGatewayCacheAdaptiveGroups: Settings!
   aiGatewayErrorsAdaptiveGroups: Settings!
   aiGatewayRequestsAdaptiveGroups: Settings!
@@ -70542,7 +71203,7 @@ type AccountVectorizeV2OperationsAdaptiveGroupsDimensions {
   # Name of a Vectorize index
   indexName: string!
   # The type of Vectorize operation
-  operation: uint64!
+  operation: string!
   # Request status. One of [2xx, 4xx, 5xx, unknown]
   requestStatus: string!
 }
@@ -70608,14 +71269,16 @@ input AccountVectorizeV2OperationsAdaptiveGroupsFilter_InputObject {
   indexName_neq: string
   indexName_notin: [string!]
   indexName_notlike: string
-  operation: uint64
-  operation_geq: uint64
-  operation_gt: uint64
-  operation_in: [uint64!]
-  operation_leq: uint64
-  operation_lt: uint64
-  operation_neq: uint64
-  operation_notin: [uint64!]
+  operation: string
+  operation_geq: string
+  operation_gt: string
+  operation_in: [string!]
+  operation_leq: string
+  operation_like: string
+  operation_lt: string
+  operation_neq: string
+  operation_notin: [string!]
+  operation_notlike: string
   requestStatus: string
   requestStatus_geq: string
   requestStatus_gt: string
@@ -70713,7 +71376,7 @@ type AccountVectorizeV2QueriesAdaptiveGroupsDimensions {
   # Name of a Vectorize index
   indexName: string!
   # The type of Vectorize operation
-  operation: uint64!
+  operation: string!
   # Request status. One of [2xx, 4xx, 5xx, unknown]
   requestStatus: string!
 }
@@ -70763,14 +71426,16 @@ input AccountVectorizeV2QueriesAdaptiveGroupsFilter_InputObject {
   indexName_neq: string
   indexName_notin: [string!]
   indexName_notlike: string
-  operation: uint64
-  operation_geq: uint64
-  operation_gt: uint64
-  operation_in: [uint64!]
-  operation_leq: uint64
-  operation_lt: uint64
-  operation_neq: uint64
-  operation_notin: [uint64!]
+  operation: string
+  operation_geq: string
+  operation_gt: string
+  operation_in: [string!]
+  operation_leq: string
+  operation_like: string
+  operation_lt: string
+  operation_neq: string
+  operation_notin: [string!]
+  operation_notlike: string
   requestStatus: string
   requestStatus_geq: string
   requestStatus_gt: string
@@ -71043,7 +71708,7 @@ type AccountVectorizeV2WritesAdaptiveGroupsDimensions {
   # Name of a Vectorize index
   indexName: string!
   # The type of Vectorize operation
-  operation: uint64!
+  operation: string!
   # Request status. One of [2xx, 4xx, 5xx, unknown]
   requestStatus: string!
 }
@@ -71093,14 +71758,16 @@ input AccountVectorizeV2WritesAdaptiveGroupsFilter_InputObject {
   indexName_neq: string
   indexName_notin: [string!]
   indexName_notlike: string
-  operation: uint64
-  operation_geq: uint64
-  operation_gt: uint64
-  operation_in: [uint64!]
-  operation_leq: uint64
-  operation_lt: uint64
-  operation_neq: uint64
-  operation_notin: [uint64!]
+  operation: string
+  operation_geq: string
+  operation_gt: string
+  operation_in: [string!]
+  operation_leq: string
+  operation_like: string
+  operation_lt: string
+  operation_neq: string
+  operation_notin: [string!]
+  operation_notlike: string
   requestStatus: string
   requestStatus_geq: string
   requestStatus_gt: string
@@ -72230,6 +72897,8 @@ type AccountWebSearchRequestsAdaptiveGroupsDimensions {
   errorCode: string!
   # The stage at which an error occurred, if any
   errorStage: string!
+  # The Websearch instance identifier (requests without an instance are reported as 'default')
+  instanceId: string!
   # The verbatim search query (truncated to 1024 characters)
   query: string!
   # The SHA-256 hex hash of the search query
@@ -72341,6 +73010,16 @@ input AccountWebSearchRequestsAdaptiveGroupsFilter_InputObject {
   errorStage_neq: string
   errorStage_notin: [string!]
   errorStage_notlike: string
+  instanceId: string
+  instanceId_geq: string
+  instanceId_gt: string
+  instanceId_in: [string!]
+  instanceId_leq: string
+  instanceId_like: string
+  instanceId_lt: string
+  instanceId_neq: string
+  instanceId_notin: [string!]
+  instanceId_notlike: string
   query: string
   queryHash: string
   queryHash_geq: string
@@ -72498,6 +73177,10 @@ enum AccountWebSearchRequestsAdaptiveGroupsOrderBy {
   errorStage_ASC
   # errorStage descending
   errorStage_DESC
+  # instanceId ascending
+  instanceId_ASC
+  # instanceId descending
+  instanceId_DESC
   # quantiles(totalDurationMsP25) ascending
   quantiles_totalDurationMsP25_ASC
   # quantiles(totalDurationMsP25) descending
@@ -76826,6 +77509,8 @@ type Mutation {
 }
 
 type organization {
+  # Aggregated Firewall events with adaptive sampling
+  firewallEventsAdaptiveGroups(filter: OrganizationFirewallEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [OrganizationFirewallEventsAdaptiveGroupsOrderBy!]): [OrganizationFirewallEventsAdaptiveGroups!]!
   # Aggregated HTTP requests data with adaptive sampling
   httpRequestsAdaptiveGroups(filter: OrganizationHttpRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [OrganizationHttpRequestsAdaptiveGroupsOrderBy!]): [OrganizationHttpRequestsAdaptiveGroups!]!
   organizationTag: string!
@@ -76834,6 +77519,1219 @@ type organization {
 
 input OrganizationFilter_InputObject {
   organizationTag: string!
+}
+
+# Aggregated Firewall events with adaptive sampling
+type OrganizationFirewallEventsAdaptiveGroups {
+  # The average value used for sample interval
+  avg: OrganizationFirewallEventsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): OrganizationFirewallEventsAdaptiveGroupsConfidence!
+  # The sum of sample interval values
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: OrganizationFirewallEventsAdaptiveGroupsDimensions
+  sum: OrganizationFirewallEventsAdaptiveGroupsSum
+}
+
+type OrganizationFirewallEventsAdaptiveGroupsAvg {
+  sampleInterval: float64!
+}
+
+type OrganizationFirewallEventsAdaptiveGroupsConfidence {
+  # The sum of sample interval values, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type OrganizationFirewallEventsAdaptiveGroupsDimensions {
+  # Associated account
+  accountTag: string!
+  # The code of the first-class action the Cloudflare Firewall took on this request
+  action: string!
+  # API Gateway (Web Assets) endpoint matched at the edge
+  apiGatewayMatchedEndpoint: string!
+  # API Gateway (Web Assets) host matched at the edge
+  apiGatewayMatchedHost: string!
+  # Array of detections ids that matched this request
+  botDetectionIds: [uint32!]!
+  # Array of detections tags that matched this request
+  botDetectionTags: [string!]!
+  # The final score originated from bot management detections.
+  botScore: uint8!
+  # Name of the source detection which generated the bot management score.
+  botScoreSrcName: string!
+  # The ASN of the visitor as string
+  clientASNDescription: string!
+  # The ASN number of the visitor
+  clientAsn: string!
+  # Country from which request originated
+  clientCountryName: string!
+  # The visitor's IP address (IPv4 or IPv6)
+  clientIP: string!
+  # The classification of the visitor's IP address, possible values are: unknown | clean | badHost | searchEngine | allowlist | greylist | monitoringService | securityScanner | noRecord | scan | backupService | mobilePlatform | tor
+  clientIPClass: string!
+  # The referer host
+  clientRefererHost: string!
+  # The referer path requested by visitor
+  clientRefererPath: string!
+  # The referer query-string was requested by the visitor
+  clientRefererQuery: string!
+  # The referer url scheme requested by the visitor
+  clientRefererScheme: string!
+  # The HTTP hostname requested by the visitor
+  clientRequestHTTPHost: string!
+  # The HTTP method used by the visitor
+  clientRequestHTTPMethodName: string!
+  # The version of HTTP protocol requested by the visitor
+  clientRequestHTTPProtocol: string!
+  # The path requested by visitor
+  clientRequestPath: string!
+  # The query-string was requested by the visitor
+  clientRequestQuery: string!
+  # The url scheme requested by the visitor
+  clientRequestScheme: string!
+  # 1 if not all contents for this request where successfully scanned, else 0
+  contentScanHasFailed: uint8!
+  # Number of scannable content objects that are malicious
+  contentScanNumMaliciousObj: uint8!
+  # Number of scannable content objects
+  contentScanNumObj: uint8!
+  # Array of scan results in order of detection
+  contentScanObjResults: [string!]!
+  # Array of scan sizes in order of detection
+  contentScanObjSizes: [uint32!]!
+  # Array of content types in order of detection
+  contentScanObjTypes: [string!]!
+  # The date the event occurred at the edge
+  date: Date!
+  # The date and time the event occurred at the edge
+  datetime: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the event occurred at the edge truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the event occurred at the edge truncated to hours
+  datetimeHour: Time!
+  # The date and time the event occurred at the edge truncated to the minute
+  datetimeMinute: Time!
+  # The description of the rule triggered by this request
+  description: string!
+  # The airport code of the Cloudflare datacenter that served this request
+  edgeColoName: string!
+  # HTTP response status code returned to browser
+  edgeResponseStatus: uint16!
+  # Whether firewallForAiPiiCategories is non empty. 0 if empty, 1 if not empty.
+  firewallForAiAnyPiiCategory: int8!
+  # Minimum score across all the defined firewall for ai custom topics; 100 if empty.
+  firewallForAiCustomTopicCategoriesScoresMin: uint8!
+  # Corresponds to the Ruleset field cf.llm.prompt.injection_score.
+  firewallForAiInjectionScore: int8!
+  # Corresponds to the Ruleset field cf.llm.prompt.pii_categories.
+  firewallForAiPiiCategories: [string!]!
+  # Corresponds to the Ruleset field cf.llm.prompt.unsafe_data_categories.
+  firewallForAiUnsafeTopicCategories: [string!]!
+  # The primary attack or use case detected in the request by Fraud detections
+  fraudAttack: string!
+  # Array of fraud detections ids that matched this request
+  fraudDetectionIds: [uint32!]!
+  # Array of fraud detections tags that matched this request
+  fraudDetectionTags: [string!]!
+  # Risk of a specific email address in account signup attempts
+  fraudEmailRisk: string!
+  # Identifies action that a given user is performing. Possible values are login, signup.
+  fraudEventType: string!
+  # A unique identifier generated by the Fraud Detection system for each user, generated during any action determined by the fraud event type.
+  fraudUserId: string!
+  # Version associated with HTTP Application
+  @Deprecated
+  httpApplicationVersion: uint64!
+  # MD5 hash of the JA3 TLS fingerprint
+  ja3Hash: string!
+  # JA4 TLS fingerprint
+  ja4: string!
+  # Whether the request passed background JavaScript Detection
+  jsDetectionPassed: string!
+  # The kind of event, currently only possible values are: firewall
+  kind: string!
+  # Rules match index in the chain
+  matchIndex: uint16!
+  # HTTP origin response status code returned to browser
+  originResponseStatus: uint16!
+  # The RayId of the request that issued the challenge/jschallenge
+  originatorRayName: string!
+  # The RayId of the request
+  rayName: string!
+  # The ref-field is a user-defined rule identifier that can be set via the API for some firewall products and allows users to label their rules individually alongside cloudflare provided identifiers (only available to entitled customers)
+  ref: string!
+  # The Cloudflare security product-specific RuleId triggered by this request
+  ruleId: string!
+  # The Cloudflare security product-specific RulesetId triggered by this request
+  rulesetId: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # The Cloudflare security product triggered by this request
+  source: string!
+  # visitor's user-agent string
+  userAgent: string!
+  # The category of verified bot
+  verifiedBotCategory: string!
+  # Beta. Overall request score generated by the WAF detection module
+  wafAttackScore: uint8!
+  # Beta. Overall request score class generated by the WAF detection module
+  wafAttackScoreClass: string!
+  # Beta. Overall request score generated by the WAF ML detection module
+  @Deprecated
+  wafMlAttackScore: uint8!
+  # Beta. WAF ML score for an SQLi attack
+  @Deprecated
+  wafMlSqliAttackScore: uint8!
+  # Beta. WAF ML score for an XSS attack
+  @Deprecated
+  wafMlXssAttackScore: uint8!
+  # Beta. WAF score for a Path Traversal attack
+  wafPathTraversalAttackScore: uint8!
+  # Beta. WAF score for a RCE attack
+  wafRceAttackScore: uint8!
+  # 1-D array of the categories associated with the rules ref in wafRequestSignatureRefs
+  wafRequestSignatureCategories: [string!]!
+  # cf.waf.signature.request.refs Ruleset field truncated to maximum 10 elements.
+  wafRequestSignatureRefs: [string!]!
+  # Beta. WAF score for a SQLi attack
+  wafSqliAttackScore: uint8!
+  # Beta. WAF score for a XSS attack
+  wafXssAttackScore: uint8!
+  # Associated zone
+  zoneTag: string!
+  # The version of a zone
+  zoneVersion: uint64!
+}
+
+input OrganizationFirewallEventsAdaptiveGroupsFilter_InputObject {
+  AND: [OrganizationFirewallEventsAdaptiveGroupsFilter_InputObject!]
+  OR: [OrganizationFirewallEventsAdaptiveGroupsFilter_InputObject!]
+  action: string
+  action_geq: string
+  action_gt: string
+  action_in: [string!]
+  action_leq: string
+  action_like: string
+  action_lt: string
+  action_neq: string
+  action_notin: [string!]
+  action_notlike: string
+  apiGatewayMatchedEndpoint: string
+  apiGatewayMatchedEndpoint_geq: string
+  apiGatewayMatchedEndpoint_gt: string
+  apiGatewayMatchedEndpoint_in: [string!]
+  apiGatewayMatchedEndpoint_leq: string
+  apiGatewayMatchedEndpoint_like: string
+  apiGatewayMatchedEndpoint_lt: string
+  apiGatewayMatchedEndpoint_neq: string
+  apiGatewayMatchedEndpoint_notin: [string!]
+  apiGatewayMatchedEndpoint_notlike: string
+  apiGatewayMatchedHost: string
+  apiGatewayMatchedHost_geq: string
+  apiGatewayMatchedHost_gt: string
+  apiGatewayMatchedHost_in: [string!]
+  apiGatewayMatchedHost_leq: string
+  apiGatewayMatchedHost_like: string
+  apiGatewayMatchedHost_lt: string
+  apiGatewayMatchedHost_neq: string
+  apiGatewayMatchedHost_notin: [string!]
+  apiGatewayMatchedHost_notlike: string
+  botDetectionIds_has: uint32
+  botDetectionIds_hasall: [uint32!]
+  botDetectionIds_hasany: [uint32!]
+  botDetectionIds_isempty: bool
+  botDetectionIds_nothas: uint32
+  botDetectionTags_has: string
+  botDetectionTags_hasall: [string!]
+  botDetectionTags_hasany: [string!]
+  botDetectionTags_isempty: bool
+  botDetectionTags_nothas: string
+  botScore: uint8
+  botScoreSrcName: string
+  botScoreSrcName_geq: string
+  botScoreSrcName_gt: string
+  botScoreSrcName_in: [string!]
+  botScoreSrcName_leq: string
+  botScoreSrcName_like: string
+  botScoreSrcName_lt: string
+  botScoreSrcName_neq: string
+  botScoreSrcName_notin: [string!]
+  botScoreSrcName_notlike: string
+  botScore_geq: uint8
+  botScore_gt: uint8
+  botScore_in: bytes
+  botScore_leq: uint8
+  botScore_lt: uint8
+  botScore_neq: uint8
+  botScore_notin: bytes
+  clientASNDescription: string
+  clientASNDescription_geq: string
+  clientASNDescription_gt: string
+  clientASNDescription_in: [string!]
+  clientASNDescription_leq: string
+  clientASNDescription_like: string
+  clientASNDescription_lt: string
+  clientASNDescription_neq: string
+  clientASNDescription_notin: [string!]
+  clientASNDescription_notlike: string
+  clientAsn: string
+  clientAsn_geq: string
+  clientAsn_gt: string
+  clientAsn_in: [string!]
+  clientAsn_leq: string
+  clientAsn_like: string
+  clientAsn_lt: string
+  clientAsn_neq: string
+  clientAsn_notin: [string!]
+  clientAsn_notlike: string
+  clientCountryName: string
+  clientCountryName_geq: string
+  clientCountryName_gt: string
+  clientCountryName_in: [string!]
+  clientCountryName_leq: string
+  clientCountryName_like: string
+  clientCountryName_lt: string
+  clientCountryName_neq: string
+  clientCountryName_notin: [string!]
+  clientCountryName_notlike: string
+  clientIP: string
+  clientIPClass: string
+  clientIPClass_geq: string
+  clientIPClass_gt: string
+  clientIPClass_in: [string!]
+  clientIPClass_leq: string
+  clientIPClass_like: string
+  clientIPClass_lt: string
+  clientIPClass_neq: string
+  clientIPClass_notin: [string!]
+  clientIPClass_notlike: string
+  clientIP_geq: string
+  clientIP_gt: string
+  clientIP_in: [string!]
+  clientIP_leq: string
+  clientIP_like: string
+  clientIP_lt: string
+  clientIP_neq: string
+  clientIP_notin: [string!]
+  clientIP_notlike: string
+  clientRefererHost: string
+  clientRefererHost_geq: string
+  clientRefererHost_gt: string
+  clientRefererHost_in: [string!]
+  clientRefererHost_leq: string
+  clientRefererHost_like: string
+  clientRefererHost_lt: string
+  clientRefererHost_neq: string
+  clientRefererHost_notin: [string!]
+  clientRefererHost_notlike: string
+  clientRefererPath: string
+  clientRefererPath_geq: string
+  clientRefererPath_gt: string
+  clientRefererPath_in: [string!]
+  clientRefererPath_leq: string
+  clientRefererPath_like: string
+  clientRefererPath_lt: string
+  clientRefererPath_neq: string
+  clientRefererPath_notin: [string!]
+  clientRefererPath_notlike: string
+  clientRefererQuery: string
+  clientRefererQuery_geq: string
+  clientRefererQuery_gt: string
+  clientRefererQuery_in: [string!]
+  clientRefererQuery_leq: string
+  clientRefererQuery_like: string
+  clientRefererQuery_lt: string
+  clientRefererQuery_neq: string
+  clientRefererQuery_notin: [string!]
+  clientRefererQuery_notlike: string
+  clientRefererScheme: string
+  clientRefererScheme_geq: string
+  clientRefererScheme_gt: string
+  clientRefererScheme_in: [string!]
+  clientRefererScheme_leq: string
+  clientRefererScheme_like: string
+  clientRefererScheme_lt: string
+  clientRefererScheme_neq: string
+  clientRefererScheme_notin: [string!]
+  clientRefererScheme_notlike: string
+  clientRequestHTTPHost: string
+  clientRequestHTTPHost_geq: string
+  clientRequestHTTPHost_gt: string
+  clientRequestHTTPHost_in: [string!]
+  clientRequestHTTPHost_leq: string
+  clientRequestHTTPHost_like: string
+  clientRequestHTTPHost_lt: string
+  clientRequestHTTPHost_neq: string
+  clientRequestHTTPHost_notin: [string!]
+  clientRequestHTTPHost_notlike: string
+  clientRequestHTTPMethodName: string
+  clientRequestHTTPMethodName_geq: string
+  clientRequestHTTPMethodName_gt: string
+  clientRequestHTTPMethodName_in: [string!]
+  clientRequestHTTPMethodName_leq: string
+  clientRequestHTTPMethodName_like: string
+  clientRequestHTTPMethodName_lt: string
+  clientRequestHTTPMethodName_neq: string
+  clientRequestHTTPMethodName_notin: [string!]
+  clientRequestHTTPMethodName_notlike: string
+  clientRequestHTTPProtocol: string
+  clientRequestHTTPProtocol_geq: string
+  clientRequestHTTPProtocol_gt: string
+  clientRequestHTTPProtocol_in: [string!]
+  clientRequestHTTPProtocol_leq: string
+  clientRequestHTTPProtocol_like: string
+  clientRequestHTTPProtocol_lt: string
+  clientRequestHTTPProtocol_neq: string
+  clientRequestHTTPProtocol_notin: [string!]
+  clientRequestHTTPProtocol_notlike: string
+  clientRequestPath: string
+  clientRequestPath_geq: string
+  clientRequestPath_gt: string
+  clientRequestPath_in: [string!]
+  clientRequestPath_leq: string
+  clientRequestPath_like: string
+  clientRequestPath_lt: string
+  clientRequestPath_neq: string
+  clientRequestPath_notin: [string!]
+  clientRequestPath_notlike: string
+  clientRequestQuery: string
+  clientRequestQuery_geq: string
+  clientRequestQuery_gt: string
+  clientRequestQuery_in: [string!]
+  clientRequestQuery_leq: string
+  clientRequestQuery_like: string
+  clientRequestQuery_lt: string
+  clientRequestQuery_neq: string
+  clientRequestQuery_notin: [string!]
+  clientRequestQuery_notlike: string
+  clientRequestScheme: string
+  clientRequestScheme_geq: string
+  clientRequestScheme_gt: string
+  clientRequestScheme_in: [string!]
+  clientRequestScheme_leq: string
+  clientRequestScheme_like: string
+  clientRequestScheme_lt: string
+  clientRequestScheme_neq: string
+  clientRequestScheme_notin: [string!]
+  clientRequestScheme_notlike: string
+  contentScanHasFailed: uint8
+  contentScanHasFailed_geq: uint8
+  contentScanHasFailed_gt: uint8
+  contentScanHasFailed_in: bytes
+  contentScanHasFailed_leq: uint8
+  contentScanHasFailed_lt: uint8
+  contentScanHasFailed_neq: uint8
+  contentScanHasFailed_notin: bytes
+  contentScanNumMaliciousObj: uint8
+  contentScanNumMaliciousObj_geq: uint8
+  contentScanNumMaliciousObj_gt: uint8
+  contentScanNumMaliciousObj_in: bytes
+  contentScanNumMaliciousObj_leq: uint8
+  contentScanNumMaliciousObj_lt: uint8
+  contentScanNumMaliciousObj_neq: uint8
+  contentScanNumMaliciousObj_notin: bytes
+  contentScanNumObj: uint8
+  contentScanNumObj_geq: uint8
+  contentScanNumObj_gt: uint8
+  contentScanNumObj_in: bytes
+  contentScanNumObj_leq: uint8
+  contentScanNumObj_lt: uint8
+  contentScanNumObj_neq: uint8
+  contentScanNumObj_notin: bytes
+  contentScanObjResults_has: string
+  contentScanObjResults_hasall: [string!]
+  contentScanObjResults_hasany: [string!]
+  contentScanObjResults_isempty: bool
+  contentScanObjResults_nothas: string
+  contentScanObjSizes_has: uint32
+  contentScanObjSizes_hasall: [uint32!]
+  contentScanObjSizes_hasany: [uint32!]
+  contentScanObjSizes_isempty: bool
+  contentScanObjSizes_nothas: uint32
+  contentScanObjTypes_has: string
+  contentScanObjTypes_hasall: [string!]
+  contentScanObjTypes_hasany: [string!]
+  contentScanObjTypes_isempty: bool
+  contentScanObjTypes_nothas: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  description: string
+  description_geq: string
+  description_gt: string
+  description_in: [string!]
+  description_leq: string
+  description_like: string
+  description_lt: string
+  description_neq: string
+  description_notin: [string!]
+  description_notlike: string
+  edgeColoName: string
+  edgeColoName_geq: string
+  edgeColoName_gt: string
+  edgeColoName_in: [string!]
+  edgeColoName_leq: string
+  edgeColoName_like: string
+  edgeColoName_lt: string
+  edgeColoName_neq: string
+  edgeColoName_notin: [string!]
+  edgeColoName_notlike: string
+  edgeResponseStatus: uint16
+  edgeResponseStatus_geq: uint16
+  edgeResponseStatus_gt: uint16
+  edgeResponseStatus_in: [uint16!]
+  edgeResponseStatus_leq: uint16
+  edgeResponseStatus_lt: uint16
+  edgeResponseStatus_neq: uint16
+  edgeResponseStatus_notin: [uint16!]
+  firewallForAiAnyPiiCategory: int8
+  firewallForAiAnyPiiCategory_geq: int8
+  firewallForAiAnyPiiCategory_gt: int8
+  firewallForAiAnyPiiCategory_in: [int8!]
+  firewallForAiAnyPiiCategory_leq: int8
+  firewallForAiAnyPiiCategory_lt: int8
+  firewallForAiAnyPiiCategory_neq: int8
+  firewallForAiAnyPiiCategory_notin: [int8!]
+  firewallForAiCustomTopicCategoriesScoresMin: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_geq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_gt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_in: bytes
+  firewallForAiCustomTopicCategoriesScoresMin_leq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_lt: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_neq: uint8
+  firewallForAiCustomTopicCategoriesScoresMin_notin: bytes
+  firewallForAiInjectionScore: int8
+  firewallForAiInjectionScore_geq: int8
+  firewallForAiInjectionScore_gt: int8
+  firewallForAiInjectionScore_in: [int8!]
+  firewallForAiInjectionScore_leq: int8
+  firewallForAiInjectionScore_lt: int8
+  firewallForAiInjectionScore_neq: int8
+  firewallForAiInjectionScore_notin: [int8!]
+  firewallForAiPiiCategories_has: string
+  firewallForAiPiiCategories_hasall: [string!]
+  firewallForAiPiiCategories_hasany: [string!]
+  firewallForAiPiiCategories_isempty: bool
+  firewallForAiPiiCategories_nothas: string
+  firewallForAiUnsafeTopicCategories_has: string
+  firewallForAiUnsafeTopicCategories_hasall: [string!]
+  firewallForAiUnsafeTopicCategories_hasany: [string!]
+  firewallForAiUnsafeTopicCategories_isempty: bool
+  firewallForAiUnsafeTopicCategories_nothas: string
+  fraudAttack: string
+  fraudAttack_geq: string
+  fraudAttack_gt: string
+  fraudAttack_in: [string!]
+  fraudAttack_leq: string
+  fraudAttack_like: string
+  fraudAttack_lt: string
+  fraudAttack_neq: string
+  fraudAttack_notin: [string!]
+  fraudAttack_notlike: string
+  fraudDetectionIds_has: uint32
+  fraudDetectionIds_hasall: [uint32!]
+  fraudDetectionIds_hasany: [uint32!]
+  fraudDetectionIds_isempty: bool
+  fraudDetectionIds_nothas: uint32
+  fraudDetectionTags_has: string
+  fraudDetectionTags_hasall: [string!]
+  fraudDetectionTags_hasany: [string!]
+  fraudDetectionTags_isempty: bool
+  fraudDetectionTags_nothas: string
+  fraudEmailRisk: string
+  fraudEmailRisk_geq: string
+  fraudEmailRisk_gt: string
+  fraudEmailRisk_in: [string!]
+  fraudEmailRisk_leq: string
+  fraudEmailRisk_like: string
+  fraudEmailRisk_lt: string
+  fraudEmailRisk_neq: string
+  fraudEmailRisk_notin: [string!]
+  fraudEmailRisk_notlike: string
+  fraudEventType: string
+  fraudEventType_geq: string
+  fraudEventType_gt: string
+  fraudEventType_in: [string!]
+  fraudEventType_leq: string
+  fraudEventType_like: string
+  fraudEventType_lt: string
+  fraudEventType_neq: string
+  fraudEventType_notin: [string!]
+  fraudEventType_notlike: string
+  fraudUserId: string
+  fraudUserId_geq: string
+  fraudUserId_gt: string
+  fraudUserId_in: [string!]
+  fraudUserId_leq: string
+  fraudUserId_like: string
+  fraudUserId_lt: string
+  fraudUserId_neq: string
+  fraudUserId_notin: [string!]
+  fraudUserId_notlike: string
+  httpApplicationVersion: uint64
+  httpApplicationVersion_geq: uint64
+  httpApplicationVersion_gt: uint64
+  httpApplicationVersion_in: [uint64!]
+  httpApplicationVersion_leq: uint64
+  httpApplicationVersion_lt: uint64
+  httpApplicationVersion_neq: uint64
+  httpApplicationVersion_notin: [uint64!]
+  ja3Hash: string
+  ja3Hash_geq: string
+  ja3Hash_gt: string
+  ja3Hash_in: [string!]
+  ja3Hash_leq: string
+  ja3Hash_like: string
+  ja3Hash_lt: string
+  ja3Hash_neq: string
+  ja3Hash_notin: [string!]
+  ja3Hash_notlike: string
+  ja4: string
+  ja4_geq: string
+  ja4_gt: string
+  ja4_in: [string!]
+  ja4_leq: string
+  ja4_like: string
+  ja4_lt: string
+  ja4_neq: string
+  ja4_notin: [string!]
+  ja4_notlike: string
+  jsDetectionPassed: string
+  jsDetectionPassed_geq: string
+  jsDetectionPassed_gt: string
+  jsDetectionPassed_in: [string!]
+  jsDetectionPassed_leq: string
+  jsDetectionPassed_like: string
+  jsDetectionPassed_lt: string
+  jsDetectionPassed_neq: string
+  jsDetectionPassed_notin: [string!]
+  jsDetectionPassed_notlike: string
+  kind: string
+  kind_geq: string
+  kind_gt: string
+  kind_in: [string!]
+  kind_leq: string
+  kind_like: string
+  kind_lt: string
+  kind_neq: string
+  kind_notin: [string!]
+  kind_notlike: string
+  matchIndex: uint16
+  matchIndex_geq: uint16
+  matchIndex_gt: uint16
+  matchIndex_in: [uint16!]
+  matchIndex_leq: uint16
+  matchIndex_lt: uint16
+  matchIndex_neq: uint16
+  matchIndex_notin: [uint16!]
+  originResponseStatus: uint16
+  originResponseStatus_geq: uint16
+  originResponseStatus_gt: uint16
+  originResponseStatus_in: [uint16!]
+  originResponseStatus_leq: uint16
+  originResponseStatus_lt: uint16
+  originResponseStatus_neq: uint16
+  originResponseStatus_notin: [uint16!]
+  originatorRayName: string
+  originatorRayName_geq: string
+  originatorRayName_gt: string
+  originatorRayName_in: [string!]
+  originatorRayName_leq: string
+  originatorRayName_like: string
+  originatorRayName_lt: string
+  originatorRayName_neq: string
+  originatorRayName_notin: [string!]
+  originatorRayName_notlike: string
+  rayName: string
+  rayName_geq: string
+  rayName_gt: string
+  rayName_in: [string!]
+  rayName_leq: string
+  rayName_like: string
+  rayName_lt: string
+  rayName_neq: string
+  rayName_notin: [string!]
+  rayName_notlike: string
+  ref: string
+  ref_geq: string
+  ref_gt: string
+  ref_in: [string!]
+  ref_leq: string
+  ref_like: string
+  ref_lt: string
+  ref_neq: string
+  ref_notin: [string!]
+  ref_notlike: string
+  ruleId: string
+  ruleId_geq: string
+  ruleId_gt: string
+  ruleId_in: [string!]
+  ruleId_leq: string
+  ruleId_like: string
+  ruleId_lt: string
+  ruleId_neq: string
+  ruleId_notin: [string!]
+  ruleId_notlike: string
+  rulesetId: string
+  rulesetId_geq: string
+  rulesetId_gt: string
+  rulesetId_in: [string!]
+  rulesetId_leq: string
+  rulesetId_like: string
+  rulesetId_lt: string
+  rulesetId_neq: string
+  rulesetId_notin: [string!]
+  rulesetId_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  source: string
+  source_geq: string
+  source_gt: string
+  source_in: [string!]
+  source_leq: string
+  source_like: string
+  source_lt: string
+  source_neq: string
+  source_notin: [string!]
+  source_notlike: string
+  userAgent: string
+  userAgent_geq: string
+  userAgent_gt: string
+  userAgent_in: [string!]
+  userAgent_leq: string
+  userAgent_like: string
+  userAgent_lt: string
+  userAgent_neq: string
+  userAgent_notin: [string!]
+  userAgent_notlike: string
+  verifiedBotCategory: string
+  verifiedBotCategory_geq: string
+  verifiedBotCategory_gt: string
+  verifiedBotCategory_in: [string!]
+  verifiedBotCategory_leq: string
+  verifiedBotCategory_like: string
+  verifiedBotCategory_lt: string
+  verifiedBotCategory_neq: string
+  verifiedBotCategory_notin: [string!]
+  verifiedBotCategory_notlike: string
+  wafAttackScore: uint8
+  wafAttackScoreClass: string
+  wafAttackScoreClass_geq: string
+  wafAttackScoreClass_gt: string
+  wafAttackScoreClass_in: [string!]
+  wafAttackScoreClass_leq: string
+  wafAttackScoreClass_like: string
+  wafAttackScoreClass_lt: string
+  wafAttackScoreClass_neq: string
+  wafAttackScoreClass_notin: [string!]
+  wafAttackScoreClass_notlike: string
+  wafAttackScore_geq: uint8
+  wafAttackScore_gt: uint8
+  wafAttackScore_in: bytes
+  wafAttackScore_leq: uint8
+  wafAttackScore_lt: uint8
+  wafAttackScore_neq: uint8
+  wafAttackScore_notin: bytes
+  wafMlAttackScore: uint8
+  wafMlAttackScore_geq: uint8
+  wafMlAttackScore_gt: uint8
+  wafMlAttackScore_in: bytes
+  wafMlAttackScore_leq: uint8
+  wafMlAttackScore_lt: uint8
+  wafMlAttackScore_neq: uint8
+  wafMlAttackScore_notin: bytes
+  wafMlSqliAttackScore: uint8
+  wafMlSqliAttackScore_geq: uint8
+  wafMlSqliAttackScore_gt: uint8
+  wafMlSqliAttackScore_in: bytes
+  wafMlSqliAttackScore_leq: uint8
+  wafMlSqliAttackScore_lt: uint8
+  wafMlSqliAttackScore_neq: uint8
+  wafMlSqliAttackScore_notin: bytes
+  wafMlXssAttackScore: uint8
+  wafMlXssAttackScore_geq: uint8
+  wafMlXssAttackScore_gt: uint8
+  wafMlXssAttackScore_in: bytes
+  wafMlXssAttackScore_leq: uint8
+  wafMlXssAttackScore_lt: uint8
+  wafMlXssAttackScore_neq: uint8
+  wafMlXssAttackScore_notin: bytes
+  wafPathTraversalAttackScore: uint8
+  wafPathTraversalAttackScore_geq: uint8
+  wafPathTraversalAttackScore_gt: uint8
+  wafPathTraversalAttackScore_in: bytes
+  wafPathTraversalAttackScore_leq: uint8
+  wafPathTraversalAttackScore_lt: uint8
+  wafPathTraversalAttackScore_neq: uint8
+  wafPathTraversalAttackScore_notin: bytes
+  wafRceAttackScore: uint8
+  wafRceAttackScore_geq: uint8
+  wafRceAttackScore_gt: uint8
+  wafRceAttackScore_in: bytes
+  wafRceAttackScore_leq: uint8
+  wafRceAttackScore_lt: uint8
+  wafRceAttackScore_neq: uint8
+  wafRceAttackScore_notin: bytes
+  wafRequestSignatureCategories_has: string
+  wafRequestSignatureCategories_hasall: [string!]
+  wafRequestSignatureCategories_hasany: [string!]
+  wafRequestSignatureCategories_isempty: bool
+  wafRequestSignatureCategories_nothas: string
+  wafRequestSignatureRefs_has: string
+  wafRequestSignatureRefs_hasall: [string!]
+  wafRequestSignatureRefs_hasany: [string!]
+  wafRequestSignatureRefs_isempty: bool
+  wafRequestSignatureRefs_nothas: string
+  wafSqliAttackScore: uint8
+  wafSqliAttackScore_geq: uint8
+  wafSqliAttackScore_gt: uint8
+  wafSqliAttackScore_in: bytes
+  wafSqliAttackScore_leq: uint8
+  wafSqliAttackScore_lt: uint8
+  wafSqliAttackScore_neq: uint8
+  wafSqliAttackScore_notin: bytes
+  wafXssAttackScore: uint8
+  wafXssAttackScore_geq: uint8
+  wafXssAttackScore_gt: uint8
+  wafXssAttackScore_in: bytes
+  wafXssAttackScore_leq: uint8
+  wafXssAttackScore_lt: uint8
+  wafXssAttackScore_neq: uint8
+  wafXssAttackScore_notin: bytes
+  zoneVersion: uint64
+  zoneVersion_geq: uint64
+  zoneVersion_gt: uint64
+  zoneVersion_in: [uint64!]
+  zoneVersion_leq: uint64
+  zoneVersion_lt: uint64
+  zoneVersion_neq: uint64
+  zoneVersion_notin: [uint64!]
+}
+
+enum OrganizationFirewallEventsAdaptiveGroupsOrderBy {
+  # action ascending
+  action_ASC
+  # action descending
+  action_DESC
+  # apiGatewayMatchedEndpoint ascending
+  apiGatewayMatchedEndpoint_ASC
+  # apiGatewayMatchedEndpoint descending
+  apiGatewayMatchedEndpoint_DESC
+  # apiGatewayMatchedHost ascending
+  apiGatewayMatchedHost_ASC
+  # apiGatewayMatchedHost descending
+  apiGatewayMatchedHost_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # botDetectionIds ascending
+  botDetectionIds_ASC
+  # botDetectionIds descending
+  botDetectionIds_DESC
+  # botDetectionTags ascending
+  botDetectionTags_ASC
+  # botDetectionTags descending
+  botDetectionTags_DESC
+  # botScoreSrcName ascending
+  botScoreSrcName_ASC
+  # botScoreSrcName descending
+  botScoreSrcName_DESC
+  # botScore ascending
+  botScore_ASC
+  # botScore descending
+  botScore_DESC
+  # clientASNDescription ascending
+  clientASNDescription_ASC
+  # clientASNDescription descending
+  clientASNDescription_DESC
+  # clientAsn ascending
+  clientAsn_ASC
+  # clientAsn descending
+  clientAsn_DESC
+  # clientCountryName ascending
+  clientCountryName_ASC
+  # clientCountryName descending
+  clientCountryName_DESC
+  # clientIPClass ascending
+  clientIPClass_ASC
+  # clientIPClass descending
+  clientIPClass_DESC
+  # clientIP ascending
+  clientIP_ASC
+  # clientIP descending
+  clientIP_DESC
+  # clientRefererHost ascending
+  clientRefererHost_ASC
+  # clientRefererHost descending
+  clientRefererHost_DESC
+  # clientRefererPath ascending
+  clientRefererPath_ASC
+  # clientRefererPath descending
+  clientRefererPath_DESC
+  # clientRefererQuery ascending
+  clientRefererQuery_ASC
+  # clientRefererQuery descending
+  clientRefererQuery_DESC
+  # clientRefererScheme ascending
+  clientRefererScheme_ASC
+  # clientRefererScheme descending
+  clientRefererScheme_DESC
+  # clientRequestHTTPHost ascending
+  clientRequestHTTPHost_ASC
+  # clientRequestHTTPHost descending
+  clientRequestHTTPHost_DESC
+  # clientRequestHTTPMethodName ascending
+  clientRequestHTTPMethodName_ASC
+  # clientRequestHTTPMethodName descending
+  clientRequestHTTPMethodName_DESC
+  # clientRequestHTTPProtocol ascending
+  clientRequestHTTPProtocol_ASC
+  # clientRequestHTTPProtocol descending
+  clientRequestHTTPProtocol_DESC
+  # clientRequestPath ascending
+  clientRequestPath_ASC
+  # clientRequestPath descending
+  clientRequestPath_DESC
+  # clientRequestQuery ascending
+  clientRequestQuery_ASC
+  # clientRequestQuery descending
+  clientRequestQuery_DESC
+  # clientRequestScheme ascending
+  clientRequestScheme_ASC
+  # clientRequestScheme descending
+  clientRequestScheme_DESC
+  # contentScanHasFailed ascending
+  contentScanHasFailed_ASC
+  # contentScanHasFailed descending
+  contentScanHasFailed_DESC
+  # contentScanNumMaliciousObj ascending
+  contentScanNumMaliciousObj_ASC
+  # contentScanNumMaliciousObj descending
+  contentScanNumMaliciousObj_DESC
+  # contentScanNumObj ascending
+  contentScanNumObj_ASC
+  # contentScanNumObj descending
+  contentScanNumObj_DESC
+  # contentScanObjResults ascending
+  contentScanObjResults_ASC
+  # contentScanObjResults descending
+  contentScanObjResults_DESC
+  # contentScanObjSizes ascending
+  contentScanObjSizes_ASC
+  # contentScanObjSizes descending
+  contentScanObjSizes_DESC
+  # contentScanObjTypes ascending
+  contentScanObjTypes_ASC
+  # contentScanObjTypes descending
+  contentScanObjTypes_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # description ascending
+  description_ASC
+  # description descending
+  description_DESC
+  # edgeColoName ascending
+  edgeColoName_ASC
+  # edgeColoName descending
+  edgeColoName_DESC
+  # edgeResponseStatus ascending
+  edgeResponseStatus_ASC
+  # edgeResponseStatus descending
+  edgeResponseStatus_DESC
+  # firewallForAiAnyPiiCategory ascending
+  firewallForAiAnyPiiCategory_ASC
+  # firewallForAiAnyPiiCategory descending
+  firewallForAiAnyPiiCategory_DESC
+  # firewallForAiCustomTopicCategoriesScoresMin ascending
+  firewallForAiCustomTopicCategoriesScoresMin_ASC
+  # firewallForAiCustomTopicCategoriesScoresMin descending
+  firewallForAiCustomTopicCategoriesScoresMin_DESC
+  # firewallForAiInjectionScore ascending
+  firewallForAiInjectionScore_ASC
+  # firewallForAiInjectionScore descending
+  firewallForAiInjectionScore_DESC
+  # firewallForAiPiiCategories ascending
+  firewallForAiPiiCategories_ASC
+  # firewallForAiPiiCategories descending
+  firewallForAiPiiCategories_DESC
+  # firewallForAiUnsafeTopicCategories ascending
+  firewallForAiUnsafeTopicCategories_ASC
+  # firewallForAiUnsafeTopicCategories descending
+  firewallForAiUnsafeTopicCategories_DESC
+  # fraudAttack ascending
+  fraudAttack_ASC
+  # fraudAttack descending
+  fraudAttack_DESC
+  # fraudDetectionIds ascending
+  fraudDetectionIds_ASC
+  # fraudDetectionIds descending
+  fraudDetectionIds_DESC
+  # fraudDetectionTags ascending
+  fraudDetectionTags_ASC
+  # fraudDetectionTags descending
+  fraudDetectionTags_DESC
+  # fraudEmailRisk ascending
+  fraudEmailRisk_ASC
+  # fraudEmailRisk descending
+  fraudEmailRisk_DESC
+  # fraudEventType ascending
+  fraudEventType_ASC
+  # fraudEventType descending
+  fraudEventType_DESC
+  # fraudUserId ascending
+  fraudUserId_ASC
+  # fraudUserId descending
+  fraudUserId_DESC
+  # httpApplicationVersion ascending
+  httpApplicationVersion_ASC
+  # httpApplicationVersion descending
+  httpApplicationVersion_DESC
+  # ja3Hash ascending
+  ja3Hash_ASC
+  # ja3Hash descending
+  ja3Hash_DESC
+  # ja4 ascending
+  ja4_ASC
+  # ja4 descending
+  ja4_DESC
+  # jsDetectionPassed ascending
+  jsDetectionPassed_ASC
+  # jsDetectionPassed descending
+  jsDetectionPassed_DESC
+  # kind ascending
+  kind_ASC
+  # kind descending
+  kind_DESC
+  # matchIndex ascending
+  matchIndex_ASC
+  # matchIndex descending
+  matchIndex_DESC
+  # originResponseStatus ascending
+  originResponseStatus_ASC
+  # originResponseStatus descending
+  originResponseStatus_DESC
+  # originatorRayName ascending
+  originatorRayName_ASC
+  # originatorRayName descending
+  originatorRayName_DESC
+  # rayName ascending
+  rayName_ASC
+  # rayName descending
+  rayName_DESC
+  # ref ascending
+  ref_ASC
+  # ref descending
+  ref_DESC
+  # ruleId ascending
+  ruleId_ASC
+  # ruleId descending
+  ruleId_DESC
+  # rulesetId ascending
+  rulesetId_ASC
+  # rulesetId descending
+  rulesetId_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # source ascending
+  source_ASC
+  # source descending
+  source_DESC
+  # sum(botDetectionIdArray) ascending
+  sum_botDetectionIdArray_ASC
+  # sum(botDetectionIdArray) descending
+  sum_botDetectionIdArray_DESC
+  # sum(botDetectionIdCountArray) ascending
+  sum_botDetectionIdCountArray_ASC
+  # sum(botDetectionIdCountArray) descending
+  sum_botDetectionIdCountArray_DESC
+  # sum(botDetectionTagArray) ascending
+  sum_botDetectionTagArray_ASC
+  # sum(botDetectionTagArray) descending
+  sum_botDetectionTagArray_DESC
+  # sum(botDetectionTagCountArray) ascending
+  sum_botDetectionTagCountArray_ASC
+  # sum(botDetectionTagCountArray) descending
+  sum_botDetectionTagCountArray_DESC
+  # sum(fraudDetectionIdArray) ascending
+  sum_fraudDetectionIdArray_ASC
+  # sum(fraudDetectionIdArray) descending
+  sum_fraudDetectionIdArray_DESC
+  # sum(fraudDetectionIdCountArray) ascending
+  sum_fraudDetectionIdCountArray_ASC
+  # sum(fraudDetectionIdCountArray) descending
+  sum_fraudDetectionIdCountArray_DESC
+  # sum(fraudDetectionTagArray) ascending
+  sum_fraudDetectionTagArray_ASC
+  # sum(fraudDetectionTagArray) descending
+  sum_fraudDetectionTagArray_DESC
+  # sum(fraudDetectionTagCountArray) ascending
+  sum_fraudDetectionTagCountArray_ASC
+  # sum(fraudDetectionTagCountArray) descending
+  sum_fraudDetectionTagCountArray_DESC
+  # userAgent ascending
+  userAgent_ASC
+  # userAgent descending
+  userAgent_DESC
+  # verifiedBotCategory ascending
+  verifiedBotCategory_ASC
+  # verifiedBotCategory descending
+  verifiedBotCategory_DESC
+  # visibility ascending
+  visibility_ASC
+  # visibility descending
+  visibility_DESC
+  # wafAttackScoreClass ascending
+  wafAttackScoreClass_ASC
+  # wafAttackScoreClass descending
+  wafAttackScoreClass_DESC
+  # wafAttackScore ascending
+  wafAttackScore_ASC
+  # wafAttackScore descending
+  wafAttackScore_DESC
+  # wafMlAttackScore ascending
+  wafMlAttackScore_ASC
+  # wafMlAttackScore descending
+  wafMlAttackScore_DESC
+  # wafMlSqliAttackScore ascending
+  wafMlSqliAttackScore_ASC
+  # wafMlSqliAttackScore descending
+  wafMlSqliAttackScore_DESC
+  # wafMlXssAttackScore ascending
+  wafMlXssAttackScore_ASC
+  # wafMlXssAttackScore descending
+  wafMlXssAttackScore_DESC
+  # wafPathTraversalAttackScore ascending
+  wafPathTraversalAttackScore_ASC
+  # wafPathTraversalAttackScore descending
+  wafPathTraversalAttackScore_DESC
+  # wafRceAttackScore ascending
+  wafRceAttackScore_ASC
+  # wafRceAttackScore descending
+  wafRceAttackScore_DESC
+  # wafRequestSignatureCategories ascending
+  wafRequestSignatureCategories_ASC
+  # wafRequestSignatureCategories descending
+  wafRequestSignatureCategories_DESC
+  # wafRequestSignatureRefs ascending
+  wafRequestSignatureRefs_ASC
+  # wafRequestSignatureRefs descending
+  wafRequestSignatureRefs_DESC
+  # wafSqliAttackScore ascending
+  wafSqliAttackScore_ASC
+  # wafSqliAttackScore descending
+  wafSqliAttackScore_DESC
+  # wafXssAttackScore ascending
+  wafXssAttackScore_ASC
+  # wafXssAttackScore descending
+  wafXssAttackScore_DESC
+  # zoneVersion ascending
+  zoneVersion_ASC
+  # zoneVersion descending
+  zoneVersion_DESC
+}
+
+type OrganizationFirewallEventsAdaptiveGroupsSum {
+  # Array of bot management detection ids
+  botDetectionIdArray: [uint32!]!
+  # Count array of bot management detection ids. Elements in this array correspond to elements in botDetectionIdArray by index.
+  botDetectionIdCountArray: [uint32!]!
+  # Array of bot management detection tags
+  botDetectionTagArray: [string!]!
+  # Count array of bot management detection tags. Elements in this array correspond to elements in botDetectionTagArray by index.
+  botDetectionTagCountArray: [uint32!]!
+  # Array of fraud detection ids
+  fraudDetectionIdArray: [uint32!]!
+  # Count array of fraud detection ids. Elements in this array correspond to elements in fraudDetectionIdArray by index.
+  fraudDetectionIdCountArray: [uint32!]!
+  # Array of fraud detection tags
+  fraudDetectionTagArray: [string!]!
+  # Count array of fraud detection tags. Elements in this array correspond to elements in fraudDetectionTagArray by index.
+  fraudDetectionTagCountArray: [uint32!]!
 }
 
 # Aggregated HTTP requests data with adaptive sampling
@@ -78721,6 +80619,7 @@ type OrganizationHttpRequestsAdaptiveGroupsSumConfidence {
 
 # Access and limitations for an organization
 type OrganizationSettings {
+  firewallEventsAdaptiveGroups: Settings!
   httpRequestsAdaptiveGroups: Settings!
 }
 
