@@ -9,6 +9,8 @@ Account-level datasets:
 * aiGatewayErrorsAdaptiveGroups
 * aiGatewayRequestsAdaptiveGroups
 * aiGatewaySizeAdaptiveGroups
+* aiGatewaySpendSessionsAdaptiveGroups
+* aiGatewaySpendUserDailyAdaptiveGroups
 * aiInferenceAdaptive
 * aiInferenceAdaptiveGroups
 * aiSearchAPIAdaptiveGroups
@@ -337,6 +339,10 @@ type account {
   aiGatewayRequestsAdaptiveGroups(filter: AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayRequestsAdaptiveGroupsOrderBy!]): [AccountAiGatewayRequestsAdaptiveGroups!]!
   # AI Gateway Stored Rows
   aiGatewaySizeAdaptiveGroups(filter: AccountAiGatewaySizeAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewaySizeAdaptiveGroupsOrderBy!]): [AccountAiGatewaySizeAdaptiveGroups!]!
+  # AI Gateway Spend session-level facts with adaptive sampling
+  aiGatewaySpendSessionsAdaptiveGroups(filter: AccountAiGatewaySpendSessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewaySpendSessionsAdaptiveGroupsOrderBy!]): [AccountAiGatewaySpendSessionsAdaptiveGroups!]!
+  # AI Gateway Spend user daily facts with adaptive sampling
+  aiGatewaySpendUserDailyAdaptiveGroups(filter: AccountAiGatewaySpendUserDailyAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewaySpendUserDailyAdaptiveGroupsOrderBy!]): [AccountAiGatewaySpendUserDailyAdaptiveGroups!]!
   # AI Inference logs with adaptive sampling
   aiInferenceAdaptive(filter: AccountAiInferenceAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveOrderBy!]): [AccountAiInferenceAdaptive!]!
   # Aggregated AI Inference logs with adaptive sampling
@@ -4756,6 +4762,8 @@ type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
   mcpToolCount: float64!
   # Access service principal name extracted from request metadata
   metadataCommonName: string!
+  # Individual metadata key saved on an AI Gateway request. Selecting this dimension explodes one request into one row per metadata key, enabling common-key discovery; counts are per key occurrence.
+  metadataKey: string!
   # Metadata keys saved on ai-gateway request
   metadataKeys: [string!]!
   # Metadata saved in on ai-gateway request
@@ -4764,6 +4772,8 @@ type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
   metadataSessionId: string!
   # Access user ID (JWT sub claim) extracted from request metadata
   metadataUserId: string!
+  # Value for a caller-selected metadata key. Use aliases to request or group by specific customer-provided metadata keys. AI Gateway-injected identity keys use the cf.* prefix.
+  metadataValue(key: string): string!
   # Metadata values saved on ai-gateway request
   metadataValues: [string!]!
   # Which models was the request sent to
@@ -4945,6 +4955,16 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   metadataCommonName_neq: string
   metadataCommonName_notin: [string!]
   metadataCommonName_notlike: string
+  metadataKey: string
+  metadataKey_geq: string
+  metadataKey_gt: string
+  metadataKey_in: [string!]
+  metadataKey_leq: string
+  metadataKey_like: string
+  metadataKey_lt: string
+  metadataKey_neq: string
+  metadataKey_notin: [string!]
+  metadataKey_notlike: string
   metadataKeys_has: string
   metadataKeys_hasall: [string!]
   metadataKeys_hasany: [string!]
@@ -5196,6 +5216,10 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   metadataCommonName_ASC
   # metadataCommonName descending
   metadataCommonName_DESC
+  # metadataKey ascending
+  metadataKey_ASC
+  # metadataKey descending
+  metadataKey_DESC
   # metadataKeys ascending
   metadataKeys_ASC
   # metadataKeys descending
@@ -5642,6 +5666,1456 @@ enum AccountAiGatewaySizeAdaptiveGroupsOrderBy {
   rows_ASC
   # rows descending
   rows_DESC
+}
+
+# AI Gateway Spend session-level facts with adaptive sampling
+type AccountAiGatewaySpendSessionsAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountAiGatewaySpendSessionsAdaptiveGroupsConfidence!
+  # Total number of AI Gateway Spend sessions
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiGatewaySpendSessionsAdaptiveGroupsDimensions
+  # Maximum AI Gateway Spend session metrics per dimension
+  max: AccountAiGatewaySpendSessionsAdaptiveGroupsMax
+  # Minimum AI Gateway Spend session metrics per dimension
+  min: AccountAiGatewaySpendSessionsAdaptiveGroupsMin
+  # Weighted quantiles of AI Gateway Spend session metrics per dimension
+  quantiles: AccountAiGatewaySpendSessionsAdaptiveGroupsQuantiles
+  # Percentage ratios for AI Gateway Spend session metrics
+  ratio: AccountAiGatewaySpendSessionsAdaptiveGroupsRatio
+  # The sum of AI Gateway Spend session metrics per dimension
+  sum: AccountAiGatewaySpendSessionsAdaptiveGroupsSum
+}
+
+type AccountAiGatewaySpendSessionsAdaptiveGroupsConfidence {
+  # Total number of AI Gateway Spend sessions, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of AI Gateway Spend session metrics per dimension, with confidence intervals
+  sum: AccountAiGatewaySpendSessionsAdaptiveGroupsSumConfidence
+}
+
+type AccountAiGatewaySpendSessionsAdaptiveGroupsDimensions {
+  # Access common name or service principal name for the session
+  commonName: string!
+  # AI Gateway Spend session end date
+  date: Date!
+  # AI Gateway Spend session end timestamp
+  datetime: Time!
+  # AI Gateway Spend session end timestamp truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # AI Gateway Spend session end timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # AI Gateway Spend session end timestamp truncated to the hour
+  datetimeHour: Time!
+  # AI Gateway Spend session end timestamp truncated to the minute
+  datetimeMinute: Time!
+  # Model used by the first request in the session
+  firstModel: string!
+  # Provider used by the first request in the session
+  firstProvider: string!
+  # Whether the session was flagged for abnormal cost
+  flagAbnormalCost: uint8!
+  # Whether the session was flagged for abnormal duration
+  flagAbnormalDuration: uint8!
+  # Whether the session was flagged for high first-message context
+  flagHighFirstContext: uint8!
+  # Whether the session was flagged for high MCP/tool-schema count
+  flagHighMcpTools: uint8!
+  # Whether the session was flagged for low token cache hit rate
+  flagLowCacheHit: uint8!
+  # Whether the session was flagged for premium model usage
+  flagPremiumModel: uint8!
+  # Whether the session was flagged for thinking or reasoning model usage
+  flagThinkingModel: uint8!
+  # AI Gateway name
+  gateway: string!
+  # JSON summary of model usage within the session
+  modelsJson: string!
+  # Primary model used in the session
+  primaryModel: string!
+  # Primary provider used in the session
+  primaryProvider: string!
+  # Primary AI Gateway request type used in the session
+  primaryRequestType: string!
+  # Producer version that emitted this session fact
+  producerVersion: string!
+  # JSON summary of provider usage within the session
+  providersJson: string!
+  # Deterministic producer row identifier for this session fact
+  rowId: string!
+  # Application or framework session identifier
+  sessionId: string!
+  # Producer source for this session fact
+  source: string!
+  # Access user ID or service principal identifier for the session
+  userId: string!
+}
+
+input AccountAiGatewaySpendSessionsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiGatewaySpendSessionsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiGatewaySpendSessionsAdaptiveGroupsFilter_InputObject!]
+  commonName: string
+  commonName_geq: string
+  commonName_gt: string
+  commonName_in: [string!]
+  commonName_leq: string
+  commonName_like: string
+  commonName_lt: string
+  commonName_neq: string
+  commonName_notin: [string!]
+  commonName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  firstModel: string
+  firstModel_geq: string
+  firstModel_gt: string
+  firstModel_in: [string!]
+  firstModel_leq: string
+  firstModel_like: string
+  firstModel_lt: string
+  firstModel_neq: string
+  firstModel_notin: [string!]
+  firstModel_notlike: string
+  firstProvider: string
+  firstProvider_geq: string
+  firstProvider_gt: string
+  firstProvider_in: [string!]
+  firstProvider_leq: string
+  firstProvider_like: string
+  firstProvider_lt: string
+  firstProvider_neq: string
+  firstProvider_notin: [string!]
+  firstProvider_notlike: string
+  flagAbnormalCost: uint8
+  flagAbnormalCost_geq: uint8
+  flagAbnormalCost_gt: uint8
+  flagAbnormalCost_in: bytes
+  flagAbnormalCost_leq: uint8
+  flagAbnormalCost_lt: uint8
+  flagAbnormalCost_neq: uint8
+  flagAbnormalCost_notin: bytes
+  flagAbnormalDuration: uint8
+  flagAbnormalDuration_geq: uint8
+  flagAbnormalDuration_gt: uint8
+  flagAbnormalDuration_in: bytes
+  flagAbnormalDuration_leq: uint8
+  flagAbnormalDuration_lt: uint8
+  flagAbnormalDuration_neq: uint8
+  flagAbnormalDuration_notin: bytes
+  flagHighFirstContext: uint8
+  flagHighFirstContext_geq: uint8
+  flagHighFirstContext_gt: uint8
+  flagHighFirstContext_in: bytes
+  flagHighFirstContext_leq: uint8
+  flagHighFirstContext_lt: uint8
+  flagHighFirstContext_neq: uint8
+  flagHighFirstContext_notin: bytes
+  flagHighMcpTools: uint8
+  flagHighMcpTools_geq: uint8
+  flagHighMcpTools_gt: uint8
+  flagHighMcpTools_in: bytes
+  flagHighMcpTools_leq: uint8
+  flagHighMcpTools_lt: uint8
+  flagHighMcpTools_neq: uint8
+  flagHighMcpTools_notin: bytes
+  flagLowCacheHit: uint8
+  flagLowCacheHit_geq: uint8
+  flagLowCacheHit_gt: uint8
+  flagLowCacheHit_in: bytes
+  flagLowCacheHit_leq: uint8
+  flagLowCacheHit_lt: uint8
+  flagLowCacheHit_neq: uint8
+  flagLowCacheHit_notin: bytes
+  flagPremiumModel: uint8
+  flagPremiumModel_geq: uint8
+  flagPremiumModel_gt: uint8
+  flagPremiumModel_in: bytes
+  flagPremiumModel_leq: uint8
+  flagPremiumModel_lt: uint8
+  flagPremiumModel_neq: uint8
+  flagPremiumModel_notin: bytes
+  flagThinkingModel: uint8
+  flagThinkingModel_geq: uint8
+  flagThinkingModel_gt: uint8
+  flagThinkingModel_in: bytes
+  flagThinkingModel_leq: uint8
+  flagThinkingModel_lt: uint8
+  flagThinkingModel_neq: uint8
+  flagThinkingModel_notin: bytes
+  gateway: string
+  gateway_geq: string
+  gateway_gt: string
+  gateway_in: [string!]
+  gateway_leq: string
+  gateway_like: string
+  gateway_lt: string
+  gateway_neq: string
+  gateway_notin: [string!]
+  gateway_notlike: string
+  modelsJson: string
+  modelsJson_geq: string
+  modelsJson_gt: string
+  modelsJson_in: [string!]
+  modelsJson_leq: string
+  modelsJson_like: string
+  modelsJson_lt: string
+  modelsJson_neq: string
+  modelsJson_notin: [string!]
+  modelsJson_notlike: string
+  primaryModel: string
+  primaryModel_geq: string
+  primaryModel_gt: string
+  primaryModel_in: [string!]
+  primaryModel_leq: string
+  primaryModel_like: string
+  primaryModel_lt: string
+  primaryModel_neq: string
+  primaryModel_notin: [string!]
+  primaryModel_notlike: string
+  primaryProvider: string
+  primaryProvider_geq: string
+  primaryProvider_gt: string
+  primaryProvider_in: [string!]
+  primaryProvider_leq: string
+  primaryProvider_like: string
+  primaryProvider_lt: string
+  primaryProvider_neq: string
+  primaryProvider_notin: [string!]
+  primaryProvider_notlike: string
+  primaryRequestType: string
+  primaryRequestType_geq: string
+  primaryRequestType_gt: string
+  primaryRequestType_in: [string!]
+  primaryRequestType_leq: string
+  primaryRequestType_like: string
+  primaryRequestType_lt: string
+  primaryRequestType_neq: string
+  primaryRequestType_notin: [string!]
+  primaryRequestType_notlike: string
+  producerVersion: string
+  producerVersion_geq: string
+  producerVersion_gt: string
+  producerVersion_in: [string!]
+  producerVersion_leq: string
+  producerVersion_like: string
+  producerVersion_lt: string
+  producerVersion_neq: string
+  producerVersion_notin: [string!]
+  producerVersion_notlike: string
+  providersJson: string
+  providersJson_geq: string
+  providersJson_gt: string
+  providersJson_in: [string!]
+  providersJson_leq: string
+  providersJson_like: string
+  providersJson_lt: string
+  providersJson_neq: string
+  providersJson_notin: [string!]
+  providersJson_notlike: string
+  rowId: string
+  rowId_geq: string
+  rowId_gt: string
+  rowId_in: [string!]
+  rowId_leq: string
+  rowId_like: string
+  rowId_lt: string
+  rowId_neq: string
+  rowId_notin: [string!]
+  rowId_notlike: string
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+  source: string
+  source_geq: string
+  source_gt: string
+  source_in: [string!]
+  source_leq: string
+  source_like: string
+  source_lt: string
+  source_neq: string
+  source_notin: [string!]
+  source_notlike: string
+  userId: string
+  userId_geq: string
+  userId_gt: string
+  userId_in: [string!]
+  userId_leq: string
+  userId_like: string
+  userId_lt: string
+  userId_neq: string
+  userId_notin: [string!]
+  userId_notlike: string
+}
+
+type AccountAiGatewaySpendSessionsAdaptiveGroupsMax {
+  # Maximum session cost
+  cost: float64!
+  # Maximum cost multiplier (session_cost / user_mean_session_cost) for outlier detection
+  costMultiplier: float64!
+  # Maximum session duration in milliseconds
+  durationMs: uint64!
+  # Maximum first-message context tokens
+  firstContextTokens: float64!
+  # Maximum first-request MCP tool count
+  firstMcpToolCount: uint32!
+  # Maximum MCP server count
+  mcpServerCount: uint32!
+  # Maximum MCP tool count
+  mcpToolCount: uint32!
+  # User mean session cost baseline used for outlier detection
+  meanSessionCost: float64!
+  # Latest session end timestamp
+  sessionEnd: Time!
+  # Latest session start timestamp
+  sessionStart: Time!
+}
+
+type AccountAiGatewaySpendSessionsAdaptiveGroupsMin {
+  # Minimum session cost
+  cost: float64!
+  # Minimum session duration in milliseconds
+  durationMs: uint64!
+  # Minimum first-message context tokens
+  firstContextTokens: float64!
+  # Earliest session end timestamp
+  sessionEnd: Time!
+  # Earliest session start timestamp
+  sessionStart: Time!
+}
+
+enum AccountAiGatewaySpendSessionsAdaptiveGroupsOrderBy {
+  # commonName ascending
+  commonName_ASC
+  # commonName descending
+  commonName_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # firstModel ascending
+  firstModel_ASC
+  # firstModel descending
+  firstModel_DESC
+  # firstProvider ascending
+  firstProvider_ASC
+  # firstProvider descending
+  firstProvider_DESC
+  # flagAbnormalCost ascending
+  flagAbnormalCost_ASC
+  # flagAbnormalCost descending
+  flagAbnormalCost_DESC
+  # flagAbnormalDuration ascending
+  flagAbnormalDuration_ASC
+  # flagAbnormalDuration descending
+  flagAbnormalDuration_DESC
+  # flagHighFirstContext ascending
+  flagHighFirstContext_ASC
+  # flagHighFirstContext descending
+  flagHighFirstContext_DESC
+  # flagHighMcpTools ascending
+  flagHighMcpTools_ASC
+  # flagHighMcpTools descending
+  flagHighMcpTools_DESC
+  # flagLowCacheHit ascending
+  flagLowCacheHit_ASC
+  # flagLowCacheHit descending
+  flagLowCacheHit_DESC
+  # flagPremiumModel ascending
+  flagPremiumModel_ASC
+  # flagPremiumModel descending
+  flagPremiumModel_DESC
+  # flagThinkingModel ascending
+  flagThinkingModel_ASC
+  # flagThinkingModel descending
+  flagThinkingModel_DESC
+  # gateway ascending
+  gateway_ASC
+  # gateway descending
+  gateway_DESC
+  # max(costMultiplier) ascending
+  max_costMultiplier_ASC
+  # max(costMultiplier) descending
+  max_costMultiplier_DESC
+  # max(cost) ascending
+  max_cost_ASC
+  # max(cost) descending
+  max_cost_DESC
+  # max(durationMs) ascending
+  max_durationMs_ASC
+  # max(durationMs) descending
+  max_durationMs_DESC
+  # max(firstContextTokens) ascending
+  max_firstContextTokens_ASC
+  # max(firstContextTokens) descending
+  max_firstContextTokens_DESC
+  # max(firstMcpToolCount) ascending
+  max_firstMcpToolCount_ASC
+  # max(firstMcpToolCount) descending
+  max_firstMcpToolCount_DESC
+  # max(mcpServerCount) ascending
+  max_mcpServerCount_ASC
+  # max(mcpServerCount) descending
+  max_mcpServerCount_DESC
+  # max(mcpToolCount) ascending
+  max_mcpToolCount_ASC
+  # max(mcpToolCount) descending
+  max_mcpToolCount_DESC
+  # max(meanSessionCost) ascending
+  max_meanSessionCost_ASC
+  # max(meanSessionCost) descending
+  max_meanSessionCost_DESC
+  # max(sessionEnd) ascending
+  max_sessionEnd_ASC
+  # max(sessionEnd) descending
+  max_sessionEnd_DESC
+  # max(sessionStart) ascending
+  max_sessionStart_ASC
+  # max(sessionStart) descending
+  max_sessionStart_DESC
+  # min(cost) ascending
+  min_cost_ASC
+  # min(cost) descending
+  min_cost_DESC
+  # min(durationMs) ascending
+  min_durationMs_ASC
+  # min(durationMs) descending
+  min_durationMs_DESC
+  # min(firstContextTokens) ascending
+  min_firstContextTokens_ASC
+  # min(firstContextTokens) descending
+  min_firstContextTokens_DESC
+  # min(sessionEnd) ascending
+  min_sessionEnd_ASC
+  # min(sessionEnd) descending
+  min_sessionEnd_DESC
+  # min(sessionStart) ascending
+  min_sessionStart_ASC
+  # min(sessionStart) descending
+  min_sessionStart_DESC
+  # modelsJson ascending
+  modelsJson_ASC
+  # modelsJson descending
+  modelsJson_DESC
+  # primaryModel ascending
+  primaryModel_ASC
+  # primaryModel descending
+  primaryModel_DESC
+  # primaryProvider ascending
+  primaryProvider_ASC
+  # primaryProvider descending
+  primaryProvider_DESC
+  # primaryRequestType ascending
+  primaryRequestType_ASC
+  # primaryRequestType descending
+  primaryRequestType_DESC
+  # producerVersion ascending
+  producerVersion_ASC
+  # producerVersion descending
+  producerVersion_DESC
+  # providersJson ascending
+  providersJson_ASC
+  # providersJson descending
+  providersJson_DESC
+  # quantiles(durationMsP25) ascending
+  quantiles_durationMsP25_ASC
+  # quantiles(durationMsP25) descending
+  quantiles_durationMsP25_DESC
+  # quantiles(durationMsP50) ascending
+  quantiles_durationMsP50_ASC
+  # quantiles(durationMsP50) descending
+  quantiles_durationMsP50_DESC
+  # quantiles(durationMsP75) ascending
+  quantiles_durationMsP75_ASC
+  # quantiles(durationMsP75) descending
+  quantiles_durationMsP75_DESC
+  # quantiles(durationMsP90) ascending
+  quantiles_durationMsP90_ASC
+  # quantiles(durationMsP90) descending
+  quantiles_durationMsP90_DESC
+  # quantiles(durationMsP95) ascending
+  quantiles_durationMsP95_ASC
+  # quantiles(durationMsP95) descending
+  quantiles_durationMsP95_DESC
+  # quantiles(durationMsP999) ascending
+  quantiles_durationMsP999_ASC
+  # quantiles(durationMsP999) descending
+  quantiles_durationMsP999_DESC
+  # quantiles(durationMsP99) ascending
+  quantiles_durationMsP99_ASC
+  # quantiles(durationMsP99) descending
+  quantiles_durationMsP99_DESC
+  # quantiles(firstContextTokensP25) ascending
+  quantiles_firstContextTokensP25_ASC
+  # quantiles(firstContextTokensP25) descending
+  quantiles_firstContextTokensP25_DESC
+  # quantiles(firstContextTokensP50) ascending
+  quantiles_firstContextTokensP50_ASC
+  # quantiles(firstContextTokensP50) descending
+  quantiles_firstContextTokensP50_DESC
+  # quantiles(firstContextTokensP75) ascending
+  quantiles_firstContextTokensP75_ASC
+  # quantiles(firstContextTokensP75) descending
+  quantiles_firstContextTokensP75_DESC
+  # quantiles(firstContextTokensP90) ascending
+  quantiles_firstContextTokensP90_ASC
+  # quantiles(firstContextTokensP90) descending
+  quantiles_firstContextTokensP90_DESC
+  # quantiles(firstContextTokensP95) ascending
+  quantiles_firstContextTokensP95_ASC
+  # quantiles(firstContextTokensP95) descending
+  quantiles_firstContextTokensP95_DESC
+  # quantiles(firstContextTokensP999) ascending
+  quantiles_firstContextTokensP999_ASC
+  # quantiles(firstContextTokensP999) descending
+  quantiles_firstContextTokensP999_DESC
+  # quantiles(firstContextTokensP99) ascending
+  quantiles_firstContextTokensP99_ASC
+  # quantiles(firstContextTokensP99) descending
+  quantiles_firstContextTokensP99_DESC
+  # ratio(cacheHitPct) ascending
+  ratio_cacheHitPct_ASC
+  # ratio(cacheHitPct) descending
+  ratio_cacheHitPct_DESC
+  # rowId ascending
+  rowId_ASC
+  # rowId descending
+  rowId_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # source ascending
+  source_ASC
+  # source descending
+  source_DESC
+  # sum(abnormalCostSessions) ascending
+  sum_abnormalCostSessions_ASC
+  # sum(abnormalCostSessions) descending
+  sum_abnormalCostSessions_DESC
+  # sum(abnormalDurationSessions) ascending
+  sum_abnormalDurationSessions_ASC
+  # sum(abnormalDurationSessions) descending
+  sum_abnormalDurationSessions_DESC
+  # sum(cacheReadRequestCount) ascending
+  sum_cacheReadRequestCount_ASC
+  # sum(cacheReadRequestCount) descending
+  sum_cacheReadRequestCount_DESC
+  # sum(cacheReadTokens) ascending
+  sum_cacheReadTokens_ASC
+  # sum(cacheReadTokens) descending
+  sum_cacheReadTokens_DESC
+  # sum(cacheWriteRequestCount) ascending
+  sum_cacheWriteRequestCount_ASC
+  # sum(cacheWriteRequestCount) descending
+  sum_cacheWriteRequestCount_DESC
+  # sum(cacheWriteTokens) ascending
+  sum_cacheWriteTokens_ASC
+  # sum(cacheWriteTokens) descending
+  sum_cacheWriteTokens_DESC
+  # sum(contextTokens) ascending
+  sum_contextTokens_ASC
+  # sum(contextTokens) descending
+  sum_contextTokens_DESC
+  # sum(cost) ascending
+  sum_cost_ASC
+  # sum(cost) descending
+  sum_cost_DESC
+  # sum(erroredRequestCount) ascending
+  sum_erroredRequestCount_ASC
+  # sum(erroredRequestCount) descending
+  sum_erroredRequestCount_DESC
+  # sum(freshInputTokens) ascending
+  sum_freshInputTokens_ASC
+  # sum(freshInputTokens) descending
+  sum_freshInputTokens_DESC
+  # sum(freshPlusWriteTokens) ascending
+  sum_freshPlusWriteTokens_ASC
+  # sum(freshPlusWriteTokens) descending
+  sum_freshPlusWriteTokens_DESC
+  # sum(highFirstContextSessions) ascending
+  sum_highFirstContextSessions_ASC
+  # sum(highFirstContextSessions) descending
+  sum_highFirstContextSessions_DESC
+  # sum(highMcpToolSessions) ascending
+  sum_highMcpToolSessions_ASC
+  # sum(highMcpToolSessions) descending
+  sum_highMcpToolSessions_DESC
+  # sum(lowCacheHitSessions) ascending
+  sum_lowCacheHitSessions_ASC
+  # sum(lowCacheHitSessions) descending
+  sum_lowCacheHitSessions_DESC
+  # sum(premiumModelCost) ascending
+  sum_premiumModelCost_ASC
+  # sum(premiumModelCost) descending
+  sum_premiumModelCost_DESC
+  # sum(premiumModelSessions) ascending
+  sum_premiumModelSessions_ASC
+  # sum(premiumModelSessions) descending
+  sum_premiumModelSessions_DESC
+  # sum(requestCount) ascending
+  sum_requestCount_ASC
+  # sum(requestCount) descending
+  sum_requestCount_DESC
+  # sum(successfulRequestCount) ascending
+  sum_successfulRequestCount_ASC
+  # sum(successfulRequestCount) descending
+  sum_successfulRequestCount_DESC
+  # sum(thinkingModelCost) ascending
+  sum_thinkingModelCost_ASC
+  # sum(thinkingModelCost) descending
+  sum_thinkingModelCost_DESC
+  # sum(thinkingModelSessions) ascending
+  sum_thinkingModelSessions_ASC
+  # sum(thinkingModelSessions) descending
+  sum_thinkingModelSessions_DESC
+  # sum(tokensIn) ascending
+  sum_tokensIn_ASC
+  # sum(tokensIn) descending
+  sum_tokensIn_DESC
+  # sum(tokensOut) ascending
+  sum_tokensOut_ASC
+  # sum(tokensOut) descending
+  sum_tokensOut_DESC
+  # sum(totalTokens) ascending
+  sum_totalTokens_ASC
+  # sum(totalTokens) descending
+  sum_totalTokens_DESC
+  # userId ascending
+  userId_ASC
+  # userId descending
+  userId_DESC
+}
+
+type AccountAiGatewaySpendSessionsAdaptiveGroupsQuantiles {
+  # 25th percentile session duration in milliseconds
+  durationMsP25: float64!
+  # 50th percentile session duration in milliseconds
+  durationMsP50: float64!
+  # 75th percentile session duration in milliseconds
+  durationMsP75: float64!
+  # 90th percentile session duration in milliseconds
+  durationMsP90: float64!
+  # 95th percentile session duration in milliseconds
+  durationMsP95: float64!
+  # 99th percentile session duration in milliseconds
+  durationMsP99: float64!
+  # 99.9th percentile session duration in milliseconds
+  durationMsP999: float64!
+  # 25th percentile first-message context tokens
+  firstContextTokensP25: float64!
+  # 50th percentile first-message context tokens
+  firstContextTokensP50: float64!
+  # 75th percentile first-message context tokens
+  firstContextTokensP75: float64!
+  # 90th percentile first-message context tokens
+  firstContextTokensP90: float64!
+  # 95th percentile first-message context tokens
+  firstContextTokensP95: float64!
+  # 99th percentile first-message context tokens
+  firstContextTokensP99: float64!
+  # 99.9th percentile first-message context tokens
+  firstContextTokensP999: float64!
+}
+
+type AccountAiGatewaySpendSessionsAdaptiveGroupsRatio {
+  # Percentage of session context tokens read from provider prompt cache
+  cacheHitPct: float64!
+}
+
+type AccountAiGatewaySpendSessionsAdaptiveGroupsSum {
+  # Total sessions flagged for abnormal cost
+  abnormalCostSessions: uint64!
+  # Total sessions flagged for abnormal duration
+  abnormalDurationSessions: uint64!
+  # Total requests with provider prompt cache reads
+  cacheReadRequestCount: uint64!
+  # Total input tokens read from provider prompt cache
+  cacheReadTokens: float64!
+  # Total requests with provider prompt cache writes
+  cacheWriteRequestCount: uint64!
+  # Total input tokens written to provider prompt cache
+  cacheWriteTokens: float64!
+  # Total cache read, cache write, and fresh input tokens
+  contextTokens: float64!
+  # Total AI Gateway Spend session cost
+  cost: float64!
+  # Total errored requests represented by the sessions
+  erroredRequestCount: uint64!
+  # Total fresh uncached input tokens
+  freshInputTokens: float64!
+  # Total fresh input tokens plus provider cache write tokens
+  freshPlusWriteTokens: float64!
+  # Total sessions flagged for high first-message context
+  highFirstContextSessions: uint64!
+  # Total sessions flagged for high MCP/tool-schema count
+  highMcpToolSessions: uint64!
+  # Total sessions flagged for low token cache hit rate
+  lowCacheHitSessions: uint64!
+  # Total session spend on configured premium models
+  premiumModelCost: float64!
+  # Total sessions flagged for premium model usage
+  premiumModelSessions: uint64!
+  # Total AI Gateway request count represented by the sessions
+  requestCount: uint64!
+  # Total successful requests represented by the sessions
+  successfulRequestCount: uint64!
+  # Total session spend on configured thinking or reasoning models
+  thinkingModelCost: float64!
+  # Total sessions flagged for thinking or reasoning model usage
+  thinkingModelSessions: uint64!
+  # Total input tokens represented by the sessions
+  tokensIn: float64!
+  # Total output tokens represented by the sessions
+  tokensOut: float64!
+  # Total input and output tokens represented by the sessions
+  totalTokens: float64!
+}
+
+type AccountAiGatewaySpendSessionsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  abnormalCostSessions: Confidence!
+  # Confidence interval for the corresponding point estimate
+  abnormalDurationSessions: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cacheReadRequestCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cacheReadTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cacheWriteRequestCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cacheWriteTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  contextTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cost: Confidence!
+  # Confidence interval for the corresponding point estimate
+  erroredRequestCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  freshInputTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  freshPlusWriteTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  highFirstContextSessions: Confidence!
+  # Confidence interval for the corresponding point estimate
+  highMcpToolSessions: Confidence!
+  # Confidence interval for the corresponding point estimate
+  lowCacheHitSessions: Confidence!
+  # Confidence interval for the corresponding point estimate
+  premiumModelCost: Confidence!
+  # Confidence interval for the corresponding point estimate
+  premiumModelSessions: Confidence!
+  # Confidence interval for the corresponding point estimate
+  requestCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  successfulRequestCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  thinkingModelCost: Confidence!
+  # Confidence interval for the corresponding point estimate
+  thinkingModelSessions: Confidence!
+  # Confidence interval for the corresponding point estimate
+  tokensIn: Confidence!
+  # Confidence interval for the corresponding point estimate
+  tokensOut: Confidence!
+  # Confidence interval for the corresponding point estimate
+  totalTokens: Confidence!
+}
+
+# AI Gateway Spend user daily facts with adaptive sampling
+type AccountAiGatewaySpendUserDailyAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountAiGatewaySpendUserDailyAdaptiveGroupsConfidence!
+  # Total number of AI Gateway Spend user daily rows
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiGatewaySpendUserDailyAdaptiveGroupsDimensions
+  # Maximum AI Gateway Spend user daily metrics per dimension
+  max: AccountAiGatewaySpendUserDailyAdaptiveGroupsMax
+  # Percentage ratios for AI Gateway Spend user daily metrics
+  ratio: AccountAiGatewaySpendUserDailyAdaptiveGroupsRatio
+  # The sum of AI Gateway Spend user daily metrics per dimension
+  sum: AccountAiGatewaySpendUserDailyAdaptiveGroupsSum
+}
+
+type AccountAiGatewaySpendUserDailyAdaptiveGroupsConfidence {
+  # Total number of AI Gateway Spend user daily rows, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of AI Gateway Spend user daily metrics per dimension, with confidence intervals
+  sum: AccountAiGatewaySpendUserDailyAdaptiveGroupsSumConfidence
+}
+
+type AccountAiGatewaySpendUserDailyAdaptiveGroupsDimensions {
+  # Access common name or service principal name
+  commonName: string!
+  # UTC date for the AI Gateway Spend user summary
+  date: Date!
+  # AI Gateway Spend user daily timestamp
+  datetime: Time!
+  # AI Gateway Spend user daily timestamp truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # AI Gateway Spend user daily timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # AI Gateway Spend user daily timestamp truncated to the hour
+  datetimeHour: Time!
+  # AI Gateway Spend user daily timestamp truncated to the minute
+  datetimeMinute: Time!
+  # Whether the user daily row was flagged for abnormal cost
+  flagAbnormalCost: uint8!
+  # Whether the user daily row was flagged for abnormal duration
+  flagAbnormalDuration: uint8!
+  # Whether the user daily row was flagged for high first-message context
+  flagHighFirstContext: uint8!
+  # Whether the user daily row was flagged for high MCP/tool-schema count
+  flagHighMcpTools: uint8!
+  # Whether the user daily row was flagged for low token cache hit rate
+  flagLowCacheHit: uint8!
+  # Whether the user daily row was flagged for premium model usage
+  flagPremiumModel: uint8!
+  # Whether the user daily row was flagged for thinking or reasoning model usage
+  flagThinkingModel: uint8!
+  # Serialized flag details for this user daily fact
+  flagsJson: string!
+  # AI Gateway name
+  gateway: string!
+  # Producer version that emitted this user daily fact
+  producerVersion: string!
+  # Serialized recommendation codes for this user daily fact
+  recommendationCodes: string!
+  # Deterministic producer row identifier for this user daily fact
+  rowId: string!
+  # Producer source for this user daily fact
+  source: string!
+  # Top model for this user's daily AI Gateway spend
+  topModel: string!
+  # Top provider for this user's daily AI Gateway spend
+  topProvider: string!
+  # Access user ID or service principal identifier
+  userId: string!
+}
+
+input AccountAiGatewaySpendUserDailyAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiGatewaySpendUserDailyAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiGatewaySpendUserDailyAdaptiveGroupsFilter_InputObject!]
+  commonName: string
+  commonName_geq: string
+  commonName_gt: string
+  commonName_in: [string!]
+  commonName_leq: string
+  commonName_like: string
+  commonName_lt: string
+  commonName_neq: string
+  commonName_notin: [string!]
+  commonName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  flagAbnormalCost: uint8
+  flagAbnormalCost_geq: uint8
+  flagAbnormalCost_gt: uint8
+  flagAbnormalCost_in: bytes
+  flagAbnormalCost_leq: uint8
+  flagAbnormalCost_lt: uint8
+  flagAbnormalCost_neq: uint8
+  flagAbnormalCost_notin: bytes
+  flagAbnormalDuration: uint8
+  flagAbnormalDuration_geq: uint8
+  flagAbnormalDuration_gt: uint8
+  flagAbnormalDuration_in: bytes
+  flagAbnormalDuration_leq: uint8
+  flagAbnormalDuration_lt: uint8
+  flagAbnormalDuration_neq: uint8
+  flagAbnormalDuration_notin: bytes
+  flagHighFirstContext: uint8
+  flagHighFirstContext_geq: uint8
+  flagHighFirstContext_gt: uint8
+  flagHighFirstContext_in: bytes
+  flagHighFirstContext_leq: uint8
+  flagHighFirstContext_lt: uint8
+  flagHighFirstContext_neq: uint8
+  flagHighFirstContext_notin: bytes
+  flagHighMcpTools: uint8
+  flagHighMcpTools_geq: uint8
+  flagHighMcpTools_gt: uint8
+  flagHighMcpTools_in: bytes
+  flagHighMcpTools_leq: uint8
+  flagHighMcpTools_lt: uint8
+  flagHighMcpTools_neq: uint8
+  flagHighMcpTools_notin: bytes
+  flagLowCacheHit: uint8
+  flagLowCacheHit_geq: uint8
+  flagLowCacheHit_gt: uint8
+  flagLowCacheHit_in: bytes
+  flagLowCacheHit_leq: uint8
+  flagLowCacheHit_lt: uint8
+  flagLowCacheHit_neq: uint8
+  flagLowCacheHit_notin: bytes
+  flagPremiumModel: uint8
+  flagPremiumModel_geq: uint8
+  flagPremiumModel_gt: uint8
+  flagPremiumModel_in: bytes
+  flagPremiumModel_leq: uint8
+  flagPremiumModel_lt: uint8
+  flagPremiumModel_neq: uint8
+  flagPremiumModel_notin: bytes
+  flagThinkingModel: uint8
+  flagThinkingModel_geq: uint8
+  flagThinkingModel_gt: uint8
+  flagThinkingModel_in: bytes
+  flagThinkingModel_leq: uint8
+  flagThinkingModel_lt: uint8
+  flagThinkingModel_neq: uint8
+  flagThinkingModel_notin: bytes
+  flagsJson: string
+  flagsJson_geq: string
+  flagsJson_gt: string
+  flagsJson_in: [string!]
+  flagsJson_leq: string
+  flagsJson_like: string
+  flagsJson_lt: string
+  flagsJson_neq: string
+  flagsJson_notin: [string!]
+  flagsJson_notlike: string
+  gateway: string
+  gateway_geq: string
+  gateway_gt: string
+  gateway_in: [string!]
+  gateway_leq: string
+  gateway_like: string
+  gateway_lt: string
+  gateway_neq: string
+  gateway_notin: [string!]
+  gateway_notlike: string
+  producerVersion: string
+  producerVersion_geq: string
+  producerVersion_gt: string
+  producerVersion_in: [string!]
+  producerVersion_leq: string
+  producerVersion_like: string
+  producerVersion_lt: string
+  producerVersion_neq: string
+  producerVersion_notin: [string!]
+  producerVersion_notlike: string
+  recommendationCodes: string
+  recommendationCodes_geq: string
+  recommendationCodes_gt: string
+  recommendationCodes_in: [string!]
+  recommendationCodes_leq: string
+  recommendationCodes_like: string
+  recommendationCodes_lt: string
+  recommendationCodes_neq: string
+  recommendationCodes_notin: [string!]
+  recommendationCodes_notlike: string
+  rowId: string
+  rowId_geq: string
+  rowId_gt: string
+  rowId_in: [string!]
+  rowId_leq: string
+  rowId_like: string
+  rowId_lt: string
+  rowId_neq: string
+  rowId_notin: [string!]
+  rowId_notlike: string
+  source: string
+  source_geq: string
+  source_gt: string
+  source_in: [string!]
+  source_leq: string
+  source_like: string
+  source_lt: string
+  source_neq: string
+  source_notin: [string!]
+  source_notlike: string
+  topModel: string
+  topModel_geq: string
+  topModel_gt: string
+  topModel_in: [string!]
+  topModel_leq: string
+  topModel_like: string
+  topModel_lt: string
+  topModel_neq: string
+  topModel_notin: [string!]
+  topModel_notlike: string
+  topProvider: string
+  topProvider_geq: string
+  topProvider_gt: string
+  topProvider_in: [string!]
+  topProvider_leq: string
+  topProvider_like: string
+  topProvider_lt: string
+  topProvider_neq: string
+  topProvider_notin: [string!]
+  topProvider_notlike: string
+  userId: string
+  userId_geq: string
+  userId_gt: string
+  userId_in: [string!]
+  userId_leq: string
+  userId_like: string
+  userId_lt: string
+  userId_neq: string
+  userId_notin: [string!]
+  userId_notlike: string
+}
+
+type AccountAiGatewaySpendUserDailyAdaptiveGroupsMax {
+  # Maximum daily MCP tool count
+  mcpToolCount: uint32!
+  # User mean cost per request used as baseline for outlier detection
+  meanRequestCostBaseline: float64!
+  # Maximum daily median first-message context tokens
+  medianFirstContextTokens: float64!
+  # Maximum daily median request cost
+  medianRequestCost: float64!
+  # Maximum daily median session duration in milliseconds
+  medianSessionDurationMs: float64!
+  # Maximum daily p90 first-message context tokens
+  p90FirstContextTokens: float64!
+  # Maximum daily p90 request cost
+  p90RequestCost: float64!
+  # Maximum daily p90 session duration in milliseconds
+  p90SessionDurationMs: float64!
+  # User rank by spend within gateway (1 = top spender)
+  spendRank: uint32!
+  # User spend as percentage of gateway total spend for concentration analysis
+  spendShare: float64!
+  # Maximum daily weighted average MCP tool count
+  weightedAvgMcpTools: float64!
+}
+
+enum AccountAiGatewaySpendUserDailyAdaptiveGroupsOrderBy {
+  # commonName ascending
+  commonName_ASC
+  # commonName descending
+  commonName_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # flagAbnormalCost ascending
+  flagAbnormalCost_ASC
+  # flagAbnormalCost descending
+  flagAbnormalCost_DESC
+  # flagAbnormalDuration ascending
+  flagAbnormalDuration_ASC
+  # flagAbnormalDuration descending
+  flagAbnormalDuration_DESC
+  # flagHighFirstContext ascending
+  flagHighFirstContext_ASC
+  # flagHighFirstContext descending
+  flagHighFirstContext_DESC
+  # flagHighMcpTools ascending
+  flagHighMcpTools_ASC
+  # flagHighMcpTools descending
+  flagHighMcpTools_DESC
+  # flagLowCacheHit ascending
+  flagLowCacheHit_ASC
+  # flagLowCacheHit descending
+  flagLowCacheHit_DESC
+  # flagPremiumModel ascending
+  flagPremiumModel_ASC
+  # flagPremiumModel descending
+  flagPremiumModel_DESC
+  # flagThinkingModel ascending
+  flagThinkingModel_ASC
+  # flagThinkingModel descending
+  flagThinkingModel_DESC
+  # flagsJson ascending
+  flagsJson_ASC
+  # flagsJson descending
+  flagsJson_DESC
+  # gateway ascending
+  gateway_ASC
+  # gateway descending
+  gateway_DESC
+  # max(mcpToolCount) ascending
+  max_mcpToolCount_ASC
+  # max(mcpToolCount) descending
+  max_mcpToolCount_DESC
+  # max(meanRequestCostBaseline) ascending
+  max_meanRequestCostBaseline_ASC
+  # max(meanRequestCostBaseline) descending
+  max_meanRequestCostBaseline_DESC
+  # max(medianFirstContextTokens) ascending
+  max_medianFirstContextTokens_ASC
+  # max(medianFirstContextTokens) descending
+  max_medianFirstContextTokens_DESC
+  # max(medianRequestCost) ascending
+  max_medianRequestCost_ASC
+  # max(medianRequestCost) descending
+  max_medianRequestCost_DESC
+  # max(medianSessionDurationMs) ascending
+  max_medianSessionDurationMs_ASC
+  # max(medianSessionDurationMs) descending
+  max_medianSessionDurationMs_DESC
+  # max(p90FirstContextTokens) ascending
+  max_p90FirstContextTokens_ASC
+  # max(p90FirstContextTokens) descending
+  max_p90FirstContextTokens_DESC
+  # max(p90RequestCost) ascending
+  max_p90RequestCost_ASC
+  # max(p90RequestCost) descending
+  max_p90RequestCost_DESC
+  # max(p90SessionDurationMs) ascending
+  max_p90SessionDurationMs_ASC
+  # max(p90SessionDurationMs) descending
+  max_p90SessionDurationMs_DESC
+  # max(spendRank) ascending
+  max_spendRank_ASC
+  # max(spendRank) descending
+  max_spendRank_DESC
+  # max(spendShare) ascending
+  max_spendShare_ASC
+  # max(spendShare) descending
+  max_spendShare_DESC
+  # max(weightedAvgMcpTools) ascending
+  max_weightedAvgMcpTools_ASC
+  # max(weightedAvgMcpTools) descending
+  max_weightedAvgMcpTools_DESC
+  # producerVersion ascending
+  producerVersion_ASC
+  # producerVersion descending
+  producerVersion_DESC
+  # ratio(cacheHitPct) ascending
+  ratio_cacheHitPct_ASC
+  # ratio(cacheHitPct) descending
+  ratio_cacheHitPct_DESC
+  # recommendationCodes ascending
+  recommendationCodes_ASC
+  # recommendationCodes descending
+  recommendationCodes_DESC
+  # rowId ascending
+  rowId_ASC
+  # rowId descending
+  rowId_DESC
+  # source ascending
+  source_ASC
+  # source descending
+  source_DESC
+  # sum(abnormalRequestCount) ascending
+  sum_abnormalRequestCount_ASC
+  # sum(abnormalRequestCount) descending
+  sum_abnormalRequestCount_DESC
+  # sum(abnormalSessionCount) ascending
+  sum_abnormalSessionCount_ASC
+  # sum(abnormalSessionCount) descending
+  sum_abnormalSessionCount_DESC
+  # sum(cacheReadTokens) ascending
+  sum_cacheReadTokens_ASC
+  # sum(cacheReadTokens) descending
+  sum_cacheReadTokens_DESC
+  # sum(cacheWriteTokens) ascending
+  sum_cacheWriteTokens_ASC
+  # sum(cacheWriteTokens) descending
+  sum_cacheWriteTokens_DESC
+  # sum(contextTokens) ascending
+  sum_contextTokens_ASC
+  # sum(contextTokens) descending
+  sum_contextTokens_DESC
+  # sum(estimatedOpportunityCost) ascending
+  sum_estimatedOpportunityCost_ASC
+  # sum(estimatedOpportunityCost) descending
+  sum_estimatedOpportunityCost_DESC
+  # sum(freshInputTokens) ascending
+  sum_freshInputTokens_ASC
+  # sum(freshInputTokens) descending
+  sum_freshInputTokens_DESC
+  # sum(freshPlusWriteTokens) ascending
+  sum_freshPlusWriteTokens_ASC
+  # sum(freshPlusWriteTokens) descending
+  sum_freshPlusWriteTokens_DESC
+  # sum(highFirstContextSessionCount) ascending
+  sum_highFirstContextSessionCount_ASC
+  # sum(highFirstContextSessionCount) descending
+  sum_highFirstContextSessionCount_DESC
+  # sum(highMcpSessionCount) ascending
+  sum_highMcpSessionCount_ASC
+  # sum(highMcpSessionCount) descending
+  sum_highMcpSessionCount_DESC
+  # sum(lowCacheSessionCount) ascending
+  sum_lowCacheSessionCount_ASC
+  # sum(lowCacheSessionCount) descending
+  sum_lowCacheSessionCount_DESC
+  # sum(premiumModelSpend) ascending
+  sum_premiumModelSpend_ASC
+  # sum(premiumModelSpend) descending
+  sum_premiumModelSpend_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # sum(sessions) ascending
+  sum_sessions_ASC
+  # sum(sessions) descending
+  sum_sessions_DESC
+  # sum(spend) ascending
+  sum_spend_ASC
+  # sum(spend) descending
+  sum_spend_DESC
+  # sum(thinkingModelSpend) ascending
+  sum_thinkingModelSpend_ASC
+  # sum(thinkingModelSpend) descending
+  sum_thinkingModelSpend_DESC
+  # sum(tokensIn) ascending
+  sum_tokensIn_ASC
+  # sum(tokensIn) descending
+  sum_tokensIn_DESC
+  # sum(tokensOut) ascending
+  sum_tokensOut_ASC
+  # sum(tokensOut) descending
+  sum_tokensOut_DESC
+  # sum(totalTokens) ascending
+  sum_totalTokens_ASC
+  # sum(totalTokens) descending
+  sum_totalTokens_DESC
+  # topModel ascending
+  topModel_ASC
+  # topModel descending
+  topModel_DESC
+  # topProvider ascending
+  topProvider_ASC
+  # topProvider descending
+  topProvider_DESC
+  # userId ascending
+  userId_ASC
+  # userId descending
+  userId_DESC
+}
+
+type AccountAiGatewaySpendUserDailyAdaptiveGroupsRatio {
+  # Percentage of user daily context tokens read from provider prompt cache
+  cacheHitPct: float64!
+}
+
+type AccountAiGatewaySpendUserDailyAdaptiveGroupsSum {
+  # Total abnormal request outliers represented by the selected user daily rows
+  abnormalRequestCount: uint64!
+  # Total abnormal session outliers represented by the selected user daily rows
+  abnormalSessionCount: uint64!
+  # Total input tokens read from provider prompt cache
+  cacheReadTokens: float64!
+  # Total input tokens written to provider prompt cache
+  cacheWriteTokens: float64!
+  # Total cache read, cache write, and fresh input tokens
+  contextTokens: float64!
+  # Total estimated avoidable spend opportunity
+  estimatedOpportunityCost: float64!
+  # Total fresh uncached input tokens
+  freshInputTokens: float64!
+  # Total fresh input tokens plus provider cache write tokens
+  freshPlusWriteTokens: float64!
+  # Total sessions flagged for high first-message context
+  highFirstContextSessionCount: uint64!
+  # Total sessions flagged for high MCP/tool-schema count
+  highMcpSessionCount: uint64!
+  # Total sessions flagged for low token cache hit rate
+  lowCacheSessionCount: uint64!
+  # Total spend on configured premium models
+  premiumModelSpend: float64!
+  # Total AI Gateway requests represented by the selected user daily rows
+  requests: uint64!
+  # Total AI Gateway sessions represented by the selected user daily rows
+  sessions: uint64!
+  # Total AI Gateway Spend for the selected user daily rows
+  spend: float64!
+  # Total spend on configured thinking or reasoning models
+  thinkingModelSpend: float64!
+  # Total input tokens represented by the selected user daily rows
+  tokensIn: float64!
+  # Total output tokens represented by the selected user daily rows
+  tokensOut: float64!
+  # Total input and output tokens represented by the selected user daily rows
+  totalTokens: float64!
+}
+
+type AccountAiGatewaySpendUserDailyAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  abnormalRequestCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  abnormalSessionCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cacheReadTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cacheWriteTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  contextTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  estimatedOpportunityCost: Confidence!
+  # Confidence interval for the corresponding point estimate
+  freshInputTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  freshPlusWriteTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  highFirstContextSessionCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  highMcpSessionCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  lowCacheSessionCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  premiumModelSpend: Confidence!
+  # Confidence interval for the corresponding point estimate
+  requests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  sessions: Confidence!
+  # Confidence interval for the corresponding point estimate
+  spend: Confidence!
+  # Confidence interval for the corresponding point estimate
+  thinkingModelSpend: Confidence!
+  # Confidence interval for the corresponding point estimate
+  tokensIn: Confidence!
+  # Confidence interval for the corresponding point estimate
+  tokensOut: Confidence!
+  # Confidence interval for the corresponding point estimate
+  totalTokens: Confidence!
 }
 
 # AI Inference logs with adaptive sampling
@@ -24947,6 +26421,8 @@ type AccountDurableObjectsInvocationsAdaptiveGroupsConfidence {
 }
 
 type AccountDurableObjectsInvocationsAdaptiveGroupsDimensions {
+  # IATA airport code for the Cloudflare datacenter where the Durable Object invocation was handled.
+  coloCode: string!
   # Request datetime, truncated to start of a day
   date: Date!
   # Request datetime
@@ -24986,6 +26462,16 @@ type AccountDurableObjectsInvocationsAdaptiveGroupsDimensions {
 input AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject {
   AND: [AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject!]
   OR: [AccountDurableObjectsInvocationsAdaptiveGroupsFilter_InputObject!]
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -25163,6 +26649,10 @@ enum AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
   # constantScriptId ascending
   constantScriptId_ASC
   # constantScriptId descending
@@ -25423,6 +26913,8 @@ type AccountDurableObjectsPeriodicGroupsConfidence {
 }
 
 type AccountDurableObjectsPeriodicGroupsDimensions {
+  # IATA airport code for the Cloudflare datacenter where the Durable Object ran.
+  coloCode: string!
   # Datetime the metrics period started, truncated to start of a day
   date: Date!
   # Datetime the metrics period started
@@ -25448,6 +26940,16 @@ type AccountDurableObjectsPeriodicGroupsDimensions {
 input AccountDurableObjectsPeriodicGroupsFilter_InputObject {
   AND: [AccountDurableObjectsPeriodicGroupsFilter_InputObject!]
   OR: [AccountDurableObjectsPeriodicGroupsFilter_InputObject!]
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -25548,6 +27050,10 @@ enum AccountDurableObjectsPeriodicGroupsOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -66450,6 +67956,8 @@ type AccountSettings {
   aiGatewayErrorsAdaptiveGroups: Settings!
   aiGatewayRequestsAdaptiveGroups: Settings!
   aiGatewaySizeAdaptiveGroups: Settings!
+  aiGatewaySpendSessionsAdaptiveGroups: Settings!
+  aiGatewaySpendUserDailyAdaptiveGroups: Settings!
   aiInferenceAdaptive: Settings!
   aiInferenceAdaptiveGroups: Settings!
   aiSearchAPIAdaptiveGroups: Settings!
