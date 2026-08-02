@@ -5,6 +5,7 @@ Account-level datasets:
   advancedTcpProtectionNetworkAnalyticsAdaptiveGroups
 * aegisIpUtilizationAdaptiveGroups
 * agentMemoryOperationsAdaptiveGroups
+* agentModelInvocationsAdaptiveGroups
 * aiGatewayCacheAdaptiveGroups
 * aiGatewayErrorsAdaptiveGroups
 * aiGatewayRequestsAdaptiveGroups
@@ -331,6 +332,8 @@ type account {
   aegisIpUtilizationAdaptiveGroups(filter: AccountAegisIpUtilizationAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAegisIpUtilizationAdaptiveGroupsOrderBy!]): [AccountAegisIpUtilizationAdaptiveGroups!]!
   # Agent Memory operations with adaptive sampling
   agentMemoryOperationsAdaptiveGroups(filter: AccountAgentMemoryOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAgentMemoryOperationsAdaptiveGroupsOrderBy!]): [AccountAgentMemoryOperationsAdaptiveGroups!]!
+  # Agent model invocation usage with adaptive sampling
+  agentModelInvocationsAdaptiveGroups(filter: AccountAgentModelInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAgentModelInvocationsAdaptiveGroupsOrderBy!]): [AccountAgentModelInvocationsAdaptiveGroups!]!
   # AI Gateway Cache
   aiGatewayCacheAdaptiveGroups(filter: AccountAiGatewayCacheAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayCacheAdaptiveGroupsOrderBy!]): [AccountAiGatewayCacheAdaptiveGroups!]!
   # AI Gateway Errors
@@ -4325,6 +4328,202 @@ enum AccountAgentMemoryOperationsAdaptiveGroupsOrderBy {
   status_ASC
   # status descending
   status_DESC
+}
+
+# Agent model invocation usage with adaptive sampling
+type AccountAgentModelInvocationsAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountAgentModelInvocationsAdaptiveGroupsConfidence!
+  # List of dimensions to group by
+  dimensions: AccountAgentModelInvocationsAdaptiveGroupsDimensions
+  sum: AccountAgentModelInvocationsAdaptiveGroupsSum
+  uniq: AccountAgentModelInvocationsAdaptiveGroupsUniq
+}
+
+type AccountAgentModelInvocationsAdaptiveGroupsConfidence {
+  # Confidence level that was requested
+  level: float64!
+  sum: AccountAgentModelInvocationsAdaptiveGroupsSumConfidence
+}
+
+type AccountAgentModelInvocationsAdaptiveGroupsDimensions {
+  # Durable Object agent class or entrypoint
+  agentName: string!
+  # Model invocation date
+  date: Date!
+  # Model invocation timestamp
+  datetime: Time!
+  # Model invocation timestamp truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Model invocation timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Model invocation timestamp truncated to the hour
+  datetimeHour: Time!
+  # Model invocation timestamp truncated to the minute
+  datetimeMinute: Time!
+  # Model used by the agent
+  model: string!
+  # Worker script name
+  scriptName: string!
+}
+
+input AccountAgentModelInvocationsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAgentModelInvocationsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAgentModelInvocationsAdaptiveGroupsFilter_InputObject!]
+  agentName: string
+  agentName_geq: string
+  agentName_gt: string
+  agentName_in: [string!]
+  agentName_leq: string
+  agentName_like: string
+  agentName_lt: string
+  agentName_neq: string
+  agentName_notin: [string!]
+  agentName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  model: string
+  model_geq: string
+  model_gt: string
+  model_in: [string!]
+  model_leq: string
+  model_like: string
+  model_lt: string
+  model_neq: string
+  model_notin: [string!]
+  model_notlike: string
+  scriptName: string
+  scriptName_geq: string
+  scriptName_gt: string
+  scriptName_in: [string!]
+  scriptName_leq: string
+  scriptName_like: string
+  scriptName_lt: string
+  scriptName_neq: string
+  scriptName_notin: [string!]
+  scriptName_notlike: string
+}
+
+enum AccountAgentModelInvocationsAdaptiveGroupsOrderBy {
+  # agentName ascending
+  agentName_ASC
+  # agentName descending
+  agentName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # model ascending
+  model_ASC
+  # model descending
+  model_DESC
+  # scriptName ascending
+  scriptName_ASC
+  # scriptName descending
+  scriptName_DESC
+  # sum(inputTokens) ascending
+  sum_inputTokens_ASC
+  # sum(inputTokens) descending
+  sum_inputTokens_DESC
+  # sum(outputTokens) ascending
+  sum_outputTokens_ASC
+  # sum(outputTokens) descending
+  sum_outputTokens_DESC
+  # uniq(runs) ascending
+  uniq_runs_ASC
+  # uniq(runs) descending
+  uniq_runs_DESC
+  # uniq(sessions) ascending
+  uniq_sessions_ASC
+  # uniq(sessions) descending
+  uniq_sessions_DESC
+}
+
+type AccountAgentModelInvocationsAdaptiveGroupsSum {
+  # Total model input tokens
+  inputTokens: uint64!
+  # Total model output tokens
+  outputTokens: uint64!
+}
+
+type AccountAgentModelInvocationsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  inputTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  outputTokens: Confidence!
+}
+
+type AccountAgentModelInvocationsAdaptiveGroupsUniq {
+  # Unique agent runs, identified by trace ID
+  runs: uint64!
+  # Unique agent sessions
+  sessions: uint64!
 }
 
 # AI Gateway Cache
@@ -30153,6 +30352,22 @@ enum AccountFirewallEventsAdaptiveGroupsOrderBy {
   sum_fraudDetectionTagCountArray_ASC
   # sum(fraudDetectionTagCountArray) descending
   sum_fraudDetectionTagCountArray_DESC
+  # sum(wafRequestSignatureCategoriesArray) ascending
+  sum_wafRequestSignatureCategoriesArray_ASC
+  # sum(wafRequestSignatureCategoriesArray) descending
+  sum_wafRequestSignatureCategoriesArray_DESC
+  # sum(wafRequestSignatureCategoriesCountArray) ascending
+  sum_wafRequestSignatureCategoriesCountArray_ASC
+  # sum(wafRequestSignatureCategoriesCountArray) descending
+  sum_wafRequestSignatureCategoriesCountArray_DESC
+  # sum(wafRequestSignatureRefsArray) ascending
+  sum_wafRequestSignatureRefsArray_ASC
+  # sum(wafRequestSignatureRefsArray) descending
+  sum_wafRequestSignatureRefsArray_DESC
+  # sum(wafRequestSignatureRefsCountArray) ascending
+  sum_wafRequestSignatureRefsCountArray_ASC
+  # sum(wafRequestSignatureRefsCountArray) descending
+  sum_wafRequestSignatureRefsCountArray_DESC
   # userAgent ascending
   userAgent_ASC
   # userAgent descending
@@ -30236,6 +30451,14 @@ type AccountFirewallEventsAdaptiveGroupsSum {
   fraudDetectionTagArray: [string!]!
   # Count array of fraud detection tags. Elements in this array correspond to elements in fraudDetectionTagArray by index.
   fraudDetectionTagCountArray: [uint32!]!
+  # Array of WAF request signature categories associated with the rule refs in wafRequestSignatureRefsArray
+  wafRequestSignatureCategoriesArray: [string!]!
+  # Count array of WAF request signature categories. Elements in this array correspond to elements in wafRequestSignatureCategoriesArray by index.
+  wafRequestSignatureCategoriesCountArray: [uint32!]!
+  # Array of WAF request signature refs (Ruleset field cf.waf.signature.request.refs)
+  wafRequestSignatureRefsArray: [string!]!
+  # Count array of WAF request signature refs. Elements in this array correspond to elements in wafRequestSignatureRefsArray by index.
+  wafRequestSignatureRefsCountArray: [uint32!]!
 }
 
 type AccountFirewallEventsAdaptiveJa4SignalsElem {
@@ -33989,6 +34212,7 @@ type AccountGatewayL7RequestsAdaptiveGroups {
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountGatewayL7RequestsAdaptiveGroupsDimensions
+  uniq: AccountGatewayL7RequestsAdaptiveGroupsUniq
 }
 
 type AccountGatewayL7RequestsAdaptiveGroupsConfidence {
@@ -34497,6 +34721,14 @@ enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
   tenantId_ASC
   # tenantId descending
   tenantId_DESC
+  # uniq(email) ascending
+  uniq_email_ASC
+  # uniq(email) descending
+  uniq_email_DESC
+  # uniq(httpHost) ascending
+  uniq_httpHost_ASC
+  # uniq(httpHost) descending
+  uniq_httpHost_DESC
   # untrustedCertificateAction ascending
   untrustedCertificateAction_ASC
   # untrustedCertificateAction descending
@@ -34517,6 +34749,13 @@ enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
   virtualNetworkName_ASC
   # virtualNetworkName descending
   virtualNetworkName_DESC
+}
+
+type AccountGatewayL7RequestsAdaptiveGroupsUniq {
+  # Approximate count of unique emails
+  email: uint64!
+  # Approximate count of unique http hosts
+  httpHost: uint64!
 }
 
 # BETA - Aggregate counts of Gateway Resolver queries by category with adaptive sampling
@@ -39678,6 +39917,22 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   sum_visits_ASC
   # sum(visits) descending
   sum_visits_DESC
+  # sum(wafRequestSignatureCategoriesArray) ascending
+  sum_wafRequestSignatureCategoriesArray_ASC
+  # sum(wafRequestSignatureCategoriesArray) descending
+  sum_wafRequestSignatureCategoriesArray_DESC
+  # sum(wafRequestSignatureCategoriesCountArray) ascending
+  sum_wafRequestSignatureCategoriesCountArray_ASC
+  # sum(wafRequestSignatureCategoriesCountArray) descending
+  sum_wafRequestSignatureCategoriesCountArray_DESC
+  # sum(wafRequestSignatureRefsArray) ascending
+  sum_wafRequestSignatureRefsArray_ASC
+  # sum(wafRequestSignatureRefsArray) descending
+  sum_wafRequestSignatureRefsArray_DESC
+  # sum(wafRequestSignatureRefsCountArray) ascending
+  sum_wafRequestSignatureRefsCountArray_ASC
+  # sum(wafRequestSignatureRefsCountArray) descending
+  sum_wafRequestSignatureRefsCountArray_DESC
   # threatIntelIpDatasets ascending
   threatIntelIpDatasets_ASC
   # threatIntelIpDatasets descending
@@ -39916,6 +40171,14 @@ type AccountHttpRequestsAdaptiveGroupsSum {
   rulesMetadataKeyCountArray: [uint32!]!
   # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
   visits: uint64!
+  # Array of WAF request signature categories associated with the rule refs in wafRequestSignatureRefsArray
+  wafRequestSignatureCategoriesArray: [string!]!
+  # Count array of WAF request signature categories. Elements in this array correspond to elements in wafRequestSignatureCategoriesArray by index.
+  wafRequestSignatureCategoriesCountArray: [uint32!]!
+  # Array of WAF request signature refs (Ruleset field cf.waf.signature.request.refs)
+  wafRequestSignatureRefsArray: [string!]!
+  # Count array of WAF request signature refs. Elements in this array correspond to elements in wafRequestSignatureRefsArray by index.
+  wafRequestSignatureRefsCountArray: [uint32!]!
 }
 
 type AccountHttpRequestsAdaptiveGroupsSumConfidence {
@@ -67952,6 +68215,7 @@ type AccountSettings {
   advancedTcpProtectionNetworkAnalyticsAdaptiveGroups: Settings!
   aegisIpUtilizationAdaptiveGroups: Settings!
   agentMemoryOperationsAdaptiveGroups: Settings!
+  agentModelInvocationsAdaptiveGroups: Settings!
   aiGatewayCacheAdaptiveGroups: Settings!
   aiGatewayErrorsAdaptiveGroups: Settings!
   aiGatewayRequestsAdaptiveGroups: Settings!
@@ -80161,6 +80425,22 @@ enum OrganizationFirewallEventsAdaptiveGroupsOrderBy {
   sum_fraudDetectionTagCountArray_ASC
   # sum(fraudDetectionTagCountArray) descending
   sum_fraudDetectionTagCountArray_DESC
+  # sum(wafRequestSignatureCategoriesArray) ascending
+  sum_wafRequestSignatureCategoriesArray_ASC
+  # sum(wafRequestSignatureCategoriesArray) descending
+  sum_wafRequestSignatureCategoriesArray_DESC
+  # sum(wafRequestSignatureCategoriesCountArray) ascending
+  sum_wafRequestSignatureCategoriesCountArray_ASC
+  # sum(wafRequestSignatureCategoriesCountArray) descending
+  sum_wafRequestSignatureCategoriesCountArray_DESC
+  # sum(wafRequestSignatureRefsArray) ascending
+  sum_wafRequestSignatureRefsArray_ASC
+  # sum(wafRequestSignatureRefsArray) descending
+  sum_wafRequestSignatureRefsArray_DESC
+  # sum(wafRequestSignatureRefsCountArray) ascending
+  sum_wafRequestSignatureRefsCountArray_ASC
+  # sum(wafRequestSignatureRefsCountArray) descending
+  sum_wafRequestSignatureRefsCountArray_DESC
   # userAgent ascending
   userAgent_ASC
   # userAgent descending
@@ -80240,6 +80520,14 @@ type OrganizationFirewallEventsAdaptiveGroupsSum {
   fraudDetectionTagArray: [string!]!
   # Count array of fraud detection tags. Elements in this array correspond to elements in fraudDetectionTagArray by index.
   fraudDetectionTagCountArray: [uint32!]!
+  # Array of WAF request signature categories associated with the rule refs in wafRequestSignatureRefsArray
+  wafRequestSignatureCategoriesArray: [string!]!
+  # Count array of WAF request signature categories. Elements in this array correspond to elements in wafRequestSignatureCategoriesArray by index.
+  wafRequestSignatureCategoriesCountArray: [uint32!]!
+  # Array of WAF request signature refs (Ruleset field cf.waf.signature.request.refs)
+  wafRequestSignatureRefsArray: [string!]!
+  # Count array of WAF request signature refs. Elements in this array correspond to elements in wafRequestSignatureRefsArray by index.
+  wafRequestSignatureRefsCountArray: [uint32!]!
 }
 
 # Aggregated HTTP requests data with adaptive sampling
@@ -81905,6 +82193,22 @@ enum OrganizationHttpRequestsAdaptiveGroupsOrderBy {
   sum_visits_ASC
   # sum(visits) descending
   sum_visits_DESC
+  # sum(wafRequestSignatureCategoriesArray) ascending
+  sum_wafRequestSignatureCategoriesArray_ASC
+  # sum(wafRequestSignatureCategoriesArray) descending
+  sum_wafRequestSignatureCategoriesArray_DESC
+  # sum(wafRequestSignatureCategoriesCountArray) ascending
+  sum_wafRequestSignatureCategoriesCountArray_ASC
+  # sum(wafRequestSignatureCategoriesCountArray) descending
+  sum_wafRequestSignatureCategoriesCountArray_DESC
+  # sum(wafRequestSignatureRefsArray) ascending
+  sum_wafRequestSignatureRefsArray_ASC
+  # sum(wafRequestSignatureRefsArray) descending
+  sum_wafRequestSignatureRefsArray_DESC
+  # sum(wafRequestSignatureRefsCountArray) ascending
+  sum_wafRequestSignatureRefsCountArray_ASC
+  # sum(wafRequestSignatureRefsCountArray) descending
+  sum_wafRequestSignatureRefsCountArray_DESC
   # threatIntelIpDatasets ascending
   threatIntelIpDatasets_ASC
   # threatIntelIpDatasets descending
@@ -82102,6 +82406,14 @@ type OrganizationHttpRequestsAdaptiveGroupsSum {
   originTlsHandshakeDurationMs: uint64!
   # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
   visits: uint64!
+  # Array of WAF request signature categories associated with the rule refs in wafRequestSignatureRefsArray
+  wafRequestSignatureCategoriesArray: [string!]!
+  # Count array of WAF request signature categories. Elements in this array correspond to elements in wafRequestSignatureCategoriesArray by index.
+  wafRequestSignatureCategoriesCountArray: [uint32!]!
+  # Array of WAF request signature refs (Ruleset field cf.waf.signature.request.refs)
+  wafRequestSignatureRefsArray: [string!]!
+  # Count array of WAF request signature refs. Elements in this array correspond to elements in wafRequestSignatureRefsArray by index.
+  wafRequestSignatureRefsCountArray: [uint32!]!
 }
 
 type OrganizationHttpRequestsAdaptiveGroupsSumConfidence {
@@ -88176,6 +88488,22 @@ enum ZoneFirewallEventsAdaptiveByTimeGroupsOrderBy {
   sum_fraudDetectionTagCountArray_ASC
   # sum(fraudDetectionTagCountArray) descending
   sum_fraudDetectionTagCountArray_DESC
+  # sum(wafRequestSignatureCategoriesArray) ascending
+  sum_wafRequestSignatureCategoriesArray_ASC
+  # sum(wafRequestSignatureCategoriesArray) descending
+  sum_wafRequestSignatureCategoriesArray_DESC
+  # sum(wafRequestSignatureCategoriesCountArray) ascending
+  sum_wafRequestSignatureCategoriesCountArray_ASC
+  # sum(wafRequestSignatureCategoriesCountArray) descending
+  sum_wafRequestSignatureCategoriesCountArray_DESC
+  # sum(wafRequestSignatureRefsArray) ascending
+  sum_wafRequestSignatureRefsArray_ASC
+  # sum(wafRequestSignatureRefsArray) descending
+  sum_wafRequestSignatureRefsArray_DESC
+  # sum(wafRequestSignatureRefsCountArray) ascending
+  sum_wafRequestSignatureRefsCountArray_ASC
+  # sum(wafRequestSignatureRefsCountArray) descending
+  sum_wafRequestSignatureRefsCountArray_DESC
   # verifiedBotCategory ascending
   verifiedBotCategory_ASC
   # verifiedBotCategory descending
@@ -88251,6 +88579,14 @@ type ZoneFirewallEventsAdaptiveByTimeGroupsSum {
   fraudDetectionTagArray: [string!]!
   # Count array of fraud detection tags. Elements in this array correspond to elements in fraudDetectionTagArray by index.
   fraudDetectionTagCountArray: [uint32!]!
+  # Array of WAF request signature categories associated with the rule refs in wafRequestSignatureRefsArray
+  wafRequestSignatureCategoriesArray: [string!]!
+  # Count array of WAF request signature categories. Elements in this array correspond to elements in wafRequestSignatureCategoriesArray by index.
+  wafRequestSignatureCategoriesCountArray: [uint32!]!
+  # Array of WAF request signature refs (Ruleset field cf.waf.signature.request.refs)
+  wafRequestSignatureRefsArray: [string!]!
+  # Count array of WAF request signature refs. Elements in this array correspond to elements in wafRequestSignatureRefsArray by index.
+  wafRequestSignatureRefsCountArray: [uint32!]!
 }
 
 input ZoneFirewallEventsAdaptiveFilter_InputObject {
@@ -90054,6 +90390,22 @@ enum ZoneFirewallEventsAdaptiveGroupsOrderBy {
   sum_fraudDetectionTagCountArray_ASC
   # sum(fraudDetectionTagCountArray) descending
   sum_fraudDetectionTagCountArray_DESC
+  # sum(wafRequestSignatureCategoriesArray) ascending
+  sum_wafRequestSignatureCategoriesArray_ASC
+  # sum(wafRequestSignatureCategoriesArray) descending
+  sum_wafRequestSignatureCategoriesArray_DESC
+  # sum(wafRequestSignatureCategoriesCountArray) ascending
+  sum_wafRequestSignatureCategoriesCountArray_ASC
+  # sum(wafRequestSignatureCategoriesCountArray) descending
+  sum_wafRequestSignatureCategoriesCountArray_DESC
+  # sum(wafRequestSignatureRefsArray) ascending
+  sum_wafRequestSignatureRefsArray_ASC
+  # sum(wafRequestSignatureRefsArray) descending
+  sum_wafRequestSignatureRefsArray_DESC
+  # sum(wafRequestSignatureRefsCountArray) ascending
+  sum_wafRequestSignatureRefsCountArray_ASC
+  # sum(wafRequestSignatureRefsCountArray) descending
+  sum_wafRequestSignatureRefsCountArray_DESC
   # userAgent ascending
   userAgent_ASC
   # userAgent descending
@@ -90133,6 +90485,14 @@ type ZoneFirewallEventsAdaptiveGroupsSum {
   fraudDetectionTagArray: [string!]!
   # Count array of fraud detection tags. Elements in this array correspond to elements in fraudDetectionTagArray by index.
   fraudDetectionTagCountArray: [uint32!]!
+  # Array of WAF request signature categories associated with the rule refs in wafRequestSignatureRefsArray
+  wafRequestSignatureCategoriesArray: [string!]!
+  # Count array of WAF request signature categories. Elements in this array correspond to elements in wafRequestSignatureCategoriesArray by index.
+  wafRequestSignatureCategoriesCountArray: [uint32!]!
+  # Array of WAF request signature refs (Ruleset field cf.waf.signature.request.refs)
+  wafRequestSignatureRefsArray: [string!]!
+  # Count array of WAF request signature refs. Elements in this array correspond to elements in wafRequestSignatureRefsArray by index.
+  wafRequestSignatureRefsCountArray: [uint32!]!
 }
 
 type ZoneFirewallEventsAdaptiveJa4SignalsElem {
@@ -94898,6 +95258,22 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   sum_visits_ASC
   # sum(visits) descending
   sum_visits_DESC
+  # sum(wafRequestSignatureCategoriesArray) ascending
+  sum_wafRequestSignatureCategoriesArray_ASC
+  # sum(wafRequestSignatureCategoriesArray) descending
+  sum_wafRequestSignatureCategoriesArray_DESC
+  # sum(wafRequestSignatureCategoriesCountArray) ascending
+  sum_wafRequestSignatureCategoriesCountArray_ASC
+  # sum(wafRequestSignatureCategoriesCountArray) descending
+  sum_wafRequestSignatureCategoriesCountArray_DESC
+  # sum(wafRequestSignatureRefsArray) ascending
+  sum_wafRequestSignatureRefsArray_ASC
+  # sum(wafRequestSignatureRefsArray) descending
+  sum_wafRequestSignatureRefsArray_DESC
+  # sum(wafRequestSignatureRefsCountArray) ascending
+  sum_wafRequestSignatureRefsCountArray_ASC
+  # sum(wafRequestSignatureRefsCountArray) descending
+  sum_wafRequestSignatureRefsCountArray_DESC
   # threatIntelIpDatasets ascending
   threatIntelIpDatasets_ASC
   # threatIntelIpDatasets descending
@@ -95132,6 +95508,14 @@ type ZoneHttpRequestsAdaptiveGroupsSum {
   rulesMetadataKeyCountArray: [uint32!]!
   # The number of requests by end-users that were initiated from a different website (i.e. where the request HTTP Referer header does not match the host in the HTTP Host header)
   visits: uint64!
+  # Array of WAF request signature categories associated with the rule refs in wafRequestSignatureRefsArray
+  wafRequestSignatureCategoriesArray: [string!]!
+  # Count array of WAF request signature categories. Elements in this array correspond to elements in wafRequestSignatureCategoriesArray by index.
+  wafRequestSignatureCategoriesCountArray: [uint32!]!
+  # Array of WAF request signature refs (Ruleset field cf.waf.signature.request.refs)
+  wafRequestSignatureRefsArray: [string!]!
+  # Count array of WAF request signature refs. Elements in this array correspond to elements in wafRequestSignatureRefsArray by index.
+  wafRequestSignatureRefsCountArray: [uint32!]!
 }
 
 type ZoneHttpRequestsAdaptiveGroupsSumConfidence {
