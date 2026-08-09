@@ -9,6 +9,7 @@ Account-level datasets:
 * aiGatewayCacheAdaptiveGroups
 * aiGatewayErrorsAdaptiveGroups
 * aiGatewayRequestsAdaptiveGroups
+* aiGatewayRequestsStagingAdaptiveGroups
 * aiGatewaySizeAdaptiveGroups
 * aiGatewaySpendSessionsAdaptiveGroups
 * aiGatewaySpendUserDailyAdaptiveGroups
@@ -17,6 +18,7 @@ Account-level datasets:
 * aiSearchAPIAdaptiveGroups
 * aiSearchIngestedItemsAdaptiveGroups
 * artifactsEventsAdaptiveGroups
+* auditLogsGroups
 * autoRAGConfigAPIAdaptiveGroups
 * autoRAGEngineAdaptiveGroups
 * browserIsolationSessionsAdaptiveGroups
@@ -93,10 +95,13 @@ Account-level datasets:
 * hyperdrivePoolSizesAdaptiveGroups
 * hyperdriveQueriesAdaptiveGroups
 * imagesRequestsAdaptiveGroups
+* imagesTransformationsAdaptiveGroups
 * imagesUniqueTransformations
 * imagesUniqueTransformationsAccumulatedSinceStartOfMonth
 * kvOperationsAdaptiveGroups
 * kvStorageAdaptiveGroups
+  lbHealthEntitiesGroups
+  lbHealthEvents
 * liveInputEventsAdaptive
 * liveInputEventsAdaptiveGroups
 * logExplorerIngestionAdaptiveGroups
@@ -340,6 +345,8 @@ type account {
   aiGatewayErrorsAdaptiveGroups(filter: AccountAiGatewayErrorsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayErrorsAdaptiveGroupsOrderBy!]): [AccountAiGatewayErrorsAdaptiveGroups!]!
   # AI Gateway Requests
   aiGatewayRequestsAdaptiveGroups(filter: AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayRequestsAdaptiveGroupsOrderBy!]): [AccountAiGatewayRequestsAdaptiveGroups!]!
+  # AI Gateway Requests (staging)
+  aiGatewayRequestsStagingAdaptiveGroups(filter: AccountAiGatewayRequestsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayRequestsStagingAdaptiveGroupsOrderBy!]): [AccountAiGatewayRequestsStagingAdaptiveGroups!]!
   # AI Gateway Stored Rows
   aiGatewaySizeAdaptiveGroups(filter: AccountAiGatewaySizeAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewaySizeAdaptiveGroupsOrderBy!]): [AccountAiGatewaySizeAdaptiveGroups!]!
   # AI Gateway Spend session-level facts with adaptive sampling
@@ -356,6 +363,8 @@ type account {
   aiSearchIngestedItemsAdaptiveGroups(filter: AccountAiSearchIngestedItemsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchIngestedItemsAdaptiveGroupsOrderBy!]): [AccountAiSearchIngestedItemsAdaptiveGroups!]!
   # Artifacts events with adaptive sampling
   artifactsEventsAdaptiveGroups(filter: AccountArtifactsEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountArtifactsEventsAdaptiveGroupsOrderBy!]): [AccountArtifactsEventsAdaptiveGroups!]!
+  # Audit log events grouped by account, time, actor, action, and resource dimensions.
+  auditLogsGroups(filter: AccountAuditLogsGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAuditLogsGroupsOrderBy!]): [AccountAuditLogsGroups!]!
   # AutoRAG Config API Search Analytics
   autoRAGConfigAPIAdaptiveGroups(filter: AccountAutoRAGConfigAPIAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAutoRAGConfigAPIAdaptiveGroupsOrderBy!]): [AccountAutoRAGConfigAPIAdaptiveGroups!]!
   # AutoRAG Engine Ingestion Analytics
@@ -509,6 +518,8 @@ type account {
   hyperdriveQueriesAdaptiveGroups(filter: AccountHyperdriveQueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHyperdriveQueriesAdaptiveGroupsOrderBy!]): [AccountHyperdriveQueriesAdaptiveGroups!]!
   # A high-level summary of Cloudflare Images served to end users.
   imagesRequestsAdaptiveGroups(filter: AccountImagesRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesRequestsAdaptiveGroupsOrderBy!]): [AccountImagesRequestsAdaptiveGroups!]!
+  # Image transformations grouped by zone, binding request type, worker binding script ID, and transformation string
+  imagesTransformationsAdaptiveGroups(filter: AccountImagesTransformationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesTransformationsAdaptiveGroupsOrderBy!]): [AccountImagesTransformationsAdaptiveGroups!]!
   # Image unique transfromations per day
   imagesUniqueTransformations(filter: AccountImagesUniqueTransformationsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesUniqueTransformationsOrderBy!]): [AccountImagesUniqueTransformations!]!
   # Image unique transformations accumulated since start of month
@@ -517,6 +528,10 @@ type account {
   kvOperationsAdaptiveGroups(filter: AccountKvOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountKvOperationsAdaptiveGroupsOrderBy!]): [AccountKvOperationsAdaptiveGroups!]!
   # KV stored data with adaptive sampling
   kvStorageAdaptiveGroups(filter: AccountKvStorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountKvStorageAdaptiveGroupsOrderBy!]): [AccountKvStorageAdaptiveGroups!]!
+  # Distinct pools and origins seen in LB health events, account-scoped
+  lbHealthEntitiesGroups(filter: AccountLbHealthEntitiesGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLbHealthEntitiesGroupsOrderBy!]): [AccountLbHealthEntitiesGroups!]!
+  # Raw LB health state-change events with geographic scope support, account-scoped
+  lbHealthEvents(filter: AccountLbHealthEventsFilter_InputObject!, limit: uint64!, orderBy: [AccountLbHealthEventsOrderBy!]): [AccountLbHealthEvents!]!
   # Live input events with adaptive sampling
   liveInputEventsAdaptive(filter: AccountLiveInputEventsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountLiveInputEventsAdaptiveOrderBy!]): [AccountLiveInputEventsAdaptive!]!
   # Aggregated live input events with adaptive sampling
@@ -4908,6 +4923,8 @@ type AccountAiGatewayRequestsAdaptiveGroups {
   max: AccountAiGatewayRequestsAdaptiveGroupsMax
   # Minimum values and first-request metrics for AI Gateway request groups
   min: AccountAiGatewayRequestsAdaptiveGroupsMin
+  # Weighted quantiles of AI Gateway request metrics per dimension
+  quantiles: AccountAiGatewayRequestsAdaptiveGroupsQuantiles
   # Percentage ratios for AI Gateway request metadata coverage and cache efficiency
   ratio: AccountAiGatewayRequestsAdaptiveGroupsRatio
   # The sum of values for a metric per dimension
@@ -5471,6 +5488,62 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   provider_ASC
   # provider descending
   provider_DESC
+  # quantiles(costP25) ascending
+  quantiles_costP25_ASC
+  # quantiles(costP25) descending
+  quantiles_costP25_DESC
+  # quantiles(costP50) ascending
+  quantiles_costP50_ASC
+  # quantiles(costP50) descending
+  quantiles_costP50_DESC
+  # quantiles(costP75) ascending
+  quantiles_costP75_ASC
+  # quantiles(costP75) descending
+  quantiles_costP75_DESC
+  # quantiles(costP90) ascending
+  quantiles_costP90_ASC
+  # quantiles(costP90) descending
+  quantiles_costP90_DESC
+  # quantiles(costP95) ascending
+  quantiles_costP95_ASC
+  # quantiles(costP95) descending
+  quantiles_costP95_DESC
+  # quantiles(costP999) ascending
+  quantiles_costP999_ASC
+  # quantiles(costP999) descending
+  quantiles_costP999_DESC
+  # quantiles(costP99) ascending
+  quantiles_costP99_ASC
+  # quantiles(costP99) descending
+  quantiles_costP99_DESC
+  # quantiles(durationMsP25) ascending
+  quantiles_durationMsP25_ASC
+  # quantiles(durationMsP25) descending
+  quantiles_durationMsP25_DESC
+  # quantiles(durationMsP50) ascending
+  quantiles_durationMsP50_ASC
+  # quantiles(durationMsP50) descending
+  quantiles_durationMsP50_DESC
+  # quantiles(durationMsP75) ascending
+  quantiles_durationMsP75_ASC
+  # quantiles(durationMsP75) descending
+  quantiles_durationMsP75_DESC
+  # quantiles(durationMsP90) ascending
+  quantiles_durationMsP90_ASC
+  # quantiles(durationMsP90) descending
+  quantiles_durationMsP90_DESC
+  # quantiles(durationMsP95) ascending
+  quantiles_durationMsP95_ASC
+  # quantiles(durationMsP95) descending
+  quantiles_durationMsP95_DESC
+  # quantiles(durationMsP999) ascending
+  quantiles_durationMsP999_ASC
+  # quantiles(durationMsP999) descending
+  quantiles_durationMsP999_DESC
+  # quantiles(durationMsP99) ascending
+  quantiles_durationMsP99_ASC
+  # quantiles(durationMsP99) descending
+  quantiles_durationMsP99_DESC
   # rateLimited ascending
   rateLimited_ASC
   # rateLimited descending
@@ -5609,6 +5682,37 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   wholesale_DESC
 }
 
+type AccountAiGatewayRequestsAdaptiveGroupsQuantiles {
+  # 25th percentile request cost
+  costP25: float64!
+  # 50th percentile request cost
+  costP50: float64!
+  # 75th percentile request cost
+  costP75: float64!
+  # 90th percentile request cost
+  costP90: float64!
+  # 95th percentile request cost
+  costP95: float64!
+  # 99th percentile request cost
+  costP99: float64!
+  # 99.9th percentile request cost
+  costP999: float64!
+  # 25th percentile request duration in milliseconds
+  durationMsP25: float64!
+  # 50th percentile request duration in milliseconds
+  durationMsP50: float64!
+  # 75th percentile request duration in milliseconds
+  durationMsP75: float64!
+  # 90th percentile request duration in milliseconds
+  durationMsP90: float64!
+  # 95th percentile request duration in milliseconds
+  durationMsP95: float64!
+  # 99th percentile request duration in milliseconds
+  durationMsP99: float64!
+  # 99.9th percentile request duration in milliseconds
+  durationMsP999: float64!
+}
+
 type AccountAiGatewayRequestsAdaptiveGroupsRatio {
   # Percentage of context tokens read from provider prompt cache
   cacheHitPct: float64!
@@ -5705,6 +5809,910 @@ type AccountAiGatewayRequestsAdaptiveGroupsSumConfidence {
 }
 
 type AccountAiGatewayRequestsAdaptiveGroupsUniq {
+  # Approximate count of unique sessions
+  sessions: uint64!
+  # Approximate count of unique authenticated users
+  users: uint64!
+}
+
+# AI Gateway Requests (staging)
+type AccountAiGatewayRequestsStagingAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountAiGatewayRequestsStagingAdaptiveGroupsConfidence!
+  # Number of processed requests
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiGatewayRequestsStagingAdaptiveGroupsDimensions
+  # Maximum values for AI Gateway request metadata per result group
+  max: AccountAiGatewayRequestsStagingAdaptiveGroupsMax
+  # Minimum values and first-request metrics for AI Gateway request groups
+  min: AccountAiGatewayRequestsStagingAdaptiveGroupsMin
+  # Weighted quantiles of AI Gateway request metrics per dimension
+  quantiles: AccountAiGatewayRequestsStagingAdaptiveGroupsQuantiles
+  # Percentage ratios for AI Gateway request metadata coverage and cache efficiency
+  ratio: AccountAiGatewayRequestsStagingAdaptiveGroupsRatio
+  # The sum of values for a metric per dimension
+  sum: AccountAiGatewayRequestsStagingAdaptiveGroupsSum
+  uniq: AccountAiGatewayRequestsStagingAdaptiveGroupsUniq
+}
+
+type AccountAiGatewayRequestsStagingAdaptiveGroupsConfidence {
+  # Number of processed requests, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountAiGatewayRequestsStagingAdaptiveGroupsSumConfidence
+}
+
+type AccountAiGatewayRequestsStagingAdaptiveGroupsDimensions {
+  # Input tokens read from provider prompt cache
+  cacheReadTokens: float64!
+  # Input tokens written to provider prompt cache
+  cacheWriteTokens: float64!
+  # Was the response served from cache?: 1 = cache hit, 0 = cache misss
+  cached: uint8!
+  # Cache read, cache write, and fresh input tokens for this request
+  contextTokens: float64!
+  # Cost per request
+  cost: float64!
+  # The date when trigger was triggered
+  date: Date!
+  # The date and time the event occurred
+  datetime: Time!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Request duration in milliseconds
+  durationMs: float64!
+  # Was the response an error: 1 , 0 for no error
+  error: uint8!
+  # Fresh uncached input tokens, falling back to tokens_in when usage metadata is unavailable
+  freshInputTokens: float64!
+  # Gateway name
+  gateway: string!
+  # MCP server count from request metadata
+  mcpServerCount: float64!
+  # MCP tool count from request metadata
+  mcpToolCount: float64!
+  # Access service principal name extracted from request metadata
+  metadataCommonName: string!
+  # Individual metadata key saved on an AI Gateway request. Selecting this dimension explodes one request into one row per metadata key, enabling common-key discovery; counts are per key occurrence.
+  metadataKey: string!
+  # Metadata keys saved on ai-gateway request
+  metadataKeys: [string!]!
+  # Metadata saved in on ai-gateway request
+  metadataRaw: string!
+  # Framework session ID extracted from request metadata (opt-in per gateway)
+  metadataSessionId: string!
+  # Access user ID (JWT sub claim) extracted from request metadata
+  metadataUserId: string!
+  # Value for a caller-selected metadata key. Use aliases to request or group by specific customer-provided metadata keys. AI Gateway-injected identity keys use the cf.* prefix.
+  metadataValue(key: string): string!
+  # Metadata values saved on ai-gateway request
+  metadataValues: [string!]!
+  # Which models was the request sent to
+  model: string!
+  # Prompts used on ai-gateway request
+  prompts: string!
+  # Prompts Ids used on ai-gateway request
+  promptsIds: [string!]!
+  # Prompts versions used on ai-gateway request
+  promptsVersions: [string!]!
+  # Which provider was the request sent to
+  provider: string!
+  # Was the request rate limited?: 1 = rate limit applied, 0 = rate limit not applied
+  rateLimited: uint8!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # HTTP Status Code of provider response
+  statusCode: uint16!
+  # Number of tokens in the request
+  tokensIn: uint64!
+  # Number of tokens in the response
+  tokensOut: uint64!
+  # Raw provider usage metadata saved on the AI Gateway request
+  usageMetadataRaw: string!
+  # User-Agent header value sent by the calling SDK or client
+  userAgent: string!
+  # Was the request use wholesale: 1 = applied, 0 = not applied
+  wholesale: uint8!
+}
+
+input AccountAiGatewayRequestsStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiGatewayRequestsStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiGatewayRequestsStagingAdaptiveGroupsFilter_InputObject!]
+  cacheReadTokens: float64
+  cacheReadTokens_geq: float64
+  cacheReadTokens_gt: float64
+  cacheReadTokens_in: [float64!]
+  cacheReadTokens_leq: float64
+  cacheReadTokens_lt: float64
+  cacheReadTokens_neq: float64
+  cacheReadTokens_notin: [float64!]
+  cacheWriteTokens: float64
+  cacheWriteTokens_geq: float64
+  cacheWriteTokens_gt: float64
+  cacheWriteTokens_in: [float64!]
+  cacheWriteTokens_leq: float64
+  cacheWriteTokens_lt: float64
+  cacheWriteTokens_neq: float64
+  cacheWriteTokens_notin: [float64!]
+  cached: uint8
+  cached_geq: uint8
+  cached_gt: uint8
+  cached_in: bytes
+  cached_leq: uint8
+  cached_lt: uint8
+  cached_neq: uint8
+  cached_notin: bytes
+  contextTokens: float64
+  contextTokens_geq: float64
+  contextTokens_gt: float64
+  contextTokens_in: [float64!]
+  contextTokens_leq: float64
+  contextTokens_lt: float64
+  contextTokens_neq: float64
+  contextTokens_notin: [float64!]
+  cost: float64
+  cost_geq: float64
+  cost_gt: float64
+  cost_in: [float64!]
+  cost_leq: float64
+  cost_lt: float64
+  cost_neq: float64
+  cost_notin: [float64!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  durationMs: float64
+  durationMs_geq: float64
+  durationMs_gt: float64
+  durationMs_in: [float64!]
+  durationMs_leq: float64
+  durationMs_lt: float64
+  durationMs_neq: float64
+  durationMs_notin: [float64!]
+  error: uint8
+  error_geq: uint8
+  error_gt: uint8
+  error_in: bytes
+  error_leq: uint8
+  error_lt: uint8
+  error_neq: uint8
+  error_notin: bytes
+  freshInputTokens: float64
+  freshInputTokens_geq: float64
+  freshInputTokens_gt: float64
+  freshInputTokens_in: [float64!]
+  freshInputTokens_leq: float64
+  freshInputTokens_lt: float64
+  freshInputTokens_neq: float64
+  freshInputTokens_notin: [float64!]
+  gateway: string
+  gateway_geq: string
+  gateway_gt: string
+  gateway_in: [string!]
+  gateway_leq: string
+  gateway_like: string
+  gateway_lt: string
+  gateway_neq: string
+  gateway_notin: [string!]
+  gateway_notlike: string
+  mcpServerCount: float64
+  mcpServerCount_geq: float64
+  mcpServerCount_gt: float64
+  mcpServerCount_in: [float64!]
+  mcpServerCount_leq: float64
+  mcpServerCount_lt: float64
+  mcpServerCount_neq: float64
+  mcpServerCount_notin: [float64!]
+  mcpToolCount: float64
+  mcpToolCount_geq: float64
+  mcpToolCount_gt: float64
+  mcpToolCount_in: [float64!]
+  mcpToolCount_leq: float64
+  mcpToolCount_lt: float64
+  mcpToolCount_neq: float64
+  mcpToolCount_notin: [float64!]
+  metadataCommonName: string
+  metadataCommonName_geq: string
+  metadataCommonName_gt: string
+  metadataCommonName_in: [string!]
+  metadataCommonName_leq: string
+  metadataCommonName_like: string
+  metadataCommonName_lt: string
+  metadataCommonName_neq: string
+  metadataCommonName_notin: [string!]
+  metadataCommonName_notlike: string
+  metadataKey: string
+  metadataKey_geq: string
+  metadataKey_gt: string
+  metadataKey_in: [string!]
+  metadataKey_leq: string
+  metadataKey_like: string
+  metadataKey_lt: string
+  metadataKey_neq: string
+  metadataKey_notin: [string!]
+  metadataKey_notlike: string
+  metadataKeys_has: string
+  metadataKeys_hasall: [string!]
+  metadataKeys_hasany: [string!]
+  metadataKeys_isempty: bool
+  metadataKeys_nothas: string
+  metadataRaw: string
+  metadataRaw_geq: string
+  metadataRaw_gt: string
+  metadataRaw_in: [string!]
+  metadataRaw_leq: string
+  metadataRaw_like: string
+  metadataRaw_lt: string
+  metadataRaw_neq: string
+  metadataRaw_notin: [string!]
+  metadataRaw_notlike: string
+  metadataSessionId: string
+  metadataSessionId_geq: string
+  metadataSessionId_gt: string
+  metadataSessionId_in: [string!]
+  metadataSessionId_leq: string
+  metadataSessionId_like: string
+  metadataSessionId_lt: string
+  metadataSessionId_neq: string
+  metadataSessionId_notin: [string!]
+  metadataSessionId_notlike: string
+  metadataUserId: string
+  metadataUserId_geq: string
+  metadataUserId_gt: string
+  metadataUserId_in: [string!]
+  metadataUserId_leq: string
+  metadataUserId_like: string
+  metadataUserId_lt: string
+  metadataUserId_neq: string
+  metadataUserId_notin: [string!]
+  metadataUserId_notlike: string
+  metadataValues_has: string
+  metadataValues_hasall: [string!]
+  metadataValues_hasany: [string!]
+  metadataValues_isempty: bool
+  metadataValues_nothas: string
+  model: string
+  model_geq: string
+  model_gt: string
+  model_in: [string!]
+  model_leq: string
+  model_like: string
+  model_lt: string
+  model_neq: string
+  model_notin: [string!]
+  model_notlike: string
+  prompts: string
+  promptsIds_has: string
+  promptsIds_hasall: [string!]
+  promptsIds_hasany: [string!]
+  promptsIds_isempty: bool
+  promptsIds_nothas: string
+  promptsVersions_has: string
+  promptsVersions_hasall: [string!]
+  promptsVersions_hasany: [string!]
+  promptsVersions_isempty: bool
+  promptsVersions_nothas: string
+  prompts_geq: string
+  prompts_gt: string
+  prompts_in: [string!]
+  prompts_leq: string
+  prompts_like: string
+  prompts_lt: string
+  prompts_neq: string
+  prompts_notin: [string!]
+  prompts_notlike: string
+  provider: string
+  provider_geq: string
+  provider_gt: string
+  provider_in: [string!]
+  provider_leq: string
+  provider_like: string
+  provider_lt: string
+  provider_neq: string
+  provider_notin: [string!]
+  provider_notlike: string
+  rateLimited: uint8
+  rateLimited_geq: uint8
+  rateLimited_gt: uint8
+  rateLimited_in: bytes
+  rateLimited_leq: uint8
+  rateLimited_lt: uint8
+  rateLimited_neq: uint8
+  rateLimited_notin: bytes
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  statusCode: uint16
+  statusCode_geq: uint16
+  statusCode_gt: uint16
+  statusCode_in: [uint16!]
+  statusCode_leq: uint16
+  statusCode_lt: uint16
+  statusCode_neq: uint16
+  statusCode_notin: [uint16!]
+  tokensIn: uint64
+  tokensIn_geq: uint64
+  tokensIn_gt: uint64
+  tokensIn_in: [uint64!]
+  tokensIn_leq: uint64
+  tokensIn_lt: uint64
+  tokensIn_neq: uint64
+  tokensIn_notin: [uint64!]
+  tokensOut: uint64
+  tokensOut_geq: uint64
+  tokensOut_gt: uint64
+  tokensOut_in: [uint64!]
+  tokensOut_leq: uint64
+  tokensOut_lt: uint64
+  tokensOut_neq: uint64
+  tokensOut_notin: [uint64!]
+  usageMetadataRaw: string
+  usageMetadataRaw_geq: string
+  usageMetadataRaw_gt: string
+  usageMetadataRaw_in: [string!]
+  usageMetadataRaw_leq: string
+  usageMetadataRaw_like: string
+  usageMetadataRaw_lt: string
+  usageMetadataRaw_neq: string
+  usageMetadataRaw_notin: [string!]
+  usageMetadataRaw_notlike: string
+  userAgent: string
+  userAgent_geq: string
+  userAgent_gt: string
+  userAgent_in: [string!]
+  userAgent_leq: string
+  userAgent_like: string
+  userAgent_lt: string
+  userAgent_neq: string
+  userAgent_notin: [string!]
+  userAgent_notlike: string
+  wholesale: uint8
+  wholesale_geq: uint8
+  wholesale_gt: uint8
+  wholesale_in: bytes
+  wholesale_leq: uint8
+  wholesale_lt: uint8
+  wholesale_neq: uint8
+  wholesale_notin: bytes
+}
+
+type AccountAiGatewayRequestsStagingAdaptiveGroupsMax {
+  # Maximum MCP server count
+  mcpServerCount: float64!
+  # Maximum MCP tool count
+  mcpToolCount: float64!
+}
+
+type AccountAiGatewayRequestsStagingAdaptiveGroupsMin {
+  # Context tokens from the first request in the result group
+  firstContextTokens: float64!
+  # MCP tool count from the first request in the result group
+  firstMcpToolCount: float64!
+  # Earliest request timestamp in the result group
+  sessionStart: Time!
+}
+
+enum AccountAiGatewayRequestsStagingAdaptiveGroupsOrderBy {
+  # cacheReadTokens ascending
+  cacheReadTokens_ASC
+  # cacheReadTokens descending
+  cacheReadTokens_DESC
+  # cacheWriteTokens ascending
+  cacheWriteTokens_ASC
+  # cacheWriteTokens descending
+  cacheWriteTokens_DESC
+  # cached ascending
+  cached_ASC
+  # cached descending
+  cached_DESC
+  # contextTokens ascending
+  contextTokens_ASC
+  # contextTokens descending
+  contextTokens_DESC
+  # cost ascending
+  cost_ASC
+  # cost descending
+  cost_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # durationMs ascending
+  durationMs_ASC
+  # durationMs descending
+  durationMs_DESC
+  # error ascending
+  error_ASC
+  # error descending
+  error_DESC
+  # freshInputTokens ascending
+  freshInputTokens_ASC
+  # freshInputTokens descending
+  freshInputTokens_DESC
+  # gateway ascending
+  gateway_ASC
+  # gateway descending
+  gateway_DESC
+  # max(mcpServerCount) ascending
+  max_mcpServerCount_ASC
+  # max(mcpServerCount) descending
+  max_mcpServerCount_DESC
+  # max(mcpToolCount) ascending
+  max_mcpToolCount_ASC
+  # max(mcpToolCount) descending
+  max_mcpToolCount_DESC
+  # mcpServerCount ascending
+  mcpServerCount_ASC
+  # mcpServerCount descending
+  mcpServerCount_DESC
+  # mcpToolCount ascending
+  mcpToolCount_ASC
+  # mcpToolCount descending
+  mcpToolCount_DESC
+  # metadataCommonName ascending
+  metadataCommonName_ASC
+  # metadataCommonName descending
+  metadataCommonName_DESC
+  # metadataKey ascending
+  metadataKey_ASC
+  # metadataKey descending
+  metadataKey_DESC
+  # metadataKeys ascending
+  metadataKeys_ASC
+  # metadataKeys descending
+  metadataKeys_DESC
+  # metadataRaw ascending
+  metadataRaw_ASC
+  # metadataRaw descending
+  metadataRaw_DESC
+  # metadataSessionId ascending
+  metadataSessionId_ASC
+  # metadataSessionId descending
+  metadataSessionId_DESC
+  # metadataUserId ascending
+  metadataUserId_ASC
+  # metadataUserId descending
+  metadataUserId_DESC
+  # metadataValues ascending
+  metadataValues_ASC
+  # metadataValues descending
+  metadataValues_DESC
+  # min(firstContextTokens) ascending
+  min_firstContextTokens_ASC
+  # min(firstContextTokens) descending
+  min_firstContextTokens_DESC
+  # min(firstMcpToolCount) ascending
+  min_firstMcpToolCount_ASC
+  # min(firstMcpToolCount) descending
+  min_firstMcpToolCount_DESC
+  # min(sessionStart) ascending
+  min_sessionStart_ASC
+  # min(sessionStart) descending
+  min_sessionStart_DESC
+  # model ascending
+  model_ASC
+  # model descending
+  model_DESC
+  # promptsIds ascending
+  promptsIds_ASC
+  # promptsIds descending
+  promptsIds_DESC
+  # promptsVersions ascending
+  promptsVersions_ASC
+  # promptsVersions descending
+  promptsVersions_DESC
+  # prompts ascending
+  prompts_ASC
+  # prompts descending
+  prompts_DESC
+  # provider ascending
+  provider_ASC
+  # provider descending
+  provider_DESC
+  # quantiles(costP25) ascending
+  quantiles_costP25_ASC
+  # quantiles(costP25) descending
+  quantiles_costP25_DESC
+  # quantiles(costP50) ascending
+  quantiles_costP50_ASC
+  # quantiles(costP50) descending
+  quantiles_costP50_DESC
+  # quantiles(costP75) ascending
+  quantiles_costP75_ASC
+  # quantiles(costP75) descending
+  quantiles_costP75_DESC
+  # quantiles(costP90) ascending
+  quantiles_costP90_ASC
+  # quantiles(costP90) descending
+  quantiles_costP90_DESC
+  # quantiles(costP95) ascending
+  quantiles_costP95_ASC
+  # quantiles(costP95) descending
+  quantiles_costP95_DESC
+  # quantiles(costP999) ascending
+  quantiles_costP999_ASC
+  # quantiles(costP999) descending
+  quantiles_costP999_DESC
+  # quantiles(costP99) ascending
+  quantiles_costP99_ASC
+  # quantiles(costP99) descending
+  quantiles_costP99_DESC
+  # quantiles(durationMsP25) ascending
+  quantiles_durationMsP25_ASC
+  # quantiles(durationMsP25) descending
+  quantiles_durationMsP25_DESC
+  # quantiles(durationMsP50) ascending
+  quantiles_durationMsP50_ASC
+  # quantiles(durationMsP50) descending
+  quantiles_durationMsP50_DESC
+  # quantiles(durationMsP75) ascending
+  quantiles_durationMsP75_ASC
+  # quantiles(durationMsP75) descending
+  quantiles_durationMsP75_DESC
+  # quantiles(durationMsP90) ascending
+  quantiles_durationMsP90_ASC
+  # quantiles(durationMsP90) descending
+  quantiles_durationMsP90_DESC
+  # quantiles(durationMsP95) ascending
+  quantiles_durationMsP95_ASC
+  # quantiles(durationMsP95) descending
+  quantiles_durationMsP95_DESC
+  # quantiles(durationMsP999) ascending
+  quantiles_durationMsP999_ASC
+  # quantiles(durationMsP999) descending
+  quantiles_durationMsP999_DESC
+  # quantiles(durationMsP99) ascending
+  quantiles_durationMsP99_ASC
+  # quantiles(durationMsP99) descending
+  quantiles_durationMsP99_DESC
+  # rateLimited ascending
+  rateLimited_ASC
+  # rateLimited descending
+  rateLimited_DESC
+  # ratio(cacheHitPct) ascending
+  ratio_cacheHitPct_ASC
+  # ratio(cacheHitPct) descending
+  ratio_cacheHitPct_DESC
+  # ratio(mcpMetadataCoveragePct) ascending
+  ratio_mcpMetadataCoveragePct_ASC
+  # ratio(mcpMetadataCoveragePct) descending
+  ratio_mcpMetadataCoveragePct_DESC
+  # ratio(rowsWithCacheReadPct) ascending
+  ratio_rowsWithCacheReadPct_ASC
+  # ratio(rowsWithCacheReadPct) descending
+  ratio_rowsWithCacheReadPct_DESC
+  # ratio(rowsWithCacheWritePct) ascending
+  ratio_rowsWithCacheWritePct_ASC
+  # ratio(rowsWithCacheWritePct) descending
+  ratio_rowsWithCacheWritePct_DESC
+  # ratio(rowsWithSessionIdPct) ascending
+  ratio_rowsWithSessionIdPct_ASC
+  # ratio(rowsWithSessionIdPct) descending
+  ratio_rowsWithSessionIdPct_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # statusCode ascending
+  statusCode_ASC
+  # statusCode descending
+  statusCode_DESC
+  # sum(cacheReadTokens) ascending
+  sum_cacheReadTokens_ASC
+  # sum(cacheReadTokens) descending
+  sum_cacheReadTokens_DESC
+  # sum(cacheWriteTokens) ascending
+  sum_cacheWriteTokens_ASC
+  # sum(cacheWriteTokens) descending
+  sum_cacheWriteTokens_DESC
+  # sum(cachedRequests) ascending
+  sum_cachedRequests_ASC
+  # sum(cachedRequests) descending
+  sum_cachedRequests_DESC
+  # sum(cachedTokensIn) ascending
+  sum_cachedTokensIn_ASC
+  # sum(cachedTokensIn) descending
+  sum_cachedTokensIn_DESC
+  # sum(cachedTokensOut) ascending
+  sum_cachedTokensOut_ASC
+  # sum(cachedTokensOut) descending
+  sum_cachedTokensOut_DESC
+  # sum(contextTokens) ascending
+  sum_contextTokens_ASC
+  # sum(contextTokens) descending
+  sum_contextTokens_DESC
+  # sum(cost) ascending
+  sum_cost_ASC
+  # sum(cost) descending
+  sum_cost_DESC
+  # sum(erroredRequests) ascending
+  sum_erroredRequests_ASC
+  # sum(erroredRequests) descending
+  sum_erroredRequests_DESC
+  # sum(freshInputTokens) ascending
+  sum_freshInputTokens_ASC
+  # sum(freshInputTokens) descending
+  sum_freshInputTokens_DESC
+  # sum(freshPlusWriteTokens) ascending
+  sum_freshPlusWriteTokens_ASC
+  # sum(freshPlusWriteTokens) descending
+  sum_freshPlusWriteTokens_DESC
+  # sum(requestsWithCacheRead) ascending
+  sum_requestsWithCacheRead_ASC
+  # sum(requestsWithCacheRead) descending
+  sum_requestsWithCacheRead_DESC
+  # sum(requestsWithCacheWrite) ascending
+  sum_requestsWithCacheWrite_ASC
+  # sum(requestsWithCacheWrite) descending
+  sum_requestsWithCacheWrite_DESC
+  # sum(requestsWithMcpCount) ascending
+  sum_requestsWithMcpCount_ASC
+  # sum(requestsWithMcpCount) descending
+  sum_requestsWithMcpCount_DESC
+  # sum(requestsWithSessionId) ascending
+  sum_requestsWithSessionId_ASC
+  # sum(requestsWithSessionId) descending
+  sum_requestsWithSessionId_DESC
+  # sum(tokensIn) ascending
+  sum_tokensIn_ASC
+  # sum(tokensIn) descending
+  sum_tokensIn_DESC
+  # sum(tokensOut) ascending
+  sum_tokensOut_ASC
+  # sum(tokensOut) descending
+  sum_tokensOut_DESC
+  # sum(totalTokens) ascending
+  sum_totalTokens_ASC
+  # sum(totalTokens) descending
+  sum_totalTokens_DESC
+  # sum(uncachedTokensIn) ascending
+  sum_uncachedTokensIn_ASC
+  # sum(uncachedTokensIn) descending
+  sum_uncachedTokensIn_DESC
+  # sum(uncachedTokensOut) ascending
+  sum_uncachedTokensOut_ASC
+  # sum(uncachedTokensOut) descending
+  sum_uncachedTokensOut_DESC
+  # tokensIn ascending
+  tokensIn_ASC
+  # tokensIn descending
+  tokensIn_DESC
+  # tokensOut ascending
+  tokensOut_ASC
+  # tokensOut descending
+  tokensOut_DESC
+  # uniq(sessions) ascending
+  uniq_sessions_ASC
+  # uniq(sessions) descending
+  uniq_sessions_DESC
+  # uniq(users) ascending
+  uniq_users_ASC
+  # uniq(users) descending
+  uniq_users_DESC
+  # usageMetadataRaw ascending
+  usageMetadataRaw_ASC
+  # usageMetadataRaw descending
+  usageMetadataRaw_DESC
+  # userAgent ascending
+  userAgent_ASC
+  # userAgent descending
+  userAgent_DESC
+  # wholesale ascending
+  wholesale_ASC
+  # wholesale descending
+  wholesale_DESC
+}
+
+type AccountAiGatewayRequestsStagingAdaptiveGroupsQuantiles {
+  # 25th percentile request cost
+  costP25: float64!
+  # 50th percentile request cost
+  costP50: float64!
+  # 75th percentile request cost
+  costP75: float64!
+  # 90th percentile request cost
+  costP90: float64!
+  # 95th percentile request cost
+  costP95: float64!
+  # 99th percentile request cost
+  costP99: float64!
+  # 99.9th percentile request cost
+  costP999: float64!
+  # 25th percentile request duration in milliseconds
+  durationMsP25: float64!
+  # 50th percentile request duration in milliseconds
+  durationMsP50: float64!
+  # 75th percentile request duration in milliseconds
+  durationMsP75: float64!
+  # 90th percentile request duration in milliseconds
+  durationMsP90: float64!
+  # 95th percentile request duration in milliseconds
+  durationMsP95: float64!
+  # 99th percentile request duration in milliseconds
+  durationMsP99: float64!
+  # 99.9th percentile request duration in milliseconds
+  durationMsP999: float64!
+}
+
+type AccountAiGatewayRequestsStagingAdaptiveGroupsRatio {
+  # Percentage of context tokens read from provider prompt cache
+  cacheHitPct: float64!
+  # Percentage of requests with MCP tool or server count metadata present
+  mcpMetadataCoveragePct: float64!
+  # Percentage of requests with cache read tokens present
+  rowsWithCacheReadPct: float64!
+  # Percentage of requests with cache write tokens present
+  rowsWithCacheWritePct: float64!
+  # Percentage of requests with a session ID in metadata
+  rowsWithSessionIdPct: float64!
+}
+
+type AccountAiGatewayRequestsStagingAdaptiveGroupsSum {
+  # Sum of input tokens read from provider prompt cache
+  cacheReadTokens: float64!
+  # Sum of input tokens written to provider prompt cache
+  cacheWriteTokens: float64!
+  # Sum of cached requests
+  cachedRequests: uint64!
+  # Sum of cached tokens in
+  cachedTokensIn: uint64!
+  # Sum of cached tokens out
+  cachedTokensOut: uint64!
+  # Sum of cache read, cache write, and fresh input tokens
+  contextTokens: float64!
+  # Total cost"
+  cost: float64!
+  # Sum of errored requests
+  erroredRequests: uint64!
+  # Sum of fresh uncached input tokens, falling back to tokens_in when usage metadata is unavailable
+  freshInputTokens: float64!
+  # Sum of fresh input tokens plus cache write tokens
+  freshPlusWriteTokens: float64!
+  # Sum of requests with cache read tokens present
+  requestsWithCacheRead: uint64!
+  # Sum of requests with cache write tokens present
+  requestsWithCacheWrite: uint64!
+  # Sum of requests with MCP tool or server count metadata present
+  requestsWithMcpCount: uint64!
+  # Sum of requests with a session ID in metadata
+  requestsWithSessionId: uint64!
+  # Sum of input tokens
+  tokensIn: uint64!
+  # Sum of output tokens
+  tokensOut: uint64!
+  # Sum of input and output tokens
+  totalTokens: uint64!
+  # Sum of uncached tokens in
+  uncachedTokensIn: uint64!
+  # Sum of uncached tokens out
+  uncachedTokensOut: uint64!
+}
+
+type AccountAiGatewayRequestsStagingAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  cacheReadTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cacheWriteTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cachedRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cachedTokensIn: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cachedTokensOut: Confidence!
+  # Confidence interval for the corresponding point estimate
+  contextTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cost: Confidence!
+  # Confidence interval for the corresponding point estimate
+  erroredRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  freshInputTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  freshPlusWriteTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  requestsWithCacheRead: Confidence!
+  # Confidence interval for the corresponding point estimate
+  requestsWithCacheWrite: Confidence!
+  # Confidence interval for the corresponding point estimate
+  requestsWithMcpCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  requestsWithSessionId: Confidence!
+  # Confidence interval for the corresponding point estimate
+  tokensIn: Confidence!
+  # Confidence interval for the corresponding point estimate
+  tokensOut: Confidence!
+  # Confidence interval for the corresponding point estimate
+  totalTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  uncachedTokensIn: Confidence!
+  # Confidence interval for the corresponding point estimate
+  uncachedTokensOut: Confidence!
+}
+
+type AccountAiGatewayRequestsStagingAdaptiveGroupsUniq {
   # Approximate count of unique sessions
   sessions: uint64!
   # Approximate count of unique authenticated users
@@ -9350,6 +10358,361 @@ type AccountArtifactsEventsAdaptiveGroupsSum {
 type AccountArtifactsEventsAdaptiveGroupsSumConfidence {
   # Confidence interval for the corresponding point estimate
   durationMs: Confidence!
+}
+
+# Audit log events grouped by account, time, actor, action, and resource dimensions.
+type AccountAuditLogsGroups {
+  # The number of audit log events.
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAuditLogsGroupsDimensions
+  uniq: AccountAuditLogsGroupsUniq
+}
+
+type AccountAuditLogsGroupsDimensions {
+  # A product-defined, human-readable description of the audit log action. Values can expand as products add audit events.
+  actionDescription: string!
+  # The result of the audit log action. Expected values are success and failure.
+  actionResult: string!
+  # The product-defined type of audit log action. Values can expand as products add audit events.
+  actionType: string!
+  # The context where the actor initiated the action, such as API or dashboard. Values can expand as actor contexts change.
+  actorContext: string!
+  # The email address of the actor that initiated the action.
+  actorEmail: string!
+  # The unique Cloudflare identifier of the actor that initiated the action.
+  actorId: string!
+  # The token identifier associated with the actor, when present.
+  actorTokenId: string!
+  # The token name associated with the actor, when present.
+  actorTokenName: string!
+  # The type of actor that initiated the action. Values can expand as actor types change.
+  actorType: string!
+  # The date the audit log action was initiated.
+  date: Date!
+  # The date and time the audit log action was initiated, truncated to fifteen minutes.
+  datetimeFifteenMinutes: Time!
+  # The date and time the audit log action was initiated, truncated to five minutes.
+  datetimeFiveMinutes: Time!
+  # The date and time the audit log action was initiated, truncated to the hour.
+  datetimeHour: Time!
+  # The date and time the audit log action was initiated, truncated to the minute.
+  datetimeMinute: Time!
+  # The raw HTTP method associated with the request, such as GET, POST, PUT, PATCH, or DELETE.
+  rawMethod: string!
+  # The raw HTTP status code associated with the request.
+  rawStatusCode: uint16!
+  # The identifier of the resource affected by the action.
+  resourceId: string!
+  # The Cloudflare product associated with the affected resource. Values can expand as products add audit events.
+  resourceProduct: string!
+  # The scope of the resource affected by the action. Values can expand as resource scopes change.
+  resourceScope: string!
+  # The product-defined type of resource affected by the action. Values can expand as products add audit events.
+  resourceType: string!
+}
+
+input AccountAuditLogsGroupsFilter_InputObject {
+  AND: [AccountAuditLogsGroupsFilter_InputObject!]
+  OR: [AccountAuditLogsGroupsFilter_InputObject!]
+  actionDescription: string
+  actionDescription_geq: string
+  actionDescription_gt: string
+  actionDescription_in: [string!]
+  actionDescription_leq: string
+  actionDescription_like: string
+  actionDescription_lt: string
+  actionDescription_neq: string
+  actionDescription_notin: [string!]
+  actionDescription_notlike: string
+  actionResult: string
+  actionResult_geq: string
+  actionResult_gt: string
+  actionResult_in: [string!]
+  actionResult_leq: string
+  actionResult_like: string
+  actionResult_lt: string
+  actionResult_neq: string
+  actionResult_notin: [string!]
+  actionResult_notlike: string
+  actionType: string
+  actionType_geq: string
+  actionType_gt: string
+  actionType_in: [string!]
+  actionType_leq: string
+  actionType_like: string
+  actionType_lt: string
+  actionType_neq: string
+  actionType_notin: [string!]
+  actionType_notlike: string
+  actorContext: string
+  actorContext_geq: string
+  actorContext_gt: string
+  actorContext_in: [string!]
+  actorContext_leq: string
+  actorContext_like: string
+  actorContext_lt: string
+  actorContext_neq: string
+  actorContext_notin: [string!]
+  actorContext_notlike: string
+  actorEmail: string
+  actorEmail_geq: string
+  actorEmail_gt: string
+  actorEmail_in: [string!]
+  actorEmail_leq: string
+  actorEmail_like: string
+  actorEmail_lt: string
+  actorEmail_neq: string
+  actorEmail_notin: [string!]
+  actorEmail_notlike: string
+  actorId: string
+  actorId_geq: string
+  actorId_gt: string
+  actorId_in: [string!]
+  actorId_leq: string
+  actorId_like: string
+  actorId_lt: string
+  actorId_neq: string
+  actorId_notin: [string!]
+  actorId_notlike: string
+  actorTokenId: string
+  actorTokenId_geq: string
+  actorTokenId_gt: string
+  actorTokenId_in: [string!]
+  actorTokenId_leq: string
+  actorTokenId_like: string
+  actorTokenId_lt: string
+  actorTokenId_neq: string
+  actorTokenId_notin: [string!]
+  actorTokenId_notlike: string
+  actorTokenName: string
+  actorTokenName_geq: string
+  actorTokenName_gt: string
+  actorTokenName_in: [string!]
+  actorTokenName_leq: string
+  actorTokenName_like: string
+  actorTokenName_lt: string
+  actorTokenName_neq: string
+  actorTokenName_notin: [string!]
+  actorTokenName_notlike: string
+  actorType: string
+  actorType_geq: string
+  actorType_gt: string
+  actorType_in: [string!]
+  actorType_leq: string
+  actorType_like: string
+  actorType_lt: string
+  actorType_neq: string
+  actorType_notin: [string!]
+  actorType_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  rawMethod: string
+  rawMethod_geq: string
+  rawMethod_gt: string
+  rawMethod_in: [string!]
+  rawMethod_leq: string
+  rawMethod_like: string
+  rawMethod_lt: string
+  rawMethod_neq: string
+  rawMethod_notin: [string!]
+  rawMethod_notlike: string
+  rawStatusCode: uint16
+  rawStatusCode_geq: uint16
+  rawStatusCode_gt: uint16
+  rawStatusCode_in: [uint16!]
+  rawStatusCode_leq: uint16
+  rawStatusCode_lt: uint16
+  rawStatusCode_neq: uint16
+  rawStatusCode_notin: [uint16!]
+  resourceId: string
+  resourceId_geq: string
+  resourceId_gt: string
+  resourceId_in: [string!]
+  resourceId_leq: string
+  resourceId_like: string
+  resourceId_lt: string
+  resourceId_neq: string
+  resourceId_notin: [string!]
+  resourceId_notlike: string
+  resourceProduct: string
+  resourceProduct_geq: string
+  resourceProduct_gt: string
+  resourceProduct_in: [string!]
+  resourceProduct_leq: string
+  resourceProduct_like: string
+  resourceProduct_lt: string
+  resourceProduct_neq: string
+  resourceProduct_notin: [string!]
+  resourceProduct_notlike: string
+  resourceScope: string
+  resourceScope_geq: string
+  resourceScope_gt: string
+  resourceScope_in: [string!]
+  resourceScope_leq: string
+  resourceScope_like: string
+  resourceScope_lt: string
+  resourceScope_neq: string
+  resourceScope_notin: [string!]
+  resourceScope_notlike: string
+  resourceType: string
+  resourceType_geq: string
+  resourceType_gt: string
+  resourceType_in: [string!]
+  resourceType_leq: string
+  resourceType_like: string
+  resourceType_lt: string
+  resourceType_neq: string
+  resourceType_notin: [string!]
+  resourceType_notlike: string
+}
+
+enum AccountAuditLogsGroupsOrderBy {
+  # actionDescription ascending
+  actionDescription_ASC
+  # actionDescription descending
+  actionDescription_DESC
+  # actionResult ascending
+  actionResult_ASC
+  # actionResult descending
+  actionResult_DESC
+  # actionType ascending
+  actionType_ASC
+  # actionType descending
+  actionType_DESC
+  # actorContext ascending
+  actorContext_ASC
+  # actorContext descending
+  actorContext_DESC
+  # actorEmail ascending
+  actorEmail_ASC
+  # actorEmail descending
+  actorEmail_DESC
+  # actorId ascending
+  actorId_ASC
+  # actorId descending
+  actorId_DESC
+  # actorTokenId ascending
+  actorTokenId_ASC
+  # actorTokenId descending
+  actorTokenId_DESC
+  # actorTokenName ascending
+  actorTokenName_ASC
+  # actorTokenName descending
+  actorTokenName_DESC
+  # actorType ascending
+  actorType_ASC
+  # actorType descending
+  actorType_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # rawMethod ascending
+  rawMethod_ASC
+  # rawMethod descending
+  rawMethod_DESC
+  # rawStatusCode ascending
+  rawStatusCode_ASC
+  # rawStatusCode descending
+  rawStatusCode_DESC
+  # resourceId ascending
+  resourceId_ASC
+  # resourceId descending
+  resourceId_DESC
+  # resourceProduct ascending
+  resourceProduct_ASC
+  # resourceProduct descending
+  resourceProduct_DESC
+  # resourceScope ascending
+  resourceScope_ASC
+  # resourceScope descending
+  resourceScope_DESC
+  # resourceType ascending
+  resourceType_ASC
+  # resourceType descending
+  resourceType_DESC
+  # uniq(actors) ascending
+  uniq_actors_ASC
+  # uniq(actors) descending
+  uniq_actors_DESC
+  # uniq(products) ascending
+  uniq_products_ASC
+  # uniq(products) descending
+  uniq_products_DESC
+}
+
+type AccountAuditLogsGroupsUniq {
+  # The number of unique actors that initiated audit log actions.
+  actors: uint64!
+  # The number of unique Cloudflare products associated with audit log actions.
+  products: uint64!
 }
 
 # AutoRAG Config API Search Analytics
@@ -33225,6 +34588,12 @@ type AccountGatewayL4SessionsAdaptiveGroupsDimensions {
   dstIpCountry: string!
   # The email address of the gateway user who initiated the session
   email: string!
+  # Indicates whether this session was made through an isolated link
+  isIsolated: uint16!
+  # The egress offramp type for the session
+  offramp: string!
+  # The ingress onramp type for the session
+  onramp: string!
   # The proxy endpoint used on this session
   proxyEndpoint: string!
   # The ID of the Gateway rule (policy) that matched the session, if any
@@ -33417,6 +34786,34 @@ input AccountGatewayL4SessionsAdaptiveGroupsFilter_InputObject {
   email_neq: string
   email_notin: [string!]
   email_notlike: string
+  isIsolated: uint16
+  isIsolated_geq: uint16
+  isIsolated_gt: uint16
+  isIsolated_in: [uint16!]
+  isIsolated_leq: uint16
+  isIsolated_lt: uint16
+  isIsolated_neq: uint16
+  isIsolated_notin: [uint16!]
+  offramp: string
+  offramp_geq: string
+  offramp_gt: string
+  offramp_in: [string!]
+  offramp_leq: string
+  offramp_like: string
+  offramp_lt: string
+  offramp_neq: string
+  offramp_notin: [string!]
+  offramp_notlike: string
+  onramp: string
+  onramp_geq: string
+  onramp_gt: string
+  onramp_in: [string!]
+  onramp_leq: string
+  onramp_like: string
+  onramp_lt: string
+  onramp_neq: string
+  onramp_notin: [string!]
+  onramp_notlike: string
   proxyEndpoint: string
   proxyEndpoint_geq: string
   proxyEndpoint_gt: string
@@ -33644,6 +35041,18 @@ enum AccountGatewayL4SessionsAdaptiveGroupsOrderBy {
   email_ASC
   # email descending
   email_DESC
+  # isIsolated ascending
+  isIsolated_ASC
+  # isIsolated descending
+  isIsolated_DESC
+  # offramp ascending
+  offramp_ASC
+  # offramp descending
+  offramp_DESC
+  # onramp ascending
+  onramp_ASC
+  # onramp descending
+  onramp_DESC
   # proxyEndpoint ascending
   proxyEndpoint_ASC
   # proxyEndpoint descending
@@ -34255,12 +35664,28 @@ type AccountGatewayL7RequestsAdaptiveGroupsDimensions {
   dstIpCountry: string!
   # The email address of the gateway user who made the request
   email: string!
+  # Whether the request was made to an MCP server. Experimental feature, may change within a three-month period
+  experimentalIsMcp: uint8!
   # The destination host for the request
   httpHost: string!
   # HTTP status code gateway returned to the user. 0 if nothing was returned(e.g client disconnected)
   httpStatusCode: float64!
   # Indicates whether this request was made through an isolated link
   isIsolated: uint16!
+  # The egress offramp type for the request
+  offramp: string!
+  # The ingress onramp type for the request
+  onramp: string!
+  # The package ecosystem identified for the request
+  packageEcosystem: string!
+  # The package name identified for the request
+  packageName: string!
+  # The package namespace identified for the request, if any
+  packageNamespace: string!
+  # The package URL (PURL) identified for the request
+  packagePURL: string!
+  # The package version identified for the request
+  packageVersion: string!
   # Access private app AUD
   privateAppAUD: string!
   # The proxy endpoint used on this request
@@ -34424,6 +35849,14 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   email_neq: string
   email_notin: [string!]
   email_notlike: string
+  experimentalIsMcp: uint8
+  experimentalIsMcp_geq: uint8
+  experimentalIsMcp_gt: uint8
+  experimentalIsMcp_in: bytes
+  experimentalIsMcp_leq: uint8
+  experimentalIsMcp_lt: uint8
+  experimentalIsMcp_neq: uint8
+  experimentalIsMcp_notin: bytes
   httpHost: string
   httpHost_geq: string
   httpHost_gt: string
@@ -34450,6 +35883,76 @@ input AccountGatewayL7RequestsAdaptiveGroupsFilter_InputObject {
   isIsolated_lt: uint16
   isIsolated_neq: uint16
   isIsolated_notin: [uint16!]
+  offramp: string
+  offramp_geq: string
+  offramp_gt: string
+  offramp_in: [string!]
+  offramp_leq: string
+  offramp_like: string
+  offramp_lt: string
+  offramp_neq: string
+  offramp_notin: [string!]
+  offramp_notlike: string
+  onramp: string
+  onramp_geq: string
+  onramp_gt: string
+  onramp_in: [string!]
+  onramp_leq: string
+  onramp_like: string
+  onramp_lt: string
+  onramp_neq: string
+  onramp_notin: [string!]
+  onramp_notlike: string
+  packageEcosystem: string
+  packageEcosystem_geq: string
+  packageEcosystem_gt: string
+  packageEcosystem_in: [string!]
+  packageEcosystem_leq: string
+  packageEcosystem_like: string
+  packageEcosystem_lt: string
+  packageEcosystem_neq: string
+  packageEcosystem_notin: [string!]
+  packageEcosystem_notlike: string
+  packageName: string
+  packageName_geq: string
+  packageName_gt: string
+  packageName_in: [string!]
+  packageName_leq: string
+  packageName_like: string
+  packageName_lt: string
+  packageName_neq: string
+  packageName_notin: [string!]
+  packageName_notlike: string
+  packageNamespace: string
+  packageNamespace_geq: string
+  packageNamespace_gt: string
+  packageNamespace_in: [string!]
+  packageNamespace_leq: string
+  packageNamespace_like: string
+  packageNamespace_lt: string
+  packageNamespace_neq: string
+  packageNamespace_notin: [string!]
+  packageNamespace_notlike: string
+  packagePURL: string
+  packagePURL_geq: string
+  packagePURL_gt: string
+  packagePURL_in: [string!]
+  packagePURL_leq: string
+  packagePURL_like: string
+  packagePURL_lt: string
+  packagePURL_neq: string
+  packagePURL_notin: [string!]
+  packagePURL_notlike: string
+  packageVersion: string
+  packageVersion_geq: string
+  packageVersion_gt: string
+  packageVersion_in: [string!]
+  packageVersion_leq: string
+  packageVersion_like: string
+  packageVersion_lt: string
+  packageVersion_neq: string
+  packageVersion_notin: [string!]
+  packageVersion_notlike: string
   privateAppAUD: string
   privateAppAUD_geq: string
   privateAppAUD_gt: string
@@ -34669,6 +36172,10 @@ enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
   email_ASC
   # email descending
   email_DESC
+  # experimentalIsMcp ascending
+  experimentalIsMcp_ASC
+  # experimentalIsMcp descending
+  experimentalIsMcp_DESC
   # httpHost ascending
   httpHost_ASC
   # httpHost descending
@@ -34681,6 +36188,34 @@ enum AccountGatewayL7RequestsAdaptiveGroupsOrderBy {
   isIsolated_ASC
   # isIsolated descending
   isIsolated_DESC
+  # offramp ascending
+  offramp_ASC
+  # offramp descending
+  offramp_DESC
+  # onramp ascending
+  onramp_ASC
+  # onramp descending
+  onramp_DESC
+  # packageEcosystem ascending
+  packageEcosystem_ASC
+  # packageEcosystem descending
+  packageEcosystem_DESC
+  # packageName ascending
+  packageName_ASC
+  # packageName descending
+  packageName_DESC
+  # packageNamespace ascending
+  packageNamespace_ASC
+  # packageNamespace descending
+  packageNamespace_DESC
+  # packagePURL ascending
+  packagePURL_ASC
+  # packagePURL descending
+  packagePURL_DESC
+  # packageVersion ascending
+  packageVersion_ASC
+  # packageVersion descending
+  packageVersion_DESC
   # privateAppAUD ascending
   privateAppAUD_ASC
   # privateAppAUD descending
@@ -37246,6 +38781,7 @@ type AccountHttpRequestsAdaptive {
   threatIntelIpDatasets: [string!]!
   # UUIDv4 identifiers linking to Threat Intelligence events that matched the visitor IP address
   threatIntelIpEventIds: [string!]!
+  # Upper tier data center; empty when no upper tier was used
   upperTierColoName: string!
   # visitor's user-agent string
   userAgent: string!
@@ -38339,6 +39875,7 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   threatIntelIpDatasets: [string!]!
   # UUIDv4 identifiers linking to Threat Intelligence events that matched the visitor IP address
   threatIntelIpEventIds: [string!]!
+  # Upper tier data center; empty when no upper tier was used
   upperTierColoName: string!
   userAgent: string!
   # Browser parsed from the user agent
@@ -41687,6 +43224,235 @@ type AccountImagesRequestsAdaptiveGroupsSumConfidence {
   requests: Confidence!
 }
 
+# Image transformations grouped by zone, binding request type, worker binding script ID, and transformation string
+type AccountImagesTransformationsAdaptiveGroups {
+  # The average value for a metric per dimensions
+  avg: AccountImagesTransformationsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountImagesTransformationsAdaptiveGroupsConfidence!
+  # Estimated number of requests per specific dimensions using adaptive sampling weights
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountImagesTransformationsAdaptiveGroupsDimensions
+  # Calculates a sum of each field per specific dimensions
+  sum: AccountImagesTransformationsAdaptiveGroupsSum
+}
+
+type AccountImagesTransformationsAdaptiveGroupsAvg {
+  # Average adaptive sampling weight
+  sampleInterval: float64!
+}
+
+type AccountImagesTransformationsAdaptiveGroupsConfidence {
+  # Estimated number of requests per specific dimensions using adaptive sampling weights, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # Calculates a sum of each field per specific dimensions, with confidence intervals
+  sum: AccountImagesTransformationsAdaptiveGroupsSumConfidence
+}
+
+type AccountImagesTransformationsAdaptiveGroupsDimensions {
+  date: Date!
+  datetime: Time!
+  datetimeFifteenMinutes: Time!
+  datetimeFiveMinutes: Time!
+  datetimeHour: Time!
+  datetimeMinute: Time!
+  # 1 when the transformation request originates from a Worker binding, otherwise 0
+  isBindingRequest: uint8!
+  # Hostname of the origin image URL
+  originHost: string!
+  # Worker script name associated with a binding transformation request
+  scriptName: string!
+  # Image transformation string
+  transformation: string!
+  # Associated zone
+  zoneTag: string!
+}
+
+input AccountImagesTransformationsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountImagesTransformationsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountImagesTransformationsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  isBindingRequest: uint8
+  isBindingRequest_geq: uint8
+  isBindingRequest_gt: uint8
+  isBindingRequest_in: bytes
+  isBindingRequest_leq: uint8
+  isBindingRequest_lt: uint8
+  isBindingRequest_neq: uint8
+  isBindingRequest_notin: bytes
+  originHost: string
+  originHost_geq: string
+  originHost_gt: string
+  originHost_in: [string!]
+  originHost_leq: string
+  originHost_like: string
+  originHost_lt: string
+  originHost_neq: string
+  originHost_notin: [string!]
+  originHost_notlike: string
+  scriptName: string
+  scriptName_geq: string
+  scriptName_gt: string
+  scriptName_in: [string!]
+  scriptName_leq: string
+  scriptName_like: string
+  scriptName_lt: string
+  scriptName_neq: string
+  scriptName_notin: [string!]
+  scriptName_notlike: string
+  transformation: string
+  transformation_geq: string
+  transformation_gt: string
+  transformation_in: [string!]
+  transformation_leq: string
+  transformation_like: string
+  transformation_lt: string
+  transformation_neq: string
+  transformation_notin: [string!]
+  transformation_notlike: string
+  zoneTag: string
+  zoneTag_geq: string
+  zoneTag_gt: string
+  zoneTag_in: [string!]
+  zoneTag_leq: string
+  zoneTag_like: string
+  zoneTag_lt: string
+  zoneTag_neq: string
+  zoneTag_notin: [string!]
+  zoneTag_notlike: string
+}
+
+enum AccountImagesTransformationsAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # bindingScriptId ascending
+  bindingScriptId_ASC
+  # bindingScriptId descending
+  bindingScriptId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # isBindingRequest ascending
+  isBindingRequest_ASC
+  # isBindingRequest descending
+  isBindingRequest_DESC
+  # originHost ascending
+  originHost_ASC
+  # originHost descending
+  originHost_DESC
+  # scriptName ascending
+  scriptName_ASC
+  # scriptName descending
+  scriptName_DESC
+  # sum(billableEventCount) ascending
+  sum_billableEventCount_ASC
+  # sum(billableEventCount) descending
+  sum_billableEventCount_DESC
+  # sum(requests) ascending
+  sum_requests_ASC
+  # sum(requests) descending
+  sum_requests_DESC
+  # transformation ascending
+  transformation_ASC
+  # transformation descending
+  transformation_DESC
+  # zoneTag ascending
+  zoneTag_ASC
+  # zoneTag descending
+  zoneTag_DESC
+}
+
+type AccountImagesTransformationsAdaptiveGroupsSum {
+  # Estimated number of billable transformation events using adaptive sampling weights
+  billableEventCount: uint64!
+  # Estimated count of image transformation requests using adaptive sampling weights
+  requests: uint64!
+}
+
+type AccountImagesTransformationsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  billableEventCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  requests: Confidence!
+}
+
 # Image unique transfromations per day
 type AccountImagesUniqueTransformations {
   # The date uniques are calculated for
@@ -42179,6 +43945,382 @@ enum AccountKvStorageAdaptiveGroupsOrderBy {
   namespaceId_ASC
   # namespaceId descending
   namespaceId_DESC
+}
+
+# Distinct pools and origins seen in LB health events, account-scoped
+type AccountLbHealthEntitiesGroups {
+  # Number of health events for this pool/origin combination
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountLbHealthEntitiesGroupsDimensions
+}
+
+type AccountLbHealthEntitiesGroupsDimensions {
+  # The date when the event was generated
+  date: Date!
+  # The datetime when the event was generated
+  datetime: Time!
+  # Name of the origin within the pool
+  originName: string!
+  # Unique identifier for the pool
+  poolId: string!
+  # Name of the pool
+  poolName: string!
+}
+
+input AccountLbHealthEntitiesGroupsFilter_InputObject {
+  AND: [AccountLbHealthEntitiesGroupsFilter_InputObject!]
+  OR: [AccountLbHealthEntitiesGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  originName: string
+  originName_geq: string
+  originName_gt: string
+  originName_in: [string!]
+  originName_leq: string
+  originName_like: string
+  originName_lt: string
+  originName_neq: string
+  originName_notin: [string!]
+  originName_notlike: string
+  poolId: string
+  poolId_geq: string
+  poolId_gt: string
+  poolId_in: [string!]
+  poolId_leq: string
+  poolId_like: string
+  poolId_lt: string
+  poolId_neq: string
+  poolId_notin: [string!]
+  poolId_notlike: string
+  poolName: string
+  poolName_geq: string
+  poolName_gt: string
+  poolName_in: [string!]
+  poolName_leq: string
+  poolName_like: string
+  poolName_lt: string
+  poolName_neq: string
+  poolName_notin: [string!]
+  poolName_notlike: string
+}
+
+enum AccountLbHealthEntitiesGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # originName ascending
+  originName_ASC
+  # originName descending
+  originName_DESC
+  # poolId ascending
+  poolId_ASC
+  # poolId descending
+  poolId_DESC
+  # poolName ascending
+  poolName_ASC
+  # poolName descending
+  poolName_DESC
+}
+
+# Raw LB health state-change events with geographic scope support, account-scoped
+type AccountLbHealthEvents {
+  # Health status of the origin that triggered the health change event (unknown = health state unknown, healthy = origin healthy, critical = origin critical)
+  changedOriginHealth: string!
+  # Name of the origin that triggered the health change event (empty if no origin health changed)
+  changedOriginName: string!
+  # The date when the event was generated
+  date: Date!
+  # The date and time when the event was generated
+  datetime: Time!
+  # Unique identifier for this event
+  eventId: uint64!
+  # Expected HTTP response codes for the pool health checks, comma-separated
+  expectedResponseCodes: string!
+  # 1 if an origin health changed at this event, 0 otherwise
+  originHealthChanged: uint8!
+  # All origins in the pool at event time
+  origins: [AccountLbHealthEventsOriginsElem!]!
+  # Count of origins in the pool with critical status
+  poolCriticalOriginCount: uint32!
+  # Health status of the pool at event time. Values: unknown (health state unknown), critical (pool critical), degraded (pool has one or more critical origins), healthy (all origins healthy)
+  poolHealth: string!
+  # 1 if the pool health changed at this event, 0 otherwise
+  poolHealthChanged: uint8!
+  # Unique identifier for the pool (a group of servers that can serve traffic for the load balancer)
+  poolId: string!
+  # Minimum number of healthy origins required for the pool to be considered healthy
+  poolMinimumHealthyOrigins: uint32!
+  # Name of the pool (a group of origin servers that can serve traffic for the load balancer)
+  poolName: string!
+  # Geographic region code where the load balancing event originated (e.g., WNAM, ENAM, WEU, EEU), or 'GLOBAL' for globally-scoped events.
+  region: string!
+  # Geographic scope of the health event. Values: global (aggregated view across all regions), regional (per-region health status), unknown (unclassified events).
+  scope: string!
+  # The timestamp when the event was generated
+  timestamp: Time!
+}
+
+input AccountLbHealthEventsFilter_InputObject {
+  AND: [AccountLbHealthEventsFilter_InputObject!]
+  OR: [AccountLbHealthEventsFilter_InputObject!]
+  changedOriginHealth: string
+  changedOriginHealth_geq: string
+  changedOriginHealth_gt: string
+  changedOriginHealth_in: [string!]
+  changedOriginHealth_leq: string
+  changedOriginHealth_like: string
+  changedOriginHealth_lt: string
+  changedOriginHealth_neq: string
+  changedOriginHealth_notin: [string!]
+  changedOriginHealth_notlike: string
+  changedOriginName: string
+  changedOriginName_geq: string
+  changedOriginName_gt: string
+  changedOriginName_in: [string!]
+  changedOriginName_leq: string
+  changedOriginName_like: string
+  changedOriginName_lt: string
+  changedOriginName_neq: string
+  changedOriginName_notin: [string!]
+  changedOriginName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  eventId: uint64
+  eventId_geq: uint64
+  eventId_gt: uint64
+  eventId_in: [uint64!]
+  eventId_leq: uint64
+  eventId_lt: uint64
+  eventId_neq: uint64
+  eventId_notin: [uint64!]
+  expectedResponseCodes: string
+  expectedResponseCodes_geq: string
+  expectedResponseCodes_gt: string
+  expectedResponseCodes_in: [string!]
+  expectedResponseCodes_leq: string
+  expectedResponseCodes_like: string
+  expectedResponseCodes_lt: string
+  expectedResponseCodes_neq: string
+  expectedResponseCodes_notin: [string!]
+  expectedResponseCodes_notlike: string
+  originHealthChanged: uint8
+  originHealthChanged_geq: uint8
+  originHealthChanged_gt: uint8
+  originHealthChanged_in: bytes
+  originHealthChanged_leq: uint8
+  originHealthChanged_lt: uint8
+  originHealthChanged_neq: uint8
+  originHealthChanged_notin: bytes
+  poolCriticalOriginCount: uint32
+  poolCriticalOriginCount_geq: uint32
+  poolCriticalOriginCount_gt: uint32
+  poolCriticalOriginCount_in: [uint32!]
+  poolCriticalOriginCount_leq: uint32
+  poolCriticalOriginCount_lt: uint32
+  poolCriticalOriginCount_neq: uint32
+  poolCriticalOriginCount_notin: [uint32!]
+  poolHealth: string
+  poolHealthChanged: uint8
+  poolHealthChanged_geq: uint8
+  poolHealthChanged_gt: uint8
+  poolHealthChanged_in: bytes
+  poolHealthChanged_leq: uint8
+  poolHealthChanged_lt: uint8
+  poolHealthChanged_neq: uint8
+  poolHealthChanged_notin: bytes
+  poolHealth_geq: string
+  poolHealth_gt: string
+  poolHealth_in: [string!]
+  poolHealth_leq: string
+  poolHealth_like: string
+  poolHealth_lt: string
+  poolHealth_neq: string
+  poolHealth_notin: [string!]
+  poolHealth_notlike: string
+  poolId: string
+  poolId_geq: string
+  poolId_gt: string
+  poolId_in: [string!]
+  poolId_leq: string
+  poolId_like: string
+  poolId_lt: string
+  poolId_neq: string
+  poolId_notin: [string!]
+  poolId_notlike: string
+  poolMinimumHealthyOrigins: uint32
+  poolMinimumHealthyOrigins_geq: uint32
+  poolMinimumHealthyOrigins_gt: uint32
+  poolMinimumHealthyOrigins_in: [uint32!]
+  poolMinimumHealthyOrigins_leq: uint32
+  poolMinimumHealthyOrigins_lt: uint32
+  poolMinimumHealthyOrigins_neq: uint32
+  poolMinimumHealthyOrigins_notin: [uint32!]
+  poolName: string
+  poolName_geq: string
+  poolName_gt: string
+  poolName_in: [string!]
+  poolName_leq: string
+  poolName_like: string
+  poolName_lt: string
+  poolName_neq: string
+  poolName_notin: [string!]
+  poolName_notlike: string
+  region: string
+  region_geq: string
+  region_gt: string
+  region_in: [string!]
+  region_leq: string
+  region_like: string
+  region_lt: string
+  region_neq: string
+  region_notin: [string!]
+  region_notlike: string
+  scope: string
+  scope_geq: string
+  scope_gt: string
+  scope_in: [string!]
+  scope_leq: string
+  scope_like: string
+  scope_lt: string
+  scope_neq: string
+  scope_notin: [string!]
+  scope_notlike: string
+  timestamp: Time
+  timestamp_geq: Time
+  timestamp_gt: Time
+  timestamp_in: [Time!]
+  timestamp_leq: Time
+  timestamp_lt: Time
+  timestamp_neq: Time
+  timestamp_notin: [Time!]
+}
+
+enum AccountLbHealthEventsOrderBy {
+  # changedOriginHealth ascending
+  changedOriginHealth_ASC
+  # changedOriginHealth descending
+  changedOriginHealth_DESC
+  # changedOriginName ascending
+  changedOriginName_ASC
+  # changedOriginName descending
+  changedOriginName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # eventId ascending
+  eventId_ASC
+  # eventId descending
+  eventId_DESC
+  # expectedResponseCodes ascending
+  expectedResponseCodes_ASC
+  # expectedResponseCodes descending
+  expectedResponseCodes_DESC
+  # originHealthChanged ascending
+  originHealthChanged_ASC
+  # originHealthChanged descending
+  originHealthChanged_DESC
+  # poolCriticalOriginCount ascending
+  poolCriticalOriginCount_ASC
+  # poolCriticalOriginCount descending
+  poolCriticalOriginCount_DESC
+  # poolHealthChanged ascending
+  poolHealthChanged_ASC
+  # poolHealthChanged descending
+  poolHealthChanged_DESC
+  # poolHealth ascending
+  poolHealth_ASC
+  # poolHealth descending
+  poolHealth_DESC
+  # poolId ascending
+  poolId_ASC
+  # poolId descending
+  poolId_DESC
+  # poolMinimumHealthyOrigins ascending
+  poolMinimumHealthyOrigins_ASC
+  # poolMinimumHealthyOrigins descending
+  poolMinimumHealthyOrigins_DESC
+  # poolName ascending
+  poolName_ASC
+  # poolName descending
+  poolName_DESC
+  # region ascending
+  region_ASC
+  # region descending
+  region_DESC
+  # scope ascending
+  scope_ASC
+  # scope descending
+  scope_DESC
+  # source ascending
+  source_ASC
+  # source descending
+  source_DESC
+  # timestamp ascending
+  timestamp_ASC
+  # timestamp descending
+  timestamp_DESC
+}
+
+type AccountLbHealthEventsOriginsElem {
+  # 1 if the origin is enabled, 0 otherwise
+  enabled: uint8!
+  # Reason the origin failed its health check (e.g., noFailure, httpTimeout, tcpFailure, codeMismatch, tlsHandshakeFailure)
+  failureReason: string!
+  # Fully qualified domain name of the origin
+  fqdn: string!
+  # Health status of the origin (unknown = health state unknown, healthy = origin healthy, critical = origin critical)
+  health: string!
+  # 1 if this origin's health changed at this event, 0 otherwise
+  healthChanged: uint8!
+  # IP address of the origin
+  ip: string!
+  # Origin name
+  originName: string!
+  # HTTP response code returned by the origin during its health check
+  responseCode: uint16!
 }
 
 # Live input events with adaptive sampling
@@ -58353,6 +60495,10 @@ enum AccountPagesFunctionsInvocationsAdaptiveGroupsOrderBy {
   scriptName_ASC
   # scriptName descending
   scriptName_DESC
+  # scriptTag ascending
+  scriptTag_ASC
+  # scriptTag descending
+  scriptTag_DESC
   # stableId ascending
   stableId_ASC
   # stableId descending
@@ -68219,6 +70365,7 @@ type AccountSettings {
   aiGatewayCacheAdaptiveGroups: Settings!
   aiGatewayErrorsAdaptiveGroups: Settings!
   aiGatewayRequestsAdaptiveGroups: Settings!
+  aiGatewayRequestsStagingAdaptiveGroups: Settings!
   aiGatewaySizeAdaptiveGroups: Settings!
   aiGatewaySpendSessionsAdaptiveGroups: Settings!
   aiGatewaySpendUserDailyAdaptiveGroups: Settings!
@@ -68227,6 +70374,7 @@ type AccountSettings {
   aiSearchAPIAdaptiveGroups: Settings!
   aiSearchIngestedItemsAdaptiveGroups: Settings!
   artifactsEventsAdaptiveGroups: Settings!
+  auditLogsGroups: Settings!
   autoRAGConfigAPIAdaptiveGroups: Settings!
   autoRAGEngineAdaptiveGroups: Settings!
   browserIsolationSessionsAdaptiveGroups: Settings!
@@ -68303,10 +70451,13 @@ type AccountSettings {
   hyperdrivePoolSizesAdaptiveGroups: Settings!
   hyperdriveQueriesAdaptiveGroups: Settings!
   imagesRequestsAdaptiveGroups: Settings!
+  imagesTransformationsAdaptiveGroups: Settings!
   imagesUniqueTransformations: Settings!
   imagesUniqueTransformationsAccumulatedSinceStartOfMonth: Settings!
   kvOperationsAdaptiveGroups: Settings!
   kvStorageAdaptiveGroups: Settings!
+  lbHealthEntitiesGroups: Settings!
+  lbHealthEvents: Settings!
   liveInputEventsAdaptive: Settings!
   liveInputEventsAdaptiveGroups: Settings!
   logExplorerIngestionAdaptiveGroups: Settings!
@@ -77635,6 +79786,10 @@ enum AccountWorkersOverviewRequestsAdaptiveGroupsOrderBy {
   scriptName_ASC
   # scriptName descending
   scriptName_DESC
+  # scriptTag ascending
+  scriptTag_ASC
+  # scriptTag descending
+  scriptTag_DESC
   # stableId ascending
   stableId_ASC
   # stableId descending
@@ -78015,6 +80170,10 @@ enum AccountWorkersSubrequestsAdaptiveGroupsOrderBy {
   scriptName_ASC
   # scriptName descending
   scriptName_DESC
+  # scriptTag ascending
+  scriptTag_ASC
+  # scriptTag descending
+  scriptTag_DESC
   # scriptVersion ascending
   scriptVersion_ASC
   # scriptVersion descending
@@ -80728,6 +82887,7 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   threatIntelIpDatasets: [string!]!
   # UUIDv4 identifiers linking to Threat Intelligence events that matched the visitor IP address
   threatIntelIpEventIds: [string!]!
+  # Upper tier data center; empty when no upper tier was used
   upperTierColoName: string!
   userAgent: string!
   # Browser parsed from the user agent
@@ -92611,6 +94771,7 @@ type ZoneHttpRequestsAdaptive {
   threatIntelIpDatasets: [string!]!
   # UUIDv4 identifiers linking to Threat Intelligence events that matched the visitor IP address
   threatIntelIpEventIds: [string!]!
+  # Upper tier data center; empty when no upper tier was used
   upperTierColoName: string!
   # visitor's user-agent string
   userAgent: string!
@@ -93692,6 +95853,7 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   threatIntelIpDatasets: [string!]!
   # UUIDv4 identifiers linking to Threat Intelligence events that matched the visitor IP address
   threatIntelIpEventIds: [string!]!
+  # Upper tier data center; empty when no upper tier was used
   upperTierColoName: string!
   userAgent: string!
   # Browser parsed from the user agent
