@@ -17,6 +17,7 @@ Account-level datasets:
 * aiInferenceAdaptiveGroups
 * aiSearchAPIAdaptiveGroups
 * aiSearchIngestedItemsAdaptiveGroups
+* aiSearchPublicEventsAdaptiveGroups
 * artifactsEventsAdaptiveGroups
 * auditLogsGroups
 * autoRAGConfigAPIAdaptiveGroups
@@ -288,7 +289,7 @@ scalar Date
 # Scalar type types.Float32
 scalar float32
 
-# Scalar type float64
+# Scalar type types.Float64
 scalar float64
 
 # Scalar type int16
@@ -361,6 +362,8 @@ type account {
   aiSearchAPIAdaptiveGroups(filter: AccountAiSearchAPIAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchAPIAdaptiveGroupsOrderBy!]): [AccountAiSearchAPIAdaptiveGroups!]!
   # AI Search Ingested Items Analytics
   aiSearchIngestedItemsAdaptiveGroups(filter: AccountAiSearchIngestedItemsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchIngestedItemsAdaptiveGroupsOrderBy!]): [AccountAiSearchIngestedItemsAdaptiveGroups!]!
+  # AI Search public endpoint analytics: searches, result clicks and view-more interactions reported by the public search snippet
+  aiSearchPublicEventsAdaptiveGroups(filter: AccountAiSearchPublicEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchPublicEventsAdaptiveGroupsOrderBy!]): [AccountAiSearchPublicEventsAdaptiveGroups!]!
   # Artifacts events with adaptive sampling
   artifactsEventsAdaptiveGroups(filter: AccountArtifactsEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountArtifactsEventsAdaptiveGroupsOrderBy!]): [AccountArtifactsEventsAdaptiveGroups!]!
   # Audit log events grouped by account, time, actor, action, and resource dimensions.
@@ -6907,17 +6910,17 @@ type AccountAiGatewaySpendSessionsAdaptiveGroupsConfidence {
 type AccountAiGatewaySpendSessionsAdaptiveGroupsDimensions {
   # Access common name or service principal name for the session
   commonName: string!
-  # AI Gateway Spend session end date
+  # UTC date when the AI Gateway session data was recorded
   date: Date!
-  # AI Gateway Spend session end timestamp
+  # UTC timestamp when the AI Gateway session data was recorded
   datetime: Time!
-  # AI Gateway Spend session end timestamp truncated to fifteen minutes
+  # AI Gateway session data recording timestamp truncated to fifteen minutes
   datetimeFifteenMinutes: Time!
-  # AI Gateway Spend session end timestamp truncated to five minutes
+  # AI Gateway session data recording timestamp truncated to five minutes
   datetimeFiveMinutes: Time!
-  # AI Gateway Spend session end timestamp truncated to the hour
+  # AI Gateway session data recording timestamp truncated to the hour
   datetimeHour: Time!
-  # AI Gateway Spend session end timestamp truncated to the minute
+  # AI Gateway session data recording timestamp truncated to the minute
   datetimeMinute: Time!
   # Model used by the first request in the session
   firstModel: string!
@@ -6955,6 +6958,10 @@ type AccountAiGatewaySpendSessionsAdaptiveGroupsDimensions {
   rowId: string!
   # Application or framework session identifier
   sessionId: string!
+  # UTC timestamp when the AI Gateway session started
+  sessionStart: Time!
+  # UTC date when the AI Gateway session started
+  sessionStartDate: Date!
   # Producer source for this session fact
   source: string!
   # Access user ID or service principal identifier for the session
@@ -7188,6 +7195,22 @@ input AccountAiGatewaySpendSessionsAdaptiveGroupsFilter_InputObject {
   sessionId_neq: string
   sessionId_notin: [string!]
   sessionId_notlike: string
+  sessionStart: Time
+  sessionStartDate: Date
+  sessionStartDate_geq: Date
+  sessionStartDate_gt: Date
+  sessionStartDate_in: [Date!]
+  sessionStartDate_leq: Date
+  sessionStartDate_lt: Date
+  sessionStartDate_neq: Date
+  sessionStartDate_notin: [Date!]
+  sessionStart_geq: Time
+  sessionStart_gt: Time
+  sessionStart_in: [Time!]
+  sessionStart_leq: Time
+  sessionStart_lt: Time
+  sessionStart_neq: Time
+  sessionStart_notin: [Time!]
   source: string
   source_geq: string
   source_gt: string
@@ -7471,6 +7494,14 @@ enum AccountAiGatewaySpendSessionsAdaptiveGroupsOrderBy {
   sessionId_ASC
   # sessionId descending
   sessionId_DESC
+  # sessionStartDate ascending
+  sessionStartDate_ASC
+  # sessionStartDate descending
+  sessionStartDate_DESC
+  # sessionStart ascending
+  sessionStart_ASC
+  # sessionStart descending
+  sessionStart_DESC
   # source ascending
   source_ASC
   # source descending
@@ -10056,6 +10087,328 @@ type AccountAiSearchIngestedItemsAdaptiveGroupsSumConfidence {
   totalTokens: Confidence!
   # Confidence interval for the corresponding point estimate
   vectorizeDurationMs: Confidence!
+}
+
+# AI Search public endpoint analytics: searches, result clicks and view-more interactions reported by the public search snippet
+type AccountAiSearchPublicEventsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountAiSearchPublicEventsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountAiSearchPublicEventsAdaptiveGroupsConfidence!
+  # Total number of snippet events, of any kind
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiSearchPublicEventsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountAiSearchPublicEventsAdaptiveGroupsSum
+  # The number of unique values for a metric per dimension
+  uniq: AccountAiSearchPublicEventsAdaptiveGroupsUniq
+}
+
+type AccountAiSearchPublicEventsAdaptiveGroupsAvg {
+  # The average position of the clicked result within the result list, -1 when the group holds no result clicks
+  clickPosition: float64!
+  # Average sample interval
+  sampleInterval: float64!
+  # The average number of results returned per search, -1 when the group holds no search events
+  totalResult: float64!
+}
+
+type AccountAiSearchPublicEventsAdaptiveGroupsConfidence {
+  # Total number of snippet events, of any kind, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountAiSearchPublicEventsAdaptiveGroupsSumConfidence
+}
+
+type AccountAiSearchPublicEventsAdaptiveGroupsDimensions {
+  # The position of the clicked result within the result list, starting at zero
+  clickPosition: int64!
+  # Whether the event is a click on the view more results control (0 = false, 1 = true)
+  clickViewMore: uint8!
+  # The identifier of the result that was clicked, empty for events that are not a result click
+  clickedResultId: string!
+  # The date of the snippet event
+  date: Date!
+  # The date and time the event occurred
+  datetime: Time!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # The version of the search snippet that reported the event
+  eventVersion: string!
+  # The verbatim search term entered in the search snippet, empty for events that carry no query
+  inputQuery: string!
+  # The Origin header of the page hosting the search snippet
+  origin: string!
+  # The identifier of the AI Search public endpoint that served the snippet
+  publicEndpointId: string!
+  # The number of results returned for the search this event belongs to
+  totalResult: int64!
+}
+
+input AccountAiSearchPublicEventsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiSearchPublicEventsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiSearchPublicEventsAdaptiveGroupsFilter_InputObject!]
+  clickPosition: int64
+  clickPosition_geq: int64
+  clickPosition_gt: int64
+  clickPosition_in: [int64!]
+  clickPosition_leq: int64
+  clickPosition_lt: int64
+  clickPosition_neq: int64
+  clickPosition_notin: [int64!]
+  clickViewMore: uint8
+  clickViewMore_geq: uint8
+  clickViewMore_gt: uint8
+  clickViewMore_in: bytes
+  clickViewMore_leq: uint8
+  clickViewMore_lt: uint8
+  clickViewMore_neq: uint8
+  clickViewMore_notin: bytes
+  clickedResultId: string
+  clickedResultId_geq: string
+  clickedResultId_gt: string
+  clickedResultId_in: [string!]
+  clickedResultId_leq: string
+  clickedResultId_like: string
+  clickedResultId_lt: string
+  clickedResultId_neq: string
+  clickedResultId_notin: [string!]
+  clickedResultId_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  eventVersion: string
+  eventVersion_geq: string
+  eventVersion_gt: string
+  eventVersion_in: [string!]
+  eventVersion_leq: string
+  eventVersion_like: string
+  eventVersion_lt: string
+  eventVersion_neq: string
+  eventVersion_notin: [string!]
+  eventVersion_notlike: string
+  inputQuery: string
+  inputQuery_geq: string
+  inputQuery_gt: string
+  inputQuery_in: [string!]
+  inputQuery_leq: string
+  inputQuery_like: string
+  inputQuery_lt: string
+  inputQuery_neq: string
+  inputQuery_notin: [string!]
+  inputQuery_notlike: string
+  origin: string
+  origin_geq: string
+  origin_gt: string
+  origin_in: [string!]
+  origin_leq: string
+  origin_like: string
+  origin_lt: string
+  origin_neq: string
+  origin_notin: [string!]
+  origin_notlike: string
+  publicEndpointId: string
+  publicEndpointId_geq: string
+  publicEndpointId_gt: string
+  publicEndpointId_in: [string!]
+  publicEndpointId_leq: string
+  publicEndpointId_like: string
+  publicEndpointId_lt: string
+  publicEndpointId_neq: string
+  publicEndpointId_notin: [string!]
+  publicEndpointId_notlike: string
+  totalResult: int64
+  totalResult_geq: int64
+  totalResult_gt: int64
+  totalResult_in: [int64!]
+  totalResult_leq: int64
+  totalResult_lt: int64
+  totalResult_neq: int64
+  totalResult_notin: [int64!]
+}
+
+enum AccountAiSearchPublicEventsAdaptiveGroupsOrderBy {
+  # avg(clickPosition) ascending
+  avg_clickPosition_ASC
+  # avg(clickPosition) descending
+  avg_clickPosition_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # avg(totalResult) ascending
+  avg_totalResult_ASC
+  # avg(totalResult) descending
+  avg_totalResult_DESC
+  # clickPosition ascending
+  clickPosition_ASC
+  # clickPosition descending
+  clickPosition_DESC
+  # clickViewMore ascending
+  clickViewMore_ASC
+  # clickViewMore descending
+  clickViewMore_DESC
+  # clickedResultId ascending
+  clickedResultId_ASC
+  # clickedResultId descending
+  clickedResultId_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # eventVersion ascending
+  eventVersion_ASC
+  # eventVersion descending
+  eventVersion_DESC
+  # inputQuery ascending
+  inputQuery_ASC
+  # inputQuery descending
+  inputQuery_DESC
+  # origin ascending
+  origin_ASC
+  # origin descending
+  origin_DESC
+  # publicEndpointId ascending
+  publicEndpointId_ASC
+  # publicEndpointId descending
+  publicEndpointId_DESC
+  # searchId ascending
+  searchId_ASC
+  # searchId descending
+  searchId_DESC
+  # sum(clickCount) ascending
+  sum_clickCount_ASC
+  # sum(clickCount) descending
+  sum_clickCount_DESC
+  # sum(searchCount) ascending
+  sum_searchCount_ASC
+  # sum(searchCount) descending
+  sum_searchCount_DESC
+  # sum(totalResult) ascending
+  sum_totalResult_ASC
+  # sum(totalResult) descending
+  sum_totalResult_DESC
+  # sum(viewMoreCount) ascending
+  sum_viewMoreCount_ASC
+  # sum(viewMoreCount) descending
+  sum_viewMoreCount_DESC
+  # totalResult ascending
+  totalResult_ASC
+  # totalResult descending
+  totalResult_DESC
+  # uniq(searchIdCount) ascending
+  uniq_searchIdCount_ASC
+  # uniq(searchIdCount) descending
+  uniq_searchIdCount_DESC
+  # userAgent ascending
+  userAgent_ASC
+  # userAgent descending
+  userAgent_DESC
+}
+
+type AccountAiSearchPublicEventsAdaptiveGroupsSum {
+  # The number of times a search result was clicked in the public search snippet
+  clickCount: uint64!
+  # The number of searches performed through the public search snippet
+  searchCount: uint64!
+  # The total number of results returned across all searches
+  totalResult: uint64!
+  # The number of times the view more results control was clicked
+  viewMoreCount: uint64!
+}
+
+type AccountAiSearchPublicEventsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  clickCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  searchCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  totalResult: Confidence!
+  # Confidence interval for the corresponding point estimate
+  viewMoreCount: Confidence!
+}
+
+type AccountAiSearchPublicEventsAdaptiveGroupsUniq {
+  # The number of distinct requests to the public endpoint that reported these events
+  searchIdCount: uint64!
 }
 
 # Artifacts events with adaptive sampling
@@ -70373,6 +70726,7 @@ type AccountSettings {
   aiInferenceAdaptiveGroups: Settings!
   aiSearchAPIAdaptiveGroups: Settings!
   aiSearchIngestedItemsAdaptiveGroups: Settings!
+  aiSearchPublicEventsAdaptiveGroups: Settings!
   artifactsEventsAdaptiveGroups: Settings!
   auditLogsGroups: Settings!
   autoRAGConfigAPIAdaptiveGroups: Settings!
