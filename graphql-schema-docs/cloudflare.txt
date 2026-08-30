@@ -7,6 +7,10 @@ Account-level datasets:
 * agentMemoryOperationsAdaptiveGroups
 * agentModelInvocationsAdaptiveGroups
 * aiGatewayCacheAdaptiveGroups
+* aiGatewayConversationAnalysesAdaptive
+* aiGatewayConversationAnalysesAdaptiveGroups
+* aiGatewayConversationAnalysesStagingAdaptive
+* aiGatewayConversationAnalysesStagingAdaptiveGroups
 * aiGatewayErrorsAdaptiveGroups
 * aiGatewayRequestsAdaptiveGroups
 * aiGatewayRequestsStagingAdaptiveGroups
@@ -160,6 +164,7 @@ Account-level datasets:
 * pipelinesUserErrorsStagingAdaptive
 * pipelinesUserErrorsStagingAdaptiveGroups
 * precursorEventsAdaptiveGroups
+* precursorSessionsAdaptiveGroups
 * privacyProxyAuthMetricsAdaptiveGroups
 * privacyProxyEgressConnMetricsAdaptiveGroups
 * privacyProxyIngressConnMetricsAdaptiveGroups
@@ -169,6 +174,7 @@ Account-level datasets:
 * queueConsumerMetricsAdaptiveGroups
 * queueDelayedBacklogAdaptiveGroups
 * queueMessageOperationsAdaptiveGroups
+* r2BandwidthUsageAdaptiveGroups
 * r2CatalogDataOperationsAdaptiveGroups
 * r2CatalogTableMaintenanceAdaptiveGroups
 * r2OperationsAdaptiveGroups
@@ -215,6 +221,9 @@ Account-level datasets:
 * workersVpcConnectionAdaptiveGroups
 * workflowsAdaptive
 * workflowsAdaptiveGroups
+* workflowsBlockedReasonAdaptiveGroups
+* workflowsQueueDepthAdaptiveGroups
+* workflowsQueueWaitAdaptiveGroups
 * zarazTrackAdaptiveGroups
 * zarazTriggersAdaptiveGroups
 * zeroTrustPrivateNetworkDiscoveryGroups
@@ -289,7 +298,7 @@ scalar Date
 # Scalar type types.Float32
 scalar float32
 
-# Scalar type types.Float64
+# Scalar type float64
 scalar float64
 
 # Scalar type int16
@@ -342,6 +351,14 @@ type account {
   agentModelInvocationsAdaptiveGroups(filter: AccountAgentModelInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAgentModelInvocationsAdaptiveGroupsOrderBy!]): [AccountAgentModelInvocationsAdaptiveGroups!]!
   # AI Gateway Cache
   aiGatewayCacheAdaptiveGroups(filter: AccountAiGatewayCacheAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayCacheAdaptiveGroupsOrderBy!]): [AccountAiGatewayCacheAdaptiveGroups!]!
+  # Individual analyzed AI Gateway conversations. This list is sampled: an aggregate may report more conversations than this node can list. A conversation re-analyzed after resuming appears as another row with its accumulated totals; conversationId identifies repeated conversations.
+  aiGatewayConversationAnalysesAdaptive(filter: AccountAiGatewayConversationAnalysesAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayConversationAnalysesAdaptiveOrderBy!]): [AccountAiGatewayConversationAnalysesAdaptive!]!
+  # Analyzed AI Gateway conversations, aggregated with adaptive sampling. One underlying row exists per analysis pick of a conversation; a conversation resumed and re-analyzed later contributes again with its accumulated totals.
+  aiGatewayConversationAnalysesAdaptiveGroups(filter: AccountAiGatewayConversationAnalysesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayConversationAnalysesAdaptiveGroupsOrderBy!]): [AccountAiGatewayConversationAnalysesAdaptiveGroups!]!
+  # Individual analyzed AI Gateway conversations with adaptive sampling (staging)
+  aiGatewayConversationAnalysesStagingAdaptive(filter: AccountAiGatewayConversationAnalysesStagingAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayConversationAnalysesStagingAdaptiveOrderBy!]): [AccountAiGatewayConversationAnalysesStagingAdaptive!]!
+  # Analyzed AI Gateway conversations with adaptive sampling (staging)
+  aiGatewayConversationAnalysesStagingAdaptiveGroups(filter: AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsOrderBy!]): [AccountAiGatewayConversationAnalysesStagingAdaptiveGroups!]!
   # AI Gateway Errors
   aiGatewayErrorsAdaptiveGroups(filter: AccountAiGatewayErrorsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayErrorsAdaptiveGroupsOrderBy!]): [AccountAiGatewayErrorsAdaptiveGroups!]!
   # AI Gateway Requests
@@ -521,7 +538,7 @@ type account {
   hyperdriveQueriesAdaptiveGroups(filter: AccountHyperdriveQueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHyperdriveQueriesAdaptiveGroupsOrderBy!]): [AccountHyperdriveQueriesAdaptiveGroups!]!
   # A high-level summary of Cloudflare Images served to end users.
   imagesRequestsAdaptiveGroups(filter: AccountImagesRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesRequestsAdaptiveGroupsOrderBy!]): [AccountImagesRequestsAdaptiveGroups!]!
-  # Image transformations grouped by zone, binding request type, worker binding script ID, and transformation string
+  # Image transformations performed for an account, grouped by zone, Worker script, transformation and origin host. Counts only transformations the resizer actually performed, so this is estimated processing volume rather than end-user request count or invoice total
   imagesTransformationsAdaptiveGroups(filter: AccountImagesTransformationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesTransformationsAdaptiveGroupsOrderBy!]): [AccountImagesTransformationsAdaptiveGroups!]!
   # Image unique transfromations per day
   imagesUniqueTransformations(filter: AccountImagesUniqueTransformationsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesUniqueTransformationsOrderBy!]): [AccountImagesUniqueTransformations!]!
@@ -649,6 +666,8 @@ type account {
   pipelinesUserErrorsStagingAdaptiveGroups(filter: AccountPipelinesUserErrorsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPipelinesUserErrorsStagingAdaptiveGroupsOrderBy!]): [AccountPipelinesUserErrorsStagingAdaptiveGroups!]!
   # Beta. Cloudflare Precursor aggregated validation events with adaptive sampling
   precursorEventsAdaptiveGroups(filter: AccountPrecursorEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPrecursorEventsAdaptiveGroupsOrderBy!]): [AccountPrecursorEventsAdaptiveGroups!]!
+  # Beta. Cloudflare Precursor session-level aggregates derived from sampled validation events
+  precursorSessionsAdaptiveGroups(filter: AccountPrecursorSessionsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPrecursorSessionsAdaptiveGroupsOrderBy!]): [AccountPrecursorSessionsAdaptiveGroups!]!
   # Aggregated Privacy Proxy authentication metrics with adaptive sampling
   privacyProxyAuthMetricsAdaptiveGroups(filter: AccountPrivacyProxyAuthMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountPrivacyProxyAuthMetricsAdaptiveGroupsOrderBy!]): [AccountPrivacyProxyAuthMetricsAdaptiveGroups!]!
   # Aggregated Privacy Proxy egress (proxy-to-origin) connection metrics with adaptive sampling
@@ -667,6 +686,8 @@ type account {
   queueDelayedBacklogAdaptiveGroups(filter: AccountQueueDelayedBacklogAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueDelayedBacklogAdaptiveGroupsOrderBy!]): [AccountQueueDelayedBacklogAdaptiveGroups!]!
   # Beta. Queue message operation data with adaptive sampling
   queueMessageOperationsAdaptiveGroups(filter: AccountQueueMessageOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountQueueMessageOperationsAdaptiveGroupsOrderBy!]): [AccountQueueMessageOperationsAdaptiveGroups!]!
+  # Estimated R2 transfer usage with adaptive sampling. Transfers smaller than 100 KiB are excluded.
+  r2BandwidthUsageAdaptiveGroups(filter: AccountR2BandwidthUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2BandwidthUsageAdaptiveGroupsOrderBy!]): [AccountR2BandwidthUsageAdaptiveGroups!]!
   # R2 Data Catalog data plane operations (Iceberg REST API requests) with adaptive sampling
   r2CatalogDataOperationsAdaptiveGroups(filter: AccountR2CatalogDataOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountR2CatalogDataOperationsAdaptiveGroupsOrderBy!]): [AccountR2CatalogDataOperationsAdaptiveGroups!]!
   # R2 Data Catalog table maintenance job metrics (compaction, snapshot expiration) with adaptive sampling
@@ -760,6 +781,12 @@ type account {
   workflowsAdaptive(filter: AccountWorkflowsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkflowsAdaptiveOrderBy!]): [AccountWorkflowsAdaptive!]!
   # Workflows analytics
   workflowsAdaptiveGroups(filter: AccountWorkflowsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkflowsAdaptiveGroupsOrderBy!]): [AccountWorkflowsAdaptiveGroups!]!
+  # Workflow gatekeeper block reason metrics with adaptive sampling. Each sample represents instances that were blocked by the gatekeeper, grouped by the reason for blocking.
+  workflowsBlockedReasonAdaptiveGroups(filter: AccountWorkflowsBlockedReasonAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkflowsBlockedReasonAdaptiveGroupsOrderBy!]): [AccountWorkflowsBlockedReasonAdaptiveGroups!]!
+  # Workflow queue depth gauge metrics with adaptive sampling. Each sample represents a snapshot of the number of instances waiting in the gatekeeper queue for a workflow.
+  workflowsQueueDepthAdaptiveGroups(filter: AccountWorkflowsQueueDepthAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkflowsQueueDepthAdaptiveGroupsOrderBy!]): [AccountWorkflowsQueueDepthAdaptiveGroups!]!
+  # Workflow queue wait time metrics with adaptive sampling. Each sample represents the time a workflow instance spent waiting in the gatekeeper queue before being admitted.
+  workflowsQueueWaitAdaptiveGroups(filter: AccountWorkflowsQueueWaitAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkflowsQueueWaitAdaptiveGroupsOrderBy!]): [AccountWorkflowsQueueWaitAdaptiveGroups!]!
   # Zaraz Track Analytics - counts zaraz.track calls
   zarazTrackAdaptiveGroups(filter: AccountZarazTrackAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountZarazTrackAdaptiveGroupsOrderBy!]): [AccountZarazTrackAdaptiveGroups!]!
   # Zaraz Triggers Analytics (a trigger is a set of rules that can trigger a zaraz action)
@@ -4748,6 +4775,1426 @@ enum AccountAiGatewayCacheAdaptiveGroupsOrderBy {
   tokensOut_ASC
   # tokensOut descending
   tokensOut_DESC
+}
+
+# Individual analyzed AI Gateway conversations. This list is sampled: an aggregate may report more conversations than this node can list. A conversation re-analyzed after resuming appears as another row with its accumulated totals; conversationId identifies repeated conversations.
+type AccountAiGatewayConversationAnalysesAdaptive {
+  # Assistant turns in the analyzed trajectory
+  assistantTurns: uint64!
+  # Coding agent that held the conversation
+  client: string!
+  # Stable hash identifying the user and session conversation; evidence join key and marker for repeated rows of one conversation
+  conversationId: string!
+  # Estimated conversation cost in USD; not a billing figure. 0 when unmeasured, and overlapping analysis periods can double-count it
+  costEstimate: float64!
+  # UTC date when the conversation analysis was published
+  date: Date!
+  # UTC timestamp when the conversation analysis was published
+  datetime: Time!
+  # First observed activity in the conversation
+  datetimeFirstActivity: Time!
+  # Last observed activity in the conversation
+  datetimeLastActivity: Time!
+  # Name of the AI Gateway the conversation went through
+  gatewayId: string!
+  # Number of analyses that measured usage; 0 means absent
+  measuredCount: uint64!
+  # 'ok' when analyzed end to end and 'skip' when refused
+  outcome: string!
+  # Cheapest tier judged sufficient; empty when unavailable
+  requiredTier: string!
+  # Number of conversations this row represents under adaptive sampling; multiply when extrapolating from listed rows
+  sampleInterval: uint64!
+  # Provider and model that served the analyzed conversation
+  servedModel: string!
+  # Tier of the served model; empty when unavailable
+  servedTier: string!
+  # 1 when overlapping analysis periods double-count usage
+  spansOverlap: uint8!
+  # Task type assigned by the classifier; empty when unclassified
+  taskLabel: string!
+  # Input tokens across the conversation's observed requests
+  tokensIn: uint64!
+  # Output tokens across the conversation's observed requests
+  tokensOut: uint64!
+  # Tool calls made by the assistant in the analyzed trajectory
+  toolCalls: uint64!
+  # CF Access user identity of the conversation's end user
+  userId: string!
+  # User turns in the analyzed trajectory
+  userTurns: uint64!
+  # 'overkill', 'appropriate', 'underpowered', 'skip' when unjudgeable, or empty when unclassified
+  verdict: string!
+  # Generation of the verdict rule used for this conversation
+  verdictVersion: string!
+}
+
+input AccountAiGatewayConversationAnalysesAdaptiveFilter_InputObject {
+  AND: [AccountAiGatewayConversationAnalysesAdaptiveFilter_InputObject!]
+  OR: [AccountAiGatewayConversationAnalysesAdaptiveFilter_InputObject!]
+  assistantTurns: uint64
+  assistantTurns_geq: uint64
+  assistantTurns_gt: uint64
+  assistantTurns_in: [uint64!]
+  assistantTurns_leq: uint64
+  assistantTurns_lt: uint64
+  assistantTurns_neq: uint64
+  assistantTurns_notin: [uint64!]
+  client: string
+  client_geq: string
+  client_gt: string
+  client_in: [string!]
+  client_leq: string
+  client_like: string
+  client_lt: string
+  client_neq: string
+  client_notin: [string!]
+  client_notlike: string
+  conversationId: string
+  conversationId_geq: string
+  conversationId_gt: string
+  conversationId_in: [string!]
+  conversationId_leq: string
+  conversationId_like: string
+  conversationId_lt: string
+  conversationId_neq: string
+  conversationId_notin: [string!]
+  conversationId_notlike: string
+  costEstimate: float64
+  costEstimate_geq: float64
+  costEstimate_gt: float64
+  costEstimate_in: [float64!]
+  costEstimate_leq: float64
+  costEstimate_lt: float64
+  costEstimate_neq: float64
+  costEstimate_notin: [float64!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  gatewayId: string
+  gatewayId_geq: string
+  gatewayId_gt: string
+  gatewayId_in: [string!]
+  gatewayId_leq: string
+  gatewayId_like: string
+  gatewayId_lt: string
+  gatewayId_neq: string
+  gatewayId_notin: [string!]
+  gatewayId_notlike: string
+  measuredCount: uint64
+  measuredCount_geq: uint64
+  measuredCount_gt: uint64
+  measuredCount_in: [uint64!]
+  measuredCount_leq: uint64
+  measuredCount_lt: uint64
+  measuredCount_neq: uint64
+  measuredCount_notin: [uint64!]
+  outcome: string
+  outcome_geq: string
+  outcome_gt: string
+  outcome_in: [string!]
+  outcome_leq: string
+  outcome_like: string
+  outcome_lt: string
+  outcome_neq: string
+  outcome_notin: [string!]
+  outcome_notlike: string
+  requiredTier: string
+  requiredTier_geq: string
+  requiredTier_gt: string
+  requiredTier_in: [string!]
+  requiredTier_leq: string
+  requiredTier_like: string
+  requiredTier_lt: string
+  requiredTier_neq: string
+  requiredTier_notin: [string!]
+  requiredTier_notlike: string
+  sampleInterval: uint64
+  sampleInterval_geq: uint64
+  sampleInterval_gt: uint64
+  sampleInterval_in: [uint64!]
+  sampleInterval_leq: uint64
+  sampleInterval_lt: uint64
+  sampleInterval_neq: uint64
+  sampleInterval_notin: [uint64!]
+  servedModel: string
+  servedModel_geq: string
+  servedModel_gt: string
+  servedModel_in: [string!]
+  servedModel_leq: string
+  servedModel_like: string
+  servedModel_lt: string
+  servedModel_neq: string
+  servedModel_notin: [string!]
+  servedModel_notlike: string
+  servedTier: string
+  servedTier_geq: string
+  servedTier_gt: string
+  servedTier_in: [string!]
+  servedTier_leq: string
+  servedTier_like: string
+  servedTier_lt: string
+  servedTier_neq: string
+  servedTier_notin: [string!]
+  servedTier_notlike: string
+  spansOverlap: uint8
+  spansOverlap_geq: uint8
+  spansOverlap_gt: uint8
+  spansOverlap_in: bytes
+  spansOverlap_leq: uint8
+  spansOverlap_lt: uint8
+  spansOverlap_neq: uint8
+  spansOverlap_notin: bytes
+  taskLabel: string
+  taskLabel_geq: string
+  taskLabel_gt: string
+  taskLabel_in: [string!]
+  taskLabel_leq: string
+  taskLabel_like: string
+  taskLabel_lt: string
+  taskLabel_neq: string
+  taskLabel_notin: [string!]
+  taskLabel_notlike: string
+  tokensIn: uint64
+  tokensIn_geq: uint64
+  tokensIn_gt: uint64
+  tokensIn_in: [uint64!]
+  tokensIn_leq: uint64
+  tokensIn_lt: uint64
+  tokensIn_neq: uint64
+  tokensIn_notin: [uint64!]
+  tokensOut: uint64
+  tokensOut_geq: uint64
+  tokensOut_gt: uint64
+  tokensOut_in: [uint64!]
+  tokensOut_leq: uint64
+  tokensOut_lt: uint64
+  tokensOut_neq: uint64
+  tokensOut_notin: [uint64!]
+  toolCalls: uint64
+  toolCalls_geq: uint64
+  toolCalls_gt: uint64
+  toolCalls_in: [uint64!]
+  toolCalls_leq: uint64
+  toolCalls_lt: uint64
+  toolCalls_neq: uint64
+  toolCalls_notin: [uint64!]
+  userId: string
+  userId_geq: string
+  userId_gt: string
+  userId_in: [string!]
+  userId_leq: string
+  userId_like: string
+  userId_lt: string
+  userId_neq: string
+  userId_notin: [string!]
+  userId_notlike: string
+  userTurns: uint64
+  userTurns_geq: uint64
+  userTurns_gt: uint64
+  userTurns_in: [uint64!]
+  userTurns_leq: uint64
+  userTurns_lt: uint64
+  userTurns_neq: uint64
+  userTurns_notin: [uint64!]
+  verdict: string
+  verdictVersion: string
+  verdictVersion_geq: string
+  verdictVersion_gt: string
+  verdictVersion_in: [string!]
+  verdictVersion_leq: string
+  verdictVersion_like: string
+  verdictVersion_lt: string
+  verdictVersion_neq: string
+  verdictVersion_notin: [string!]
+  verdictVersion_notlike: string
+  verdict_geq: string
+  verdict_gt: string
+  verdict_in: [string!]
+  verdict_leq: string
+  verdict_like: string
+  verdict_lt: string
+  verdict_neq: string
+  verdict_notin: [string!]
+  verdict_notlike: string
+}
+
+# Analyzed AI Gateway conversations, aggregated with adaptive sampling. One underlying row exists per analysis pick of a conversation; a conversation resumed and re-analyzed later contributes again with its accumulated totals.
+type AccountAiGatewayConversationAnalysesAdaptiveGroups {
+  avg: AccountAiGatewayConversationAnalysesAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountAiGatewayConversationAnalysesAdaptiveGroupsConfidence!
+  # Number of analyzed conversations (canonical analysis picks; re-analyses of a resumed conversation count again)
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiGatewayConversationAnalysesAdaptiveGroupsDimensions
+  sum: AccountAiGatewayConversationAnalysesAdaptiveGroupsSum
+}
+
+type AccountAiGatewayConversationAnalysesAdaptiveGroupsAvg {
+  # Mean estimated cost in USD per conversation over conversations whose cost was measured; 0 when none in the group was measured. When recombining groups client-side, filter measuredCount greater than 0 and divide summed costEstimate by count rather than averaging these averages
+  costEstimate: float64!
+  # Average sample interval of the rows behind this result; how heavily sampled the answer is
+  sampleInterval: float64!
+}
+
+type AccountAiGatewayConversationAnalysesAdaptiveGroupsConfidence {
+  # Number of analyzed conversations (canonical analysis picks; re-analyses of a resumed conversation count again), with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  sum: AccountAiGatewayConversationAnalysesAdaptiveGroupsSumConfidence
+}
+
+type AccountAiGatewayConversationAnalysesAdaptiveGroupsDimensions {
+  # Coding agent that held the conversation (for example claude-code, codex, or opencode); empty when no readable trajectory existed
+  client: string!
+  # UTC date when the conversation analysis was published
+  date: Date!
+  # UTC timestamp when the conversation analysis was published
+  datetime: Time!
+  # First observed activity in the conversation
+  datetimeFirstActivity: Time!
+  # Conversation analysis publication time truncated to the hour
+  datetimeHour: Time!
+  # Last observed activity in the conversation
+  datetimeLastActivity: Time!
+  # Name of the AI Gateway the conversations went through
+  gatewayId: string!
+  # 'ok' when the conversation was analyzed end to end and 'skip' when a stage refused it; skipped conversations still carry usage measures
+  outcome: string!
+  # Cheapest tier judged sufficient for the conversation's task; empty on unclassified conversations and when verdict is 'skip'
+  requiredTier: string!
+  # Provider and model that served the analyzed part of the conversation. A conversation that used several models is attributed to the model its picked analysis saw. Empty when outcome is not 'ok'
+  servedModel: string!
+  # Tier of the served model; empty on unclassified conversations and on classified conversations whose verdict is 'skip'
+  servedTier: string!
+  # Why a skipped conversation was refused; read with skipStage
+  skipReason: string!
+  # Pipeline stage that refused a skipped conversation
+  skipStage: string!
+  # Task type the classifier assigned to the conversation; an open vocabulary that can shift when the classifier changes. Empty on conversations that were not classified; filter outcome to 'ok'
+  taskLabel: string!
+  # CF Access user identity of the conversation's end user, as the gateway recorded it. Grouping is most accurate within a single gateway; across many gateways results become coarse
+  userId: string!
+  # User turns in the analyzed trajectory (consecutive same-role messages count once). 0 can mean no readable trajectory or no user turn
+  userTurns: uint64!
+  # Whether the served model's tier was above ('overkill'), at ('appropriate'), or below ('underpowered') what the conversation needed; 'skip' when it could not be judged and empty when unclassified
+  verdict: string!
+  # Generation of the verdict rule that judged this conversation; compare verdicts across time within one generation
+  verdictVersion: string!
+}
+
+input AccountAiGatewayConversationAnalysesAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiGatewayConversationAnalysesAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiGatewayConversationAnalysesAdaptiveGroupsFilter_InputObject!]
+  client: string
+  client_geq: string
+  client_gt: string
+  client_in: [string!]
+  client_leq: string
+  client_like: string
+  client_lt: string
+  client_neq: string
+  client_notin: [string!]
+  client_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  gatewayId: string
+  gatewayId_geq: string
+  gatewayId_gt: string
+  gatewayId_in: [string!]
+  gatewayId_leq: string
+  gatewayId_like: string
+  gatewayId_lt: string
+  gatewayId_neq: string
+  gatewayId_notin: [string!]
+  gatewayId_notlike: string
+  labelConfidence: float64
+  labelConfidence_geq: float64
+  labelConfidence_gt: float64
+  labelConfidence_in: [float64!]
+  labelConfidence_leq: float64
+  labelConfidence_lt: float64
+  labelConfidence_neq: float64
+  labelConfidence_notin: [float64!]
+  measuredCount: uint64
+  measuredCount_geq: uint64
+  measuredCount_gt: uint64
+  measuredCount_in: [uint64!]
+  measuredCount_leq: uint64
+  measuredCount_lt: uint64
+  measuredCount_neq: uint64
+  measuredCount_notin: [uint64!]
+  outcome: string
+  outcome_geq: string
+  outcome_gt: string
+  outcome_in: [string!]
+  outcome_leq: string
+  outcome_like: string
+  outcome_lt: string
+  outcome_neq: string
+  outcome_notin: [string!]
+  outcome_notlike: string
+  requiredTier: string
+  requiredTier_geq: string
+  requiredTier_gt: string
+  requiredTier_in: [string!]
+  requiredTier_leq: string
+  requiredTier_like: string
+  requiredTier_lt: string
+  requiredTier_neq: string
+  requiredTier_notin: [string!]
+  requiredTier_notlike: string
+  servedModel: string
+  servedModel_geq: string
+  servedModel_gt: string
+  servedModel_in: [string!]
+  servedModel_leq: string
+  servedModel_like: string
+  servedModel_lt: string
+  servedModel_neq: string
+  servedModel_notin: [string!]
+  servedModel_notlike: string
+  servedTier: string
+  servedTier_geq: string
+  servedTier_gt: string
+  servedTier_in: [string!]
+  servedTier_leq: string
+  servedTier_like: string
+  servedTier_lt: string
+  servedTier_neq: string
+  servedTier_notin: [string!]
+  servedTier_notlike: string
+  skipReason: string
+  skipReason_geq: string
+  skipReason_gt: string
+  skipReason_in: [string!]
+  skipReason_leq: string
+  skipReason_like: string
+  skipReason_lt: string
+  skipReason_neq: string
+  skipReason_notin: [string!]
+  skipReason_notlike: string
+  skipStage: string
+  skipStage_geq: string
+  skipStage_gt: string
+  skipStage_in: [string!]
+  skipStage_leq: string
+  skipStage_like: string
+  skipStage_lt: string
+  skipStage_neq: string
+  skipStage_notin: [string!]
+  skipStage_notlike: string
+  spansOverlap: uint8
+  spansOverlap_geq: uint8
+  spansOverlap_gt: uint8
+  spansOverlap_in: bytes
+  spansOverlap_leq: uint8
+  spansOverlap_lt: uint8
+  spansOverlap_neq: uint8
+  spansOverlap_notin: bytes
+  taskLabel: string
+  taskLabel_geq: string
+  taskLabel_gt: string
+  taskLabel_in: [string!]
+  taskLabel_leq: string
+  taskLabel_like: string
+  taskLabel_lt: string
+  taskLabel_neq: string
+  taskLabel_notin: [string!]
+  taskLabel_notlike: string
+  userId: string
+  userId_geq: string
+  userId_gt: string
+  userId_in: [string!]
+  userId_leq: string
+  userId_like: string
+  userId_lt: string
+  userId_neq: string
+  userId_notin: [string!]
+  userId_notlike: string
+  userTurns: uint64
+  userTurns_geq: uint64
+  userTurns_gt: uint64
+  userTurns_in: [uint64!]
+  userTurns_leq: uint64
+  userTurns_lt: uint64
+  userTurns_neq: uint64
+  userTurns_notin: [uint64!]
+  verdict: string
+  verdictVersion: string
+  verdictVersion_geq: string
+  verdictVersion_gt: string
+  verdictVersion_in: [string!]
+  verdictVersion_leq: string
+  verdictVersion_like: string
+  verdictVersion_lt: string
+  verdictVersion_neq: string
+  verdictVersion_notin: [string!]
+  verdictVersion_notlike: string
+  verdict_geq: string
+  verdict_gt: string
+  verdict_in: [string!]
+  verdict_leq: string
+  verdict_like: string
+  verdict_lt: string
+  verdict_neq: string
+  verdict_notin: [string!]
+  verdict_notlike: string
+}
+
+enum AccountAiGatewayConversationAnalysesAdaptiveGroupsOrderBy {
+  # avg(costEstimate) ascending
+  avg_costEstimate_ASC
+  # avg(costEstimate) descending
+  avg_costEstimate_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # client ascending
+  client_ASC
+  # client descending
+  client_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # gatewayId ascending
+  gatewayId_ASC
+  # gatewayId descending
+  gatewayId_DESC
+  # outcome ascending
+  outcome_ASC
+  # outcome descending
+  outcome_DESC
+  # requiredTier ascending
+  requiredTier_ASC
+  # requiredTier descending
+  requiredTier_DESC
+  # servedModel ascending
+  servedModel_ASC
+  # servedModel descending
+  servedModel_DESC
+  # servedTier ascending
+  servedTier_ASC
+  # servedTier descending
+  servedTier_DESC
+  # skipReason ascending
+  skipReason_ASC
+  # skipReason descending
+  skipReason_DESC
+  # skipStage ascending
+  skipStage_ASC
+  # skipStage descending
+  skipStage_DESC
+  # sum(costEstimate) ascending
+  sum_costEstimate_ASC
+  # sum(costEstimate) descending
+  sum_costEstimate_DESC
+  # sum(tokensInCached) ascending
+  sum_tokensInCached_ASC
+  # sum(tokensInCached) descending
+  sum_tokensInCached_DESC
+  # sum(tokensIn) ascending
+  sum_tokensIn_ASC
+  # sum(tokensIn) descending
+  sum_tokensIn_DESC
+  # sum(tokensOut) ascending
+  sum_tokensOut_ASC
+  # sum(tokensOut) descending
+  sum_tokensOut_DESC
+  # taskLabel ascending
+  taskLabel_ASC
+  # taskLabel descending
+  taskLabel_DESC
+  # userId ascending
+  userId_ASC
+  # userId descending
+  userId_DESC
+  # userTurns ascending
+  userTurns_ASC
+  # userTurns descending
+  userTurns_DESC
+  # verdictVersion ascending
+  verdictVersion_ASC
+  # verdictVersion descending
+  verdictVersion_DESC
+  # verdict ascending
+  verdict_ASC
+  # verdict descending
+  verdict_DESC
+}
+
+type AccountAiGatewayConversationAnalysesAdaptiveGroupsSum {
+  # Total estimated cost in USD across the grouped conversations; an estimate from token counts and model rates, not a billing figure, and cached input is priced as fresh
+  costEstimate: float64!
+  # Total input tokens across the grouped conversations
+  tokensIn: uint64!
+  # Cached part of the total input tokens (provider-side prompt caching), not a pool beside tokensIn
+  tokensInCached: uint64!
+  # Total output tokens across the grouped conversations
+  tokensOut: uint64!
+}
+
+type AccountAiGatewayConversationAnalysesAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  costEstimate: Confidence!
+  # Confidence interval for the corresponding point estimate
+  tokensIn: Confidence!
+  # Confidence interval for the corresponding point estimate
+  tokensInCached: Confidence!
+  # Confidence interval for the corresponding point estimate
+  tokensOut: Confidence!
+}
+
+enum AccountAiGatewayConversationAnalysesAdaptiveOrderBy {
+  # assistantTurns ascending
+  assistantTurns_ASC
+  # assistantTurns descending
+  assistantTurns_DESC
+  # client ascending
+  client_ASC
+  # client descending
+  client_DESC
+  # conversationId ascending
+  conversationId_ASC
+  # conversationId descending
+  conversationId_DESC
+  # costEstimate ascending
+  costEstimate_ASC
+  # costEstimate descending
+  costEstimate_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # gatewayId ascending
+  gatewayId_ASC
+  # gatewayId descending
+  gatewayId_DESC
+  # measuredCount ascending
+  measuredCount_ASC
+  # measuredCount descending
+  measuredCount_DESC
+  # outcome ascending
+  outcome_ASC
+  # outcome descending
+  outcome_DESC
+  # requiredTier ascending
+  requiredTier_ASC
+  # requiredTier descending
+  requiredTier_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # servedModel ascending
+  servedModel_ASC
+  # servedModel descending
+  servedModel_DESC
+  # servedTier ascending
+  servedTier_ASC
+  # servedTier descending
+  servedTier_DESC
+  # spansOverlap ascending
+  spansOverlap_ASC
+  # spansOverlap descending
+  spansOverlap_DESC
+  # taskLabel ascending
+  taskLabel_ASC
+  # taskLabel descending
+  taskLabel_DESC
+  # tokensIn ascending
+  tokensIn_ASC
+  # tokensIn descending
+  tokensIn_DESC
+  # tokensOut ascending
+  tokensOut_ASC
+  # tokensOut descending
+  tokensOut_DESC
+  # toolCalls ascending
+  toolCalls_ASC
+  # toolCalls descending
+  toolCalls_DESC
+  # userId ascending
+  userId_ASC
+  # userId descending
+  userId_DESC
+  # userTurns ascending
+  userTurns_ASC
+  # userTurns descending
+  userTurns_DESC
+  # verdictVersion ascending
+  verdictVersion_ASC
+  # verdictVersion descending
+  verdictVersion_DESC
+  # verdict ascending
+  verdict_ASC
+  # verdict descending
+  verdict_DESC
+}
+
+# Individual analyzed AI Gateway conversations with adaptive sampling (staging)
+type AccountAiGatewayConversationAnalysesStagingAdaptive {
+  # Assistant turns in the analyzed trajectory
+  assistantTurns: uint64!
+  # Coding agent that held the conversation
+  client: string!
+  # Stable hash identifying the user and session conversation; evidence join key and marker for repeated rows of one conversation
+  conversationId: string!
+  # Estimated conversation cost in USD; not a billing figure. 0 when unmeasured, and overlapping analysis periods can double-count it
+  costEstimate: float64!
+  # UTC date when the conversation analysis was published
+  date: Date!
+  # UTC timestamp when the conversation analysis was published
+  datetime: Time!
+  # First observed activity in the conversation
+  datetimeFirstActivity: Time!
+  # Last observed activity in the conversation
+  datetimeLastActivity: Time!
+  # Name of the AI Gateway the conversation went through
+  gatewayId: string!
+  # Number of analyses that measured usage; 0 means absent
+  measuredCount: uint64!
+  # 'ok' when analyzed end to end and 'skip' when refused
+  outcome: string!
+  # Cheapest tier judged sufficient; empty when unavailable
+  requiredTier: string!
+  # Number of conversations this row represents under adaptive sampling; multiply when extrapolating from listed rows
+  sampleInterval: uint64!
+  # Provider and model that served the analyzed conversation
+  servedModel: string!
+  # Tier of the served model; empty when unavailable
+  servedTier: string!
+  # 1 when overlapping analysis periods double-count usage
+  spansOverlap: uint8!
+  # Task type assigned by the classifier; empty when unclassified
+  taskLabel: string!
+  # Input tokens across the conversation's observed requests
+  tokensIn: uint64!
+  # Output tokens across the conversation's observed requests
+  tokensOut: uint64!
+  # Tool calls made by the assistant in the analyzed trajectory
+  toolCalls: uint64!
+  # CF Access user identity of the conversation's end user
+  userId: string!
+  # User turns in the analyzed trajectory
+  userTurns: uint64!
+  # 'overkill', 'appropriate', 'underpowered', 'skip' when unjudgeable, or empty when unclassified
+  verdict: string!
+  # Generation of the verdict rule used for this conversation
+  verdictVersion: string!
+}
+
+input AccountAiGatewayConversationAnalysesStagingAdaptiveFilter_InputObject {
+  AND: [AccountAiGatewayConversationAnalysesStagingAdaptiveFilter_InputObject!]
+  OR: [AccountAiGatewayConversationAnalysesStagingAdaptiveFilter_InputObject!]
+  assistantTurns: uint64
+  assistantTurns_geq: uint64
+  assistantTurns_gt: uint64
+  assistantTurns_in: [uint64!]
+  assistantTurns_leq: uint64
+  assistantTurns_lt: uint64
+  assistantTurns_neq: uint64
+  assistantTurns_notin: [uint64!]
+  client: string
+  client_geq: string
+  client_gt: string
+  client_in: [string!]
+  client_leq: string
+  client_like: string
+  client_lt: string
+  client_neq: string
+  client_notin: [string!]
+  client_notlike: string
+  conversationId: string
+  conversationId_geq: string
+  conversationId_gt: string
+  conversationId_in: [string!]
+  conversationId_leq: string
+  conversationId_like: string
+  conversationId_lt: string
+  conversationId_neq: string
+  conversationId_notin: [string!]
+  conversationId_notlike: string
+  costEstimate: float64
+  costEstimate_geq: float64
+  costEstimate_gt: float64
+  costEstimate_in: [float64!]
+  costEstimate_leq: float64
+  costEstimate_lt: float64
+  costEstimate_neq: float64
+  costEstimate_notin: [float64!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  gatewayId: string
+  gatewayId_geq: string
+  gatewayId_gt: string
+  gatewayId_in: [string!]
+  gatewayId_leq: string
+  gatewayId_like: string
+  gatewayId_lt: string
+  gatewayId_neq: string
+  gatewayId_notin: [string!]
+  gatewayId_notlike: string
+  measuredCount: uint64
+  measuredCount_geq: uint64
+  measuredCount_gt: uint64
+  measuredCount_in: [uint64!]
+  measuredCount_leq: uint64
+  measuredCount_lt: uint64
+  measuredCount_neq: uint64
+  measuredCount_notin: [uint64!]
+  outcome: string
+  outcome_geq: string
+  outcome_gt: string
+  outcome_in: [string!]
+  outcome_leq: string
+  outcome_like: string
+  outcome_lt: string
+  outcome_neq: string
+  outcome_notin: [string!]
+  outcome_notlike: string
+  requiredTier: string
+  requiredTier_geq: string
+  requiredTier_gt: string
+  requiredTier_in: [string!]
+  requiredTier_leq: string
+  requiredTier_like: string
+  requiredTier_lt: string
+  requiredTier_neq: string
+  requiredTier_notin: [string!]
+  requiredTier_notlike: string
+  sampleInterval: uint64
+  sampleInterval_geq: uint64
+  sampleInterval_gt: uint64
+  sampleInterval_in: [uint64!]
+  sampleInterval_leq: uint64
+  sampleInterval_lt: uint64
+  sampleInterval_neq: uint64
+  sampleInterval_notin: [uint64!]
+  servedModel: string
+  servedModel_geq: string
+  servedModel_gt: string
+  servedModel_in: [string!]
+  servedModel_leq: string
+  servedModel_like: string
+  servedModel_lt: string
+  servedModel_neq: string
+  servedModel_notin: [string!]
+  servedModel_notlike: string
+  servedTier: string
+  servedTier_geq: string
+  servedTier_gt: string
+  servedTier_in: [string!]
+  servedTier_leq: string
+  servedTier_like: string
+  servedTier_lt: string
+  servedTier_neq: string
+  servedTier_notin: [string!]
+  servedTier_notlike: string
+  spansOverlap: uint8
+  spansOverlap_geq: uint8
+  spansOverlap_gt: uint8
+  spansOverlap_in: bytes
+  spansOverlap_leq: uint8
+  spansOverlap_lt: uint8
+  spansOverlap_neq: uint8
+  spansOverlap_notin: bytes
+  taskLabel: string
+  taskLabel_geq: string
+  taskLabel_gt: string
+  taskLabel_in: [string!]
+  taskLabel_leq: string
+  taskLabel_like: string
+  taskLabel_lt: string
+  taskLabel_neq: string
+  taskLabel_notin: [string!]
+  taskLabel_notlike: string
+  tokensIn: uint64
+  tokensIn_geq: uint64
+  tokensIn_gt: uint64
+  tokensIn_in: [uint64!]
+  tokensIn_leq: uint64
+  tokensIn_lt: uint64
+  tokensIn_neq: uint64
+  tokensIn_notin: [uint64!]
+  tokensOut: uint64
+  tokensOut_geq: uint64
+  tokensOut_gt: uint64
+  tokensOut_in: [uint64!]
+  tokensOut_leq: uint64
+  tokensOut_lt: uint64
+  tokensOut_neq: uint64
+  tokensOut_notin: [uint64!]
+  toolCalls: uint64
+  toolCalls_geq: uint64
+  toolCalls_gt: uint64
+  toolCalls_in: [uint64!]
+  toolCalls_leq: uint64
+  toolCalls_lt: uint64
+  toolCalls_neq: uint64
+  toolCalls_notin: [uint64!]
+  userId: string
+  userId_geq: string
+  userId_gt: string
+  userId_in: [string!]
+  userId_leq: string
+  userId_like: string
+  userId_lt: string
+  userId_neq: string
+  userId_notin: [string!]
+  userId_notlike: string
+  userTurns: uint64
+  userTurns_geq: uint64
+  userTurns_gt: uint64
+  userTurns_in: [uint64!]
+  userTurns_leq: uint64
+  userTurns_lt: uint64
+  userTurns_neq: uint64
+  userTurns_notin: [uint64!]
+  verdict: string
+  verdictVersion: string
+  verdictVersion_geq: string
+  verdictVersion_gt: string
+  verdictVersion_in: [string!]
+  verdictVersion_leq: string
+  verdictVersion_like: string
+  verdictVersion_lt: string
+  verdictVersion_neq: string
+  verdictVersion_notin: [string!]
+  verdictVersion_notlike: string
+  verdict_geq: string
+  verdict_gt: string
+  verdict_in: [string!]
+  verdict_leq: string
+  verdict_like: string
+  verdict_lt: string
+  verdict_neq: string
+  verdict_notin: [string!]
+  verdict_notlike: string
+}
+
+# Analyzed AI Gateway conversations with adaptive sampling (staging)
+type AccountAiGatewayConversationAnalysesStagingAdaptiveGroups {
+  avg: AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsConfidence!
+  # Number of analyzed conversations (canonical analysis picks; re-analyses of a resumed conversation count again)
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsDimensions
+  sum: AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsSum
+}
+
+type AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsAvg {
+  # Mean estimated cost in USD per conversation over conversations whose cost was measured; 0 when none in the group was measured. When recombining groups client-side, filter measuredCount greater than 0 and divide summed costEstimate by count rather than averaging these averages
+  costEstimate: float64!
+  # Average sample interval of the rows behind this result; how heavily sampled the answer is
+  sampleInterval: float64!
+}
+
+type AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsConfidence {
+  # Number of analyzed conversations (canonical analysis picks; re-analyses of a resumed conversation count again), with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  sum: AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsSumConfidence
+}
+
+type AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsDimensions {
+  # Coding agent that held the conversation (for example claude-code, codex, or opencode); empty when no readable trajectory existed
+  client: string!
+  # UTC date when the conversation analysis was published
+  date: Date!
+  # UTC timestamp when the conversation analysis was published
+  datetime: Time!
+  # First observed activity in the conversation
+  datetimeFirstActivity: Time!
+  # Conversation analysis publication time truncated to the hour
+  datetimeHour: Time!
+  # Last observed activity in the conversation
+  datetimeLastActivity: Time!
+  # Name of the AI Gateway the conversations went through
+  gatewayId: string!
+  # 'ok' when the conversation was analyzed end to end and 'skip' when a stage refused it; skipped conversations still carry usage measures
+  outcome: string!
+  # Cheapest tier judged sufficient for the conversation's task; empty on unclassified conversations and when verdict is 'skip'
+  requiredTier: string!
+  # Provider and model that served the analyzed part of the conversation. A conversation that used several models is attributed to the model its picked analysis saw. Empty when outcome is not 'ok'
+  servedModel: string!
+  # Tier of the served model; empty on unclassified conversations and on classified conversations whose verdict is 'skip'
+  servedTier: string!
+  # Why a skipped conversation was refused; read with skipStage
+  skipReason: string!
+  # Pipeline stage that refused a skipped conversation
+  skipStage: string!
+  # Task type the classifier assigned to the conversation; an open vocabulary that can shift when the classifier changes. Empty on conversations that were not classified; filter outcome to 'ok'
+  taskLabel: string!
+  # CF Access user identity of the conversation's end user, as the gateway recorded it. Grouping is most accurate within a single gateway; across many gateways results become coarse
+  userId: string!
+  # User turns in the analyzed trajectory (consecutive same-role messages count once). 0 can mean no readable trajectory or no user turn
+  userTurns: uint64!
+  # Whether the served model's tier was above ('overkill'), at ('appropriate'), or below ('underpowered') what the conversation needed; 'skip' when it could not be judged and empty when unclassified
+  verdict: string!
+  # Generation of the verdict rule that judged this conversation; compare verdicts across time within one generation
+  verdictVersion: string!
+}
+
+input AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsFilter_InputObject!]
+  client: string
+  client_geq: string
+  client_gt: string
+  client_in: [string!]
+  client_leq: string
+  client_like: string
+  client_lt: string
+  client_neq: string
+  client_notin: [string!]
+  client_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  gatewayId: string
+  gatewayId_geq: string
+  gatewayId_gt: string
+  gatewayId_in: [string!]
+  gatewayId_leq: string
+  gatewayId_like: string
+  gatewayId_lt: string
+  gatewayId_neq: string
+  gatewayId_notin: [string!]
+  gatewayId_notlike: string
+  labelConfidence: float64
+  labelConfidence_geq: float64
+  labelConfidence_gt: float64
+  labelConfidence_in: [float64!]
+  labelConfidence_leq: float64
+  labelConfidence_lt: float64
+  labelConfidence_neq: float64
+  labelConfidence_notin: [float64!]
+  measuredCount: uint64
+  measuredCount_geq: uint64
+  measuredCount_gt: uint64
+  measuredCount_in: [uint64!]
+  measuredCount_leq: uint64
+  measuredCount_lt: uint64
+  measuredCount_neq: uint64
+  measuredCount_notin: [uint64!]
+  outcome: string
+  outcome_geq: string
+  outcome_gt: string
+  outcome_in: [string!]
+  outcome_leq: string
+  outcome_like: string
+  outcome_lt: string
+  outcome_neq: string
+  outcome_notin: [string!]
+  outcome_notlike: string
+  requiredTier: string
+  requiredTier_geq: string
+  requiredTier_gt: string
+  requiredTier_in: [string!]
+  requiredTier_leq: string
+  requiredTier_like: string
+  requiredTier_lt: string
+  requiredTier_neq: string
+  requiredTier_notin: [string!]
+  requiredTier_notlike: string
+  servedModel: string
+  servedModel_geq: string
+  servedModel_gt: string
+  servedModel_in: [string!]
+  servedModel_leq: string
+  servedModel_like: string
+  servedModel_lt: string
+  servedModel_neq: string
+  servedModel_notin: [string!]
+  servedModel_notlike: string
+  servedTier: string
+  servedTier_geq: string
+  servedTier_gt: string
+  servedTier_in: [string!]
+  servedTier_leq: string
+  servedTier_like: string
+  servedTier_lt: string
+  servedTier_neq: string
+  servedTier_notin: [string!]
+  servedTier_notlike: string
+  skipReason: string
+  skipReason_geq: string
+  skipReason_gt: string
+  skipReason_in: [string!]
+  skipReason_leq: string
+  skipReason_like: string
+  skipReason_lt: string
+  skipReason_neq: string
+  skipReason_notin: [string!]
+  skipReason_notlike: string
+  skipStage: string
+  skipStage_geq: string
+  skipStage_gt: string
+  skipStage_in: [string!]
+  skipStage_leq: string
+  skipStage_like: string
+  skipStage_lt: string
+  skipStage_neq: string
+  skipStage_notin: [string!]
+  skipStage_notlike: string
+  spansOverlap: uint8
+  spansOverlap_geq: uint8
+  spansOverlap_gt: uint8
+  spansOverlap_in: bytes
+  spansOverlap_leq: uint8
+  spansOverlap_lt: uint8
+  spansOverlap_neq: uint8
+  spansOverlap_notin: bytes
+  taskLabel: string
+  taskLabel_geq: string
+  taskLabel_gt: string
+  taskLabel_in: [string!]
+  taskLabel_leq: string
+  taskLabel_like: string
+  taskLabel_lt: string
+  taskLabel_neq: string
+  taskLabel_notin: [string!]
+  taskLabel_notlike: string
+  userId: string
+  userId_geq: string
+  userId_gt: string
+  userId_in: [string!]
+  userId_leq: string
+  userId_like: string
+  userId_lt: string
+  userId_neq: string
+  userId_notin: [string!]
+  userId_notlike: string
+  userTurns: uint64
+  userTurns_geq: uint64
+  userTurns_gt: uint64
+  userTurns_in: [uint64!]
+  userTurns_leq: uint64
+  userTurns_lt: uint64
+  userTurns_neq: uint64
+  userTurns_notin: [uint64!]
+  verdict: string
+  verdictVersion: string
+  verdictVersion_geq: string
+  verdictVersion_gt: string
+  verdictVersion_in: [string!]
+  verdictVersion_leq: string
+  verdictVersion_like: string
+  verdictVersion_lt: string
+  verdictVersion_neq: string
+  verdictVersion_notin: [string!]
+  verdictVersion_notlike: string
+  verdict_geq: string
+  verdict_gt: string
+  verdict_in: [string!]
+  verdict_leq: string
+  verdict_like: string
+  verdict_lt: string
+  verdict_neq: string
+  verdict_notin: [string!]
+  verdict_notlike: string
+}
+
+enum AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsOrderBy {
+  # avg(costEstimate) ascending
+  avg_costEstimate_ASC
+  # avg(costEstimate) descending
+  avg_costEstimate_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # client ascending
+  client_ASC
+  # client descending
+  client_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # gatewayId ascending
+  gatewayId_ASC
+  # gatewayId descending
+  gatewayId_DESC
+  # outcome ascending
+  outcome_ASC
+  # outcome descending
+  outcome_DESC
+  # requiredTier ascending
+  requiredTier_ASC
+  # requiredTier descending
+  requiredTier_DESC
+  # servedModel ascending
+  servedModel_ASC
+  # servedModel descending
+  servedModel_DESC
+  # servedTier ascending
+  servedTier_ASC
+  # servedTier descending
+  servedTier_DESC
+  # skipReason ascending
+  skipReason_ASC
+  # skipReason descending
+  skipReason_DESC
+  # skipStage ascending
+  skipStage_ASC
+  # skipStage descending
+  skipStage_DESC
+  # sum(costEstimate) ascending
+  sum_costEstimate_ASC
+  # sum(costEstimate) descending
+  sum_costEstimate_DESC
+  # sum(tokensInCached) ascending
+  sum_tokensInCached_ASC
+  # sum(tokensInCached) descending
+  sum_tokensInCached_DESC
+  # sum(tokensIn) ascending
+  sum_tokensIn_ASC
+  # sum(tokensIn) descending
+  sum_tokensIn_DESC
+  # sum(tokensOut) ascending
+  sum_tokensOut_ASC
+  # sum(tokensOut) descending
+  sum_tokensOut_DESC
+  # taskLabel ascending
+  taskLabel_ASC
+  # taskLabel descending
+  taskLabel_DESC
+  # userId ascending
+  userId_ASC
+  # userId descending
+  userId_DESC
+  # userTurns ascending
+  userTurns_ASC
+  # userTurns descending
+  userTurns_DESC
+  # verdictVersion ascending
+  verdictVersion_ASC
+  # verdictVersion descending
+  verdictVersion_DESC
+  # verdict ascending
+  verdict_ASC
+  # verdict descending
+  verdict_DESC
+}
+
+type AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsSum {
+  # Total estimated cost in USD across the grouped conversations; an estimate from token counts and model rates, not a billing figure, and cached input is priced as fresh
+  costEstimate: float64!
+  # Total input tokens across the grouped conversations
+  tokensIn: uint64!
+  # Cached part of the total input tokens (provider-side prompt caching), not a pool beside tokensIn
+  tokensInCached: uint64!
+  # Total output tokens across the grouped conversations
+  tokensOut: uint64!
+}
+
+type AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  costEstimate: Confidence!
+  # Confidence interval for the corresponding point estimate
+  tokensIn: Confidence!
+  # Confidence interval for the corresponding point estimate
+  tokensInCached: Confidence!
+  # Confidence interval for the corresponding point estimate
+  tokensOut: Confidence!
+}
+
+enum AccountAiGatewayConversationAnalysesStagingAdaptiveOrderBy {
+  # assistantTurns ascending
+  assistantTurns_ASC
+  # assistantTurns descending
+  assistantTurns_DESC
+  # client ascending
+  client_ASC
+  # client descending
+  client_DESC
+  # conversationId ascending
+  conversationId_ASC
+  # conversationId descending
+  conversationId_DESC
+  # costEstimate ascending
+  costEstimate_ASC
+  # costEstimate descending
+  costEstimate_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # gatewayId ascending
+  gatewayId_ASC
+  # gatewayId descending
+  gatewayId_DESC
+  # measuredCount ascending
+  measuredCount_ASC
+  # measuredCount descending
+  measuredCount_DESC
+  # outcome ascending
+  outcome_ASC
+  # outcome descending
+  outcome_DESC
+  # requiredTier ascending
+  requiredTier_ASC
+  # requiredTier descending
+  requiredTier_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # servedModel ascending
+  servedModel_ASC
+  # servedModel descending
+  servedModel_DESC
+  # servedTier ascending
+  servedTier_ASC
+  # servedTier descending
+  servedTier_DESC
+  # spansOverlap ascending
+  spansOverlap_ASC
+  # spansOverlap descending
+  spansOverlap_DESC
+  # taskLabel ascending
+  taskLabel_ASC
+  # taskLabel descending
+  taskLabel_DESC
+  # tokensIn ascending
+  tokensIn_ASC
+  # tokensIn descending
+  tokensIn_DESC
+  # tokensOut ascending
+  tokensOut_ASC
+  # tokensOut descending
+  tokensOut_DESC
+  # toolCalls ascending
+  toolCalls_ASC
+  # toolCalls descending
+  toolCalls_DESC
+  # userId ascending
+  userId_ASC
+  # userId descending
+  userId_DESC
+  # userTurns ascending
+  userTurns_ASC
+  # userTurns descending
+  userTurns_DESC
+  # verdictVersion ascending
+  verdictVersion_ASC
+  # verdictVersion descending
+  verdictVersion_DESC
+  # verdict ascending
+  verdict_ASC
+  # verdict descending
+  verdict_DESC
 }
 
 # AI Gateway Errors
@@ -28362,7 +29809,7 @@ type AccountDurableObjectsInvocationsAdaptiveGroupsDimensions {
   namespaceId: string!
   # Durable Object ID as a hex string
   objectId: string!
-  # The name (slug) of the preview script
+  # The name (slug) of the preview script. Requires an exact scriptName filter.
   previewSlug: string!
   # The name of the script
   scriptName: string!
@@ -43577,7 +45024,7 @@ type AccountImagesRequestsAdaptiveGroupsSumConfidence {
   requests: Confidence!
 }
 
-# Image transformations grouped by zone, binding request type, worker binding script ID, and transformation string
+# Image transformations performed for an account, grouped by zone, Worker script, transformation and origin host. Counts only transformations the resizer actually performed, so this is estimated processing volume rather than end-user request count or invoice total
 type AccountImagesTransformationsAdaptiveGroups {
   # The average value for a metric per dimensions
   avg: AccountImagesTransformationsAdaptiveGroupsAvg
@@ -43606,21 +45053,29 @@ type AccountImagesTransformationsAdaptiveGroupsConfidence {
 }
 
 type AccountImagesTransformationsAdaptiveGroupsDimensions {
+  # The date the transformation request was served
   date: Date!
+  # The date and time the transformation request was served
   datetime: Time!
+  # The date and time the transformation request was served, truncated to a multiple of 15 minutes
   datetimeFifteenMinutes: Time!
+  # The date and time the transformation request was served, truncated to a multiple of 5 minutes
   datetimeFiveMinutes: Time!
+  # The date and time the transformation request was served, truncated to the hour
   datetimeHour: Time!
+  # The date and time the transformation request was served, truncated to the minute
   datetimeMinute: Time!
   # 1 when the transformation request originates from a Worker binding, otherwise 0
   isBindingRequest: uint8!
   # Hostname of the origin image URL
   originHost: string!
-  # Worker script name associated with a binding transformation request
+  # Name of the Worker script that requested the transformation through the Images binding. Empty for transformations that did not come from a binding
   scriptName: string!
   # Image transformation string
   transformation: string!
-  # Associated zone
+  # Billing classification of the event: 0 when the account is not on unique transformation billing, 1 when the request was billable, 2 when the account is on the free tier
+  version: int64!
+  # Zone the transformation was requested through. Binding requests are not associated with a zone and report an all-zero tag
   zoneTag: string!
 }
 
@@ -43713,6 +45168,14 @@ input AccountImagesTransformationsAdaptiveGroupsFilter_InputObject {
   transformation_neq: string
   transformation_notin: [string!]
   transformation_notlike: string
+  version: int64
+  version_geq: int64
+  version_gt: int64
+  version_in: [int64!]
+  version_leq: int64
+  version_lt: int64
+  version_neq: int64
+  version_notin: [int64!]
   zoneTag: string
   zoneTag_geq: string
   zoneTag_gt: string
@@ -43770,6 +45233,10 @@ enum AccountImagesTransformationsAdaptiveGroupsOrderBy {
   originHost_ASC
   # originHost descending
   originHost_DESC
+  # product ascending
+  product_ASC
+  # product descending
+  product_DESC
   # scriptName ascending
   scriptName_ASC
   # scriptName descending
@@ -43786,6 +45253,10 @@ enum AccountImagesTransformationsAdaptiveGroupsOrderBy {
   transformation_ASC
   # transformation descending
   transformation_DESC
+  # version ascending
+  version_ASC
+  # version descending
+  version_DESC
   # zoneTag ascending
   zoneTag_ASC
   # zoneTag descending
@@ -43793,9 +45264,9 @@ enum AccountImagesTransformationsAdaptiveGroupsOrderBy {
 }
 
 type AccountImagesTransformationsAdaptiveGroupsSum {
-  # Estimated number of billable transformation events using adaptive sampling weights
+  # Estimated count of billable transformation requests using adaptive sampling weights. Includes only version = 1 requests (unique transformation billing), so this can be lower than requests and is not an invoice figure
   billableEventCount: uint64!
-  # Estimated count of image transformation requests using adaptive sampling weights
+  # Estimated count of transformations performed, using adaptive sampling weights
   requests: uint64!
 }
 
@@ -44309,7 +45780,7 @@ type AccountLbHealthEntitiesGroups {
 }
 
 type AccountLbHealthEntitiesGroupsDimensions {
-  # The date when the event was generated
+  # The date when the event was generated. Filter by this field for optimal performance.
   date: Date!
   # The datetime when the event was generated
   datetime: Time!
@@ -44405,7 +45876,7 @@ type AccountLbHealthEvents {
   changedOriginHealth: string!
   # Name of the origin that triggered the health change event (empty if no origin health changed)
   changedOriginName: string!
-  # The date when the event was generated
+  # The date when the event was generated. Filter by this field for optimal performance.
   date: Date!
   # The date and time when the event was generated
   datetime: Time!
@@ -44433,7 +45904,7 @@ type AccountLbHealthEvents {
   region: string!
   # Geographic scope of the health event. Values: global (aggregated view across all regions), regional (per-region health status), unknown (unclassified events).
   scope: string!
-  # The timestamp when the event was generated
+  # The date and time when the event was generated
   timestamp: Time!
 }
 
@@ -44664,7 +46135,7 @@ type AccountLbHealthEventsOriginsElem {
   failureReason: string!
   # Fully qualified domain name of the origin
   fqdn: string!
-  # Health status of the origin (unknown = health state unknown, healthy = origin healthy, critical = origin critical)
+  # Health status of the origin. Values: unknown (health state unknown), healthy (origin healthy), critical (origin critical)
   health: string!
   # 1 if this origin's health changed at this event, 0 otherwise
   healthChanged: uint8!
@@ -58805,6 +60276,8 @@ type AccountMnmFlowDataAdaptiveGroupsDimensions {
   destinationAddress: string!
   # Value of the Destination Port header field in the packet
   destinationPort: uint16!
+  # Computed subnet of the destination address (/24 for IPv4; /48 for IPv6)
+  destinationSubnet: string!
   # Device ID of the warp client exporting MNM flows
   deviceID: string!
   # Value of the Ethertype header field in the Ethernet packet (2048 for IPv4; 34525 for IPv6)
@@ -58827,6 +60300,8 @@ type AccountMnmFlowDataAdaptiveGroupsDimensions {
   sourceAddress: string!
   # Value of the Source Port header field in the packet
   sourcePort: uint16!
+  # Computed subnet of the source address (/24 for IPv4; /48 for IPv6)
+  sourceSubnet: string!
   # Value of the Flags header field in the TCP packet
   tcpFlags: uint16!
   # Human-readable string representation of the Flags header field in the TCP packet
@@ -58920,6 +60395,16 @@ input AccountMnmFlowDataAdaptiveGroupsFilter_InputObject {
   destinationPort_lt: uint16
   destinationPort_neq: uint16
   destinationPort_notin: [uint16!]
+  destinationSubnet: string
+  destinationSubnet_geq: string
+  destinationSubnet_gt: string
+  destinationSubnet_in: [string!]
+  destinationSubnet_leq: string
+  destinationSubnet_like: string
+  destinationSubnet_lt: string
+  destinationSubnet_neq: string
+  destinationSubnet_notin: [string!]
+  destinationSubnet_notlike: string
   deviceID: string
   deviceID_geq: string
   deviceID_gt: string
@@ -59013,6 +60498,16 @@ input AccountMnmFlowDataAdaptiveGroupsFilter_InputObject {
   sourcePort_lt: uint16
   sourcePort_neq: uint16
   sourcePort_notin: [uint16!]
+  sourceSubnet: string
+  sourceSubnet_geq: string
+  sourceSubnet_gt: string
+  sourceSubnet_in: [string!]
+  sourceSubnet_leq: string
+  sourceSubnet_like: string
+  sourceSubnet_lt: string
+  sourceSubnet_neq: string
+  sourceSubnet_notin: [string!]
+  sourceSubnet_notlike: string
   tcpFlags: uint16
   tcpFlagsString: string
   tcpFlagsString_geq: string
@@ -59198,6 +60693,10 @@ enum AccountMnmFlowDataAdaptiveGroupsOrderBy {
   destinationPort_ASC
   # destinationPort descending
   destinationPort_DESC
+  # destinationSubnet ascending
+  destinationSubnet_ASC
+  # destinationSubnet descending
+  destinationSubnet_DESC
   # deviceID ascending
   deviceID_ASC
   # deviceID descending
@@ -59242,6 +60741,10 @@ enum AccountMnmFlowDataAdaptiveGroupsOrderBy {
   sourcePort_ASC
   # sourcePort descending
   sourcePort_DESC
+  # sourceSubnet ascending
+  sourceSubnet_ASC
+  # sourceSubnet descending
+  sourceSubnet_DESC
   # sum(bits) ascending
   sum_bits_ASC
   # sum(bits) descending
@@ -62846,6 +64349,8 @@ type AccountPrecursorEventsAdaptiveGroupsDimensions {
   browserMajor: uint16!
   # Browser name tied to that Precursor validation event
   browserName: string!
+  # The ASN of the visitor as string
+  clientASNDescription: string!
   # 2 character country code tied to that Precursor validation event
   countryCode: string!
   # The date the Precursor validation event was emitted
@@ -62911,6 +64416,16 @@ input AccountPrecursorEventsAdaptiveGroupsFilter_InputObject {
   browserName_neq: string
   browserName_notin: [string!]
   browserName_notlike: string
+  clientASNDescription: string
+  clientASNDescription_geq: string
+  clientASNDescription_gt: string
+  clientASNDescription_in: [string!]
+  clientASNDescription_leq: string
+  clientASNDescription_like: string
+  clientASNDescription_lt: string
+  clientASNDescription_neq: string
+  clientASNDescription_notin: [string!]
+  clientASNDescription_notlike: string
   countryCode: string
   countryCode_geq: string
   countryCode_gt: string
@@ -63080,6 +64595,10 @@ enum AccountPrecursorEventsAdaptiveGroupsOrderBy {
   browserName_ASC
   # browserName descending
   browserName_DESC
+  # clientASNDescription ascending
+  clientASNDescription_ASC
+  # clientASNDescription descending
+  clientASNDescription_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -63166,6 +64685,243 @@ type AccountPrecursorEventsAdaptiveGroupsSum {
 type AccountPrecursorEventsAdaptiveGroupsSumConfidence {
   # Confidence interval for the corresponding point estimate
   sessionsStarted: Confidence!
+}
+
+# Beta. Cloudflare Precursor session-level aggregates derived from sampled validation events
+type AccountPrecursorSessionsAdaptiveGroups {
+  avg: AccountPrecursorSessionsAdaptiveGroupsAvg
+  # Estimated number of Cloudflare Precursor sessions observed in sampled validation events
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountPrecursorSessionsAdaptiveGroupsDimensions
+  sum: AccountPrecursorSessionsAdaptiveGroupsSum
+}
+
+type AccountPrecursorSessionsAdaptiveGroupsAvg {
+  # Average observed span, in seconds, between the first and last validation events for a Precursor session
+  observedDurationSecs: float64!
+  # Average number of Precursor validation events per observed session
+  validations: float64!
+}
+
+type AccountPrecursorSessionsAdaptiveGroupsDimensions {
+  # Latest ASN observed for that Precursor session
+  asn: uint32!
+  # Latest browser name observed for that Precursor session
+  browserName: string!
+  # Latest 2 character country code observed for that Precursor session
+  countryCode: string!
+  # The date the Precursor session was first observed
+  date: Date!
+  # The date and time the Precursor session was first observed
+  datetime: Time!
+  # The date and time the Precursor session was first observed truncated to the day
+  datetimeDay: Time!
+  # The date and time the Precursor session was first observed truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the Precursor session was first observed truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the Precursor session was first observed truncated to a multiple of 30 minutes
+  datetimeHalfOfHour: Time!
+  # The date and time the Precursor session was first observed truncated to the hour
+  datetimeHour: Time!
+  # The date and time the Precursor session was first observed truncated to the minute
+  datetimeMinute: Time!
+  # Latest hostname observed for that Precursor session
+  hostname: string!
+  # Zone ID tied to that Precursor session
+  zoneId: uint32!
+}
+
+input AccountPrecursorSessionsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountPrecursorSessionsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountPrecursorSessionsAdaptiveGroupsFilter_InputObject!]
+  asn: uint32
+  asn_geq: uint32
+  asn_gt: uint32
+  asn_in: [uint32!]
+  asn_leq: uint32
+  asn_lt: uint32
+  asn_neq: uint32
+  asn_notin: [uint32!]
+  browserName: string
+  browserName_geq: string
+  browserName_gt: string
+  browserName_in: [string!]
+  browserName_leq: string
+  browserName_like: string
+  browserName_lt: string
+  browserName_neq: string
+  browserName_notin: [string!]
+  browserName_notlike: string
+  countryCode: string
+  countryCode_geq: string
+  countryCode_gt: string
+  countryCode_in: [string!]
+  countryCode_leq: string
+  countryCode_like: string
+  countryCode_lt: string
+  countryCode_neq: string
+  countryCode_notin: [string!]
+  countryCode_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeDay: Time
+  datetimeDay_geq: Time
+  datetimeDay_gt: Time
+  datetimeDay_in: [Time!]
+  datetimeDay_leq: Time
+  datetimeDay_lt: Time
+  datetimeDay_neq: Time
+  datetimeDay_notin: [Time!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHalfOfHour: Time
+  datetimeHalfOfHour_geq: Time
+  datetimeHalfOfHour_gt: Time
+  datetimeHalfOfHour_in: [Time!]
+  datetimeHalfOfHour_leq: Time
+  datetimeHalfOfHour_lt: Time
+  datetimeHalfOfHour_neq: Time
+  datetimeHalfOfHour_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  hostname: string
+  hostname_geq: string
+  hostname_gt: string
+  hostname_in: [string!]
+  hostname_leq: string
+  hostname_like: string
+  hostname_lt: string
+  hostname_neq: string
+  hostname_notin: [string!]
+  hostname_notlike: string
+  zoneId: uint32
+  zoneId_geq: uint32
+  zoneId_gt: uint32
+  zoneId_in: [uint32!]
+  zoneId_leq: uint32
+  zoneId_lt: uint32
+  zoneId_neq: uint32
+  zoneId_notin: [uint32!]
+}
+
+enum AccountPrecursorSessionsAdaptiveGroupsOrderBy {
+  # asn ascending
+  asn_ASC
+  # asn descending
+  asn_DESC
+  # avg(observedDurationSecs) ascending
+  avg_observedDurationSecs_ASC
+  # avg(observedDurationSecs) descending
+  avg_observedDurationSecs_DESC
+  # avg(validations) ascending
+  avg_validations_ASC
+  # avg(validations) descending
+  avg_validations_DESC
+  # browserName ascending
+  browserName_ASC
+  # browserName descending
+  browserName_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # countryCode ascending
+  countryCode_ASC
+  # countryCode descending
+  countryCode_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeDay ascending
+  datetimeDay_ASC
+  # datetimeDay descending
+  datetimeDay_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHalfOfHour ascending
+  datetimeHalfOfHour_ASC
+  # datetimeHalfOfHour descending
+  datetimeHalfOfHour_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # hostname ascending
+  hostname_ASC
+  # hostname descending
+  hostname_DESC
+  # sum(validations) ascending
+  sum_validations_ASC
+  # sum(validations) descending
+  sum_validations_DESC
+  # zoneId ascending
+  zoneId_ASC
+  # zoneId descending
+  zoneId_DESC
+}
+
+type AccountPrecursorSessionsAdaptiveGroupsSum {
+  # Estimated number of Cloudflare Precursor validation events for observed sessions
+  validations: uint64!
 }
 
 # Aggregated Privacy Proxy authentication metrics with adaptive sampling
@@ -66212,6 +67968,156 @@ type AccountQueueMessageOperationsAdaptiveGroupsSumConfidence {
   billableOperations: Confidence!
   # Confidence interval for the corresponding point estimate
   bytes: Confidence!
+}
+
+# Estimated R2 transfer usage with adaptive sampling. Transfers smaller than 100 KiB are excluded.
+type AccountR2BandwidthUsageAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountR2BandwidthUsageAdaptiveGroupsConfidence!
+  # List of dimensions to group by
+  dimensions: AccountR2BandwidthUsageAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountR2BandwidthUsageAdaptiveGroupsSum
+}
+
+type AccountR2BandwidthUsageAdaptiveGroupsConfidence {
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountR2BandwidthUsageAdaptiveGroupsSumConfidence
+}
+
+type AccountR2BandwidthUsageAdaptiveGroupsDimensions {
+  # The canonical R2 bucket identifier, including its jurisdiction prefix when applicable
+  bucketName: string!
+  # Transfer timestamp, truncated to the start of a day
+  date: Date!
+  # Transfer timestamp
+  datetime: Time!
+  # Transfer timestamp, truncated to the start of fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Transfer timestamp, truncated to the start of five minutes
+  datetimeFiveMinutes: Time!
+  # Transfer timestamp, truncated to the start of an hour
+  datetimeHour: Time!
+  # Transfer timestamp, truncated to the start of a minute
+  datetimeMinute: Time!
+}
+
+input AccountR2BandwidthUsageAdaptiveGroupsFilter_InputObject {
+  AND: [AccountR2BandwidthUsageAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountR2BandwidthUsageAdaptiveGroupsFilter_InputObject!]
+  bucketName: string
+  bucketName_geq: string
+  bucketName_gt: string
+  bucketName_in: [string!]
+  bucketName_leq: string
+  bucketName_like: string
+  bucketName_lt: string
+  bucketName_neq: string
+  bucketName_notin: [string!]
+  bucketName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+}
+
+enum AccountR2BandwidthUsageAdaptiveGroupsOrderBy {
+  # bucketName ascending
+  bucketName_ASC
+  # bucketName descending
+  bucketName_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # sum(bytesDownload) ascending
+  sum_bytesDownload_ASC
+  # sum(bytesDownload) descending
+  sum_bytesDownload_DESC
+  # sum(bytesUpload) ascending
+  sum_bytesUpload_ASC
+  # sum(bytesUpload) descending
+  sum_bytesUpload_DESC
+}
+
+type AccountR2BandwidthUsageAdaptiveGroupsSum {
+  # Estimated downloaded bytes, weighted by the adaptive sample interval
+  bytesDownload: uint64!
+  # Estimated uploaded bytes, weighted by the adaptive sample interval
+  bytesUpload: uint64!
+}
+
+type AccountR2BandwidthUsageAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  bytesDownload: Confidence!
+  # Confidence interval for the corresponding point estimate
+  bytesUpload: Confidence!
 }
 
 # R2 Data Catalog data plane operations (Iceberg REST API requests) with adaptive sampling
@@ -70716,6 +72622,10 @@ type AccountSettings {
   agentMemoryOperationsAdaptiveGroups: Settings!
   agentModelInvocationsAdaptiveGroups: Settings!
   aiGatewayCacheAdaptiveGroups: Settings!
+  aiGatewayConversationAnalysesAdaptive: Settings!
+  aiGatewayConversationAnalysesAdaptiveGroups: Settings!
+  aiGatewayConversationAnalysesStagingAdaptive: Settings!
+  aiGatewayConversationAnalysesStagingAdaptiveGroups: Settings!
   aiGatewayErrorsAdaptiveGroups: Settings!
   aiGatewayRequestsAdaptiveGroups: Settings!
   aiGatewayRequestsStagingAdaptiveGroups: Settings!
@@ -70869,6 +72779,7 @@ type AccountSettings {
   pipelinesUserErrorsStagingAdaptive: Settings!
   pipelinesUserErrorsStagingAdaptiveGroups: Settings!
   precursorEventsAdaptiveGroups: Settings!
+  precursorSessionsAdaptiveGroups: Settings!
   privacyProxyAuthMetricsAdaptiveGroups: Settings!
   privacyProxyEgressConnMetricsAdaptiveGroups: Settings!
   privacyProxyIngressConnMetricsAdaptiveGroups: Settings!
@@ -70878,6 +72789,7 @@ type AccountSettings {
   queueConsumerMetricsAdaptiveGroups: Settings!
   queueDelayedBacklogAdaptiveGroups: Settings!
   queueMessageOperationsAdaptiveGroups: Settings!
+  r2BandwidthUsageAdaptiveGroups: Settings!
   r2CatalogDataOperationsAdaptiveGroups: Settings!
   r2CatalogTableMaintenanceAdaptiveGroups: Settings!
   r2OperationsAdaptiveGroups: Settings!
@@ -70924,6 +72836,9 @@ type AccountSettings {
   workersVpcConnectionAdaptiveGroups: Settings!
   workflowsAdaptive: Settings!
   workflowsAdaptiveGroups: Settings!
+  workflowsBlockedReasonAdaptiveGroups: Settings!
+  workflowsQueueDepthAdaptiveGroups: Settings!
+  workflowsQueueWaitAdaptiveGroups: Settings!
   zarazTrackAdaptiveGroups: Settings!
   zarazTriggersAdaptiveGroups: Settings!
   zeroTrustPrivateNetworkDiscoveryGroups: Settings!
@@ -78456,7 +80371,7 @@ type AccountWorkersCacheRequestsAdaptiveGroupsDimensions {
   isDispatcher: uint8!
   # Whether this request is for a preview. 1 if preview, 0 if not.
   isPreview: uint8!
-  # The name (slug) of the preview script
+  # The name (slug) of the preview script. Requires an exact scriptName filter.
   previewSlug: string!
   # The name of the script
   scriptName: string!
@@ -78816,7 +80731,7 @@ type AccountWorkersInvocationsAdaptiveDimensions {
   isDispatcher: uint8!
   # Whether this invocation is for a preview. 1 if preview, 0 if not.
   isPreview: uint8!
-  # The name (slug) of the preview script
+  # The name (slug) of the preview script. Requires an exact scriptName filter.
   previewSlug: string!
   # The name of the script
   scriptName: string!
@@ -80218,7 +82133,7 @@ type AccountWorkersSubrequestsAdaptiveGroupsDimensions {
   httpResponseStatus: uint64!
   # Whether this invocation is for a preview. 1 if preview, 0 if not.
   isPreview: uint8!
-  # The name (slug) of the preview script
+  # The name (slug) of the preview script. Requires an exact scriptName filter.
   previewSlug: string!
   # The outcome of the subrequest
   requestOutcome: string!
@@ -81312,6 +83227,562 @@ enum AccountWorkflowsAdaptiveOrderBy {
   workflowName_ASC
   # workflowName descending
   workflowName_DESC
+}
+
+# Workflow gatekeeper block reason metrics with adaptive sampling. Each sample represents instances that were blocked by the gatekeeper, grouped by the reason for blocking.
+type AccountWorkflowsBlockedReasonAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountWorkflowsBlockedReasonAdaptiveGroupsConfidence!
+  # Number of blocked reason samples
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountWorkflowsBlockedReasonAdaptiveGroupsDimensions
+  sum: AccountWorkflowsBlockedReasonAdaptiveGroupsSum
+}
+
+type AccountWorkflowsBlockedReasonAdaptiveGroupsConfidence {
+  # Number of blocked reason samples, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  sum: AccountWorkflowsBlockedReasonAdaptiveGroupsSumConfidence
+}
+
+type AccountWorkflowsBlockedReasonAdaptiveGroupsDimensions {
+  # Sample date
+  date: Date!
+  # Sample timestamp
+  datetime: Time!
+  # Sample timestamp truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Sample timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Sample timestamp truncated to the hour
+  datetimeHour: Time!
+  # Sample timestamp truncated to the minute
+  datetimeMinute: Time!
+  # Gatekeeper block reason: WORKFLOW_LIMIT, GLOBAL_LIMIT, or LIMIT_RESOLUTION_ERROR
+  reason: string!
+  # Workflow script name
+  workflowId: string!
+}
+
+input AccountWorkflowsBlockedReasonAdaptiveGroupsFilter_InputObject {
+  AND: [AccountWorkflowsBlockedReasonAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountWorkflowsBlockedReasonAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  reason: string
+  reason_geq: string
+  reason_gt: string
+  reason_in: [string!]
+  reason_leq: string
+  reason_like: string
+  reason_lt: string
+  reason_neq: string
+  reason_notin: [string!]
+  reason_notlike: string
+  workflowId: string
+  workflowId_geq: string
+  workflowId_gt: string
+  workflowId_in: [string!]
+  workflowId_leq: string
+  workflowId_like: string
+  workflowId_lt: string
+  workflowId_neq: string
+  workflowId_notin: [string!]
+  workflowId_notlike: string
+}
+
+enum AccountWorkflowsBlockedReasonAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # reason ascending
+  reason_ASC
+  # reason descending
+  reason_DESC
+  # sum(blockedCount) ascending
+  sum_blockedCount_ASC
+  # sum(blockedCount) descending
+  sum_blockedCount_DESC
+  # workflowId ascending
+  workflowId_ASC
+  # workflowId descending
+  workflowId_DESC
+}
+
+type AccountWorkflowsBlockedReasonAdaptiveGroupsSum {
+  # Total number of instances blocked by the gatekeeper
+  blockedCount: uint64!
+}
+
+type AccountWorkflowsBlockedReasonAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  blockedCount: Confidence!
+}
+
+# Workflow queue depth gauge metrics with adaptive sampling. Each sample represents a snapshot of the number of instances waiting in the gatekeeper queue for a workflow.
+type AccountWorkflowsQueueDepthAdaptiveGroups {
+  avg: AccountWorkflowsQueueDepthAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountWorkflowsQueueDepthAdaptiveGroupsConfidence!
+  # Number of queue depth samples
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountWorkflowsQueueDepthAdaptiveGroupsDimensions
+  quantiles: AccountWorkflowsQueueDepthAdaptiveGroupsQuantiles
+}
+
+type AccountWorkflowsQueueDepthAdaptiveGroupsAvg {
+  # Average queue depth (number of queued instances)
+  queueDepth: float64!
+}
+
+type AccountWorkflowsQueueDepthAdaptiveGroupsConfidence {
+  # Number of queue depth samples, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type AccountWorkflowsQueueDepthAdaptiveGroupsDimensions {
+  # Sample date
+  date: Date!
+  # Sample timestamp
+  datetime: Time!
+  # Sample timestamp truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Sample timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Sample timestamp truncated to the hour
+  datetimeHour: Time!
+  # Sample timestamp truncated to the minute
+  datetimeMinute: Time!
+  # Workflow script name
+  workflowId: string!
+}
+
+input AccountWorkflowsQueueDepthAdaptiveGroupsFilter_InputObject {
+  AND: [AccountWorkflowsQueueDepthAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountWorkflowsQueueDepthAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  workflowId: string
+  workflowId_geq: string
+  workflowId_gt: string
+  workflowId_in: [string!]
+  workflowId_leq: string
+  workflowId_like: string
+  workflowId_lt: string
+  workflowId_neq: string
+  workflowId_notin: [string!]
+  workflowId_notlike: string
+}
+
+enum AccountWorkflowsQueueDepthAdaptiveGroupsOrderBy {
+  # avg(queueDepth) ascending
+  avg_queueDepth_ASC
+  # avg(queueDepth) descending
+  avg_queueDepth_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # quantiles(queueDepthP25) ascending
+  quantiles_queueDepthP25_ASC
+  # quantiles(queueDepthP25) descending
+  quantiles_queueDepthP25_DESC
+  # quantiles(queueDepthP50) ascending
+  quantiles_queueDepthP50_ASC
+  # quantiles(queueDepthP50) descending
+  quantiles_queueDepthP50_DESC
+  # quantiles(queueDepthP75) ascending
+  quantiles_queueDepthP75_ASC
+  # quantiles(queueDepthP75) descending
+  quantiles_queueDepthP75_DESC
+  # quantiles(queueDepthP90) ascending
+  quantiles_queueDepthP90_ASC
+  # quantiles(queueDepthP90) descending
+  quantiles_queueDepthP90_DESC
+  # quantiles(queueDepthP95) ascending
+  quantiles_queueDepthP95_ASC
+  # quantiles(queueDepthP95) descending
+  quantiles_queueDepthP95_DESC
+  # quantiles(queueDepthP999) ascending
+  quantiles_queueDepthP999_ASC
+  # quantiles(queueDepthP999) descending
+  quantiles_queueDepthP999_DESC
+  # quantiles(queueDepthP99) ascending
+  quantiles_queueDepthP99_ASC
+  # quantiles(queueDepthP99) descending
+  quantiles_queueDepthP99_DESC
+  # workflowId ascending
+  workflowId_ASC
+  # workflowId descending
+  workflowId_DESC
+}
+
+type AccountWorkflowsQueueDepthAdaptiveGroupsQuantiles {
+  # Queue depth at the 25th percentile
+  queueDepthP25: float64!
+  # Queue depth at the 50th percentile
+  queueDepthP50: float64!
+  # Queue depth at the 75th percentile
+  queueDepthP75: float64!
+  # Queue depth at the 90th percentile
+  queueDepthP90: float64!
+  # Queue depth at the 95th percentile
+  queueDepthP95: float64!
+  # Queue depth at the 99th percentile
+  queueDepthP99: float64!
+  # Queue depth at the 99.9th percentile
+  queueDepthP999: float64!
+}
+
+# Workflow queue wait time metrics with adaptive sampling. Each sample represents the time a workflow instance spent waiting in the gatekeeper queue before being admitted.
+type AccountWorkflowsQueueWaitAdaptiveGroups {
+  avg: AccountWorkflowsQueueWaitAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountWorkflowsQueueWaitAdaptiveGroupsConfidence!
+  # Number of queue wait samples
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountWorkflowsQueueWaitAdaptiveGroupsDimensions
+  quantiles: AccountWorkflowsQueueWaitAdaptiveGroupsQuantiles
+  sum: AccountWorkflowsQueueWaitAdaptiveGroupsSum
+}
+
+type AccountWorkflowsQueueWaitAdaptiveGroupsAvg {
+  # Average queue wait time (ms)
+  waitMs: float64!
+}
+
+type AccountWorkflowsQueueWaitAdaptiveGroupsConfidence {
+  # Number of queue wait samples, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  sum: AccountWorkflowsQueueWaitAdaptiveGroupsSumConfidence
+}
+
+type AccountWorkflowsQueueWaitAdaptiveGroupsDimensions {
+  # Sample date
+  date: Date!
+  # Sample timestamp
+  datetime: Time!
+  # Sample timestamp truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Sample timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Sample timestamp truncated to the hour
+  datetimeHour: Time!
+  # Sample timestamp truncated to the minute
+  datetimeMinute: Time!
+  # Workflow script name
+  workflowId: string!
+}
+
+input AccountWorkflowsQueueWaitAdaptiveGroupsFilter_InputObject {
+  AND: [AccountWorkflowsQueueWaitAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountWorkflowsQueueWaitAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  workflowId: string
+  workflowId_geq: string
+  workflowId_gt: string
+  workflowId_in: [string!]
+  workflowId_leq: string
+  workflowId_like: string
+  workflowId_lt: string
+  workflowId_neq: string
+  workflowId_notin: [string!]
+  workflowId_notlike: string
+}
+
+enum AccountWorkflowsQueueWaitAdaptiveGroupsOrderBy {
+  # avg(waitMs) ascending
+  avg_waitMs_ASC
+  # avg(waitMs) descending
+  avg_waitMs_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # quantiles(waitMsP25) ascending
+  quantiles_waitMsP25_ASC
+  # quantiles(waitMsP25) descending
+  quantiles_waitMsP25_DESC
+  # quantiles(waitMsP50) ascending
+  quantiles_waitMsP50_ASC
+  # quantiles(waitMsP50) descending
+  quantiles_waitMsP50_DESC
+  # quantiles(waitMsP75) ascending
+  quantiles_waitMsP75_ASC
+  # quantiles(waitMsP75) descending
+  quantiles_waitMsP75_DESC
+  # quantiles(waitMsP90) ascending
+  quantiles_waitMsP90_ASC
+  # quantiles(waitMsP90) descending
+  quantiles_waitMsP90_DESC
+  # quantiles(waitMsP95) ascending
+  quantiles_waitMsP95_ASC
+  # quantiles(waitMsP95) descending
+  quantiles_waitMsP95_DESC
+  # quantiles(waitMsP999) ascending
+  quantiles_waitMsP999_ASC
+  # quantiles(waitMsP999) descending
+  quantiles_waitMsP999_DESC
+  # quantiles(waitMsP99) ascending
+  quantiles_waitMsP99_ASC
+  # quantiles(waitMsP99) descending
+  quantiles_waitMsP99_DESC
+  # sum(waitMs) ascending
+  sum_waitMs_ASC
+  # sum(waitMs) descending
+  sum_waitMs_DESC
+  # workflowId ascending
+  workflowId_ASC
+  # workflowId descending
+  workflowId_DESC
+}
+
+type AccountWorkflowsQueueWaitAdaptiveGroupsQuantiles {
+  # Queue wait time (ms) at the 25th percentile
+  waitMsP25: float64!
+  # Queue wait time (ms) at the 50th percentile
+  waitMsP50: float64!
+  # Queue wait time (ms) at the 75th percentile
+  waitMsP75: float64!
+  # Queue wait time (ms) at the 90th percentile
+  waitMsP90: float64!
+  # Queue wait time (ms) at the 95th percentile
+  waitMsP95: float64!
+  # Queue wait time (ms) at the 99th percentile
+  waitMsP99: float64!
+  # Queue wait time (ms) at the 99.9th percentile
+  waitMsP999: float64!
+}
+
+type AccountWorkflowsQueueWaitAdaptiveGroupsSum {
+  # Total queue wait time (ms)
+  waitMs: float64!
+}
+
+type AccountWorkflowsQueueWaitAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  waitMs: Confidence!
 }
 
 # Zaraz Track Analytics - counts zaraz.track calls
