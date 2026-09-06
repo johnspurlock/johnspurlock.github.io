@@ -112,6 +112,7 @@ Account-level datasets:
 * logExplorerIngestionAdaptiveGroups
 * logpushHealthAdaptiveGroups
 * logpushTransformersAdaptiveGroups
+* logpushUsageAdaptiveGroups
   magicEndpointHealthCheckAdaptiveGroups
   magicFirewallNetworkAnalyticsAdaptiveGroups
   magicFirewallRateLimitNetworkAnalyticsAdaptiveGroups
@@ -241,6 +242,7 @@ Zone-level datasets:
 * dmarcReportsSourcesAdaptiveGroups
 * dnsAnalyticsAdaptive
 * dnsAnalyticsAdaptiveGroups
+* emailComplaintsAdaptiveGroups
 * emailRoutingAdaptive
 * emailRoutingAdaptiveGroups
 * emailSendingAdaptive
@@ -265,6 +267,8 @@ Zone-level datasets:
 * logpushTransformersAdaptiveGroups
   nelReportsAdaptiveGroups
   pageShieldReportsAdaptiveGroups
+* preRenderBotRequestsAdaptiveGroups
+* preRenderRenderAttemptsAdaptiveGroups
 * userProfilesAdaptiveGroups
 * userProfilesPiiGroups
 * userProfilesRawEventsGroups
@@ -351,9 +355,9 @@ type account {
   agentModelInvocationsAdaptiveGroups(filter: AccountAgentModelInvocationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAgentModelInvocationsAdaptiveGroupsOrderBy!]): [AccountAgentModelInvocationsAdaptiveGroups!]!
   # AI Gateway Cache
   aiGatewayCacheAdaptiveGroups(filter: AccountAiGatewayCacheAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayCacheAdaptiveGroupsOrderBy!]): [AccountAiGatewayCacheAdaptiveGroups!]!
-  # Individual analyzed AI Gateway conversations. This list is sampled: an aggregate may report more conversations than this node can list. A conversation re-analyzed after resuming appears as another row with its accumulated totals; conversationId identifies repeated conversations.
+  # Individual analyzed AI Gateway conversations. This list is a sample: adaptive sampling means not every conversation is retained as a row, and counts extrapolate through sampleInterval while listings do not - an aggregate may report more conversations than this node can list. A conversation active across several analysis periods appears once per period, each row with that period's usage; conversationId identifies repeats
   aiGatewayConversationAnalysesAdaptive(filter: AccountAiGatewayConversationAnalysesAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayConversationAnalysesAdaptiveOrderBy!]): [AccountAiGatewayConversationAnalysesAdaptive!]!
-  # Analyzed AI Gateway conversations, aggregated with adaptive sampling. One underlying row exists per analysis pick of a conversation; a conversation resumed and re-analyzed later contributes again with its accumulated totals.
+  # Analyzed AI Gateway conversations, aggregated with adaptive sampling. One underlying row per analysis of a conversation; a conversation active across several analysis periods contributes one row per period, each with that period's usage.
   aiGatewayConversationAnalysesAdaptiveGroups(filter: AccountAiGatewayConversationAnalysesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayConversationAnalysesAdaptiveGroupsOrderBy!]): [AccountAiGatewayConversationAnalysesAdaptiveGroups!]!
   # Individual analyzed AI Gateway conversations with adaptive sampling (staging)
   aiGatewayConversationAnalysesStagingAdaptive(filter: AccountAiGatewayConversationAnalysesStagingAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountAiGatewayConversationAnalysesStagingAdaptiveOrderBy!]): [AccountAiGatewayConversationAnalysesStagingAdaptive!]!
@@ -562,6 +566,8 @@ type account {
   logpushHealthAdaptiveGroups(filter: AccountLogpushHealthAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogpushHealthAdaptiveGroupsOrderBy!]): [AccountLogpushHealthAdaptiveGroups!]!
   # Beta. Logpush transformer health metrics
   logpushTransformersAdaptiveGroups(filter: AccountLogpushTransformersAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogpushTransformersAdaptiveGroupsOrderBy!]): [AccountLogpushTransformersAdaptiveGroups!]!
+  # Account-wide billable usage for successfully delivered customer-owned Logpush jobs
+  logpushUsageAdaptiveGroups(filter: AccountLogpushUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogpushUsageAdaptiveGroupsOrderBy!]): [AccountLogpushUsageAdaptiveGroups!]!
   # Magic Endpoint Healthcheck events with adaptive sampling.
   magicEndpointHealthCheckAdaptiveGroups(filter: AccountMagicEndpointHealthCheckAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicEndpointHealthCheckAdaptiveGroupsOrderBy!]): [AccountMagicEndpointHealthCheckAdaptiveGroups!]!
   # Network analytics data for Magic Firewall
@@ -4777,55 +4783,53 @@ enum AccountAiGatewayCacheAdaptiveGroupsOrderBy {
   tokensOut_DESC
 }
 
-# Individual analyzed AI Gateway conversations. This list is sampled: an aggregate may report more conversations than this node can list. A conversation re-analyzed after resuming appears as another row with its accumulated totals; conversationId identifies repeated conversations.
+# Individual analyzed AI Gateway conversations. This list is a sample: adaptive sampling means not every conversation is retained as a row, and counts extrapolate through sampleInterval while listings do not - an aggregate may report more conversations than this node can list. A conversation active across several analysis periods appears once per period, each row with that period's usage; conversationId identifies repeats
 type AccountAiGatewayConversationAnalysesAdaptive {
   # Assistant turns in the analyzed trajectory
   assistantTurns: uint64!
-  # Coding agent that held the conversation
+  # Coding agent that held the conversation; empty when no readable trajectory
   client: string!
-  # Stable hash identifying the user and session conversation; evidence join key and marker for repeated rows of one conversation
+  # Stable hash identifying the (user, session) conversation; join key back to the analysis records, and the marker for repeated rows of one conversation
   conversationId: string!
-  # Estimated conversation cost in USD; not a billing figure. 0 when unmeasured, and overlapping analysis periods can double-count it
+  # Estimated cost in USD of the requests this row's analysis period observed; not a billing figure, 0 when unmeasured (measuredCount = 0), and a re-covering run's rows (spansOverlap = 1) can double-count it
   costEstimate: float64!
-  # UTC date when the conversation analysis was published
+  # Date the analysis settled and its row was published
   date: Date!
-  # UTC timestamp when the conversation analysis was published
+  # When the analysis settled and its row was published
   datetime: Time!
-  # First observed activity in the conversation
+  # Start of the row's analysis period. Filtering on it does not narrow the scanned window - pair it with a date or datetime filter (publish time), which is what partitioning follows
   datetimeFirstActivity: Time!
-  # Last observed activity in the conversation
-  datetimeLastActivity: Time!
   # Name of the AI Gateway the conversation went through
   gatewayId: string!
-  # Number of analyses that measured usage; 0 means absent
+  # 1 when this analysis measured usage; 0 means cost and token fields are absent, not zero
   measuredCount: uint64!
-  # 'ok' when analyzed end to end and 'skip' when refused
+  # 'ok' when analyzed end to end, 'skip' when refused
   outcome: string!
-  # Cheapest tier judged sufficient; empty when unavailable
+  # Cheapest tier judged sufficient; empty when not classified or when verdict is 'skip'
   requiredTier: string!
-  # Number of conversations this row represents under adaptive sampling; multiply when extrapolating from listed rows
+  # How many rows this row stands for under adaptive sampling; multiply when extrapolating from listed rows
   sampleInterval: uint64!
-  # Provider and model that served the analyzed conversation
+  # The provider/model that served the analyzed part of the conversation; empty when not classified
   servedModel: string!
-  # Tier of the served model; empty when unavailable
+  # Tier of the served model; empty when not classified or when verdict is 'skip'
   servedTier: string!
-  # 1 when overlapping analysis periods double-count usage
-  spansOverlap: uint8!
-  # Task type assigned by the classifier; empty when unclassified
+  # 1 when this row's run re-covered a period another analysis also measured; sums that include it can double-count
+  spansOverlap: uint64!
+  # Task type the classifier assigned; empty when not classified
   taskLabel: string!
-  # Input tokens across the conversation's observed requests
+  # Input tokens across the period's observed requests
   tokensIn: uint64!
-  # Output tokens across the conversation's observed requests
+  # Output tokens across the period's observed requests
   tokensOut: uint64!
-  # Tool calls made by the assistant in the analyzed trajectory
+  # Tool calls the assistant made in the analyzed trajectory
   toolCalls: uint64!
   # CF Access user identity of the conversation's end user
   userId: string!
-  # User turns in the analyzed trajectory
+  # User turns in the analyzed trajectory; 0 when no readable trajectory
   userTurns: uint64!
-  # 'overkill', 'appropriate', 'underpowered', 'skip' when unjudgeable, or empty when unclassified
+  # 'overkill', 'appropriate', 'underpowered', 'skip' when unjudgeable, empty when not classified
   verdict: string!
-  # Generation of the verdict rule used for this conversation
+  # Generation of the verdict rule that judged this conversation
   verdictVersion: string!
 }
 
@@ -4877,6 +4881,14 @@ input AccountAiGatewayConversationAnalysesAdaptiveFilter_InputObject {
   date_neq: Date
   date_notin: [Date!]
   datetime: Time
+  datetimeFirstActivity: Time
+  datetimeFirstActivity_geq: Time
+  datetimeFirstActivity_gt: Time
+  datetimeFirstActivity_in: [Time!]
+  datetimeFirstActivity_leq: Time
+  datetimeFirstActivity_lt: Time
+  datetimeFirstActivity_neq: Time
+  datetimeFirstActivity_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -4950,14 +4962,14 @@ input AccountAiGatewayConversationAnalysesAdaptiveFilter_InputObject {
   servedTier_neq: string
   servedTier_notin: [string!]
   servedTier_notlike: string
-  spansOverlap: uint8
-  spansOverlap_geq: uint8
-  spansOverlap_gt: uint8
-  spansOverlap_in: bytes
-  spansOverlap_leq: uint8
-  spansOverlap_lt: uint8
-  spansOverlap_neq: uint8
-  spansOverlap_notin: bytes
+  spansOverlap: uint64
+  spansOverlap_geq: uint64
+  spansOverlap_gt: uint64
+  spansOverlap_in: [uint64!]
+  spansOverlap_leq: uint64
+  spansOverlap_lt: uint64
+  spansOverlap_neq: uint64
+  spansOverlap_notin: [uint64!]
   taskLabel: string
   taskLabel_geq: string
   taskLabel_gt: string
@@ -5032,27 +5044,28 @@ input AccountAiGatewayConversationAnalysesAdaptiveFilter_InputObject {
   verdict_notlike: string
 }
 
-# Analyzed AI Gateway conversations, aggregated with adaptive sampling. One underlying row exists per analysis pick of a conversation; a conversation resumed and re-analyzed later contributes again with its accumulated totals.
+# Analyzed AI Gateway conversations, aggregated with adaptive sampling. One underlying row per analysis of a conversation; a conversation active across several analysis periods contributes one row per period, each with that period's usage.
 type AccountAiGatewayConversationAnalysesAdaptiveGroups {
   avg: AccountAiGatewayConversationAnalysesAdaptiveGroupsAvg
   # ALPHA - DO NOT USE
   confidence(level: float64!): AccountAiGatewayConversationAnalysesAdaptiveGroupsConfidence!
-  # Number of analyzed conversations (canonical analysis picks; re-analyses of a resumed conversation count again)
+  # Number of analysis rows; a conversation active across several periods, or re-analyzed, counts once per row - uniq.conversationId is the distinct-conversation count
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountAiGatewayConversationAnalysesAdaptiveGroupsDimensions
   sum: AccountAiGatewayConversationAnalysesAdaptiveGroupsSum
+  uniq: AccountAiGatewayConversationAnalysesAdaptiveGroupsUniq
 }
 
 type AccountAiGatewayConversationAnalysesAdaptiveGroupsAvg {
-  # Mean estimated cost in USD per conversation over conversations whose cost was measured; 0 when none in the group was measured. When recombining groups client-side, filter measuredCount greater than 0 and divide summed costEstimate by count rather than averaging these averages
+  # Mean estimated cost in USD per analysis row, over rows whose cost was measured; 0 when none in the group was measured. When recombining groups client-side, filter measuredCount greater than 0 and divide the summed costEstimate total by the summed count - never average these averages
   costEstimate: float64!
   # Average sample interval of the rows behind this result; how heavily sampled the answer is
   sampleInterval: float64!
 }
 
 type AccountAiGatewayConversationAnalysesAdaptiveGroupsConfidence {
-  # Number of analyzed conversations (canonical analysis picks; re-analyses of a resumed conversation count again), with confidence intervals
+  # Number of analysis rows; a conversation active across several periods, or re-analyzed, counts once per row - uniq.conversationId is the distinct-conversation count, with confidence intervals
   count: Confidence!
   # Confidence level that was requested
   level: float64!
@@ -5060,39 +5073,37 @@ type AccountAiGatewayConversationAnalysesAdaptiveGroupsConfidence {
 }
 
 type AccountAiGatewayConversationAnalysesAdaptiveGroupsDimensions {
-  # Coding agent that held the conversation (for example claude-code, codex, or opencode); empty when no readable trajectory existed
+  # Coding agent that held the conversation (e.g. claude-code, codex, opencode); empty when no readable trajectory existed
   client: string!
-  # UTC date when the conversation analysis was published
+  # Stable hash identifying the (user, session) conversation; the marker for repeated rows, and the evidence join key. Group by it only under a narrow filter (one gateway, one user) to total one conversation's rows - across many conversations the grouping goes coarse and rare rows vanish
+  conversationId: string!
+  # Date the analysis settled and its row was published
   date: Date!
-  # UTC timestamp when the conversation analysis was published
+  # When the analysis settled and its row was published; activity time rides the view's firstActivityMs / lastActivityMs (the view definition's timestamp comment)
   datetime: Time!
-  # First observed activity in the conversation
-  datetimeFirstActivity: Time!
-  # Conversation analysis publication time truncated to the hour
+  # When the analysis settled and its row was published, truncated to the hour
   datetimeHour: Time!
-  # Last observed activity in the conversation
-  datetimeLastActivity: Time!
   # Name of the AI Gateway the conversations went through
   gatewayId: string!
-  # 'ok' when the conversation was analyzed end to end and 'skip' when a stage refused it; skipped conversations still carry usage measures
+  # 'ok' when the conversation was analyzed end to end, 'skip' when a stage refused it; skipped conversations still carry usage measures
   outcome: string!
-  # Cheapest tier judged sufficient for the conversation's task; empty on unclassified conversations and when verdict is 'skip'
+  # Cheapest tier judged sufficient for the conversation's task by the verdict rule; empty on unclassified conversations and on classified conversations whose verdict is 'skip'
   requiredTier: string!
-  # Provider and model that served the analyzed part of the conversation. A conversation that used several models is attributed to the model its picked analysis saw. Empty when outcome is not 'ok'
+  # The provider/model that served the analyzed part of the conversation, as the gateway logged it. A conversation that used several models is attributed to the one this analysis saw. Empty on conversations that were not classified - filter outcome to 'ok' before grouping
   servedModel: string!
-  # Tier of the served model; empty on unclassified conversations and on classified conversations whose verdict is 'skip'
+  # Tier of the served model, as judged by the verdict rule; empty on unclassified conversations and on classified conversations whose verdict is 'skip'
   servedTier: string!
-  # Why a skipped conversation was refused; read with skipStage
+  # Why a skipped conversation was refused; read together with skipStage
   skipReason: string!
   # Pipeline stage that refused a skipped conversation
   skipStage: string!
-  # Task type the classifier assigned to the conversation; an open vocabulary that can shift when the classifier changes. Empty on conversations that were not classified; filter outcome to 'ok'
+  # Task type the classifier assigned to the conversation; an open vocabulary that can shift when the classifier changes. Empty on conversations that were not classified - filter outcome to 'ok'
   taskLabel: string!
-  # CF Access user identity of the conversation's end user, as the gateway recorded it. Grouping is most accurate within a single gateway; across many gateways results become coarse
+  # CF Access user identity of the conversation's end user, as the gateway recorded it. Grouping is most accurate within a single gateway; across many gateways results go coarse
   userId: string!
-  # User turns in the analyzed trajectory (consecutive same-role messages count once). 0 can mean no readable trajectory or no user turn
+  # User turns in the analyzed trajectory (consecutive same-role messages count once). 0 on rows without a readable trajectory (client empty) and on trajectories with no user turn; bucket client-side, recombining averages per the costEstimate average's recipe
   userTurns: uint64!
-  # Whether the served model's tier was above ('overkill'), at ('appropriate'), or below ('underpowered') what the conversation needed; 'skip' when it could not be judged and empty when unclassified
+  # Whether the served model's tier was above ('overkill'), at ('appropriate'), or below ('underpowered') what the conversation needed; 'skip' when the model could not be judged, empty when the conversation was not classified
   verdict: string!
   # Generation of the verdict rule that judged this conversation; compare verdicts across time within one generation
   verdictVersion: string!
@@ -5111,6 +5122,16 @@ input AccountAiGatewayConversationAnalysesAdaptiveGroupsFilter_InputObject {
   client_neq: string
   client_notin: [string!]
   client_notlike: string
+  conversationId: string
+  conversationId_geq: string
+  conversationId_gt: string
+  conversationId_in: [string!]
+  conversationId_leq: string
+  conversationId_like: string
+  conversationId_lt: string
+  conversationId_neq: string
+  conversationId_notin: [string!]
+  conversationId_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -5221,14 +5242,14 @@ input AccountAiGatewayConversationAnalysesAdaptiveGroupsFilter_InputObject {
   skipStage_neq: string
   skipStage_notin: [string!]
   skipStage_notlike: string
-  spansOverlap: uint8
-  spansOverlap_geq: uint8
-  spansOverlap_gt: uint8
-  spansOverlap_in: bytes
-  spansOverlap_leq: uint8
-  spansOverlap_lt: uint8
-  spansOverlap_neq: uint8
-  spansOverlap_notin: bytes
+  spansOverlap: uint64
+  spansOverlap_geq: uint64
+  spansOverlap_gt: uint64
+  spansOverlap_in: [uint64!]
+  spansOverlap_leq: uint64
+  spansOverlap_lt: uint64
+  spansOverlap_neq: uint64
+  spansOverlap_notin: [uint64!]
   taskLabel: string
   taskLabel_geq: string
   taskLabel_gt: string
@@ -5292,6 +5313,10 @@ enum AccountAiGatewayConversationAnalysesAdaptiveGroupsOrderBy {
   client_ASC
   # client descending
   client_DESC
+  # conversationId ascending
+  conversationId_ASC
+  # conversationId descending
+  conversationId_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -5356,6 +5381,10 @@ enum AccountAiGatewayConversationAnalysesAdaptiveGroupsOrderBy {
   taskLabel_ASC
   # taskLabel descending
   taskLabel_DESC
+  # uniq(conversationId) ascending
+  uniq_conversationId_ASC
+  # uniq(conversationId) descending
+  uniq_conversationId_DESC
   # userId ascending
   userId_ASC
   # userId descending
@@ -5396,6 +5425,11 @@ type AccountAiGatewayConversationAnalysesAdaptiveGroupsSumConfidence {
   tokensOut: Confidence!
 }
 
+type AccountAiGatewayConversationAnalysesAdaptiveGroupsUniq {
+  # Distinct conversations behind the grouped rows. Approximate, and counted over surviving stored rows: exact where the finest resolution tier answers, an undercount at coarse tiers
+  conversationId: uint64!
+}
+
 enum AccountAiGatewayConversationAnalysesAdaptiveOrderBy {
   # assistantTurns ascending
   assistantTurns_ASC
@@ -5417,6 +5451,10 @@ enum AccountAiGatewayConversationAnalysesAdaptiveOrderBy {
   date_ASC
   # date descending
   date_DESC
+  # datetimeFirstActivity ascending
+  datetimeFirstActivity_ASC
+  # datetimeFirstActivity descending
+  datetimeFirstActivity_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -5491,51 +5529,49 @@ enum AccountAiGatewayConversationAnalysesAdaptiveOrderBy {
 type AccountAiGatewayConversationAnalysesStagingAdaptive {
   # Assistant turns in the analyzed trajectory
   assistantTurns: uint64!
-  # Coding agent that held the conversation
+  # Coding agent that held the conversation; empty when no readable trajectory
   client: string!
-  # Stable hash identifying the user and session conversation; evidence join key and marker for repeated rows of one conversation
+  # Stable hash identifying the (user, session) conversation; join key back to the analysis records, and the marker for repeated rows of one conversation
   conversationId: string!
-  # Estimated conversation cost in USD; not a billing figure. 0 when unmeasured, and overlapping analysis periods can double-count it
+  # Estimated cost in USD of the requests this row's analysis period observed; not a billing figure, 0 when unmeasured (measuredCount = 0), and a re-covering run's rows (spansOverlap = 1) can double-count it
   costEstimate: float64!
-  # UTC date when the conversation analysis was published
+  # Date the analysis settled and its row was published
   date: Date!
-  # UTC timestamp when the conversation analysis was published
+  # When the analysis settled and its row was published
   datetime: Time!
-  # First observed activity in the conversation
+  # Start of the row's analysis period. Filtering on it does not narrow the scanned window - pair it with a date or datetime filter (publish time), which is what partitioning follows
   datetimeFirstActivity: Time!
-  # Last observed activity in the conversation
-  datetimeLastActivity: Time!
   # Name of the AI Gateway the conversation went through
   gatewayId: string!
-  # Number of analyses that measured usage; 0 means absent
+  # 1 when this analysis measured usage; 0 means cost and token fields are absent, not zero
   measuredCount: uint64!
-  # 'ok' when analyzed end to end and 'skip' when refused
+  # 'ok' when analyzed end to end, 'skip' when refused
   outcome: string!
-  # Cheapest tier judged sufficient; empty when unavailable
+  # Cheapest tier judged sufficient; empty when not classified or when verdict is 'skip'
   requiredTier: string!
-  # Number of conversations this row represents under adaptive sampling; multiply when extrapolating from listed rows
+  # How many rows this row stands for under adaptive sampling; multiply when extrapolating from listed rows
   sampleInterval: uint64!
-  # Provider and model that served the analyzed conversation
+  # The provider/model that served the analyzed part of the conversation; empty when not classified
   servedModel: string!
-  # Tier of the served model; empty when unavailable
+  # Tier of the served model; empty when not classified or when verdict is 'skip'
   servedTier: string!
-  # 1 when overlapping analysis periods double-count usage
-  spansOverlap: uint8!
-  # Task type assigned by the classifier; empty when unclassified
+  # 1 when this row's run re-covered a period another analysis also measured; sums that include it can double-count
+  spansOverlap: uint64!
+  # Task type the classifier assigned; empty when not classified
   taskLabel: string!
-  # Input tokens across the conversation's observed requests
+  # Input tokens across the period's observed requests
   tokensIn: uint64!
-  # Output tokens across the conversation's observed requests
+  # Output tokens across the period's observed requests
   tokensOut: uint64!
-  # Tool calls made by the assistant in the analyzed trajectory
+  # Tool calls the assistant made in the analyzed trajectory
   toolCalls: uint64!
   # CF Access user identity of the conversation's end user
   userId: string!
-  # User turns in the analyzed trajectory
+  # User turns in the analyzed trajectory; 0 when no readable trajectory
   userTurns: uint64!
-  # 'overkill', 'appropriate', 'underpowered', 'skip' when unjudgeable, or empty when unclassified
+  # 'overkill', 'appropriate', 'underpowered', 'skip' when unjudgeable, empty when not classified
   verdict: string!
-  # Generation of the verdict rule used for this conversation
+  # Generation of the verdict rule that judged this conversation
   verdictVersion: string!
 }
 
@@ -5587,6 +5623,14 @@ input AccountAiGatewayConversationAnalysesStagingAdaptiveFilter_InputObject {
   date_neq: Date
   date_notin: [Date!]
   datetime: Time
+  datetimeFirstActivity: Time
+  datetimeFirstActivity_geq: Time
+  datetimeFirstActivity_gt: Time
+  datetimeFirstActivity_in: [Time!]
+  datetimeFirstActivity_leq: Time
+  datetimeFirstActivity_lt: Time
+  datetimeFirstActivity_neq: Time
+  datetimeFirstActivity_notin: [Time!]
   datetime_geq: Time
   datetime_gt: Time
   datetime_in: [Time!]
@@ -5660,14 +5704,14 @@ input AccountAiGatewayConversationAnalysesStagingAdaptiveFilter_InputObject {
   servedTier_neq: string
   servedTier_notin: [string!]
   servedTier_notlike: string
-  spansOverlap: uint8
-  spansOverlap_geq: uint8
-  spansOverlap_gt: uint8
-  spansOverlap_in: bytes
-  spansOverlap_leq: uint8
-  spansOverlap_lt: uint8
-  spansOverlap_neq: uint8
-  spansOverlap_notin: bytes
+  spansOverlap: uint64
+  spansOverlap_geq: uint64
+  spansOverlap_gt: uint64
+  spansOverlap_in: [uint64!]
+  spansOverlap_leq: uint64
+  spansOverlap_lt: uint64
+  spansOverlap_neq: uint64
+  spansOverlap_notin: [uint64!]
   taskLabel: string
   taskLabel_geq: string
   taskLabel_gt: string
@@ -5747,22 +5791,23 @@ type AccountAiGatewayConversationAnalysesStagingAdaptiveGroups {
   avg: AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsAvg
   # ALPHA - DO NOT USE
   confidence(level: float64!): AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsConfidence!
-  # Number of analyzed conversations (canonical analysis picks; re-analyses of a resumed conversation count again)
+  # Number of analysis rows; a conversation active across several periods, or re-analyzed, counts once per row - uniq.conversationId is the distinct-conversation count
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsDimensions
   sum: AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsSum
+  uniq: AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsUniq
 }
 
 type AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsAvg {
-  # Mean estimated cost in USD per conversation over conversations whose cost was measured; 0 when none in the group was measured. When recombining groups client-side, filter measuredCount greater than 0 and divide summed costEstimate by count rather than averaging these averages
+  # Mean estimated cost in USD per analysis row, over rows whose cost was measured; 0 when none in the group was measured. When recombining groups client-side, filter measuredCount greater than 0 and divide the summed costEstimate total by the summed count - never average these averages
   costEstimate: float64!
   # Average sample interval of the rows behind this result; how heavily sampled the answer is
   sampleInterval: float64!
 }
 
 type AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsConfidence {
-  # Number of analyzed conversations (canonical analysis picks; re-analyses of a resumed conversation count again), with confidence intervals
+  # Number of analysis rows; a conversation active across several periods, or re-analyzed, counts once per row - uniq.conversationId is the distinct-conversation count, with confidence intervals
   count: Confidence!
   # Confidence level that was requested
   level: float64!
@@ -5770,39 +5815,37 @@ type AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsConfidence {
 }
 
 type AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsDimensions {
-  # Coding agent that held the conversation (for example claude-code, codex, or opencode); empty when no readable trajectory existed
+  # Coding agent that held the conversation (e.g. claude-code, codex, opencode); empty when no readable trajectory existed
   client: string!
-  # UTC date when the conversation analysis was published
+  # Stable hash identifying the (user, session) conversation; the marker for repeated rows, and the evidence join key. Group by it only under a narrow filter (one gateway, one user) to total one conversation's rows - across many conversations the grouping goes coarse and rare rows vanish
+  conversationId: string!
+  # Date the analysis settled and its row was published
   date: Date!
-  # UTC timestamp when the conversation analysis was published
+  # When the analysis settled and its row was published; activity time rides the view's firstActivityMs / lastActivityMs (the view definition's timestamp comment)
   datetime: Time!
-  # First observed activity in the conversation
-  datetimeFirstActivity: Time!
-  # Conversation analysis publication time truncated to the hour
+  # When the analysis settled and its row was published, truncated to the hour
   datetimeHour: Time!
-  # Last observed activity in the conversation
-  datetimeLastActivity: Time!
   # Name of the AI Gateway the conversations went through
   gatewayId: string!
-  # 'ok' when the conversation was analyzed end to end and 'skip' when a stage refused it; skipped conversations still carry usage measures
+  # 'ok' when the conversation was analyzed end to end, 'skip' when a stage refused it; skipped conversations still carry usage measures
   outcome: string!
-  # Cheapest tier judged sufficient for the conversation's task; empty on unclassified conversations and when verdict is 'skip'
+  # Cheapest tier judged sufficient for the conversation's task by the verdict rule; empty on unclassified conversations and on classified conversations whose verdict is 'skip'
   requiredTier: string!
-  # Provider and model that served the analyzed part of the conversation. A conversation that used several models is attributed to the model its picked analysis saw. Empty when outcome is not 'ok'
+  # The provider/model that served the analyzed part of the conversation, as the gateway logged it. A conversation that used several models is attributed to the one this analysis saw. Empty on conversations that were not classified - filter outcome to 'ok' before grouping
   servedModel: string!
-  # Tier of the served model; empty on unclassified conversations and on classified conversations whose verdict is 'skip'
+  # Tier of the served model, as judged by the verdict rule; empty on unclassified conversations and on classified conversations whose verdict is 'skip'
   servedTier: string!
-  # Why a skipped conversation was refused; read with skipStage
+  # Why a skipped conversation was refused; read together with skipStage
   skipReason: string!
   # Pipeline stage that refused a skipped conversation
   skipStage: string!
-  # Task type the classifier assigned to the conversation; an open vocabulary that can shift when the classifier changes. Empty on conversations that were not classified; filter outcome to 'ok'
+  # Task type the classifier assigned to the conversation; an open vocabulary that can shift when the classifier changes. Empty on conversations that were not classified - filter outcome to 'ok'
   taskLabel: string!
-  # CF Access user identity of the conversation's end user, as the gateway recorded it. Grouping is most accurate within a single gateway; across many gateways results become coarse
+  # CF Access user identity of the conversation's end user, as the gateway recorded it. Grouping is most accurate within a single gateway; across many gateways results go coarse
   userId: string!
-  # User turns in the analyzed trajectory (consecutive same-role messages count once). 0 can mean no readable trajectory or no user turn
+  # User turns in the analyzed trajectory (consecutive same-role messages count once). 0 on rows without a readable trajectory (client empty) and on trajectories with no user turn; bucket client-side, recombining averages per the costEstimate average's recipe
   userTurns: uint64!
-  # Whether the served model's tier was above ('overkill'), at ('appropriate'), or below ('underpowered') what the conversation needed; 'skip' when it could not be judged and empty when unclassified
+  # Whether the served model's tier was above ('overkill'), at ('appropriate'), or below ('underpowered') what the conversation needed; 'skip' when the model could not be judged, empty when the conversation was not classified
   verdict: string!
   # Generation of the verdict rule that judged this conversation; compare verdicts across time within one generation
   verdictVersion: string!
@@ -5821,6 +5864,16 @@ input AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsFilter_InputObjec
   client_neq: string
   client_notin: [string!]
   client_notlike: string
+  conversationId: string
+  conversationId_geq: string
+  conversationId_gt: string
+  conversationId_in: [string!]
+  conversationId_leq: string
+  conversationId_like: string
+  conversationId_lt: string
+  conversationId_neq: string
+  conversationId_notin: [string!]
+  conversationId_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -5931,14 +5984,14 @@ input AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsFilter_InputObjec
   skipStage_neq: string
   skipStage_notin: [string!]
   skipStage_notlike: string
-  spansOverlap: uint8
-  spansOverlap_geq: uint8
-  spansOverlap_gt: uint8
-  spansOverlap_in: bytes
-  spansOverlap_leq: uint8
-  spansOverlap_lt: uint8
-  spansOverlap_neq: uint8
-  spansOverlap_notin: bytes
+  spansOverlap: uint64
+  spansOverlap_geq: uint64
+  spansOverlap_gt: uint64
+  spansOverlap_in: [uint64!]
+  spansOverlap_leq: uint64
+  spansOverlap_lt: uint64
+  spansOverlap_neq: uint64
+  spansOverlap_notin: [uint64!]
   taskLabel: string
   taskLabel_geq: string
   taskLabel_gt: string
@@ -6002,6 +6055,10 @@ enum AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsOrderBy {
   client_ASC
   # client descending
   client_DESC
+  # conversationId ascending
+  conversationId_ASC
+  # conversationId descending
+  conversationId_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -6066,6 +6123,10 @@ enum AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsOrderBy {
   taskLabel_ASC
   # taskLabel descending
   taskLabel_DESC
+  # uniq(conversationId) ascending
+  uniq_conversationId_ASC
+  # uniq(conversationId) descending
+  uniq_conversationId_DESC
   # userId ascending
   userId_ASC
   # userId descending
@@ -6106,6 +6167,11 @@ type AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsSumConfidence {
   tokensOut: Confidence!
 }
 
+type AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsUniq {
+  # Distinct conversations behind the grouped rows. Approximate, and counted over surviving stored rows: exact where the finest resolution tier answers, an undercount at coarse tiers
+  conversationId: uint64!
+}
+
 enum AccountAiGatewayConversationAnalysesStagingAdaptiveOrderBy {
   # assistantTurns ascending
   assistantTurns_ASC
@@ -6127,6 +6193,10 @@ enum AccountAiGatewayConversationAnalysesStagingAdaptiveOrderBy {
   date_ASC
   # date descending
   date_DESC
+  # datetimeFirstActivity ascending
+  datetimeFirstActivity_ASC
+  # datetimeFirstActivity descending
+  datetimeFirstActivity_DESC
   # datetime ascending
   datetime_ASC
   # datetime descending
@@ -30095,6 +30165,34 @@ enum AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy {
   previewSlug_ASC
   # previewSlug descending
   previewSlug_DESC
+  # quantiles(cpuTimeP25) ascending
+  quantiles_cpuTimeP25_ASC
+  # quantiles(cpuTimeP25) descending
+  quantiles_cpuTimeP25_DESC
+  # quantiles(cpuTimeP50) ascending
+  quantiles_cpuTimeP50_ASC
+  # quantiles(cpuTimeP50) descending
+  quantiles_cpuTimeP50_DESC
+  # quantiles(cpuTimeP75) ascending
+  quantiles_cpuTimeP75_ASC
+  # quantiles(cpuTimeP75) descending
+  quantiles_cpuTimeP75_DESC
+  # quantiles(cpuTimeP90) ascending
+  quantiles_cpuTimeP90_ASC
+  # quantiles(cpuTimeP90) descending
+  quantiles_cpuTimeP90_DESC
+  # quantiles(cpuTimeP95) ascending
+  quantiles_cpuTimeP95_ASC
+  # quantiles(cpuTimeP95) descending
+  quantiles_cpuTimeP95_DESC
+  # quantiles(cpuTimeP999) ascending
+  quantiles_cpuTimeP999_ASC
+  # quantiles(cpuTimeP999) descending
+  quantiles_cpuTimeP999_DESC
+  # quantiles(cpuTimeP99) ascending
+  quantiles_cpuTimeP99_ASC
+  # quantiles(cpuTimeP99) descending
+  quantiles_cpuTimeP99_DESC
   # quantiles(responseBodySizeP25) ascending
   quantiles_responseBodySizeP25_ASC
   # quantiles(responseBodySizeP25) descending
@@ -30190,6 +30288,20 @@ enum AccountDurableObjectsInvocationsAdaptiveGroupsOrderBy {
 }
 
 type AccountDurableObjectsInvocationsAdaptiveGroupsQuantiles {
+  # CPU time 25th percentile - microseconds
+  cpuTimeP25: float32!
+  # CPU time 50th percentile - microseconds
+  cpuTimeP50: float32!
+  # CPU time 75th percentile - microseconds
+  cpuTimeP75: float32!
+  # CPU time 90th percentile - microseconds
+  cpuTimeP90: float32!
+  # CPU time 95th percentile - microseconds
+  cpuTimeP95: float32!
+  # CPU time 99th percentile - microseconds
+  cpuTimeP99: float32!
+  # CPU time 99.9th percentile - microseconds
+  cpuTimeP999: float32!
   # Response body size 25th percentile - bytes
   responseBodySizeP25: float32!
   # Response body size 50th percentile - bytes
@@ -30796,6 +30908,8 @@ type AccountDurableObjectsStorageGroupsDimensions {
   datetimeHour: Time!
   # Datetime that the storage usage was recorded, truncated to start of a minute
   datetimeMinute: Time!
+  # Durable Object namespace IDs
+  namespaceIds: [string!]!
 }
 
 input AccountDurableObjectsStorageGroupsFilter_InputObject {
@@ -30849,6 +30963,11 @@ input AccountDurableObjectsStorageGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  namespaceIds_has: string
+  namespaceIds_hasall: [string!]
+  namespaceIds_hasany: [string!]
+  namespaceIds_isempty: bool
+  namespaceIds_nothas: string
 }
 
 type AccountDurableObjectsStorageGroupsMax {
@@ -30885,6 +31004,10 @@ enum AccountDurableObjectsStorageGroupsOrderBy {
   max_storedBytes_ASC
   # max(storedBytes) descending
   max_storedBytes_DESC
+  # namespaceIds ascending
+  namespaceIds_ASC
+  # namespaceIds descending
+  namespaceIds_DESC
 }
 
 # Durable Objects subrequests with adaptive sampling
@@ -40548,7 +40671,7 @@ type AccountHttpRequestsAdaptive {
   originResponseDurationMs: uint64!
   # The time elapsed between completing the TLS handshake and receiving the origin response headers
   originResponseHeaderReceiveDurationMs: uint32!
-  # HTTP origin response status code returned to browser
+  # HTTP origin response status code returned to browser. Note: this may be 0 if requests are fronted by a worker.
   originResponseStatus: uint16!
   # The time elapsed between the start and completion of the TCP handshake with the origin
   originTcpHandshakeDurationMs: uint16!
@@ -41571,6 +41694,8 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   clientRequestScheme: string!
   # SSL protocol version
   clientSSLProtocol: string!
+  # TLS key exchange group negotiated between the client and Cloudflare
+  clientTLSKeyExchangeGroup: string!
   coloCode: string!
   # 1 if not all contents for this request where successfully scanned, else 0
   contentScanHasFailed: uint8!
@@ -41650,7 +41775,7 @@ type AccountHttpRequestsAdaptiveGroupsDimensions {
   originResponseDurationMs: uint64!
   # The time elapsed between completing the TLS handshake and receiving the origin response headers
   originResponseHeaderReceiveDurationMs: uint32!
-  # HTTP response status code returned by the origin
+  # HTTP response status code returned by the origin. Note: this may be 0 if requests are fronted by a worker.
   originResponseStatus: uint16!
   # The time elapsed between the start and completion of the TCP handshake with the origin
   originTcpHandshakeDurationMs: uint16!
@@ -41959,6 +42084,16 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   clientSSLProtocol_neq: string
   clientSSLProtocol_notin: [string!]
   clientSSLProtocol_notlike: string
+  clientTLSKeyExchangeGroup: string
+  clientTLSKeyExchangeGroup_geq: string
+  clientTLSKeyExchangeGroup_gt: string
+  clientTLSKeyExchangeGroup_in: [string!]
+  clientTLSKeyExchangeGroup_leq: string
+  clientTLSKeyExchangeGroup_like: string
+  clientTLSKeyExchangeGroup_lt: string
+  clientTLSKeyExchangeGroup_neq: string
+  clientTLSKeyExchangeGroup_notin: [string!]
+  clientTLSKeyExchangeGroup_notlike: string
   coloCode: string
   coloCode_geq: string
   coloCode_gt: string
@@ -42722,6 +42857,10 @@ enum AccountHttpRequestsAdaptiveGroupsOrderBy {
   clientSSLProtocol_ASC
   # clientSSLProtocol descending
   clientSSLProtocol_DESC
+  # clientTLSKeyExchangeGroup ascending
+  clientTLSKeyExchangeGroup_ASC
+  # clientTLSKeyExchangeGroup descending
+  clientTLSKeyExchangeGroup_DESC
   # coloCode ascending
   coloCode_ASC
   # coloCode descending
@@ -44034,6 +44173,8 @@ type AccountHttpRequestsOverviewAdaptiveGroupsDimensions {
   clientRequestHTTPProtocol: string!
   # SSL protocol version
   clientSSLProtocol: string!
+  # TLS key exchange group negotiated between the client and Cloudflare
+  clientTLSKeyExchangeGroup: string!
   # The date the event occurred at the edge
   date: Date!
   # The date and time the event occurred at the edge
@@ -44094,6 +44235,16 @@ input AccountHttpRequestsOverviewAdaptiveGroupsFilter_InputObject {
   clientSSLProtocol_neq: string
   clientSSLProtocol_notin: [string!]
   clientSSLProtocol_notlike: string
+  clientTLSKeyExchangeGroup: string
+  clientTLSKeyExchangeGroup_geq: string
+  clientTLSKeyExchangeGroup_gt: string
+  clientTLSKeyExchangeGroup_in: [string!]
+  clientTLSKeyExchangeGroup_leq: string
+  clientTLSKeyExchangeGroup_like: string
+  clientTLSKeyExchangeGroup_lt: string
+  clientTLSKeyExchangeGroup_neq: string
+  clientTLSKeyExchangeGroup_notin: [string!]
+  clientTLSKeyExchangeGroup_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -44241,6 +44392,10 @@ enum AccountHttpRequestsOverviewAdaptiveGroupsOrderBy {
   clientSSLProtocol_ASC
   # clientSSLProtocol descending
   clientSSLProtocol_DESC
+  # clientTLSKeyExchangeGroup ascending
+  clientTLSKeyExchangeGroup_ASC
+  # clientTLSKeyExchangeGroup descending
+  clientTLSKeyExchangeGroup_DESC
   # date ascending
   date_ASC
   # date descending
@@ -47211,6 +47366,96 @@ type AccountLogpushTransformersAdaptiveGroupsSumConfidence {
   bytesOut: Confidence!
   # Confidence interval for the corresponding point estimate
   records: Confidence!
+}
+
+# Account-wide billable usage for successfully delivered customer-owned Logpush jobs
+type AccountLogpushUsageAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountLogpushUsageAdaptiveGroupsConfidence!
+  # List of dimensions to group by
+  dimensions: AccountLogpushUsageAdaptiveGroupsDimensions
+  # The sum of billable Logpush bytes
+  sum: AccountLogpushUsageAdaptiveGroupsSum
+}
+
+type AccountLogpushUsageAdaptiveGroupsConfidence {
+  # Confidence level that was requested
+  level: float64!
+  # The sum of billable Logpush bytes, with confidence intervals
+  sum: AccountLogpushUsageAdaptiveGroupsSumConfidence
+}
+
+type AccountLogpushUsageAdaptiveGroupsDimensions {
+  # Delivery date
+  date: Date!
+  # Delivery time
+  datetime: Time!
+}
+
+input AccountLogpushUsageAdaptiveGroupsFilter_InputObject {
+  AND: [AccountLogpushUsageAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountLogpushUsageAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+}
+
+enum AccountLogpushUsageAdaptiveGroupsOrderBy {
+  # blob12Empty ascending
+  blob12Empty_ASC
+  # blob12Empty descending
+  blob12Empty_DESC
+  # blob9Empty ascending
+  blob9Empty_ASC
+  # blob9Empty descending
+  blob9Empty_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # logpushJobOffset ascending
+  logpushJobOffset_ASC
+  # logpushJobOffset descending
+  logpushJobOffset_DESC
+  # namespace ascending
+  namespace_ASC
+  # namespace descending
+  namespace_DESC
+  # successfulDelivery ascending
+  successfulDelivery_ASC
+  # successfulDelivery descending
+  successfulDelivery_DESC
+  # sum(billableBytes) ascending
+  sum_billableBytes_ASC
+  # sum(billableBytes) descending
+  sum_billableBytes_DESC
+}
+
+type AccountLogpushUsageAdaptiveGroupsSum {
+  # Uncompressed bytes successfully delivered by customer-owned Logpush jobs
+  billableBytes: uint64!
+}
+
+type AccountLogpushUsageAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  billableBytes: Confidence!
 }
 
 # Magic Endpoint Healthcheck events with adaptive sampling.
@@ -72727,6 +72972,7 @@ type AccountSettings {
   logExplorerIngestionAdaptiveGroups: Settings!
   logpushHealthAdaptiveGroups: Settings!
   logpushTransformersAdaptiveGroups: Settings!
+  logpushUsageAdaptiveGroups: Settings!
   magicEndpointHealthCheckAdaptiveGroups: Settings!
   magicFirewallNetworkAnalyticsAdaptiveGroups: Settings!
   magicFirewallRateLimitNetworkAnalyticsAdaptiveGroups: Settings!
@@ -85687,7 +85933,7 @@ type OrganizationHttpRequestsAdaptiveGroupsDimensions {
   originResponseDurationMs: uint64!
   # The time elapsed between completing the TLS handshake and receiving the origin response headers
   originResponseHeaderReceiveDurationMs: uint32!
-  # HTTP response status code returned by the origin
+  # HTTP response status code returned by the origin. Note: this may be 0 if requests are fronted by a worker.
   originResponseStatus: uint16!
   # The time elapsed between the start and completion of the TCP handshake with the origin
   originTcpHandshakeDurationMs: uint16!
@@ -87480,6 +87726,8 @@ type zone {
   dnsAnalyticsAdaptive(filter: ZoneDnsAnalyticsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneDnsAnalyticsAdaptiveOrderBy!]): [ZoneDnsAnalyticsAdaptive!]!
   # Analytics data for DNS queries
   dnsAnalyticsAdaptiveGroups(filter: ZoneDnsAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneDnsAnalyticsAdaptiveGroupsOrderBy!]): [ZoneDnsAnalyticsAdaptiveGroups!]!
+  # Aggregated email complaints with adaptive sampling
+  emailComplaintsAdaptiveGroups(filter: ZoneEmailComplaintsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneEmailComplaintsAdaptiveGroupsOrderBy!]): [ZoneEmailComplaintsAdaptiveGroups!]!
   # Beta. Raw email routing logs with adaptive sampling
   emailRoutingAdaptive(filter: ZoneEmailRoutingAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [ZoneEmailRoutingAdaptiveOrderBy!]): [ZoneEmailRoutingAdaptive!]!
   # Beta. Aggregated email routing logs with adaptive sampling
@@ -87530,6 +87778,10 @@ type zone {
   nelReportsAdaptiveGroups(filter: ZoneNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneNelReportsAdaptiveGroupsOrderBy!]): [ZoneNelReportsAdaptiveGroups!]!
   # Page Shield CSP reports
   pageShieldReportsAdaptiveGroups(filter: ZonePageShieldReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZonePageShieldReportsAdaptiveGroupsOrderBy!]): [ZonePageShieldReportsAdaptiveGroups!]!
+  # Aggregated pre-render bot requests with adaptive sampling
+  preRenderBotRequestsAdaptiveGroups(filter: ZonePreRenderBotRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZonePreRenderBotRequestsAdaptiveGroupsOrderBy!]): [ZonePreRenderBotRequestsAdaptiveGroups!]!
+  # Aggregated pre-render render attempts with adaptive sampling
+  preRenderRenderAttemptsAdaptiveGroups(filter: ZonePreRenderRenderAttemptsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZonePreRenderRenderAttemptsAdaptiveGroupsOrderBy!]): [ZonePreRenderRenderAttemptsAdaptiveGroups!]!
   settings: ZoneSettings
   # User ID profiles for login and sign up attempts
   userProfilesAdaptiveGroups(filter: ZoneUserProfilesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneUserProfilesAdaptiveGroupsOrderBy!]): [ZoneUserProfilesAdaptiveGroups!]!
@@ -90961,6 +91213,198 @@ enum ZoneDnsAnalyticsAdaptiveOrderBy {
   upstreamIP_ASC
   # upstreamIP descending
   upstreamIP_DESC
+}
+
+# Aggregated email complaints with adaptive sampling
+type ZoneEmailComplaintsAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): ZoneEmailComplaintsAdaptiveGroupsConfidence!
+  # Number of complaints
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneEmailComplaintsAdaptiveGroupsDimensions
+}
+
+type ZoneEmailComplaintsAdaptiveGroupsConfidence {
+  # Number of complaints, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type ZoneEmailComplaintsAdaptiveGroupsDimensions {
+  # The date the complaint event was recorded
+  date: Date!
+  # The date and time the complaint event was recorded
+  datetime: Time!
+  # The date and time the complaint event was recorded truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the complaint event was recorded truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the complaint event was recorded truncated to the hour
+  datetimeHour: Time!
+  # The date and time the complaint event was recorded truncated to the minute
+  datetimeMinute: Time!
+  # Time of the correlated email delivery
+  deliveryTimestamp: Time!
+  # Whether the complaint is for Email Sending
+  isEmailSending: uint8!
+  # Mailbox provider that sent the complaint
+  provider: string!
+  # Email Sending domain associated with the complaint
+  sendingDomain: string!
+  # Complaint report format
+  source: string!
+}
+
+input ZoneEmailComplaintsAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneEmailComplaintsAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneEmailComplaintsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  deliveryTimestamp: Time
+  deliveryTimestamp_geq: Time
+  deliveryTimestamp_gt: Time
+  deliveryTimestamp_in: [Time!]
+  deliveryTimestamp_leq: Time
+  deliveryTimestamp_lt: Time
+  deliveryTimestamp_neq: Time
+  deliveryTimestamp_notin: [Time!]
+  isEmailSending: uint8
+  isEmailSending_geq: uint8
+  isEmailSending_gt: uint8
+  isEmailSending_in: bytes
+  isEmailSending_leq: uint8
+  isEmailSending_lt: uint8
+  isEmailSending_neq: uint8
+  isEmailSending_notin: bytes
+  provider: string
+  provider_geq: string
+  provider_gt: string
+  provider_in: [string!]
+  provider_leq: string
+  provider_like: string
+  provider_lt: string
+  provider_neq: string
+  provider_notin: [string!]
+  provider_notlike: string
+  sendingDomain: string
+  sendingDomain_geq: string
+  sendingDomain_gt: string
+  sendingDomain_in: [string!]
+  sendingDomain_leq: string
+  sendingDomain_like: string
+  sendingDomain_lt: string
+  sendingDomain_neq: string
+  sendingDomain_notin: [string!]
+  sendingDomain_notlike: string
+  source: string
+  source_geq: string
+  source_gt: string
+  source_in: [string!]
+  source_leq: string
+  source_like: string
+  source_lt: string
+  source_neq: string
+  source_notin: [string!]
+  source_notlike: string
+}
+
+enum ZoneEmailComplaintsAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # deliveryTimestamp ascending
+  deliveryTimestamp_ASC
+  # deliveryTimestamp descending
+  deliveryTimestamp_DESC
+  # isEmailSending ascending
+  isEmailSending_ASC
+  # isEmailSending descending
+  isEmailSending_DESC
+  # provider ascending
+  provider_ASC
+  # provider descending
+  provider_DESC
+  # sendingDomain ascending
+  sendingDomain_ASC
+  # sendingDomain descending
+  sendingDomain_DESC
+  # source ascending
+  source_ASC
+  # source descending
+  source_DESC
 }
 
 # Beta. Raw email routing logs with adaptive sampling
@@ -97563,7 +98007,7 @@ type ZoneHttpRequestsAdaptive {
   originResponseDurationMs: uint64!
   # The time elapsed between completing the TLS handshake and receiving the origin response headers
   originResponseHeaderReceiveDurationMs: uint32!
-  # HTTP origin response status code returned to browser
+  # HTTP origin response status code returned to browser. Note: this may be 0 if requests are fronted by a worker.
   originResponseStatus: uint16!
   # The time elapsed between the start and completion of the TCP handshake with the origin
   originTcpHandshakeDurationMs: uint16!
@@ -98574,6 +99018,8 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   clientRequestScheme: string!
   # SSL protocol version
   clientSSLProtocol: string!
+  # TLS key exchange group negotiated between the client and Cloudflare
+  clientTLSKeyExchangeGroup: string!
   coloCode: string!
   # 1 if not all contents for this request where successfully scanned, else 0
   contentScanHasFailed: uint8!
@@ -98653,7 +99099,7 @@ type ZoneHttpRequestsAdaptiveGroupsDimensions {
   originResponseDurationMs: uint64!
   # The time elapsed between completing the TLS handshake and receiving the origin response headers
   originResponseHeaderReceiveDurationMs: uint32!
-  # HTTP response status code returned by the origin
+  # HTTP response status code returned by the origin. Note: this may be 0 if requests are fronted by a worker.
   originResponseStatus: uint16!
   # The time elapsed between the start and completion of the TCP handshake with the origin
   originTcpHandshakeDurationMs: uint16!
@@ -98960,6 +99406,16 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   clientSSLProtocol_neq: string
   clientSSLProtocol_notin: [string!]
   clientSSLProtocol_notlike: string
+  clientTLSKeyExchangeGroup: string
+  clientTLSKeyExchangeGroup_geq: string
+  clientTLSKeyExchangeGroup_gt: string
+  clientTLSKeyExchangeGroup_in: [string!]
+  clientTLSKeyExchangeGroup_leq: string
+  clientTLSKeyExchangeGroup_like: string
+  clientTLSKeyExchangeGroup_lt: string
+  clientTLSKeyExchangeGroup_neq: string
+  clientTLSKeyExchangeGroup_notin: [string!]
+  clientTLSKeyExchangeGroup_notlike: string
   coloCode: string
   coloCode_geq: string
   coloCode_gt: string
@@ -99713,6 +100169,10 @@ enum ZoneHttpRequestsAdaptiveGroupsOrderBy {
   clientSSLProtocol_ASC
   # clientSSLProtocol descending
   clientSSLProtocol_DESC
+  # clientTLSKeyExchangeGroup ascending
+  clientTLSKeyExchangeGroup_ASC
+  # clientTLSKeyExchangeGroup descending
+  clientTLSKeyExchangeGroup_DESC
   # coloCode ascending
   coloCode_ASC
   # coloCode descending
@@ -101017,6 +101477,8 @@ type ZoneHttpRequestsOverviewAdaptiveGroupsDimensions {
   clientRequestHTTPProtocol: string!
   # SSL protocol version
   clientSSLProtocol: string!
+  # TLS key exchange group negotiated between the client and Cloudflare
+  clientTLSKeyExchangeGroup: string!
   # The date the event occurred at the edge
   date: Date!
   # The date and time the event occurred at the edge
@@ -101075,6 +101537,16 @@ input ZoneHttpRequestsOverviewAdaptiveGroupsFilter_InputObject {
   clientSSLProtocol_neq: string
   clientSSLProtocol_notin: [string!]
   clientSSLProtocol_notlike: string
+  clientTLSKeyExchangeGroup: string
+  clientTLSKeyExchangeGroup_geq: string
+  clientTLSKeyExchangeGroup_gt: string
+  clientTLSKeyExchangeGroup_in: [string!]
+  clientTLSKeyExchangeGroup_leq: string
+  clientTLSKeyExchangeGroup_like: string
+  clientTLSKeyExchangeGroup_lt: string
+  clientTLSKeyExchangeGroup_neq: string
+  clientTLSKeyExchangeGroup_notin: [string!]
+  clientTLSKeyExchangeGroup_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -101212,6 +101684,10 @@ enum ZoneHttpRequestsOverviewAdaptiveGroupsOrderBy {
   clientSSLProtocol_ASC
   # clientSSLProtocol descending
   clientSSLProtocol_DESC
+  # clientTLSKeyExchangeGroup ascending
+  clientTLSKeyExchangeGroup_ASC
+  # clientTLSKeyExchangeGroup descending
+  clientTLSKeyExchangeGroup_DESC
   # date ascending
   date_ASC
   # date descending
@@ -103432,6 +103908,488 @@ enum ZonePageShieldReportsAdaptiveGroupsOrderBy {
   url_DESC
 }
 
+# Aggregated pre-render bot requests with adaptive sampling
+type ZonePreRenderBotRequestsAdaptiveGroups {
+  # The weighted average value for a metric per dimension
+  avg: ZonePreRenderBotRequestsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): ZonePreRenderBotRequestsAdaptiveGroupsConfidence!
+  # Estimated number of bot requests
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZonePreRenderBotRequestsAdaptiveGroupsDimensions
+  # Weighted quantiles for a metric per dimension
+  quantiles: ZonePreRenderBotRequestsAdaptiveGroupsQuantiles
+  # The weighted sum of values for a metric per dimension
+  sum: ZonePreRenderBotRequestsAdaptiveGroupsSum
+}
+
+type ZonePreRenderBotRequestsAdaptiveGroupsAvg {
+  # Average adaptive sampling interval
+  sampleInterval: float64!
+  # Average bot serve latency in milliseconds
+  serveLatencyMs: float64!
+}
+
+type ZonePreRenderBotRequestsAdaptiveGroupsConfidence {
+  # Estimated number of bot requests, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The weighted sum of values for a metric per dimension, with confidence intervals
+  sum: ZonePreRenderBotRequestsAdaptiveGroupsSumConfidence
+}
+
+type ZonePreRenderBotRequestsAdaptiveGroupsDimensions {
+  # The verified bot category
+  botCategory: string!
+  # How the response was served: hit, stale, miss_render, or origin_fallback
+  cacheStatus: string!
+  # The date of the bot request
+  date: Date!
+  # The date and time of the bot request
+  datetime: Time!
+  # The date and time of the bot request truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time of the bot request truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time of the bot request truncated to the hour
+  datetimeHour: Time!
+  # The HTTP response status
+  httpStatus: uint16!
+  # Whether Bot Management verified the bot
+  verifiedBot: uint8!
+}
+
+input ZonePreRenderBotRequestsAdaptiveGroupsFilter_InputObject {
+  AND: [ZonePreRenderBotRequestsAdaptiveGroupsFilter_InputObject!]
+  OR: [ZonePreRenderBotRequestsAdaptiveGroupsFilter_InputObject!]
+  botCategory: string
+  botCategory_geq: string
+  botCategory_gt: string
+  botCategory_in: [string!]
+  botCategory_leq: string
+  botCategory_like: string
+  botCategory_lt: string
+  botCategory_neq: string
+  botCategory_notin: [string!]
+  botCategory_notlike: string
+  cacheStatus: string
+  cacheStatus_geq: string
+  cacheStatus_gt: string
+  cacheStatus_in: [string!]
+  cacheStatus_leq: string
+  cacheStatus_like: string
+  cacheStatus_lt: string
+  cacheStatus_neq: string
+  cacheStatus_notin: [string!]
+  cacheStatus_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  httpStatus: uint16
+  httpStatus_geq: uint16
+  httpStatus_gt: uint16
+  httpStatus_in: [uint16!]
+  httpStatus_leq: uint16
+  httpStatus_lt: uint16
+  httpStatus_neq: uint16
+  httpStatus_notin: [uint16!]
+  verifiedBot: uint8
+  verifiedBot_geq: uint8
+  verifiedBot_gt: uint8
+  verifiedBot_in: bytes
+  verifiedBot_leq: uint8
+  verifiedBot_lt: uint8
+  verifiedBot_neq: uint8
+  verifiedBot_notin: bytes
+}
+
+enum ZonePreRenderBotRequestsAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # avg(serveLatencyMs) ascending
+  avg_serveLatencyMs_ASC
+  # avg(serveLatencyMs) descending
+  avg_serveLatencyMs_DESC
+  # botCategory ascending
+  botCategory_ASC
+  # botCategory descending
+  botCategory_DESC
+  # cacheStatus ascending
+  cacheStatus_ASC
+  # cacheStatus descending
+  cacheStatus_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # httpStatus ascending
+  httpStatus_ASC
+  # httpStatus descending
+  httpStatus_DESC
+  # quantiles(serveLatencyMsP25) ascending
+  quantiles_serveLatencyMsP25_ASC
+  # quantiles(serveLatencyMsP25) descending
+  quantiles_serveLatencyMsP25_DESC
+  # quantiles(serveLatencyMsP50) ascending
+  quantiles_serveLatencyMsP50_ASC
+  # quantiles(serveLatencyMsP50) descending
+  quantiles_serveLatencyMsP50_DESC
+  # quantiles(serveLatencyMsP75) ascending
+  quantiles_serveLatencyMsP75_ASC
+  # quantiles(serveLatencyMsP75) descending
+  quantiles_serveLatencyMsP75_DESC
+  # quantiles(serveLatencyMsP90) ascending
+  quantiles_serveLatencyMsP90_ASC
+  # quantiles(serveLatencyMsP90) descending
+  quantiles_serveLatencyMsP90_DESC
+  # quantiles(serveLatencyMsP95) ascending
+  quantiles_serveLatencyMsP95_ASC
+  # quantiles(serveLatencyMsP95) descending
+  quantiles_serveLatencyMsP95_DESC
+  # quantiles(serveLatencyMsP999) ascending
+  quantiles_serveLatencyMsP999_ASC
+  # quantiles(serveLatencyMsP999) descending
+  quantiles_serveLatencyMsP999_DESC
+  # quantiles(serveLatencyMsP99) ascending
+  quantiles_serveLatencyMsP99_ASC
+  # quantiles(serveLatencyMsP99) descending
+  quantiles_serveLatencyMsP99_DESC
+  # sum(bytesServed) ascending
+  sum_bytesServed_ASC
+  # sum(bytesServed) descending
+  sum_bytesServed_DESC
+  # verifiedBot ascending
+  verifiedBot_ASC
+  # verifiedBot descending
+  verifiedBot_DESC
+}
+
+type ZonePreRenderBotRequestsAdaptiveGroupsQuantiles {
+  # Bot serve latency in milliseconds at the 25th percentile
+  serveLatencyMsP25: float64!
+  # Bot serve latency in milliseconds at the 50th percentile
+  serveLatencyMsP50: float64!
+  # Bot serve latency in milliseconds at the 75th percentile
+  serveLatencyMsP75: float64!
+  # Bot serve latency in milliseconds at the 90th percentile
+  serveLatencyMsP90: float64!
+  # Bot serve latency in milliseconds at the 95th percentile
+  serveLatencyMsP95: float64!
+  # Bot serve latency in milliseconds at the 99th percentile
+  serveLatencyMsP99: float64!
+  # Bot serve latency in milliseconds at the 99.9th percentile
+  serveLatencyMsP999: float64!
+}
+
+type ZonePreRenderBotRequestsAdaptiveGroupsSum {
+  # Estimated bytes served to bots
+  bytesServed: uint64!
+}
+
+type ZonePreRenderBotRequestsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  bytesServed: Confidence!
+}
+
+# Aggregated pre-render render attempts with adaptive sampling
+type ZonePreRenderRenderAttemptsAdaptiveGroups {
+  # The weighted average value for a metric per dimension
+  avg: ZonePreRenderRenderAttemptsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): ZonePreRenderRenderAttemptsAdaptiveGroupsConfidence!
+  # Estimated number of render attempts
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZonePreRenderRenderAttemptsAdaptiveGroupsDimensions
+  # Weighted quantiles for a metric per dimension
+  quantiles: ZonePreRenderRenderAttemptsAdaptiveGroupsQuantiles
+  # The weighted sum of values for a metric per dimension
+  sum: ZonePreRenderRenderAttemptsAdaptiveGroupsSum
+}
+
+type ZonePreRenderRenderAttemptsAdaptiveGroupsAvg {
+  # Average render duration in milliseconds
+  renderDurationMs: float64!
+  # Average adaptive sampling interval
+  sampleInterval: float64!
+}
+
+type ZonePreRenderRenderAttemptsAdaptiveGroupsConfidence {
+  # Estimated number of render attempts, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The weighted sum of values for a metric per dimension, with confidence intervals
+  sum: ZonePreRenderRenderAttemptsAdaptiveGroupsSumConfidence
+}
+
+type ZonePreRenderRenderAttemptsAdaptiveGroupsDimensions {
+  # The date of the render attempt
+  date: Date!
+  # The date and time of the render attempt
+  datetime: Time!
+  # The date and time of the render attempt truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time of the render attempt truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time of the render attempt truncated to the hour
+  datetimeHour: Time!
+  # The render error class
+  errorClass: string!
+  # Whether the render succeeded
+  success: uint8!
+  # Why the render started
+  trigger: string!
+}
+
+input ZonePreRenderRenderAttemptsAdaptiveGroupsFilter_InputObject {
+  AND: [ZonePreRenderRenderAttemptsAdaptiveGroupsFilter_InputObject!]
+  OR: [ZonePreRenderRenderAttemptsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  errorClass: string
+  errorClass_geq: string
+  errorClass_gt: string
+  errorClass_in: [string!]
+  errorClass_leq: string
+  errorClass_like: string
+  errorClass_lt: string
+  errorClass_neq: string
+  errorClass_notin: [string!]
+  errorClass_notlike: string
+  success: uint8
+  success_geq: uint8
+  success_gt: uint8
+  success_in: bytes
+  success_leq: uint8
+  success_lt: uint8
+  success_neq: uint8
+  success_notin: bytes
+  trigger: string
+  trigger_geq: string
+  trigger_gt: string
+  trigger_in: [string!]
+  trigger_leq: string
+  trigger_like: string
+  trigger_lt: string
+  trigger_neq: string
+  trigger_notin: [string!]
+  trigger_notlike: string
+}
+
+enum ZonePreRenderRenderAttemptsAdaptiveGroupsOrderBy {
+  # avg(renderDurationMs) ascending
+  avg_renderDurationMs_ASC
+  # avg(renderDurationMs) descending
+  avg_renderDurationMs_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # errorClass ascending
+  errorClass_ASC
+  # errorClass descending
+  errorClass_DESC
+  # quantiles(renderDurationMsP25) ascending
+  quantiles_renderDurationMsP25_ASC
+  # quantiles(renderDurationMsP25) descending
+  quantiles_renderDurationMsP25_DESC
+  # quantiles(renderDurationMsP50) ascending
+  quantiles_renderDurationMsP50_ASC
+  # quantiles(renderDurationMsP50) descending
+  quantiles_renderDurationMsP50_DESC
+  # quantiles(renderDurationMsP75) ascending
+  quantiles_renderDurationMsP75_ASC
+  # quantiles(renderDurationMsP75) descending
+  quantiles_renderDurationMsP75_DESC
+  # quantiles(renderDurationMsP90) ascending
+  quantiles_renderDurationMsP90_ASC
+  # quantiles(renderDurationMsP90) descending
+  quantiles_renderDurationMsP90_DESC
+  # quantiles(renderDurationMsP95) ascending
+  quantiles_renderDurationMsP95_ASC
+  # quantiles(renderDurationMsP95) descending
+  quantiles_renderDurationMsP95_DESC
+  # quantiles(renderDurationMsP999) ascending
+  quantiles_renderDurationMsP999_ASC
+  # quantiles(renderDurationMsP999) descending
+  quantiles_renderDurationMsP999_DESC
+  # quantiles(renderDurationMsP99) ascending
+  quantiles_renderDurationMsP99_ASC
+  # quantiles(renderDurationMsP99) descending
+  quantiles_renderDurationMsP99_DESC
+  # success ascending
+  success_ASC
+  # success descending
+  success_DESC
+  # sum(browserSecondsUsed) ascending
+  sum_browserSecondsUsed_ASC
+  # sum(browserSecondsUsed) descending
+  sum_browserSecondsUsed_DESC
+  # sum(htmlBytes) ascending
+  sum_htmlBytes_ASC
+  # sum(htmlBytes) descending
+  sum_htmlBytes_DESC
+  # trigger ascending
+  trigger_ASC
+  # trigger descending
+  trigger_DESC
+}
+
+type ZonePreRenderRenderAttemptsAdaptiveGroupsQuantiles {
+  # Render duration in milliseconds at the 25th percentile
+  renderDurationMsP25: float64!
+  # Render duration in milliseconds at the 50th percentile
+  renderDurationMsP50: float64!
+  # Render duration in milliseconds at the 75th percentile
+  renderDurationMsP75: float64!
+  # Render duration in milliseconds at the 90th percentile
+  renderDurationMsP90: float64!
+  # Render duration in milliseconds at the 95th percentile
+  renderDurationMsP95: float64!
+  # Render duration in milliseconds at the 99th percentile
+  renderDurationMsP99: float64!
+  # Render duration in milliseconds at the 99.9th percentile
+  renderDurationMsP999: float64!
+}
+
+type ZonePreRenderRenderAttemptsAdaptiveGroupsSum {
+  # Estimated browser seconds used
+  browserSecondsUsed: float64!
+  # Estimated rendered HTML bytes
+  htmlBytes: uint64!
+}
+
+type ZonePreRenderRenderAttemptsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  browserSecondsUsed: Confidence!
+  # Confidence interval for the corresponding point estimate
+  htmlBytes: Confidence!
+}
+
 # Access and limitations for a zone
 type ZoneSettings {
   apiGatewayGraphqlQueryAnalyticsGroups: Settings!
@@ -103446,6 +104404,7 @@ type ZoneSettings {
   dmarcReportsSourcesAdaptiveGroups: Settings!
   dnsAnalyticsAdaptive: Settings!
   dnsAnalyticsAdaptiveGroups: Settings!
+  emailComplaintsAdaptiveGroups: Settings!
   emailRoutingAdaptive: Settings!
   emailRoutingAdaptiveGroups: Settings!
   emailSendingAdaptive: Settings!
@@ -103470,6 +104429,8 @@ type ZoneSettings {
   logpushTransformersAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   pageShieldReportsAdaptiveGroups: Settings!
+  preRenderBotRequestsAdaptiveGroups: Settings!
+  preRenderRenderAttemptsAdaptiveGroups: Settings!
   userProfilesAdaptiveGroups: Settings!
   userProfilesPiiGroups: Settings!
   userProfilesRawEventsGroups: Settings!
