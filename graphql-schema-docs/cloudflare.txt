@@ -3,7 +3,7 @@ Account-level datasets:
 * accessLoginRequestsAdaptiveGroups
   advancedDnsProtectionNetworkAnalyticsAdaptiveGroups
   advancedTcpProtectionNetworkAnalyticsAdaptiveGroups
-* aegisIpUtilizationAdaptiveGroups
+  aegisIpUtilizationAdaptiveGroups
 * agentMemoryOperationsAdaptiveGroups
 * agentModelInvocationsAdaptiveGroups
 * aiGatewayCacheAdaptiveGroups
@@ -194,6 +194,8 @@ Account-level datasets:
   storageTraces
 * streamCMCDAdaptiveGroups
 * streamMinutesViewedAdaptiveGroups
+* streamWHIPBroadcastMetricsAdaptive
+* streamWHIPBroadcastMetricsAdaptiveGroups
 * toMarkdownConversionAdaptive
 * toMarkdownConversionAdaptiveGroups
 * turnstileAdaptiveGroups
@@ -230,6 +232,7 @@ Account-level datasets:
 * zeroTrustPrivateNetworkDiscoveryGroups
 
 Zone-level datasets:
+  accountAbuseProtectionAdaptiveGroups
 * apiGatewayGraphqlQueryAnalyticsGroups
 * apiGatewayMatchedSessionIDsAdaptiveGroups
 * apiGatewayMatchedSessionIDsPerEndpointAdaptiveGroups
@@ -269,9 +272,9 @@ Zone-level datasets:
   pageShieldReportsAdaptiveGroups
 * preRenderBotRequestsAdaptiveGroups
 * preRenderRenderAttemptsAdaptiveGroups
-* userProfilesAdaptiveGroups
-* userProfilesPiiGroups
-* userProfilesRawEventsGroups
+  userProfilesAdaptiveGroups
+  userProfilesPiiGroups
+  userProfilesRawEventsGroups
   waitingRoomAnalyticsAdaptive
   waitingRoomAnalyticsAdaptiveGroups
 * workersZoneInvocationsAdaptiveGroups
@@ -731,6 +734,10 @@ type account {
   streamCMCDAdaptiveGroups(filter: AccountStreamCMCDAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountStreamCMCDAdaptiveGroupsOrderBy!]): [AccountStreamCMCDAdaptiveGroups!]!
   # A high-level summary of Cloudflare Stream minutes viewed.
   streamMinutesViewedAdaptiveGroups(filter: AccountStreamMinutesViewedAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountStreamMinutesViewedAdaptiveGroupsOrderBy!]): [AccountStreamMinutesViewedAdaptiveGroups!]!
+  # WHIP broadcast metrics for Cloudflare Stream.
+  streamWHIPBroadcastMetricsAdaptive(filter: AccountStreamWHIPBroadcastMetricsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountStreamWHIPBroadcastMetricsAdaptiveOrderBy!]): [AccountStreamWHIPBroadcastMetricsAdaptive!]!
+  # Aggregated WHIP broadcast metrics for Cloudflare Stream
+  streamWHIPBroadcastMetricsAdaptiveGroups(filter: AccountStreamWHIPBroadcastMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountStreamWHIPBroadcastMetricsAdaptiveGroupsOrderBy!]): [AccountStreamWHIPBroadcastMetricsAdaptiveGroups!]!
   # Markdown Conversion Metrics
   toMarkdownConversionAdaptive(filter: AccountToMarkdownConversionAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountToMarkdownConversionAdaptiveOrderBy!]): [AccountToMarkdownConversionAdaptive!]!
   # Markdown Conversion Metrics
@@ -5053,6 +5060,8 @@ type AccountAiGatewayConversationAnalysesAdaptiveGroups {
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountAiGatewayConversationAnalysesAdaptiveGroupsDimensions
+  # Latest activity values across grouped analysis rows
+  max: AccountAiGatewayConversationAnalysesAdaptiveGroupsMax
   sum: AccountAiGatewayConversationAnalysesAdaptiveGroupsSum
   uniq: AccountAiGatewayConversationAnalysesAdaptiveGroupsUniq
 }
@@ -5300,6 +5309,11 @@ input AccountAiGatewayConversationAnalysesAdaptiveGroupsFilter_InputObject {
   verdict_notlike: string
 }
 
+type AccountAiGatewayConversationAnalysesAdaptiveGroupsMax {
+  # Latest observed conversation activity across the grouped analysis rows. Exact at the finest resolution; adaptive sampling at coarser resolutions can move this value earlier
+  lastActivity: Time!
+}
+
 enum AccountAiGatewayConversationAnalysesAdaptiveGroupsOrderBy {
   # avg(costEstimate) ascending
   avg_costEstimate_ASC
@@ -5337,6 +5351,10 @@ enum AccountAiGatewayConversationAnalysesAdaptiveGroupsOrderBy {
   gatewayId_ASC
   # gatewayId descending
   gatewayId_DESC
+  # max(lastActivity) ascending
+  max_lastActivity_ASC
+  # max(lastActivity) descending
+  max_lastActivity_DESC
   # outcome ascending
   outcome_ASC
   # outcome descending
@@ -5795,6 +5813,8 @@ type AccountAiGatewayConversationAnalysesStagingAdaptiveGroups {
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsDimensions
+  # Latest activity values across grouped analysis rows
+  max: AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsMax
   sum: AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsSum
   uniq: AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsUniq
 }
@@ -6042,6 +6062,11 @@ input AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsFilter_InputObjec
   verdict_notlike: string
 }
 
+type AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsMax {
+  # Latest observed conversation activity across the grouped analysis rows. Exact at the finest resolution; adaptive sampling at coarser resolutions can move this value earlier
+  lastActivity: Time!
+}
+
 enum AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsOrderBy {
   # avg(costEstimate) ascending
   avg_costEstimate_ASC
@@ -6079,6 +6104,10 @@ enum AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsOrderBy {
   gatewayId_ASC
   # gatewayId descending
   gatewayId_DESC
+  # max(lastActivity) ascending
+  max_lastActivity_ASC
+  # max(lastActivity) descending
+  max_lastActivity_DESC
   # outcome ascending
   outcome_ASC
   # outcome descending
@@ -6492,6 +6521,8 @@ type AccountAiGatewayRequestsAdaptiveGroupsDimensions {
   freshInputTokens: float64!
   # Gateway name
   gateway: string!
+  # Whether log classification was enabled for this request
+  logClassificationEnabled: uint8!
   # MCP server count from request metadata
   mcpServerCount: float64!
   # MCP tool count from request metadata
@@ -6665,6 +6696,14 @@ input AccountAiGatewayRequestsAdaptiveGroupsFilter_InputObject {
   gateway_neq: string
   gateway_notin: [string!]
   gateway_notlike: string
+  logClassificationEnabled: uint8
+  logClassificationEnabled_geq: uint8
+  logClassificationEnabled_gt: uint8
+  logClassificationEnabled_in: bytes
+  logClassificationEnabled_leq: uint8
+  logClassificationEnabled_lt: uint8
+  logClassificationEnabled_neq: uint8
+  logClassificationEnabled_notin: bytes
   mcpServerCount: float64
   mcpServerCount_geq: float64
   mcpServerCount_gt: float64
@@ -6932,6 +6971,10 @@ enum AccountAiGatewayRequestsAdaptiveGroupsOrderBy {
   gateway_ASC
   # gateway descending
   gateway_DESC
+  # logClassificationEnabled ascending
+  logClassificationEnabled_ASC
+  # logClassificationEnabled descending
+  logClassificationEnabled_DESC
   # max(mcpServerCount) ascending
   max_mcpServerCount_ASC
   # max(mcpServerCount) descending
@@ -7396,6 +7439,8 @@ type AccountAiGatewayRequestsStagingAdaptiveGroupsDimensions {
   freshInputTokens: float64!
   # Gateway name
   gateway: string!
+  # Whether log classification was enabled for this request
+  logClassificationEnabled: uint8!
   # MCP server count from request metadata
   mcpServerCount: float64!
   # MCP tool count from request metadata
@@ -7569,6 +7614,14 @@ input AccountAiGatewayRequestsStagingAdaptiveGroupsFilter_InputObject {
   gateway_neq: string
   gateway_notin: [string!]
   gateway_notlike: string
+  logClassificationEnabled: uint8
+  logClassificationEnabled_geq: uint8
+  logClassificationEnabled_gt: uint8
+  logClassificationEnabled_in: bytes
+  logClassificationEnabled_leq: uint8
+  logClassificationEnabled_lt: uint8
+  logClassificationEnabled_neq: uint8
+  logClassificationEnabled_notin: bytes
   mcpServerCount: float64
   mcpServerCount_geq: float64
   mcpServerCount_gt: float64
@@ -7836,6 +7889,10 @@ enum AccountAiGatewayRequestsStagingAdaptiveGroupsOrderBy {
   gateway_ASC
   # gateway descending
   gateway_DESC
+  # logClassificationEnabled ascending
+  logClassificationEnabled_ASC
+  # logClassificationEnabled descending
+  logClassificationEnabled_DESC
   # max(mcpServerCount) ascending
   max_mcpServerCount_ASC
   # max(mcpServerCount) descending
@@ -70314,6 +70371,8 @@ type AccountRumPerformanceEventsAdaptiveGroups {
 type AccountRumPerformanceEventsAdaptiveGroupsAvg {
   # Connection time
   connectionTime: uint64!
+  # Connection time excluding the TLS handshake
+  connectionTimeWithoutTLS: uint64!
   # Domain lookup time
   dnsTime: uint64!
   # The time when the first content piece from the DOM is painted (i.e. some text or an image)
@@ -70326,12 +70385,16 @@ type AccountRumPerformanceEventsAdaptiveGroupsAvg {
   pageLoadTime: uint64!
   # The time to download and display the entire content of a web page in the browser window
   pageRenderTime: uint64!
+  # Redirect time
+  redirectTime: uint64!
   # The time between initiating the request and receiving the first byte of the response
   requestTime: uint64!
   # The time between receiving the first byte and the last byte of the response
   responseTime: uint64!
   # Average sample interval
   sampleInterval: float64!
+  # TLS handshake time
+  tlsTime: uint64!
 }
 
 type AccountRumPerformanceEventsAdaptiveGroupsConfidence {
@@ -70597,6 +70660,10 @@ input AccountRumPerformanceEventsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
+  # avg(connectionTimeWithoutTLS) ascending
+  avg_connectionTimeWithoutTLS_ASC
+  # avg(connectionTimeWithoutTLS) descending
+  avg_connectionTimeWithoutTLS_DESC
   # avg(connectionTime) ascending
   avg_connectionTime_ASC
   # avg(connectionTime) descending
@@ -70625,6 +70692,10 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   avg_pageRenderTime_ASC
   # avg(pageRenderTime) descending
   avg_pageRenderTime_DESC
+  # avg(redirectTime) ascending
+  avg_redirectTime_ASC
+  # avg(redirectTime) descending
+  avg_redirectTime_DESC
   # avg(requestTime) ascending
   avg_requestTime_ASC
   # avg(requestTime) descending
@@ -70637,6 +70708,10 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
   avg_sampleInterval_DESC
+  # avg(tlsTime) ascending
+  avg_tlsTime_ASC
+  # avg(tlsTime) descending
+  avg_tlsTime_DESC
   # bot ascending
   bot_ASC
   # bot descending
@@ -70717,6 +70792,34 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   quantiles_connectionTimeP99_ASC
   # quantiles(connectionTimeP99) descending
   quantiles_connectionTimeP99_DESC
+  # quantiles(connectionTimeWithoutTLSP25) ascending
+  quantiles_connectionTimeWithoutTLSP25_ASC
+  # quantiles(connectionTimeWithoutTLSP25) descending
+  quantiles_connectionTimeWithoutTLSP25_DESC
+  # quantiles(connectionTimeWithoutTLSP50) ascending
+  quantiles_connectionTimeWithoutTLSP50_ASC
+  # quantiles(connectionTimeWithoutTLSP50) descending
+  quantiles_connectionTimeWithoutTLSP50_DESC
+  # quantiles(connectionTimeWithoutTLSP75) ascending
+  quantiles_connectionTimeWithoutTLSP75_ASC
+  # quantiles(connectionTimeWithoutTLSP75) descending
+  quantiles_connectionTimeWithoutTLSP75_DESC
+  # quantiles(connectionTimeWithoutTLSP90) ascending
+  quantiles_connectionTimeWithoutTLSP90_ASC
+  # quantiles(connectionTimeWithoutTLSP90) descending
+  quantiles_connectionTimeWithoutTLSP90_DESC
+  # quantiles(connectionTimeWithoutTLSP95) ascending
+  quantiles_connectionTimeWithoutTLSP95_ASC
+  # quantiles(connectionTimeWithoutTLSP95) descending
+  quantiles_connectionTimeWithoutTLSP95_DESC
+  # quantiles(connectionTimeWithoutTLSP999) ascending
+  quantiles_connectionTimeWithoutTLSP999_ASC
+  # quantiles(connectionTimeWithoutTLSP999) descending
+  quantiles_connectionTimeWithoutTLSP999_DESC
+  # quantiles(connectionTimeWithoutTLSP99) ascending
+  quantiles_connectionTimeWithoutTLSP99_ASC
+  # quantiles(connectionTimeWithoutTLSP99) descending
+  quantiles_connectionTimeWithoutTLSP99_DESC
   # quantiles(dnsTimeP25) ascending
   quantiles_dnsTimeP25_ASC
   # quantiles(dnsTimeP25) descending
@@ -70885,6 +70988,34 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   quantiles_pageRenderTimeP99_ASC
   # quantiles(pageRenderTimeP99) descending
   quantiles_pageRenderTimeP99_DESC
+  # quantiles(redirectTimeP25) ascending
+  quantiles_redirectTimeP25_ASC
+  # quantiles(redirectTimeP25) descending
+  quantiles_redirectTimeP25_DESC
+  # quantiles(redirectTimeP50) ascending
+  quantiles_redirectTimeP50_ASC
+  # quantiles(redirectTimeP50) descending
+  quantiles_redirectTimeP50_DESC
+  # quantiles(redirectTimeP75) ascending
+  quantiles_redirectTimeP75_ASC
+  # quantiles(redirectTimeP75) descending
+  quantiles_redirectTimeP75_DESC
+  # quantiles(redirectTimeP90) ascending
+  quantiles_redirectTimeP90_ASC
+  # quantiles(redirectTimeP90) descending
+  quantiles_redirectTimeP90_DESC
+  # quantiles(redirectTimeP95) ascending
+  quantiles_redirectTimeP95_ASC
+  # quantiles(redirectTimeP95) descending
+  quantiles_redirectTimeP95_DESC
+  # quantiles(redirectTimeP999) ascending
+  quantiles_redirectTimeP999_ASC
+  # quantiles(redirectTimeP999) descending
+  quantiles_redirectTimeP999_DESC
+  # quantiles(redirectTimeP99) ascending
+  quantiles_redirectTimeP99_ASC
+  # quantiles(redirectTimeP99) descending
+  quantiles_redirectTimeP99_DESC
   # quantiles(requestTimeP25) ascending
   quantiles_requestTimeP25_ASC
   # quantiles(requestTimeP25) descending
@@ -70941,6 +71072,34 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   quantiles_responseTimeP99_ASC
   # quantiles(responseTimeP99) descending
   quantiles_responseTimeP99_DESC
+  # quantiles(tlsTimeP25) ascending
+  quantiles_tlsTimeP25_ASC
+  # quantiles(tlsTimeP25) descending
+  quantiles_tlsTimeP25_DESC
+  # quantiles(tlsTimeP50) ascending
+  quantiles_tlsTimeP50_ASC
+  # quantiles(tlsTimeP50) descending
+  quantiles_tlsTimeP50_DESC
+  # quantiles(tlsTimeP75) ascending
+  quantiles_tlsTimeP75_ASC
+  # quantiles(tlsTimeP75) descending
+  quantiles_tlsTimeP75_DESC
+  # quantiles(tlsTimeP90) ascending
+  quantiles_tlsTimeP90_ASC
+  # quantiles(tlsTimeP90) descending
+  quantiles_tlsTimeP90_DESC
+  # quantiles(tlsTimeP95) ascending
+  quantiles_tlsTimeP95_ASC
+  # quantiles(tlsTimeP95) descending
+  quantiles_tlsTimeP95_DESC
+  # quantiles(tlsTimeP999) ascending
+  quantiles_tlsTimeP999_ASC
+  # quantiles(tlsTimeP999) descending
+  quantiles_tlsTimeP999_DESC
+  # quantiles(tlsTimeP99) ascending
+  quantiles_tlsTimeP99_ASC
+  # quantiles(tlsTimeP99) descending
+  quantiles_tlsTimeP99_DESC
   # refererHost ascending
   refererHost_ASC
   # refererHost descending
@@ -70998,6 +71157,20 @@ type AccountRumPerformanceEventsAdaptiveGroupsQuantiles {
   connectionTimeP99: uint64!
   # Connection time
   connectionTimeP999: uint64!
+  # Connection time excluding the TLS handshake
+  connectionTimeWithoutTLSP25: uint64!
+  # Connection time excluding the TLS handshake
+  connectionTimeWithoutTLSP50: uint64!
+  # Connection time excluding the TLS handshake
+  connectionTimeWithoutTLSP75: uint64!
+  # Connection time excluding the TLS handshake
+  connectionTimeWithoutTLSP90: uint64!
+  # Connection time excluding the TLS handshake
+  connectionTimeWithoutTLSP95: uint64!
+  # Connection time excluding the TLS handshake
+  connectionTimeWithoutTLSP99: uint64!
+  # Connection time excluding the TLS handshake
+  connectionTimeWithoutTLSP999: uint64!
   # Domain lookup time
   dnsTimeP25: uint64!
   # Domain lookup time
@@ -71082,6 +71255,20 @@ type AccountRumPerformanceEventsAdaptiveGroupsQuantiles {
   pageRenderTimeP99: uint64!
   # The time to download and display the entire content of a web page in the browser window
   pageRenderTimeP999: uint64!
+  # Redirect time
+  redirectTimeP25: uint64!
+  # Redirect time
+  redirectTimeP50: uint64!
+  # Redirect time
+  redirectTimeP75: uint64!
+  # Redirect time
+  redirectTimeP90: uint64!
+  # Redirect time
+  redirectTimeP95: uint64!
+  # Redirect time
+  redirectTimeP99: uint64!
+  # Redirect time
+  redirectTimeP999: uint64!
   # The time between initiating the request and receiving the first byte of the response
   requestTimeP25: uint64!
   # The time between initiating the request and receiving the first byte of the response
@@ -71110,6 +71297,20 @@ type AccountRumPerformanceEventsAdaptiveGroupsQuantiles {
   responseTimeP99: uint64!
   # The time between receiving the first byte and the last byte of the response
   responseTimeP999: uint64!
+  # TLS handshake time
+  tlsTimeP25: uint64!
+  # TLS handshake time
+  tlsTimeP50: uint64!
+  # TLS handshake time
+  tlsTimeP75: uint64!
+  # TLS handshake time
+  tlsTimeP90: uint64!
+  # TLS handshake time
+  tlsTimeP95: uint64!
+  # TLS handshake time
+  tlsTimeP99: uint64!
+  # TLS handshake time
+  tlsTimeP999: uint64!
 }
 
 type AccountRumPerformanceEventsAdaptiveGroupsSum {
@@ -73054,6 +73255,8 @@ type AccountSettings {
   storageTraces: Settings!
   streamCMCDAdaptiveGroups: Settings!
   streamMinutesViewedAdaptiveGroups: Settings!
+  streamWHIPBroadcastMetricsAdaptive: Settings!
+  streamWHIPBroadcastMetricsAdaptiveGroups: Settings!
   toMarkdownConversionAdaptive: Settings!
   toMarkdownConversionAdaptiveGroups: Settings!
   turnstileAdaptiveGroups: Settings!
@@ -76323,6 +76526,605 @@ enum AccountStreamMinutesViewedAdaptiveGroupsOrderBy {
 
 type AccountStreamMinutesViewedAdaptiveGroupsSum {
   minutesViewed: uint64!
+}
+
+# WHIP broadcast metrics for Cloudflare Stream.
+type AccountStreamWHIPBroadcastMetricsAdaptive {
+  # Rate of received packets being dropped from the ingest buffer
+  bufferDropRate: float64!
+  # Media codec MIME type
+  codecMimeType: string!
+  # Media codec name
+  codecName: string!
+  # Date and time when the metric was collected
+  datetime: Time!
+  # RTP packets dropped from the ingest buffer during the observation period
+  droppedPackets: uint64!
+  # ICE connection state
+  iceConnectionState: string!
+  # Live input ID
+  inputId: string!
+  # Type of media, either audio or video
+  mediaKind: string!
+  # Length of the observation period (time window) in seconds
+  observationDurationSeconds: float64!
+  # WebRTC peer connection ID
+  peerConnectionId: string!
+  # WebRTC peer connection state
+  peerConnectionState: string!
+  # Bytes received during the observation period
+  receivedBytes: uint64!
+  # RTP packets received during the observation period
+  receivedPackets: uint64!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # WebRTC media track ID
+  trackId: string!
+  # State of the track being ingested
+  trackIngestState: string!
+}
+
+input AccountStreamWHIPBroadcastMetricsAdaptiveFilter_InputObject {
+  AND: [AccountStreamWHIPBroadcastMetricsAdaptiveFilter_InputObject!]
+  OR: [AccountStreamWHIPBroadcastMetricsAdaptiveFilter_InputObject!]
+  bufferDropRate: float64
+  bufferDropRate_geq: float64
+  bufferDropRate_gt: float64
+  bufferDropRate_in: [float64!]
+  bufferDropRate_leq: float64
+  bufferDropRate_lt: float64
+  bufferDropRate_neq: float64
+  bufferDropRate_notin: [float64!]
+  codecMimeType: string
+  codecMimeType_geq: string
+  codecMimeType_gt: string
+  codecMimeType_in: [string!]
+  codecMimeType_leq: string
+  codecMimeType_like: string
+  codecMimeType_lt: string
+  codecMimeType_neq: string
+  codecMimeType_notin: [string!]
+  codecMimeType_notlike: string
+  codecName: string
+  codecName_geq: string
+  codecName_gt: string
+  codecName_in: [string!]
+  codecName_leq: string
+  codecName_like: string
+  codecName_lt: string
+  codecName_neq: string
+  codecName_notin: [string!]
+  codecName_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  droppedPackets: uint64
+  droppedPackets_geq: uint64
+  droppedPackets_gt: uint64
+  droppedPackets_in: [uint64!]
+  droppedPackets_leq: uint64
+  droppedPackets_lt: uint64
+  droppedPackets_neq: uint64
+  droppedPackets_notin: [uint64!]
+  iceConnectionState: string
+  iceConnectionState_geq: string
+  iceConnectionState_gt: string
+  iceConnectionState_in: [string!]
+  iceConnectionState_leq: string
+  iceConnectionState_like: string
+  iceConnectionState_lt: string
+  iceConnectionState_neq: string
+  iceConnectionState_notin: [string!]
+  iceConnectionState_notlike: string
+  inputId: string
+  inputId_geq: string
+  inputId_gt: string
+  inputId_in: [string!]
+  inputId_leq: string
+  inputId_like: string
+  inputId_lt: string
+  inputId_neq: string
+  inputId_notin: [string!]
+  inputId_notlike: string
+  mediaKind: string
+  mediaKind_geq: string
+  mediaKind_gt: string
+  mediaKind_in: [string!]
+  mediaKind_leq: string
+  mediaKind_like: string
+  mediaKind_lt: string
+  mediaKind_neq: string
+  mediaKind_notin: [string!]
+  mediaKind_notlike: string
+  observationDurationSeconds: float64
+  observationDurationSeconds_geq: float64
+  observationDurationSeconds_gt: float64
+  observationDurationSeconds_in: [float64!]
+  observationDurationSeconds_leq: float64
+  observationDurationSeconds_lt: float64
+  observationDurationSeconds_neq: float64
+  observationDurationSeconds_notin: [float64!]
+  peerConnectionId: string
+  peerConnectionId_geq: string
+  peerConnectionId_gt: string
+  peerConnectionId_in: [string!]
+  peerConnectionId_leq: string
+  peerConnectionId_like: string
+  peerConnectionId_lt: string
+  peerConnectionId_neq: string
+  peerConnectionId_notin: [string!]
+  peerConnectionId_notlike: string
+  peerConnectionState: string
+  peerConnectionState_geq: string
+  peerConnectionState_gt: string
+  peerConnectionState_in: [string!]
+  peerConnectionState_leq: string
+  peerConnectionState_like: string
+  peerConnectionState_lt: string
+  peerConnectionState_neq: string
+  peerConnectionState_notin: [string!]
+  peerConnectionState_notlike: string
+  receivedBytes: uint64
+  receivedBytes_geq: uint64
+  receivedBytes_gt: uint64
+  receivedBytes_in: [uint64!]
+  receivedBytes_leq: uint64
+  receivedBytes_lt: uint64
+  receivedBytes_neq: uint64
+  receivedBytes_notin: [uint64!]
+  receivedPackets: uint64
+  receivedPackets_geq: uint64
+  receivedPackets_gt: uint64
+  receivedPackets_in: [uint64!]
+  receivedPackets_leq: uint64
+  receivedPackets_lt: uint64
+  receivedPackets_neq: uint64
+  receivedPackets_notin: [uint64!]
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  trackId: string
+  trackId_geq: string
+  trackId_gt: string
+  trackId_in: [string!]
+  trackId_leq: string
+  trackId_like: string
+  trackId_lt: string
+  trackId_neq: string
+  trackId_notin: [string!]
+  trackId_notlike: string
+  trackIngestState: string
+  trackIngestState_geq: string
+  trackIngestState_gt: string
+  trackIngestState_in: [string!]
+  trackIngestState_leq: string
+  trackIngestState_like: string
+  trackIngestState_lt: string
+  trackIngestState_neq: string
+  trackIngestState_notin: [string!]
+  trackIngestState_notlike: string
+}
+
+# Aggregated WHIP broadcast metrics for Cloudflare Stream
+type AccountStreamWHIPBroadcastMetricsAdaptiveGroups {
+  # Average value of each metric for the selected dimensions
+  avg: AccountStreamWHIPBroadcastMetricsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountStreamWHIPBroadcastMetricsAdaptiveGroupsConfidence!
+  # Estimated number of observations
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountStreamWHIPBroadcastMetricsAdaptiveGroupsDimensions
+  # Total value of each metric for the selected dimensions
+  sum: AccountStreamWHIPBroadcastMetricsAdaptiveGroupsSum
+}
+
+type AccountStreamWHIPBroadcastMetricsAdaptiveGroupsAvg {
+  # Rate of received packets being dropped from the ingest buffer
+  bufferDropRate: float64!
+  # Average ingest bitrate measured in bits per second
+  ingestBitrate: float64!
+  # Average ingest packet rate measured in packets per second
+  ingestPacketRate: float64!
+  # Average adaptive sampling interval
+  sampleInterval: float64!
+}
+
+type AccountStreamWHIPBroadcastMetricsAdaptiveGroupsConfidence {
+  # Estimated number of observations, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # Total value of each metric for the selected dimensions, with confidence intervals
+  sum: AccountStreamWHIPBroadcastMetricsAdaptiveGroupsSumConfidence
+}
+
+type AccountStreamWHIPBroadcastMetricsAdaptiveGroupsDimensions {
+  # Media codec MIME type
+  codecMimeType: string!
+  # Media codec name
+  codecName: string!
+  # Date when the metric was observed
+  date: Date!
+  # Date and time when the metric was collected
+  datetime: Time!
+  # Date and time of the observation truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Date and time of the observation truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Date and time of the observation truncated to the hour
+  datetimeHour: Time!
+  # Date and time of the observation truncated to the minute
+  datetimeMinute: Time!
+  # ICE connection state
+  iceConnectionState: string!
+  # Live input ID
+  inputId: string!
+  # Type of media, either audio or video
+  mediaKind: string!
+  # WebRTC peer connection ID
+  peerConnectionId: string!
+  # WebRTC peer connection state
+  peerConnectionState: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # WebRTC media track ID
+  trackId: string!
+  # State of the track being ingested
+  trackIngestState: string!
+}
+
+input AccountStreamWHIPBroadcastMetricsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountStreamWHIPBroadcastMetricsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountStreamWHIPBroadcastMetricsAdaptiveGroupsFilter_InputObject!]
+  codecMimeType: string
+  codecMimeType_geq: string
+  codecMimeType_gt: string
+  codecMimeType_in: [string!]
+  codecMimeType_leq: string
+  codecMimeType_like: string
+  codecMimeType_lt: string
+  codecMimeType_neq: string
+  codecMimeType_notin: [string!]
+  codecMimeType_notlike: string
+  codecName: string
+  codecName_geq: string
+  codecName_gt: string
+  codecName_in: [string!]
+  codecName_leq: string
+  codecName_like: string
+  codecName_lt: string
+  codecName_neq: string
+  codecName_notin: [string!]
+  codecName_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  iceConnectionState: string
+  iceConnectionState_geq: string
+  iceConnectionState_gt: string
+  iceConnectionState_in: [string!]
+  iceConnectionState_leq: string
+  iceConnectionState_like: string
+  iceConnectionState_lt: string
+  iceConnectionState_neq: string
+  iceConnectionState_notin: [string!]
+  iceConnectionState_notlike: string
+  inputId: string
+  inputId_geq: string
+  inputId_gt: string
+  inputId_in: [string!]
+  inputId_leq: string
+  inputId_like: string
+  inputId_lt: string
+  inputId_neq: string
+  inputId_notin: [string!]
+  inputId_notlike: string
+  mediaKind: string
+  mediaKind_geq: string
+  mediaKind_gt: string
+  mediaKind_in: [string!]
+  mediaKind_leq: string
+  mediaKind_like: string
+  mediaKind_lt: string
+  mediaKind_neq: string
+  mediaKind_notin: [string!]
+  mediaKind_notlike: string
+  peerConnectionId: string
+  peerConnectionId_geq: string
+  peerConnectionId_gt: string
+  peerConnectionId_in: [string!]
+  peerConnectionId_leq: string
+  peerConnectionId_like: string
+  peerConnectionId_lt: string
+  peerConnectionId_neq: string
+  peerConnectionId_notin: [string!]
+  peerConnectionId_notlike: string
+  peerConnectionState: string
+  peerConnectionState_geq: string
+  peerConnectionState_gt: string
+  peerConnectionState_in: [string!]
+  peerConnectionState_leq: string
+  peerConnectionState_like: string
+  peerConnectionState_lt: string
+  peerConnectionState_neq: string
+  peerConnectionState_notin: [string!]
+  peerConnectionState_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  trackId: string
+  trackId_geq: string
+  trackId_gt: string
+  trackId_in: [string!]
+  trackId_leq: string
+  trackId_like: string
+  trackId_lt: string
+  trackId_neq: string
+  trackId_notin: [string!]
+  trackId_notlike: string
+  trackIngestState: string
+  trackIngestState_geq: string
+  trackIngestState_gt: string
+  trackIngestState_in: [string!]
+  trackIngestState_leq: string
+  trackIngestState_like: string
+  trackIngestState_lt: string
+  trackIngestState_neq: string
+  trackIngestState_notin: [string!]
+  trackIngestState_notlike: string
+}
+
+enum AccountStreamWHIPBroadcastMetricsAdaptiveGroupsOrderBy {
+  # avg(bufferDropRate) ascending
+  avg_bufferDropRate_ASC
+  # avg(bufferDropRate) descending
+  avg_bufferDropRate_DESC
+  # avg(ingestBitrate) ascending
+  avg_ingestBitrate_ASC
+  # avg(ingestBitrate) descending
+  avg_ingestBitrate_DESC
+  # avg(ingestPacketRate) ascending
+  avg_ingestPacketRate_ASC
+  # avg(ingestPacketRate) descending
+  avg_ingestPacketRate_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # codecMimeType ascending
+  codecMimeType_ASC
+  # codecMimeType descending
+  codecMimeType_DESC
+  # codecName ascending
+  codecName_ASC
+  # codecName descending
+  codecName_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # iceConnectionState ascending
+  iceConnectionState_ASC
+  # iceConnectionState descending
+  iceConnectionState_DESC
+  # inputId ascending
+  inputId_ASC
+  # inputId descending
+  inputId_DESC
+  # mediaKind ascending
+  mediaKind_ASC
+  # mediaKind descending
+  mediaKind_DESC
+  # peerConnectionId ascending
+  peerConnectionId_ASC
+  # peerConnectionId descending
+  peerConnectionId_DESC
+  # peerConnectionState ascending
+  peerConnectionState_ASC
+  # peerConnectionState descending
+  peerConnectionState_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # sum(droppedPackets) ascending
+  sum_droppedPackets_ASC
+  # sum(droppedPackets) descending
+  sum_droppedPackets_DESC
+  # sum(observationDurationSeconds) ascending
+  sum_observationDurationSeconds_ASC
+  # sum(observationDurationSeconds) descending
+  sum_observationDurationSeconds_DESC
+  # sum(receivedBytes) ascending
+  sum_receivedBytes_ASC
+  # sum(receivedBytes) descending
+  sum_receivedBytes_DESC
+  # sum(receivedPackets) ascending
+  sum_receivedPackets_ASC
+  # sum(receivedPackets) descending
+  sum_receivedPackets_DESC
+  # trackId ascending
+  trackId_ASC
+  # trackId descending
+  trackId_DESC
+  # trackIngestState ascending
+  trackIngestState_ASC
+  # trackIngestState descending
+  trackIngestState_DESC
+}
+
+type AccountStreamWHIPBroadcastMetricsAdaptiveGroupsSum {
+  # Estimated number of RTP packets dropped from the ingest buffer
+  droppedPackets: uint64!
+  # Estimated total observation time in seconds
+  observationDurationSeconds: float64!
+  # Estimated total bytes received
+  receivedBytes: uint64!
+  # Estimated total RTP packets received
+  receivedPackets: uint64!
+}
+
+type AccountStreamWHIPBroadcastMetricsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  droppedPackets: Confidence!
+  # Confidence interval for the corresponding point estimate
+  observationDurationSeconds: Confidence!
+  # Confidence interval for the corresponding point estimate
+  receivedBytes: Confidence!
+  # Confidence interval for the corresponding point estimate
+  receivedPackets: Confidence!
+}
+
+enum AccountStreamWHIPBroadcastMetricsAdaptiveOrderBy {
+  # bufferDropRate ascending
+  bufferDropRate_ASC
+  # bufferDropRate descending
+  bufferDropRate_DESC
+  # codecMimeType ascending
+  codecMimeType_ASC
+  # codecMimeType descending
+  codecMimeType_DESC
+  # codecName ascending
+  codecName_ASC
+  # codecName descending
+  codecName_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # droppedPackets ascending
+  droppedPackets_ASC
+  # droppedPackets descending
+  droppedPackets_DESC
+  # iceConnectionState ascending
+  iceConnectionState_ASC
+  # iceConnectionState descending
+  iceConnectionState_DESC
+  # inputId ascending
+  inputId_ASC
+  # inputId descending
+  inputId_DESC
+  # mediaKind ascending
+  mediaKind_ASC
+  # mediaKind descending
+  mediaKind_DESC
+  # observationDurationSeconds ascending
+  observationDurationSeconds_ASC
+  # observationDurationSeconds descending
+  observationDurationSeconds_DESC
+  # peerConnectionId ascending
+  peerConnectionId_ASC
+  # peerConnectionId descending
+  peerConnectionId_DESC
+  # peerConnectionState ascending
+  peerConnectionState_ASC
+  # peerConnectionState descending
+  peerConnectionState_DESC
+  # receivedBytes ascending
+  receivedBytes_ASC
+  # receivedBytes descending
+  receivedBytes_DESC
+  # receivedPackets ascending
+  receivedPackets_ASC
+  # receivedPackets descending
+  receivedPackets_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # trackId ascending
+  trackId_ASC
+  # trackId descending
+  trackId_DESC
+  # trackIngestState ascending
+  trackIngestState_ASC
+  # trackIngestState descending
+  trackIngestState_DESC
 }
 
 # Markdown Conversion Metrics
@@ -87702,6 +88504,8 @@ type viewer {
 }
 
 type zone {
+  # Hourly Account Abuse Protection aggregates.
+  accountAbuseProtectionAdaptiveGroups(filter: ZoneAccountAbuseProtectionAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneAccountAbuseProtectionAdaptiveGroupsOrderBy!]): [ZoneAccountAbuseProtectionAdaptiveGroups!]!
   # GraphQL query attributes and trends
   apiGatewayGraphqlQueryAnalyticsGroups(filter: ZoneApiGatewayGraphqlQueryAnalyticsGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneApiGatewayGraphqlQueryAnalyticsGroupsOrderBy!]): [ZoneApiGatewayGraphqlQueryAnalyticsGroups!]!
   # Beta. Aggregated count of Session Identifier matches
@@ -87820,6 +88624,197 @@ type zone {
   # Zaraz Triggers Analytics (a trigger is a set of rules that can trigger a zaraz action)
   zarazTriggersAdaptiveGroups(filter: ZoneZarazTriggersAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneZarazTriggersAdaptiveGroupsOrderBy!]): [ZoneZarazTriggersAdaptiveGroups!]!
   zoneTag: string!
+}
+
+# Hourly Account Abuse Protection aggregates.
+type ZoneAccountAbuseProtectionAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: ZoneAccountAbuseProtectionAdaptiveGroupsDimensions
+  sum: ZoneAccountAbuseProtectionAdaptiveGroupsSum
+  uniq: ZoneAccountAbuseProtectionAdaptiveGroupsUniq
+}
+
+type ZoneAccountAbuseProtectionAdaptiveGroupsDimensions {
+  # Start of the UTC hourly aggregate bucket.
+  datetimeHour: Time!
+  # Event ingestion source. Possible values are cdn or api.
+  eventSource: string!
+  # Canonical account-activity category used to partition hourly aggregates.
+  eventType: string!
+}
+
+input ZoneAccountAbuseProtectionAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneAccountAbuseProtectionAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneAccountAbuseProtectionAdaptiveGroupsFilter_InputObject!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  eventSource: string
+  eventSource_geq: string
+  eventSource_gt: string
+  eventSource_in: [string!]
+  eventSource_leq: string
+  eventSource_like: string
+  eventSource_lt: string
+  eventSource_neq: string
+  eventSource_notin: [string!]
+  eventSource_notlike: string
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
+}
+
+enum ZoneAccountAbuseProtectionAdaptiveGroupsOrderBy {
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # eventSource ascending
+  eventSource_ASC
+  # eventSource descending
+  eventSource_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
+  # sum(eventCount) ascending
+  sum_eventCount_ASC
+  # sum(eventCount) descending
+  sum_eventCount_DESC
+  # sum(failedLoginCount) ascending
+  sum_failedLoginCount_ASC
+  # sum(failedLoginCount) descending
+  sum_failedLoginCount_DESC
+  # sum(lccCleanCount) ascending
+  sum_lccCleanCount_ASC
+  # sum(lccCleanCount) descending
+  sum_lccCleanCount_DESC
+  # sum(lccNotCheckedCount) ascending
+  sum_lccNotCheckedCount_ASC
+  # sum(lccNotCheckedCount) descending
+  sum_lccNotCheckedCount_DESC
+  # sum(lccPasswordLeakedCount) ascending
+  sum_lccPasswordLeakedCount_ASC
+  # sum(lccPasswordLeakedCount) descending
+  sum_lccPasswordLeakedCount_DESC
+  # sum(lccUsernameAndPasswordLeakedCount) ascending
+  sum_lccUsernameAndPasswordLeakedCount_ASC
+  # sum(lccUsernameAndPasswordLeakedCount) descending
+  sum_lccUsernameAndPasswordLeakedCount_DESC
+  # sum(lccUsernameLeakedCount) ascending
+  sum_lccUsernameLeakedCount_ASC
+  # sum(lccUsernameLeakedCount) descending
+  sum_lccUsernameLeakedCount_DESC
+  # sum(successfulLoginCount) ascending
+  sum_successfulLoginCount_ASC
+  # sum(successfulLoginCount) descending
+  sum_successfulLoginCount_DESC
+  # sum(topASNCounts) ascending
+  sum_topASNCounts_ASC
+  # sum(topASNCounts) descending
+  sum_topASNCounts_DESC
+  # sum(topASNs) ascending
+  sum_topASNs_ASC
+  # sum(topASNs) descending
+  sum_topASNs_DESC
+  # sum(topCountries) ascending
+  sum_topCountries_ASC
+  # sum(topCountries) descending
+  sum_topCountries_DESC
+  # sum(topCountryCounts) ascending
+  sum_topCountryCounts_ASC
+  # sum(topCountryCounts) descending
+  sum_topCountryCounts_DESC
+  # sum(topDeviceCounts) ascending
+  sum_topDeviceCounts_ASC
+  # sum(topDeviceCounts) descending
+  sum_topDeviceCounts_DESC
+  # sum(topDevices) ascending
+  sum_topDevices_ASC
+  # sum(topDevices) descending
+  sum_topDevices_DESC
+  # sum(topIPCounts) ascending
+  sum_topIPCounts_ASC
+  # sum(topIPCounts) descending
+  sum_topIPCounts_DESC
+  # sum(topIPs) ascending
+  sum_topIPs_ASC
+  # sum(topIPs) descending
+  sum_topIPs_DESC
+  # uniq(signupUsers) ascending
+  uniq_signupUsers_ASC
+  # uniq(signupUsers) descending
+  uniq_signupUsers_DESC
+  # uniq(uniqueDevices) ascending
+  uniq_uniqueDevices_ASC
+  # uniq(uniqueDevices) descending
+  uniq_uniqueDevices_DESC
+  # uniq(uniqueIPs) ascending
+  uniq_uniqueIPs_ASC
+  # uniq(uniqueIPs) descending
+  uniq_uniqueIPs_DESC
+  # uniq(uniqueUsers) ascending
+  uniq_uniqueUsers_ASC
+  # uniq(uniqueUsers) descending
+  uniq_uniqueUsers_DESC
+}
+
+type ZoneAccountAbuseProtectionAdaptiveGroupsSum {
+  # Number of events.
+  eventCount: uint64!
+  # Number of failed login events.
+  failedLoginCount: uint64!
+  # Number of events with an explicit clean Leaked Credential Check result.
+  lccCleanCount: uint64!
+  # Number of events with no Leaked Credential Check result.
+  lccNotCheckedCount: uint64!
+  # Number of events whose Leaked Credential Check result indicates a leaked password.
+  lccPasswordLeakedCount: uint64!
+  # Number of events whose Leaked Credential Check result indicates a leaked username and password.
+  lccUsernameAndPasswordLeakedCount: uint64!
+  # Number of events whose Leaked Credential Check result indicates a leaked username or similar password.
+  lccUsernameLeakedCount: uint64!
+  # Number of successful login events.
+  successfulLoginCount: uint64!
+  # Approximate event counts for topASNs.
+  topASNCounts: [uint64!]!
+  # Top 10 client ASNs, positionally aligned with topASNCounts.
+  topASNs: [uint32!]!
+  # Top 10 country codes, positionally aligned with topCountryCounts.
+  topCountries: [string!]!
+  # Approximate event counts for topCountries.
+  topCountryCounts: [uint64!]!
+  # Approximate event counts for topDevices.
+  topDeviceCounts: [uint64!]!
+  # Top 10 Turnstile ephemeral IDs, positionally aligned with topDeviceCounts.
+  topDevices: [string!]!
+  # Approximate event counts for topIPs.
+  topIPCounts: [uint64!]!
+  # Top 10 client IPs, positionally aligned with topIPCounts.
+  topIPs: [string!]!
+}
+
+type ZoneAccountAbuseProtectionAdaptiveGroupsUniq {
+  # Approximate number of unique users with signup activity.
+  signupUsers: uint64!
+  # Approximate number of unique non-empty Turnstile ephemeral IDs.
+  uniqueDevices: uint64!
+  # Approximate number of unique non-empty client IPs.
+  uniqueIPs: uint64!
+  # Approximate number of unique non-empty user IDs.
+  uniqueUsers: uint64!
 }
 
 # GraphQL query attributes and trends
@@ -104392,6 +105387,7 @@ type ZonePreRenderRenderAttemptsAdaptiveGroupsSumConfidence {
 
 # Access and limitations for a zone
 type ZoneSettings {
+  accountAbuseProtectionAdaptiveGroups: Settings!
   apiGatewayGraphqlQueryAnalyticsGroups: Settings!
   apiGatewayMatchedSessionIDsAdaptiveGroups: Settings!
   apiGatewayMatchedSessionIDsPerEndpointAdaptiveGroups: Settings!
@@ -104463,9 +105459,11 @@ type ZoneUserProfilesAdaptiveGroups {
 type ZoneUserProfilesAdaptiveGroupsDimensions {
   # Profile aggregates for a given date.
   date: Date!
-  # Type of the event. Possible values are login or signup.
+  # Event ingestion source. Possible values are cdn or api.
+  eventSource: string!
+  # Canonical account-activity category used to partition profile aggregates.
   eventType: string!
-  # Unique identifier for a user. 128-bit hash.
+  # Hex-encoded identifier for a user.
   userId: string!
 }
 
@@ -104480,6 +105478,16 @@ input ZoneUserProfilesAdaptiveGroupsFilter_InputObject {
   date_lt: Date
   date_neq: Date
   date_notin: [Date!]
+  eventSource: string
+  eventSource_geq: string
+  eventSource_gt: string
+  eventSource_in: [string!]
+  eventSource_leq: string
+  eventSource_like: string
+  eventSource_lt: string
+  eventSource_neq: string
+  eventSource_notin: [string!]
+  eventSource_notlike: string
   eventType: string
   eventType_geq: string
   eventType_gt: string
@@ -104505,6 +105513,8 @@ input ZoneUserProfilesAdaptiveGroupsFilter_InputObject {
 type ZoneUserProfilesAdaptiveGroupsMax {
   # Timestamp of the most recent event for a user id.
   lastSeen: Time!
+  # Most recent non-empty client IP for a user id in the selected range.
+  mostRecentIP: string!
 }
 
 enum ZoneUserProfilesAdaptiveGroupsOrderBy {
@@ -104512,6 +105522,10 @@ enum ZoneUserProfilesAdaptiveGroupsOrderBy {
   date_ASC
   # date descending
   date_DESC
+  # eventSource ascending
+  eventSource_ASC
+  # eventSource descending
+  eventSource_DESC
   # eventType ascending
   eventType_ASC
   # eventType descending
@@ -104520,6 +105534,10 @@ enum ZoneUserProfilesAdaptiveGroupsOrderBy {
   max_lastSeen_ASC
   # max(lastSeen) descending
   max_lastSeen_DESC
+  # max(mostRecentIP) ascending
+  max_mostRecentIP_ASC
+  # max(mostRecentIP) descending
+  max_mostRecentIP_DESC
   # sum(eventCount) ascending
   sum_eventCount_ASC
   # sum(eventCount) descending
@@ -104528,6 +105546,26 @@ enum ZoneUserProfilesAdaptiveGroupsOrderBy {
   sum_failedLoginCount_ASC
   # sum(failedLoginCount) descending
   sum_failedLoginCount_DESC
+  # sum(lccCleanCount) ascending
+  sum_lccCleanCount_ASC
+  # sum(lccCleanCount) descending
+  sum_lccCleanCount_DESC
+  # sum(lccNotCheckedCount) ascending
+  sum_lccNotCheckedCount_ASC
+  # sum(lccNotCheckedCount) descending
+  sum_lccNotCheckedCount_DESC
+  # sum(lccPasswordLeakedCount) ascending
+  sum_lccPasswordLeakedCount_ASC
+  # sum(lccPasswordLeakedCount) descending
+  sum_lccPasswordLeakedCount_DESC
+  # sum(lccUsernameAndPasswordLeakedCount) ascending
+  sum_lccUsernameAndPasswordLeakedCount_ASC
+  # sum(lccUsernameAndPasswordLeakedCount) descending
+  sum_lccUsernameAndPasswordLeakedCount_DESC
+  # sum(lccUsernameLeakedCount) ascending
+  sum_lccUsernameLeakedCount_ASC
+  # sum(lccUsernameLeakedCount) descending
+  sum_lccUsernameLeakedCount_DESC
   # sum(leakedCredentialHitCount) ascending
   sum_leakedCredentialHitCount_ASC
   # sum(leakedCredentialHitCount) descending
@@ -104536,6 +105574,10 @@ enum ZoneUserProfilesAdaptiveGroupsOrderBy {
   sum_passwordLeakedCount_ASC
   # sum(passwordLeakedCount) descending
   sum_passwordLeakedCount_DESC
+  # sum(successfulLoginCount) ascending
+  sum_successfulLoginCount_ASC
+  # sum(successfulLoginCount) descending
+  sum_successfulLoginCount_DESC
   # sum(topASNs) ascending
   sum_topASNs_ASC
   # sum(topASNs) descending
@@ -104560,6 +105602,10 @@ enum ZoneUserProfilesAdaptiveGroupsOrderBy {
   uniq_browserCount_ASC
   # uniq(browserCount) descending
   uniq_browserCount_DESC
+  # uniq(ephemeralIdCount) ascending
+  uniq_ephemeralIdCount_ASC
+  # uniq(ephemeralIdCount) descending
+  uniq_ephemeralIdCount_DESC
   # uniq(ipCount) ascending
   uniq_ipCount_ASC
   # uniq(ipCount) descending
@@ -104579,10 +105625,22 @@ type ZoneUserProfilesAdaptiveGroupsSum {
   eventCount: uint64!
   # Number of failed login attempts for a user id.
   failedLoginCount: uint64!
+  # Number of events with an explicit clean Leaked Credential Check result.
+  lccCleanCount: uint64!
+  # Number of events with no Leaked Credential Check result.
+  lccNotCheckedCount: uint64!
+  # Number of events whose Leaked Credential Check result indicates a leaked password.
+  lccPasswordLeakedCount: uint64!
+  # Number of events whose Leaked Credential Check result indicates a leaked username and password.
+  lccUsernameAndPasswordLeakedCount: uint64!
+  # Number of events whose Leaked Credential Check result indicates a leaked username or similar password.
+  lccUsernameLeakedCount: uint64!
   # Number of events with any leaked credential check hit (username leaked, password leaked, or username/password similar) for a user id. Broader than passwordLeakedCount, which counts password-leaked results only.
   leakedCredentialHitCount: uint64!
   # Number of leaked credential check results where the password was leaked (username_and_password_leaked or password_leaked) for a user id.
   passwordLeakedCount: uint64!
+  # Number of successful login attempts for a user id.
+  successfulLoginCount: uint64!
   # Array of top 5 ASNs for a user id.
   topASNs: [uint32!]!
   # Array of top 5 city names for a user id.
@@ -104598,6 +105656,8 @@ type ZoneUserProfilesAdaptiveGroupsSum {
 type ZoneUserProfilesAdaptiveGroupsUniq {
   # Number of unique browser families for a user id.
   browserCount: uint64!
+  # Approximate number of unique non-empty Turnstile ephemeral IDs for a user id.
+  ephemeralIdCount: uint64!
   # Number of unique IPs for a user id.
   ipCount: uint64!
   # Number of unique operating system families for a user id.
@@ -104626,6 +105686,8 @@ type ZoneUserProfilesPiiGroupsDimensions {
   date: Date!
   # The email address associated with the user. Requires the com.cloudflare.api.account.zone.fraud-detection.pii.read permission; otherwise returned as REDACTED.
   email: string!
+  # The email domain associated with the user. Requires the com.cloudflare.api.account.zone.fraud-detection.pii.read permission; otherwise returned as REDACTED.
+  emailDomain: string!
   # Unique identifier for a user. 128-bit hash.
   userId: string!
 }
@@ -104642,6 +105704,16 @@ input ZoneUserProfilesPiiGroupsFilter_InputObject {
   date_neq: Date
   date_notin: [Date!]
   email: string
+  emailDomain: string
+  emailDomain_geq: string
+  emailDomain_gt: string
+  emailDomain_in: [string!]
+  emailDomain_leq: string
+  emailDomain_like: string
+  emailDomain_lt: string
+  emailDomain_neq: string
+  emailDomain_notin: [string!]
+  emailDomain_notlike: string
   email_geq: string
   email_gt: string
   email_in: [string!]
@@ -104672,6 +105744,10 @@ enum ZoneUserProfilesPiiGroupsOrderBy {
   date_ASC
   # date descending
   date_DESC
+  # emailDomain ascending
+  emailDomain_ASC
+  # emailDomain descending
+  emailDomain_DESC
   # email ascending
   email_ASC
   # email descending
@@ -104716,9 +105792,11 @@ type ZoneUserProfilesRawEventsGroups {
   deviceType: string!
   # The Turnstile ephemeral device ID associated with the event. Returns an empty string if not present.
   ephemeralId: string!
+  # Event ingestion source. Possible values are cdn or api.
+  eventSource: string!
   # When the event happened.
   eventTimestamp: Time!
-  # Type of the event. Possible values are signup or login.
+  # Canonical account-activity category recorded for the event.
   eventType: string!
   # Risk level of the email address in the event.
   fraudEmailRisk: string!
@@ -104883,6 +105961,16 @@ input ZoneUserProfilesRawEventsGroupsFilter_InputObject {
   ephemeralId_neq: string
   ephemeralId_notin: [string!]
   ephemeralId_notlike: string
+  eventSource: string
+  eventSource_geq: string
+  eventSource_gt: string
+  eventSource_in: [string!]
+  eventSource_leq: string
+  eventSource_like: string
+  eventSource_lt: string
+  eventSource_neq: string
+  eventSource_notin: [string!]
+  eventSource_notlike: string
   eventTimestamp: Time
   eventTimestamp_geq: Time
   eventTimestamp_gt: Time
@@ -105036,6 +106124,10 @@ enum ZoneUserProfilesRawEventsGroupsOrderBy {
   ephemeralId_ASC
   # ephemeralId descending
   ephemeralId_DESC
+  # eventSource ascending
+  eventSource_ASC
+  # eventSource descending
+  eventSource_DESC
   # eventTimestamp ascending
   eventTimestamp_ASC
   # eventTimestamp descending
