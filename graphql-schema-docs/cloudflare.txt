@@ -23,6 +23,7 @@ Account-level datasets:
 * aiSearchIngestedItemsAdaptiveGroups
 * aiSearchPublicEventsAdaptiveGroups
 * artifactsEventsAdaptiveGroups
+* artifactsStorageAdaptiveGroups
 * auditLogsGroups
 * autoRAGConfigAPIAdaptiveGroups
 * autoRAGEngineAdaptiveGroups
@@ -118,6 +119,7 @@ Account-level datasets:
   magicFirewallRateLimitNetworkAnalyticsAdaptiveGroups
   magicFirewallSamplesAdaptiveGroups
   magicIDPSNetworkAnalyticsAdaptiveGroups
+  magicTransitFragNeededErrorsAdaptiveGroups
   magicTransitNetworkAnalyticsAdaptiveGroups
   magicTransitTunnelHealthCheckSLOsAdaptiveGroups
   magicTransitTunnelHealthChecksAdaptiveGroups
@@ -146,6 +148,7 @@ Account-level datasets:
 * mediaUniqueTransformationsAccumulatedSinceStartOfMonth
 * mnmAWSVPCFlowDataAdaptiveGroups
 * mnmFlowDataAdaptiveGroups
+* monetizationGatewayAdaptiveGroups
   nelReportsAdaptiveGroups
 * ohttpMetricsAdaptive
 * ohttpMetricsAdaptiveGroups
@@ -305,7 +308,7 @@ scalar Date
 # Scalar type types.Float32
 scalar float32
 
-# Scalar type float64
+# Scalar type types.Float64
 scalar float64
 
 # Scalar type int16
@@ -390,6 +393,8 @@ type account {
   aiSearchPublicEventsAdaptiveGroups(filter: AccountAiSearchPublicEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchPublicEventsAdaptiveGroupsOrderBy!]): [AccountAiSearchPublicEventsAdaptiveGroups!]!
   # Artifacts events with adaptive sampling
   artifactsEventsAdaptiveGroups(filter: AccountArtifactsEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountArtifactsEventsAdaptiveGroupsOrderBy!]): [AccountArtifactsEventsAdaptiveGroups!]!
+  # Artifacts repository storage snapshots with adaptive sampling
+  artifactsStorageAdaptiveGroups(filter: AccountArtifactsStorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountArtifactsStorageAdaptiveGroupsOrderBy!]): [AccountArtifactsStorageAdaptiveGroups!]!
   # Audit log events grouped by account, time, actor, action, and resource dimensions.
   auditLogsGroups(filter: AccountAuditLogsGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAuditLogsGroupsOrderBy!]): [AccountAuditLogsGroups!]!
   # AutoRAG Config API Search Analytics
@@ -581,6 +586,8 @@ type account {
   magicFirewallSamplesAdaptiveGroups(filter: AccountMagicFirewallSamplesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicFirewallSamplesAdaptiveGroupsOrderBy!]): [AccountMagicFirewallSamplesAdaptiveGroups!]!
   # Network analytics data for Magic IDS
   magicIDPSNetworkAnalyticsAdaptiveGroups(filter: AccountMagicIDPSNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicIDPSNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountMagicIDPSNetworkAnalyticsAdaptiveGroups!]!
+  # Network analytics data for Magic Transit ICMP frag needed traffic
+  magicTransitFragNeededErrorsAdaptiveGroups(filter: AccountMagicTransitFragNeededErrorsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitFragNeededErrorsAdaptiveGroupsOrderBy!]): [AccountMagicTransitFragNeededErrorsAdaptiveGroups!]!
   # Network analytics data for Magic Transit traffic
   magicTransitNetworkAnalyticsAdaptiveGroups(filter: AccountMagicTransitNetworkAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitNetworkAnalyticsAdaptiveGroupsOrderBy!]): [AccountMagicTransitNetworkAnalyticsAdaptiveGroups!]!
   # Magic Transit Tunnel Health Check SLO events with adaptive sampling.
@@ -637,6 +644,8 @@ type account {
   mnmAWSVPCFlowDataAdaptiveGroups(filter: AccountMnmAWSVPCFlowDataAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMnmAWSVPCFlowDataAdaptiveGroupsOrderBy!]): [AccountMnmAWSVPCFlowDataAdaptiveGroups!]!
   # Flow data collected through Magic Network Monitoring
   mnmFlowDataAdaptiveGroups(filter: AccountMnmFlowDataAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMnmFlowDataAdaptiveGroupsOrderBy!]): [AccountMnmFlowDataAdaptiveGroups!]!
+  # Monetization Gateway payment outcomes with adaptive sampling
+  monetizationGatewayAdaptiveGroups(filter: AccountMonetizationGatewayAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMonetizationGatewayAdaptiveGroupsOrderBy!]): [AccountMonetizationGatewayAdaptiveGroups!]!
   # Data to visualize network error logs
   nelReportsAdaptiveGroups(filter: AccountNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountNelReportsAdaptiveGroupsOrderBy!]): [AccountNelReportsAdaptiveGroups!]!
   # oHTTP request metrics with adaptive sampling
@@ -4881,6 +4890,8 @@ enum AccountAiGatewayCacheAdaptiveGroupsOrderBy {
 type AccountAiGatewayConversationAnalysesAdaptive {
   # Assistant turns in the analyzed trajectory
   assistantTurns: uint64!
+  # 1 when the pick has a known price and chosenCostEstimate is below costEstimate; 0 also covers a pick with no known price
+  chosenCheaper: uint64!
   # Estimated cost in USD had the classifier's pick served this row's requests, at that model's per-token prices; 0 when the pick has no known price (chosenPriced = 0) or nothing was measured
   chosenCostEstimate: float64!
   # 1 when a price is known for the classifier's pick; 0 means chosenCostEstimate and savingEstimate are absent, not zero
@@ -4909,7 +4920,7 @@ type AccountAiGatewayConversationAnalysesAdaptive {
   requiredTier: string!
   # How many rows this row stands for under adaptive sampling; multiply when extrapolating from listed rows
   sampleInterval: uint64!
-  # costEstimate minus chosenCostEstimate, positive where the pick is cheaper; 0 when the pick has no known price
+  # costEstimate minus chosenCostEstimate; 0 when the pick has no known price. The two sides are estimated differently, so it can be negative even for a cheaper model - chosenCheaper marks the rows where it is positive
   savingEstimate: float64!
   # The provider/model that served the analyzed part of the conversation; empty when not classified
   servedModel: string!
@@ -4948,6 +4959,14 @@ input AccountAiGatewayConversationAnalysesAdaptiveFilter_InputObject {
   assistantTurns_lt: uint64
   assistantTurns_neq: uint64
   assistantTurns_notin: [uint64!]
+  chosenCheaper: uint64
+  chosenCheaper_geq: uint64
+  chosenCheaper_gt: uint64
+  chosenCheaper_in: [uint64!]
+  chosenCheaper_leq: uint64
+  chosenCheaper_lt: uint64
+  chosenCheaper_neq: uint64
+  chosenCheaper_notin: [uint64!]
   chosenCostEstimate: float64
   chosenCostEstimate_geq: float64
   chosenCostEstimate_gt: float64
@@ -5279,6 +5298,14 @@ type AccountAiGatewayConversationAnalysesAdaptiveGroupsDimensions {
 input AccountAiGatewayConversationAnalysesAdaptiveGroupsFilter_InputObject {
   AND: [AccountAiGatewayConversationAnalysesAdaptiveGroupsFilter_InputObject!]
   OR: [AccountAiGatewayConversationAnalysesAdaptiveGroupsFilter_InputObject!]
+  chosenCheaper: uint64
+  chosenCheaper_geq: uint64
+  chosenCheaper_gt: uint64
+  chosenCheaper_in: [uint64!]
+  chosenCheaper_leq: uint64
+  chosenCheaper_lt: uint64
+  chosenCheaper_neq: uint64
+  chosenCheaper_notin: [uint64!]
   chosenPriced: uint64
   chosenPriced_geq: uint64
   chosenPriced_gt: uint64
@@ -5641,9 +5668,9 @@ enum AccountAiGatewayConversationAnalysesAdaptiveGroupsOrderBy {
 type AccountAiGatewayConversationAnalysesAdaptiveGroupsSum {
   # Total estimated cost in USD had the classifier's pick served the grouped conversations, their token counts priced at that model's per-token prices. A row whose pick has no known price (chosenPriced = 0) contributes 0, so subtract this from costEstimate only under a chosenPriced filter - or read savingEstimate, which does that
   chosenCostEstimate: float64!
-  # Total estimated cost in USD across the grouped conversations; an estimate from token counts and model rates, not a billing figure, and cached input is priced as fresh
+  # Total estimated cost in USD across the grouped conversations: the cost the gateway logged for each request, summed. Not a billing figure
   costEstimate: float64!
-  # costEstimate minus chosenCostEstimate over rows whose pick has a known price: the estimated USD saved had the classifier's pick served them. Positive where the pick is cheaper; filter verdict to 'overkill' for the conversations a cheaper model would have handled. On the same footing as costEstimate (an estimate, cached input priced as fresh), and a conversation that used several models has every token repriced
+  # costEstimate minus chosenCostEstimate over rows whose pick has a known price: the estimated USD saved had the classifier's pick served them. Filter verdict to 'overkill' for the conversations a cheaper model would have handled. The two sides are estimated differently, so a row can come out negative even where the pick is the cheaper model; filter chosenCheaper to 1 to leave those out. A conversation that used several models has every token repriced
   savingEstimate: float64!
   # Total input tokens across the grouped conversations
   tokensIn: uint64!
@@ -5678,6 +5705,10 @@ enum AccountAiGatewayConversationAnalysesAdaptiveOrderBy {
   assistantTurns_ASC
   # assistantTurns descending
   assistantTurns_DESC
+  # chosenCheaper ascending
+  chosenCheaper_ASC
+  # chosenCheaper descending
+  chosenCheaper_DESC
   # chosenCostEstimate ascending
   chosenCostEstimate_ASC
   # chosenCostEstimate descending
@@ -5792,6 +5823,8 @@ enum AccountAiGatewayConversationAnalysesAdaptiveOrderBy {
 type AccountAiGatewayConversationAnalysesStagingAdaptive {
   # Assistant turns in the analyzed trajectory
   assistantTurns: uint64!
+  # 1 when the pick has a known price and chosenCostEstimate is below costEstimate; 0 also covers a pick with no known price
+  chosenCheaper: uint64!
   # Estimated cost in USD had the classifier's pick served this row's requests, at that model's per-token prices; 0 when the pick has no known price (chosenPriced = 0) or nothing was measured
   chosenCostEstimate: float64!
   # 1 when a price is known for the classifier's pick; 0 means chosenCostEstimate and savingEstimate are absent, not zero
@@ -5820,7 +5853,7 @@ type AccountAiGatewayConversationAnalysesStagingAdaptive {
   requiredTier: string!
   # How many rows this row stands for under adaptive sampling; multiply when extrapolating from listed rows
   sampleInterval: uint64!
-  # costEstimate minus chosenCostEstimate, positive where the pick is cheaper; 0 when the pick has no known price
+  # costEstimate minus chosenCostEstimate; 0 when the pick has no known price. The two sides are estimated differently, so it can be negative even for a cheaper model - chosenCheaper marks the rows where it is positive
   savingEstimate: float64!
   # The provider/model that served the analyzed part of the conversation; empty when not classified
   servedModel: string!
@@ -5859,6 +5892,14 @@ input AccountAiGatewayConversationAnalysesStagingAdaptiveFilter_InputObject {
   assistantTurns_lt: uint64
   assistantTurns_neq: uint64
   assistantTurns_notin: [uint64!]
+  chosenCheaper: uint64
+  chosenCheaper_geq: uint64
+  chosenCheaper_gt: uint64
+  chosenCheaper_in: [uint64!]
+  chosenCheaper_leq: uint64
+  chosenCheaper_lt: uint64
+  chosenCheaper_neq: uint64
+  chosenCheaper_notin: [uint64!]
   chosenCostEstimate: float64
   chosenCostEstimate_geq: float64
   chosenCostEstimate_gt: float64
@@ -6190,6 +6231,14 @@ type AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsDimensions {
 input AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsFilter_InputObject {
   AND: [AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsFilter_InputObject!]
   OR: [AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsFilter_InputObject!]
+  chosenCheaper: uint64
+  chosenCheaper_geq: uint64
+  chosenCheaper_gt: uint64
+  chosenCheaper_in: [uint64!]
+  chosenCheaper_leq: uint64
+  chosenCheaper_lt: uint64
+  chosenCheaper_neq: uint64
+  chosenCheaper_notin: [uint64!]
   chosenPriced: uint64
   chosenPriced_geq: uint64
   chosenPriced_gt: uint64
@@ -6552,9 +6601,9 @@ enum AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsOrderBy {
 type AccountAiGatewayConversationAnalysesStagingAdaptiveGroupsSum {
   # Total estimated cost in USD had the classifier's pick served the grouped conversations, their token counts priced at that model's per-token prices. A row whose pick has no known price (chosenPriced = 0) contributes 0, so subtract this from costEstimate only under a chosenPriced filter - or read savingEstimate, which does that
   chosenCostEstimate: float64!
-  # Total estimated cost in USD across the grouped conversations; an estimate from token counts and model rates, not a billing figure, and cached input is priced as fresh
+  # Total estimated cost in USD across the grouped conversations: the cost the gateway logged for each request, summed. Not a billing figure
   costEstimate: float64!
-  # costEstimate minus chosenCostEstimate over rows whose pick has a known price: the estimated USD saved had the classifier's pick served them. Positive where the pick is cheaper; filter verdict to 'overkill' for the conversations a cheaper model would have handled. On the same footing as costEstimate (an estimate, cached input priced as fresh), and a conversation that used several models has every token repriced
+  # costEstimate minus chosenCostEstimate over rows whose pick has a known price: the estimated USD saved had the classifier's pick served them. Filter verdict to 'overkill' for the conversations a cheaper model would have handled. The two sides are estimated differently, so a row can come out negative even where the pick is the cheaper model; filter chosenCheaper to 1 to leave those out. A conversation that used several models has every token repriced
   savingEstimate: float64!
   # Total input tokens across the grouped conversations
   tokensIn: uint64!
@@ -6589,6 +6638,10 @@ enum AccountAiGatewayConversationAnalysesStagingAdaptiveOrderBy {
   assistantTurns_ASC
   # assistantTurns descending
   assistantTurns_DESC
+  # chosenCheaper ascending
+  chosenCheaper_ASC
+  # chosenCheaper descending
+  chosenCheaper_DESC
   # chosenCostEstimate ascending
   chosenCostEstimate_ASC
   # chosenCostEstimate descending
@@ -12769,6 +12822,166 @@ type AccountArtifactsEventsAdaptiveGroupsSum {
 type AccountArtifactsEventsAdaptiveGroupsSumConfidence {
   # Confidence interval for the corresponding point estimate
   durationMs: Confidence!
+}
+
+# Artifacts repository storage snapshots with adaptive sampling
+type AccountArtifactsStorageAdaptiveGroups {
+  # List of dimensions to group by
+  dimensions: AccountArtifactsStorageAdaptiveGroupsDimensions
+  # The max of values for a metric per dimension
+  max: AccountArtifactsStorageAdaptiveGroupsMax
+}
+
+type AccountArtifactsStorageAdaptiveGroupsDimensions {
+  # The date the storage snapshot was recorded
+  date: Date!
+  # The date and time the storage snapshot was recorded
+  datetime: Time!
+  # The date and time the storage snapshot was recorded, truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the storage snapshot was recorded, truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the storage snapshot was recorded, truncated to the hour
+  datetimeHour: Time!
+  # The date and time the storage snapshot was recorded, truncated to the minute
+  datetimeMinute: Time!
+  # The date and time the storage snapshot was recorded, truncated to start of six hour window
+  datetimeSixHours: Time!
+  # The name of the repository within its namespace
+  repositoryName: string!
+  # The namespace of the repository
+  repositoryNamespace: string!
+}
+
+input AccountArtifactsStorageAdaptiveGroupsFilter_InputObject {
+  AND: [AccountArtifactsStorageAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountArtifactsStorageAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeSixHours: Time
+  datetimeSixHours_geq: Time
+  datetimeSixHours_gt: Time
+  datetimeSixHours_in: [Time!]
+  datetimeSixHours_leq: Time
+  datetimeSixHours_lt: Time
+  datetimeSixHours_neq: Time
+  datetimeSixHours_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  repositoryName: string
+  repositoryName_geq: string
+  repositoryName_gt: string
+  repositoryName_ilike: string
+  repositoryName_in: [string!]
+  repositoryName_leq: string
+  repositoryName_like: string
+  repositoryName_lt: string
+  repositoryName_neq: string
+  repositoryName_notin: [string!]
+  repositoryName_notlike: string
+  repositoryNamespace: string
+  repositoryNamespace_geq: string
+  repositoryNamespace_gt: string
+  repositoryNamespace_ilike: string
+  repositoryNamespace_in: [string!]
+  repositoryNamespace_leq: string
+  repositoryNamespace_like: string
+  repositoryNamespace_lt: string
+  repositoryNamespace_neq: string
+  repositoryNamespace_notin: [string!]
+  repositoryNamespace_notlike: string
+}
+
+type AccountArtifactsStorageAdaptiveGroupsMax {
+  # The maximum size of the repository (measured in bytes) observed over the queried time period.
+  repositorySizeBytes: uint64!
+}
+
+enum AccountArtifactsStorageAdaptiveGroupsOrderBy {
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeSixHours ascending
+  datetimeSixHours_ASC
+  # datetimeSixHours descending
+  datetimeSixHours_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # max(repositorySizeBytes) ascending
+  max_repositorySizeBytes_ASC
+  # max(repositorySizeBytes) descending
+  max_repositorySizeBytes_DESC
+  # repositoryName ascending
+  repositoryName_ASC
+  # repositoryName descending
+  repositoryName_DESC
+  # repositoryNamespace ascending
+  repositoryNamespace_ASC
+  # repositoryNamespace descending
+  repositoryNamespace_DESC
 }
 
 # Audit log events grouped by account, time, actor, action, and resource dimensions.
@@ -53522,6 +53735,82 @@ type AccountMagicIDPSNetworkAnalyticsAdaptiveGroupsSumConfidence {
   packets: Confidence!
 }
 
+# Network analytics data for Magic Transit ICMP frag needed traffic
+type AccountMagicTransitFragNeededErrorsAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountMagicTransitFragNeededErrorsAdaptiveGroupsConfidence!
+  # List of dimensions to group by
+  dimensions: AccountMagicTransitFragNeededErrorsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountMagicTransitFragNeededErrorsAdaptiveGroupsSum
+}
+
+type AccountMagicTransitFragNeededErrorsAdaptiveGroupsConfidence {
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountMagicTransitFragNeededErrorsAdaptiveGroupsSumConfidence
+}
+
+type AccountMagicTransitFragNeededErrorsAdaptiveGroupsDimensions {
+  datetimeFiveMinutes: Time!
+  # Value of the Destination Address header field in the IPv4 or IPv6 packet
+  ipDestinationAddress: string!
+}
+
+input AccountMagicTransitFragNeededErrorsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMagicTransitFragNeededErrorsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMagicTransitFragNeededErrorsAdaptiveGroupsFilter_InputObject!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  ipDestinationAddress: string
+  ipDestinationAddress_geq: string
+  ipDestinationAddress_gt: string
+  ipDestinationAddress_ilike: string
+  ipDestinationAddress_in: [string!]
+  ipDestinationAddress_leq: string
+  ipDestinationAddress_like: string
+  ipDestinationAddress_lt: string
+  ipDestinationAddress_neq: string
+  ipDestinationAddress_notin: [string!]
+  ipDestinationAddress_notlike: string
+}
+
+enum AccountMagicTransitFragNeededErrorsAdaptiveGroupsOrderBy {
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # ipDestinationAddress ascending
+  ipDestinationAddress_ASC
+  # ipDestinationAddress descending
+  ipDestinationAddress_DESC
+  # sum(packets) ascending
+  sum_packets_ASC
+  # sum(packets) descending
+  sum_packets_DESC
+  # system ascending
+  system_ASC
+  # system descending
+  system_DESC
+}
+
+type AccountMagicTransitFragNeededErrorsAdaptiveGroupsSum {
+  # Sum of packets received
+  packets: uint64!
+}
+
+type AccountMagicTransitFragNeededErrorsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  packets: Confidence!
+}
+
 # Network analytics data for Magic Transit traffic
 type AccountMagicTransitNetworkAnalyticsAdaptiveGroups {
   # The average of values for a metric per dimension
@@ -62697,6 +62986,470 @@ type AccountMnmFlowDataAdaptiveGroupsSumConfidence {
   packets: Confidence!
 }
 
+# Monetization Gateway payment outcomes with adaptive sampling
+type AccountMonetizationGatewayAdaptiveGroups {
+  # Averages calculated from payment outcome rows.
+  avg: AccountMonetizationGatewayAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountMonetizationGatewayAdaptiveGroupsConfidence!
+  # The sampling-weighted number of payment outcomes.
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMonetizationGatewayAdaptiveGroupsDimensions
+  # Origin latency percentiles
+  quantiles: AccountMonetizationGatewayAdaptiveGroupsQuantiles
+  # Sampling-weighted totals for payment outcomes
+  sum: AccountMonetizationGatewayAdaptiveGroupsSum
+  # Distinct values observed among payment outcome rows.
+  uniq: AccountMonetizationGatewayAdaptiveGroupsUniq
+}
+
+type AccountMonetizationGatewayAdaptiveGroupsAvg {
+  # The weighted average origin time to first byte in milliseconds among sampled rows with an origin fetch, or -1 when the group has none
+  originTtfbMs: float64!
+  # The average sampling interval
+  sampleInterval: float64!
+}
+
+type AccountMonetizationGatewayAdaptiveGroupsConfidence {
+  # The sampling-weighted number of payment outcomes., with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # Sampling-weighted totals for payment outcomes, with confidence intervals
+  sum: AccountMonetizationGatewayAdaptiveGroupsSumConfidence
+}
+
+type AccountMonetizationGatewayAdaptiveGroupsDimensions {
+  # The asset used for payment
+  asset: string!
+  # The buyer wallet. Empty for outcomes without a known buyer.
+  buyer: string!
+  # The date the payment outcome occurred
+  date: Date!
+  # The date and time the payment outcome occurred
+  datetime: Time!
+  # The date and time the payment outcome occurred truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the payment outcome occurred truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the payment outcome occurred truncated to the hour
+  datetimeHour: Time!
+  # The date and time the payment outcome occurred truncated to the minute
+  datetimeMinute: Time!
+  # The coordinator error code, or an empty string when no error occurred
+  errorCode: string!
+  # The payment outcome, such as payment_required, settled, or settle_rejected
+  event: string!
+  # The origin host.
+  host: string!
+  # The payment network
+  network: string!
+  # The HTTP status returned by the origin, or zero when no origin request was made
+  originStatus: uint32!
+  # The payment scheme, such as exact or upto
+  scheme: string!
+  # The seller wallet
+  seller: string!
+  # The settlement transaction identifier
+  transaction: string!
+  # The payment transport protocol
+  transport: string!
+  # Associated zone
+  zoneTag: string!
+}
+
+input AccountMonetizationGatewayAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMonetizationGatewayAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMonetizationGatewayAdaptiveGroupsFilter_InputObject!]
+  asset: string
+  asset_geq: string
+  asset_gt: string
+  asset_ilike: string
+  asset_in: [string!]
+  asset_leq: string
+  asset_like: string
+  asset_lt: string
+  asset_neq: string
+  asset_notin: [string!]
+  asset_notlike: string
+  buyer: string
+  buyer_geq: string
+  buyer_gt: string
+  buyer_ilike: string
+  buyer_in: [string!]
+  buyer_leq: string
+  buyer_like: string
+  buyer_lt: string
+  buyer_neq: string
+  buyer_notin: [string!]
+  buyer_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  errorCode: string
+  errorCode_geq: string
+  errorCode_gt: string
+  errorCode_ilike: string
+  errorCode_in: [string!]
+  errorCode_leq: string
+  errorCode_like: string
+  errorCode_lt: string
+  errorCode_neq: string
+  errorCode_notin: [string!]
+  errorCode_notlike: string
+  event: string
+  event_geq: string
+  event_gt: string
+  event_ilike: string
+  event_in: [string!]
+  event_leq: string
+  event_like: string
+  event_lt: string
+  event_neq: string
+  event_notin: [string!]
+  event_notlike: string
+  host: string
+  host_geq: string
+  host_gt: string
+  host_ilike: string
+  host_in: [string!]
+  host_leq: string
+  host_like: string
+  host_lt: string
+  host_neq: string
+  host_notin: [string!]
+  host_notlike: string
+  network: string
+  network_geq: string
+  network_gt: string
+  network_ilike: string
+  network_in: [string!]
+  network_leq: string
+  network_like: string
+  network_lt: string
+  network_neq: string
+  network_notin: [string!]
+  network_notlike: string
+  originStatus: uint32
+  originStatus_geq: uint32
+  originStatus_gt: uint32
+  originStatus_in: [uint32!]
+  originStatus_leq: uint32
+  originStatus_lt: uint32
+  originStatus_neq: uint32
+  originStatus_notin: [uint32!]
+  scheme: string
+  scheme_geq: string
+  scheme_gt: string
+  scheme_ilike: string
+  scheme_in: [string!]
+  scheme_leq: string
+  scheme_like: string
+  scheme_lt: string
+  scheme_neq: string
+  scheme_notin: [string!]
+  scheme_notlike: string
+  seller: string
+  seller_geq: string
+  seller_gt: string
+  seller_ilike: string
+  seller_in: [string!]
+  seller_leq: string
+  seller_like: string
+  seller_lt: string
+  seller_neq: string
+  seller_notin: [string!]
+  seller_notlike: string
+  transaction: string
+  transaction_geq: string
+  transaction_gt: string
+  transaction_ilike: string
+  transaction_in: [string!]
+  transaction_leq: string
+  transaction_like: string
+  transaction_lt: string
+  transaction_neq: string
+  transaction_notin: [string!]
+  transaction_notlike: string
+  transport: string
+  transport_geq: string
+  transport_gt: string
+  transport_ilike: string
+  transport_in: [string!]
+  transport_leq: string
+  transport_like: string
+  transport_lt: string
+  transport_neq: string
+  transport_notin: [string!]
+  transport_notlike: string
+  zoneTag: string
+  zoneTag_geq: string
+  zoneTag_gt: string
+  zoneTag_ilike: string
+  zoneTag_in: [string!]
+  zoneTag_leq: string
+  zoneTag_like: string
+  zoneTag_lt: string
+  zoneTag_neq: string
+  zoneTag_notin: [string!]
+  zoneTag_notlike: string
+}
+
+enum AccountMonetizationGatewayAdaptiveGroupsOrderBy {
+  # asset ascending
+  asset_ASC
+  # asset descending
+  asset_DESC
+  # avg(originTtfbMs) ascending
+  avg_originTtfbMs_ASC
+  # avg(originTtfbMs) descending
+  avg_originTtfbMs_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # buyer ascending
+  buyer_ASC
+  # buyer descending
+  buyer_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # errorCode ascending
+  errorCode_ASC
+  # errorCode descending
+  errorCode_DESC
+  # event ascending
+  event_ASC
+  # event descending
+  event_DESC
+  # host ascending
+  host_ASC
+  # host descending
+  host_DESC
+  # network ascending
+  network_ASC
+  # network descending
+  network_DESC
+  # originStatus ascending
+  originStatus_ASC
+  # originStatus descending
+  originStatus_DESC
+  # quantiles(originTtfbMsP25) ascending
+  quantiles_originTtfbMsP25_ASC
+  # quantiles(originTtfbMsP25) descending
+  quantiles_originTtfbMsP25_DESC
+  # quantiles(originTtfbMsP50) ascending
+  quantiles_originTtfbMsP50_ASC
+  # quantiles(originTtfbMsP50) descending
+  quantiles_originTtfbMsP50_DESC
+  # quantiles(originTtfbMsP75) ascending
+  quantiles_originTtfbMsP75_ASC
+  # quantiles(originTtfbMsP75) descending
+  quantiles_originTtfbMsP75_DESC
+  # quantiles(originTtfbMsP90) ascending
+  quantiles_originTtfbMsP90_ASC
+  # quantiles(originTtfbMsP90) descending
+  quantiles_originTtfbMsP90_DESC
+  # quantiles(originTtfbMsP95) ascending
+  quantiles_originTtfbMsP95_ASC
+  # quantiles(originTtfbMsP95) descending
+  quantiles_originTtfbMsP95_DESC
+  # quantiles(originTtfbMsP999) ascending
+  quantiles_originTtfbMsP999_ASC
+  # quantiles(originTtfbMsP999) descending
+  quantiles_originTtfbMsP999_DESC
+  # quantiles(originTtfbMsP99) ascending
+  quantiles_originTtfbMsP99_ASC
+  # quantiles(originTtfbMsP99) descending
+  quantiles_originTtfbMsP99_DESC
+  # scheme ascending
+  scheme_ASC
+  # scheme descending
+  scheme_DESC
+  # seller ascending
+  seller_ASC
+  # seller descending
+  seller_DESC
+  # sum(failOpen) ascending
+  sum_failOpen_ASC
+  # sum(failOpen) descending
+  sum_failOpen_DESC
+  # sum(originErrorSkipped) ascending
+  sum_originErrorSkipped_ASC
+  # sum(originErrorSkipped) descending
+  sum_originErrorSkipped_DESC
+  # sum(paymentRequired) ascending
+  sum_paymentRequired_ASC
+  # sum(paymentRequired) descending
+  sum_paymentRequired_DESC
+  # sum(settleInfraFault) ascending
+  sum_settleInfraFault_ASC
+  # sum(settleInfraFault) descending
+  sum_settleInfraFault_DESC
+  # sum(settleRejected) ascending
+  sum_settleRejected_ASC
+  # sum(settleRejected) descending
+  sum_settleRejected_DESC
+  # sum(settleSkipped) ascending
+  sum_settleSkipped_ASC
+  # sum(settleSkipped) descending
+  sum_settleSkipped_DESC
+  # sum(settledAmount) ascending
+  sum_settledAmount_ASC
+  # sum(settledAmount) descending
+  sum_settledAmount_DESC
+  # sum(settled) ascending
+  sum_settled_ASC
+  # sum(settled) descending
+  sum_settled_DESC
+  # transaction ascending
+  transaction_ASC
+  # transaction descending
+  transaction_DESC
+  # transport ascending
+  transport_ASC
+  # transport descending
+  transport_DESC
+  # uniq(buyers) ascending
+  uniq_buyers_ASC
+  # uniq(buyers) descending
+  uniq_buyers_DESC
+  # zoneTag ascending
+  zoneTag_ASC
+  # zoneTag descending
+  zoneTag_DESC
+}
+
+type AccountMonetizationGatewayAdaptiveGroupsQuantiles {
+  # Origin time to first byte in milliseconds (25th percentile), or -1 when the group has no origin fetch
+  originTtfbMsP25: float64!
+  # Origin time to first byte in milliseconds (50th percentile), or -1 when the group has no origin fetch
+  originTtfbMsP50: float64!
+  # Origin time to first byte in milliseconds (75th percentile), or -1 when the group has no origin fetch
+  originTtfbMsP75: float64!
+  # Origin time to first byte in milliseconds (90th percentile), or -1 when the group has no origin fetch
+  originTtfbMsP90: float64!
+  # Origin time to first byte in milliseconds (95th percentile), or -1 when the group has no origin fetch
+  originTtfbMsP95: float64!
+  # Origin time to first byte in milliseconds (99th percentile), or -1 when the group has no origin fetch
+  originTtfbMsP99: float64!
+  # Origin time to first byte in milliseconds (99.9th percentile), or -1 when the group has no origin fetch
+  originTtfbMsP999: float64!
+}
+
+type AccountMonetizationGatewayAdaptiveGroupsSum {
+  # Number of outcomes that failed open to the origin
+  failOpen: uint64!
+  # Number of origin-error outcomes for which settlement was skipped
+  originErrorSkipped: uint64!
+  # Number of outcomes that required a payment
+  paymentRequired: uint64!
+  # Number of settlement infrastructure failures
+  settleInfraFault: uint64!
+  # Number of payments rejected during settlement
+  settleRejected: uint64!
+  # Number of outcomes for which settlement was skipped
+  settleSkipped: uint64!
+  # Number of successfully settled payments
+  settled: uint64!
+  # The sampling-weighted amount settled, in the asset's atomic units. Returned as a decimal string to preserve precision.
+  settledAmount: string!
+}
+
+type AccountMonetizationGatewayAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  failOpen: Confidence!
+  # Confidence interval for the corresponding point estimate
+  originErrorSkipped: Confidence!
+  # Confidence interval for the corresponding point estimate
+  paymentRequired: Confidence!
+  # Confidence interval for the corresponding point estimate
+  settleInfraFault: Confidence!
+  # Confidence interval for the corresponding point estimate
+  settleRejected: Confidence!
+  # Confidence interval for the corresponding point estimate
+  settleSkipped: Confidence!
+  # Confidence interval for the corresponding point estimate
+  settled: Confidence!
+}
+
+type AccountMonetizationGatewayAdaptiveGroupsUniq {
+  # The minimum number of distinct buyer wallets observed.
+  buyers: uint64!
+}
+
 # Data to visualize network error logs
 type AccountNelReportsAdaptiveGroups {
   avg: AccountNelReportsAdaptiveGroupsAvg
@@ -63880,6 +64633,7 @@ type AccountOhttpRelayRequestMetricsAdaptiveGroups {
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountOhttpRelayRequestMetricsAdaptiveGroupsDimensions
+  quantiles: AccountOhttpRelayRequestMetricsAdaptiveGroupsQuantiles
 }
 
 type AccountOhttpRelayRequestMetricsAdaptiveGroupsConfidence {
@@ -64033,10 +64787,55 @@ enum AccountOhttpRelayRequestMetricsAdaptiveGroupsOrderBy {
   proxyStatus_ASC
   # proxyStatus descending
   proxyStatus_DESC
+  # quantiles(processingDurationMsP25) ascending
+  quantiles_processingDurationMsP25_ASC
+  # quantiles(processingDurationMsP25) descending
+  quantiles_processingDurationMsP25_DESC
+  # quantiles(processingDurationMsP50) ascending
+  quantiles_processingDurationMsP50_ASC
+  # quantiles(processingDurationMsP50) descending
+  quantiles_processingDurationMsP50_DESC
+  # quantiles(processingDurationMsP75) ascending
+  quantiles_processingDurationMsP75_ASC
+  # quantiles(processingDurationMsP75) descending
+  quantiles_processingDurationMsP75_DESC
+  # quantiles(processingDurationMsP90) ascending
+  quantiles_processingDurationMsP90_ASC
+  # quantiles(processingDurationMsP90) descending
+  quantiles_processingDurationMsP90_DESC
+  # quantiles(processingDurationMsP95) ascending
+  quantiles_processingDurationMsP95_ASC
+  # quantiles(processingDurationMsP95) descending
+  quantiles_processingDurationMsP95_DESC
+  # quantiles(processingDurationMsP999) ascending
+  quantiles_processingDurationMsP999_ASC
+  # quantiles(processingDurationMsP999) descending
+  quantiles_processingDurationMsP999_DESC
+  # quantiles(processingDurationMsP99) ascending
+  quantiles_processingDurationMsP99_ASC
+  # quantiles(processingDurationMsP99) descending
+  quantiles_processingDurationMsP99_DESC
   # relayStatusCode ascending
   relayStatusCode_ASC
   # relayStatusCode descending
   relayStatusCode_DESC
+}
+
+type AccountOhttpRelayRequestMetricsAdaptiveGroupsQuantiles {
+  # Time spent processing the request before sending it upstream in milliseconds (25th percentile)
+  processingDurationMsP25: float64!
+  # Time spent processing the request before sending it upstream in milliseconds (50th percentile)
+  processingDurationMsP50: float64!
+  # Time spent processing the request before sending it upstream in milliseconds (75th percentile)
+  processingDurationMsP75: float64!
+  # Time spent processing the request before sending it upstream in milliseconds (90th percentile)
+  processingDurationMsP90: float64!
+  # Time spent processing the request before sending it upstream in milliseconds (95th percentile)
+  processingDurationMsP95: float64!
+  # Time spent processing the request before sending it upstream in milliseconds (99th percentile)
+  processingDurationMsP99: float64!
+  # Time spent processing the request before sending it upstream in milliseconds (99.9th percentile)
+  processingDurationMsP999: float64!
 }
 
 # Pages Functions invocations with adaptive sampling
@@ -71734,6 +72533,12 @@ type AccountRumPageloadEventsAdaptiveGroupsConfidence {
 type AccountRumPageloadEventsAdaptiveGroupsDimensions {
   # Indicates if the request is likely from a bot (non-human traffic). Returns 1 if from a bot, 0 otherwise.
   bot: uint8!
+  # Browser engine name (e.g. Blink, Gecko, WebKit)
+  browserEngine: string!
+  # Browser engine version string (e.g. 131)
+  browserEngineVersion: string!
+  # Browser version string (e.g. 131, 18.3)
+  browserVersion: string!
   # Client country ISO 3166 alpha2 code
   countryName: string!
   # Signed Exchange enabled status
@@ -71756,6 +72561,8 @@ type AccountRumPageloadEventsAdaptiveGroupsDimensions {
   deviceType: string!
   # Navigation type of the request
   navigationType: string!
+  # OS version string (e.g. 15.2, 10)
+  osVersion: string!
   # Host of the HTTP request referer
   refererHost: string!
   # Path of the HTTP request referer
@@ -71787,6 +72594,39 @@ input AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject {
   bot_lt: uint8
   bot_neq: uint8
   bot_notin: bytes
+  browserEngine: string
+  browserEngineVersion: string
+  browserEngineVersion_geq: string
+  browserEngineVersion_gt: string
+  browserEngineVersion_ilike: string
+  browserEngineVersion_in: [string!]
+  browserEngineVersion_leq: string
+  browserEngineVersion_like: string
+  browserEngineVersion_lt: string
+  browserEngineVersion_neq: string
+  browserEngineVersion_notin: [string!]
+  browserEngineVersion_notlike: string
+  browserEngine_geq: string
+  browserEngine_gt: string
+  browserEngine_ilike: string
+  browserEngine_in: [string!]
+  browserEngine_leq: string
+  browserEngine_like: string
+  browserEngine_lt: string
+  browserEngine_neq: string
+  browserEngine_notin: [string!]
+  browserEngine_notlike: string
+  browserVersion: string
+  browserVersion_geq: string
+  browserVersion_gt: string
+  browserVersion_ilike: string
+  browserVersion_in: [string!]
+  browserVersion_leq: string
+  browserVersion_like: string
+  browserVersion_lt: string
+  browserVersion_neq: string
+  browserVersion_notin: [string!]
+  browserVersion_notlike: string
   countryName: string
   countryName_geq: string
   countryName_gt: string
@@ -71898,6 +72738,17 @@ input AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject {
   navigationType_neq: string
   navigationType_notin: [string!]
   navigationType_notlike: string
+  osVersion: string
+  osVersion_geq: string
+  osVersion_gt: string
+  osVersion_ilike: string
+  osVersion_in: [string!]
+  osVersion_leq: string
+  osVersion_like: string
+  osVersion_lt: string
+  osVersion_neq: string
+  osVersion_notin: [string!]
+  osVersion_notlike: string
   refererHost: string
   refererHost_geq: string
   refererHost_gt: string
@@ -72008,6 +72859,18 @@ enum AccountRumPageloadEventsAdaptiveGroupsOrderBy {
   bot_ASC
   # bot descending
   bot_DESC
+  # browserEngineVersion ascending
+  browserEngineVersion_ASC
+  # browserEngineVersion descending
+  browserEngineVersion_DESC
+  # browserEngine ascending
+  browserEngine_ASC
+  # browserEngine descending
+  browserEngine_DESC
+  # browserVersion ascending
+  browserVersion_ASC
+  # browserVersion descending
+  browserVersion_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -72056,6 +72919,10 @@ enum AccountRumPageloadEventsAdaptiveGroupsOrderBy {
   navigationType_ASC
   # navigationType descending
   navigationType_DESC
+  # osVersion ascending
+  osVersion_ASC
+  # osVersion descending
+  osVersion_DESC
   # refererHost ascending
   refererHost_ASC
   # refererHost descending
@@ -72124,8 +72991,8 @@ type AccountRumPerformanceEventsAdaptiveGroups {
 type AccountRumPerformanceEventsAdaptiveGroupsAvg {
   # Connection time
   connectionTime: uint64!
-  # Connection time excluding the TLS handshake
-  connectionTimeWithoutTLS: uint64!
+  # Connection time excluding the TLS handshake in microseconds (negative value indicates N/A)
+  connectionTimeWithoutTLS: int64!
   # Domain lookup time
   dnsTime: uint64!
   # The time when the first content piece from the DOM is painted (i.e. some text or an image)
@@ -72138,16 +73005,16 @@ type AccountRumPerformanceEventsAdaptiveGroupsAvg {
   pageLoadTime: uint64!
   # The time to download and display the entire content of a web page in the browser window
   pageRenderTime: uint64!
-  # Redirect time
-  redirectTime: uint64!
+  # Redirect time in microseconds (negative value indicates N/A)
+  redirectTime: int64!
   # The time between initiating the request and receiving the first byte of the response
   requestTime: uint64!
   # The time between receiving the first byte and the last byte of the response
   responseTime: uint64!
   # Average sample interval
   sampleInterval: float64!
-  # TLS handshake time
-  tlsTime: uint64!
+  # TLS handshake time in microseconds (negative value indicates N/A)
+  tlsTime: int64!
 }
 
 type AccountRumPerformanceEventsAdaptiveGroupsConfidence {
@@ -72161,6 +73028,12 @@ type AccountRumPerformanceEventsAdaptiveGroupsConfidence {
 type AccountRumPerformanceEventsAdaptiveGroupsDimensions {
   # Indicates if the request is likely from a bot (non-human traffic). Returns 1 if from a bot, 0 otherwise.
   bot: uint8!
+  # Browser engine name (e.g. Blink, Gecko, WebKit)
+  browserEngine: string!
+  # Browser engine version string (e.g. 131)
+  browserEngineVersion: string!
+  # Browser version string (e.g. 131, 18.3)
+  browserVersion: string!
   # Client country ISO 3166 alpha2 code
   countryName: string!
   # Signed Exchange enabled status
@@ -72183,6 +73056,8 @@ type AccountRumPerformanceEventsAdaptiveGroupsDimensions {
   deviceType: string!
   # Navigation type of the request
   navigationType: string!
+  # OS version string (e.g. 15.2, 10)
+  osVersion: string!
   # Host of the HTTP request referer
   refererHost: string!
   # Path of the HTTP request referer
@@ -72214,6 +73089,39 @@ input AccountRumPerformanceEventsAdaptiveGroupsFilter_InputObject {
   bot_lt: uint8
   bot_neq: uint8
   bot_notin: bytes
+  browserEngine: string
+  browserEngineVersion: string
+  browserEngineVersion_geq: string
+  browserEngineVersion_gt: string
+  browserEngineVersion_ilike: string
+  browserEngineVersion_in: [string!]
+  browserEngineVersion_leq: string
+  browserEngineVersion_like: string
+  browserEngineVersion_lt: string
+  browserEngineVersion_neq: string
+  browserEngineVersion_notin: [string!]
+  browserEngineVersion_notlike: string
+  browserEngine_geq: string
+  browserEngine_gt: string
+  browserEngine_ilike: string
+  browserEngine_in: [string!]
+  browserEngine_leq: string
+  browserEngine_like: string
+  browserEngine_lt: string
+  browserEngine_neq: string
+  browserEngine_notin: [string!]
+  browserEngine_notlike: string
+  browserVersion: string
+  browserVersion_geq: string
+  browserVersion_gt: string
+  browserVersion_ilike: string
+  browserVersion_in: [string!]
+  browserVersion_leq: string
+  browserVersion_like: string
+  browserVersion_lt: string
+  browserVersion_neq: string
+  browserVersion_notin: [string!]
+  browserVersion_notlike: string
   countryName: string
   countryName_geq: string
   countryName_gt: string
@@ -72325,6 +73233,17 @@ input AccountRumPerformanceEventsAdaptiveGroupsFilter_InputObject {
   navigationType_neq: string
   navigationType_notin: [string!]
   navigationType_notlike: string
+  osVersion: string
+  osVersion_geq: string
+  osVersion_gt: string
+  osVersion_ilike: string
+  osVersion_in: [string!]
+  osVersion_leq: string
+  osVersion_like: string
+  osVersion_lt: string
+  osVersion_neq: string
+  osVersion_notin: [string!]
+  osVersion_notlike: string
   refererHost: string
   refererHost_geq: string
   refererHost_gt: string
@@ -72483,6 +73402,18 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   bot_ASC
   # bot descending
   bot_DESC
+  # browserEngineVersion ascending
+  browserEngineVersion_ASC
+  # browserEngineVersion descending
+  browserEngineVersion_DESC
+  # browserEngine ascending
+  browserEngine_ASC
+  # browserEngine descending
+  browserEngine_DESC
+  # browserVersion ascending
+  browserVersion_ASC
+  # browserVersion descending
+  browserVersion_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -72531,6 +73462,10 @@ enum AccountRumPerformanceEventsAdaptiveGroupsOrderBy {
   navigationType_ASC
   # navigationType descending
   navigationType_DESC
+  # osVersion ascending
+  osVersion_ASC
+  # osVersion descending
+  osVersion_DESC
   # quantiles(connectionTimeP25) ascending
   quantiles_connectionTimeP25_ASC
   # quantiles(connectionTimeP25) descending
@@ -72924,20 +73859,20 @@ type AccountRumPerformanceEventsAdaptiveGroupsQuantiles {
   connectionTimeP99: uint64!
   # Connection time
   connectionTimeP999: uint64!
-  # Connection time excluding the TLS handshake
-  connectionTimeWithoutTLSP25: uint64!
-  # Connection time excluding the TLS handshake
-  connectionTimeWithoutTLSP50: uint64!
-  # Connection time excluding the TLS handshake
-  connectionTimeWithoutTLSP75: uint64!
-  # Connection time excluding the TLS handshake
-  connectionTimeWithoutTLSP90: uint64!
-  # Connection time excluding the TLS handshake
-  connectionTimeWithoutTLSP95: uint64!
-  # Connection time excluding the TLS handshake
-  connectionTimeWithoutTLSP99: uint64!
-  # Connection time excluding the TLS handshake
-  connectionTimeWithoutTLSP999: uint64!
+  # Connection time excluding the TLS handshake in microseconds (negative value indicates N/A)
+  connectionTimeWithoutTLSP25: int64!
+  # Connection time excluding the TLS handshake in microseconds (negative value indicates N/A)
+  connectionTimeWithoutTLSP50: int64!
+  # Connection time excluding the TLS handshake in microseconds (negative value indicates N/A)
+  connectionTimeWithoutTLSP75: int64!
+  # Connection time excluding the TLS handshake in microseconds (negative value indicates N/A)
+  connectionTimeWithoutTLSP90: int64!
+  # Connection time excluding the TLS handshake in microseconds (negative value indicates N/A)
+  connectionTimeWithoutTLSP95: int64!
+  # Connection time excluding the TLS handshake in microseconds (negative value indicates N/A)
+  connectionTimeWithoutTLSP99: int64!
+  # Connection time excluding the TLS handshake in microseconds (negative value indicates N/A)
+  connectionTimeWithoutTLSP999: int64!
   # Domain lookup time
   dnsTimeP25: uint64!
   # Domain lookup time
@@ -73022,20 +73957,20 @@ type AccountRumPerformanceEventsAdaptiveGroupsQuantiles {
   pageRenderTimeP99: uint64!
   # The time to download and display the entire content of a web page in the browser window
   pageRenderTimeP999: uint64!
-  # Redirect time
-  redirectTimeP25: uint64!
-  # Redirect time
-  redirectTimeP50: uint64!
-  # Redirect time
-  redirectTimeP75: uint64!
-  # Redirect time
-  redirectTimeP90: uint64!
-  # Redirect time
-  redirectTimeP95: uint64!
-  # Redirect time
-  redirectTimeP99: uint64!
-  # Redirect time
-  redirectTimeP999: uint64!
+  # Redirect time in microseconds (negative value indicates N/A)
+  redirectTimeP25: int64!
+  # Redirect time in microseconds (negative value indicates N/A)
+  redirectTimeP50: int64!
+  # Redirect time in microseconds (negative value indicates N/A)
+  redirectTimeP75: int64!
+  # Redirect time in microseconds (negative value indicates N/A)
+  redirectTimeP90: int64!
+  # Redirect time in microseconds (negative value indicates N/A)
+  redirectTimeP95: int64!
+  # Redirect time in microseconds (negative value indicates N/A)
+  redirectTimeP99: int64!
+  # Redirect time in microseconds (negative value indicates N/A)
+  redirectTimeP999: int64!
   # The time between initiating the request and receiving the first byte of the response
   requestTimeP25: uint64!
   # The time between initiating the request and receiving the first byte of the response
@@ -73064,20 +73999,20 @@ type AccountRumPerformanceEventsAdaptiveGroupsQuantiles {
   responseTimeP99: uint64!
   # The time between receiving the first byte and the last byte of the response
   responseTimeP999: uint64!
-  # TLS handshake time
-  tlsTimeP25: uint64!
-  # TLS handshake time
-  tlsTimeP50: uint64!
-  # TLS handshake time
-  tlsTimeP75: uint64!
-  # TLS handshake time
-  tlsTimeP90: uint64!
-  # TLS handshake time
-  tlsTimeP95: uint64!
-  # TLS handshake time
-  tlsTimeP99: uint64!
-  # TLS handshake time
-  tlsTimeP999: uint64!
+  # TLS handshake time in microseconds (negative value indicates N/A)
+  tlsTimeP25: int64!
+  # TLS handshake time in microseconds (negative value indicates N/A)
+  tlsTimeP50: int64!
+  # TLS handshake time in microseconds (negative value indicates N/A)
+  tlsTimeP75: int64!
+  # TLS handshake time in microseconds (negative value indicates N/A)
+  tlsTimeP90: int64!
+  # TLS handshake time in microseconds (negative value indicates N/A)
+  tlsTimeP95: int64!
+  # TLS handshake time in microseconds (negative value indicates N/A)
+  tlsTimeP99: int64!
+  # TLS handshake time in microseconds (negative value indicates N/A)
+  tlsTimeP999: int64!
 }
 
 type AccountRumPerformanceEventsAdaptiveGroupsSum {
@@ -73094,6 +74029,12 @@ type AccountRumPerformanceEventsAdaptiveGroupsSumConfidence {
 type AccountRumWebVitalsEventsAdaptive {
   # Indicates if the request is likely from a bot (non-human traffic). Returns 1 if from a bot, 0 otherwise.
   bot: uint8!
+  # Browser engine name (e.g. Blink, Gecko, WebKit)
+  browserEngine: string!
+  # Browser engine version string (e.g. 131)
+  browserEngineVersion: string!
+  # Browser version string (e.g. 131, 18.3)
+  browserVersion: string!
   # Client country ISO 3166 alpha2 code
   countryName: string!
   # Cumulative Layout Shift (Core Web Vitals) (-1 indicates N/A)
@@ -73166,6 +74107,8 @@ type AccountRumWebVitalsEventsAdaptive {
   lcpResourceLoadTime: int64!
   # Navigation type of the request
   navigationType: string!
+  # OS version string (e.g. 15.2, 10)
+  osVersion: string!
   # Host of the HTTP request referer
   refererHost: string!
   # Path of the HTTP request referer
@@ -73201,6 +74144,39 @@ input AccountRumWebVitalsEventsAdaptiveFilter_InputObject {
   bot_lt: uint8
   bot_neq: uint8
   bot_notin: bytes
+  browserEngine: string
+  browserEngineVersion: string
+  browserEngineVersion_geq: string
+  browserEngineVersion_gt: string
+  browserEngineVersion_ilike: string
+  browserEngineVersion_in: [string!]
+  browserEngineVersion_leq: string
+  browserEngineVersion_like: string
+  browserEngineVersion_lt: string
+  browserEngineVersion_neq: string
+  browserEngineVersion_notin: [string!]
+  browserEngineVersion_notlike: string
+  browserEngine_geq: string
+  browserEngine_gt: string
+  browserEngine_ilike: string
+  browserEngine_in: [string!]
+  browserEngine_leq: string
+  browserEngine_like: string
+  browserEngine_lt: string
+  browserEngine_neq: string
+  browserEngine_notin: [string!]
+  browserEngine_notlike: string
+  browserVersion: string
+  browserVersion_geq: string
+  browserVersion_gt: string
+  browserVersion_ilike: string
+  browserVersion_in: [string!]
+  browserVersion_leq: string
+  browserVersion_like: string
+  browserVersion_lt: string
+  browserVersion_neq: string
+  browserVersion_notin: [string!]
+  browserVersion_notlike: string
   countryName: string
   countryName_geq: string
   countryName_gt: string
@@ -73546,6 +74522,17 @@ input AccountRumWebVitalsEventsAdaptiveFilter_InputObject {
   navigationType_neq: string
   navigationType_notin: [string!]
   navigationType_notlike: string
+  osVersion: string
+  osVersion_geq: string
+  osVersion_gt: string
+  osVersion_ilike: string
+  osVersion_in: [string!]
+  osVersion_leq: string
+  osVersion_like: string
+  osVersion_lt: string
+  osVersion_neq: string
+  osVersion_notin: [string!]
+  osVersion_notlike: string
   refererHost: string
   refererHost_geq: string
   refererHost_gt: string
@@ -73717,6 +74704,12 @@ type AccountRumWebVitalsEventsAdaptiveGroupsConfidence {
 type AccountRumWebVitalsEventsAdaptiveGroupsDimensions {
   # Indicates if the request is likely from a bot (non-human traffic). Returns 1 if from a bot, 0 otherwise.
   bot: uint8!
+  # Browser engine name (e.g. Blink, Gecko, WebKit)
+  browserEngine: string!
+  # Browser engine version string (e.g. 131)
+  browserEngineVersion: string!
+  # Browser version string (e.g. 131, 18.3)
+  browserVersion: string!
   # Client country ISO 3166 alpha2 code
   countryName: string!
   # DOM selector name of the largest layout shift
@@ -73772,6 +74765,8 @@ type AccountRumWebVitalsEventsAdaptiveGroupsDimensions {
   lcpInitiatorType: string!
   # Navigation type of the request
   navigationType: string!
+  # OS version string (e.g. 15.2, 10)
+  osVersion: string!
   # Host of the HTTP request referer
   refererHost: string!
   # Path of the HTTP request referer
@@ -73803,6 +74798,39 @@ input AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject {
   bot_lt: uint8
   bot_neq: uint8
   bot_notin: bytes
+  browserEngine: string
+  browserEngineVersion: string
+  browserEngineVersion_geq: string
+  browserEngineVersion_gt: string
+  browserEngineVersion_ilike: string
+  browserEngineVersion_in: [string!]
+  browserEngineVersion_leq: string
+  browserEngineVersion_like: string
+  browserEngineVersion_lt: string
+  browserEngineVersion_neq: string
+  browserEngineVersion_notin: [string!]
+  browserEngineVersion_notlike: string
+  browserEngine_geq: string
+  browserEngine_gt: string
+  browserEngine_ilike: string
+  browserEngine_in: [string!]
+  browserEngine_leq: string
+  browserEngine_like: string
+  browserEngine_lt: string
+  browserEngine_neq: string
+  browserEngine_notin: [string!]
+  browserEngine_notlike: string
+  browserVersion: string
+  browserVersion_geq: string
+  browserVersion_gt: string
+  browserVersion_ilike: string
+  browserVersion_in: [string!]
+  browserVersion_leq: string
+  browserVersion_like: string
+  browserVersion_lt: string
+  browserVersion_neq: string
+  browserVersion_notin: [string!]
+  browserVersion_notlike: string
   countryName: string
   countryName_geq: string
   countryName_gt: string
@@ -74111,6 +75139,17 @@ input AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject {
   navigationType_neq: string
   navigationType_notin: [string!]
   navigationType_notlike: string
+  osVersion: string
+  osVersion_geq: string
+  osVersion_gt: string
+  osVersion_ilike: string
+  osVersion_in: [string!]
+  osVersion_leq: string
+  osVersion_like: string
+  osVersion_lt: string
+  osVersion_neq: string
+  osVersion_notin: [string!]
+  osVersion_notlike: string
   refererHost: string
   refererHost_geq: string
   refererHost_gt: string
@@ -74269,6 +75308,18 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   bot_ASC
   # bot descending
   bot_DESC
+  # browserEngineVersion ascending
+  browserEngineVersion_ASC
+  # browserEngineVersion descending
+  browserEngineVersion_DESC
+  # browserEngine ascending
+  browserEngine_ASC
+  # browserEngine descending
+  browserEngine_DESC
+  # browserVersion ascending
+  browserVersion_ASC
+  # browserVersion descending
+  browserVersion_DESC
   # count() ascending
   count_ASC
   # count() descending
@@ -74377,6 +75428,10 @@ enum AccountRumWebVitalsEventsAdaptiveGroupsOrderBy {
   navigationType_ASC
   # navigationType descending
   navigationType_DESC
+  # osVersion ascending
+  osVersion_ASC
+  # osVersion descending
+  osVersion_DESC
   # quantiles(cumulativeLayoutShiftP25) ascending
   quantiles_cumulativeLayoutShiftP25_ASC
   # quantiles(cumulativeLayoutShiftP25) descending
@@ -75136,6 +76191,18 @@ enum AccountRumWebVitalsEventsAdaptiveOrderBy {
   bot_ASC
   # bot descending
   bot_DESC
+  # browserEngineVersion ascending
+  browserEngineVersion_ASC
+  # browserEngineVersion descending
+  browserEngineVersion_DESC
+  # browserEngine ascending
+  browserEngine_ASC
+  # browserEngine descending
+  browserEngine_DESC
+  # browserVersion ascending
+  browserVersion_ASC
+  # browserVersion descending
+  browserVersion_DESC
   # countryName ascending
   countryName_ASC
   # countryName descending
@@ -75280,6 +76347,10 @@ enum AccountRumWebVitalsEventsAdaptiveOrderBy {
   navigationType_ASC
   # navigationType descending
   navigationType_DESC
+  # osVersion ascending
+  osVersion_ASC
+  # osVersion descending
+  osVersion_DESC
   # refererHost ascending
   refererHost_ASC
   # refererHost descending
@@ -75352,6 +76423,7 @@ type AccountSettings {
   aiSearchIngestedItemsAdaptiveGroups: Settings!
   aiSearchPublicEventsAdaptiveGroups: Settings!
   artifactsEventsAdaptiveGroups: Settings!
+  artifactsStorageAdaptiveGroups: Settings!
   auditLogsGroups: Settings!
   autoRAGConfigAPIAdaptiveGroups: Settings!
   autoRAGEngineAdaptiveGroups: Settings!
@@ -75447,6 +76519,7 @@ type AccountSettings {
   magicFirewallRateLimitNetworkAnalyticsAdaptiveGroups: Settings!
   magicFirewallSamplesAdaptiveGroups: Settings!
   magicIDPSNetworkAnalyticsAdaptiveGroups: Settings!
+  magicTransitFragNeededErrorsAdaptiveGroups: Settings!
   magicTransitNetworkAnalyticsAdaptiveGroups: Settings!
   magicTransitTunnelHealthCheckSLOsAdaptiveGroups: Settings!
   magicTransitTunnelHealthChecksAdaptiveGroups: Settings!
@@ -75475,6 +76548,7 @@ type AccountSettings {
   mediaUniqueTransformationsAccumulatedSinceStartOfMonth: Settings!
   mnmAWSVPCFlowDataAdaptiveGroups: Settings!
   mnmFlowDataAdaptiveGroups: Settings!
+  monetizationGatewayAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   ohttpMetricsAdaptive: Settings!
   ohttpMetricsAdaptiveGroups: Settings!
@@ -91314,6 +92388,10 @@ enum ZoneAccountAbuseProtectionAdaptiveGroupsOrderBy {
   sum_topASNCounts_ASC
   # sum(topASNCounts) descending
   sum_topASNCounts_DESC
+  # sum(topASNDescriptions) ascending
+  sum_topASNDescriptions_ASC
+  # sum(topASNDescriptions) descending
+  sum_topASNDescriptions_DESC
   # sum(topASNs) ascending
   sum_topASNs_ASC
   # sum(topASNs) descending
@@ -91379,6 +92457,8 @@ type ZoneAccountAbuseProtectionAdaptiveGroupsSum {
   successfulLoginCount: uint64!
   # Approximate event counts for topASNs.
   topASNCounts: [uint64!]!
+  # Client ASN network operator names, positionally aligned with topASNs and topASNCounts. Entries are UNKNOWN when the operator cannot be identified.
+  topASNDescriptions: [string!]!
   # Top 10 client ASNs, positionally aligned with topASNCounts.
   topASNs: [uint32!]!
   # Top 10 country codes, positionally aligned with topCountryCounts.
@@ -108587,6 +109667,10 @@ enum ZoneUserProfilesAdaptiveGroupsOrderBy {
   sum_successfulLoginCount_ASC
   # sum(successfulLoginCount) descending
   sum_successfulLoginCount_DESC
+  # sum(topASNDescriptions) ascending
+  sum_topASNDescriptions_ASC
+  # sum(topASNDescriptions) descending
+  sum_topASNDescriptions_DESC
   # sum(topASNs) ascending
   sum_topASNs_ASC
   # sum(topASNs) descending
@@ -108650,6 +109734,8 @@ type ZoneUserProfilesAdaptiveGroupsSum {
   passwordLeakedCount: uint64!
   # Number of successful login attempts for a user id.
   successfulLoginCount: uint64!
+  # Array of top 5 client ASN network operator names for a user id, positionally aligned with topASNs. Entries are UNKNOWN when the operator cannot be identified.
+  topASNDescriptions: [string!]!
   # Array of top 5 ASNs for a user id.
   topASNs: [uint32!]!
   # Array of top 5 city names for a user id.
@@ -108784,6 +109870,8 @@ type ZoneUserProfilesRawEventsGroups {
   botScore: uint8!
   # The ASN number associated with the event.
   clientASN: uint32!
+  # Name of the network operator that owns the client ASN associated with the event (UNKNOWN when the operator cannot be identified).
+  clientASNDescription: string!
   # City name.
   clientCity: string!
   # Country code (alpha2).
@@ -108876,6 +109964,17 @@ input ZoneUserProfilesRawEventsGroupsFilter_InputObject {
   botScore_neq: uint8
   botScore_notin: bytes
   clientASN: uint32
+  clientASNDescription: string
+  clientASNDescription_geq: string
+  clientASNDescription_gt: string
+  clientASNDescription_ilike: string
+  clientASNDescription_in: [string!]
+  clientASNDescription_leq: string
+  clientASNDescription_like: string
+  clientASNDescription_lt: string
+  clientASNDescription_neq: string
+  clientASNDescription_notin: [string!]
+  clientASNDescription_notlike: string
   clientASN_geq: uint32
   clientASN_gt: uint32
   clientASN_in: [uint32!]
@@ -109111,6 +110210,10 @@ enum ZoneUserProfilesRawEventsGroupsOrderBy {
   botScore_ASC
   # botScore descending
   botScore_DESC
+  # clientASNDescription ascending
+  clientASNDescription_ASC
+  # clientASNDescription descending
+  clientASNDescription_DESC
   # clientASN ascending
   clientASN_ASC
   # clientASN descending
