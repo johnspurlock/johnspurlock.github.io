@@ -20,8 +20,13 @@ Account-level datasets:
 * aiInferenceAdaptive
 * aiInferenceAdaptiveGroups
 * aiSearchAPIAdaptiveGroups
+* aiSearchFulltextQueriesAdaptiveGroups
+* aiSearchImageProcessingTokensAdaptiveGroups
 * aiSearchIngestedItemsAdaptiveGroups
+* aiSearchIngestionTokensAdaptiveGroups
 * aiSearchPublicEventsAdaptiveGroups
+* aiSearchSemanticQueriesAdaptiveGroups
+* aiSearchStorageAdaptiveGroups
 * artifactsEventsAdaptiveGroups
 * artifactsStorageAdaptiveGroups
 * auditLogsGroups
@@ -78,6 +83,9 @@ Account-level datasets:
 * durableObjectsSqlStorageGroups
 * durableObjectsStorageGroups
 * durableObjectsSubrequestsAdaptiveGroups
+* emailComplaintsAdaptiveGroups
+* emailSendingAdaptive
+* emailSendingAdaptiveGroups
   fbmAttackAnalyticsGroups
 * firewallEventsAdaptive
   firewallEventsAdaptiveGroups
@@ -95,13 +103,16 @@ Account-level datasets:
 * httpRequests1dGroups
 * httpRequests1hGroups
   httpRequests1mGroups
-  httpRequestsAdaptive
+* httpRequestsAdaptive
 * httpRequestsAdaptiveGroups
 * httpRequestsOverviewAdaptiveGroups
 * hyperdrivePoolSizesAdaptiveGroups
 * hyperdriveQueriesAdaptiveGroups
+* imagesHostedRequestsAdaptiveGroups
+* imagesHostedRequestsStagingAdaptiveGroups
 * imagesRequestsAdaptiveGroups
 * imagesTransformationsAdaptiveGroups
+* imagesUniqueGroups
 * imagesUniqueTransformations
 * imagesUniqueTransformationsAccumulatedSinceStartOfMonth
 * kvOperationsAdaptiveGroups
@@ -387,10 +398,20 @@ type account {
   aiInferenceAdaptiveGroups(filter: AccountAiInferenceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiInferenceAdaptiveGroupsOrderBy!]): [AccountAiInferenceAdaptiveGroups!]!
   # AI Search API Search Analytics
   aiSearchAPIAdaptiveGroups(filter: AccountAiSearchAPIAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchAPIAdaptiveGroupsOrderBy!]): [AccountAiSearchAPIAdaptiveGroups!]!
+  # Sample-weighted estimate of AI Search full-text queries. Logical operations are not deduplicated, so retries may be counted more than once.
+  aiSearchFulltextQueriesAdaptiveGroups(filter: AccountAiSearchFulltextQueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchFulltextQueriesAdaptiveGroupsOrderBy!]): [AccountAiSearchFulltextQueriesAdaptiveGroups!]!
+  # Sample-weighted estimate of AI Search image processing tokens. Logical operations are not deduplicated, so retries may be counted more than once.
+  aiSearchImageProcessingTokensAdaptiveGroups(filter: AccountAiSearchImageProcessingTokensAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchImageProcessingTokensAdaptiveGroupsOrderBy!]): [AccountAiSearchImageProcessingTokensAdaptiveGroups!]!
   # AI Search Ingested Items Analytics
   aiSearchIngestedItemsAdaptiveGroups(filter: AccountAiSearchIngestedItemsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchIngestedItemsAdaptiveGroupsOrderBy!]): [AccountAiSearchIngestedItemsAdaptiveGroups!]!
+  # Sample-weighted estimate of AI Search ingestion tokens. Logical operations are not deduplicated, so retries may be counted more than once.
+  aiSearchIngestionTokensAdaptiveGroups(filter: AccountAiSearchIngestionTokensAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchIngestionTokensAdaptiveGroupsOrderBy!]): [AccountAiSearchIngestionTokensAdaptiveGroups!]!
   # AI Search public endpoint analytics: searches, result clicks and view-more interactions reported by the public search snippet
   aiSearchPublicEventsAdaptiveGroups(filter: AccountAiSearchPublicEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchPublicEventsAdaptiveGroupsOrderBy!]): [AccountAiSearchPublicEventsAdaptiveGroups!]!
+  # Sample-weighted estimate of AI Search semantic queries. Logical operations are not deduplicated, so retries may be counted more than once.
+  aiSearchSemanticQueriesAdaptiveGroups(filter: AccountAiSearchSemanticQueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchSemanticQueriesAdaptiveGroupsOrderBy!]): [AccountAiSearchSemanticQueriesAdaptiveGroups!]!
+  # Sample-weighted estimate of AI Search storage byte-hours from hourly per-instance byte observations. Observations are not deduplicated, so duplicate rows may be counted more than once.
+  aiSearchStorageAdaptiveGroups(filter: AccountAiSearchStorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchStorageAdaptiveGroupsOrderBy!]): [AccountAiSearchStorageAdaptiveGroups!]!
   # Artifacts events with adaptive sampling
   artifactsEventsAdaptiveGroups(filter: AccountArtifactsEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountArtifactsEventsAdaptiveGroupsOrderBy!]): [AccountArtifactsEventsAdaptiveGroups!]!
   # Artifacts repository storage snapshots with adaptive sampling
@@ -503,6 +524,12 @@ type account {
   durableObjectsStorageGroups(filter: AccountDurableObjectsStorageGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsStorageGroupsOrderBy!]): [AccountDurableObjectsStorageGroups!]!
   # Durable Objects subrequests with adaptive sampling
   durableObjectsSubrequestsAdaptiveGroups(filter: AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy!]): [AccountDurableObjectsSubrequestsAdaptiveGroups!]!
+  # Aggregated email complaints for all zones in an account, with adaptive sampling
+  emailComplaintsAdaptiveGroups(filter: AccountEmailComplaintsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountEmailComplaintsAdaptiveGroupsOrderBy!]): [AccountEmailComplaintsAdaptiveGroups!]!
+  # Raw email sending logs for all zones in an account, with adaptive sampling
+  emailSendingAdaptive(filter: AccountEmailSendingAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountEmailSendingAdaptiveOrderBy!]): [AccountEmailSendingAdaptive!]!
+  # Aggregated email sending logs for all zones in an account, with adaptive sampling
+  emailSendingAdaptiveGroups(filter: AccountEmailSendingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountEmailSendingAdaptiveGroupsOrderBy!]): [AccountEmailSendingAdaptiveGroups!]!
   # FBM analytics metadata for attacks detected by dosd
   fbmAttackAnalyticsGroups(filter: AccountFbmAttackAnalyticsGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountFbmAttackAnalyticsGroupsOrderBy!]): [AccountFbmAttackAnalyticsGroups!]!
   # Raw Firewall events with adaptive sampling
@@ -548,10 +575,16 @@ type account {
   hyperdrivePoolSizesAdaptiveGroups(filter: AccountHyperdrivePoolSizesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHyperdrivePoolSizesAdaptiveGroupsOrderBy!]): [AccountHyperdrivePoolSizesAdaptiveGroups!]!
   # Hyperdrive query events with adaptive sampling.
   hyperdriveQueriesAdaptiveGroups(filter: AccountHyperdriveQueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountHyperdriveQueriesAdaptiveGroupsOrderBy!]): [AccountHyperdriveQueriesAdaptiveGroups!]!
+  # Hosted Images delivery requests for an account, grouped by variant, format, response, cache status and location
+  imagesHostedRequestsAdaptiveGroups(filter: AccountImagesHostedRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesHostedRequestsAdaptiveGroupsOrderBy!]): [AccountImagesHostedRequestsAdaptiveGroups!]!
+  # Hosted Images delivery requests for an account in staging, grouped by variant, format, response, cache status and location
+  imagesHostedRequestsStagingAdaptiveGroups(filter: AccountImagesHostedRequestsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesHostedRequestsStagingAdaptiveGroupsOrderBy!]): [AccountImagesHostedRequestsStagingAdaptiveGroups!]!
   # A high-level summary of Cloudflare Images served to end users.
   imagesRequestsAdaptiveGroups(filter: AccountImagesRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesRequestsAdaptiveGroupsOrderBy!]): [AccountImagesRequestsAdaptiveGroups!]!
   # Image transformations performed for an account, grouped by zone, Worker script, transformation and origin host. Counts only transformations the resizer actually performed, so this is estimated processing volume rather than end-user request count or invoice total
   imagesTransformationsAdaptiveGroups(filter: AccountImagesTransformationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesTransformationsAdaptiveGroupsOrderBy!]): [AccountImagesTransformationsAdaptiveGroups!]!
+  # Number of unique origin images over the requested period
+  imagesUniqueGroups(filter: AccountImagesUniqueGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesUniqueGroupsOrderBy!]): [AccountImagesUniqueGroups!]!
   # Image unique transfromations per day
   imagesUniqueTransformations(filter: AccountImagesUniqueTransformationsFilter_InputObject!, limit: uint64!, orderBy: [AccountImagesUniqueTransformationsOrderBy!]): [AccountImagesUniqueTransformations!]!
   # Image unique transformations accumulated since start of month
@@ -11842,6 +11875,414 @@ type AccountAiSearchAPIAdaptiveGroupsSumConfidence {
   searchCount: Confidence!
 }
 
+# Sample-weighted estimate of AI Search full-text queries. Logical operations are not deduplicated, so retries may be counted more than once.
+type AccountAiSearchFulltextQueriesAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountAiSearchFulltextQueriesAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountAiSearchFulltextQueriesAdaptiveGroupsConfidence!
+  # Sample-weighted estimate of full-text queries; retries are not deduplicated
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiSearchFulltextQueriesAdaptiveGroupsDimensions
+}
+
+type AccountAiSearchFulltextQueriesAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountAiSearchFulltextQueriesAdaptiveGroupsConfidence {
+  # Sample-weighted estimate of full-text queries; retries are not deduplicated, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type AccountAiSearchFulltextQueriesAdaptiveGroupsDimensions {
+  # The date of the billing event
+  date: Date!
+  # The date and time of the billing event
+  datetime: Time!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Public AI Search instance identifier
+  instanceId: string!
+  # AI Search namespace identifier
+  namespaceId: string!
+  # Billing tier at the time of the event (free or paid)
+  tier: string!
+}
+
+input AccountAiSearchFulltextQueriesAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiSearchFulltextQueriesAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiSearchFulltextQueriesAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  instanceId: string
+  instanceId_geq: string
+  instanceId_gt: string
+  instanceId_ilike: string
+  instanceId_in: [string!]
+  instanceId_leq: string
+  instanceId_like: string
+  instanceId_lt: string
+  instanceId_neq: string
+  instanceId_notin: [string!]
+  instanceId_notlike: string
+  namespaceId: string
+  namespaceId_geq: string
+  namespaceId_gt: string
+  namespaceId_ilike: string
+  namespaceId_in: [string!]
+  namespaceId_leq: string
+  namespaceId_like: string
+  namespaceId_lt: string
+  namespaceId_neq: string
+  namespaceId_notin: [string!]
+  namespaceId_notlike: string
+  tier: string
+  tier_geq: string
+  tier_gt: string
+  tier_ilike: string
+  tier_in: [string!]
+  tier_leq: string
+  tier_like: string
+  tier_lt: string
+  tier_neq: string
+  tier_notin: [string!]
+  tier_notlike: string
+}
+
+enum AccountAiSearchFulltextQueriesAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # instanceId ascending
+  instanceId_ASC
+  # instanceId descending
+  instanceId_DESC
+  # namespaceId ascending
+  namespaceId_ASC
+  # namespaceId descending
+  namespaceId_DESC
+  # tier ascending
+  tier_ASC
+  # tier descending
+  tier_DESC
+}
+
+# Sample-weighted estimate of AI Search image processing tokens. Logical operations are not deduplicated, so retries may be counted more than once.
+type AccountAiSearchImageProcessingTokensAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountAiSearchImageProcessingTokensAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountAiSearchImageProcessingTokensAdaptiveGroupsConfidence!
+  # Sample-weighted estimate of image processing events; retries are not deduplicated
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiSearchImageProcessingTokensAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountAiSearchImageProcessingTokensAdaptiveGroupsSum
+}
+
+type AccountAiSearchImageProcessingTokensAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountAiSearchImageProcessingTokensAdaptiveGroupsConfidence {
+  # Sample-weighted estimate of image processing events; retries are not deduplicated, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountAiSearchImageProcessingTokensAdaptiveGroupsSumConfidence
+}
+
+type AccountAiSearchImageProcessingTokensAdaptiveGroupsDimensions {
+  # The date of the billing event
+  date: Date!
+  # The date and time of the billing event
+  datetime: Time!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Source of the processed image
+  imageSource: string!
+  # Public AI Search instance identifier
+  instanceId: string!
+  # AI Search namespace identifier
+  namespaceId: string!
+  # Billing tier at the time of the event (free or paid)
+  tier: string!
+  # Method used to count image processing tokens
+  tokenCountMethod: string!
+}
+
+input AccountAiSearchImageProcessingTokensAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiSearchImageProcessingTokensAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiSearchImageProcessingTokensAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  imageSource: string
+  imageSource_geq: string
+  imageSource_gt: string
+  imageSource_ilike: string
+  imageSource_in: [string!]
+  imageSource_leq: string
+  imageSource_like: string
+  imageSource_lt: string
+  imageSource_neq: string
+  imageSource_notin: [string!]
+  imageSource_notlike: string
+  instanceId: string
+  instanceId_geq: string
+  instanceId_gt: string
+  instanceId_ilike: string
+  instanceId_in: [string!]
+  instanceId_leq: string
+  instanceId_like: string
+  instanceId_lt: string
+  instanceId_neq: string
+  instanceId_notin: [string!]
+  instanceId_notlike: string
+  namespaceId: string
+  namespaceId_geq: string
+  namespaceId_gt: string
+  namespaceId_ilike: string
+  namespaceId_in: [string!]
+  namespaceId_leq: string
+  namespaceId_like: string
+  namespaceId_lt: string
+  namespaceId_neq: string
+  namespaceId_notin: [string!]
+  namespaceId_notlike: string
+  tier: string
+  tier_geq: string
+  tier_gt: string
+  tier_ilike: string
+  tier_in: [string!]
+  tier_leq: string
+  tier_like: string
+  tier_lt: string
+  tier_neq: string
+  tier_notin: [string!]
+  tier_notlike: string
+  tokenCountMethod: string
+  tokenCountMethod_geq: string
+  tokenCountMethod_gt: string
+  tokenCountMethod_ilike: string
+  tokenCountMethod_in: [string!]
+  tokenCountMethod_leq: string
+  tokenCountMethod_like: string
+  tokenCountMethod_lt: string
+  tokenCountMethod_neq: string
+  tokenCountMethod_notin: [string!]
+  tokenCountMethod_notlike: string
+}
+
+enum AccountAiSearchImageProcessingTokensAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # imageSource ascending
+  imageSource_ASC
+  # imageSource descending
+  imageSource_DESC
+  # instanceId ascending
+  instanceId_ASC
+  # instanceId descending
+  instanceId_DESC
+  # namespaceId ascending
+  namespaceId_ASC
+  # namespaceId descending
+  namespaceId_DESC
+  # sum(tokens) ascending
+  sum_tokens_ASC
+  # sum(tokens) descending
+  sum_tokens_DESC
+  # tier ascending
+  tier_ASC
+  # tier descending
+  tier_DESC
+  # tokenCountMethod ascending
+  tokenCountMethod_ASC
+  # tokenCountMethod descending
+  tokenCountMethod_DESC
+}
+
+type AccountAiSearchImageProcessingTokensAdaptiveGroupsSum {
+  # Sample-weighted estimate of image processing tokens; retries are not deduplicated
+  tokens: uint64!
+}
+
+type AccountAiSearchImageProcessingTokensAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  tokens: Confidence!
+}
+
 # AI Search Ingested Items Analytics
 type AccountAiSearchIngestedItemsAdaptiveGroups {
   # The average of values for a metric per dimension
@@ -12189,6 +12630,219 @@ type AccountAiSearchIngestedItemsAdaptiveGroupsSumConfidence {
   vectorizeDurationMs: Confidence!
 }
 
+# Sample-weighted estimate of AI Search ingestion tokens. Logical operations are not deduplicated, so retries may be counted more than once.
+type AccountAiSearchIngestionTokensAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountAiSearchIngestionTokensAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountAiSearchIngestionTokensAdaptiveGroupsConfidence!
+  # Sample-weighted estimate of ingestion events; retries are not deduplicated
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiSearchIngestionTokensAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountAiSearchIngestionTokensAdaptiveGroupsSum
+}
+
+type AccountAiSearchIngestionTokensAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountAiSearchIngestionTokensAdaptiveGroupsConfidence {
+  # Sample-weighted estimate of ingestion events; retries are not deduplicated, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountAiSearchIngestionTokensAdaptiveGroupsSumConfidence
+}
+
+type AccountAiSearchIngestionTokensAdaptiveGroupsDimensions {
+  # The date of the billing event
+  date: Date!
+  # The date and time of the billing event
+  datetime: Time!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Public AI Search instance identifier
+  instanceId: string!
+  # AI Search namespace identifier
+  namespaceId: string!
+  # Billing tier at the time of the event (free or paid)
+  tier: string!
+  # Method used to count ingestion tokens
+  tokenCountMethod: string!
+}
+
+input AccountAiSearchIngestionTokensAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiSearchIngestionTokensAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiSearchIngestionTokensAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  instanceId: string
+  instanceId_geq: string
+  instanceId_gt: string
+  instanceId_ilike: string
+  instanceId_in: [string!]
+  instanceId_leq: string
+  instanceId_like: string
+  instanceId_lt: string
+  instanceId_neq: string
+  instanceId_notin: [string!]
+  instanceId_notlike: string
+  namespaceId: string
+  namespaceId_geq: string
+  namespaceId_gt: string
+  namespaceId_ilike: string
+  namespaceId_in: [string!]
+  namespaceId_leq: string
+  namespaceId_like: string
+  namespaceId_lt: string
+  namespaceId_neq: string
+  namespaceId_notin: [string!]
+  namespaceId_notlike: string
+  tier: string
+  tier_geq: string
+  tier_gt: string
+  tier_ilike: string
+  tier_in: [string!]
+  tier_leq: string
+  tier_like: string
+  tier_lt: string
+  tier_neq: string
+  tier_notin: [string!]
+  tier_notlike: string
+  tokenCountMethod: string
+  tokenCountMethod_geq: string
+  tokenCountMethod_gt: string
+  tokenCountMethod_ilike: string
+  tokenCountMethod_in: [string!]
+  tokenCountMethod_leq: string
+  tokenCountMethod_like: string
+  tokenCountMethod_lt: string
+  tokenCountMethod_neq: string
+  tokenCountMethod_notin: [string!]
+  tokenCountMethod_notlike: string
+}
+
+enum AccountAiSearchIngestionTokensAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # instanceId ascending
+  instanceId_ASC
+  # instanceId descending
+  instanceId_DESC
+  # namespaceId ascending
+  namespaceId_ASC
+  # namespaceId descending
+  namespaceId_DESC
+  # sum(tokens) ascending
+  sum_tokens_ASC
+  # sum(tokens) descending
+  sum_tokens_DESC
+  # tier ascending
+  tier_ASC
+  # tier descending
+  tier_DESC
+  # tokenCountMethod ascending
+  tokenCountMethod_ASC
+  # tokenCountMethod descending
+  tokenCountMethod_DESC
+}
+
+type AccountAiSearchIngestionTokensAdaptiveGroupsSum {
+  # Sample-weighted estimate of ingestion tokens; retries are not deduplicated
+  tokens: uint64!
+}
+
+type AccountAiSearchIngestionTokensAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  tokens: Confidence!
+}
+
 # AI Search public endpoint analytics: searches, result clicks and view-more interactions reported by the public search snippet
 type AccountAiSearchPublicEventsAdaptiveGroups {
   # The average of values for a metric per dimension
@@ -12514,6 +13168,424 @@ type AccountAiSearchPublicEventsAdaptiveGroupsSumConfidence {
 type AccountAiSearchPublicEventsAdaptiveGroupsUniq {
   # The number of distinct requests to the public endpoint that reported these events
   searchIdCount: uint64!
+}
+
+# Sample-weighted estimate of AI Search semantic queries. Logical operations are not deduplicated, so retries may be counted more than once.
+type AccountAiSearchSemanticQueriesAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountAiSearchSemanticQueriesAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountAiSearchSemanticQueriesAdaptiveGroupsConfidence!
+  # Sample-weighted estimate of semantic queries; retries are not deduplicated
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiSearchSemanticQueriesAdaptiveGroupsDimensions
+}
+
+type AccountAiSearchSemanticQueriesAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountAiSearchSemanticQueriesAdaptiveGroupsConfidence {
+  # Sample-weighted estimate of semantic queries; retries are not deduplicated, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type AccountAiSearchSemanticQueriesAdaptiveGroupsDimensions {
+  # The date of the billing event
+  date: Date!
+  # The date and time of the billing event
+  datetime: Time!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Public AI Search instance identifier
+  instanceId: string!
+  # AI Search namespace identifier
+  namespaceId: string!
+  # Type of semantic retrieval performed
+  retrievalType: string!
+  # Billing tier at the time of the event (free or paid)
+  tier: string!
+}
+
+input AccountAiSearchSemanticQueriesAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiSearchSemanticQueriesAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiSearchSemanticQueriesAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  instanceId: string
+  instanceId_geq: string
+  instanceId_gt: string
+  instanceId_ilike: string
+  instanceId_in: [string!]
+  instanceId_leq: string
+  instanceId_like: string
+  instanceId_lt: string
+  instanceId_neq: string
+  instanceId_notin: [string!]
+  instanceId_notlike: string
+  namespaceId: string
+  namespaceId_geq: string
+  namespaceId_gt: string
+  namespaceId_ilike: string
+  namespaceId_in: [string!]
+  namespaceId_leq: string
+  namespaceId_like: string
+  namespaceId_lt: string
+  namespaceId_neq: string
+  namespaceId_notin: [string!]
+  namespaceId_notlike: string
+  retrievalType: string
+  retrievalType_geq: string
+  retrievalType_gt: string
+  retrievalType_ilike: string
+  retrievalType_in: [string!]
+  retrievalType_leq: string
+  retrievalType_like: string
+  retrievalType_lt: string
+  retrievalType_neq: string
+  retrievalType_notin: [string!]
+  retrievalType_notlike: string
+  tier: string
+  tier_geq: string
+  tier_gt: string
+  tier_ilike: string
+  tier_in: [string!]
+  tier_leq: string
+  tier_like: string
+  tier_lt: string
+  tier_neq: string
+  tier_notin: [string!]
+  tier_notlike: string
+}
+
+enum AccountAiSearchSemanticQueriesAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # instanceId ascending
+  instanceId_ASC
+  # instanceId descending
+  instanceId_DESC
+  # namespaceId ascending
+  namespaceId_ASC
+  # namespaceId descending
+  namespaceId_DESC
+  # retrievalType ascending
+  retrievalType_ASC
+  # retrievalType descending
+  retrievalType_DESC
+  # tier ascending
+  tier_ASC
+  # tier descending
+  tier_DESC
+}
+
+# Sample-weighted estimate of AI Search storage byte-hours from hourly per-instance byte observations. Observations are not deduplicated, so duplicate rows may be counted more than once.
+type AccountAiSearchStorageAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountAiSearchStorageAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountAiSearchStorageAdaptiveGroupsConfidence!
+  # Sample-weighted estimate of hourly storage observations; duplicate observations are not deduplicated
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiSearchStorageAdaptiveGroupsDimensions
+  # The maximum value for a metric per dimension
+  max: AccountAiSearchStorageAdaptiveGroupsMax
+  # The sum of values for a metric per dimension
+  sum: AccountAiSearchStorageAdaptiveGroupsSum
+}
+
+type AccountAiSearchStorageAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountAiSearchStorageAdaptiveGroupsConfidence {
+  # Sample-weighted estimate of hourly storage observations; duplicate observations are not deduplicated, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountAiSearchStorageAdaptiveGroupsSumConfidence
+}
+
+type AccountAiSearchStorageAdaptiveGroupsDimensions {
+  # The date of the billing event
+  date: Date!
+  # The date and time of the billing event
+  datetime: Time!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Public AI Search instance identifier
+  instanceId: string!
+  # AI Search namespace identifier
+  namespaceId: string!
+  # Billing tier at the time of the event (free or paid)
+  tier: string!
+}
+
+input AccountAiSearchStorageAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiSearchStorageAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiSearchStorageAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  instanceId: string
+  instanceId_geq: string
+  instanceId_gt: string
+  instanceId_ilike: string
+  instanceId_in: [string!]
+  instanceId_leq: string
+  instanceId_like: string
+  instanceId_lt: string
+  instanceId_neq: string
+  instanceId_notin: [string!]
+  instanceId_notlike: string
+  namespaceId: string
+  namespaceId_geq: string
+  namespaceId_gt: string
+  namespaceId_ilike: string
+  namespaceId_in: [string!]
+  namespaceId_leq: string
+  namespaceId_like: string
+  namespaceId_lt: string
+  namespaceId_neq: string
+  namespaceId_notin: [string!]
+  namespaceId_notlike: string
+  tier: string
+  tier_geq: string
+  tier_gt: string
+  tier_ilike: string
+  tier_in: [string!]
+  tier_leq: string
+  tier_like: string
+  tier_lt: string
+  tier_neq: string
+  tier_notin: [string!]
+  tier_notlike: string
+}
+
+type AccountAiSearchStorageAdaptiveGroupsMax {
+  # Peak single-instance hourly byte observation, not the account total
+  bytes: uint64!
+}
+
+enum AccountAiSearchStorageAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # instanceId ascending
+  instanceId_ASC
+  # instanceId descending
+  instanceId_DESC
+  # max(bytes) ascending
+  max_bytes_ASC
+  # max(bytes) descending
+  max_bytes_DESC
+  # namespaceId ascending
+  namespaceId_ASC
+  # namespaceId descending
+  namespaceId_DESC
+  # sum(byteHours) ascending
+  sum_byteHours_ASC
+  # sum(byteHours) descending
+  sum_byteHours_DESC
+  # sum(metadataByteHours) ascending
+  sum_metadataByteHours_ASC
+  # sum(metadataByteHours) descending
+  sum_metadataByteHours_DESC
+  # sum(payloadByteHours) ascending
+  sum_payloadByteHours_ASC
+  # sum(payloadByteHours) descending
+  sum_payloadByteHours_DESC
+  # tier ascending
+  tier_ASC
+  # tier descending
+  tier_DESC
+}
+
+type AccountAiSearchStorageAdaptiveGroupsSum {
+  # Sample-weighted estimate of total storage byte-hours; duplicate observations are not deduplicated
+  byteHours: uint64!
+  # Sample-weighted estimate of metadata byte-hours; duplicate observations are not deduplicated
+  metadataByteHours: uint64!
+  # Sample-weighted estimate of payload byte-hours; duplicate observations are not deduplicated
+  payloadByteHours: uint64!
+}
+
+type AccountAiSearchStorageAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  byteHours: Confidence!
+  # Confidence interval for the corresponding point estimate
+  metadataByteHours: Confidence!
+  # Confidence interval for the corresponding point estimate
+  payloadByteHours: Confidence!
 }
 
 # Artifacts events with adaptive sampling
@@ -32446,6 +33518,1067 @@ type AccountDurableObjectsSubrequestsAdaptiveGroupsSumConfidence {
   requestBodySizeUncached: Confidence!
 }
 
+# Aggregated email complaints for all zones in an account, with adaptive sampling
+type AccountEmailComplaintsAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountEmailComplaintsAdaptiveGroupsConfidence!
+  # Number of complaints
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountEmailComplaintsAdaptiveGroupsDimensions
+}
+
+type AccountEmailComplaintsAdaptiveGroupsConfidence {
+  # Number of complaints, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type AccountEmailComplaintsAdaptiveGroupsDimensions {
+  # The date the complaint event was recorded
+  date: Date!
+  # The date and time the complaint event was recorded
+  datetime: Time!
+  # The date and time the complaint event was recorded truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the complaint event was recorded truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the complaint event was recorded truncated to the hour
+  datetimeHour: Time!
+  # The date and time the complaint event was recorded truncated to the minute
+  datetimeMinute: Time!
+  # The date of the correlated email delivery
+  deliveryDate: Date!
+  # Time of the correlated email delivery truncated to fifteen minutes
+  deliveryDatetimeFifteenMinutes: Time!
+  # Time of the correlated email delivery truncated to five minutes
+  deliveryDatetimeFiveMinutes: Time!
+  # Time of the correlated email delivery truncated to the hour
+  deliveryDatetimeHour: Time!
+  # Time of the correlated email delivery truncated to the minute
+  deliveryDatetimeMinute: Time!
+  # Time of the correlated email delivery
+  deliveryTimestamp: Time!
+  # Whether the complaint is for Email Sending
+  isEmailSending: uint8!
+  # Mailbox provider that sent the complaint
+  provider: string!
+  # Email Sending domain associated with the complaint
+  sendingDomain: string!
+  # Complaint report format
+  source: string!
+}
+
+input AccountEmailComplaintsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountEmailComplaintsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountEmailComplaintsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  deliveryDate: Date
+  deliveryDate_geq: Date
+  deliveryDate_gt: Date
+  deliveryDate_in: [Date!]
+  deliveryDate_leq: Date
+  deliveryDate_lt: Date
+  deliveryDate_neq: Date
+  deliveryDate_notin: [Date!]
+  deliveryDatetimeFifteenMinutes: Time
+  deliveryDatetimeFifteenMinutes_geq: Time
+  deliveryDatetimeFifteenMinutes_gt: Time
+  deliveryDatetimeFifteenMinutes_in: [Time!]
+  deliveryDatetimeFifteenMinutes_leq: Time
+  deliveryDatetimeFifteenMinutes_lt: Time
+  deliveryDatetimeFifteenMinutes_neq: Time
+  deliveryDatetimeFifteenMinutes_notin: [Time!]
+  deliveryDatetimeFiveMinutes: Time
+  deliveryDatetimeFiveMinutes_geq: Time
+  deliveryDatetimeFiveMinutes_gt: Time
+  deliveryDatetimeFiveMinutes_in: [Time!]
+  deliveryDatetimeFiveMinutes_leq: Time
+  deliveryDatetimeFiveMinutes_lt: Time
+  deliveryDatetimeFiveMinutes_neq: Time
+  deliveryDatetimeFiveMinutes_notin: [Time!]
+  deliveryDatetimeHour: Time
+  deliveryDatetimeHour_geq: Time
+  deliveryDatetimeHour_gt: Time
+  deliveryDatetimeHour_in: [Time!]
+  deliveryDatetimeHour_leq: Time
+  deliveryDatetimeHour_lt: Time
+  deliveryDatetimeHour_neq: Time
+  deliveryDatetimeHour_notin: [Time!]
+  deliveryDatetimeMinute: Time
+  deliveryDatetimeMinute_geq: Time
+  deliveryDatetimeMinute_gt: Time
+  deliveryDatetimeMinute_in: [Time!]
+  deliveryDatetimeMinute_leq: Time
+  deliveryDatetimeMinute_lt: Time
+  deliveryDatetimeMinute_neq: Time
+  deliveryDatetimeMinute_notin: [Time!]
+  deliveryTimestamp: Time
+  deliveryTimestamp_geq: Time
+  deliveryTimestamp_gt: Time
+  deliveryTimestamp_in: [Time!]
+  deliveryTimestamp_leq: Time
+  deliveryTimestamp_lt: Time
+  deliveryTimestamp_neq: Time
+  deliveryTimestamp_notin: [Time!]
+  isEmailSending: uint8
+  isEmailSending_geq: uint8
+  isEmailSending_gt: uint8
+  isEmailSending_in: bytes
+  isEmailSending_leq: uint8
+  isEmailSending_lt: uint8
+  isEmailSending_neq: uint8
+  isEmailSending_notin: bytes
+  provider: string
+  provider_geq: string
+  provider_gt: string
+  provider_ilike: string
+  provider_in: [string!]
+  provider_leq: string
+  provider_like: string
+  provider_lt: string
+  provider_neq: string
+  provider_notin: [string!]
+  provider_notlike: string
+  sendingDomain: string
+  sendingDomain_geq: string
+  sendingDomain_gt: string
+  sendingDomain_ilike: string
+  sendingDomain_in: [string!]
+  sendingDomain_leq: string
+  sendingDomain_like: string
+  sendingDomain_lt: string
+  sendingDomain_neq: string
+  sendingDomain_notin: [string!]
+  sendingDomain_notlike: string
+  source: string
+  source_geq: string
+  source_gt: string
+  source_ilike: string
+  source_in: [string!]
+  source_leq: string
+  source_like: string
+  source_lt: string
+  source_neq: string
+  source_notin: [string!]
+  source_notlike: string
+}
+
+enum AccountEmailComplaintsAdaptiveGroupsOrderBy {
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # deliveryDate ascending
+  deliveryDate_ASC
+  # deliveryDate descending
+  deliveryDate_DESC
+  # deliveryDatetimeFifteenMinutes ascending
+  deliveryDatetimeFifteenMinutes_ASC
+  # deliveryDatetimeFifteenMinutes descending
+  deliveryDatetimeFifteenMinutes_DESC
+  # deliveryDatetimeFiveMinutes ascending
+  deliveryDatetimeFiveMinutes_ASC
+  # deliveryDatetimeFiveMinutes descending
+  deliveryDatetimeFiveMinutes_DESC
+  # deliveryDatetimeHour ascending
+  deliveryDatetimeHour_ASC
+  # deliveryDatetimeHour descending
+  deliveryDatetimeHour_DESC
+  # deliveryDatetimeMinute ascending
+  deliveryDatetimeMinute_ASC
+  # deliveryDatetimeMinute descending
+  deliveryDatetimeMinute_DESC
+  # deliveryTimestamp ascending
+  deliveryTimestamp_ASC
+  # deliveryTimestamp descending
+  deliveryTimestamp_DESC
+  # isEmailSending ascending
+  isEmailSending_ASC
+  # isEmailSending descending
+  isEmailSending_DESC
+  # provider ascending
+  provider_ASC
+  # provider descending
+  provider_DESC
+  # sendingDomain ascending
+  sendingDomain_ASC
+  # sendingDomain descending
+  sendingDomain_DESC
+  # source ascending
+  source_ASC
+  # source descending
+  source_DESC
+}
+
+# Raw email sending logs for all zones in an account, with adaptive sampling
+type AccountEmailSendingAdaptive {
+  # ARC check status of the source email
+  arc: string!
+  # The date and time the source email was received
+  datetime: Time!
+  # DKIM check status of the source email
+  dkim: string!
+  # DMARC check status of the source email
+  dmarc: string!
+  # The envelope recipient email address
+  envelopeTo: string!
+  # The envelope recipient email address
+  @Deprecated
+  envelopeTos: string!
+  # Whether customer behavior or data caused the rejection: customer, non_customer, or empty when there is no error
+  errorAttribution: string!
+  # Error type (if any)
+  errorCause: string!
+  # Detailed error message (if any)
+  errorDetail: string!
+  # Origin of email (incoming|forward|reply|newEmail)
+  eventType: string!
+  # The sender email address of the source email
+  from: string!
+  # Is this the last event for this email?
+  isLastEvent: uint8!
+  # Is this event related to a NDR (bounce) email?
+  isNDR: uint8!
+  # Source email is spam
+  isSpam: uint8!
+  # The Message-ID header of the source email (if present)
+  messageId: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # Domain from which the email was sent
+  sendingDomain: string!
+  # Unique identifier for the email log entry (note: retries for the same email may result in multiple log entries)
+  sessionId: string!
+  # Spam score value
+  spamScore: uint32!
+  # Spam threshold value
+  spamThreshold: uint32!
+  # SPF check status of the source email
+  spf: string!
+  # The resulting outcome (action) for the email
+  status: string!
+  # The subject of the source email
+  subject: string!
+  # The recipient email address of the source email
+  to: string!
+}
+
+input AccountEmailSendingAdaptiveFilter_InputObject {
+  AND: [AccountEmailSendingAdaptiveFilter_InputObject!]
+  OR: [AccountEmailSendingAdaptiveFilter_InputObject!]
+  arc: string
+  arc_geq: string
+  arc_gt: string
+  arc_ilike: string
+  arc_in: [string!]
+  arc_leq: string
+  arc_like: string
+  arc_lt: string
+  arc_neq: string
+  arc_notin: [string!]
+  arc_notlike: string
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  dkim: string
+  dkim_geq: string
+  dkim_gt: string
+  dkim_ilike: string
+  dkim_in: [string!]
+  dkim_leq: string
+  dkim_like: string
+  dkim_lt: string
+  dkim_neq: string
+  dkim_notin: [string!]
+  dkim_notlike: string
+  dmarc: string
+  dmarc_geq: string
+  dmarc_gt: string
+  dmarc_ilike: string
+  dmarc_in: [string!]
+  dmarc_leq: string
+  dmarc_like: string
+  dmarc_lt: string
+  dmarc_neq: string
+  dmarc_notin: [string!]
+  dmarc_notlike: string
+  envelopeTo: string
+  envelopeTo_geq: string
+  envelopeTo_gt: string
+  envelopeTo_ilike: string
+  envelopeTo_in: [string!]
+  envelopeTo_leq: string
+  envelopeTo_like: string
+  envelopeTo_lt: string
+  envelopeTo_neq: string
+  envelopeTo_notin: [string!]
+  envelopeTo_notlike: string
+  envelopeTos: string
+  envelopeTos_geq: string
+  envelopeTos_gt: string
+  envelopeTos_ilike: string
+  envelopeTos_in: [string!]
+  envelopeTos_leq: string
+  envelopeTos_like: string
+  envelopeTos_lt: string
+  envelopeTos_neq: string
+  envelopeTos_notin: [string!]
+  envelopeTos_notlike: string
+  errorAttribution: string
+  errorAttribution_geq: string
+  errorAttribution_gt: string
+  errorAttribution_ilike: string
+  errorAttribution_in: [string!]
+  errorAttribution_leq: string
+  errorAttribution_like: string
+  errorAttribution_lt: string
+  errorAttribution_neq: string
+  errorAttribution_notin: [string!]
+  errorAttribution_notlike: string
+  errorCause: string
+  errorCause_geq: string
+  errorCause_gt: string
+  errorCause_ilike: string
+  errorCause_in: [string!]
+  errorCause_leq: string
+  errorCause_like: string
+  errorCause_lt: string
+  errorCause_neq: string
+  errorCause_notin: [string!]
+  errorCause_notlike: string
+  errorDetail: string
+  errorDetail_geq: string
+  errorDetail_gt: string
+  errorDetail_ilike: string
+  errorDetail_in: [string!]
+  errorDetail_leq: string
+  errorDetail_like: string
+  errorDetail_lt: string
+  errorDetail_neq: string
+  errorDetail_notin: [string!]
+  errorDetail_notlike: string
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_ilike: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
+  from: string
+  from_geq: string
+  from_gt: string
+  from_ilike: string
+  from_in: [string!]
+  from_leq: string
+  from_like: string
+  from_lt: string
+  from_neq: string
+  from_notin: [string!]
+  from_notlike: string
+  isLastEvent: uint8
+  isLastEvent_geq: uint8
+  isLastEvent_gt: uint8
+  isLastEvent_in: bytes
+  isLastEvent_leq: uint8
+  isLastEvent_lt: uint8
+  isLastEvent_neq: uint8
+  isLastEvent_notin: bytes
+  isNDR: uint8
+  isNDR_geq: uint8
+  isNDR_gt: uint8
+  isNDR_in: bytes
+  isNDR_leq: uint8
+  isNDR_lt: uint8
+  isNDR_neq: uint8
+  isNDR_notin: bytes
+  isSpam: uint8
+  isSpam_geq: uint8
+  isSpam_gt: uint8
+  isSpam_in: bytes
+  isSpam_leq: uint8
+  isSpam_lt: uint8
+  isSpam_neq: uint8
+  isSpam_notin: bytes
+  messageId: string
+  messageId_geq: string
+  messageId_gt: string
+  messageId_ilike: string
+  messageId_in: [string!]
+  messageId_leq: string
+  messageId_like: string
+  messageId_lt: string
+  messageId_neq: string
+  messageId_notin: [string!]
+  messageId_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  sendingDomain: string
+  sendingDomain_geq: string
+  sendingDomain_gt: string
+  sendingDomain_ilike: string
+  sendingDomain_in: [string!]
+  sendingDomain_leq: string
+  sendingDomain_like: string
+  sendingDomain_lt: string
+  sendingDomain_neq: string
+  sendingDomain_notin: [string!]
+  sendingDomain_notlike: string
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_ilike: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+  spamScore: uint32
+  spamScore_geq: uint32
+  spamScore_gt: uint32
+  spamScore_in: [uint32!]
+  spamScore_leq: uint32
+  spamScore_lt: uint32
+  spamScore_neq: uint32
+  spamScore_notin: [uint32!]
+  spamThreshold: uint32
+  spamThreshold_geq: uint32
+  spamThreshold_gt: uint32
+  spamThreshold_in: [uint32!]
+  spamThreshold_leq: uint32
+  spamThreshold_lt: uint32
+  spamThreshold_neq: uint32
+  spamThreshold_notin: [uint32!]
+  spf: string
+  spf_geq: string
+  spf_gt: string
+  spf_ilike: string
+  spf_in: [string!]
+  spf_leq: string
+  spf_like: string
+  spf_lt: string
+  spf_neq: string
+  spf_notin: [string!]
+  spf_notlike: string
+  status: string
+  status_geq: string
+  status_gt: string
+  status_ilike: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
+  subject: string
+  subject_geq: string
+  subject_gt: string
+  subject_ilike: string
+  subject_in: [string!]
+  subject_leq: string
+  subject_like: string
+  subject_lt: string
+  subject_neq: string
+  subject_notin: [string!]
+  subject_notlike: string
+  to: string
+  to_geq: string
+  to_gt: string
+  to_ilike: string
+  to_in: [string!]
+  to_leq: string
+  to_like: string
+  to_lt: string
+  to_neq: string
+  to_notin: [string!]
+  to_notlike: string
+}
+
+# Aggregated email sending logs for all zones in an account, with adaptive sampling
+type AccountEmailSendingAdaptiveGroups {
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountEmailSendingAdaptiveGroupsConfidence!
+  # Number of emails processed
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountEmailSendingAdaptiveGroupsDimensions
+}
+
+type AccountEmailSendingAdaptiveGroupsConfidence {
+  # Number of emails processed, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type AccountEmailSendingAdaptiveGroupsDimensions {
+  # ARC check status of the source email
+  arc: string!
+  # The date the source email was received
+  date: Date!
+  # The date and time the source email was received
+  datetime: Time!
+  # The date and time the source email was received truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the source email was received truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the source email was received truncated to the hour
+  datetimeHour: Time!
+  # The date and time the source email was received truncated to the minute
+  datetimeMinute: Time!
+  # DKIM check status of the source email
+  dkim: string!
+  # DMARC check status of the source email
+  dmarc: string!
+  # The envelope recipient email address
+  envelopeTo: string!
+  # The envelope recipient email address
+  @Deprecated
+  envelopeTos: string!
+  # Whether customer behavior or data caused the rejection: customer, non_customer, or empty when there is no error
+  errorAttribution: string!
+  # Error type (if any)
+  errorCause: string!
+  # Origin of email (incoming|forward|reply|newEmail)
+  eventType: string!
+  # Is this the last event for this email?
+  isLastEvent: uint8!
+  # Is this event related to a NDR (bounce) email?
+  isNDR: uint8!
+  # Source email is spam
+  isSpam: uint8!
+  # ABR sample interval
+  sampleInterval: uint32!
+  # Domain from which the email was sent
+  sendingDomain: string!
+  # Spam score value
+  spamScore: uint32!
+  # Spam threshold value
+  spamThreshold: uint32!
+  # SPF check status of the source email
+  spf: string!
+  # The resulting outcome (action) for the email
+  status: string!
+}
+
+input AccountEmailSendingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountEmailSendingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountEmailSendingAdaptiveGroupsFilter_InputObject!]
+  arc: string
+  arc_geq: string
+  arc_gt: string
+  arc_ilike: string
+  arc_in: [string!]
+  arc_leq: string
+  arc_like: string
+  arc_lt: string
+  arc_neq: string
+  arc_notin: [string!]
+  arc_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  dkim: string
+  dkim_geq: string
+  dkim_gt: string
+  dkim_ilike: string
+  dkim_in: [string!]
+  dkim_leq: string
+  dkim_like: string
+  dkim_lt: string
+  dkim_neq: string
+  dkim_notin: [string!]
+  dkim_notlike: string
+  dmarc: string
+  dmarc_geq: string
+  dmarc_gt: string
+  dmarc_ilike: string
+  dmarc_in: [string!]
+  dmarc_leq: string
+  dmarc_like: string
+  dmarc_lt: string
+  dmarc_neq: string
+  dmarc_notin: [string!]
+  dmarc_notlike: string
+  envelopeTo: string
+  envelopeTo_geq: string
+  envelopeTo_gt: string
+  envelopeTo_ilike: string
+  envelopeTo_in: [string!]
+  envelopeTo_leq: string
+  envelopeTo_like: string
+  envelopeTo_lt: string
+  envelopeTo_neq: string
+  envelopeTo_notin: [string!]
+  envelopeTo_notlike: string
+  envelopeTos: string
+  envelopeTos_geq: string
+  envelopeTos_gt: string
+  envelopeTos_ilike: string
+  envelopeTos_in: [string!]
+  envelopeTos_leq: string
+  envelopeTos_like: string
+  envelopeTos_lt: string
+  envelopeTos_neq: string
+  envelopeTos_notin: [string!]
+  envelopeTos_notlike: string
+  errorAttribution: string
+  errorAttribution_geq: string
+  errorAttribution_gt: string
+  errorAttribution_ilike: string
+  errorAttribution_in: [string!]
+  errorAttribution_leq: string
+  errorAttribution_like: string
+  errorAttribution_lt: string
+  errorAttribution_neq: string
+  errorAttribution_notin: [string!]
+  errorAttribution_notlike: string
+  errorCause: string
+  errorCause_geq: string
+  errorCause_gt: string
+  errorCause_ilike: string
+  errorCause_in: [string!]
+  errorCause_leq: string
+  errorCause_like: string
+  errorCause_lt: string
+  errorCause_neq: string
+  errorCause_notin: [string!]
+  errorCause_notlike: string
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_ilike: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
+  isLastEvent: uint8
+  isLastEvent_geq: uint8
+  isLastEvent_gt: uint8
+  isLastEvent_in: bytes
+  isLastEvent_leq: uint8
+  isLastEvent_lt: uint8
+  isLastEvent_neq: uint8
+  isLastEvent_notin: bytes
+  isNDR: uint8
+  isNDR_geq: uint8
+  isNDR_gt: uint8
+  isNDR_in: bytes
+  isNDR_leq: uint8
+  isNDR_lt: uint8
+  isNDR_neq: uint8
+  isNDR_notin: bytes
+  isSpam: uint8
+  isSpam_geq: uint8
+  isSpam_gt: uint8
+  isSpam_in: bytes
+  isSpam_leq: uint8
+  isSpam_lt: uint8
+  isSpam_neq: uint8
+  isSpam_notin: bytes
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+  sendingDomain: string
+  sendingDomain_geq: string
+  sendingDomain_gt: string
+  sendingDomain_ilike: string
+  sendingDomain_in: [string!]
+  sendingDomain_leq: string
+  sendingDomain_like: string
+  sendingDomain_lt: string
+  sendingDomain_neq: string
+  sendingDomain_notin: [string!]
+  sendingDomain_notlike: string
+  spamScore: uint32
+  spamScore_geq: uint32
+  spamScore_gt: uint32
+  spamScore_in: [uint32!]
+  spamScore_leq: uint32
+  spamScore_lt: uint32
+  spamScore_neq: uint32
+  spamScore_notin: [uint32!]
+  spamThreshold: uint32
+  spamThreshold_geq: uint32
+  spamThreshold_gt: uint32
+  spamThreshold_in: [uint32!]
+  spamThreshold_leq: uint32
+  spamThreshold_lt: uint32
+  spamThreshold_neq: uint32
+  spamThreshold_notin: [uint32!]
+  spf: string
+  spf_geq: string
+  spf_gt: string
+  spf_ilike: string
+  spf_in: [string!]
+  spf_leq: string
+  spf_like: string
+  spf_lt: string
+  spf_neq: string
+  spf_notin: [string!]
+  spf_notlike: string
+  status: string
+  status_geq: string
+  status_gt: string
+  status_ilike: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
+}
+
+enum AccountEmailSendingAdaptiveGroupsOrderBy {
+  # arc ascending
+  arc_ASC
+  # arc descending
+  arc_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # dkim ascending
+  dkim_ASC
+  # dkim descending
+  dkim_DESC
+  # dmarc ascending
+  dmarc_ASC
+  # dmarc descending
+  dmarc_DESC
+  # envelopeTo ascending
+  envelopeTo_ASC
+  # envelopeTo descending
+  envelopeTo_DESC
+  # envelopeTos ascending
+  envelopeTos_ASC
+  # envelopeTos descending
+  envelopeTos_DESC
+  # errorAttribution ascending
+  errorAttribution_ASC
+  # errorAttribution descending
+  errorAttribution_DESC
+  # errorCause ascending
+  errorCause_ASC
+  # errorCause descending
+  errorCause_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
+  # isEmailSending ascending
+  isEmailSending_ASC
+  # isEmailSending descending
+  isEmailSending_DESC
+  # isLastEvent ascending
+  isLastEvent_ASC
+  # isLastEvent descending
+  isLastEvent_DESC
+  # isNDR ascending
+  isNDR_ASC
+  # isNDR descending
+  isNDR_DESC
+  # isSpam ascending
+  isSpam_ASC
+  # isSpam descending
+  isSpam_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # sendingDomain ascending
+  sendingDomain_ASC
+  # sendingDomain descending
+  sendingDomain_DESC
+  # spamScore ascending
+  spamScore_ASC
+  # spamScore descending
+  spamScore_DESC
+  # spamThreshold ascending
+  spamThreshold_ASC
+  # spamThreshold descending
+  spamThreshold_DESC
+  # spf ascending
+  spf_ASC
+  # spf descending
+  spf_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+}
+
+enum AccountEmailSendingAdaptiveOrderBy {
+  # arc ascending
+  arc_ASC
+  # arc descending
+  arc_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # dkim ascending
+  dkim_ASC
+  # dkim descending
+  dkim_DESC
+  # dmarc ascending
+  dmarc_ASC
+  # dmarc descending
+  dmarc_DESC
+  # envelopeTo ascending
+  envelopeTo_ASC
+  # envelopeTo descending
+  envelopeTo_DESC
+  # envelopeTos ascending
+  envelopeTos_ASC
+  # envelopeTos descending
+  envelopeTos_DESC
+  # errorAttribution ascending
+  errorAttribution_ASC
+  # errorAttribution descending
+  errorAttribution_DESC
+  # errorCause ascending
+  errorCause_ASC
+  # errorCause descending
+  errorCause_DESC
+  # errorDetail ascending
+  errorDetail_ASC
+  # errorDetail descending
+  errorDetail_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
+  # from ascending
+  from_ASC
+  # from descending
+  from_DESC
+  # isEmailSending ascending
+  isEmailSending_ASC
+  # isEmailSending descending
+  isEmailSending_DESC
+  # isLastEvent ascending
+  isLastEvent_ASC
+  # isLastEvent descending
+  isLastEvent_DESC
+  # isNDR ascending
+  isNDR_ASC
+  # isNDR descending
+  isNDR_DESC
+  # isSpam ascending
+  isSpam_ASC
+  # isSpam descending
+  isSpam_DESC
+  # messageId ascending
+  messageId_ASC
+  # messageId descending
+  messageId_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # sendingDomain ascending
+  sendingDomain_ASC
+  # sendingDomain descending
+  sendingDomain_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # spamScore ascending
+  spamScore_ASC
+  # spamScore descending
+  spamScore_DESC
+  # spamThreshold ascending
+  spamThreshold_ASC
+  # spamThreshold descending
+  spamThreshold_DESC
+  # spf ascending
+  spf_ASC
+  # spf descending
+  spf_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # subject ascending
+  subject_ASC
+  # subject descending
+  subject_DESC
+  # to ascending
+  to_ASC
+  # to descending
+  to_DESC
+}
+
 # FBM analytics metadata for attacks detected by dosd
 type AccountFbmAttackAnalyticsGroups {
   # Unique identifier of the mitigation that matched the packet, if any
@@ -43778,6 +45911,30 @@ input AccountHttpRequestsAdaptiveGroupsFilter_InputObject {
   edgeTimeToFirstByteMs_lt: uint16
   edgeTimeToFirstByteMs_neq: uint16
   edgeTimeToFirstByteMs_notin: [uint16!]
+  edgeWorkerHandled: uint8
+  edgeWorkerHandled_geq: uint8
+  edgeWorkerHandled_gt: uint8
+  edgeWorkerHandled_in: bytes
+  edgeWorkerHandled_leq: uint8
+  edgeWorkerHandled_lt: uint8
+  edgeWorkerHandled_neq: uint8
+  edgeWorkerHandled_notin: bytes
+  edgeWorkerStatus: uint8
+  edgeWorkerStatusAvailable: uint8
+  edgeWorkerStatusAvailable_geq: uint8
+  edgeWorkerStatusAvailable_gt: uint8
+  edgeWorkerStatusAvailable_in: bytes
+  edgeWorkerStatusAvailable_leq: uint8
+  edgeWorkerStatusAvailable_lt: uint8
+  edgeWorkerStatusAvailable_neq: uint8
+  edgeWorkerStatusAvailable_notin: bytes
+  edgeWorkerStatus_geq: uint8
+  edgeWorkerStatus_gt: uint8
+  edgeWorkerStatus_in: bytes
+  edgeWorkerStatus_leq: uint8
+  edgeWorkerStatus_lt: uint8
+  edgeWorkerStatus_neq: uint8
+  edgeWorkerStatus_notin: bytes
   firewallForAiAnyPiiCategory: int8
   firewallForAiAnyPiiCategory_geq: int8
   firewallForAiAnyPiiCategory_gt: int8
@@ -46607,6 +48764,758 @@ type AccountHyperdriveQueriesAdaptiveGroupsSumConfidence {
   resultBytes: Confidence!
 }
 
+# Hosted Images delivery requests for an account, grouped by variant, format, response, cache status and location
+type AccountImagesHostedRequestsAdaptiveGroups {
+  # The average value for a metric per dimensions
+  avg: AccountImagesHostedRequestsAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountImagesHostedRequestsAdaptiveGroupsConfidence!
+  # Estimated number of Hosted Images delivery requests using adaptive sampling weights
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountImagesHostedRequestsAdaptiveGroupsDimensions
+}
+
+type AccountImagesHostedRequestsAdaptiveGroupsAvg {
+  # Average adaptive sampling weight
+  sampleInterval: float64!
+  # Average duration in milliseconds of the image delivery subrequest
+  subrequestDurationMs: float64!
+}
+
+type AccountImagesHostedRequestsAdaptiveGroupsConfidence {
+  # Estimated number of Hosted Images delivery requests using adaptive sampling weights, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type AccountImagesHostedRequestsAdaptiveGroupsDimensions {
+  # Cache status returned for the image request
+  cacheStatus: string!
+  # Organisation owning the ASN of the client that originated the image request
+  clientASNDescription: string!
+  # ASN of the client that originated the image request
+  clientAsn: uint32!
+  # Country where the image request originated
+  clientCountryName: string!
+  # Hostname from the image request Referer header
+  clientRefererHost: string!
+  # Cloudflare data centre that served the image request
+  coloName: string!
+  # Content type returned for the image request
+  contentType: string!
+  # The date the image request was served
+  date: Date!
+  # The date and time the image request was served
+  datetime: Time!
+  # The date and time the image request was served, truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the image request was served, truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the image request was served, truncated to the hour
+  datetimeHour: Time!
+  # The date and time the image request was served, truncated to the minute
+  datetimeMinute: Time!
+  # Requested image format preference
+  formatPreference: string!
+  # HTTP response status returned for the image request
+  httpStatus: uint16!
+  # Identifier of the requested image. Note: high-cardinality - prefer filtering over grouping for large time windows
+  imageId: string!
+  # 1 when the request used a flexible variant, otherwise 0
+  isFlexibleVariant: uint8!
+  # 1 when the image request used a signed URL, otherwise 0
+  isSigned: uint8!
+  # Browser parsed from the image request User-Agent header
+  userAgentBrowser: string!
+  # OS parsed from the image request User-Agent header
+  userAgentOS: string!
+  # Requested image variant
+  variant: string!
+}
+
+input AccountImagesHostedRequestsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountImagesHostedRequestsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountImagesHostedRequestsAdaptiveGroupsFilter_InputObject!]
+  cacheStatus: string
+  cacheStatus_geq: string
+  cacheStatus_gt: string
+  cacheStatus_ilike: string
+  cacheStatus_in: [string!]
+  cacheStatus_leq: string
+  cacheStatus_like: string
+  cacheStatus_lt: string
+  cacheStatus_neq: string
+  cacheStatus_notin: [string!]
+  cacheStatus_notlike: string
+  clientASNDescription: string
+  clientASNDescription_geq: string
+  clientASNDescription_gt: string
+  clientASNDescription_ilike: string
+  clientASNDescription_in: [string!]
+  clientASNDescription_leq: string
+  clientASNDescription_like: string
+  clientASNDescription_lt: string
+  clientASNDescription_neq: string
+  clientASNDescription_notin: [string!]
+  clientASNDescription_notlike: string
+  clientAsn: uint32
+  clientAsn_geq: uint32
+  clientAsn_gt: uint32
+  clientAsn_in: [uint32!]
+  clientAsn_leq: uint32
+  clientAsn_lt: uint32
+  clientAsn_neq: uint32
+  clientAsn_notin: [uint32!]
+  clientCountryName: string
+  clientCountryName_geq: string
+  clientCountryName_gt: string
+  clientCountryName_ilike: string
+  clientCountryName_in: [string!]
+  clientCountryName_leq: string
+  clientCountryName_like: string
+  clientCountryName_lt: string
+  clientCountryName_neq: string
+  clientCountryName_notin: [string!]
+  clientCountryName_notlike: string
+  clientRefererHost: string
+  clientRefererHost_geq: string
+  clientRefererHost_gt: string
+  clientRefererHost_ilike: string
+  clientRefererHost_in: [string!]
+  clientRefererHost_leq: string
+  clientRefererHost_like: string
+  clientRefererHost_lt: string
+  clientRefererHost_neq: string
+  clientRefererHost_notin: [string!]
+  clientRefererHost_notlike: string
+  coloName: string
+  coloName_geq: string
+  coloName_gt: string
+  coloName_ilike: string
+  coloName_in: [string!]
+  coloName_leq: string
+  coloName_like: string
+  coloName_lt: string
+  coloName_neq: string
+  coloName_notin: [string!]
+  coloName_notlike: string
+  contentType: string
+  contentType_geq: string
+  contentType_gt: string
+  contentType_ilike: string
+  contentType_in: [string!]
+  contentType_leq: string
+  contentType_like: string
+  contentType_lt: string
+  contentType_neq: string
+  contentType_notin: [string!]
+  contentType_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  formatPreference: string
+  formatPreference_geq: string
+  formatPreference_gt: string
+  formatPreference_ilike: string
+  formatPreference_in: [string!]
+  formatPreference_leq: string
+  formatPreference_like: string
+  formatPreference_lt: string
+  formatPreference_neq: string
+  formatPreference_notin: [string!]
+  formatPreference_notlike: string
+  httpStatus: uint16
+  httpStatus_geq: uint16
+  httpStatus_gt: uint16
+  httpStatus_in: [uint16!]
+  httpStatus_leq: uint16
+  httpStatus_lt: uint16
+  httpStatus_neq: uint16
+  httpStatus_notin: [uint16!]
+  imageId: string
+  imageId_geq: string
+  imageId_gt: string
+  imageId_ilike: string
+  imageId_in: [string!]
+  imageId_leq: string
+  imageId_like: string
+  imageId_lt: string
+  imageId_neq: string
+  imageId_notin: [string!]
+  imageId_notlike: string
+  isFlexibleVariant: uint8
+  isFlexibleVariant_geq: uint8
+  isFlexibleVariant_gt: uint8
+  isFlexibleVariant_in: bytes
+  isFlexibleVariant_leq: uint8
+  isFlexibleVariant_lt: uint8
+  isFlexibleVariant_neq: uint8
+  isFlexibleVariant_notin: bytes
+  isSigned: uint8
+  isSigned_geq: uint8
+  isSigned_gt: uint8
+  isSigned_in: bytes
+  isSigned_leq: uint8
+  isSigned_lt: uint8
+  isSigned_neq: uint8
+  isSigned_notin: bytes
+  userAgentBrowser: string
+  userAgentBrowser_geq: string
+  userAgentBrowser_gt: string
+  userAgentBrowser_ilike: string
+  userAgentBrowser_in: [string!]
+  userAgentBrowser_leq: string
+  userAgentBrowser_like: string
+  userAgentBrowser_lt: string
+  userAgentBrowser_neq: string
+  userAgentBrowser_notin: [string!]
+  userAgentBrowser_notlike: string
+  userAgentOS: string
+  userAgentOS_geq: string
+  userAgentOS_gt: string
+  userAgentOS_ilike: string
+  userAgentOS_in: [string!]
+  userAgentOS_leq: string
+  userAgentOS_like: string
+  userAgentOS_lt: string
+  userAgentOS_neq: string
+  userAgentOS_notin: [string!]
+  userAgentOS_notlike: string
+  variant: string
+  variant_geq: string
+  variant_gt: string
+  variant_ilike: string
+  variant_in: [string!]
+  variant_leq: string
+  variant_like: string
+  variant_lt: string
+  variant_neq: string
+  variant_notin: [string!]
+  variant_notlike: string
+}
+
+enum AccountImagesHostedRequestsAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # avg(subrequestDurationMs) ascending
+  avg_subrequestDurationMs_ASC
+  # avg(subrequestDurationMs) descending
+  avg_subrequestDurationMs_DESC
+  # cacheStatus ascending
+  cacheStatus_ASC
+  # cacheStatus descending
+  cacheStatus_DESC
+  # clientASNDescription ascending
+  clientASNDescription_ASC
+  # clientASNDescription descending
+  clientASNDescription_DESC
+  # clientAsn ascending
+  clientAsn_ASC
+  # clientAsn descending
+  clientAsn_DESC
+  # clientCountryName ascending
+  clientCountryName_ASC
+  # clientCountryName descending
+  clientCountryName_DESC
+  # clientRefererHost ascending
+  clientRefererHost_ASC
+  # clientRefererHost descending
+  clientRefererHost_DESC
+  # coloName ascending
+  coloName_ASC
+  # coloName descending
+  coloName_DESC
+  # contentType ascending
+  contentType_ASC
+  # contentType descending
+  contentType_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # formatPreference ascending
+  formatPreference_ASC
+  # formatPreference descending
+  formatPreference_DESC
+  # httpStatus ascending
+  httpStatus_ASC
+  # httpStatus descending
+  httpStatus_DESC
+  # imageId ascending
+  imageId_ASC
+  # imageId descending
+  imageId_DESC
+  # isFlexibleVariant ascending
+  isFlexibleVariant_ASC
+  # isFlexibleVariant descending
+  isFlexibleVariant_DESC
+  # isSigned ascending
+  isSigned_ASC
+  # isSigned descending
+  isSigned_DESC
+  # userAgentBrowser ascending
+  userAgentBrowser_ASC
+  # userAgentBrowser descending
+  userAgentBrowser_DESC
+  # userAgentOS ascending
+  userAgentOS_ASC
+  # userAgentOS descending
+  userAgentOS_DESC
+  # variant ascending
+  variant_ASC
+  # variant descending
+  variant_DESC
+}
+
+# Hosted Images delivery requests for an account in staging, grouped by variant, format, response, cache status and location
+type AccountImagesHostedRequestsStagingAdaptiveGroups {
+  # The average value for a metric per dimensions
+  avg: AccountImagesHostedRequestsStagingAdaptiveGroupsAvg
+  # ALPHA - DO NOT USE
+  confidence(level: float64!): AccountImagesHostedRequestsStagingAdaptiveGroupsConfidence!
+  # Estimated number of Hosted Images delivery requests using adaptive sampling weights
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountImagesHostedRequestsStagingAdaptiveGroupsDimensions
+}
+
+type AccountImagesHostedRequestsStagingAdaptiveGroupsAvg {
+  # Average adaptive sampling weight
+  sampleInterval: float64!
+  # Average duration in milliseconds of the image delivery subrequest
+  subrequestDurationMs: float64!
+}
+
+type AccountImagesHostedRequestsStagingAdaptiveGroupsConfidence {
+  # Estimated number of Hosted Images delivery requests using adaptive sampling weights, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type AccountImagesHostedRequestsStagingAdaptiveGroupsDimensions {
+  # Cache status returned for the image request
+  cacheStatus: string!
+  # Organisation owning the ASN of the client that originated the image request
+  clientASNDescription: string!
+  # ASN of the client that originated the image request
+  clientAsn: uint32!
+  # Country where the image request originated
+  clientCountryName: string!
+  # Hostname from the image request Referer header
+  clientRefererHost: string!
+  # Cloudflare data centre that served the image request
+  coloName: string!
+  # Content type returned for the image request
+  contentType: string!
+  # The date the image request was served
+  date: Date!
+  # The date and time the image request was served
+  datetime: Time!
+  # The date and time the image request was served, truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time the image request was served, truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time the image request was served, truncated to the hour
+  datetimeHour: Time!
+  # The date and time the image request was served, truncated to the minute
+  datetimeMinute: Time!
+  # Requested image format preference
+  formatPreference: string!
+  # HTTP response status returned for the image request
+  httpStatus: uint16!
+  # Identifier of the requested image. Note: high-cardinality - prefer filtering over grouping for large time windows
+  imageId: string!
+  # 1 when the request used a flexible variant, otherwise 0
+  isFlexibleVariant: uint8!
+  # 1 when the image request used a signed URL, otherwise 0
+  isSigned: uint8!
+  # Browser parsed from the image request User-Agent header
+  userAgentBrowser: string!
+  # OS parsed from the image request User-Agent header
+  userAgentOS: string!
+  # Requested image variant
+  variant: string!
+}
+
+input AccountImagesHostedRequestsStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountImagesHostedRequestsStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountImagesHostedRequestsStagingAdaptiveGroupsFilter_InputObject!]
+  cacheStatus: string
+  cacheStatus_geq: string
+  cacheStatus_gt: string
+  cacheStatus_ilike: string
+  cacheStatus_in: [string!]
+  cacheStatus_leq: string
+  cacheStatus_like: string
+  cacheStatus_lt: string
+  cacheStatus_neq: string
+  cacheStatus_notin: [string!]
+  cacheStatus_notlike: string
+  clientASNDescription: string
+  clientASNDescription_geq: string
+  clientASNDescription_gt: string
+  clientASNDescription_ilike: string
+  clientASNDescription_in: [string!]
+  clientASNDescription_leq: string
+  clientASNDescription_like: string
+  clientASNDescription_lt: string
+  clientASNDescription_neq: string
+  clientASNDescription_notin: [string!]
+  clientASNDescription_notlike: string
+  clientAsn: uint32
+  clientAsn_geq: uint32
+  clientAsn_gt: uint32
+  clientAsn_in: [uint32!]
+  clientAsn_leq: uint32
+  clientAsn_lt: uint32
+  clientAsn_neq: uint32
+  clientAsn_notin: [uint32!]
+  clientCountryName: string
+  clientCountryName_geq: string
+  clientCountryName_gt: string
+  clientCountryName_ilike: string
+  clientCountryName_in: [string!]
+  clientCountryName_leq: string
+  clientCountryName_like: string
+  clientCountryName_lt: string
+  clientCountryName_neq: string
+  clientCountryName_notin: [string!]
+  clientCountryName_notlike: string
+  clientRefererHost: string
+  clientRefererHost_geq: string
+  clientRefererHost_gt: string
+  clientRefererHost_ilike: string
+  clientRefererHost_in: [string!]
+  clientRefererHost_leq: string
+  clientRefererHost_like: string
+  clientRefererHost_lt: string
+  clientRefererHost_neq: string
+  clientRefererHost_notin: [string!]
+  clientRefererHost_notlike: string
+  coloName: string
+  coloName_geq: string
+  coloName_gt: string
+  coloName_ilike: string
+  coloName_in: [string!]
+  coloName_leq: string
+  coloName_like: string
+  coloName_lt: string
+  coloName_neq: string
+  coloName_notin: [string!]
+  coloName_notlike: string
+  contentType: string
+  contentType_geq: string
+  contentType_gt: string
+  contentType_ilike: string
+  contentType_in: [string!]
+  contentType_leq: string
+  contentType_like: string
+  contentType_lt: string
+  contentType_neq: string
+  contentType_notin: [string!]
+  contentType_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  formatPreference: string
+  formatPreference_geq: string
+  formatPreference_gt: string
+  formatPreference_ilike: string
+  formatPreference_in: [string!]
+  formatPreference_leq: string
+  formatPreference_like: string
+  formatPreference_lt: string
+  formatPreference_neq: string
+  formatPreference_notin: [string!]
+  formatPreference_notlike: string
+  httpStatus: uint16
+  httpStatus_geq: uint16
+  httpStatus_gt: uint16
+  httpStatus_in: [uint16!]
+  httpStatus_leq: uint16
+  httpStatus_lt: uint16
+  httpStatus_neq: uint16
+  httpStatus_notin: [uint16!]
+  imageId: string
+  imageId_geq: string
+  imageId_gt: string
+  imageId_ilike: string
+  imageId_in: [string!]
+  imageId_leq: string
+  imageId_like: string
+  imageId_lt: string
+  imageId_neq: string
+  imageId_notin: [string!]
+  imageId_notlike: string
+  isFlexibleVariant: uint8
+  isFlexibleVariant_geq: uint8
+  isFlexibleVariant_gt: uint8
+  isFlexibleVariant_in: bytes
+  isFlexibleVariant_leq: uint8
+  isFlexibleVariant_lt: uint8
+  isFlexibleVariant_neq: uint8
+  isFlexibleVariant_notin: bytes
+  isSigned: uint8
+  isSigned_geq: uint8
+  isSigned_gt: uint8
+  isSigned_in: bytes
+  isSigned_leq: uint8
+  isSigned_lt: uint8
+  isSigned_neq: uint8
+  isSigned_notin: bytes
+  userAgentBrowser: string
+  userAgentBrowser_geq: string
+  userAgentBrowser_gt: string
+  userAgentBrowser_ilike: string
+  userAgentBrowser_in: [string!]
+  userAgentBrowser_leq: string
+  userAgentBrowser_like: string
+  userAgentBrowser_lt: string
+  userAgentBrowser_neq: string
+  userAgentBrowser_notin: [string!]
+  userAgentBrowser_notlike: string
+  userAgentOS: string
+  userAgentOS_geq: string
+  userAgentOS_gt: string
+  userAgentOS_ilike: string
+  userAgentOS_in: [string!]
+  userAgentOS_leq: string
+  userAgentOS_like: string
+  userAgentOS_lt: string
+  userAgentOS_neq: string
+  userAgentOS_notin: [string!]
+  userAgentOS_notlike: string
+  variant: string
+  variant_geq: string
+  variant_gt: string
+  variant_ilike: string
+  variant_in: [string!]
+  variant_leq: string
+  variant_like: string
+  variant_lt: string
+  variant_neq: string
+  variant_notin: [string!]
+  variant_notlike: string
+}
+
+enum AccountImagesHostedRequestsStagingAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # avg(subrequestDurationMs) ascending
+  avg_subrequestDurationMs_ASC
+  # avg(subrequestDurationMs) descending
+  avg_subrequestDurationMs_DESC
+  # cacheStatus ascending
+  cacheStatus_ASC
+  # cacheStatus descending
+  cacheStatus_DESC
+  # clientASNDescription ascending
+  clientASNDescription_ASC
+  # clientASNDescription descending
+  clientASNDescription_DESC
+  # clientAsn ascending
+  clientAsn_ASC
+  # clientAsn descending
+  clientAsn_DESC
+  # clientCountryName ascending
+  clientCountryName_ASC
+  # clientCountryName descending
+  clientCountryName_DESC
+  # clientRefererHost ascending
+  clientRefererHost_ASC
+  # clientRefererHost descending
+  clientRefererHost_DESC
+  # coloName ascending
+  coloName_ASC
+  # coloName descending
+  coloName_DESC
+  # contentType ascending
+  contentType_ASC
+  # contentType descending
+  contentType_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # formatPreference ascending
+  formatPreference_ASC
+  # formatPreference descending
+  formatPreference_DESC
+  # httpStatus ascending
+  httpStatus_ASC
+  # httpStatus descending
+  httpStatus_DESC
+  # imageId ascending
+  imageId_ASC
+  # imageId descending
+  imageId_DESC
+  # isFlexibleVariant ascending
+  isFlexibleVariant_ASC
+  # isFlexibleVariant descending
+  isFlexibleVariant_DESC
+  # isSigned ascending
+  isSigned_ASC
+  # isSigned descending
+  isSigned_DESC
+  # userAgentBrowser ascending
+  userAgentBrowser_ASC
+  # userAgentBrowser descending
+  userAgentBrowser_DESC
+  # userAgentOS ascending
+  userAgentOS_ASC
+  # userAgentOS descending
+  userAgentOS_DESC
+  # variant ascending
+  variant_ASC
+  # variant descending
+  variant_DESC
+}
+
 # A high-level summary of Cloudflare Images served to end users.
 type AccountImagesRequestsAdaptiveGroups {
   # The average value for a metric per dimension
@@ -47005,6 +49914,42 @@ type AccountImagesTransformationsAdaptiveGroupsSumConfidence {
   billableEventCount: Confidence!
   # Confidence interval for the corresponding point estimate
   requests: Confidence!
+}
+
+# Number of unique origin images over the requested period
+type AccountImagesUniqueGroups {
+  # List of dimensions to group by
+  dimensions: AccountImagesUniqueGroupsDimensions
+  # Calculates the number of unique values over the queried period
+  uniq: AccountImagesUniqueGroupsUniq
+}
+
+type AccountImagesUniqueGroupsDimensions {
+}
+
+input AccountImagesUniqueGroupsFilter_InputObject {
+  AND: [AccountImagesUniqueGroupsFilter_InputObject!]
+  OR: [AccountImagesUniqueGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+}
+
+enum AccountImagesUniqueGroupsOrderBy {
+  # uniq(images) ascending
+  uniq_images_ASC
+  # uniq(images) descending
+  uniq_images_DESC
+}
+
+type AccountImagesUniqueGroupsUniq {
+  # Number of unique origin images over the queried period
+  images: uint64!
 }
 
 # Image unique transfromations per day
@@ -70588,6 +73533,8 @@ type AccountQueueMessageOperationsAdaptiveGroupsDimensions {
   outcome: string!
   # The ID of the Queue
   queueId: string!
+  # Value of a specific resource tag on the queue. Returns an empty string when the tag is absent or its value is empty. Requires the name argument.
+  tag(name: string): string!
 }
 
 input AccountQueueMessageOperationsAdaptiveGroupsFilter_InputObject {
@@ -70693,6 +73640,11 @@ input AccountQueueMessageOperationsAdaptiveGroupsFilter_InputObject {
   queueId_neq: string
   queueId_notin: [string!]
   queueId_notlike: string
+  tags_has: string
+  tags_hasall: [string!]
+  tags_hasany: [string!]
+  tags_isempty: bool
+  tags_nothas: string
 }
 
 type AccountQueueMessageOperationsAdaptiveGroupsMax {
@@ -70809,6 +73761,14 @@ type AccountR2BandwidthUsageAdaptiveGroupsConfidence {
 type AccountR2BandwidthUsageAdaptiveGroupsDimensions {
   # The canonical R2 bucket identifier, including its jurisdiction prefix when applicable
   bucketName: string!
+  # City of the Cloudflare data center that served the transfer
+  coloCity: string!
+  # IATA airport code of the Cloudflare data center that served the transfer
+  coloCode: string!
+  # ISO 3166-1 alpha-2 country code of the Cloudflare data center that served the transfer
+  coloCountry: string!
+  # Region of the Cloudflare data center that served the transfer (WNAM, ENAM, WEUR, EEUR, APAC, SAM, OC, AFR, ME)
+  coloRegion: string!
   # Transfer timestamp, truncated to the start of a day
   date: Date!
   # Transfer timestamp
@@ -70837,6 +73797,50 @@ input AccountR2BandwidthUsageAdaptiveGroupsFilter_InputObject {
   bucketName_neq: string
   bucketName_notin: [string!]
   bucketName_notlike: string
+  coloCity: string
+  coloCity_geq: string
+  coloCity_gt: string
+  coloCity_ilike: string
+  coloCity_in: [string!]
+  coloCity_leq: string
+  coloCity_like: string
+  coloCity_lt: string
+  coloCity_neq: string
+  coloCity_notin: [string!]
+  coloCity_notlike: string
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_ilike: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
+  coloCountry: string
+  coloCountry_geq: string
+  coloCountry_gt: string
+  coloCountry_ilike: string
+  coloCountry_in: [string!]
+  coloCountry_leq: string
+  coloCountry_like: string
+  coloCountry_lt: string
+  coloCountry_neq: string
+  coloCountry_notin: [string!]
+  coloCountry_notlike: string
+  coloRegion: string
+  coloRegion_geq: string
+  coloRegion_gt: string
+  coloRegion_ilike: string
+  coloRegion_in: [string!]
+  coloRegion_leq: string
+  coloRegion_like: string
+  coloRegion_lt: string
+  coloRegion_neq: string
+  coloRegion_notin: [string!]
+  coloRegion_notlike: string
   date: Date
   date_geq: Date
   date_gt: Date
@@ -70892,6 +73896,22 @@ enum AccountR2BandwidthUsageAdaptiveGroupsOrderBy {
   bucketName_ASC
   # bucketName descending
   bucketName_DESC
+  # coloCity ascending
+  coloCity_ASC
+  # coloCity descending
+  coloCity_DESC
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
+  # coloCountry ascending
+  coloCountry_ASC
+  # coloCountry descending
+  coloCountry_DESC
+  # coloRegion ascending
+  coloRegion_ASC
+  # coloRegion descending
+  coloRegion_DESC
   # date ascending
   date_ASC
   # date descending
@@ -71584,6 +74604,8 @@ type AccountR2OperationsAdaptiveGroupsDimensions {
   responseStatusCode: uint16!
   # The storage class that applies to this request
   storageClass: string!
+  # Value of a specific resource tag on the bucket. Returns an empty string when the tag is absent or its value is empty. Requires the name argument.
+  tag(name: string): string!
 }
 
 input AccountR2OperationsAdaptiveGroupsFilter_InputObject {
@@ -71711,6 +74733,11 @@ input AccountR2OperationsAdaptiveGroupsFilter_InputObject {
   storageClass_neq: string
   storageClass_notin: [string!]
   storageClass_notlike: string
+  tags_has: string
+  tags_hasall: [string!]
+  tags_hasany: [string!]
+  tags_isempty: bool
+  tags_nothas: string
 }
 
 enum AccountR2OperationsAdaptiveGroupsOrderBy {
@@ -76420,8 +79447,13 @@ type AccountSettings {
   aiInferenceAdaptive: Settings!
   aiInferenceAdaptiveGroups: Settings!
   aiSearchAPIAdaptiveGroups: Settings!
+  aiSearchFulltextQueriesAdaptiveGroups: Settings!
+  aiSearchImageProcessingTokensAdaptiveGroups: Settings!
   aiSearchIngestedItemsAdaptiveGroups: Settings!
+  aiSearchIngestionTokensAdaptiveGroups: Settings!
   aiSearchPublicEventsAdaptiveGroups: Settings!
+  aiSearchSemanticQueriesAdaptiveGroups: Settings!
+  aiSearchStorageAdaptiveGroups: Settings!
   artifactsEventsAdaptiveGroups: Settings!
   artifactsStorageAdaptiveGroups: Settings!
   auditLogsGroups: Settings!
@@ -76478,6 +79510,9 @@ type AccountSettings {
   durableObjectsSqlStorageGroups: Settings!
   durableObjectsStorageGroups: Settings!
   durableObjectsSubrequestsAdaptiveGroups: Settings!
+  emailComplaintsAdaptiveGroups: Settings!
+  emailSendingAdaptive: Settings!
+  emailSendingAdaptiveGroups: Settings!
   fbmAttackAnalyticsGroups: Settings!
   firewallEventsAdaptive: Settings!
   firewallEventsAdaptiveGroups: Settings!
@@ -76500,8 +79535,11 @@ type AccountSettings {
   httpRequestsOverviewAdaptiveGroups: Settings!
   hyperdrivePoolSizesAdaptiveGroups: Settings!
   hyperdriveQueriesAdaptiveGroups: Settings!
+  imagesHostedRequestsAdaptiveGroups: Settings!
+  imagesHostedRequestsStagingAdaptiveGroups: Settings!
   imagesRequestsAdaptiveGroups: Settings!
   imagesTransformationsAdaptiveGroups: Settings!
+  imagesUniqueGroups: Settings!
   imagesUniqueTransformations: Settings!
   imagesUniqueTransformationsAccumulatedSinceStartOfMonth: Settings!
   kvOperationsAdaptiveGroups: Settings!
@@ -95991,6 +99029,16 @@ type ZoneEmailComplaintsAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # The date and time the complaint event was recorded truncated to the minute
   datetimeMinute: Time!
+  # The date of the correlated email delivery
+  deliveryDate: Date!
+  # Time of the correlated email delivery truncated to fifteen minutes
+  deliveryDatetimeFifteenMinutes: Time!
+  # Time of the correlated email delivery truncated to five minutes
+  deliveryDatetimeFiveMinutes: Time!
+  # Time of the correlated email delivery truncated to the hour
+  deliveryDatetimeHour: Time!
+  # Time of the correlated email delivery truncated to the minute
+  deliveryDatetimeMinute: Time!
   # Time of the correlated email delivery
   deliveryTimestamp: Time!
   # Whether the complaint is for Email Sending
@@ -96054,6 +99102,46 @@ input ZoneEmailComplaintsAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  deliveryDate: Date
+  deliveryDate_geq: Date
+  deliveryDate_gt: Date
+  deliveryDate_in: [Date!]
+  deliveryDate_leq: Date
+  deliveryDate_lt: Date
+  deliveryDate_neq: Date
+  deliveryDate_notin: [Date!]
+  deliveryDatetimeFifteenMinutes: Time
+  deliveryDatetimeFifteenMinutes_geq: Time
+  deliveryDatetimeFifteenMinutes_gt: Time
+  deliveryDatetimeFifteenMinutes_in: [Time!]
+  deliveryDatetimeFifteenMinutes_leq: Time
+  deliveryDatetimeFifteenMinutes_lt: Time
+  deliveryDatetimeFifteenMinutes_neq: Time
+  deliveryDatetimeFifteenMinutes_notin: [Time!]
+  deliveryDatetimeFiveMinutes: Time
+  deliveryDatetimeFiveMinutes_geq: Time
+  deliveryDatetimeFiveMinutes_gt: Time
+  deliveryDatetimeFiveMinutes_in: [Time!]
+  deliveryDatetimeFiveMinutes_leq: Time
+  deliveryDatetimeFiveMinutes_lt: Time
+  deliveryDatetimeFiveMinutes_neq: Time
+  deliveryDatetimeFiveMinutes_notin: [Time!]
+  deliveryDatetimeHour: Time
+  deliveryDatetimeHour_geq: Time
+  deliveryDatetimeHour_gt: Time
+  deliveryDatetimeHour_in: [Time!]
+  deliveryDatetimeHour_leq: Time
+  deliveryDatetimeHour_lt: Time
+  deliveryDatetimeHour_neq: Time
+  deliveryDatetimeHour_notin: [Time!]
+  deliveryDatetimeMinute: Time
+  deliveryDatetimeMinute_geq: Time
+  deliveryDatetimeMinute_gt: Time
+  deliveryDatetimeMinute_in: [Time!]
+  deliveryDatetimeMinute_leq: Time
+  deliveryDatetimeMinute_lt: Time
+  deliveryDatetimeMinute_neq: Time
+  deliveryDatetimeMinute_notin: [Time!]
   deliveryTimestamp: Time
   deliveryTimestamp_geq: Time
   deliveryTimestamp_gt: Time
@@ -96134,6 +99222,26 @@ enum ZoneEmailComplaintsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # deliveryDate ascending
+  deliveryDate_ASC
+  # deliveryDate descending
+  deliveryDate_DESC
+  # deliveryDatetimeFifteenMinutes ascending
+  deliveryDatetimeFifteenMinutes_ASC
+  # deliveryDatetimeFifteenMinutes descending
+  deliveryDatetimeFifteenMinutes_DESC
+  # deliveryDatetimeFiveMinutes ascending
+  deliveryDatetimeFiveMinutes_ASC
+  # deliveryDatetimeFiveMinutes descending
+  deliveryDatetimeFiveMinutes_DESC
+  # deliveryDatetimeHour ascending
+  deliveryDatetimeHour_ASC
+  # deliveryDatetimeHour descending
+  deliveryDatetimeHour_DESC
+  # deliveryDatetimeMinute ascending
+  deliveryDatetimeMinute_ASC
+  # deliveryDatetimeMinute descending
+  deliveryDatetimeMinute_DESC
   # deliveryTimestamp ascending
   deliveryTimestamp_ASC
   # deliveryTimestamp descending
@@ -96871,6 +99979,8 @@ type ZoneEmailSendingAdaptive {
   # The envelope recipient email address
   @Deprecated
   envelopeTos: string!
+  # Whether customer behavior or data caused the rejection: customer, non_customer, or empty when there is no error
+  errorAttribution: string!
   # Error type (if any)
   errorCause: string!
   # Detailed error message (if any)
@@ -96973,6 +100083,17 @@ input ZoneEmailSendingAdaptiveFilter_InputObject {
   envelopeTos_neq: string
   envelopeTos_notin: [string!]
   envelopeTos_notlike: string
+  errorAttribution: string
+  errorAttribution_geq: string
+  errorAttribution_gt: string
+  errorAttribution_ilike: string
+  errorAttribution_in: [string!]
+  errorAttribution_leq: string
+  errorAttribution_like: string
+  errorAttribution_lt: string
+  errorAttribution_neq: string
+  errorAttribution_notin: [string!]
+  errorAttribution_notlike: string
   errorCause: string
   errorCause_geq: string
   errorCause_gt: string
@@ -97185,6 +100306,8 @@ type ZoneEmailSendingAdaptiveGroupsDimensions {
   # The envelope recipient email address
   @Deprecated
   envelopeTos: string!
+  # Whether customer behavior or data caused the rejection: customer, non_customer, or empty when there is no error
+  errorAttribution: string!
   # Error type (if any)
   errorCause: string!
   # Origin of email (incoming|forward|reply|newEmail)
@@ -97315,6 +100438,17 @@ input ZoneEmailSendingAdaptiveGroupsFilter_InputObject {
   envelopeTos_neq: string
   envelopeTos_notin: [string!]
   envelopeTos_notlike: string
+  errorAttribution: string
+  errorAttribution_geq: string
+  errorAttribution_gt: string
+  errorAttribution_ilike: string
+  errorAttribution_in: [string!]
+  errorAttribution_leq: string
+  errorAttribution_like: string
+  errorAttribution_lt: string
+  errorAttribution_neq: string
+  errorAttribution_notin: [string!]
+  errorAttribution_notlike: string
   errorCause: string
   errorCause_geq: string
   errorCause_gt: string
@@ -97469,6 +100603,10 @@ enum ZoneEmailSendingAdaptiveGroupsOrderBy {
   envelopeTos_ASC
   # envelopeTos descending
   envelopeTos_DESC
+  # errorAttribution ascending
+  errorAttribution_ASC
+  # errorAttribution descending
+  errorAttribution_DESC
   # errorCause ascending
   errorCause_ASC
   # errorCause descending
@@ -97544,6 +100682,10 @@ enum ZoneEmailSendingAdaptiveOrderBy {
   envelopeTos_ASC
   # envelopeTos descending
   envelopeTos_DESC
+  # errorAttribution ascending
+  errorAttribution_ASC
+  # errorAttribution descending
+  errorAttribution_DESC
   # errorCause ascending
   errorCause_ASC
   # errorCause descending
@@ -104576,6 +107718,30 @@ input ZoneHttpRequestsAdaptiveGroupsFilter_InputObject {
   edgeTimeToFirstByteMs_lt: uint16
   edgeTimeToFirstByteMs_neq: uint16
   edgeTimeToFirstByteMs_notin: [uint16!]
+  edgeWorkerHandled: uint8
+  edgeWorkerHandled_geq: uint8
+  edgeWorkerHandled_gt: uint8
+  edgeWorkerHandled_in: bytes
+  edgeWorkerHandled_leq: uint8
+  edgeWorkerHandled_lt: uint8
+  edgeWorkerHandled_neq: uint8
+  edgeWorkerHandled_notin: bytes
+  edgeWorkerStatus: uint8
+  edgeWorkerStatusAvailable: uint8
+  edgeWorkerStatusAvailable_geq: uint8
+  edgeWorkerStatusAvailable_gt: uint8
+  edgeWorkerStatusAvailable_in: bytes
+  edgeWorkerStatusAvailable_leq: uint8
+  edgeWorkerStatusAvailable_lt: uint8
+  edgeWorkerStatusAvailable_neq: uint8
+  edgeWorkerStatusAvailable_notin: bytes
+  edgeWorkerStatus_geq: uint8
+  edgeWorkerStatus_gt: uint8
+  edgeWorkerStatus_in: bytes
+  edgeWorkerStatus_leq: uint8
+  edgeWorkerStatus_lt: uint8
+  edgeWorkerStatus_neq: uint8
+  edgeWorkerStatus_notin: bytes
   firewallForAiAnyPiiCategory: int8
   firewallForAiAnyPiiCategory_geq: int8
   firewallForAiAnyPiiCategory_gt: int8
@@ -109683,6 +112849,10 @@ enum ZoneUserProfilesAdaptiveGroupsOrderBy {
   sum_topCountries_ASC
   # sum(topCountries) descending
   sum_topCountries_DESC
+  # sum(topDevices) ascending
+  sum_topDevices_ASC
+  # sum(topDevices) descending
+  sum_topDevices_DESC
   # sum(topIPs) ascending
   sum_topIPs_ASC
   # sum(topIPs) descending
@@ -109742,6 +112912,8 @@ type ZoneUserProfilesAdaptiveGroupsSum {
   topCities: [string!]!
   # Array of top 5 country codes (alpha2) for a user id.
   topCountries: [string!]!
+  # Array of up to 5 approximately most frequent non-empty Turnstile ephemeral IDs for a user id.
+  topDevices: [string!]!
   # Array of top 5 IP addresses for a user id.
   topIPs: [string!]!
   # Array of top 5 user agents for a user id.
