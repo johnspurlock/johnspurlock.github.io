@@ -73533,7 +73533,7 @@ type AccountQueueMessageOperationsAdaptiveGroupsDimensions {
   outcome: string!
   # The ID of the Queue
   queueId: string!
-  # Value of a specific resource tag on the queue. Returns an empty string when the tag is absent or its value is empty. Requires the name argument.
+  # Beta. Currently only available on selected accounts. Value of a specific resource tag on the queue. Returns an empty string when the tag is absent or its value is empty. Requires the name argument.
   tag(name: string): string!
 }
 
@@ -74604,7 +74604,7 @@ type AccountR2OperationsAdaptiveGroupsDimensions {
   responseStatusCode: uint16!
   # The storage class that applies to this request
   storageClass: string!
-  # Value of a specific resource tag on the bucket. Returns an empty string when the tag is absent or its value is empty. Requires the name argument.
+  # Beta. Currently only available on selected accounts. Value of a specific resource tag on the bucket. Returns an empty string when the tag is absent or its value is empty. Requires the name argument.
   tag(name: string): string!
 }
 
@@ -99290,7 +99290,7 @@ type ZoneEmailRoutingAdaptive {
   isSpam: uint8!
   # The Message-ID header of the source email (if present)
   messageId: string!
-  # The UUID of the routing rule matched by the source email
+  # The UUID of the routing rule matched by the source email (empty if no rule matched)
   ruleMatched: string!
   # ABR sample interval
   sampleInterval: uint32!
@@ -99571,7 +99571,7 @@ type ZoneEmailRoutingAdaptiveGroupsDimensions {
   isNDR: uint8!
   # Source email is spam
   isSpam: uint8!
-  # The UUID of the routing rule matched by the source email
+  # The UUID of the routing rule matched by the source email (empty if no rule matched)
   ruleMatched: string!
   # ABR sample interval
   sampleInterval: uint32!
