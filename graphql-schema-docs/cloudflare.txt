@@ -48,9 +48,6 @@ Account-level datasets:
 * cf1AccessLoginsRawGroups
 * cf1GatewayDns1dGroups
 * cf1GatewayDns1hGroups
-* cf1GatewayDnsLuga1dGroups
-* cf1GatewayDnsLuga1hGroups
-* cf1GatewayDnsLugaRawGroups
 * cf1GatewayDnsRawGroups
 * cf1GatewayHttp1dGroups
 * cf1GatewayHttp1hGroups
@@ -143,6 +140,7 @@ Account-level datasets:
   magicTransitTunnelHealthCheckSLOsAdaptiveGroups
   magicTransitTunnelHealthChecksAdaptiveGroups
   magicTransitTunnelTrafficAdaptiveGroups
+* markdownForAgentsAdaptiveGroups
   mconnTelemetryEventsAdaptiveGroups
   mconnTelemetryEventsStagingAdaptiveGroups
   mconnTelemetrySnapshotDhcpLeasesAdaptiveGroups
@@ -291,11 +289,13 @@ Zone-level datasets:
   loadBalancingRequestsAdaptiveGroups
 * logpushHealthAdaptiveGroups
 * logpushTransformersAdaptiveGroups
+* markdownForAgentsAdaptiveGroups
   nelReportsAdaptiveGroups
 * ohttpGatewayMetricsAdaptiveGroups
   pageShieldReportsAdaptiveGroups
 * preRenderBotRequestsAdaptiveGroups
 * preRenderRenderAttemptsAdaptiveGroups
+* precursorSessionsGroups
   userProfilesAdaptiveGroups
   userProfilesPiiGroups
   userProfilesRawEventsGroups
@@ -329,7 +329,7 @@ scalar Date
 # Scalar type types.Float32
 scalar float32
 
-# Scalar type types.Float64
+# Scalar type float64
 scalar float64
 
 # Scalar type int16
@@ -464,12 +464,6 @@ type account {
   cf1GatewayDns1dGroups(filter: AccountCf1GatewayDns1dGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayDns1dGroupsOrderBy!]): [AccountCf1GatewayDns1dGroups!]!
   # CF1 Gateway DNS analytics - 1 hour rollup
   cf1GatewayDns1hGroups(filter: AccountCf1GatewayDns1hGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayDns1hGroupsOrderBy!]): [AccountCf1GatewayDns1hGroups!]!
-  # CF1 Gateway DNS LUGA analytics - 1 day rollup
-  cf1GatewayDnsLuga1dGroups(filter: AccountCf1GatewayDnsLuga1dGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayDnsLuga1dGroupsOrderBy!]): [AccountCf1GatewayDnsLuga1dGroups!]!
-  # CF1 Gateway DNS LUGA analytics - 1 hour rollup
-  cf1GatewayDnsLuga1hGroups(filter: AccountCf1GatewayDnsLuga1hGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayDnsLuga1hGroupsOrderBy!]): [AccountCf1GatewayDnsLuga1hGroups!]!
-  # CF1 Gateway DNS LUGA analytics - raw data (max 3h query window). Use cf1GatewayDnsLuga1hGroups for longer ranges, or cf1GatewayDnsLuga1dGroups for 10d+
-  cf1GatewayDnsLugaRawGroups(filter: AccountCf1GatewayDnsLugaRawGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayDnsLugaRawGroupsOrderBy!]): [AccountCf1GatewayDnsLugaRawGroups!]!
   # CF1 Gateway DNS analytics - raw data (max 3h query window). Use cf1GatewayDns1hGroups for longer ranges, or cf1GatewayDns1dGroups for 10d+
   cf1GatewayDnsRawGroups(filter: AccountCf1GatewayDnsRawGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayDnsRawGroupsOrderBy!]): [AccountCf1GatewayDnsRawGroups!]!
   # CF1 Gateway HTTP analytics - 1 day rollup (up to 90d window, 365d back)
@@ -655,6 +649,8 @@ type account {
   magicTransitTunnelHealthChecksAdaptiveGroups(filter: AccountMagicTransitTunnelHealthChecksAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitTunnelHealthChecksAdaptiveGroupsOrderBy!]): [AccountMagicTransitTunnelHealthChecksAdaptiveGroups!]!
   # Bandwidth usage metric of a Magic Transit tunnel.
   magicTransitTunnelTrafficAdaptiveGroups(filter: AccountMagicTransitTunnelTrafficAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMagicTransitTunnelTrafficAdaptiveGroupsOrderBy!]): [AccountMagicTransitTunnelTrafficAdaptiveGroups!]!
+  # Sampled in-process Markdown for Agents conversion attempts, including partial output and failures. Completion does not establish downstream delivery.
+  markdownForAgentsAdaptiveGroups(filter: AccountMarkdownForAgentsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMarkdownForAgentsAdaptiveGroupsOrderBy!]): [AccountMarkdownForAgentsAdaptiveGroups!]!
   # Aggregated Magic WAN Connector events with adaptive sampling
   mconnTelemetryEventsAdaptiveGroups(filter: AccountMconnTelemetryEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMconnTelemetryEventsAdaptiveGroupsOrderBy!]): [AccountMconnTelemetryEventsAdaptiveGroups!]!
   # Aggregated Magic WAN Connector events with adaptive sampling
@@ -18617,11 +18613,11 @@ type AccountCf1GatewayDns1dGroupsDimensions {
   country: string!
   # Day start timestamp (daily granularity)
   datetime: Time!
-  # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
+  # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   deviceId: string!
   # Union of EDE codes observed in the group (rollup of raw edeErrors via groupUniqArrayArray; sorted ascending for deterministic output)
   edeErrors: [uint16!]!
-  # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
+  # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   email: string!
   # Whether the email is a non-identity email address
   isNonidentity: uint8!
@@ -18643,7 +18639,7 @@ type AccountCf1GatewayDns1dGroupsDimensions {
   rcode: string!
   # Gateway resolver decision. To filter for all "block" outcomes, use resolverDecision_in with ["blockedRule", "blockedByQueryName", "blockedByCategory"]. Other values: allowedOnNoPolicyMatch, allowedOnPolicyMatch, allowedByQueryName, overrideRule, safesearchRule, ytRestrictedModeRule, allowedOnNoLocation, allowedOnNoRule, overrideOnlyRule.
   resolverDecision: string!
-  # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
+  # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal "REDACTED"
   sourceIP: string!
 }
 
@@ -19248,861 +19244,6 @@ type AccountCf1GatewayDns1hGroupsSum {
 }
 
 type AccountCf1GatewayDns1hGroupsUniq {
-  # Unique devices
-  devices: uint64!
-  # Unique users
-  users: uint64!
-}
-
-# CF1 Gateway DNS LUGA analytics - 1 day rollup
-type AccountCf1GatewayDnsLuga1dGroups {
-  # List of dimensions to group by
-  dimensions: AccountCf1GatewayDnsLuga1dGroupsDimensions
-  sum: AccountCf1GatewayDnsLuga1dGroupsSum
-  uniq: AccountCf1GatewayDnsLuga1dGroupsUniq
-}
-
-type AccountCf1GatewayDnsLuga1dGroupsDimensions {
-  # Cloudflare colo code
-  coloName: string!
-  # Source country code
-  country: string!
-  # Day start timestamp (daily granularity)
-  datetime: Time!
-  # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
-  deviceId: string!
-  # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
-  email: string!
-  # Whether the email is a non-identity email address
-  isNonidentity: uint8!
-  # Gateway location ID
-  location: string!
-  # Policy ID
-  policyId: string!
-  # DNS protocol
-  protocol: string!
-  # DNS query type
-  queryType: string!
-  # DNS response code
-  rcode: string!
-  # Gateway resolver decision
-  resolverDecision: string!
-  # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
-  sourceIP: string!
-}
-
-input AccountCf1GatewayDnsLuga1dGroupsFilter_InputObject {
-  AND: [AccountCf1GatewayDnsLuga1dGroupsFilter_InputObject!]
-  OR: [AccountCf1GatewayDnsLuga1dGroupsFilter_InputObject!]
-  coloName: string
-  coloName_geq: string
-  coloName_gt: string
-  coloName_ilike: string
-  coloName_in: [string!]
-  coloName_leq: string
-  coloName_like: string
-  coloName_lt: string
-  coloName_neq: string
-  coloName_notin: [string!]
-  coloName_notlike: string
-  country: string
-  country_geq: string
-  country_gt: string
-  country_ilike: string
-  country_in: [string!]
-  country_leq: string
-  country_like: string
-  country_lt: string
-  country_neq: string
-  country_notin: [string!]
-  country_notlike: string
-  datetime: Time
-  datetime_geq: Time
-  datetime_gt: Time
-  datetime_in: [Time!]
-  datetime_leq: Time
-  datetime_lt: Time
-  datetime_neq: Time
-  datetime_notin: [Time!]
-  deviceId: string
-  deviceId_geq: string
-  deviceId_gt: string
-  deviceId_ilike: string
-  deviceId_in: [string!]
-  deviceId_leq: string
-  deviceId_like: string
-  deviceId_lt: string
-  deviceId_neq: string
-  deviceId_notin: [string!]
-  deviceId_notlike: string
-  email: string
-  email_geq: string
-  email_gt: string
-  email_ilike: string
-  email_in: [string!]
-  email_leq: string
-  email_like: string
-  email_lt: string
-  email_neq: string
-  email_notin: [string!]
-  email_notlike: string
-  isNonidentity: uint8
-  isNonidentity_geq: uint8
-  isNonidentity_gt: uint8
-  isNonidentity_in: bytes
-  isNonidentity_leq: uint8
-  isNonidentity_lt: uint8
-  isNonidentity_neq: uint8
-  isNonidentity_notin: bytes
-  location: string
-  location_geq: string
-  location_gt: string
-  location_ilike: string
-  location_in: [string!]
-  location_leq: string
-  location_like: string
-  location_lt: string
-  location_neq: string
-  location_notin: [string!]
-  location_notlike: string
-  policyId: string
-  policyId_geq: string
-  policyId_gt: string
-  policyId_ilike: string
-  policyId_in: [string!]
-  policyId_leq: string
-  policyId_like: string
-  policyId_lt: string
-  policyId_neq: string
-  policyId_notin: [string!]
-  policyId_notlike: string
-  protocol: string
-  protocol_geq: string
-  protocol_gt: string
-  protocol_ilike: string
-  protocol_in: [string!]
-  protocol_leq: string
-  protocol_like: string
-  protocol_lt: string
-  protocol_neq: string
-  protocol_notin: [string!]
-  protocol_notlike: string
-  queryType: string
-  queryType_geq: string
-  queryType_gt: string
-  queryType_ilike: string
-  queryType_in: [string!]
-  queryType_leq: string
-  queryType_like: string
-  queryType_lt: string
-  queryType_neq: string
-  queryType_notin: [string!]
-  queryType_notlike: string
-  rcode: string
-  rcode_geq: string
-  rcode_gt: string
-  rcode_ilike: string
-  rcode_in: [string!]
-  rcode_leq: string
-  rcode_like: string
-  rcode_lt: string
-  rcode_neq: string
-  rcode_notin: [string!]
-  rcode_notlike: string
-  resolverDecision: string
-  resolverDecision_geq: string
-  resolverDecision_gt: string
-  resolverDecision_ilike: string
-  resolverDecision_in: [string!]
-  resolverDecision_leq: string
-  resolverDecision_like: string
-  resolverDecision_lt: string
-  resolverDecision_neq: string
-  resolverDecision_notin: [string!]
-  resolverDecision_notlike: string
-  sourceIP: string
-  sourceIP_geq: string
-  sourceIP_gt: string
-  sourceIP_ilike: string
-  sourceIP_in: [string!]
-  sourceIP_leq: string
-  sourceIP_like: string
-  sourceIP_lt: string
-  sourceIP_neq: string
-  sourceIP_notin: [string!]
-  sourceIP_notlike: string
-}
-
-enum AccountCf1GatewayDnsLuga1dGroupsOrderBy {
-  # coloName ascending
-  coloName_ASC
-  # coloName descending
-  coloName_DESC
-  # country ascending
-  country_ASC
-  # country descending
-  country_DESC
-  # datetime ascending
-  datetime_ASC
-  # datetime descending
-  datetime_DESC
-  # deviceId ascending
-  deviceId_ASC
-  # deviceId descending
-  deviceId_DESC
-  # email ascending
-  email_ASC
-  # email descending
-  email_DESC
-  # isNonidentity ascending
-  isNonidentity_ASC
-  # isNonidentity descending
-  isNonidentity_DESC
-  # location ascending
-  location_ASC
-  # location descending
-  location_DESC
-  # policyId ascending
-  policyId_ASC
-  # policyId descending
-  policyId_DESC
-  # protocol ascending
-  protocol_ASC
-  # protocol descending
-  protocol_DESC
-  # queryType ascending
-  queryType_ASC
-  # queryType descending
-  queryType_DESC
-  # rcode ascending
-  rcode_ASC
-  # rcode descending
-  rcode_DESC
-  # resolverDecision ascending
-  resolverDecision_ASC
-  # resolverDecision descending
-  resolverDecision_DESC
-  # sourceIP ascending
-  sourceIP_ASC
-  # sourceIP descending
-  sourceIP_DESC
-  # sum(queries) ascending
-  sum_queries_ASC
-  # sum(queries) descending
-  sum_queries_DESC
-  # sum(queryBytes) ascending
-  sum_queryBytes_ASC
-  # sum(queryBytes) descending
-  sum_queryBytes_DESC
-  # sum(responseBytes) ascending
-  sum_responseBytes_ASC
-  # sum(responseBytes) descending
-  sum_responseBytes_DESC
-  # uniq(devices) ascending
-  uniq_devices_ASC
-  # uniq(devices) descending
-  uniq_devices_DESC
-  # uniq(users) ascending
-  uniq_users_ASC
-  # uniq(users) descending
-  uniq_users_DESC
-}
-
-type AccountCf1GatewayDnsLuga1dGroupsSum {
-  # Total DNS queries
-  queries: uint64!
-  # Total query bytes
-  queryBytes: uint64!
-  # Total response bytes
-  responseBytes: uint64!
-}
-
-type AccountCf1GatewayDnsLuga1dGroupsUniq {
-  # Unique devices
-  devices: uint64!
-  # Unique users
-  users: uint64!
-}
-
-# CF1 Gateway DNS LUGA analytics - 1 hour rollup
-type AccountCf1GatewayDnsLuga1hGroups {
-  # List of dimensions to group by
-  dimensions: AccountCf1GatewayDnsLuga1hGroupsDimensions
-  sum: AccountCf1GatewayDnsLuga1hGroupsSum
-  uniq: AccountCf1GatewayDnsLuga1hGroupsUniq
-}
-
-type AccountCf1GatewayDnsLuga1hGroupsDimensions {
-  # Cloudflare colo code
-  coloName: string!
-  # Source country code
-  country: string!
-  # Hour start timestamp (hourly granularity)
-  datetime: Time!
-  # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
-  deviceId: string!
-  # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
-  email: string!
-  # Whether the email is a non-identity email address
-  isNonidentity: uint8!
-  # Gateway location ID
-  location: string!
-  # Policy ID
-  policyId: string!
-  # DNS protocol
-  protocol: string!
-  # DNS query type
-  queryType: string!
-  # DNS response code
-  rcode: string!
-  # Gateway resolver decision
-  resolverDecision: string!
-  # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
-  sourceIP: string!
-}
-
-input AccountCf1GatewayDnsLuga1hGroupsFilter_InputObject {
-  AND: [AccountCf1GatewayDnsLuga1hGroupsFilter_InputObject!]
-  OR: [AccountCf1GatewayDnsLuga1hGroupsFilter_InputObject!]
-  coloName: string
-  coloName_geq: string
-  coloName_gt: string
-  coloName_ilike: string
-  coloName_in: [string!]
-  coloName_leq: string
-  coloName_like: string
-  coloName_lt: string
-  coloName_neq: string
-  coloName_notin: [string!]
-  coloName_notlike: string
-  country: string
-  country_geq: string
-  country_gt: string
-  country_ilike: string
-  country_in: [string!]
-  country_leq: string
-  country_like: string
-  country_lt: string
-  country_neq: string
-  country_notin: [string!]
-  country_notlike: string
-  datetime: Time
-  datetime_geq: Time
-  datetime_gt: Time
-  datetime_in: [Time!]
-  datetime_leq: Time
-  datetime_lt: Time
-  datetime_neq: Time
-  datetime_notin: [Time!]
-  deviceId: string
-  deviceId_geq: string
-  deviceId_gt: string
-  deviceId_ilike: string
-  deviceId_in: [string!]
-  deviceId_leq: string
-  deviceId_like: string
-  deviceId_lt: string
-  deviceId_neq: string
-  deviceId_notin: [string!]
-  deviceId_notlike: string
-  email: string
-  email_geq: string
-  email_gt: string
-  email_ilike: string
-  email_in: [string!]
-  email_leq: string
-  email_like: string
-  email_lt: string
-  email_neq: string
-  email_notin: [string!]
-  email_notlike: string
-  isNonidentity: uint8
-  isNonidentity_geq: uint8
-  isNonidentity_gt: uint8
-  isNonidentity_in: bytes
-  isNonidentity_leq: uint8
-  isNonidentity_lt: uint8
-  isNonidentity_neq: uint8
-  isNonidentity_notin: bytes
-  location: string
-  location_geq: string
-  location_gt: string
-  location_ilike: string
-  location_in: [string!]
-  location_leq: string
-  location_like: string
-  location_lt: string
-  location_neq: string
-  location_notin: [string!]
-  location_notlike: string
-  policyId: string
-  policyId_geq: string
-  policyId_gt: string
-  policyId_ilike: string
-  policyId_in: [string!]
-  policyId_leq: string
-  policyId_like: string
-  policyId_lt: string
-  policyId_neq: string
-  policyId_notin: [string!]
-  policyId_notlike: string
-  protocol: string
-  protocol_geq: string
-  protocol_gt: string
-  protocol_ilike: string
-  protocol_in: [string!]
-  protocol_leq: string
-  protocol_like: string
-  protocol_lt: string
-  protocol_neq: string
-  protocol_notin: [string!]
-  protocol_notlike: string
-  queryType: string
-  queryType_geq: string
-  queryType_gt: string
-  queryType_ilike: string
-  queryType_in: [string!]
-  queryType_leq: string
-  queryType_like: string
-  queryType_lt: string
-  queryType_neq: string
-  queryType_notin: [string!]
-  queryType_notlike: string
-  rcode: string
-  rcode_geq: string
-  rcode_gt: string
-  rcode_ilike: string
-  rcode_in: [string!]
-  rcode_leq: string
-  rcode_like: string
-  rcode_lt: string
-  rcode_neq: string
-  rcode_notin: [string!]
-  rcode_notlike: string
-  resolverDecision: string
-  resolverDecision_geq: string
-  resolverDecision_gt: string
-  resolverDecision_ilike: string
-  resolverDecision_in: [string!]
-  resolverDecision_leq: string
-  resolverDecision_like: string
-  resolverDecision_lt: string
-  resolverDecision_neq: string
-  resolverDecision_notin: [string!]
-  resolverDecision_notlike: string
-  sourceIP: string
-  sourceIP_geq: string
-  sourceIP_gt: string
-  sourceIP_ilike: string
-  sourceIP_in: [string!]
-  sourceIP_leq: string
-  sourceIP_like: string
-  sourceIP_lt: string
-  sourceIP_neq: string
-  sourceIP_notin: [string!]
-  sourceIP_notlike: string
-}
-
-enum AccountCf1GatewayDnsLuga1hGroupsOrderBy {
-  # coloName ascending
-  coloName_ASC
-  # coloName descending
-  coloName_DESC
-  # country ascending
-  country_ASC
-  # country descending
-  country_DESC
-  # datetime ascending
-  datetime_ASC
-  # datetime descending
-  datetime_DESC
-  # deviceId ascending
-  deviceId_ASC
-  # deviceId descending
-  deviceId_DESC
-  # email ascending
-  email_ASC
-  # email descending
-  email_DESC
-  # isNonidentity ascending
-  isNonidentity_ASC
-  # isNonidentity descending
-  isNonidentity_DESC
-  # location ascending
-  location_ASC
-  # location descending
-  location_DESC
-  # policyId ascending
-  policyId_ASC
-  # policyId descending
-  policyId_DESC
-  # protocol ascending
-  protocol_ASC
-  # protocol descending
-  protocol_DESC
-  # queryType ascending
-  queryType_ASC
-  # queryType descending
-  queryType_DESC
-  # rcode ascending
-  rcode_ASC
-  # rcode descending
-  rcode_DESC
-  # resolverDecision ascending
-  resolverDecision_ASC
-  # resolverDecision descending
-  resolverDecision_DESC
-  # sourceIP ascending
-  sourceIP_ASC
-  # sourceIP descending
-  sourceIP_DESC
-  # sum(queries) ascending
-  sum_queries_ASC
-  # sum(queries) descending
-  sum_queries_DESC
-  # sum(queryBytes) ascending
-  sum_queryBytes_ASC
-  # sum(queryBytes) descending
-  sum_queryBytes_DESC
-  # sum(responseBytes) ascending
-  sum_responseBytes_ASC
-  # sum(responseBytes) descending
-  sum_responseBytes_DESC
-  # uniq(devices) ascending
-  uniq_devices_ASC
-  # uniq(devices) descending
-  uniq_devices_DESC
-  # uniq(users) ascending
-  uniq_users_ASC
-  # uniq(users) descending
-  uniq_users_DESC
-}
-
-type AccountCf1GatewayDnsLuga1hGroupsSum {
-  # Total DNS queries
-  queries: uint64!
-  # Total query bytes
-  queryBytes: uint64!
-  # Total response bytes
-  responseBytes: uint64!
-}
-
-type AccountCf1GatewayDnsLuga1hGroupsUniq {
-  # Unique devices
-  devices: uint64!
-  # Unique users
-  users: uint64!
-}
-
-# CF1 Gateway DNS LUGA analytics - raw data (max 3h query window). Use cf1GatewayDnsLuga1hGroups for longer ranges, or cf1GatewayDnsLuga1dGroups for 10d+
-type AccountCf1GatewayDnsLugaRawGroups {
-  # List of dimensions to group by
-  dimensions: AccountCf1GatewayDnsLugaRawGroupsDimensions
-  sum: AccountCf1GatewayDnsLugaRawGroupsSum
-  uniq: AccountCf1GatewayDnsLugaRawGroupsUniq
-}
-
-type AccountCf1GatewayDnsLugaRawGroupsDimensions {
-  # Cloudflare colo code
-  coloName: string!
-  # Source country code
-  country: string!
-  # Query timestamp
-  datetime: Time!
-  # Query timestamp truncated to five minutes
-  datetimeFiveMinutes: Time!
-  # Query timestamp truncated to hour
-  datetimeHour: Time!
-  # Query name (destination domain)
-  destination: string!
-  # Device ID. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
-  deviceId: string!
-  # User email address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
-  email: string!
-  # Whether the email is a non-identity email address
-  isNonidentity: uint8!
-  # Gateway location ID
-  location: string!
-  # Policy ID
-  policyId: string!
-  # DNS protocol
-  protocol: string!
-  # DNS query type
-  queryType: string!
-  # DNS response code
-  rcode: string!
-  # Gateway resolver decision
-  resolverDecision: string!
-  # Source IP address. Requires the #teams:pii (legacy) or com.cloudflare.team.gateway.pii.read (Bach) permission; otherwise returned as the literal \"REDACTED\"
-  sourceIP: string!
-}
-
-input AccountCf1GatewayDnsLugaRawGroupsFilter_InputObject {
-  AND: [AccountCf1GatewayDnsLugaRawGroupsFilter_InputObject!]
-  OR: [AccountCf1GatewayDnsLugaRawGroupsFilter_InputObject!]
-  coloName: string
-  coloName_geq: string
-  coloName_gt: string
-  coloName_ilike: string
-  coloName_in: [string!]
-  coloName_leq: string
-  coloName_like: string
-  coloName_lt: string
-  coloName_neq: string
-  coloName_notin: [string!]
-  coloName_notlike: string
-  country: string
-  country_geq: string
-  country_gt: string
-  country_ilike: string
-  country_in: [string!]
-  country_leq: string
-  country_like: string
-  country_lt: string
-  country_neq: string
-  country_notin: [string!]
-  country_notlike: string
-  datetime: Time
-  datetimeFiveMinutes: Time
-  datetimeFiveMinutes_geq: Time
-  datetimeFiveMinutes_gt: Time
-  datetimeFiveMinutes_in: [Time!]
-  datetimeFiveMinutes_leq: Time
-  datetimeFiveMinutes_lt: Time
-  datetimeFiveMinutes_neq: Time
-  datetimeFiveMinutes_notin: [Time!]
-  datetimeHour: Time
-  datetimeHour_geq: Time
-  datetimeHour_gt: Time
-  datetimeHour_in: [Time!]
-  datetimeHour_leq: Time
-  datetimeHour_lt: Time
-  datetimeHour_neq: Time
-  datetimeHour_notin: [Time!]
-  datetime_geq: Time
-  datetime_gt: Time
-  datetime_in: [Time!]
-  datetime_leq: Time
-  datetime_lt: Time
-  datetime_neq: Time
-  datetime_notin: [Time!]
-  destination: string
-  destination_geq: string
-  destination_gt: string
-  destination_ilike: string
-  destination_in: [string!]
-  destination_leq: string
-  destination_like: string
-  destination_lt: string
-  destination_neq: string
-  destination_notin: [string!]
-  destination_notlike: string
-  deviceId: string
-  deviceId_geq: string
-  deviceId_gt: string
-  deviceId_ilike: string
-  deviceId_in: [string!]
-  deviceId_leq: string
-  deviceId_like: string
-  deviceId_lt: string
-  deviceId_neq: string
-  deviceId_notin: [string!]
-  deviceId_notlike: string
-  email: string
-  email_geq: string
-  email_gt: string
-  email_ilike: string
-  email_in: [string!]
-  email_leq: string
-  email_like: string
-  email_lt: string
-  email_neq: string
-  email_notin: [string!]
-  email_notlike: string
-  isNonidentity: uint8
-  isNonidentity_geq: uint8
-  isNonidentity_gt: uint8
-  isNonidentity_in: bytes
-  isNonidentity_leq: uint8
-  isNonidentity_lt: uint8
-  isNonidentity_neq: uint8
-  isNonidentity_notin: bytes
-  location: string
-  location_geq: string
-  location_gt: string
-  location_ilike: string
-  location_in: [string!]
-  location_leq: string
-  location_like: string
-  location_lt: string
-  location_neq: string
-  location_notin: [string!]
-  location_notlike: string
-  policyId: string
-  policyId_geq: string
-  policyId_gt: string
-  policyId_ilike: string
-  policyId_in: [string!]
-  policyId_leq: string
-  policyId_like: string
-  policyId_lt: string
-  policyId_neq: string
-  policyId_notin: [string!]
-  policyId_notlike: string
-  protocol: string
-  protocol_geq: string
-  protocol_gt: string
-  protocol_ilike: string
-  protocol_in: [string!]
-  protocol_leq: string
-  protocol_like: string
-  protocol_lt: string
-  protocol_neq: string
-  protocol_notin: [string!]
-  protocol_notlike: string
-  queryType: string
-  queryType_geq: string
-  queryType_gt: string
-  queryType_ilike: string
-  queryType_in: [string!]
-  queryType_leq: string
-  queryType_like: string
-  queryType_lt: string
-  queryType_neq: string
-  queryType_notin: [string!]
-  queryType_notlike: string
-  rcode: string
-  rcode_geq: string
-  rcode_gt: string
-  rcode_ilike: string
-  rcode_in: [string!]
-  rcode_leq: string
-  rcode_like: string
-  rcode_lt: string
-  rcode_neq: string
-  rcode_notin: [string!]
-  rcode_notlike: string
-  resolverDecision: string
-  resolverDecision_geq: string
-  resolverDecision_gt: string
-  resolverDecision_ilike: string
-  resolverDecision_in: [string!]
-  resolverDecision_leq: string
-  resolverDecision_like: string
-  resolverDecision_lt: string
-  resolverDecision_neq: string
-  resolverDecision_notin: [string!]
-  resolverDecision_notlike: string
-  sourceIP: string
-  sourceIP_geq: string
-  sourceIP_gt: string
-  sourceIP_ilike: string
-  sourceIP_in: [string!]
-  sourceIP_leq: string
-  sourceIP_like: string
-  sourceIP_lt: string
-  sourceIP_neq: string
-  sourceIP_notin: [string!]
-  sourceIP_notlike: string
-}
-
-enum AccountCf1GatewayDnsLugaRawGroupsOrderBy {
-  # coloName ascending
-  coloName_ASC
-  # coloName descending
-  coloName_DESC
-  # country ascending
-  country_ASC
-  # country descending
-  country_DESC
-  # datetimeFiveMinutes ascending
-  datetimeFiveMinutes_ASC
-  # datetimeFiveMinutes descending
-  datetimeFiveMinutes_DESC
-  # datetimeHour ascending
-  datetimeHour_ASC
-  # datetimeHour descending
-  datetimeHour_DESC
-  # datetime ascending
-  datetime_ASC
-  # datetime descending
-  datetime_DESC
-  # destination ascending
-  destination_ASC
-  # destination descending
-  destination_DESC
-  # deviceId ascending
-  deviceId_ASC
-  # deviceId descending
-  deviceId_DESC
-  # email ascending
-  email_ASC
-  # email descending
-  email_DESC
-  # isNonidentity ascending
-  isNonidentity_ASC
-  # isNonidentity descending
-  isNonidentity_DESC
-  # location ascending
-  location_ASC
-  # location descending
-  location_DESC
-  # policyId ascending
-  policyId_ASC
-  # policyId descending
-  policyId_DESC
-  # protocol ascending
-  protocol_ASC
-  # protocol descending
-  protocol_DESC
-  # queryType ascending
-  queryType_ASC
-  # queryType descending
-  queryType_DESC
-  # rcode ascending
-  rcode_ASC
-  # rcode descending
-  rcode_DESC
-  # resolverDecision ascending
-  resolverDecision_ASC
-  # resolverDecision descending
-  resolverDecision_DESC
-  # sourceIP ascending
-  sourceIP_ASC
-  # sourceIP descending
-  sourceIP_DESC
-  # sum(queries) ascending
-  sum_queries_ASC
-  # sum(queries) descending
-  sum_queries_DESC
-  # sum(queryBytes) ascending
-  sum_queryBytes_ASC
-  # sum(queryBytes) descending
-  sum_queryBytes_DESC
-  # sum(responseBytes) ascending
-  sum_responseBytes_ASC
-  # sum(responseBytes) descending
-  sum_responseBytes_DESC
-  # uniq(devices) ascending
-  uniq_devices_ASC
-  # uniq(devices) descending
-  uniq_devices_DESC
-  # uniq(users) ascending
-  uniq_users_ASC
-  # uniq(users) descending
-  uniq_users_DESC
-}
-
-type AccountCf1GatewayDnsLugaRawGroupsSum {
-  # Total DNS queries
-  queries: uint64!
-  # Total query bytes
-  queryBytes: uint64!
-  # Total response bytes
-  responseBytes: uint64!
-}
-
-type AccountCf1GatewayDnsLugaRawGroupsUniq {
   # Unique devices
   devices: uint64!
   # Unique users
@@ -47966,6 +47107,8 @@ type AccountImagesHostedRequestsAdaptiveGroupsDimensions {
   isFlexibleVariant: uint8!
   # 1 when the image request used a signed URL, otherwise 0
   isSigned: uint8!
+  # Beta. Currently only available on selected accounts. Value of a specific resource tag on the image. Returns an empty string when the tag is absent or its value is empty. Requires the name argument.
+  tag(name: string): string!
   # Browser parsed from the image request User-Agent header
   userAgentBrowser: string!
   # OS parsed from the image request User-Agent header
@@ -48145,6 +47288,11 @@ input AccountImagesHostedRequestsAdaptiveGroupsFilter_InputObject {
   isSigned_lt: uint8
   isSigned_neq: uint8
   isSigned_notin: bytes
+  tags_has: string
+  tags_hasall: [string!]
+  tags_hasany: [string!]
+  tags_isempty: bool
+  tags_nothas: string
   userAgentBrowser: string
   userAgentBrowser_geq: string
   userAgentBrowser_gt: string
@@ -48342,6 +47490,8 @@ type AccountImagesHostedRequestsStagingAdaptiveGroupsDimensions {
   isFlexibleVariant: uint8!
   # 1 when the image request used a signed URL, otherwise 0
   isSigned: uint8!
+  # Beta. Currently only available on selected accounts. Value of a specific resource tag on the image. Returns an empty string when the tag is absent or its value is empty. Requires the name argument.
+  tag(name: string): string!
   # Browser parsed from the image request User-Agent header
   userAgentBrowser: string!
   # OS parsed from the image request User-Agent header
@@ -48521,6 +47671,11 @@ input AccountImagesHostedRequestsStagingAdaptiveGroupsFilter_InputObject {
   isSigned_lt: uint8
   isSigned_neq: uint8
   isSigned_notin: bytes
+  tags_has: string
+  tags_hasall: [string!]
+  tags_hasany: [string!]
+  tags_isempty: bool
+  tags_nothas: string
   userAgentBrowser: string
   userAgentBrowser_geq: string
   userAgentBrowser_gt: string
@@ -51769,6 +50924,10 @@ enum AccountLogpushHealthAdaptiveGroupsOrderBy {
   objectType_ASC
   # objectType descending
   objectType_DESC
+  # ownedByServiceEmpty ascending
+  ownedByServiceEmpty_ASC
+  # ownedByServiceEmpty descending
+  ownedByServiceEmpty_DESC
   # status ascending
   status_ASC
   # status descending
@@ -59876,6 +59035,408 @@ enum AccountMagicWANConnectorMetricsAdaptiveGroupsOrderBy {
   mconnSiteID_ASC
   # mconnSiteID descending
   mconnSiteID_DESC
+}
+
+# Sampled in-process Markdown for Agents conversion attempts, including partial output and failures. Completion does not establish downstream delivery.
+type AccountMarkdownForAgentsAdaptiveGroups {
+  # Sample characteristics.
+  avg: AccountMarkdownForAgentsAdaptiveGroupsAvg
+  # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
+  confidence(level: float64!): AccountMarkdownForAgentsAdaptiveGroupsConfidence!
+  # Estimated conversion attempts. Skipped requests and some early cancellations are not recorded.
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountMarkdownForAgentsAdaptiveGroupsDimensions
+  # Sample-weighted estimates, except explicitly unweighted sampled observation counts.
+  sum: AccountMarkdownForAgentsAdaptiveGroupsSum
+}
+
+type AccountMarkdownForAgentsAdaptiveGroupsAvg {
+  # Average sampling expansion factor; not producer-event coverage or confidence in rare failures.
+  sampleInterval: float64!
+}
+
+type AccountMarkdownForAgentsAdaptiveGroupsConfidence {
+  # Estimated conversion attempts. Skipped requests and some early cancellations are not recorded., with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # Sample-weighted estimates, except explicitly unweighted sampled observation counts., with confidence intervals
+  sum: AccountMarkdownForAgentsAdaptiveGroupsSumConfidence
+}
+
+type AccountMarkdownForAgentsAdaptiveGroupsDimensions {
+  # Analytics event date.
+  date: Date!
+  # Analytics event time, not necessarily request start.
+  datetime: Time!
+  # Analytics event time truncated to fifteen minutes.
+  datetimeFifteenMinutes: Time!
+  # Analytics event time truncated to five minutes.
+  datetimeFiveMinutes: Time!
+  # Analytics event time truncated to the hour.
+  datetimeHour: Time!
+  # Analytics event time truncated to the minute.
+  datetimeMinute: Time!
+  # Content-free terminal error tag emitted by the converter; none for completed or unfinished streams. New tags may be added.
+  errorCode: string!
+  # not_omitted, omitted, or unknown. Not omitted does not establish that front matter existed.
+  frontmatterStatus: string!
+  # Lowercase hostname from the logged URL; empty if unparseable.
+  hostname: string!
+  # not_truncated, truncated, or unknown.
+  inputStatus: string!
+  # not_omitted, omitted, or unknown. Not omitted does not establish that JSON-LD existed.
+  jsonLdStatus: string!
+  # full, partial, completed_unknown, error, or unfinished. Full means no reported content-loss limits, not lossless HTML preservation or delivery.
+  outcome: string!
+  # Logged URL without query, fragment or authority credentials, capped by the producer at 1024 bytes. Long prefixes may collide; invalid UTF-8 is replaced.
+  pageUrl: string!
+  # Caller-supplied user agent, not verified crawler identity.
+  userAgent: string!
+  # Zone identifier, or empty if unavailable.
+  zoneTag: string!
+}
+
+input AccountMarkdownForAgentsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountMarkdownForAgentsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountMarkdownForAgentsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  errorCode: string
+  errorCode_geq: string
+  errorCode_gt: string
+  errorCode_ilike: string
+  errorCode_in: [string!]
+  errorCode_leq: string
+  errorCode_like: string
+  errorCode_lt: string
+  errorCode_neq: string
+  errorCode_notin: [string!]
+  errorCode_notlike: string
+  frontmatterStatus: string
+  frontmatterStatus_geq: string
+  frontmatterStatus_gt: string
+  frontmatterStatus_ilike: string
+  frontmatterStatus_in: [string!]
+  frontmatterStatus_leq: string
+  frontmatterStatus_like: string
+  frontmatterStatus_lt: string
+  frontmatterStatus_neq: string
+  frontmatterStatus_notin: [string!]
+  frontmatterStatus_notlike: string
+  hostname: string
+  hostname_geq: string
+  hostname_gt: string
+  hostname_ilike: string
+  hostname_in: [string!]
+  hostname_leq: string
+  hostname_like: string
+  hostname_lt: string
+  hostname_neq: string
+  hostname_notin: [string!]
+  hostname_notlike: string
+  inputStatus: string
+  inputStatus_geq: string
+  inputStatus_gt: string
+  inputStatus_ilike: string
+  inputStatus_in: [string!]
+  inputStatus_leq: string
+  inputStatus_like: string
+  inputStatus_lt: string
+  inputStatus_neq: string
+  inputStatus_notin: [string!]
+  inputStatus_notlike: string
+  jsonLdStatus: string
+  jsonLdStatus_geq: string
+  jsonLdStatus_gt: string
+  jsonLdStatus_ilike: string
+  jsonLdStatus_in: [string!]
+  jsonLdStatus_leq: string
+  jsonLdStatus_like: string
+  jsonLdStatus_lt: string
+  jsonLdStatus_neq: string
+  jsonLdStatus_notin: [string!]
+  jsonLdStatus_notlike: string
+  outcome: string
+  outcome_geq: string
+  outcome_gt: string
+  outcome_ilike: string
+  outcome_in: [string!]
+  outcome_leq: string
+  outcome_like: string
+  outcome_lt: string
+  outcome_neq: string
+  outcome_notin: [string!]
+  outcome_notlike: string
+  pageUrl: string
+  pageUrl_geq: string
+  pageUrl_gt: string
+  pageUrl_ilike: string
+  pageUrl_in: [string!]
+  pageUrl_leq: string
+  pageUrl_like: string
+  pageUrl_lt: string
+  pageUrl_neq: string
+  pageUrl_notin: [string!]
+  pageUrl_notlike: string
+  userAgent: string
+  userAgent_geq: string
+  userAgent_gt: string
+  userAgent_ilike: string
+  userAgent_in: [string!]
+  userAgent_leq: string
+  userAgent_like: string
+  userAgent_lt: string
+  userAgent_neq: string
+  userAgent_notin: [string!]
+  userAgent_notlike: string
+  zoneTag: string
+  zoneTag_geq: string
+  zoneTag_gt: string
+  zoneTag_ilike: string
+  zoneTag_in: [string!]
+  zoneTag_leq: string
+  zoneTag_like: string
+  zoneTag_lt: string
+  zoneTag_neq: string
+  zoneTag_notin: [string!]
+  zoneTag_notlike: string
+}
+
+enum AccountMarkdownForAgentsAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # errorCode ascending
+  errorCode_ASC
+  # errorCode descending
+  errorCode_DESC
+  # frontmatterStatus ascending
+  frontmatterStatus_ASC
+  # frontmatterStatus descending
+  frontmatterStatus_DESC
+  # hostname ascending
+  hostname_ASC
+  # hostname descending
+  hostname_DESC
+  # inputStatus ascending
+  inputStatus_ASC
+  # inputStatus descending
+  inputStatus_DESC
+  # jsonLdStatus ascending
+  jsonLdStatus_ASC
+  # jsonLdStatus descending
+  jsonLdStatus_DESC
+  # outcome ascending
+  outcome_ASC
+  # outcome descending
+  outcome_DESC
+  # pageUrl ascending
+  pageUrl_ASC
+  # pageUrl descending
+  pageUrl_DESC
+  # sum(completedUnknownRequests) ascending
+  sum_completedUnknownRequests_ASC
+  # sum(completedUnknownRequests) descending
+  sum_completedUnknownRequests_DESC
+  # sum(estimatedTokensSaved) ascending
+  sum_estimatedTokensSaved_ASC
+  # sum(estimatedTokensSaved) descending
+  sum_estimatedTokensSaved_DESC
+  # sum(failedRequests) ascending
+  sum_failedRequests_ASC
+  # sum(failedRequests) descending
+  sum_failedRequests_DESC
+  # sum(frontmatterOmittedRequests) ascending
+  sum_frontmatterOmittedRequests_ASC
+  # sum(frontmatterOmittedRequests) descending
+  sum_frontmatterOmittedRequests_DESC
+  # sum(fullRequests) ascending
+  sum_fullRequests_ASC
+  # sum(fullRequests) descending
+  sum_fullRequests_DESC
+  # sum(inputTruncatedRequests) ascending
+  sum_inputTruncatedRequests_ASC
+  # sum(inputTruncatedRequests) descending
+  sum_inputTruncatedRequests_DESC
+  # sum(jsonLdOmittedRequests) ascending
+  sum_jsonLdOmittedRequests_ASC
+  # sum(jsonLdOmittedRequests) descending
+  sum_jsonLdOmittedRequests_DESC
+  # sum(partialRequests) ascending
+  sum_partialRequests_ASC
+  # sum(partialRequests) descending
+  sum_partialRequests_DESC
+  # sum(sampledFailedRequests) ascending
+  sum_sampledFailedRequests_ASC
+  # sum(sampledFailedRequests) descending
+  sum_sampledFailedRequests_DESC
+  # sum(sampledPartialRequests) ascending
+  sum_sampledPartialRequests_ASC
+  # sum(sampledPartialRequests) descending
+  sum_sampledPartialRequests_DESC
+  # sum(sampledRequests) ascending
+  sum_sampledRequests_ASC
+  # sum(sampledRequests) descending
+  sum_sampledRequests_DESC
+  # sum(savingsEligibleRequests) ascending
+  sum_savingsEligibleRequests_ASC
+  # sum(savingsEligibleRequests) descending
+  sum_savingsEligibleRequests_DESC
+  # sum(savingsInputTokens) ascending
+  sum_savingsInputTokens_ASC
+  # sum(savingsInputTokens) descending
+  sum_savingsInputTokens_DESC
+  # sum(savingsOutputTokens) ascending
+  sum_savingsOutputTokens_ASC
+  # sum(savingsOutputTokens) descending
+  sum_savingsOutputTokens_DESC
+  # sum(unfinishedRequests) ascending
+  sum_unfinishedRequests_ASC
+  # sum(unfinishedRequests) descending
+  sum_unfinishedRequests_DESC
+  # userAgent ascending
+  userAgent_ASC
+  # userAgent descending
+  userAgent_DESC
+  # zoneTag ascending
+  zoneTag_ASC
+  # zoneTag descending
+  zoneTag_DESC
+}
+
+type AccountMarkdownForAgentsAdaptiveGroupsSum {
+  # Completed conversions whose limit telemetry cannot establish full or partial output.
+  completedUnknownRequests: uint64!
+  # Signed net input-minus-output token estimate for full, savings-eligible conversions. Expansion contributes negatively.
+  estimatedTokensSaved: int64!
+  # Terminal conversion failures, excluding unfinished streams.
+  failedRequests: uint64!
+  # Completed conversions with oversized front matter omitted. May overlap other limits.
+  frontmatterOmittedRequests: uint64!
+  # Completed conversions with all three content-loss flags known false; not lossless HTML preservation.
+  fullRequests: uint64!
+  # Completed conversions with known input cutoff. May overlap metadata omissions.
+  inputTruncatedRequests: uint64!
+  # Completed conversions with oversized JSON-LD omitted. May overlap other limits.
+  jsonLdOmittedRequests: uint64!
+  # Completed conversions with at least one known content-loss limit.
+  partialRequests: uint64!
+  # Actual terminal-failure observations, without population expansion.
+  sampledFailedRequests: uint64!
+  # Actual partial-output observations, without population expansion.
+  sampledPartialRequests: uint64!
+  # Actual observed sample rows, without population expansion.
+  sampledRequests: uint64!
+  # Full conversions with a positive input estimate used for all token-savings sums.
+  savingsEligibleRequests: uint64!
+  # Estimated input tokens on savings-eligible conversions. Per-event estimate is floor(decompressed HTML bytes fed to converter / 4), not a tokenizer count.
+  savingsInputTokens: uint64!
+  # Estimated produced Markdown tokens on the same savings-eligible cohort, using floor(bytes / 4); not proof of delivery.
+  savingsOutputTokens: uint64!
+  # Streams without a terminal converter outcome; cause is unknown.
+  unfinishedRequests: uint64!
+}
+
+type AccountMarkdownForAgentsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  completedUnknownRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  failedRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  frontmatterOmittedRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  fullRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  inputTruncatedRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  jsonLdOmittedRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  partialRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  savingsEligibleRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  savingsInputTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  savingsOutputTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  unfinishedRequests: Confidence!
 }
 
 # Aggregated Magic WAN Connector events with adaptive sampling
@@ -80029,9 +79590,6 @@ type AccountSettings {
   cf1AccessLoginsRawGroups: Settings!
   cf1GatewayDns1dGroups: Settings!
   cf1GatewayDns1hGroups: Settings!
-  cf1GatewayDnsLuga1dGroups: Settings!
-  cf1GatewayDnsLuga1hGroups: Settings!
-  cf1GatewayDnsLugaRawGroups: Settings!
   cf1GatewayDnsRawGroups: Settings!
   cf1GatewayHttp1dGroups: Settings!
   cf1GatewayHttp1hGroups: Settings!
@@ -80124,6 +79682,7 @@ type AccountSettings {
   magicTransitTunnelHealthCheckSLOsAdaptiveGroups: Settings!
   magicTransitTunnelHealthChecksAdaptiveGroups: Settings!
   magicTransitTunnelTrafficAdaptiveGroups: Settings!
+  markdownForAgentsAdaptiveGroups: Settings!
   mconnTelemetryEventsAdaptiveGroups: Settings!
   mconnTelemetryEventsStagingAdaptiveGroups: Settings!
   mconnTelemetrySnapshotDhcpLeasesAdaptiveGroups: Settings!
@@ -95826,6 +95385,8 @@ type zone {
   logpushHealthAdaptiveGroups(filter: ZoneLogpushHealthAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneLogpushHealthAdaptiveGroupsOrderBy!]): [ZoneLogpushHealthAdaptiveGroups!]!
   # Beta. Logpush transformer health metrics
   logpushTransformersAdaptiveGroups(filter: ZoneLogpushTransformersAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneLogpushTransformersAdaptiveGroupsOrderBy!]): [ZoneLogpushTransformersAdaptiveGroups!]!
+  # Sampled in-process Markdown for Agents conversion attempts, including partial output and failures. Completion does not establish downstream delivery.
+  markdownForAgentsAdaptiveGroups(filter: ZoneMarkdownForAgentsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneMarkdownForAgentsAdaptiveGroupsOrderBy!]): [ZoneMarkdownForAgentsAdaptiveGroups!]!
   # Data to visualize network error logs
   nelReportsAdaptiveGroups(filter: ZoneNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneNelReportsAdaptiveGroupsOrderBy!]): [ZoneNelReportsAdaptiveGroups!]!
   # Aggregated oHTTP request metrics with adaptive sampling for Privacy Gateway customers
@@ -95836,6 +95397,8 @@ type zone {
   preRenderBotRequestsAdaptiveGroups(filter: ZonePreRenderBotRequestsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZonePreRenderBotRequestsAdaptiveGroupsOrderBy!]): [ZonePreRenderBotRequestsAdaptiveGroups!]!
   # Aggregated pre-render render attempts with adaptive sampling
   preRenderRenderAttemptsAdaptiveGroups(filter: ZonePreRenderRenderAttemptsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZonePreRenderRenderAttemptsAdaptiveGroupsOrderBy!]): [ZonePreRenderRenderAttemptsAdaptiveGroups!]!
+  # Estimated Precursor sessions represented by Ready Aggregates events
+  precursorSessionsGroups(filter: ZonePrecursorSessionsGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZonePrecursorSessionsGroupsOrderBy!]): [ZonePrecursorSessionsGroups!]!
   settings: ZoneSettings
   # User ID profiles for login and sign up attempts
   userProfilesAdaptiveGroups(filter: ZoneUserProfilesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneUserProfilesAdaptiveGroupsOrderBy!]): [ZoneUserProfilesAdaptiveGroups!]!
@@ -111915,6 +111478,10 @@ enum ZoneLogpushHealthAdaptiveGroupsOrderBy {
   objectType_ASC
   # objectType descending
   objectType_DESC
+  # ownedByServiceEmpty ascending
+  ownedByServiceEmpty_ASC
+  # ownedByServiceEmpty descending
+  ownedByServiceEmpty_DESC
   # status ascending
   status_ASC
   # status descending
@@ -112219,6 +111786,391 @@ type ZoneLogpushTransformersAdaptiveGroupsSumConfidence {
   bytesOut: Confidence!
   # Confidence interval for the corresponding point estimate
   records: Confidence!
+}
+
+# Sampled in-process Markdown for Agents conversion attempts, including partial output and failures. Completion does not establish downstream delivery.
+type ZoneMarkdownForAgentsAdaptiveGroups {
+  # Sample characteristics.
+  avg: ZoneMarkdownForAgentsAdaptiveGroupsAvg
+  # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
+  confidence(level: float64!): ZoneMarkdownForAgentsAdaptiveGroupsConfidence!
+  # Estimated conversion attempts. Skipped requests and some early cancellations are not recorded.
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneMarkdownForAgentsAdaptiveGroupsDimensions
+  # Sample-weighted estimates, except explicitly unweighted sampled observation counts.
+  sum: ZoneMarkdownForAgentsAdaptiveGroupsSum
+}
+
+type ZoneMarkdownForAgentsAdaptiveGroupsAvg {
+  # Average sampling expansion factor; not producer-event coverage or confidence in rare failures.
+  sampleInterval: float64!
+}
+
+type ZoneMarkdownForAgentsAdaptiveGroupsConfidence {
+  # Estimated conversion attempts. Skipped requests and some early cancellations are not recorded., with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # Sample-weighted estimates, except explicitly unweighted sampled observation counts., with confidence intervals
+  sum: ZoneMarkdownForAgentsAdaptiveGroupsSumConfidence
+}
+
+type ZoneMarkdownForAgentsAdaptiveGroupsDimensions {
+  # Analytics event date.
+  date: Date!
+  # Analytics event time, not necessarily request start.
+  datetime: Time!
+  # Analytics event time truncated to fifteen minutes.
+  datetimeFifteenMinutes: Time!
+  # Analytics event time truncated to five minutes.
+  datetimeFiveMinutes: Time!
+  # Analytics event time truncated to the hour.
+  datetimeHour: Time!
+  # Analytics event time truncated to the minute.
+  datetimeMinute: Time!
+  # Content-free terminal error tag emitted by the converter; none for completed or unfinished streams. New tags may be added.
+  errorCode: string!
+  # not_omitted, omitted, or unknown. Not omitted does not establish that front matter existed.
+  frontmatterStatus: string!
+  # Lowercase hostname from the logged URL; empty if unparseable.
+  hostname: string!
+  # not_truncated, truncated, or unknown.
+  inputStatus: string!
+  # not_omitted, omitted, or unknown. Not omitted does not establish that JSON-LD existed.
+  jsonLdStatus: string!
+  # full, partial, completed_unknown, error, or unfinished. Full means no reported content-loss limits, not lossless HTML preservation or delivery.
+  outcome: string!
+  # Logged URL without query, fragment or authority credentials, capped by the producer at 1024 bytes. Long prefixes may collide; invalid UTF-8 is replaced.
+  pageUrl: string!
+  # Caller-supplied user agent, not verified crawler identity.
+  userAgent: string!
+}
+
+input ZoneMarkdownForAgentsAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneMarkdownForAgentsAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneMarkdownForAgentsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  errorCode: string
+  errorCode_geq: string
+  errorCode_gt: string
+  errorCode_ilike: string
+  errorCode_in: [string!]
+  errorCode_leq: string
+  errorCode_like: string
+  errorCode_lt: string
+  errorCode_neq: string
+  errorCode_notin: [string!]
+  errorCode_notlike: string
+  frontmatterStatus: string
+  frontmatterStatus_geq: string
+  frontmatterStatus_gt: string
+  frontmatterStatus_ilike: string
+  frontmatterStatus_in: [string!]
+  frontmatterStatus_leq: string
+  frontmatterStatus_like: string
+  frontmatterStatus_lt: string
+  frontmatterStatus_neq: string
+  frontmatterStatus_notin: [string!]
+  frontmatterStatus_notlike: string
+  hostname: string
+  hostname_geq: string
+  hostname_gt: string
+  hostname_ilike: string
+  hostname_in: [string!]
+  hostname_leq: string
+  hostname_like: string
+  hostname_lt: string
+  hostname_neq: string
+  hostname_notin: [string!]
+  hostname_notlike: string
+  inputStatus: string
+  inputStatus_geq: string
+  inputStatus_gt: string
+  inputStatus_ilike: string
+  inputStatus_in: [string!]
+  inputStatus_leq: string
+  inputStatus_like: string
+  inputStatus_lt: string
+  inputStatus_neq: string
+  inputStatus_notin: [string!]
+  inputStatus_notlike: string
+  jsonLdStatus: string
+  jsonLdStatus_geq: string
+  jsonLdStatus_gt: string
+  jsonLdStatus_ilike: string
+  jsonLdStatus_in: [string!]
+  jsonLdStatus_leq: string
+  jsonLdStatus_like: string
+  jsonLdStatus_lt: string
+  jsonLdStatus_neq: string
+  jsonLdStatus_notin: [string!]
+  jsonLdStatus_notlike: string
+  outcome: string
+  outcome_geq: string
+  outcome_gt: string
+  outcome_ilike: string
+  outcome_in: [string!]
+  outcome_leq: string
+  outcome_like: string
+  outcome_lt: string
+  outcome_neq: string
+  outcome_notin: [string!]
+  outcome_notlike: string
+  pageUrl: string
+  pageUrl_geq: string
+  pageUrl_gt: string
+  pageUrl_ilike: string
+  pageUrl_in: [string!]
+  pageUrl_leq: string
+  pageUrl_like: string
+  pageUrl_lt: string
+  pageUrl_neq: string
+  pageUrl_notin: [string!]
+  pageUrl_notlike: string
+  userAgent: string
+  userAgent_geq: string
+  userAgent_gt: string
+  userAgent_ilike: string
+  userAgent_in: [string!]
+  userAgent_leq: string
+  userAgent_like: string
+  userAgent_lt: string
+  userAgent_neq: string
+  userAgent_notin: [string!]
+  userAgent_notlike: string
+}
+
+enum ZoneMarkdownForAgentsAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # errorCode ascending
+  errorCode_ASC
+  # errorCode descending
+  errorCode_DESC
+  # frontmatterStatus ascending
+  frontmatterStatus_ASC
+  # frontmatterStatus descending
+  frontmatterStatus_DESC
+  # hostname ascending
+  hostname_ASC
+  # hostname descending
+  hostname_DESC
+  # inputStatus ascending
+  inputStatus_ASC
+  # inputStatus descending
+  inputStatus_DESC
+  # jsonLdStatus ascending
+  jsonLdStatus_ASC
+  # jsonLdStatus descending
+  jsonLdStatus_DESC
+  # outcome ascending
+  outcome_ASC
+  # outcome descending
+  outcome_DESC
+  # pageUrl ascending
+  pageUrl_ASC
+  # pageUrl descending
+  pageUrl_DESC
+  # sum(completedUnknownRequests) ascending
+  sum_completedUnknownRequests_ASC
+  # sum(completedUnknownRequests) descending
+  sum_completedUnknownRequests_DESC
+  # sum(estimatedTokensSaved) ascending
+  sum_estimatedTokensSaved_ASC
+  # sum(estimatedTokensSaved) descending
+  sum_estimatedTokensSaved_DESC
+  # sum(failedRequests) ascending
+  sum_failedRequests_ASC
+  # sum(failedRequests) descending
+  sum_failedRequests_DESC
+  # sum(frontmatterOmittedRequests) ascending
+  sum_frontmatterOmittedRequests_ASC
+  # sum(frontmatterOmittedRequests) descending
+  sum_frontmatterOmittedRequests_DESC
+  # sum(fullRequests) ascending
+  sum_fullRequests_ASC
+  # sum(fullRequests) descending
+  sum_fullRequests_DESC
+  # sum(inputTruncatedRequests) ascending
+  sum_inputTruncatedRequests_ASC
+  # sum(inputTruncatedRequests) descending
+  sum_inputTruncatedRequests_DESC
+  # sum(jsonLdOmittedRequests) ascending
+  sum_jsonLdOmittedRequests_ASC
+  # sum(jsonLdOmittedRequests) descending
+  sum_jsonLdOmittedRequests_DESC
+  # sum(partialRequests) ascending
+  sum_partialRequests_ASC
+  # sum(partialRequests) descending
+  sum_partialRequests_DESC
+  # sum(sampledFailedRequests) ascending
+  sum_sampledFailedRequests_ASC
+  # sum(sampledFailedRequests) descending
+  sum_sampledFailedRequests_DESC
+  # sum(sampledPartialRequests) ascending
+  sum_sampledPartialRequests_ASC
+  # sum(sampledPartialRequests) descending
+  sum_sampledPartialRequests_DESC
+  # sum(sampledRequests) ascending
+  sum_sampledRequests_ASC
+  # sum(sampledRequests) descending
+  sum_sampledRequests_DESC
+  # sum(savingsEligibleRequests) ascending
+  sum_savingsEligibleRequests_ASC
+  # sum(savingsEligibleRequests) descending
+  sum_savingsEligibleRequests_DESC
+  # sum(savingsInputTokens) ascending
+  sum_savingsInputTokens_ASC
+  # sum(savingsInputTokens) descending
+  sum_savingsInputTokens_DESC
+  # sum(savingsOutputTokens) ascending
+  sum_savingsOutputTokens_ASC
+  # sum(savingsOutputTokens) descending
+  sum_savingsOutputTokens_DESC
+  # sum(unfinishedRequests) ascending
+  sum_unfinishedRequests_ASC
+  # sum(unfinishedRequests) descending
+  sum_unfinishedRequests_DESC
+  # userAgent ascending
+  userAgent_ASC
+  # userAgent descending
+  userAgent_DESC
+}
+
+type ZoneMarkdownForAgentsAdaptiveGroupsSum {
+  # Completed conversions whose limit telemetry cannot establish full or partial output.
+  completedUnknownRequests: uint64!
+  # Signed net input-minus-output token estimate for full, savings-eligible conversions. Expansion contributes negatively.
+  estimatedTokensSaved: int64!
+  # Terminal conversion failures, excluding unfinished streams.
+  failedRequests: uint64!
+  # Completed conversions with oversized front matter omitted. May overlap other limits.
+  frontmatterOmittedRequests: uint64!
+  # Completed conversions with all three content-loss flags known false; not lossless HTML preservation.
+  fullRequests: uint64!
+  # Completed conversions with known input cutoff. May overlap metadata omissions.
+  inputTruncatedRequests: uint64!
+  # Completed conversions with oversized JSON-LD omitted. May overlap other limits.
+  jsonLdOmittedRequests: uint64!
+  # Completed conversions with at least one known content-loss limit.
+  partialRequests: uint64!
+  # Actual terminal-failure observations, without population expansion.
+  sampledFailedRequests: uint64!
+  # Actual partial-output observations, without population expansion.
+  sampledPartialRequests: uint64!
+  # Actual observed sample rows, without population expansion.
+  sampledRequests: uint64!
+  # Full conversions with a positive input estimate used for all token-savings sums.
+  savingsEligibleRequests: uint64!
+  # Estimated input tokens on savings-eligible conversions. Per-event estimate is floor(decompressed HTML bytes fed to converter / 4), not a tokenizer count.
+  savingsInputTokens: uint64!
+  # Estimated produced Markdown tokens on the same savings-eligible cohort, using floor(bytes / 4); not proof of delivery.
+  savingsOutputTokens: uint64!
+  # Streams without a terminal converter outcome; cause is unknown.
+  unfinishedRequests: uint64!
+}
+
+type ZoneMarkdownForAgentsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  completedUnknownRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  failedRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  frontmatterOmittedRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  fullRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  inputTruncatedRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  jsonLdOmittedRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  partialRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  savingsEligibleRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  savingsInputTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  savingsOutputTokens: Confidence!
+  # Confidence interval for the corresponding point estimate
+  unfinishedRequests: Confidence!
 }
 
 # Data to visualize network error logs
@@ -113116,6 +113068,116 @@ enum ZonePageShieldReportsAdaptiveGroupsOrderBy {
   url_DESC
 }
 
+# Estimated Precursor sessions represented by Ready Aggregates events
+type ZonePrecursorSessionsGroups {
+  # Averages calculated from Ready Aggregates events
+  avg: ZonePrecursorSessionsGroupsAvg
+  # Estimated distinct sessions represented by Ready Aggregates events
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZonePrecursorSessionsGroupsDimensions
+}
+
+type ZonePrecursorSessionsGroupsAvg {
+  # Ready Aggregates event count divided by estimated distinct sessions
+  evalsPerSession: float64!
+  # Average session age in seconds at each recorded evaluation, weighted by evaluations
+  sessionLengthSeconds: float64!
+}
+
+type ZonePrecursorSessionsGroupsDimensions {
+  # The UTC date containing the recorded evaluations
+  date: Date!
+  # The UTC fifteen-minute bucket containing the recorded evaluations
+  datetimeFifteenMinutes: Time!
+  # The UTC five-minute bucket containing the recorded evaluations
+  datetimeFiveMinutes: Time!
+  # The UTC hour containing the recorded evaluations
+  datetimeHour: Time!
+  # The UTC minute containing the recorded evaluations
+  datetimeMinute: Time!
+}
+
+input ZonePrecursorSessionsGroupsFilter_InputObject {
+  AND: [ZonePrecursorSessionsGroupsFilter_InputObject!]
+  OR: [ZonePrecursorSessionsGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+}
+
+enum ZonePrecursorSessionsGroupsOrderBy {
+  # avg(evalsPerSession) ascending
+  avg_evalsPerSession_ASC
+  # avg(evalsPerSession) descending
+  avg_evalsPerSession_DESC
+  # avg(sessionLengthSeconds) ascending
+  avg_sessionLengthSeconds_ASC
+  # avg(sessionLengthSeconds) descending
+  avg_sessionLengthSeconds_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+}
+
 # Aggregated pre-render bot requests with adaptive sampling
 type ZonePreRenderBotRequestsAdaptiveGroups {
   # The weighted average value for a metric per dimension
@@ -113640,11 +113702,13 @@ type ZoneSettings {
   loadBalancingRequestsAdaptiveGroups: Settings!
   logpushHealthAdaptiveGroups: Settings!
   logpushTransformersAdaptiveGroups: Settings!
+  markdownForAgentsAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
   ohttpGatewayMetricsAdaptiveGroups: Settings!
   pageShieldReportsAdaptiveGroups: Settings!
   preRenderBotRequestsAdaptiveGroups: Settings!
   preRenderRenderAttemptsAdaptiveGroups: Settings!
+  precursorSessionsGroups: Settings!
   userProfilesAdaptiveGroups: Settings!
   userProfilesPiiGroups: Settings!
   userProfilesRawEventsGroups: Settings!
