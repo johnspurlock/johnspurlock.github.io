@@ -23,6 +23,7 @@ Account-level datasets:
 * aiSearchImageProcessingTokensAdaptiveGroups
 * aiSearchIngestedItemsAdaptiveGroups
 * aiSearchIngestionTokensAdaptiveGroups
+* aiSearchMediaSecondsAdaptiveGroups
 * aiSearchPublicEventsAdaptiveGroups
 * aiSearchSemanticQueriesAdaptiveGroups
 * aiSearchStorageAdaptiveGroups
@@ -215,6 +216,7 @@ Account-level datasets:
   storageTraces
 * streamCMCDAdaptiveGroups
 * streamMinutesViewedAdaptiveGroups
+* streamWHEPPlaybackMetricsAdaptiveGroups
 * streamWHIPBroadcastMetricsAdaptive
 * streamWHIPBroadcastMetricsAdaptiveGroups
 * toMarkdownConversionAdaptive
@@ -414,6 +416,8 @@ type account {
   aiSearchIngestedItemsAdaptiveGroups(filter: AccountAiSearchIngestedItemsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchIngestedItemsAdaptiveGroupsOrderBy!]): [AccountAiSearchIngestedItemsAdaptiveGroups!]!
   # Sample-weighted estimate of AI Search ingestion tokens. Logical operations are not deduplicated, so retries may be counted more than once.
   aiSearchIngestionTokensAdaptiveGroups(filter: AccountAiSearchIngestionTokensAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchIngestionTokensAdaptiveGroupsOrderBy!]): [AccountAiSearchIngestionTokensAdaptiveGroups!]!
+  # Sample-weighted estimate of AI Search media seconds (audio and video transcribed by new media jobs). Logical operations are not deduplicated, so retries may be counted more than once.
+  aiSearchMediaSecondsAdaptiveGroups(filter: AccountAiSearchMediaSecondsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchMediaSecondsAdaptiveGroupsOrderBy!]): [AccountAiSearchMediaSecondsAdaptiveGroups!]!
   # AI Search public endpoint analytics: searches, result clicks and view-more interactions reported by the public search snippet
   aiSearchPublicEventsAdaptiveGroups(filter: AccountAiSearchPublicEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountAiSearchPublicEventsAdaptiveGroupsOrderBy!]): [AccountAiSearchPublicEventsAdaptiveGroups!]!
   # Sample-weighted estimate of AI Search semantic queries. Logical operations are not deduplicated, so retries may be counted more than once.
@@ -800,6 +804,8 @@ type account {
   streamCMCDAdaptiveGroups(filter: AccountStreamCMCDAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountStreamCMCDAdaptiveGroupsOrderBy!]): [AccountStreamCMCDAdaptiveGroups!]!
   # A high-level summary of Cloudflare Stream minutes viewed.
   streamMinutesViewedAdaptiveGroups(filter: AccountStreamMinutesViewedAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountStreamMinutesViewedAdaptiveGroupsOrderBy!]): [AccountStreamMinutesViewedAdaptiveGroups!]!
+  # Aggregated WHEP playback metrics for Cloudflare Stream
+  streamWHEPPlaybackMetricsAdaptiveGroups(filter: AccountStreamWHEPPlaybackMetricsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountStreamWHEPPlaybackMetricsAdaptiveGroupsOrderBy!]): [AccountStreamWHEPPlaybackMetricsAdaptiveGroups!]!
   # WHIP broadcast metrics for Cloudflare Stream.
   streamWHIPBroadcastMetricsAdaptive(filter: AccountStreamWHIPBroadcastMetricsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountStreamWHIPBroadcastMetricsAdaptiveOrderBy!]): [AccountStreamWHIPBroadcastMetricsAdaptive!]!
   # Aggregated WHIP broadcast metrics for Cloudflare Stream
@@ -11970,6 +11976,219 @@ type AccountAiSearchIngestionTokensAdaptiveGroupsSum {
 type AccountAiSearchIngestionTokensAdaptiveGroupsSumConfidence {
   # Confidence interval for the corresponding point estimate
   tokens: Confidence!
+}
+
+# Sample-weighted estimate of AI Search media seconds (audio and video transcribed by new media jobs). Logical operations are not deduplicated, so retries may be counted more than once.
+type AccountAiSearchMediaSecondsAdaptiveGroups {
+  # The average of values for a metric per dimension
+  avg: AccountAiSearchMediaSecondsAdaptiveGroupsAvg
+  # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
+  confidence(level: float64!): AccountAiSearchMediaSecondsAdaptiveGroupsConfidence!
+  # Sample-weighted estimate of media transcription events; retries are not deduplicated
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountAiSearchMediaSecondsAdaptiveGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountAiSearchMediaSecondsAdaptiveGroupsSum
+}
+
+type AccountAiSearchMediaSecondsAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountAiSearchMediaSecondsAdaptiveGroupsConfidence {
+  # Sample-weighted estimate of media transcription events; retries are not deduplicated, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # The sum of values for a metric per dimension, with confidence intervals
+  sum: AccountAiSearchMediaSecondsAdaptiveGroupsSumConfidence
+}
+
+type AccountAiSearchMediaSecondsAdaptiveGroupsDimensions {
+  # The date of the billing event
+  date: Date!
+  # The date and time of the billing event
+  datetime: Time!
+  # The date and time truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # The date and time truncated to the hour
+  datetimeHour: Time!
+  # The date and time truncated to the minute
+  datetimeMinute: Time!
+  # Public AI Search instance identifier
+  instanceId: string!
+  # Media path the job ran: audio or video
+  mediaType: string!
+  # AI Search namespace identifier
+  namespaceId: string!
+  # Billing tier at the time of the event (free or paid)
+  tier: string!
+}
+
+input AccountAiSearchMediaSecondsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountAiSearchMediaSecondsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountAiSearchMediaSecondsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  instanceId: string
+  instanceId_geq: string
+  instanceId_gt: string
+  instanceId_ilike: string
+  instanceId_in: [string!]
+  instanceId_leq: string
+  instanceId_like: string
+  instanceId_lt: string
+  instanceId_neq: string
+  instanceId_notin: [string!]
+  instanceId_notlike: string
+  mediaType: string
+  mediaType_geq: string
+  mediaType_gt: string
+  mediaType_ilike: string
+  mediaType_in: [string!]
+  mediaType_leq: string
+  mediaType_like: string
+  mediaType_lt: string
+  mediaType_neq: string
+  mediaType_notin: [string!]
+  mediaType_notlike: string
+  namespaceId: string
+  namespaceId_geq: string
+  namespaceId_gt: string
+  namespaceId_ilike: string
+  namespaceId_in: [string!]
+  namespaceId_leq: string
+  namespaceId_like: string
+  namespaceId_lt: string
+  namespaceId_neq: string
+  namespaceId_notin: [string!]
+  namespaceId_notlike: string
+  tier: string
+  tier_geq: string
+  tier_gt: string
+  tier_ilike: string
+  tier_in: [string!]
+  tier_leq: string
+  tier_like: string
+  tier_lt: string
+  tier_neq: string
+  tier_notin: [string!]
+  tier_notlike: string
+}
+
+enum AccountAiSearchMediaSecondsAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # instanceId ascending
+  instanceId_ASC
+  # instanceId descending
+  instanceId_DESC
+  # mediaType ascending
+  mediaType_ASC
+  # mediaType descending
+  mediaType_DESC
+  # namespaceId ascending
+  namespaceId_ASC
+  # namespaceId descending
+  namespaceId_DESC
+  # sum(seconds) ascending
+  sum_seconds_ASC
+  # sum(seconds) descending
+  sum_seconds_DESC
+  # tier ascending
+  tier_ASC
+  # tier descending
+  tier_DESC
+}
+
+type AccountAiSearchMediaSecondsAdaptiveGroupsSum {
+  # Sample-weighted estimate of media seconds; retries are not deduplicated
+  seconds: uint64!
+}
+
+type AccountAiSearchMediaSecondsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  seconds: Confidence!
 }
 
 # AI Search public endpoint analytics: searches, result clicks and view-more interactions reported by the public search snippet
@@ -31621,8 +31840,6 @@ type AccountDurableObjectsSubrequestsAdaptiveGroupsDimensions {
   datetimeSixHours: Time!
   # The name of the script environment
   environmentName: string!
-  # The name the Durable Object was created with
-  name: string!
   # Durable Object namespace ID
   namespaceId: string!
   # Durable Object ID as a hex string
@@ -31701,17 +31918,6 @@ input AccountDurableObjectsSubrequestsAdaptiveGroupsFilter_InputObject {
   environmentName_neq: string
   environmentName_notin: [string!]
   environmentName_notlike: string
-  name: string
-  name_geq: string
-  name_gt: string
-  name_ilike: string
-  name_in: [string!]
-  name_leq: string
-  name_like: string
-  name_lt: string
-  name_neq: string
-  name_notin: [string!]
-  name_notlike: string
   namespaceId: string
   namespaceId_geq: string
   namespaceId_gt: string
@@ -31784,10 +31990,6 @@ enum AccountDurableObjectsSubrequestsAdaptiveGroupsOrderBy {
   environmentName_ASC
   # environmentName descending
   environmentName_DESC
-  # name ascending
-  name_ASC
-  # name descending
-  name_DESC
   # namespaceId ascending
   namespaceId_ASC
   # namespaceId descending
@@ -51362,6 +51564,10 @@ enum AccountLogpushUsageAdaptiveGroupsOrderBy {
   blob9Empty_ASC
   # blob9Empty descending
   blob9Empty_DESC
+  # coreJobOffset ascending
+  coreJobOffset_ASC
+  # coreJobOffset descending
+  coreJobOffset_DESC
   # date ascending
   date_ASC
   # date descending
@@ -51370,10 +51576,10 @@ enum AccountLogpushUsageAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
-  # logpushJobOffset ascending
-  logpushJobOffset_ASC
-  # logpushJobOffset descending
-  logpushJobOffset_DESC
+  # edgeJobOffset ascending
+  edgeJobOffset_ASC
+  # edgeJobOffset descending
+  edgeJobOffset_DESC
   # namespace ascending
   namespace_ASC
   # namespace descending
@@ -51386,6 +51592,10 @@ enum AccountLogpushUsageAdaptiveGroupsOrderBy {
   sum_billableBytes_ASC
   # sum(billableBytes) descending
   sum_billableBytes_DESC
+  # unbilledDataset ascending
+  unbilledDataset_ASC
+  # unbilledDataset descending
+  unbilledDataset_DESC
 }
 
 type AccountLogpushUsageAdaptiveGroupsSum {
@@ -79565,6 +79775,7 @@ type AccountSettings {
   aiSearchImageProcessingTokensAdaptiveGroups: Settings!
   aiSearchIngestedItemsAdaptiveGroups: Settings!
   aiSearchIngestionTokensAdaptiveGroups: Settings!
+  aiSearchMediaSecondsAdaptiveGroups: Settings!
   aiSearchPublicEventsAdaptiveGroups: Settings!
   aiSearchSemanticQueriesAdaptiveGroups: Settings!
   aiSearchStorageAdaptiveGroups: Settings!
@@ -79757,6 +79968,7 @@ type AccountSettings {
   storageTraces: Settings!
   streamCMCDAdaptiveGroups: Settings!
   streamMinutesViewedAdaptiveGroups: Settings!
+  streamWHEPPlaybackMetricsAdaptiveGroups: Settings!
   streamWHIPBroadcastMetricsAdaptive: Settings!
   streamWHIPBroadcastMetricsAdaptiveGroups: Settings!
   toMarkdownConversionAdaptive: Settings!
@@ -83108,6 +83320,354 @@ enum AccountStreamMinutesViewedAdaptiveGroupsOrderBy {
 
 type AccountStreamMinutesViewedAdaptiveGroupsSum {
   minutesViewed: uint64!
+}
+
+# Aggregated WHEP playback metrics for Cloudflare Stream
+type AccountStreamWHEPPlaybackMetricsAdaptiveGroups {
+  # Average value of each metric for the selected dimensions
+  avg: AccountStreamWHEPPlaybackMetricsAdaptiveGroupsAvg
+  # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
+  confidence(level: float64!): AccountStreamWHEPPlaybackMetricsAdaptiveGroupsConfidence!
+  # Estimated number of observations
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountStreamWHEPPlaybackMetricsAdaptiveGroupsDimensions
+  # The maximum value for a metric per dimension
+  max: AccountStreamWHEPPlaybackMetricsAdaptiveGroupsMax
+  # Total value of each metric for the selected dimensions
+  sum: AccountStreamWHEPPlaybackMetricsAdaptiveGroupsSum
+}
+
+type AccountStreamWHEPPlaybackMetricsAdaptiveGroupsAvg {
+  # Average audio jitter in seconds
+  audioJitterSeconds: float64!
+  # Rate of expected audio packets that were lost
+  audioPacketLossRate: float64!
+  # Average of the most recent ICE round trip time in seconds
+  iceCurrentRttSeconds: float64!
+  # Average ICE round trip time in seconds
+  iceRttSeconds: float64!
+  # Average receiver estimated maximum bitrate in bits per second
+  rembBitsPerSecond: float64!
+  # Average adaptive sampling interval
+  sampleInterval: float64!
+  # Average video jitter in seconds
+  videoJitterSeconds: float64!
+  # Rate of expected video packets that were lost
+  videoPacketLossRate: float64!
+}
+
+type AccountStreamWHEPPlaybackMetricsAdaptiveGroupsConfidence {
+  # Estimated number of observations, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  # Total value of each metric for the selected dimensions, with confidence intervals
+  sum: AccountStreamWHEPPlaybackMetricsAdaptiveGroupsSumConfidence
+}
+
+type AccountStreamWHEPPlaybackMetricsAdaptiveGroupsDimensions {
+  # Date when the metric was observed
+  date: Date!
+  # Date and time when the metric was collected
+  datetime: Time!
+  # Date and time of the observation truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Date and time of the observation truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Date and time of the observation truncated to the hour
+  datetimeHour: Time!
+  # Date and time of the observation truncated to the minute
+  datetimeMinute: Time!
+  # DTLS transport state
+  dtlsState: string!
+  # ICE connection state
+  iceConnectionState: string!
+  # Live input ID
+  inputId: string!
+  # WebRTC peer connection state
+  peerConnectionState: string!
+  # ABR sample interval
+  sampleInterval: uint32!
+}
+
+input AccountStreamWHEPPlaybackMetricsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountStreamWHEPPlaybackMetricsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountStreamWHEPPlaybackMetricsAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  dtlsState: string
+  dtlsState_geq: string
+  dtlsState_gt: string
+  dtlsState_ilike: string
+  dtlsState_in: [string!]
+  dtlsState_leq: string
+  dtlsState_like: string
+  dtlsState_lt: string
+  dtlsState_neq: string
+  dtlsState_notin: [string!]
+  dtlsState_notlike: string
+  iceConnectionState: string
+  iceConnectionState_geq: string
+  iceConnectionState_gt: string
+  iceConnectionState_ilike: string
+  iceConnectionState_in: [string!]
+  iceConnectionState_leq: string
+  iceConnectionState_like: string
+  iceConnectionState_lt: string
+  iceConnectionState_neq: string
+  iceConnectionState_notin: [string!]
+  iceConnectionState_notlike: string
+  inputId: string
+  inputId_geq: string
+  inputId_gt: string
+  inputId_ilike: string
+  inputId_in: [string!]
+  inputId_leq: string
+  inputId_like: string
+  inputId_lt: string
+  inputId_neq: string
+  inputId_notin: [string!]
+  inputId_notlike: string
+  peerConnectionState: string
+  peerConnectionState_geq: string
+  peerConnectionState_gt: string
+  peerConnectionState_ilike: string
+  peerConnectionState_in: [string!]
+  peerConnectionState_leq: string
+  peerConnectionState_like: string
+  peerConnectionState_lt: string
+  peerConnectionState_neq: string
+  peerConnectionState_notin: [string!]
+  peerConnectionState_notlike: string
+  sampleInterval: uint32
+  sampleInterval_geq: uint32
+  sampleInterval_gt: uint32
+  sampleInterval_in: [uint32!]
+  sampleInterval_leq: uint32
+  sampleInterval_lt: uint32
+  sampleInterval_neq: uint32
+  sampleInterval_notin: [uint32!]
+}
+
+type AccountStreamWHEPPlaybackMetricsAdaptiveGroupsMax {
+  # Most audio RTP packets lost in any single observation
+  audioPacketsLost: uint64!
+  # Highest most recent ICE round trip time in seconds of any observation
+  iceCurrentRttSeconds: float64!
+  # Most video RTP packets lost in any single observation
+  videoPacketsLost: uint64!
+}
+
+enum AccountStreamWHEPPlaybackMetricsAdaptiveGroupsOrderBy {
+  # avg(audioJitterSeconds) ascending
+  avg_audioJitterSeconds_ASC
+  # avg(audioJitterSeconds) descending
+  avg_audioJitterSeconds_DESC
+  # avg(audioPacketLossRate) ascending
+  avg_audioPacketLossRate_ASC
+  # avg(audioPacketLossRate) descending
+  avg_audioPacketLossRate_DESC
+  # avg(iceCurrentRttSeconds) ascending
+  avg_iceCurrentRttSeconds_ASC
+  # avg(iceCurrentRttSeconds) descending
+  avg_iceCurrentRttSeconds_DESC
+  # avg(iceRttSeconds) ascending
+  avg_iceRttSeconds_ASC
+  # avg(iceRttSeconds) descending
+  avg_iceRttSeconds_DESC
+  # avg(rembBitsPerSecond) ascending
+  avg_rembBitsPerSecond_ASC
+  # avg(rembBitsPerSecond) descending
+  avg_rembBitsPerSecond_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # avg(videoJitterSeconds) ascending
+  avg_videoJitterSeconds_ASC
+  # avg(videoJitterSeconds) descending
+  avg_videoJitterSeconds_DESC
+  # avg(videoPacketLossRate) ascending
+  avg_videoPacketLossRate_ASC
+  # avg(videoPacketLossRate) descending
+  avg_videoPacketLossRate_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # dtlsState ascending
+  dtlsState_ASC
+  # dtlsState descending
+  dtlsState_DESC
+  # iceConnectionState ascending
+  iceConnectionState_ASC
+  # iceConnectionState descending
+  iceConnectionState_DESC
+  # inputId ascending
+  inputId_ASC
+  # inputId descending
+  inputId_DESC
+  # max(audioPacketsLost) ascending
+  max_audioPacketsLost_ASC
+  # max(audioPacketsLost) descending
+  max_audioPacketsLost_DESC
+  # max(iceCurrentRttSeconds) ascending
+  max_iceCurrentRttSeconds_ASC
+  # max(iceCurrentRttSeconds) descending
+  max_iceCurrentRttSeconds_DESC
+  # max(videoPacketsLost) ascending
+  max_videoPacketsLost_ASC
+  # max(videoPacketsLost) descending
+  max_videoPacketsLost_DESC
+  # peerConnectionState ascending
+  peerConnectionState_ASC
+  # peerConnectionState descending
+  peerConnectionState_DESC
+  # sampleInterval ascending
+  sampleInterval_ASC
+  # sampleInterval descending
+  sampleInterval_DESC
+  # sum(audioPacketsExpected) ascending
+  sum_audioPacketsExpected_ASC
+  # sum(audioPacketsExpected) descending
+  sum_audioPacketsExpected_DESC
+  # sum(audioPacketsLost) ascending
+  sum_audioPacketsLost_ASC
+  # sum(audioPacketsLost) descending
+  sum_audioPacketsLost_DESC
+  # sum(nackPackets) ascending
+  sum_nackPackets_ASC
+  # sum(nackPackets) descending
+  sum_nackPackets_DESC
+  # sum(nackRequestedPackets) ascending
+  sum_nackRequestedPackets_ASC
+  # sum(nackRequestedPackets) descending
+  sum_nackRequestedPackets_DESC
+  # sum(observationDurationSeconds) ascending
+  sum_observationDurationSeconds_ASC
+  # sum(observationDurationSeconds) descending
+  sum_observationDurationSeconds_DESC
+  # sum(pliCount) ascending
+  sum_pliCount_ASC
+  # sum(pliCount) descending
+  sum_pliCount_DESC
+  # sum(videoPacketsExpected) ascending
+  sum_videoPacketsExpected_ASC
+  # sum(videoPacketsExpected) descending
+  sum_videoPacketsExpected_DESC
+  # sum(videoPacketsLost) ascending
+  sum_videoPacketsLost_ASC
+  # sum(videoPacketsLost) descending
+  sum_videoPacketsLost_DESC
+}
+
+type AccountStreamWHEPPlaybackMetricsAdaptiveGroupsSum {
+  # Estimated total audio RTP packets expected
+  audioPacketsExpected: uint64!
+  # Estimated total audio RTP packets lost
+  audioPacketsLost: uint64!
+  # Estimated total NACK packets sent
+  nackPackets: uint64!
+  # Estimated total packets requested by NACKs
+  nackRequestedPackets: uint64!
+  # Estimated total observation time in seconds
+  observationDurationSeconds: float64!
+  # Estimated total picture loss indications sent
+  pliCount: uint64!
+  # Estimated total video RTP packets expected
+  videoPacketsExpected: uint64!
+  # Estimated total video RTP packets lost
+  videoPacketsLost: uint64!
+}
+
+type AccountStreamWHEPPlaybackMetricsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  audioPacketsExpected: Confidence!
+  # Confidence interval for the corresponding point estimate
+  audioPacketsLost: Confidence!
+  # Confidence interval for the corresponding point estimate
+  nackPackets: Confidence!
+  # Confidence interval for the corresponding point estimate
+  nackRequestedPackets: Confidence!
+  # Confidence interval for the corresponding point estimate
+  observationDurationSeconds: Confidence!
+  # Confidence interval for the corresponding point estimate
+  pliCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  videoPacketsExpected: Confidence!
+  # Confidence interval for the corresponding point estimate
+  videoPacketsLost: Confidence!
 }
 
 # WHIP broadcast metrics for Cloudflare Stream.
@@ -88449,6 +89009,10 @@ type AccountWorkersInvocationsAdaptiveDimensions {
   dispatchNamespaceName: string!
   # The name of the script environment
   environmentName: string!
+  # How the Worker was invoked: fetch, rpc, cron, alarm, queue, email, tail, websocket (Durable Object hibernatable WebSocket event), connectTcp (TCP connection to the connect handler) or connectUdp (UDP flow to the connect handler). unknown for other invocation types and for data before this field was added.
+  eventType: string!
+  # HTTP status code the Worker responded with. 0 if the invocation was not an HTTP request or the Worker did not send a response.
+  httpResponseStatus: uint16!
   # Whether the request is from a Dispatch Worker. Non-zero if true
   isDispatcher: uint8!
   # Whether this invocation is for a preview. 1 if preview, 0 if not.
@@ -88570,6 +89134,25 @@ input AccountWorkersInvocationsAdaptiveFilter_InputObject {
   environmentName_neq: string
   environmentName_notin: [string!]
   environmentName_notlike: string
+  eventType: string
+  eventType_geq: string
+  eventType_gt: string
+  eventType_ilike: string
+  eventType_in: [string!]
+  eventType_leq: string
+  eventType_like: string
+  eventType_lt: string
+  eventType_neq: string
+  eventType_notin: [string!]
+  eventType_notlike: string
+  httpResponseStatus: uint16
+  httpResponseStatus_geq: uint16
+  httpResponseStatus_gt: uint16
+  httpResponseStatus_in: [uint16!]
+  httpResponseStatus_leq: uint16
+  httpResponseStatus_lt: uint16
+  httpResponseStatus_neq: uint16
+  httpResponseStatus_notin: [uint16!]
   isDispatcher: uint8
   isDispatcher_geq: uint8
   isDispatcher_gt: uint8
@@ -88659,12 +89242,16 @@ type AccountWorkersInvocationsAdaptiveMax {
   cpuTime: float64!
   # Maximum duration of one request - GB*s
   duration: float64!
+  # Maximum garbage collection time for one Worker invocation - microseconds
+  gcTimeUs: float64!
   # Maximum V8 isolate memory usage across Worker invocations - bytes
   memoryUsageBytes: float64!
   # Maximum Request Duration in microseconds
   requestDuration: float64!
   # Maximum response body size for one request - bytes
   responseBodySize: float64!
+  # Maximum CPU time spent starting a Worker isolate, including script parsing, for one Worker invocation - microseconds
+  startupCpuTimeUs: float64!
   # Maximum wall time for one request - microseconds
   wallTime: float64!
   # Maximum WebAssembly linear memory usage across Worker invocations - bytes
@@ -88741,6 +89328,14 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   environmentName_ASC
   # environmentName descending
   environmentName_DESC
+  # eventType ascending
+  eventType_ASC
+  # eventType descending
+  eventType_DESC
+  # httpResponseStatus ascending
+  httpResponseStatus_ASC
+  # httpResponseStatus descending
+  httpResponseStatus_DESC
   # isDispatcher ascending
   isDispatcher_ASC
   # isDispatcher descending
@@ -88757,6 +89352,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   max_duration_ASC
   # max(duration) descending
   max_duration_DESC
+  # max(gcTimeUs) ascending
+  max_gcTimeUs_ASC
+  # max(gcTimeUs) descending
+  max_gcTimeUs_DESC
   # max(memoryUsageBytes) ascending
   max_memoryUsageBytes_ASC
   # max(memoryUsageBytes) descending
@@ -88769,6 +89368,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   max_responseBodySize_ASC
   # max(responseBodySize) descending
   max_responseBodySize_DESC
+  # max(startupCpuTimeUs) ascending
+  max_startupCpuTimeUs_ASC
+  # max(startupCpuTimeUs) descending
+  max_startupCpuTimeUs_DESC
   # max(wallTime) ascending
   max_wallTime_ASC
   # max(wallTime) descending
@@ -88861,6 +89464,34 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   quantiles_durationP99_ASC
   # quantiles(durationP99) descending
   quantiles_durationP99_DESC
+  # quantiles(gcTimeUsP25) ascending
+  quantiles_gcTimeUsP25_ASC
+  # quantiles(gcTimeUsP25) descending
+  quantiles_gcTimeUsP25_DESC
+  # quantiles(gcTimeUsP50) ascending
+  quantiles_gcTimeUsP50_ASC
+  # quantiles(gcTimeUsP50) descending
+  quantiles_gcTimeUsP50_DESC
+  # quantiles(gcTimeUsP75) ascending
+  quantiles_gcTimeUsP75_ASC
+  # quantiles(gcTimeUsP75) descending
+  quantiles_gcTimeUsP75_DESC
+  # quantiles(gcTimeUsP90) ascending
+  quantiles_gcTimeUsP90_ASC
+  # quantiles(gcTimeUsP90) descending
+  quantiles_gcTimeUsP90_DESC
+  # quantiles(gcTimeUsP95) ascending
+  quantiles_gcTimeUsP95_ASC
+  # quantiles(gcTimeUsP95) descending
+  quantiles_gcTimeUsP95_DESC
+  # quantiles(gcTimeUsP999) ascending
+  quantiles_gcTimeUsP999_ASC
+  # quantiles(gcTimeUsP999) descending
+  quantiles_gcTimeUsP999_DESC
+  # quantiles(gcTimeUsP99) ascending
+  quantiles_gcTimeUsP99_ASC
+  # quantiles(gcTimeUsP99) descending
+  quantiles_gcTimeUsP99_DESC
   # quantiles(memoryUsageBytesP25) ascending
   quantiles_memoryUsageBytesP25_ASC
   # quantiles(memoryUsageBytesP25) descending
@@ -88945,6 +89576,34 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   quantiles_responseBodySizeP99_ASC
   # quantiles(responseBodySizeP99) descending
   quantiles_responseBodySizeP99_DESC
+  # quantiles(startupCpuTimeUsP25) ascending
+  quantiles_startupCpuTimeUsP25_ASC
+  # quantiles(startupCpuTimeUsP25) descending
+  quantiles_startupCpuTimeUsP25_DESC
+  # quantiles(startupCpuTimeUsP50) ascending
+  quantiles_startupCpuTimeUsP50_ASC
+  # quantiles(startupCpuTimeUsP50) descending
+  quantiles_startupCpuTimeUsP50_DESC
+  # quantiles(startupCpuTimeUsP75) ascending
+  quantiles_startupCpuTimeUsP75_ASC
+  # quantiles(startupCpuTimeUsP75) descending
+  quantiles_startupCpuTimeUsP75_DESC
+  # quantiles(startupCpuTimeUsP90) ascending
+  quantiles_startupCpuTimeUsP90_ASC
+  # quantiles(startupCpuTimeUsP90) descending
+  quantiles_startupCpuTimeUsP90_DESC
+  # quantiles(startupCpuTimeUsP95) ascending
+  quantiles_startupCpuTimeUsP95_ASC
+  # quantiles(startupCpuTimeUsP95) descending
+  quantiles_startupCpuTimeUsP95_DESC
+  # quantiles(startupCpuTimeUsP999) ascending
+  quantiles_startupCpuTimeUsP999_ASC
+  # quantiles(startupCpuTimeUsP999) descending
+  quantiles_startupCpuTimeUsP999_DESC
+  # quantiles(startupCpuTimeUsP99) ascending
+  quantiles_startupCpuTimeUsP99_ASC
+  # quantiles(startupCpuTimeUsP99) descending
+  quantiles_startupCpuTimeUsP99_DESC
   # quantiles(wallTimeP25) ascending
   quantiles_wallTimeP25_ASC
   # quantiles(wallTimeP25) descending
@@ -89037,6 +89696,14 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   sum_errors_ASC
   # sum(errors) descending
   sum_errors_DESC
+  # sum(fullGcCount) ascending
+  sum_fullGcCount_ASC
+  # sum(fullGcCount) descending
+  sum_fullGcCount_DESC
+  # sum(gcTimeUs) ascending
+  sum_gcTimeUs_ASC
+  # sum(gcTimeUs) descending
+  sum_gcTimeUs_DESC
   # sum(requestDuration) ascending
   sum_requestDuration_ASC
   # sum(requestDuration) descending
@@ -89049,6 +89716,10 @@ enum AccountWorkersInvocationsAdaptiveOrderBy {
   sum_responseBodySize_ASC
   # sum(responseBodySize) descending
   sum_responseBodySize_DESC
+  # sum(startupCpuTimeUs) ascending
+  sum_startupCpuTimeUs_ASC
+  # sum(startupCpuTimeUs) descending
+  sum_startupCpuTimeUs_DESC
   # sum(subrequests) ascending
   sum_subrequests_ASC
   # sum(subrequests) descending
@@ -89092,6 +89763,20 @@ type AccountWorkersInvocationsAdaptiveQuantiles {
   durationP99: float32!
   # Duration 99.9th percentile - GB*s
   durationP999: float32!
+  # Garbage collection time 25th percentile across Worker invocations - microseconds
+  gcTimeUsP25: float32!
+  # Garbage collection time 50th percentile across Worker invocations - microseconds
+  gcTimeUsP50: float32!
+  # Garbage collection time 75th percentile across Worker invocations - microseconds
+  gcTimeUsP75: float32!
+  # Garbage collection time 90th percentile across Worker invocations - microseconds
+  gcTimeUsP90: float32!
+  # Garbage collection time 95th percentile across Worker invocations - microseconds
+  gcTimeUsP95: float32!
+  # Garbage collection time 99th percentile across Worker invocations - microseconds
+  gcTimeUsP99: float32!
+  # Garbage collection time 99.9th percentile across Worker invocations - microseconds
+  gcTimeUsP999: float32!
   # V8 isolate memory usage 25th percentile across Worker invocations - bytes
   memoryUsageBytesP25: float32!
   # V8 isolate memory usage 50th percentile across Worker invocations - bytes
@@ -89134,6 +89819,20 @@ type AccountWorkersInvocationsAdaptiveQuantiles {
   responseBodySizeP99: float32!
   # Response body size 99.9th percentile - bytes
   responseBodySizeP999: float32!
+  # Isolate startup CPU time 25th percentile across Worker invocations, 0 for invocations that did not report an isolate startup - microseconds
+  startupCpuTimeUsP25: float32!
+  # Isolate startup CPU time 50th percentile across Worker invocations, 0 for invocations that did not report an isolate startup - microseconds
+  startupCpuTimeUsP50: float32!
+  # Isolate startup CPU time 75th percentile across Worker invocations, 0 for invocations that did not report an isolate startup - microseconds
+  startupCpuTimeUsP75: float32!
+  # Isolate startup CPU time 90th percentile across Worker invocations, 0 for invocations that did not report an isolate startup - microseconds
+  startupCpuTimeUsP90: float32!
+  # Isolate startup CPU time 95th percentile across Worker invocations, 0 for invocations that did not report an isolate startup - microseconds
+  startupCpuTimeUsP95: float32!
+  # Isolate startup CPU time 99th percentile across Worker invocations, 0 for invocations that did not report an isolate startup - microseconds
+  startupCpuTimeUsP99: float32!
+  # Isolate startup CPU time 99.9th percentile across Worker invocations, 0 for invocations that did not report an isolate startup - microseconds
+  startupCpuTimeUsP999: float32!
   # Wall time 25th percentile - microseconds
   wallTimeP25: float32!
   # Wall time 50th percentile - microseconds
@@ -89173,12 +89872,18 @@ type AccountWorkersInvocationsAdaptiveSum {
   duration: float64!
   # Sum of Errors
   errors: uint64!
+  # Sum of full (mark-compact) garbage collections that finished during Worker invocations
+  fullGcCount: uint64!
+  # Sum of time V8 spent in garbage collection during Worker invocations, already included in cpuTimeUs - microseconds
+  gcTimeUs: uint64!
   # Sum of Request Duration in microseconds
   requestDuration: float64!
   # Sum of Requests
   requests: uint64!
   # Sum of Response Body Sizes
   responseBodySize: uint64!
+  # Sum of CPU time spent starting Worker isolates, including script parsing. Not included in cpuTimeUs. Each startup is counted once, on the first invocation to complete on the new isolate - microseconds
+  startupCpuTimeUs: uint64!
   # Sum of Subrequests
   subrequests: uint64!
   # Sum of Wall Time
@@ -89195,11 +89900,17 @@ type AccountWorkersInvocationsAdaptiveSumConfidence {
   # Confidence interval for the corresponding point estimate
   errors: Confidence!
   # Confidence interval for the corresponding point estimate
+  fullGcCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  gcTimeUs: Confidence!
+  # Confidence interval for the corresponding point estimate
   requestDuration: Confidence!
   # Confidence interval for the corresponding point estimate
   requests: Confidence!
   # Confidence interval for the corresponding point estimate
   responseBodySize: Confidence!
+  # Confidence interval for the corresponding point estimate
+  startupCpuTimeUs: Confidence!
   # Confidence interval for the corresponding point estimate
   subrequests: Confidence!
   # Confidence interval for the corresponding point estimate
@@ -89826,6 +90537,8 @@ type AccountWorkersOverviewRequestsAdaptiveGroupsSumConfidence {
 
 # Beta. Workers subrequests with adaptive sampling
 type AccountWorkersSubrequestsAdaptiveGroups {
+  # The average value used for sample interval
+  avg: AccountWorkersSubrequestsAdaptiveGroupsAvg
   # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
   confidence(level: float64!): AccountWorkersSubrequestsAdaptiveGroupsConfidence!
   # List of dimensions to group by
@@ -89834,6 +90547,11 @@ type AccountWorkersSubrequestsAdaptiveGroups {
   quantiles: AccountWorkersSubrequestsAdaptiveGroupsQuantiles
   # The sum of values for a metric per dimension
   sum: AccountWorkersSubrequestsAdaptiveGroupsSum
+}
+
+type AccountWorkersSubrequestsAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
 }
 
 type AccountWorkersSubrequestsAdaptiveGroupsConfidence {
@@ -90056,6 +90774,10 @@ input AccountWorkersSubrequestsAdaptiveGroupsFilter_InputObject {
 }
 
 enum AccountWorkersSubrequestsAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
   # cacheStatus ascending
   cacheStatus_ASC
   # cacheStatus descending
@@ -115646,6 +116368,8 @@ type ZoneWorkersZoneInvocationsAdaptiveGroups {
 type ZoneWorkersZoneInvocationsAdaptiveGroupsAvg {
   # Average CPU time used per request (in microseconds)
   avgCpuTime: uint64!
+  # Average sample interval
+  sampleInterval: float64!
 }
 
 type ZoneWorkersZoneInvocationsAdaptiveGroupsConfidence {
@@ -115751,6 +116475,10 @@ enum ZoneWorkersZoneInvocationsAdaptiveGroupsOrderBy {
   avg_avgCpuTime_ASC
   # avg(avgCpuTime) descending
   avg_avgCpuTime_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
   # constantScriptId ascending
   constantScriptId_ASC
   # constantScriptId descending
@@ -115833,12 +116561,19 @@ type ZoneWorkersZoneInvocationsAdaptiveGroupsSumConfidence {
 
 # Workers subrequests with adaptive sampling
 type ZoneWorkersZoneSubrequestsAdaptiveGroups {
+  # The average value used for sample interval
+  avg: ZoneWorkersZoneSubrequestsAdaptiveGroupsAvg
   # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
   confidence(level: float64!): ZoneWorkersZoneSubrequestsAdaptiveGroupsConfidence!
   # List of dimensions to group by
   dimensions: ZoneWorkersZoneSubrequestsAdaptiveGroupsDimensions
   # The sum of values for a metric per dimension
   sum: ZoneWorkersZoneSubrequestsAdaptiveGroupsSum
+}
+
+type ZoneWorkersZoneSubrequestsAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
 }
 
 type ZoneWorkersZoneSubrequestsAdaptiveGroupsConfidence {
@@ -115960,6 +116695,10 @@ input ZoneWorkersZoneSubrequestsAdaptiveGroupsFilter_InputObject {
 }
 
 enum ZoneWorkersZoneSubrequestsAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
   # cacheStatus ascending
   cacheStatus_ASC
   # cacheStatus descending
