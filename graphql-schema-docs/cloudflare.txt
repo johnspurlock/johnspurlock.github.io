@@ -261,6 +261,7 @@ Zone-level datasets:
 * apiGatewayMatchedSessionIDsPerEndpointAdaptiveGroups
 * apiGatewayMatchedSessionIDsPerEndpointFlattenedAdaptiveGroups
 * apiRequestSequencesGroups
+* apiShieldSchemaAnalyticsAdaptiveGroups
 * cacheReserveOperationsAdaptiveGroups
   cacheReserveRequestsAdaptiveGroups
 * cacheReserveStorageAdaptiveGroups
@@ -331,7 +332,7 @@ scalar Date
 # Scalar type types.Float32
 scalar float32
 
-# Scalar type float64
+# Scalar type types.Float64
 scalar float64
 
 # Scalar type int16
@@ -474,7 +475,7 @@ type account {
   cf1GatewayHttp1dGroups(filter: AccountCf1GatewayHttp1dGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayHttp1dGroupsOrderBy!]): [AccountCf1GatewayHttp1dGroups!]!
   # CF1 Gateway HTTP analytics - 1 hour rollup (up to 31d window, 62d back)
   cf1GatewayHttp1hGroups(filter: AccountCf1GatewayHttp1hGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayHttp1hGroupsOrderBy!]): [AccountCf1GatewayHttp1hGroups!]!
-  # CF1 Gateway HTTP analytics - raw data (max 3h query window, 4d lookback). Use cf1GatewayHttp1hGroups for longer ranges, or cf1GatewayHttp1dGroups for 10d+
+  # CF1 Gateway HTTP analytics - adaptive raw data (max 3h query window, 4d lookback). Use cf1GatewayHttp1hGroups for longer ranges, or cf1GatewayHttp1dGroups for 10d+
   cf1GatewayHttpRawGroups(filter: AccountCf1GatewayHttpRawGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayHttpRawGroupsOrderBy!]): [AccountCf1GatewayHttpRawGroups!]!
   # CF1 Gateway Network analytics (L4 firewall events) - 1 day rollup (up to 90d window, 365d back)
   cf1GatewayNetwork1dGroups(filter: AccountCf1GatewayNetwork1dGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountCf1GatewayNetwork1dGroupsOrderBy!]): [AccountCf1GatewayNetwork1dGroups!]!
@@ -20599,12 +20600,20 @@ type AccountCf1GatewayHttp1hGroupsUniq {
   users: uint64!
 }
 
-# CF1 Gateway HTTP analytics - raw data (max 3h query window, 4d lookback). Use cf1GatewayHttp1hGroups for longer ranges, or cf1GatewayHttp1dGroups for 10d+
+# CF1 Gateway HTTP analytics - adaptive raw data (max 3h query window, 4d lookback). Use cf1GatewayHttp1hGroups for longer ranges, or cf1GatewayHttp1dGroups for 10d+
 type AccountCf1GatewayHttpRawGroups {
+  # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
+  confidence(level: float64!): AccountCf1GatewayHttpRawGroupsConfidence!
   # List of dimensions to group by
   dimensions: AccountCf1GatewayHttpRawGroupsDimensions
   sum: AccountCf1GatewayHttpRawGroupsSum
   uniq: AccountCf1GatewayHttpRawGroupsUniq
+}
+
+type AccountCf1GatewayHttpRawGroupsConfidence {
+  # Confidence level that was requested
+  level: float64!
+  sum: AccountCf1GatewayHttpRawGroupsSumConfidence
 }
 
 type AccountCf1GatewayHttpRawGroupsDimensions {
@@ -21092,10 +21101,41 @@ type AccountCf1GatewayHttpRawGroupsSum {
   sandboxScans: uint64!
 }
 
+type AccountCf1GatewayHttpRawGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  antivirusRequestScans: Confidence!
+  # Confidence interval for the corresponding point estimate
+  antivirusResponseScans: Confidence!
+  # Confidence interval for the corresponding point estimate
+  avBlockedFiles: Confidence!
+  # Confidence interval for the corresponding point estimate
+  bodyBytesRcvd: Confidence!
+  # Confidence interval for the corresponding point estimate
+  bodyBytesSent: Confidence!
+  # Confidence interval for the corresponding point estimate
+  dlpProfileMatchesTotal: Confidence!
+  # Confidence interval for the corresponding point estimate
+  filesScanned: Confidence!
+  # Confidence interval for the corresponding point estimate
+  httpHostBytesRcvd: Confidence!
+  # Confidence interval for the corresponding point estimate
+  httpHostBytesSent: Confidence!
+  # Confidence interval for the corresponding point estimate
+  isolatedRequests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  mcpUrlCountTotal: Confidence!
+  # Confidence interval for the corresponding point estimate
+  requests: Confidence!
+  # Confidence interval for the corresponding point estimate
+  sandboxBlocks: Confidence!
+  # Confidence interval for the corresponding point estimate
+  sandboxScans: Confidence!
+}
+
 type AccountCf1GatewayHttpRawGroupsUniq {
-  # Unique users with MCP activity
+  # Distinct email values with MCP activity observed in raw rows; may undercount on sampled tiers
   mcpDistinctUsers: uint64!
-  # Unique users
+  # Unique users; may undercount on sampled tiers
   users: uint64!
 }
 
@@ -31178,6 +31218,8 @@ type AccountDurableObjectsPeriodicGroupsConfidence {
 }
 
 type AccountDurableObjectsPeriodicGroupsDimensions {
+  # Configured Durable Object memory limit in MB (limits.durable_object_memory_mb); 0 = unset (128MB)
+  actorMemoryMb: uint32!
   # IATA airport code for the Cloudflare datacenter where the Durable Object ran.
   coloCode: string!
   # Datetime the metrics period started, truncated to start of a day
@@ -31205,6 +31247,14 @@ type AccountDurableObjectsPeriodicGroupsDimensions {
 input AccountDurableObjectsPeriodicGroupsFilter_InputObject {
   AND: [AccountDurableObjectsPeriodicGroupsFilter_InputObject!]
   OR: [AccountDurableObjectsPeriodicGroupsFilter_InputObject!]
+  actorMemoryMb: uint32
+  actorMemoryMb_geq: uint32
+  actorMemoryMb_gt: uint32
+  actorMemoryMb_in: [uint32!]
+  actorMemoryMb_leq: uint32
+  actorMemoryMb_lt: uint32
+  actorMemoryMb_neq: uint32
+  actorMemoryMb_notin: [uint32!]
   coloCode: string
   coloCode_geq: string
   coloCode_gt: string
@@ -31315,6 +31365,10 @@ type AccountDurableObjectsPeriodicGroupsMax {
 }
 
 enum AccountDurableObjectsPeriodicGroupsOrderBy {
+  # actorMemoryMb ascending
+  actorMemoryMb_ASC
+  # actorMemoryMb descending
+  actorMemoryMb_DESC
   # avg(sampleInterval) ascending
   avg_sampleInterval_ASC
   # avg(sampleInterval) descending
@@ -31483,7 +31537,7 @@ type AccountDurableObjectsPeriodicGroupsSum {
   activeTime: uint64!
   # Sum of CPU time - microseconds
   cpuTime: uint64!
-  # Sum of Duration - GB*s
+  # Sum of Duration - GB*s, weighted by the configured Durable Object memory limit
   duration: float64!
   # Sum of CPU exceeded errors
   exceededCpuErrors: uint64!
@@ -32314,6 +32368,8 @@ type AccountEmailSendingAdaptive {
   isNDR: uint8!
   # Source email is spam
   isSpam: uint8!
+  # Whether the recipient is a verified address of the account
+  isVerifiedRecipient: uint8!
   # The Message-ID header of the source email (if present)
   messageId: string!
   # ABR sample interval
@@ -32481,6 +32537,14 @@ input AccountEmailSendingAdaptiveFilter_InputObject {
   isSpam_lt: uint8
   isSpam_neq: uint8
   isSpam_notin: bytes
+  isVerifiedRecipient: uint8
+  isVerifiedRecipient_geq: uint8
+  isVerifiedRecipient_gt: uint8
+  isVerifiedRecipient_in: bytes
+  isVerifiedRecipient_leq: uint8
+  isVerifiedRecipient_lt: uint8
+  isVerifiedRecipient_neq: uint8
+  isVerifiedRecipient_notin: bytes
   messageId: string
   messageId_geq: string
   messageId_gt: string
@@ -32637,6 +32701,8 @@ type AccountEmailSendingAdaptiveGroupsDimensions {
   isNDR: uint8!
   # Source email is spam
   isSpam: uint8!
+  # Whether the recipient is a verified address of the account
+  isVerifiedRecipient: uint8!
   # ABR sample interval
   sampleInterval: uint32!
   # Domain from which the email was sent
@@ -32814,6 +32880,14 @@ input AccountEmailSendingAdaptiveGroupsFilter_InputObject {
   isSpam_lt: uint8
   isSpam_neq: uint8
   isSpam_notin: bytes
+  isVerifiedRecipient: uint8
+  isVerifiedRecipient_geq: uint8
+  isVerifiedRecipient_gt: uint8
+  isVerifiedRecipient_in: bytes
+  isVerifiedRecipient_leq: uint8
+  isVerifiedRecipient_lt: uint8
+  isVerifiedRecipient_neq: uint8
+  isVerifiedRecipient_notin: bytes
   sampleInterval: uint32
   sampleInterval_geq: uint32
   sampleInterval_gt: uint32
@@ -32950,6 +33024,10 @@ enum AccountEmailSendingAdaptiveGroupsOrderBy {
   isSpam_ASC
   # isSpam descending
   isSpam_DESC
+  # isVerifiedRecipient ascending
+  isVerifiedRecipient_ASC
+  # isVerifiedRecipient descending
+  isVerifiedRecipient_DESC
   # sampleInterval ascending
   sampleInterval_ASC
   # sampleInterval descending
@@ -33037,6 +33115,10 @@ enum AccountEmailSendingAdaptiveOrderBy {
   isSpam_ASC
   # isSpam descending
   isSpam_DESC
+  # isVerifiedRecipient ascending
+  isVerifiedRecipient_ASC
+  # isVerifiedRecipient descending
+  isVerifiedRecipient_DESC
   # messageId ascending
   messageId_ASC
   # messageId descending
@@ -48200,6 +48282,8 @@ type AccountImagesTransformationsAdaptiveGroupsDimensions {
   isBindingRequest: uint8!
   # Hostname of the origin image URL
   originHost: string!
+  # How the transformation was requested: url (a /cdn-cgi/image/ URL), worker_fetch (a Worker fetch() with cf.image), binding (the Images binding), or unknown (not reported, for example before this field existed)
+  requestSource: string!
   # Name of the Worker script that requested the transformation through the Images binding. Empty for transformations that did not come from a binding
   scriptName: string!
   # Image transformation string
@@ -48280,6 +48364,17 @@ input AccountImagesTransformationsAdaptiveGroupsFilter_InputObject {
   originHost_neq: string
   originHost_notin: [string!]
   originHost_notlike: string
+  requestSource: string
+  requestSource_geq: string
+  requestSource_gt: string
+  requestSource_ilike: string
+  requestSource_in: [string!]
+  requestSource_leq: string
+  requestSource_like: string
+  requestSource_lt: string
+  requestSource_neq: string
+  requestSource_notin: [string!]
+  requestSource_notlike: string
   scriptName: string
   scriptName_geq: string
   scriptName_gt: string
@@ -48372,6 +48467,10 @@ enum AccountImagesTransformationsAdaptiveGroupsOrderBy {
   product_ASC
   # product descending
   product_DESC
+  # requestSource ascending
+  requestSource_ASC
+  # requestSource descending
+  requestSource_DESC
   # scriptName ascending
   scriptName_ASC
   # scriptName descending
@@ -96045,6 +96144,8 @@ type zone {
   apiGatewayMatchedSessionIDsPerEndpointFlattenedAdaptiveGroups(filter: ZoneApiGatewayMatchedSessionIDsPerEndpointFlattenedAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneApiGatewayMatchedSessionIDsPerEndpointFlattenedAdaptiveGroupsOrderBy!]): [ZoneApiGatewayMatchedSessionIDsPerEndpointFlattenedAdaptiveGroups!]!
   # Sequences of API endpoint operations. Sequences are learned by grouping requests by AuthID. Correlation scores are estimated over a 24 hour window and are current to within 10 minutes
   apiRequestSequencesGroups(filter: ZoneApiRequestSequencesGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneApiRequestSequencesGroupsOrderBy!]): [ZoneApiRequestSequencesGroups!]!
+  # Sampled schema validation violations. Counts estimate emitted violations, not distinct requests or violations omitted by collection limits.
+  apiShieldSchemaAnalyticsAdaptiveGroups(filter: ZoneApiShieldSchemaAnalyticsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneApiShieldSchemaAnalyticsAdaptiveGroupsOrderBy!]): [ZoneApiShieldSchemaAnalyticsAdaptiveGroups!]!
   # Beta. Cache Reserve operations with adaptive sampling
   cacheReserveOperationsAdaptiveGroups(filter: ZoneCacheReserveOperationsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [ZoneCacheReserveOperationsAdaptiveGroupsOrderBy!]): [ZoneCacheReserveOperationsAdaptiveGroups!]!
   # Cache Reserve HTTP requests data with adaptive sampling
@@ -97491,6 +97592,321 @@ type ZoneApiRequestSequencesGroupsUniq {
   rankCount: uint32!
   # Number of unique sequenceHash values
   sequenceHashCount: uint32!
+}
+
+# Sampled schema validation violations. Counts estimate emitted violations, not distinct requests or violations omitted by collection limits.
+type ZoneApiShieldSchemaAnalyticsAdaptiveGroups {
+  avg: ZoneApiShieldSchemaAnalyticsAdaptiveGroupsAvg
+  # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
+  confidence(level: float64!): ZoneApiShieldSchemaAnalyticsAdaptiveGroupsConfidence!
+  # Estimated number of emitted violations, adjusted for sampling. A request may contribute multiple violations; omitted violations are excluded.
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: ZoneApiShieldSchemaAnalyticsAdaptiveGroupsDimensions
+}
+
+type ZoneApiShieldSchemaAnalyticsAdaptiveGroupsAvg {
+  # Average sample interval of the emitted violation records
+  sampleInterval: float64!
+}
+
+type ZoneApiShieldSchemaAnalyticsAdaptiveGroupsConfidence {
+  # Estimated number of emitted violations, adjusted for sampling. A request may contribute multiple violations; omitted violations are excluded., with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type ZoneApiShieldSchemaAnalyticsAdaptiveGroupsDimensions {
+  # Specific violated constraint; may be empty when the family fully describes the violation
+  constraintDetail: string!
+  # Family of the violated schema constraint
+  constraintFamily: string!
+  # Date of the violation
+  date: Date!
+  # Time of the violation, with second precision
+  datetime: Time!
+  # Time of the violation, rounded down to the day
+  datetimeDay: Time!
+  # Time of the violation, rounded down to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Time of the violation, rounded down to five minutes
+  datetimeFiveMinutes: Time!
+  # Time of the violation, rounded down to thirty minutes
+  datetimeHalfOfHour: Time!
+  # Time of the violation, rounded down to the hour
+  datetimeHour: Time!
+  # Time of the violation, rounded down to the minute
+  datetimeMinute: Time!
+  # Location of the violation in the request, such as path, query, header, cookie or body
+  location: string!
+  # Ray ID of the sampled request.
+  rayName: string!
+  # Generation of the schema used for validation
+  schemaGeneration: uint64!
+  # Kind of schema used for validation
+  schemaKind: string!
+  # Parameter name or body path associated with the violation; shortened when targetTruncated is 1
+  target: string!
+  # 1 if this violation's target was shortened, otherwise 0
+  targetTruncated: uint8!
+  # Number of supported violations omitted by the per-request limit. Repeated on every violation from the request; do not sum across records.
+  truncatedViolationCount: uint32!
+  # Web Asset Operation ID
+  webAssetsOperationId: string!
+}
+
+input ZoneApiShieldSchemaAnalyticsAdaptiveGroupsFilter_InputObject {
+  AND: [ZoneApiShieldSchemaAnalyticsAdaptiveGroupsFilter_InputObject!]
+  OR: [ZoneApiShieldSchemaAnalyticsAdaptiveGroupsFilter_InputObject!]
+  constraintDetail: string
+  constraintDetail_geq: string
+  constraintDetail_gt: string
+  constraintDetail_ilike: string
+  constraintDetail_in: [string!]
+  constraintDetail_leq: string
+  constraintDetail_like: string
+  constraintDetail_lt: string
+  constraintDetail_neq: string
+  constraintDetail_notin: [string!]
+  constraintDetail_notlike: string
+  constraintFamily: string
+  constraintFamily_geq: string
+  constraintFamily_gt: string
+  constraintFamily_ilike: string
+  constraintFamily_in: [string!]
+  constraintFamily_leq: string
+  constraintFamily_like: string
+  constraintFamily_lt: string
+  constraintFamily_neq: string
+  constraintFamily_notin: [string!]
+  constraintFamily_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeDay: Time
+  datetimeDay_geq: Time
+  datetimeDay_gt: Time
+  datetimeDay_in: [Time!]
+  datetimeDay_leq: Time
+  datetimeDay_lt: Time
+  datetimeDay_neq: Time
+  datetimeDay_notin: [Time!]
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHalfOfHour: Time
+  datetimeHalfOfHour_geq: Time
+  datetimeHalfOfHour_gt: Time
+  datetimeHalfOfHour_in: [Time!]
+  datetimeHalfOfHour_leq: Time
+  datetimeHalfOfHour_lt: Time
+  datetimeHalfOfHour_neq: Time
+  datetimeHalfOfHour_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  location: string
+  location_geq: string
+  location_gt: string
+  location_ilike: string
+  location_in: [string!]
+  location_leq: string
+  location_like: string
+  location_lt: string
+  location_neq: string
+  location_notin: [string!]
+  location_notlike: string
+  rayName: string
+  rayName_geq: string
+  rayName_gt: string
+  rayName_ilike: string
+  rayName_in: [string!]
+  rayName_leq: string
+  rayName_like: string
+  rayName_lt: string
+  rayName_neq: string
+  rayName_notin: [string!]
+  rayName_notlike: string
+  schemaGeneration: uint64
+  schemaGeneration_geq: uint64
+  schemaGeneration_gt: uint64
+  schemaGeneration_in: [uint64!]
+  schemaGeneration_leq: uint64
+  schemaGeneration_lt: uint64
+  schemaGeneration_neq: uint64
+  schemaGeneration_notin: [uint64!]
+  schemaKind: string
+  schemaKind_geq: string
+  schemaKind_gt: string
+  schemaKind_ilike: string
+  schemaKind_in: [string!]
+  schemaKind_leq: string
+  schemaKind_like: string
+  schemaKind_lt: string
+  schemaKind_neq: string
+  schemaKind_notin: [string!]
+  schemaKind_notlike: string
+  target: string
+  targetTruncated: uint8
+  targetTruncated_geq: uint8
+  targetTruncated_gt: uint8
+  targetTruncated_in: bytes
+  targetTruncated_leq: uint8
+  targetTruncated_lt: uint8
+  targetTruncated_neq: uint8
+  targetTruncated_notin: bytes
+  target_geq: string
+  target_gt: string
+  target_ilike: string
+  target_in: [string!]
+  target_leq: string
+  target_like: string
+  target_lt: string
+  target_neq: string
+  target_notin: [string!]
+  target_notlike: string
+  truncatedViolationCount: uint32
+  truncatedViolationCount_geq: uint32
+  truncatedViolationCount_gt: uint32
+  truncatedViolationCount_in: [uint32!]
+  truncatedViolationCount_leq: uint32
+  truncatedViolationCount_lt: uint32
+  truncatedViolationCount_neq: uint32
+  truncatedViolationCount_notin: [uint32!]
+  webAssetsOperationId: string
+  webAssetsOperationId_geq: string
+  webAssetsOperationId_gt: string
+  webAssetsOperationId_ilike: string
+  webAssetsOperationId_in: [string!]
+  webAssetsOperationId_leq: string
+  webAssetsOperationId_like: string
+  webAssetsOperationId_lt: string
+  webAssetsOperationId_neq: string
+  webAssetsOperationId_notin: [string!]
+  webAssetsOperationId_notlike: string
+}
+
+enum ZoneApiShieldSchemaAnalyticsAdaptiveGroupsOrderBy {
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # constraintDetail ascending
+  constraintDetail_ASC
+  # constraintDetail descending
+  constraintDetail_DESC
+  # constraintFamily ascending
+  constraintFamily_ASC
+  # constraintFamily descending
+  constraintFamily_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeDay ascending
+  datetimeDay_ASC
+  # datetimeDay descending
+  datetimeDay_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHalfOfHour ascending
+  datetimeHalfOfHour_ASC
+  # datetimeHalfOfHour descending
+  datetimeHalfOfHour_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # location ascending
+  location_ASC
+  # location descending
+  location_DESC
+  # rayName ascending
+  rayName_ASC
+  # rayName descending
+  rayName_DESC
+  # schemaGeneration ascending
+  schemaGeneration_ASC
+  # schemaGeneration descending
+  schemaGeneration_DESC
+  # schemaKind ascending
+  schemaKind_ASC
+  # schemaKind descending
+  schemaKind_DESC
+  # targetTruncated ascending
+  targetTruncated_ASC
+  # targetTruncated descending
+  targetTruncated_DESC
+  # target ascending
+  target_ASC
+  # target descending
+  target_DESC
+  # truncatedViolationCount ascending
+  truncatedViolationCount_ASC
+  # truncatedViolationCount descending
+  truncatedViolationCount_DESC
+  # webAssetsOperationId ascending
+  webAssetsOperationId_ASC
+  # webAssetsOperationId descending
+  webAssetsOperationId_DESC
 }
 
 # Beta. Cache Reserve operations with adaptive sampling
@@ -100912,6 +101328,8 @@ type ZoneEmailSendingAdaptive {
   isNDR: uint8!
   # Source email is spam
   isSpam: uint8!
+  # Whether the recipient is a verified address of the account
+  isVerifiedRecipient: uint8!
   # The Message-ID header of the source email (if present)
   messageId: string!
   # ABR sample interval
@@ -101079,6 +101497,14 @@ input ZoneEmailSendingAdaptiveFilter_InputObject {
   isSpam_lt: uint8
   isSpam_neq: uint8
   isSpam_notin: bytes
+  isVerifiedRecipient: uint8
+  isVerifiedRecipient_geq: uint8
+  isVerifiedRecipient_gt: uint8
+  isVerifiedRecipient_in: bytes
+  isVerifiedRecipient_leq: uint8
+  isVerifiedRecipient_lt: uint8
+  isVerifiedRecipient_neq: uint8
+  isVerifiedRecipient_notin: bytes
   messageId: string
   messageId_geq: string
   messageId_gt: string
@@ -101235,6 +101661,8 @@ type ZoneEmailSendingAdaptiveGroupsDimensions {
   isNDR: uint8!
   # Source email is spam
   isSpam: uint8!
+  # Whether the recipient is a verified address of the account
+  isVerifiedRecipient: uint8!
   # ABR sample interval
   sampleInterval: uint32!
   # Domain from which the email was sent
@@ -101412,6 +101840,14 @@ input ZoneEmailSendingAdaptiveGroupsFilter_InputObject {
   isSpam_lt: uint8
   isSpam_neq: uint8
   isSpam_notin: bytes
+  isVerifiedRecipient: uint8
+  isVerifiedRecipient_geq: uint8
+  isVerifiedRecipient_gt: uint8
+  isVerifiedRecipient_in: bytes
+  isVerifiedRecipient_leq: uint8
+  isVerifiedRecipient_lt: uint8
+  isVerifiedRecipient_neq: uint8
+  isVerifiedRecipient_notin: bytes
   sampleInterval: uint32
   sampleInterval_geq: uint32
   sampleInterval_gt: uint32
@@ -101548,6 +101984,10 @@ enum ZoneEmailSendingAdaptiveGroupsOrderBy {
   isSpam_ASC
   # isSpam descending
   isSpam_DESC
+  # isVerifiedRecipient ascending
+  isVerifiedRecipient_ASC
+  # isVerifiedRecipient descending
+  isVerifiedRecipient_DESC
   # sampleInterval ascending
   sampleInterval_ASC
   # sampleInterval descending
@@ -101635,6 +102075,10 @@ enum ZoneEmailSendingAdaptiveOrderBy {
   isSpam_ASC
   # isSpam descending
   isSpam_DESC
+  # isVerifiedRecipient ascending
+  isVerifiedRecipient_ASC
+  # isVerifiedRecipient descending
+  isVerifiedRecipient_DESC
   # messageId ascending
   messageId_ASC
   # messageId descending
@@ -113947,8 +114391,18 @@ type ZonePreRenderBotRequestsAdaptiveGroupsDimensions {
   datetimeFiveMinutes: Time!
   # The date and time of the bot request truncated to the hour
   datetimeHour: Time!
+  # The Browser Run error code for the failure, or 0 when there is none or the reason is internal
+  failureCode: uint16!
+  # Why pre-rendering failed: render_timeout, navigation_failed, target_closed, origin_status, non_html, or internal. Empty when it succeeded
+  failureReason: string!
   # The HTTP response status
   httpStatus: uint16!
+  # The browser engine that rendered the page
+  renderEngine: string!
+  # The HTTP status the page returned while rendering, or 0
+  upstreamStatus: uint16!
+  # The requested URL without its query string
+  url: string!
   # Whether Bot Management verified the bot
   verifiedBot: uint8!
 }
@@ -114018,6 +114472,25 @@ input ZonePreRenderBotRequestsAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
+  failureCode: uint16
+  failureCode_geq: uint16
+  failureCode_gt: uint16
+  failureCode_in: [uint16!]
+  failureCode_leq: uint16
+  failureCode_lt: uint16
+  failureCode_neq: uint16
+  failureCode_notin: [uint16!]
+  failureReason: string
+  failureReason_geq: string
+  failureReason_gt: string
+  failureReason_ilike: string
+  failureReason_in: [string!]
+  failureReason_leq: string
+  failureReason_like: string
+  failureReason_lt: string
+  failureReason_neq: string
+  failureReason_notin: [string!]
+  failureReason_notlike: string
   httpStatus: uint16
   httpStatus_geq: uint16
   httpStatus_gt: uint16
@@ -114026,6 +114499,36 @@ input ZonePreRenderBotRequestsAdaptiveGroupsFilter_InputObject {
   httpStatus_lt: uint16
   httpStatus_neq: uint16
   httpStatus_notin: [uint16!]
+  renderEngine: string
+  renderEngine_geq: string
+  renderEngine_gt: string
+  renderEngine_ilike: string
+  renderEngine_in: [string!]
+  renderEngine_leq: string
+  renderEngine_like: string
+  renderEngine_lt: string
+  renderEngine_neq: string
+  renderEngine_notin: [string!]
+  renderEngine_notlike: string
+  upstreamStatus: uint16
+  upstreamStatus_geq: uint16
+  upstreamStatus_gt: uint16
+  upstreamStatus_in: [uint16!]
+  upstreamStatus_leq: uint16
+  upstreamStatus_lt: uint16
+  upstreamStatus_neq: uint16
+  upstreamStatus_notin: [uint16!]
+  url: string
+  url_geq: string
+  url_gt: string
+  url_ilike: string
+  url_in: [string!]
+  url_leq: string
+  url_like: string
+  url_lt: string
+  url_neq: string
+  url_notin: [string!]
+  url_notlike: string
   verifiedBot: uint8
   verifiedBot_geq: uint8
   verifiedBot_gt: uint8
@@ -114077,6 +114580,14 @@ enum ZonePreRenderBotRequestsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # failureCode ascending
+  failureCode_ASC
+  # failureCode descending
+  failureCode_DESC
+  # failureReason ascending
+  failureReason_ASC
+  # failureReason descending
+  failureReason_DESC
   # httpStatus ascending
   httpStatus_ASC
   # httpStatus descending
@@ -114109,10 +114620,46 @@ enum ZonePreRenderBotRequestsAdaptiveGroupsOrderBy {
   quantiles_serveLatencyMsP99_ASC
   # quantiles(serveLatencyMsP99) descending
   quantiles_serveLatencyMsP99_DESC
+  # renderEngine ascending
+  renderEngine_ASC
+  # renderEngine descending
+  renderEngine_DESC
   # sum(bytesServed) ascending
   sum_bytesServed_ASC
   # sum(bytesServed) descending
   sum_bytesServed_DESC
+  # sum(cacheServed) ascending
+  sum_cacheServed_ASC
+  # sum(cacheServed) descending
+  sum_cacheServed_DESC
+  # sum(fallbackCount) ascending
+  sum_fallbackCount_ASC
+  # sum(fallbackCount) descending
+  sum_fallbackCount_DESC
+  # sum(freshCacheHits) ascending
+  sum_freshCacheHits_ASC
+  # sum(freshCacheHits) descending
+  sum_freshCacheHits_DESC
+  # sum(httpErrorCount) ascending
+  sum_httpErrorCount_ASC
+  # sum(httpErrorCount) descending
+  sum_httpErrorCount_DESC
+  # sum(noResponseCount) ascending
+  sum_noResponseCount_ASC
+  # sum(noResponseCount) descending
+  sum_noResponseCount_DESC
+  # sum(redirectCount) ascending
+  sum_redirectCount_ASC
+  # sum(redirectCount) descending
+  sum_redirectCount_DESC
+  # upstreamStatus ascending
+  upstreamStatus_ASC
+  # upstreamStatus descending
+  upstreamStatus_DESC
+  # url ascending
+  url_ASC
+  # url descending
+  url_DESC
   # verifiedBot ascending
   verifiedBot_ASC
   # verifiedBot descending
@@ -114139,11 +114686,35 @@ type ZonePreRenderBotRequestsAdaptiveGroupsQuantiles {
 type ZonePreRenderBotRequestsAdaptiveGroupsSum {
   # Estimated bytes served to bots
   bytesServed: uint64!
+  # Estimated requests served from fresh or stale cache
+  cacheServed: uint64!
+  # Estimated requests served by origin fallback
+  fallbackCount: uint64!
+  # Estimated requests served from a fresh cache entry
+  freshCacheHits: uint64!
+  # Estimated requests with a 4xx, 5xx, or no response
+  httpErrorCount: uint64!
+  # Estimated requests with no HTTP response
+  noResponseCount: uint64!
+  # Estimated requests returning a redirect
+  redirectCount: uint64!
 }
 
 type ZonePreRenderBotRequestsAdaptiveGroupsSumConfidence {
   # Confidence interval for the corresponding point estimate
   bytesServed: Confidence!
+  # Confidence interval for the corresponding point estimate
+  cacheServed: Confidence!
+  # Confidence interval for the corresponding point estimate
+  fallbackCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  freshCacheHits: Confidence!
+  # Confidence interval for the corresponding point estimate
+  httpErrorCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  noResponseCount: Confidence!
+  # Confidence interval for the corresponding point estimate
+  redirectCount: Confidence!
 }
 
 # Aggregated pre-render render attempts with adaptive sampling
@@ -114189,12 +114760,20 @@ type ZonePreRenderRenderAttemptsAdaptiveGroupsDimensions {
   datetimeFiveMinutes: Time!
   # The date and time of the render attempt truncated to the hour
   datetimeHour: Time!
-  # The render error class
-  errorClass: string!
+  # The Browser Run error code for the failure, or 0 when there is none or the reason is internal
+  failureCode: uint16!
+  # Why the render failed: render_timeout, navigation_failed, target_closed, origin_status, non_html, or internal. Empty on success
+  failureReason: string!
+  # The browser engine that rendered the page
+  renderEngine: string!
   # Whether the render succeeded
   success: uint8!
   # Why the render started
   trigger: string!
+  # The HTTP status the page returned while rendering, or 0
+  upstreamStatus: uint16!
+  # The URL submitted for rendering without its query string
+  url: string!
 }
 
 input ZonePreRenderRenderAttemptsAdaptiveGroupsFilter_InputObject {
@@ -114240,17 +114819,36 @@ input ZonePreRenderRenderAttemptsAdaptiveGroupsFilter_InputObject {
   datetime_lt: Time
   datetime_neq: Time
   datetime_notin: [Time!]
-  errorClass: string
-  errorClass_geq: string
-  errorClass_gt: string
-  errorClass_ilike: string
-  errorClass_in: [string!]
-  errorClass_leq: string
-  errorClass_like: string
-  errorClass_lt: string
-  errorClass_neq: string
-  errorClass_notin: [string!]
-  errorClass_notlike: string
+  failureCode: uint16
+  failureCode_geq: uint16
+  failureCode_gt: uint16
+  failureCode_in: [uint16!]
+  failureCode_leq: uint16
+  failureCode_lt: uint16
+  failureCode_neq: uint16
+  failureCode_notin: [uint16!]
+  failureReason: string
+  failureReason_geq: string
+  failureReason_gt: string
+  failureReason_ilike: string
+  failureReason_in: [string!]
+  failureReason_leq: string
+  failureReason_like: string
+  failureReason_lt: string
+  failureReason_neq: string
+  failureReason_notin: [string!]
+  failureReason_notlike: string
+  renderEngine: string
+  renderEngine_geq: string
+  renderEngine_gt: string
+  renderEngine_ilike: string
+  renderEngine_in: [string!]
+  renderEngine_leq: string
+  renderEngine_like: string
+  renderEngine_lt: string
+  renderEngine_neq: string
+  renderEngine_notin: [string!]
+  renderEngine_notlike: string
   success: uint8
   success_geq: uint8
   success_gt: uint8
@@ -114270,6 +114868,25 @@ input ZonePreRenderRenderAttemptsAdaptiveGroupsFilter_InputObject {
   trigger_neq: string
   trigger_notin: [string!]
   trigger_notlike: string
+  upstreamStatus: uint16
+  upstreamStatus_geq: uint16
+  upstreamStatus_gt: uint16
+  upstreamStatus_in: [uint16!]
+  upstreamStatus_leq: uint16
+  upstreamStatus_lt: uint16
+  upstreamStatus_neq: uint16
+  upstreamStatus_notin: [uint16!]
+  url: string
+  url_geq: string
+  url_gt: string
+  url_ilike: string
+  url_in: [string!]
+  url_leq: string
+  url_like: string
+  url_lt: string
+  url_neq: string
+  url_notin: [string!]
+  url_notlike: string
 }
 
 enum ZonePreRenderRenderAttemptsAdaptiveGroupsOrderBy {
@@ -114305,10 +114922,14 @@ enum ZonePreRenderRenderAttemptsAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
-  # errorClass ascending
-  errorClass_ASC
-  # errorClass descending
-  errorClass_DESC
+  # failureCode ascending
+  failureCode_ASC
+  # failureCode descending
+  failureCode_DESC
+  # failureReason ascending
+  failureReason_ASC
+  # failureReason descending
+  failureReason_DESC
   # quantiles(renderDurationMsP25) ascending
   quantiles_renderDurationMsP25_ASC
   # quantiles(renderDurationMsP25) descending
@@ -114337,6 +114958,10 @@ enum ZonePreRenderRenderAttemptsAdaptiveGroupsOrderBy {
   quantiles_renderDurationMsP99_ASC
   # quantiles(renderDurationMsP99) descending
   quantiles_renderDurationMsP99_DESC
+  # renderEngine ascending
+  renderEngine_ASC
+  # renderEngine descending
+  renderEngine_DESC
   # success ascending
   success_ASC
   # success descending
@@ -114349,10 +114974,22 @@ enum ZonePreRenderRenderAttemptsAdaptiveGroupsOrderBy {
   sum_htmlBytes_ASC
   # sum(htmlBytes) descending
   sum_htmlBytes_DESC
+  # sum(renderErrors) ascending
+  sum_renderErrors_ASC
+  # sum(renderErrors) descending
+  sum_renderErrors_DESC
   # trigger ascending
   trigger_ASC
   # trigger descending
   trigger_DESC
+  # upstreamStatus ascending
+  upstreamStatus_ASC
+  # upstreamStatus descending
+  upstreamStatus_DESC
+  # url ascending
+  url_ASC
+  # url descending
+  url_DESC
 }
 
 type ZonePreRenderRenderAttemptsAdaptiveGroupsQuantiles {
@@ -114377,6 +115014,8 @@ type ZonePreRenderRenderAttemptsAdaptiveGroupsSum {
   browserSecondsUsed: float64!
   # Estimated rendered HTML bytes
   htmlBytes: uint64!
+  # Estimated failed render attempts
+  renderErrors: uint64!
 }
 
 type ZonePreRenderRenderAttemptsAdaptiveGroupsSumConfidence {
@@ -114384,6 +115023,8 @@ type ZonePreRenderRenderAttemptsAdaptiveGroupsSumConfidence {
   browserSecondsUsed: Confidence!
   # Confidence interval for the corresponding point estimate
   htmlBytes: Confidence!
+  # Confidence interval for the corresponding point estimate
+  renderErrors: Confidence!
 }
 
 # Access and limitations for a zone
@@ -114394,6 +115035,7 @@ type ZoneSettings {
   apiGatewayMatchedSessionIDsPerEndpointAdaptiveGroups: Settings!
   apiGatewayMatchedSessionIDsPerEndpointFlattenedAdaptiveGroups: Settings!
   apiRequestSequencesGroups: Settings!
+  apiShieldSchemaAnalyticsAdaptiveGroups: Settings!
   cacheReserveOperationsAdaptiveGroups: Settings!
   cacheReserveRequestsAdaptiveGroups: Settings!
   cacheReserveStorageAdaptiveGroups: Settings!
