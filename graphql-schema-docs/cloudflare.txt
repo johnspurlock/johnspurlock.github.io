@@ -69,6 +69,10 @@ Account-level datasets:
 * d1AnalyticsAdaptiveGroups
 * d1QueriesAdaptiveGroups
 * d1StorageAdaptiveGroups
+* dexHttpTestResultsAdaptiveGroups
+* dexHttpTestResultsStagingAdaptiveGroups
+* dexTracerouteTestResultsAdaptiveGroups
+* dexTracerouteTestResultsStagingAdaptiveGroups
 * dnsAnalyticsAdaptive
 * dnsAnalyticsAdaptiveGroups
 * dnsFirewallAnalyticsAdaptive
@@ -127,7 +131,9 @@ Account-level datasets:
 * liveInputEventsAdaptive
 * liveInputEventsAdaptiveGroups
 * logExplorerIngestionAdaptiveGroups
+* logpushExternalUsageAdaptiveGroups
 * logpushHealthAdaptiveGroups
+* logpushInternalUsageAdaptiveGroups
 * logpushTransformersAdaptiveGroups
 * logpushTransformersSuccessfulUsageAdaptiveGroups
 * logpushUsageAdaptiveGroups
@@ -168,6 +174,8 @@ Account-level datasets:
 * mnmFlowDataAdaptiveGroups
 * monetizationGatewayAdaptiveGroups
   nelReportsAdaptiveGroups
+* networkQualityClients1mGroups
+* networkQualityUsage1mGroups
 * networkQualityUsageAdaptiveGroups
 * ohttpMetricsAdaptive
 * ohttpMetricsAdaptiveGroups
@@ -231,6 +239,7 @@ Account-level datasets:
 * videoBufferEventsAdaptiveGroups
 * videoPlaybackEventsAdaptiveGroups
 * videoQualityEventsAdaptiveGroups
+* warpClientLogEventsGroups
 * warpDeviceAdaptiveGroups
 * webSearchRequestsAdaptiveGroups
 * workerPlacementAdaptiveGroups
@@ -332,7 +341,7 @@ scalar Date
 # Scalar type types.Float32
 scalar float32
 
-# Scalar type types.Float64
+# Scalar type float64
 scalar float64
 
 # Scalar type int16
@@ -509,6 +518,14 @@ type account {
   d1QueriesAdaptiveGroups(filter: AccountD1QueriesAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1QueriesAdaptiveGroupsOrderBy!]): [AccountD1QueriesAdaptiveGroups!]!
   # D1 storage with adaptive sampling
   d1StorageAdaptiveGroups(filter: AccountD1StorageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountD1StorageAdaptiveGroupsOrderBy!]): [AccountD1StorageAdaptiveGroups!]!
+  # Beta. DEX HTTP test results with adaptive sampling
+  dexHttpTestResultsAdaptiveGroups(filter: AccountDexHttpTestResultsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDexHttpTestResultsAdaptiveGroupsOrderBy!]): [AccountDexHttpTestResultsAdaptiveGroups!]!
+  # Beta. DEX HTTP test results with adaptive sampling (staging)
+  dexHttpTestResultsStagingAdaptiveGroups(filter: AccountDexHttpTestResultsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDexHttpTestResultsStagingAdaptiveGroupsOrderBy!]): [AccountDexHttpTestResultsStagingAdaptiveGroups!]!
+  # Beta. DEX traceroute test results with adaptive sampling
+  dexTracerouteTestResultsAdaptiveGroups(filter: AccountDexTracerouteTestResultsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDexTracerouteTestResultsAdaptiveGroupsOrderBy!]): [AccountDexTracerouteTestResultsAdaptiveGroups!]!
+  # Beta. DEX traceroute test results with adaptive sampling (staging)
+  dexTracerouteTestResultsStagingAdaptiveGroups(filter: AccountDexTracerouteTestResultsStagingAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountDexTracerouteTestResultsStagingAdaptiveGroupsOrderBy!]): [AccountDexTracerouteTestResultsStagingAdaptiveGroups!]!
   # Analytics data for DNS queries
   dnsAnalyticsAdaptive(filter: AccountDnsAnalyticsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountDnsAnalyticsAdaptiveOrderBy!]): [AccountDnsAnalyticsAdaptive!]!
   # Analytics data for DNS queries
@@ -626,8 +643,12 @@ type account {
   liveInputEventsAdaptiveGroups(filter: AccountLiveInputEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLiveInputEventsAdaptiveGroupsOrderBy!]): [AccountLiveInputEventsAdaptiveGroups!]!
   # Ingestion metrics for Log Explorer
   logExplorerIngestionAdaptiveGroups(filter: AccountLogExplorerIngestionAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogExplorerIngestionAdaptiveGroupsOrderBy!]): [AccountLogExplorerIngestionAdaptiveGroups!]!
+  # Account-wide billable usage for successfully delivered customer-owned Logpush jobs with a non-Cloudflare destination (all destinations other than R2 and Pipelines)
+  logpushExternalUsageAdaptiveGroups(filter: AccountLogpushExternalUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogpushExternalUsageAdaptiveGroupsOrderBy!]): [AccountLogpushExternalUsageAdaptiveGroups!]!
   # Beta. Logpush job health metrics
   logpushHealthAdaptiveGroups(filter: AccountLogpushHealthAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogpushHealthAdaptiveGroupsOrderBy!]): [AccountLogpushHealthAdaptiveGroups!]!
+  # Account-wide billable usage for successfully delivered customer-owned Logpush jobs with a Cloudflare destination (R2 or Pipelines)
+  logpushInternalUsageAdaptiveGroups(filter: AccountLogpushInternalUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogpushInternalUsageAdaptiveGroupsOrderBy!]): [AccountLogpushInternalUsageAdaptiveGroups!]!
   # Beta. Logpush transformer health metrics
   logpushTransformersAdaptiveGroups(filter: AccountLogpushTransformersAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountLogpushTransformersAdaptiveGroupsOrderBy!]): [AccountLogpushTransformersAdaptiveGroups!]!
   # Account-wide billable usage for successful invocations of Logpush transformers across all job scopes
@@ -708,6 +729,10 @@ type account {
   monetizationGatewayAdaptiveGroups(filter: AccountMonetizationGatewayAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountMonetizationGatewayAdaptiveGroupsOrderBy!]): [AccountMonetizationGatewayAdaptiveGroups!]!
   # Data to visualize network error logs
   nelReportsAdaptiveGroups(filter: AccountNelReportsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountNelReportsAdaptiveGroupsOrderBy!]): [AccountNelReportsAdaptiveGroups!]!
+  # Beta. Network Quality API usage and unique clients from authorized client requests (i.e. requests carrying an authorization token issued on behalf of the account), aggregated per minute without sampling
+  networkQualityClients1mGroups(filter: AccountNetworkQualityClients1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountNetworkQualityClients1mGroupsOrderBy!]): [AccountNetworkQualityClients1mGroups!]!
+  # Beta. Network Quality API usage and unique tokens from authorized client requests (i.e. requests carrying an authorization token issued on behalf of the account), aggregated per minute without sampling
+  networkQualityUsage1mGroups(filter: AccountNetworkQualityUsage1mGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountNetworkQualityUsage1mGroupsOrderBy!]): [AccountNetworkQualityUsage1mGroups!]!
   # Beta. Network Quality API usage from authorized client requests (i.e. requests carrying an authorization token issued on behalf of the account), with adaptive sampling
   networkQualityUsageAdaptiveGroups(filter: AccountNetworkQualityUsageAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountNetworkQualityUsageAdaptiveGroupsOrderBy!]): [AccountNetworkQualityUsageAdaptiveGroups!]!
   # oHTTP request metrics with adaptive sampling
@@ -835,6 +860,8 @@ type account {
   videoPlaybackEventsAdaptiveGroups(filter: AccountVideoPlaybackEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVideoPlaybackEventsAdaptiveGroupsOrderBy!]): [AccountVideoPlaybackEventsAdaptiveGroups!]!
   # Beta. Aggregated video streaming quality change event metrics with adaptive sampling
   videoQualityEventsAdaptiveGroups(filter: AccountVideoQualityEventsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountVideoQualityEventsAdaptiveGroupsOrderBy!]): [AccountVideoQualityEventsAdaptiveGroups!]!
+  # Cloudflare One Client log events.
+  warpClientLogEventsGroups(filter: AccountWarpClientLogEventsGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWarpClientLogEventsGroupsOrderBy!]): [AccountWarpClientLogEventsGroups!]!
   # Beta. Warp device health events with adaptive sampling
   warpDeviceAdaptiveGroups(filter: AccountWarpDeviceAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWarpDeviceAdaptiveGroupsOrderBy!]): [AccountWarpDeviceAdaptiveGroups!]!
   # Web Search Requests Analytics
@@ -867,11 +894,11 @@ type account {
   workflowsAdaptive(filter: AccountWorkflowsAdaptiveFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkflowsAdaptiveOrderBy!]): [AccountWorkflowsAdaptive!]!
   # Workflows analytics
   workflowsAdaptiveGroups(filter: AccountWorkflowsAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkflowsAdaptiveGroupsOrderBy!]): [AccountWorkflowsAdaptiveGroups!]!
-  # Workflow gatekeeper block reason metrics with adaptive sampling. Each sample represents instances that were blocked by the gatekeeper, grouped by the reason for blocking.
+  # Workflow instances held back by a concurrency limit, with adaptive sampling, by the limit that held them back. Each instance is counted once, when the limit first refuses it a slot.
   workflowsBlockedReasonAdaptiveGroups(filter: AccountWorkflowsBlockedReasonAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkflowsBlockedReasonAdaptiveGroupsOrderBy!]): [AccountWorkflowsBlockedReasonAdaptiveGroups!]!
-  # Workflow queue depth gauge metrics with adaptive sampling. Each sample represents a snapshot of the number of instances waiting in the gatekeeper queue for a workflow.
+  # Number of workflow instances held back by a concurrency limit, summed across all of the workflow's shards, with adaptive sampling. Sampled every few seconds while at least one instance is held back, plus a single 0 when none are left; no samples means none were held back.
   workflowsQueueDepthAdaptiveGroups(filter: AccountWorkflowsQueueDepthAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkflowsQueueDepthAdaptiveGroupsOrderBy!]): [AccountWorkflowsQueueDepthAdaptiveGroups!]!
-  # Workflow queue wait time metrics with adaptive sampling. Each sample represents the time a workflow instance spent waiting in the gatekeeper queue before being admitted.
+  # Time workflow instances spent held back by a concurrency limit (the workflow's or the account's), with adaptive sampling. Each sample is one instance that was refused a slot at least once, recorded when it starts and measured from its first refusal; instances that start without being refused are not sampled.
   workflowsQueueWaitAdaptiveGroups(filter: AccountWorkflowsQueueWaitAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountWorkflowsQueueWaitAdaptiveGroupsOrderBy!]): [AccountWorkflowsQueueWaitAdaptiveGroups!]!
   # Zaraz Track Analytics - counts zaraz.track calls
   zarazTrackAdaptiveGroups(filter: AccountZarazTrackAdaptiveGroupsFilter_InputObject!, limit: uint64!, orderBy: [AccountZarazTrackAdaptiveGroupsOrderBy!]): [AccountZarazTrackAdaptiveGroups!]!
@@ -27199,6 +27226,2802 @@ enum AccountD1StorageAdaptiveGroupsOrderBy {
   max_databaseSizeBytes_DESC
 }
 
+# Beta. DEX HTTP test results with adaptive sampling
+type AccountDexHttpTestResultsAdaptiveGroups {
+  avg: AccountDexHttpTestResultsAdaptiveGroupsAvg
+  # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
+  confidence(level: float64!): AccountDexHttpTestResultsAdaptiveGroupsConfidence!
+  # Number of HTTP test results
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountDexHttpTestResultsAdaptiveGroupsDimensions
+  max: AccountDexHttpTestResultsAdaptiveGroupsMax
+  min: AccountDexHttpTestResultsAdaptiveGroupsMin
+  quantiles: AccountDexHttpTestResultsAdaptiveGroupsQuantiles
+  ratio: AccountDexHttpTestResultsAdaptiveGroupsRatio
+  sum: AccountDexHttpTestResultsAdaptiveGroupsSum
+  uniq: AccountDexHttpTestResultsAdaptiveGroupsUniq
+}
+
+type AccountDexHttpTestResultsAdaptiveGroupsAvg {
+  # Average DNS response time in milliseconds for successful HTTP test results
+  dnsResponseTimeMs: float64!
+  # Average resource fetch time in milliseconds for successful HTTP test results
+  resourceFetchTimeMs: float64!
+  # Average sample interval
+  sampleInterval: float64!
+  # Average server response time in milliseconds for successful HTTP test results
+  serverResponseTimeMs: float64!
+}
+
+type AccountDexHttpTestResultsAdaptiveGroupsConfidence {
+  # Number of HTTP test results, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  sum: AccountDexHttpTestResultsAdaptiveGroupsSumConfidence
+}
+
+type AccountDexHttpTestResultsAdaptiveGroupsDimensions {
+  # HTTP response body size in bytes
+  bodyBytes: int64!
+  # Device operating system
+  clientPlatform: string!
+  # WARP client version
+  clientVersion: string!
+  # Cloudflare colo associated with the test result
+  colo: string!
+  # Test result timestamp truncated to the day
+  date: Date!
+  # Test result timestamp
+  datetime: Time!
+  # Test result timestamp truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Test result timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Test result timestamp truncated to the hour
+  datetimeHour: Time!
+  # Test result timestamp truncated to the minute
+  datetimeMinute: Time!
+  # Test result timestamp truncated to thirty minutes
+  datetimeThirtyMinutes: Time!
+  # Device ID
+  deviceId: string!
+  # Device registration ID
+  deviceRegistration: string!
+  # DNS response time in milliseconds
+  dnsResponseTimeMs: float64!
+  # Whether the test ran inside or outside the WARP tunnel
+  executionContext: string!
+  # HTTP response headers size in bytes
+  headerBytes: int64!
+  # HTTP request method
+  method: string!
+  # HTTP redirect duration in milliseconds
+  redirectDurationMs: float64!
+  # Total resource fetch time in milliseconds
+  resourceFetchTimeMs: float64!
+  # Server response time in milliseconds
+  serverResponseTimeMs: float64!
+  # HTTP response status code
+  statusCode: int32!
+  # TCP connection time in milliseconds
+  tcpConnectTimeMs: float64!
+  # DEX test configuration ID
+  testId: string!
+  # Unique test result ID
+  testResultId: string!
+  # WARP tunnel protocol
+  tunnelType: string!
+}
+
+input AccountDexHttpTestResultsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountDexHttpTestResultsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountDexHttpTestResultsAdaptiveGroupsFilter_InputObject!]
+  bodyBytes: int64
+  bodyBytes_geq: int64
+  bodyBytes_gt: int64
+  bodyBytes_in: [int64!]
+  bodyBytes_leq: int64
+  bodyBytes_lt: int64
+  bodyBytes_neq: int64
+  bodyBytes_notin: [int64!]
+  clientPlatform: string
+  clientPlatform_geq: string
+  clientPlatform_gt: string
+  clientPlatform_ilike: string
+  clientPlatform_in: [string!]
+  clientPlatform_leq: string
+  clientPlatform_like: string
+  clientPlatform_lt: string
+  clientPlatform_neq: string
+  clientPlatform_notin: [string!]
+  clientPlatform_notlike: string
+  clientVersion: string
+  clientVersion_geq: string
+  clientVersion_gt: string
+  clientVersion_ilike: string
+  clientVersion_in: [string!]
+  clientVersion_leq: string
+  clientVersion_like: string
+  clientVersion_lt: string
+  clientVersion_neq: string
+  clientVersion_notin: [string!]
+  clientVersion_notlike: string
+  colo: string
+  colo_geq: string
+  colo_gt: string
+  colo_ilike: string
+  colo_in: [string!]
+  colo_leq: string
+  colo_like: string
+  colo_lt: string
+  colo_neq: string
+  colo_notin: [string!]
+  colo_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeThirtyMinutes: Time
+  datetimeThirtyMinutes_geq: Time
+  datetimeThirtyMinutes_gt: Time
+  datetimeThirtyMinutes_in: [Time!]
+  datetimeThirtyMinutes_leq: Time
+  datetimeThirtyMinutes_lt: Time
+  datetimeThirtyMinutes_neq: Time
+  datetimeThirtyMinutes_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_ilike: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  deviceRegistration: string
+  deviceRegistration_geq: string
+  deviceRegistration_gt: string
+  deviceRegistration_ilike: string
+  deviceRegistration_in: [string!]
+  deviceRegistration_leq: string
+  deviceRegistration_like: string
+  deviceRegistration_lt: string
+  deviceRegistration_neq: string
+  deviceRegistration_notin: [string!]
+  deviceRegistration_notlike: string
+  dnsResponseTimeMs: float64
+  dnsResponseTimeMs_geq: float64
+  dnsResponseTimeMs_gt: float64
+  dnsResponseTimeMs_in: [float64!]
+  dnsResponseTimeMs_leq: float64
+  dnsResponseTimeMs_lt: float64
+  dnsResponseTimeMs_neq: float64
+  dnsResponseTimeMs_notin: [float64!]
+  executionContext: string
+  executionContext_geq: string
+  executionContext_gt: string
+  executionContext_ilike: string
+  executionContext_in: [string!]
+  executionContext_leq: string
+  executionContext_like: string
+  executionContext_lt: string
+  executionContext_neq: string
+  executionContext_notin: [string!]
+  executionContext_notlike: string
+  headerBytes: int64
+  headerBytes_geq: int64
+  headerBytes_gt: int64
+  headerBytes_in: [int64!]
+  headerBytes_leq: int64
+  headerBytes_lt: int64
+  headerBytes_neq: int64
+  headerBytes_notin: [int64!]
+  method: string
+  method_geq: string
+  method_gt: string
+  method_ilike: string
+  method_in: [string!]
+  method_leq: string
+  method_like: string
+  method_lt: string
+  method_neq: string
+  method_notin: [string!]
+  method_notlike: string
+  redirectDurationMs: float64
+  redirectDurationMs_geq: float64
+  redirectDurationMs_gt: float64
+  redirectDurationMs_in: [float64!]
+  redirectDurationMs_leq: float64
+  redirectDurationMs_lt: float64
+  redirectDurationMs_neq: float64
+  redirectDurationMs_notin: [float64!]
+  resourceFetchTimeMs: float64
+  resourceFetchTimeMs_geq: float64
+  resourceFetchTimeMs_gt: float64
+  resourceFetchTimeMs_in: [float64!]
+  resourceFetchTimeMs_leq: float64
+  resourceFetchTimeMs_lt: float64
+  resourceFetchTimeMs_neq: float64
+  resourceFetchTimeMs_notin: [float64!]
+  serverResponseTimeMs: float64
+  serverResponseTimeMs_geq: float64
+  serverResponseTimeMs_gt: float64
+  serverResponseTimeMs_in: [float64!]
+  serverResponseTimeMs_leq: float64
+  serverResponseTimeMs_lt: float64
+  serverResponseTimeMs_neq: float64
+  serverResponseTimeMs_notin: [float64!]
+  statusCode: int32
+  statusCode_geq: int32
+  statusCode_gt: int32
+  statusCode_in: [int32!]
+  statusCode_leq: int32
+  statusCode_lt: int32
+  statusCode_neq: int32
+  statusCode_notin: [int32!]
+  tcpConnectTimeMs: float64
+  tcpConnectTimeMs_geq: float64
+  tcpConnectTimeMs_gt: float64
+  tcpConnectTimeMs_in: [float64!]
+  tcpConnectTimeMs_leq: float64
+  tcpConnectTimeMs_lt: float64
+  tcpConnectTimeMs_neq: float64
+  tcpConnectTimeMs_notin: [float64!]
+  testId: string
+  testId_geq: string
+  testId_gt: string
+  testId_ilike: string
+  testId_in: [string!]
+  testId_leq: string
+  testId_like: string
+  testId_lt: string
+  testId_neq: string
+  testId_notin: [string!]
+  testId_notlike: string
+  testResultId: string
+  testResultId_geq: string
+  testResultId_gt: string
+  testResultId_ilike: string
+  testResultId_in: [string!]
+  testResultId_leq: string
+  testResultId_like: string
+  testResultId_lt: string
+  testResultId_neq: string
+  testResultId_notin: [string!]
+  testResultId_notlike: string
+  tunnelType: string
+  tunnelType_geq: string
+  tunnelType_gt: string
+  tunnelType_ilike: string
+  tunnelType_in: [string!]
+  tunnelType_leq: string
+  tunnelType_like: string
+  tunnelType_lt: string
+  tunnelType_neq: string
+  tunnelType_notin: [string!]
+  tunnelType_notlike: string
+}
+
+type AccountDexHttpTestResultsAdaptiveGroupsMax {
+  # Maximum DNS response time in milliseconds for successful HTTP test results
+  dnsResponseTimeMs: float64!
+  # Maximum resource fetch time in milliseconds for successful HTTP test results
+  resourceFetchTimeMs: float64!
+  # Maximum server response time in milliseconds for successful HTTP test results
+  serverResponseTimeMs: float64!
+  # Latest test result timestamp
+  timestamp: Time!
+}
+
+type AccountDexHttpTestResultsAdaptiveGroupsMin {
+  # Minimum DNS response time in milliseconds for successful HTTP test results
+  dnsResponseTimeMs: float64!
+  # Minimum resource fetch time in milliseconds for successful HTTP test results
+  resourceFetchTimeMs: float64!
+  # Minimum server response time in milliseconds for successful HTTP test results
+  serverResponseTimeMs: float64!
+}
+
+enum AccountDexHttpTestResultsAdaptiveGroupsOrderBy {
+  # avg(dnsResponseTimeMs) ascending
+  avg_dnsResponseTimeMs_ASC
+  # avg(dnsResponseTimeMs) descending
+  avg_dnsResponseTimeMs_DESC
+  # avg(resourceFetchTimeMs) ascending
+  avg_resourceFetchTimeMs_ASC
+  # avg(resourceFetchTimeMs) descending
+  avg_resourceFetchTimeMs_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # avg(serverResponseTimeMs) ascending
+  avg_serverResponseTimeMs_ASC
+  # avg(serverResponseTimeMs) descending
+  avg_serverResponseTimeMs_DESC
+  # bodyBytes ascending
+  bodyBytes_ASC
+  # bodyBytes descending
+  bodyBytes_DESC
+  # clientPlatform ascending
+  clientPlatform_ASC
+  # clientPlatform descending
+  clientPlatform_DESC
+  # clientVersion ascending
+  clientVersion_ASC
+  # clientVersion descending
+  clientVersion_DESC
+  # colo ascending
+  colo_ASC
+  # colo descending
+  colo_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeThirtyMinutes ascending
+  datetimeThirtyMinutes_ASC
+  # datetimeThirtyMinutes descending
+  datetimeThirtyMinutes_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # deviceRegistration ascending
+  deviceRegistration_ASC
+  # deviceRegistration descending
+  deviceRegistration_DESC
+  # dnsResponseTimeMs ascending
+  dnsResponseTimeMs_ASC
+  # dnsResponseTimeMs descending
+  dnsResponseTimeMs_DESC
+  # executionContext ascending
+  executionContext_ASC
+  # executionContext descending
+  executionContext_DESC
+  # headerBytes ascending
+  headerBytes_ASC
+  # headerBytes descending
+  headerBytes_DESC
+  # max(dnsResponseTimeMs) ascending
+  max_dnsResponseTimeMs_ASC
+  # max(dnsResponseTimeMs) descending
+  max_dnsResponseTimeMs_DESC
+  # max(resourceFetchTimeMs) ascending
+  max_resourceFetchTimeMs_ASC
+  # max(resourceFetchTimeMs) descending
+  max_resourceFetchTimeMs_DESC
+  # max(serverResponseTimeMs) ascending
+  max_serverResponseTimeMs_ASC
+  # max(serverResponseTimeMs) descending
+  max_serverResponseTimeMs_DESC
+  # max(timestamp) ascending
+  max_timestamp_ASC
+  # max(timestamp) descending
+  max_timestamp_DESC
+  # method ascending
+  method_ASC
+  # method descending
+  method_DESC
+  # min(dnsResponseTimeMs) ascending
+  min_dnsResponseTimeMs_ASC
+  # min(dnsResponseTimeMs) descending
+  min_dnsResponseTimeMs_DESC
+  # min(resourceFetchTimeMs) ascending
+  min_resourceFetchTimeMs_ASC
+  # min(resourceFetchTimeMs) descending
+  min_resourceFetchTimeMs_DESC
+  # min(serverResponseTimeMs) ascending
+  min_serverResponseTimeMs_ASC
+  # min(serverResponseTimeMs) descending
+  min_serverResponseTimeMs_DESC
+  # quantiles(dnsResponseTimeMsP25) ascending
+  quantiles_dnsResponseTimeMsP25_ASC
+  # quantiles(dnsResponseTimeMsP25) descending
+  quantiles_dnsResponseTimeMsP25_DESC
+  # quantiles(dnsResponseTimeMsP50) ascending
+  quantiles_dnsResponseTimeMsP50_ASC
+  # quantiles(dnsResponseTimeMsP50) descending
+  quantiles_dnsResponseTimeMsP50_DESC
+  # quantiles(dnsResponseTimeMsP75) ascending
+  quantiles_dnsResponseTimeMsP75_ASC
+  # quantiles(dnsResponseTimeMsP75) descending
+  quantiles_dnsResponseTimeMsP75_DESC
+  # quantiles(dnsResponseTimeMsP90) ascending
+  quantiles_dnsResponseTimeMsP90_ASC
+  # quantiles(dnsResponseTimeMsP90) descending
+  quantiles_dnsResponseTimeMsP90_DESC
+  # quantiles(dnsResponseTimeMsP95) ascending
+  quantiles_dnsResponseTimeMsP95_ASC
+  # quantiles(dnsResponseTimeMsP95) descending
+  quantiles_dnsResponseTimeMsP95_DESC
+  # quantiles(dnsResponseTimeMsP999) ascending
+  quantiles_dnsResponseTimeMsP999_ASC
+  # quantiles(dnsResponseTimeMsP999) descending
+  quantiles_dnsResponseTimeMsP999_DESC
+  # quantiles(dnsResponseTimeMsP99) ascending
+  quantiles_dnsResponseTimeMsP99_ASC
+  # quantiles(dnsResponseTimeMsP99) descending
+  quantiles_dnsResponseTimeMsP99_DESC
+  # quantiles(resourceFetchTimeMsP25) ascending
+  quantiles_resourceFetchTimeMsP25_ASC
+  # quantiles(resourceFetchTimeMsP25) descending
+  quantiles_resourceFetchTimeMsP25_DESC
+  # quantiles(resourceFetchTimeMsP50) ascending
+  quantiles_resourceFetchTimeMsP50_ASC
+  # quantiles(resourceFetchTimeMsP50) descending
+  quantiles_resourceFetchTimeMsP50_DESC
+  # quantiles(resourceFetchTimeMsP75) ascending
+  quantiles_resourceFetchTimeMsP75_ASC
+  # quantiles(resourceFetchTimeMsP75) descending
+  quantiles_resourceFetchTimeMsP75_DESC
+  # quantiles(resourceFetchTimeMsP90) ascending
+  quantiles_resourceFetchTimeMsP90_ASC
+  # quantiles(resourceFetchTimeMsP90) descending
+  quantiles_resourceFetchTimeMsP90_DESC
+  # quantiles(resourceFetchTimeMsP95) ascending
+  quantiles_resourceFetchTimeMsP95_ASC
+  # quantiles(resourceFetchTimeMsP95) descending
+  quantiles_resourceFetchTimeMsP95_DESC
+  # quantiles(resourceFetchTimeMsP999) ascending
+  quantiles_resourceFetchTimeMsP999_ASC
+  # quantiles(resourceFetchTimeMsP999) descending
+  quantiles_resourceFetchTimeMsP999_DESC
+  # quantiles(resourceFetchTimeMsP99) ascending
+  quantiles_resourceFetchTimeMsP99_ASC
+  # quantiles(resourceFetchTimeMsP99) descending
+  quantiles_resourceFetchTimeMsP99_DESC
+  # quantiles(serverResponseTimeMsP25) ascending
+  quantiles_serverResponseTimeMsP25_ASC
+  # quantiles(serverResponseTimeMsP25) descending
+  quantiles_serverResponseTimeMsP25_DESC
+  # quantiles(serverResponseTimeMsP50) ascending
+  quantiles_serverResponseTimeMsP50_ASC
+  # quantiles(serverResponseTimeMsP50) descending
+  quantiles_serverResponseTimeMsP50_DESC
+  # quantiles(serverResponseTimeMsP75) ascending
+  quantiles_serverResponseTimeMsP75_ASC
+  # quantiles(serverResponseTimeMsP75) descending
+  quantiles_serverResponseTimeMsP75_DESC
+  # quantiles(serverResponseTimeMsP90) ascending
+  quantiles_serverResponseTimeMsP90_ASC
+  # quantiles(serverResponseTimeMsP90) descending
+  quantiles_serverResponseTimeMsP90_DESC
+  # quantiles(serverResponseTimeMsP95) ascending
+  quantiles_serverResponseTimeMsP95_ASC
+  # quantiles(serverResponseTimeMsP95) descending
+  quantiles_serverResponseTimeMsP95_DESC
+  # quantiles(serverResponseTimeMsP999) ascending
+  quantiles_serverResponseTimeMsP999_ASC
+  # quantiles(serverResponseTimeMsP999) descending
+  quantiles_serverResponseTimeMsP999_DESC
+  # quantiles(serverResponseTimeMsP99) ascending
+  quantiles_serverResponseTimeMsP99_ASC
+  # quantiles(serverResponseTimeMsP99) descending
+  quantiles_serverResponseTimeMsP99_DESC
+  # ratio(availabilityPct) ascending
+  ratio_availabilityPct_ASC
+  # ratio(availabilityPct) descending
+  ratio_availabilityPct_DESC
+  # redirectDurationMs ascending
+  redirectDurationMs_ASC
+  # redirectDurationMs descending
+  redirectDurationMs_DESC
+  # resourceFetchTimeMs ascending
+  resourceFetchTimeMs_ASC
+  # resourceFetchTimeMs descending
+  resourceFetchTimeMs_DESC
+  # serverResponseTimeMs ascending
+  serverResponseTimeMs_ASC
+  # serverResponseTimeMs descending
+  serverResponseTimeMs_DESC
+  # statusCode ascending
+  statusCode_ASC
+  # statusCode descending
+  statusCode_DESC
+  # sum(httpStatusCode2xx) ascending
+  sum_httpStatusCode2xx_ASC
+  # sum(httpStatusCode2xx) descending
+  sum_httpStatusCode2xx_DESC
+  # sum(httpStatusCode3xx) ascending
+  sum_httpStatusCode3xx_ASC
+  # sum(httpStatusCode3xx) descending
+  sum_httpStatusCode3xx_DESC
+  # sum(httpStatusCode4xx) ascending
+  sum_httpStatusCode4xx_ASC
+  # sum(httpStatusCode4xx) descending
+  sum_httpStatusCode4xx_DESC
+  # sum(httpStatusCode5xx) ascending
+  sum_httpStatusCode5xx_ASC
+  # sum(httpStatusCode5xx) descending
+  sum_httpStatusCode5xx_DESC
+  # sum(successfulTestResults) ascending
+  sum_successfulTestResults_ASC
+  # sum(successfulTestResults) descending
+  sum_successfulTestResults_DESC
+  # tcpConnectTimeMs ascending
+  tcpConnectTimeMs_ASC
+  # tcpConnectTimeMs descending
+  tcpConnectTimeMs_DESC
+  # testId ascending
+  testId_ASC
+  # testId descending
+  testId_DESC
+  # testResultId ascending
+  testResultId_ASC
+  # testResultId descending
+  testResultId_DESC
+  # tunnelType ascending
+  tunnelType_ASC
+  # tunnelType descending
+  tunnelType_DESC
+  # uniq(deviceIds) ascending
+  uniq_deviceIds_ASC
+  # uniq(deviceIds) descending
+  uniq_deviceIds_DESC
+}
+
+type AccountDexHttpTestResultsAdaptiveGroupsQuantiles {
+  # DNS response time in milliseconds at the 25th percentile for successful HTTP test results
+  dnsResponseTimeMsP25: float64!
+  # DNS response time in milliseconds at the 50th percentile for successful HTTP test results
+  dnsResponseTimeMsP50: float64!
+  # DNS response time in milliseconds at the 75th percentile for successful HTTP test results
+  dnsResponseTimeMsP75: float64!
+  # DNS response time in milliseconds at the 90th percentile for successful HTTP test results
+  dnsResponseTimeMsP90: float64!
+  # DNS response time in milliseconds at the 95th percentile for successful HTTP test results
+  dnsResponseTimeMsP95: float64!
+  # DNS response time in milliseconds at the 99th percentile for successful HTTP test results
+  dnsResponseTimeMsP99: float64!
+  # DNS response time in milliseconds at the 99.9th percentile for successful HTTP test results
+  dnsResponseTimeMsP999: float64!
+  # Resource fetch time in milliseconds at the 25th percentile for successful HTTP test results
+  resourceFetchTimeMsP25: float64!
+  # Resource fetch time in milliseconds at the 50th percentile for successful HTTP test results
+  resourceFetchTimeMsP50: float64!
+  # Resource fetch time in milliseconds at the 75th percentile for successful HTTP test results
+  resourceFetchTimeMsP75: float64!
+  # Resource fetch time in milliseconds at the 90th percentile for successful HTTP test results
+  resourceFetchTimeMsP90: float64!
+  # Resource fetch time in milliseconds at the 95th percentile for successful HTTP test results
+  resourceFetchTimeMsP95: float64!
+  # Resource fetch time in milliseconds at the 99th percentile for successful HTTP test results
+  resourceFetchTimeMsP99: float64!
+  # Resource fetch time in milliseconds at the 99.9th percentile for successful HTTP test results
+  resourceFetchTimeMsP999: float64!
+  # Server response time in milliseconds at the 25th percentile for successful HTTP test results
+  serverResponseTimeMsP25: float64!
+  # Server response time in milliseconds at the 50th percentile for successful HTTP test results
+  serverResponseTimeMsP50: float64!
+  # Server response time in milliseconds at the 75th percentile for successful HTTP test results
+  serverResponseTimeMsP75: float64!
+  # Server response time in milliseconds at the 90th percentile for successful HTTP test results
+  serverResponseTimeMsP90: float64!
+  # Server response time in milliseconds at the 95th percentile for successful HTTP test results
+  serverResponseTimeMsP95: float64!
+  # Server response time in milliseconds at the 99th percentile for successful HTTP test results
+  serverResponseTimeMsP99: float64!
+  # Server response time in milliseconds at the 99.9th percentile for successful HTTP test results
+  serverResponseTimeMsP999: float64!
+}
+
+type AccountDexHttpTestResultsAdaptiveGroupsRatio {
+  # Percentage of HTTP test results that completed successfully
+  availabilityPct: float64!
+}
+
+type AccountDexHttpTestResultsAdaptiveGroupsSum {
+  # Number of HTTP test results with a 2xx response status
+  httpStatusCode2xx: uint64!
+  # Number of HTTP test results with a 3xx response status
+  httpStatusCode3xx: uint64!
+  # Number of HTTP test results with a 4xx response status
+  httpStatusCode4xx: uint64!
+  # Number of HTTP test results with a 5xx response status
+  httpStatusCode5xx: uint64!
+  # Number of successful HTTP test results
+  successfulTestResults: uint64!
+}
+
+type AccountDexHttpTestResultsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  httpStatusCode2xx: Confidence!
+  # Confidence interval for the corresponding point estimate
+  httpStatusCode3xx: Confidence!
+  # Confidence interval for the corresponding point estimate
+  httpStatusCode4xx: Confidence!
+  # Confidence interval for the corresponding point estimate
+  httpStatusCode5xx: Confidence!
+  # Confidence interval for the corresponding point estimate
+  successfulTestResults: Confidence!
+}
+
+type AccountDexHttpTestResultsAdaptiveGroupsUniq {
+  # Approximate count of unique device IDs
+  deviceIds: uint64!
+}
+
+# Beta. DEX HTTP test results with adaptive sampling (staging)
+type AccountDexHttpTestResultsStagingAdaptiveGroups {
+  avg: AccountDexHttpTestResultsStagingAdaptiveGroupsAvg
+  # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
+  confidence(level: float64!): AccountDexHttpTestResultsStagingAdaptiveGroupsConfidence!
+  # Number of HTTP test results
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountDexHttpTestResultsStagingAdaptiveGroupsDimensions
+  max: AccountDexHttpTestResultsStagingAdaptiveGroupsMax
+  min: AccountDexHttpTestResultsStagingAdaptiveGroupsMin
+  quantiles: AccountDexHttpTestResultsStagingAdaptiveGroupsQuantiles
+  ratio: AccountDexHttpTestResultsStagingAdaptiveGroupsRatio
+  sum: AccountDexHttpTestResultsStagingAdaptiveGroupsSum
+  uniq: AccountDexHttpTestResultsStagingAdaptiveGroupsUniq
+}
+
+type AccountDexHttpTestResultsStagingAdaptiveGroupsAvg {
+  # Average DNS response time in milliseconds for successful HTTP test results
+  dnsResponseTimeMs: float64!
+  # Average resource fetch time in milliseconds for successful HTTP test results
+  resourceFetchTimeMs: float64!
+  # Average sample interval
+  sampleInterval: float64!
+  # Average server response time in milliseconds for successful HTTP test results
+  serverResponseTimeMs: float64!
+}
+
+type AccountDexHttpTestResultsStagingAdaptiveGroupsConfidence {
+  # Number of HTTP test results, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  sum: AccountDexHttpTestResultsStagingAdaptiveGroupsSumConfidence
+}
+
+type AccountDexHttpTestResultsStagingAdaptiveGroupsDimensions {
+  # HTTP response body size in bytes
+  bodyBytes: int64!
+  # Device operating system
+  clientPlatform: string!
+  # WARP client version
+  clientVersion: string!
+  # Cloudflare colo associated with the test result
+  colo: string!
+  # Test result timestamp truncated to the day
+  date: Date!
+  # Test result timestamp
+  datetime: Time!
+  # Test result timestamp truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Test result timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Test result timestamp truncated to the hour
+  datetimeHour: Time!
+  # Test result timestamp truncated to the minute
+  datetimeMinute: Time!
+  # Test result timestamp truncated to thirty minutes
+  datetimeThirtyMinutes: Time!
+  # Device ID
+  deviceId: string!
+  # Device registration ID
+  deviceRegistration: string!
+  # DNS response time in milliseconds
+  dnsResponseTimeMs: float64!
+  # Whether the test ran inside or outside the WARP tunnel
+  executionContext: string!
+  # HTTP response headers size in bytes
+  headerBytes: int64!
+  # HTTP request method
+  method: string!
+  # HTTP redirect duration in milliseconds
+  redirectDurationMs: float64!
+  # Total resource fetch time in milliseconds
+  resourceFetchTimeMs: float64!
+  # Server response time in milliseconds
+  serverResponseTimeMs: float64!
+  # HTTP response status code
+  statusCode: int32!
+  # TCP connection time in milliseconds
+  tcpConnectTimeMs: float64!
+  # DEX test configuration ID
+  testId: string!
+  # Unique test result ID
+  testResultId: string!
+  # WARP tunnel protocol
+  tunnelType: string!
+}
+
+input AccountDexHttpTestResultsStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountDexHttpTestResultsStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountDexHttpTestResultsStagingAdaptiveGroupsFilter_InputObject!]
+  bodyBytes: int64
+  bodyBytes_geq: int64
+  bodyBytes_gt: int64
+  bodyBytes_in: [int64!]
+  bodyBytes_leq: int64
+  bodyBytes_lt: int64
+  bodyBytes_neq: int64
+  bodyBytes_notin: [int64!]
+  clientPlatform: string
+  clientPlatform_geq: string
+  clientPlatform_gt: string
+  clientPlatform_ilike: string
+  clientPlatform_in: [string!]
+  clientPlatform_leq: string
+  clientPlatform_like: string
+  clientPlatform_lt: string
+  clientPlatform_neq: string
+  clientPlatform_notin: [string!]
+  clientPlatform_notlike: string
+  clientVersion: string
+  clientVersion_geq: string
+  clientVersion_gt: string
+  clientVersion_ilike: string
+  clientVersion_in: [string!]
+  clientVersion_leq: string
+  clientVersion_like: string
+  clientVersion_lt: string
+  clientVersion_neq: string
+  clientVersion_notin: [string!]
+  clientVersion_notlike: string
+  colo: string
+  colo_geq: string
+  colo_gt: string
+  colo_ilike: string
+  colo_in: [string!]
+  colo_leq: string
+  colo_like: string
+  colo_lt: string
+  colo_neq: string
+  colo_notin: [string!]
+  colo_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeThirtyMinutes: Time
+  datetimeThirtyMinutes_geq: Time
+  datetimeThirtyMinutes_gt: Time
+  datetimeThirtyMinutes_in: [Time!]
+  datetimeThirtyMinutes_leq: Time
+  datetimeThirtyMinutes_lt: Time
+  datetimeThirtyMinutes_neq: Time
+  datetimeThirtyMinutes_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_ilike: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  deviceRegistration: string
+  deviceRegistration_geq: string
+  deviceRegistration_gt: string
+  deviceRegistration_ilike: string
+  deviceRegistration_in: [string!]
+  deviceRegistration_leq: string
+  deviceRegistration_like: string
+  deviceRegistration_lt: string
+  deviceRegistration_neq: string
+  deviceRegistration_notin: [string!]
+  deviceRegistration_notlike: string
+  dnsResponseTimeMs: float64
+  dnsResponseTimeMs_geq: float64
+  dnsResponseTimeMs_gt: float64
+  dnsResponseTimeMs_in: [float64!]
+  dnsResponseTimeMs_leq: float64
+  dnsResponseTimeMs_lt: float64
+  dnsResponseTimeMs_neq: float64
+  dnsResponseTimeMs_notin: [float64!]
+  executionContext: string
+  executionContext_geq: string
+  executionContext_gt: string
+  executionContext_ilike: string
+  executionContext_in: [string!]
+  executionContext_leq: string
+  executionContext_like: string
+  executionContext_lt: string
+  executionContext_neq: string
+  executionContext_notin: [string!]
+  executionContext_notlike: string
+  headerBytes: int64
+  headerBytes_geq: int64
+  headerBytes_gt: int64
+  headerBytes_in: [int64!]
+  headerBytes_leq: int64
+  headerBytes_lt: int64
+  headerBytes_neq: int64
+  headerBytes_notin: [int64!]
+  method: string
+  method_geq: string
+  method_gt: string
+  method_ilike: string
+  method_in: [string!]
+  method_leq: string
+  method_like: string
+  method_lt: string
+  method_neq: string
+  method_notin: [string!]
+  method_notlike: string
+  redirectDurationMs: float64
+  redirectDurationMs_geq: float64
+  redirectDurationMs_gt: float64
+  redirectDurationMs_in: [float64!]
+  redirectDurationMs_leq: float64
+  redirectDurationMs_lt: float64
+  redirectDurationMs_neq: float64
+  redirectDurationMs_notin: [float64!]
+  resourceFetchTimeMs: float64
+  resourceFetchTimeMs_geq: float64
+  resourceFetchTimeMs_gt: float64
+  resourceFetchTimeMs_in: [float64!]
+  resourceFetchTimeMs_leq: float64
+  resourceFetchTimeMs_lt: float64
+  resourceFetchTimeMs_neq: float64
+  resourceFetchTimeMs_notin: [float64!]
+  serverResponseTimeMs: float64
+  serverResponseTimeMs_geq: float64
+  serverResponseTimeMs_gt: float64
+  serverResponseTimeMs_in: [float64!]
+  serverResponseTimeMs_leq: float64
+  serverResponseTimeMs_lt: float64
+  serverResponseTimeMs_neq: float64
+  serverResponseTimeMs_notin: [float64!]
+  statusCode: int32
+  statusCode_geq: int32
+  statusCode_gt: int32
+  statusCode_in: [int32!]
+  statusCode_leq: int32
+  statusCode_lt: int32
+  statusCode_neq: int32
+  statusCode_notin: [int32!]
+  tcpConnectTimeMs: float64
+  tcpConnectTimeMs_geq: float64
+  tcpConnectTimeMs_gt: float64
+  tcpConnectTimeMs_in: [float64!]
+  tcpConnectTimeMs_leq: float64
+  tcpConnectTimeMs_lt: float64
+  tcpConnectTimeMs_neq: float64
+  tcpConnectTimeMs_notin: [float64!]
+  testId: string
+  testId_geq: string
+  testId_gt: string
+  testId_ilike: string
+  testId_in: [string!]
+  testId_leq: string
+  testId_like: string
+  testId_lt: string
+  testId_neq: string
+  testId_notin: [string!]
+  testId_notlike: string
+  testResultId: string
+  testResultId_geq: string
+  testResultId_gt: string
+  testResultId_ilike: string
+  testResultId_in: [string!]
+  testResultId_leq: string
+  testResultId_like: string
+  testResultId_lt: string
+  testResultId_neq: string
+  testResultId_notin: [string!]
+  testResultId_notlike: string
+  tunnelType: string
+  tunnelType_geq: string
+  tunnelType_gt: string
+  tunnelType_ilike: string
+  tunnelType_in: [string!]
+  tunnelType_leq: string
+  tunnelType_like: string
+  tunnelType_lt: string
+  tunnelType_neq: string
+  tunnelType_notin: [string!]
+  tunnelType_notlike: string
+}
+
+type AccountDexHttpTestResultsStagingAdaptiveGroupsMax {
+  # Maximum DNS response time in milliseconds for successful HTTP test results
+  dnsResponseTimeMs: float64!
+  # Maximum resource fetch time in milliseconds for successful HTTP test results
+  resourceFetchTimeMs: float64!
+  # Maximum server response time in milliseconds for successful HTTP test results
+  serverResponseTimeMs: float64!
+  # Latest test result timestamp
+  timestamp: Time!
+}
+
+type AccountDexHttpTestResultsStagingAdaptiveGroupsMin {
+  # Minimum DNS response time in milliseconds for successful HTTP test results
+  dnsResponseTimeMs: float64!
+  # Minimum resource fetch time in milliseconds for successful HTTP test results
+  resourceFetchTimeMs: float64!
+  # Minimum server response time in milliseconds for successful HTTP test results
+  serverResponseTimeMs: float64!
+}
+
+enum AccountDexHttpTestResultsStagingAdaptiveGroupsOrderBy {
+  # avg(dnsResponseTimeMs) ascending
+  avg_dnsResponseTimeMs_ASC
+  # avg(dnsResponseTimeMs) descending
+  avg_dnsResponseTimeMs_DESC
+  # avg(resourceFetchTimeMs) ascending
+  avg_resourceFetchTimeMs_ASC
+  # avg(resourceFetchTimeMs) descending
+  avg_resourceFetchTimeMs_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # avg(serverResponseTimeMs) ascending
+  avg_serverResponseTimeMs_ASC
+  # avg(serverResponseTimeMs) descending
+  avg_serverResponseTimeMs_DESC
+  # bodyBytes ascending
+  bodyBytes_ASC
+  # bodyBytes descending
+  bodyBytes_DESC
+  # clientPlatform ascending
+  clientPlatform_ASC
+  # clientPlatform descending
+  clientPlatform_DESC
+  # clientVersion ascending
+  clientVersion_ASC
+  # clientVersion descending
+  clientVersion_DESC
+  # colo ascending
+  colo_ASC
+  # colo descending
+  colo_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeThirtyMinutes ascending
+  datetimeThirtyMinutes_ASC
+  # datetimeThirtyMinutes descending
+  datetimeThirtyMinutes_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # deviceRegistration ascending
+  deviceRegistration_ASC
+  # deviceRegistration descending
+  deviceRegistration_DESC
+  # dnsResponseTimeMs ascending
+  dnsResponseTimeMs_ASC
+  # dnsResponseTimeMs descending
+  dnsResponseTimeMs_DESC
+  # executionContext ascending
+  executionContext_ASC
+  # executionContext descending
+  executionContext_DESC
+  # headerBytes ascending
+  headerBytes_ASC
+  # headerBytes descending
+  headerBytes_DESC
+  # max(dnsResponseTimeMs) ascending
+  max_dnsResponseTimeMs_ASC
+  # max(dnsResponseTimeMs) descending
+  max_dnsResponseTimeMs_DESC
+  # max(resourceFetchTimeMs) ascending
+  max_resourceFetchTimeMs_ASC
+  # max(resourceFetchTimeMs) descending
+  max_resourceFetchTimeMs_DESC
+  # max(serverResponseTimeMs) ascending
+  max_serverResponseTimeMs_ASC
+  # max(serverResponseTimeMs) descending
+  max_serverResponseTimeMs_DESC
+  # max(timestamp) ascending
+  max_timestamp_ASC
+  # max(timestamp) descending
+  max_timestamp_DESC
+  # method ascending
+  method_ASC
+  # method descending
+  method_DESC
+  # min(dnsResponseTimeMs) ascending
+  min_dnsResponseTimeMs_ASC
+  # min(dnsResponseTimeMs) descending
+  min_dnsResponseTimeMs_DESC
+  # min(resourceFetchTimeMs) ascending
+  min_resourceFetchTimeMs_ASC
+  # min(resourceFetchTimeMs) descending
+  min_resourceFetchTimeMs_DESC
+  # min(serverResponseTimeMs) ascending
+  min_serverResponseTimeMs_ASC
+  # min(serverResponseTimeMs) descending
+  min_serverResponseTimeMs_DESC
+  # quantiles(dnsResponseTimeMsP25) ascending
+  quantiles_dnsResponseTimeMsP25_ASC
+  # quantiles(dnsResponseTimeMsP25) descending
+  quantiles_dnsResponseTimeMsP25_DESC
+  # quantiles(dnsResponseTimeMsP50) ascending
+  quantiles_dnsResponseTimeMsP50_ASC
+  # quantiles(dnsResponseTimeMsP50) descending
+  quantiles_dnsResponseTimeMsP50_DESC
+  # quantiles(dnsResponseTimeMsP75) ascending
+  quantiles_dnsResponseTimeMsP75_ASC
+  # quantiles(dnsResponseTimeMsP75) descending
+  quantiles_dnsResponseTimeMsP75_DESC
+  # quantiles(dnsResponseTimeMsP90) ascending
+  quantiles_dnsResponseTimeMsP90_ASC
+  # quantiles(dnsResponseTimeMsP90) descending
+  quantiles_dnsResponseTimeMsP90_DESC
+  # quantiles(dnsResponseTimeMsP95) ascending
+  quantiles_dnsResponseTimeMsP95_ASC
+  # quantiles(dnsResponseTimeMsP95) descending
+  quantiles_dnsResponseTimeMsP95_DESC
+  # quantiles(dnsResponseTimeMsP999) ascending
+  quantiles_dnsResponseTimeMsP999_ASC
+  # quantiles(dnsResponseTimeMsP999) descending
+  quantiles_dnsResponseTimeMsP999_DESC
+  # quantiles(dnsResponseTimeMsP99) ascending
+  quantiles_dnsResponseTimeMsP99_ASC
+  # quantiles(dnsResponseTimeMsP99) descending
+  quantiles_dnsResponseTimeMsP99_DESC
+  # quantiles(resourceFetchTimeMsP25) ascending
+  quantiles_resourceFetchTimeMsP25_ASC
+  # quantiles(resourceFetchTimeMsP25) descending
+  quantiles_resourceFetchTimeMsP25_DESC
+  # quantiles(resourceFetchTimeMsP50) ascending
+  quantiles_resourceFetchTimeMsP50_ASC
+  # quantiles(resourceFetchTimeMsP50) descending
+  quantiles_resourceFetchTimeMsP50_DESC
+  # quantiles(resourceFetchTimeMsP75) ascending
+  quantiles_resourceFetchTimeMsP75_ASC
+  # quantiles(resourceFetchTimeMsP75) descending
+  quantiles_resourceFetchTimeMsP75_DESC
+  # quantiles(resourceFetchTimeMsP90) ascending
+  quantiles_resourceFetchTimeMsP90_ASC
+  # quantiles(resourceFetchTimeMsP90) descending
+  quantiles_resourceFetchTimeMsP90_DESC
+  # quantiles(resourceFetchTimeMsP95) ascending
+  quantiles_resourceFetchTimeMsP95_ASC
+  # quantiles(resourceFetchTimeMsP95) descending
+  quantiles_resourceFetchTimeMsP95_DESC
+  # quantiles(resourceFetchTimeMsP999) ascending
+  quantiles_resourceFetchTimeMsP999_ASC
+  # quantiles(resourceFetchTimeMsP999) descending
+  quantiles_resourceFetchTimeMsP999_DESC
+  # quantiles(resourceFetchTimeMsP99) ascending
+  quantiles_resourceFetchTimeMsP99_ASC
+  # quantiles(resourceFetchTimeMsP99) descending
+  quantiles_resourceFetchTimeMsP99_DESC
+  # quantiles(serverResponseTimeMsP25) ascending
+  quantiles_serverResponseTimeMsP25_ASC
+  # quantiles(serverResponseTimeMsP25) descending
+  quantiles_serverResponseTimeMsP25_DESC
+  # quantiles(serverResponseTimeMsP50) ascending
+  quantiles_serverResponseTimeMsP50_ASC
+  # quantiles(serverResponseTimeMsP50) descending
+  quantiles_serverResponseTimeMsP50_DESC
+  # quantiles(serverResponseTimeMsP75) ascending
+  quantiles_serverResponseTimeMsP75_ASC
+  # quantiles(serverResponseTimeMsP75) descending
+  quantiles_serverResponseTimeMsP75_DESC
+  # quantiles(serverResponseTimeMsP90) ascending
+  quantiles_serverResponseTimeMsP90_ASC
+  # quantiles(serverResponseTimeMsP90) descending
+  quantiles_serverResponseTimeMsP90_DESC
+  # quantiles(serverResponseTimeMsP95) ascending
+  quantiles_serverResponseTimeMsP95_ASC
+  # quantiles(serverResponseTimeMsP95) descending
+  quantiles_serverResponseTimeMsP95_DESC
+  # quantiles(serverResponseTimeMsP999) ascending
+  quantiles_serverResponseTimeMsP999_ASC
+  # quantiles(serverResponseTimeMsP999) descending
+  quantiles_serverResponseTimeMsP999_DESC
+  # quantiles(serverResponseTimeMsP99) ascending
+  quantiles_serverResponseTimeMsP99_ASC
+  # quantiles(serverResponseTimeMsP99) descending
+  quantiles_serverResponseTimeMsP99_DESC
+  # ratio(availabilityPct) ascending
+  ratio_availabilityPct_ASC
+  # ratio(availabilityPct) descending
+  ratio_availabilityPct_DESC
+  # redirectDurationMs ascending
+  redirectDurationMs_ASC
+  # redirectDurationMs descending
+  redirectDurationMs_DESC
+  # resourceFetchTimeMs ascending
+  resourceFetchTimeMs_ASC
+  # resourceFetchTimeMs descending
+  resourceFetchTimeMs_DESC
+  # serverResponseTimeMs ascending
+  serverResponseTimeMs_ASC
+  # serverResponseTimeMs descending
+  serverResponseTimeMs_DESC
+  # statusCode ascending
+  statusCode_ASC
+  # statusCode descending
+  statusCode_DESC
+  # sum(httpStatusCode2xx) ascending
+  sum_httpStatusCode2xx_ASC
+  # sum(httpStatusCode2xx) descending
+  sum_httpStatusCode2xx_DESC
+  # sum(httpStatusCode3xx) ascending
+  sum_httpStatusCode3xx_ASC
+  # sum(httpStatusCode3xx) descending
+  sum_httpStatusCode3xx_DESC
+  # sum(httpStatusCode4xx) ascending
+  sum_httpStatusCode4xx_ASC
+  # sum(httpStatusCode4xx) descending
+  sum_httpStatusCode4xx_DESC
+  # sum(httpStatusCode5xx) ascending
+  sum_httpStatusCode5xx_ASC
+  # sum(httpStatusCode5xx) descending
+  sum_httpStatusCode5xx_DESC
+  # sum(successfulTestResults) ascending
+  sum_successfulTestResults_ASC
+  # sum(successfulTestResults) descending
+  sum_successfulTestResults_DESC
+  # tcpConnectTimeMs ascending
+  tcpConnectTimeMs_ASC
+  # tcpConnectTimeMs descending
+  tcpConnectTimeMs_DESC
+  # testId ascending
+  testId_ASC
+  # testId descending
+  testId_DESC
+  # testResultId ascending
+  testResultId_ASC
+  # testResultId descending
+  testResultId_DESC
+  # tunnelType ascending
+  tunnelType_ASC
+  # tunnelType descending
+  tunnelType_DESC
+  # uniq(deviceIds) ascending
+  uniq_deviceIds_ASC
+  # uniq(deviceIds) descending
+  uniq_deviceIds_DESC
+}
+
+type AccountDexHttpTestResultsStagingAdaptiveGroupsQuantiles {
+  # DNS response time in milliseconds at the 25th percentile for successful HTTP test results
+  dnsResponseTimeMsP25: float64!
+  # DNS response time in milliseconds at the 50th percentile for successful HTTP test results
+  dnsResponseTimeMsP50: float64!
+  # DNS response time in milliseconds at the 75th percentile for successful HTTP test results
+  dnsResponseTimeMsP75: float64!
+  # DNS response time in milliseconds at the 90th percentile for successful HTTP test results
+  dnsResponseTimeMsP90: float64!
+  # DNS response time in milliseconds at the 95th percentile for successful HTTP test results
+  dnsResponseTimeMsP95: float64!
+  # DNS response time in milliseconds at the 99th percentile for successful HTTP test results
+  dnsResponseTimeMsP99: float64!
+  # DNS response time in milliseconds at the 99.9th percentile for successful HTTP test results
+  dnsResponseTimeMsP999: float64!
+  # Resource fetch time in milliseconds at the 25th percentile for successful HTTP test results
+  resourceFetchTimeMsP25: float64!
+  # Resource fetch time in milliseconds at the 50th percentile for successful HTTP test results
+  resourceFetchTimeMsP50: float64!
+  # Resource fetch time in milliseconds at the 75th percentile for successful HTTP test results
+  resourceFetchTimeMsP75: float64!
+  # Resource fetch time in milliseconds at the 90th percentile for successful HTTP test results
+  resourceFetchTimeMsP90: float64!
+  # Resource fetch time in milliseconds at the 95th percentile for successful HTTP test results
+  resourceFetchTimeMsP95: float64!
+  # Resource fetch time in milliseconds at the 99th percentile for successful HTTP test results
+  resourceFetchTimeMsP99: float64!
+  # Resource fetch time in milliseconds at the 99.9th percentile for successful HTTP test results
+  resourceFetchTimeMsP999: float64!
+  # Server response time in milliseconds at the 25th percentile for successful HTTP test results
+  serverResponseTimeMsP25: float64!
+  # Server response time in milliseconds at the 50th percentile for successful HTTP test results
+  serverResponseTimeMsP50: float64!
+  # Server response time in milliseconds at the 75th percentile for successful HTTP test results
+  serverResponseTimeMsP75: float64!
+  # Server response time in milliseconds at the 90th percentile for successful HTTP test results
+  serverResponseTimeMsP90: float64!
+  # Server response time in milliseconds at the 95th percentile for successful HTTP test results
+  serverResponseTimeMsP95: float64!
+  # Server response time in milliseconds at the 99th percentile for successful HTTP test results
+  serverResponseTimeMsP99: float64!
+  # Server response time in milliseconds at the 99.9th percentile for successful HTTP test results
+  serverResponseTimeMsP999: float64!
+}
+
+type AccountDexHttpTestResultsStagingAdaptiveGroupsRatio {
+  # Percentage of HTTP test results that completed successfully
+  availabilityPct: float64!
+}
+
+type AccountDexHttpTestResultsStagingAdaptiveGroupsSum {
+  # Number of HTTP test results with a 2xx response status
+  httpStatusCode2xx: uint64!
+  # Number of HTTP test results with a 3xx response status
+  httpStatusCode3xx: uint64!
+  # Number of HTTP test results with a 4xx response status
+  httpStatusCode4xx: uint64!
+  # Number of HTTP test results with a 5xx response status
+  httpStatusCode5xx: uint64!
+  # Number of successful HTTP test results
+  successfulTestResults: uint64!
+}
+
+type AccountDexHttpTestResultsStagingAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  httpStatusCode2xx: Confidence!
+  # Confidence interval for the corresponding point estimate
+  httpStatusCode3xx: Confidence!
+  # Confidence interval for the corresponding point estimate
+  httpStatusCode4xx: Confidence!
+  # Confidence interval for the corresponding point estimate
+  httpStatusCode5xx: Confidence!
+  # Confidence interval for the corresponding point estimate
+  successfulTestResults: Confidence!
+}
+
+type AccountDexHttpTestResultsStagingAdaptiveGroupsUniq {
+  # Approximate count of unique device IDs
+  deviceIds: uint64!
+}
+
+# Beta. DEX traceroute test results with adaptive sampling
+type AccountDexTracerouteTestResultsAdaptiveGroups {
+  avg: AccountDexTracerouteTestResultsAdaptiveGroupsAvg
+  # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
+  confidence(level: float64!): AccountDexTracerouteTestResultsAdaptiveGroupsConfidence!
+  # Number of traceroute test results
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountDexTracerouteTestResultsAdaptiveGroupsDimensions
+  max: AccountDexTracerouteTestResultsAdaptiveGroupsMax
+  min: AccountDexTracerouteTestResultsAdaptiveGroupsMin
+  quantiles: AccountDexTracerouteTestResultsAdaptiveGroupsQuantiles
+  ratio: AccountDexTracerouteTestResultsAdaptiveGroupsRatio
+  sum: AccountDexTracerouteTestResultsAdaptiveGroupsSum
+  uniq: AccountDexTracerouteTestResultsAdaptiveGroupsUniq
+}
+
+type AccountDexTracerouteTestResultsAdaptiveGroupsAvg {
+  # Average number of hops for traceroute tests that reached the destination
+  numberOfHops: float64!
+  # Average packet loss percentage for traceroute tests that reached the destination
+  packetLossPct: float64!
+  # Average round-trip time in milliseconds for traceroute tests that reached the destination
+  roundTripTimeMs: float64!
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountDexTracerouteTestResultsAdaptiveGroupsConfidence {
+  # Number of traceroute test results, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  sum: AccountDexTracerouteTestResultsAdaptiveGroupsSumConfidence
+}
+
+type AccountDexTracerouteTestResultsAdaptiveGroupsDimensions {
+  # Average round-trip time to the final hop in milliseconds
+  avgRttMs: float64!
+  # Device operating system
+  clientPlatform: string!
+  # WARP client version
+  clientVersion: string!
+  # Cloudflare colo associated with the test result
+  colo: string!
+  # Test result timestamp truncated to the day
+  date: Date!
+  # Test result timestamp
+  datetime: Time!
+  # Test result timestamp truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Test result timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Test result timestamp truncated to the hour
+  datetimeHour: Time!
+  # Test result timestamp truncated to the minute
+  datetimeMinute: Time!
+  # Test result timestamp truncated to thirty minutes
+  datetimeThirtyMinutes: Time!
+  # Device ID
+  deviceId: string!
+  # Device registration ID
+  deviceRegistration: string!
+  # Traceroute destination hostname
+  dstName: string!
+  # Whether the test ran inside or outside the WARP tunnel
+  executionContext: string!
+  # Autonomous system number for the device's ISP IP address
+  ispAsn: uint32!
+  # Autonomous system organization for the device's ISP IP address
+  ispAso: string!
+  # Public ISP IP address
+  ispIpAddress: string!
+  # Maximum round-trip time to the final hop in milliseconds
+  maxRttMs: float64!
+  # Minimum round-trip time to the final hop in milliseconds
+  minRttMs: float64!
+  # Number of traceroute hops
+  numberOfHops: uint8!
+  # Fraction of packets lost on the final hop
+  packetLossFraction: float64!
+  # Traceroute protocol
+  protocol: string!
+  # Whether the traceroute reached its destination
+  reachedDestination: uint8!
+  # Traceroute test status
+  status: string!
+  # DEX test configuration ID
+  testId: string!
+  # Unique test result ID
+  testResultId: string!
+  # WARP tunnel protocol
+  tunnelType: string!
+}
+
+input AccountDexTracerouteTestResultsAdaptiveGroupsFilter_InputObject {
+  AND: [AccountDexTracerouteTestResultsAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountDexTracerouteTestResultsAdaptiveGroupsFilter_InputObject!]
+  avgRttMs: float64
+  avgRttMs_geq: float64
+  avgRttMs_gt: float64
+  avgRttMs_in: [float64!]
+  avgRttMs_leq: float64
+  avgRttMs_lt: float64
+  avgRttMs_neq: float64
+  avgRttMs_notin: [float64!]
+  clientPlatform: string
+  clientPlatform_geq: string
+  clientPlatform_gt: string
+  clientPlatform_ilike: string
+  clientPlatform_in: [string!]
+  clientPlatform_leq: string
+  clientPlatform_like: string
+  clientPlatform_lt: string
+  clientPlatform_neq: string
+  clientPlatform_notin: [string!]
+  clientPlatform_notlike: string
+  clientVersion: string
+  clientVersion_geq: string
+  clientVersion_gt: string
+  clientVersion_ilike: string
+  clientVersion_in: [string!]
+  clientVersion_leq: string
+  clientVersion_like: string
+  clientVersion_lt: string
+  clientVersion_neq: string
+  clientVersion_notin: [string!]
+  clientVersion_notlike: string
+  colo: string
+  colo_geq: string
+  colo_gt: string
+  colo_ilike: string
+  colo_in: [string!]
+  colo_leq: string
+  colo_like: string
+  colo_lt: string
+  colo_neq: string
+  colo_notin: [string!]
+  colo_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeThirtyMinutes: Time
+  datetimeThirtyMinutes_geq: Time
+  datetimeThirtyMinutes_gt: Time
+  datetimeThirtyMinutes_in: [Time!]
+  datetimeThirtyMinutes_leq: Time
+  datetimeThirtyMinutes_lt: Time
+  datetimeThirtyMinutes_neq: Time
+  datetimeThirtyMinutes_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_ilike: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  deviceRegistration: string
+  deviceRegistration_geq: string
+  deviceRegistration_gt: string
+  deviceRegistration_ilike: string
+  deviceRegistration_in: [string!]
+  deviceRegistration_leq: string
+  deviceRegistration_like: string
+  deviceRegistration_lt: string
+  deviceRegistration_neq: string
+  deviceRegistration_notin: [string!]
+  deviceRegistration_notlike: string
+  dstName: string
+  dstName_geq: string
+  dstName_gt: string
+  dstName_ilike: string
+  dstName_in: [string!]
+  dstName_leq: string
+  dstName_like: string
+  dstName_lt: string
+  dstName_neq: string
+  dstName_notin: [string!]
+  dstName_notlike: string
+  executionContext: string
+  executionContext_geq: string
+  executionContext_gt: string
+  executionContext_ilike: string
+  executionContext_in: [string!]
+  executionContext_leq: string
+  executionContext_like: string
+  executionContext_lt: string
+  executionContext_neq: string
+  executionContext_notin: [string!]
+  executionContext_notlike: string
+  ispAsn: uint32
+  ispAsn_geq: uint32
+  ispAsn_gt: uint32
+  ispAsn_in: [uint32!]
+  ispAsn_leq: uint32
+  ispAsn_lt: uint32
+  ispAsn_neq: uint32
+  ispAsn_notin: [uint32!]
+  ispAso: string
+  ispAso_geq: string
+  ispAso_gt: string
+  ispAso_ilike: string
+  ispAso_in: [string!]
+  ispAso_leq: string
+  ispAso_like: string
+  ispAso_lt: string
+  ispAso_neq: string
+  ispAso_notin: [string!]
+  ispAso_notlike: string
+  ispIpAddress: string
+  ispIpAddress_geq: string
+  ispIpAddress_gt: string
+  ispIpAddress_ilike: string
+  ispIpAddress_in: [string!]
+  ispIpAddress_leq: string
+  ispIpAddress_like: string
+  ispIpAddress_lt: string
+  ispIpAddress_neq: string
+  ispIpAddress_notin: [string!]
+  ispIpAddress_notlike: string
+  maxRttMs: float64
+  maxRttMs_geq: float64
+  maxRttMs_gt: float64
+  maxRttMs_in: [float64!]
+  maxRttMs_leq: float64
+  maxRttMs_lt: float64
+  maxRttMs_neq: float64
+  maxRttMs_notin: [float64!]
+  minRttMs: float64
+  minRttMs_geq: float64
+  minRttMs_gt: float64
+  minRttMs_in: [float64!]
+  minRttMs_leq: float64
+  minRttMs_lt: float64
+  minRttMs_neq: float64
+  minRttMs_notin: [float64!]
+  numberOfHops: uint8
+  numberOfHops_geq: uint8
+  numberOfHops_gt: uint8
+  numberOfHops_in: bytes
+  numberOfHops_leq: uint8
+  numberOfHops_lt: uint8
+  numberOfHops_neq: uint8
+  numberOfHops_notin: bytes
+  packetLossFraction: float64
+  packetLossFraction_geq: float64
+  packetLossFraction_gt: float64
+  packetLossFraction_in: [float64!]
+  packetLossFraction_leq: float64
+  packetLossFraction_lt: float64
+  packetLossFraction_neq: float64
+  packetLossFraction_notin: [float64!]
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_ilike: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  reachedDestination: uint8
+  reachedDestination_geq: uint8
+  reachedDestination_gt: uint8
+  reachedDestination_in: bytes
+  reachedDestination_leq: uint8
+  reachedDestination_lt: uint8
+  reachedDestination_neq: uint8
+  reachedDestination_notin: bytes
+  status: string
+  status_geq: string
+  status_gt: string
+  status_ilike: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
+  testId: string
+  testId_geq: string
+  testId_gt: string
+  testId_ilike: string
+  testId_in: [string!]
+  testId_leq: string
+  testId_like: string
+  testId_lt: string
+  testId_neq: string
+  testId_notin: [string!]
+  testId_notlike: string
+  testResultId: string
+  testResultId_geq: string
+  testResultId_gt: string
+  testResultId_ilike: string
+  testResultId_in: [string!]
+  testResultId_leq: string
+  testResultId_like: string
+  testResultId_lt: string
+  testResultId_neq: string
+  testResultId_notin: [string!]
+  testResultId_notlike: string
+  tunnelType: string
+  tunnelType_geq: string
+  tunnelType_gt: string
+  tunnelType_ilike: string
+  tunnelType_in: [string!]
+  tunnelType_leq: string
+  tunnelType_like: string
+  tunnelType_lt: string
+  tunnelType_neq: string
+  tunnelType_notin: [string!]
+  tunnelType_notlike: string
+}
+
+type AccountDexTracerouteTestResultsAdaptiveGroupsMax {
+  # Maximum number of hops for traceroute tests that reached the destination
+  numberOfHops: uint8!
+  # Maximum packet loss percentage for traceroute tests that reached the destination
+  packetLossPct: float64!
+  # Maximum round-trip time in milliseconds for traceroute tests that reached the destination
+  roundTripTimeMs: float64!
+  # Latest test result timestamp
+  timestamp: Time!
+}
+
+type AccountDexTracerouteTestResultsAdaptiveGroupsMin {
+  # Minimum number of hops for traceroute tests that reached the destination
+  numberOfHops: uint8!
+  # Minimum packet loss percentage for traceroute tests that reached the destination
+  packetLossPct: float64!
+  # Minimum round-trip time in milliseconds for traceroute tests that reached the destination
+  roundTripTimeMs: float64!
+}
+
+enum AccountDexTracerouteTestResultsAdaptiveGroupsOrderBy {
+  # avgRttMs ascending
+  avgRttMs_ASC
+  # avgRttMs descending
+  avgRttMs_DESC
+  # avg(numberOfHops) ascending
+  avg_numberOfHops_ASC
+  # avg(numberOfHops) descending
+  avg_numberOfHops_DESC
+  # avg(packetLossPct) ascending
+  avg_packetLossPct_ASC
+  # avg(packetLossPct) descending
+  avg_packetLossPct_DESC
+  # avg(roundTripTimeMs) ascending
+  avg_roundTripTimeMs_ASC
+  # avg(roundTripTimeMs) descending
+  avg_roundTripTimeMs_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # clientPlatform ascending
+  clientPlatform_ASC
+  # clientPlatform descending
+  clientPlatform_DESC
+  # clientVersion ascending
+  clientVersion_ASC
+  # clientVersion descending
+  clientVersion_DESC
+  # colo ascending
+  colo_ASC
+  # colo descending
+  colo_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeThirtyMinutes ascending
+  datetimeThirtyMinutes_ASC
+  # datetimeThirtyMinutes descending
+  datetimeThirtyMinutes_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # deviceRegistration ascending
+  deviceRegistration_ASC
+  # deviceRegistration descending
+  deviceRegistration_DESC
+  # dstName ascending
+  dstName_ASC
+  # dstName descending
+  dstName_DESC
+  # executionContext ascending
+  executionContext_ASC
+  # executionContext descending
+  executionContext_DESC
+  # ispAsn ascending
+  ispAsn_ASC
+  # ispAsn descending
+  ispAsn_DESC
+  # ispAso ascending
+  ispAso_ASC
+  # ispAso descending
+  ispAso_DESC
+  # ispIpAddress ascending
+  ispIpAddress_ASC
+  # ispIpAddress descending
+  ispIpAddress_DESC
+  # maxRttMs ascending
+  maxRttMs_ASC
+  # maxRttMs descending
+  maxRttMs_DESC
+  # max(numberOfHops) ascending
+  max_numberOfHops_ASC
+  # max(numberOfHops) descending
+  max_numberOfHops_DESC
+  # max(packetLossPct) ascending
+  max_packetLossPct_ASC
+  # max(packetLossPct) descending
+  max_packetLossPct_DESC
+  # max(roundTripTimeMs) ascending
+  max_roundTripTimeMs_ASC
+  # max(roundTripTimeMs) descending
+  max_roundTripTimeMs_DESC
+  # max(timestamp) ascending
+  max_timestamp_ASC
+  # max(timestamp) descending
+  max_timestamp_DESC
+  # minRttMs ascending
+  minRttMs_ASC
+  # minRttMs descending
+  minRttMs_DESC
+  # min(numberOfHops) ascending
+  min_numberOfHops_ASC
+  # min(numberOfHops) descending
+  min_numberOfHops_DESC
+  # min(packetLossPct) ascending
+  min_packetLossPct_ASC
+  # min(packetLossPct) descending
+  min_packetLossPct_DESC
+  # min(roundTripTimeMs) ascending
+  min_roundTripTimeMs_ASC
+  # min(roundTripTimeMs) descending
+  min_roundTripTimeMs_DESC
+  # numberOfHops ascending
+  numberOfHops_ASC
+  # numberOfHops descending
+  numberOfHops_DESC
+  # packetLossFraction ascending
+  packetLossFraction_ASC
+  # packetLossFraction descending
+  packetLossFraction_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # quantiles(numberOfHopsP25) ascending
+  quantiles_numberOfHopsP25_ASC
+  # quantiles(numberOfHopsP25) descending
+  quantiles_numberOfHopsP25_DESC
+  # quantiles(numberOfHopsP50) ascending
+  quantiles_numberOfHopsP50_ASC
+  # quantiles(numberOfHopsP50) descending
+  quantiles_numberOfHopsP50_DESC
+  # quantiles(numberOfHopsP75) ascending
+  quantiles_numberOfHopsP75_ASC
+  # quantiles(numberOfHopsP75) descending
+  quantiles_numberOfHopsP75_DESC
+  # quantiles(numberOfHopsP90) ascending
+  quantiles_numberOfHopsP90_ASC
+  # quantiles(numberOfHopsP90) descending
+  quantiles_numberOfHopsP90_DESC
+  # quantiles(numberOfHopsP95) ascending
+  quantiles_numberOfHopsP95_ASC
+  # quantiles(numberOfHopsP95) descending
+  quantiles_numberOfHopsP95_DESC
+  # quantiles(numberOfHopsP999) ascending
+  quantiles_numberOfHopsP999_ASC
+  # quantiles(numberOfHopsP999) descending
+  quantiles_numberOfHopsP999_DESC
+  # quantiles(numberOfHopsP99) ascending
+  quantiles_numberOfHopsP99_ASC
+  # quantiles(numberOfHopsP99) descending
+  quantiles_numberOfHopsP99_DESC
+  # quantiles(packetLossPctP25) ascending
+  quantiles_packetLossPctP25_ASC
+  # quantiles(packetLossPctP25) descending
+  quantiles_packetLossPctP25_DESC
+  # quantiles(packetLossPctP50) ascending
+  quantiles_packetLossPctP50_ASC
+  # quantiles(packetLossPctP50) descending
+  quantiles_packetLossPctP50_DESC
+  # quantiles(packetLossPctP75) ascending
+  quantiles_packetLossPctP75_ASC
+  # quantiles(packetLossPctP75) descending
+  quantiles_packetLossPctP75_DESC
+  # quantiles(packetLossPctP90) ascending
+  quantiles_packetLossPctP90_ASC
+  # quantiles(packetLossPctP90) descending
+  quantiles_packetLossPctP90_DESC
+  # quantiles(packetLossPctP95) ascending
+  quantiles_packetLossPctP95_ASC
+  # quantiles(packetLossPctP95) descending
+  quantiles_packetLossPctP95_DESC
+  # quantiles(packetLossPctP999) ascending
+  quantiles_packetLossPctP999_ASC
+  # quantiles(packetLossPctP999) descending
+  quantiles_packetLossPctP999_DESC
+  # quantiles(packetLossPctP99) ascending
+  quantiles_packetLossPctP99_ASC
+  # quantiles(packetLossPctP99) descending
+  quantiles_packetLossPctP99_DESC
+  # quantiles(roundTripTimeMsP25) ascending
+  quantiles_roundTripTimeMsP25_ASC
+  # quantiles(roundTripTimeMsP25) descending
+  quantiles_roundTripTimeMsP25_DESC
+  # quantiles(roundTripTimeMsP50) ascending
+  quantiles_roundTripTimeMsP50_ASC
+  # quantiles(roundTripTimeMsP50) descending
+  quantiles_roundTripTimeMsP50_DESC
+  # quantiles(roundTripTimeMsP75) ascending
+  quantiles_roundTripTimeMsP75_ASC
+  # quantiles(roundTripTimeMsP75) descending
+  quantiles_roundTripTimeMsP75_DESC
+  # quantiles(roundTripTimeMsP90) ascending
+  quantiles_roundTripTimeMsP90_ASC
+  # quantiles(roundTripTimeMsP90) descending
+  quantiles_roundTripTimeMsP90_DESC
+  # quantiles(roundTripTimeMsP95) ascending
+  quantiles_roundTripTimeMsP95_ASC
+  # quantiles(roundTripTimeMsP95) descending
+  quantiles_roundTripTimeMsP95_DESC
+  # quantiles(roundTripTimeMsP999) ascending
+  quantiles_roundTripTimeMsP999_ASC
+  # quantiles(roundTripTimeMsP999) descending
+  quantiles_roundTripTimeMsP999_DESC
+  # quantiles(roundTripTimeMsP99) ascending
+  quantiles_roundTripTimeMsP99_ASC
+  # quantiles(roundTripTimeMsP99) descending
+  quantiles_roundTripTimeMsP99_DESC
+  # ratio(availabilityPct) ascending
+  ratio_availabilityPct_ASC
+  # ratio(availabilityPct) descending
+  ratio_availabilityPct_DESC
+  # reachedDestination ascending
+  reachedDestination_ASC
+  # reachedDestination descending
+  reachedDestination_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # sum(successfulTestResults) ascending
+  sum_successfulTestResults_ASC
+  # sum(successfulTestResults) descending
+  sum_successfulTestResults_DESC
+  # testId ascending
+  testId_ASC
+  # testId descending
+  testId_DESC
+  # testResultId ascending
+  testResultId_ASC
+  # testResultId descending
+  testResultId_DESC
+  # tunnelType ascending
+  tunnelType_ASC
+  # tunnelType descending
+  tunnelType_DESC
+  # uniq(deviceIds) ascending
+  uniq_deviceIds_ASC
+  # uniq(deviceIds) descending
+  uniq_deviceIds_DESC
+}
+
+type AccountDexTracerouteTestResultsAdaptiveGroupsQuantiles {
+  # Number of hops at the 25th percentile for traceroute tests that reached the destination
+  numberOfHopsP25: uint8!
+  # Number of hops at the 50th percentile for traceroute tests that reached the destination
+  numberOfHopsP50: uint8!
+  # Number of hops at the 75th percentile for traceroute tests that reached the destination
+  numberOfHopsP75: uint8!
+  # Number of hops at the 90th percentile for traceroute tests that reached the destination
+  numberOfHopsP90: uint8!
+  # Number of hops at the 95th percentile for traceroute tests that reached the destination
+  numberOfHopsP95: uint8!
+  # Number of hops at the 99th percentile for traceroute tests that reached the destination
+  numberOfHopsP99: uint8!
+  # Number of hops at the 99.9th percentile for traceroute tests that reached the destination
+  numberOfHopsP999: uint8!
+  # Packet loss percentage at the 25th percentile for traceroute tests that reached the destination
+  packetLossPctP25: float64!
+  # Packet loss percentage at the 50th percentile for traceroute tests that reached the destination
+  packetLossPctP50: float64!
+  # Packet loss percentage at the 75th percentile for traceroute tests that reached the destination
+  packetLossPctP75: float64!
+  # Packet loss percentage at the 90th percentile for traceroute tests that reached the destination
+  packetLossPctP90: float64!
+  # Packet loss percentage at the 95th percentile for traceroute tests that reached the destination
+  packetLossPctP95: float64!
+  # Packet loss percentage at the 99th percentile for traceroute tests that reached the destination
+  packetLossPctP99: float64!
+  # Packet loss percentage at the 99.9th percentile for traceroute tests that reached the destination
+  packetLossPctP999: float64!
+  # Round-trip time in milliseconds at the 25th percentile for traceroute tests that reached the destination
+  roundTripTimeMsP25: float64!
+  # Round-trip time in milliseconds at the 50th percentile for traceroute tests that reached the destination
+  roundTripTimeMsP50: float64!
+  # Round-trip time in milliseconds at the 75th percentile for traceroute tests that reached the destination
+  roundTripTimeMsP75: float64!
+  # Round-trip time in milliseconds at the 90th percentile for traceroute tests that reached the destination
+  roundTripTimeMsP90: float64!
+  # Round-trip time in milliseconds at the 95th percentile for traceroute tests that reached the destination
+  roundTripTimeMsP95: float64!
+  # Round-trip time in milliseconds at the 99th percentile for traceroute tests that reached the destination
+  roundTripTimeMsP99: float64!
+  # Round-trip time in milliseconds at the 99.9th percentile for traceroute tests that reached the destination
+  roundTripTimeMsP999: float64!
+}
+
+type AccountDexTracerouteTestResultsAdaptiveGroupsRatio {
+  # Percentage of traceroute test results that reached the destination
+  availabilityPct: float64!
+}
+
+type AccountDexTracerouteTestResultsAdaptiveGroupsSum {
+  # Number of traceroute test results that reached the destination
+  successfulTestResults: uint64!
+}
+
+type AccountDexTracerouteTestResultsAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  successfulTestResults: Confidence!
+}
+
+type AccountDexTracerouteTestResultsAdaptiveGroupsUniq {
+  # Approximate count of unique device IDs
+  deviceIds: uint64!
+}
+
+# Beta. DEX traceroute test results with adaptive sampling (staging)
+type AccountDexTracerouteTestResultsStagingAdaptiveGroups {
+  avg: AccountDexTracerouteTestResultsStagingAdaptiveGroupsAvg
+  # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
+  confidence(level: float64!): AccountDexTracerouteTestResultsStagingAdaptiveGroupsConfidence!
+  # Number of traceroute test results
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountDexTracerouteTestResultsStagingAdaptiveGroupsDimensions
+  max: AccountDexTracerouteTestResultsStagingAdaptiveGroupsMax
+  min: AccountDexTracerouteTestResultsStagingAdaptiveGroupsMin
+  quantiles: AccountDexTracerouteTestResultsStagingAdaptiveGroupsQuantiles
+  ratio: AccountDexTracerouteTestResultsStagingAdaptiveGroupsRatio
+  sum: AccountDexTracerouteTestResultsStagingAdaptiveGroupsSum
+  uniq: AccountDexTracerouteTestResultsStagingAdaptiveGroupsUniq
+}
+
+type AccountDexTracerouteTestResultsStagingAdaptiveGroupsAvg {
+  # Average number of hops for traceroute tests that reached the destination
+  numberOfHops: float64!
+  # Average packet loss percentage for traceroute tests that reached the destination
+  packetLossPct: float64!
+  # Average round-trip time in milliseconds for traceroute tests that reached the destination
+  roundTripTimeMs: float64!
+  # Average sample interval
+  sampleInterval: float64!
+}
+
+type AccountDexTracerouteTestResultsStagingAdaptiveGroupsConfidence {
+  # Number of traceroute test results, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+  sum: AccountDexTracerouteTestResultsStagingAdaptiveGroupsSumConfidence
+}
+
+type AccountDexTracerouteTestResultsStagingAdaptiveGroupsDimensions {
+  # Average round-trip time to the final hop in milliseconds
+  avgRttMs: float64!
+  # Device operating system
+  clientPlatform: string!
+  # WARP client version
+  clientVersion: string!
+  # Cloudflare colo associated with the test result
+  colo: string!
+  # Test result timestamp truncated to the day
+  date: Date!
+  # Test result timestamp
+  datetime: Time!
+  # Test result timestamp truncated to fifteen minutes
+  datetimeFifteenMinutes: Time!
+  # Test result timestamp truncated to five minutes
+  datetimeFiveMinutes: Time!
+  # Test result timestamp truncated to the hour
+  datetimeHour: Time!
+  # Test result timestamp truncated to the minute
+  datetimeMinute: Time!
+  # Test result timestamp truncated to thirty minutes
+  datetimeThirtyMinutes: Time!
+  # Device ID
+  deviceId: string!
+  # Device registration ID
+  deviceRegistration: string!
+  # Traceroute destination hostname
+  dstName: string!
+  # Whether the test ran inside or outside the WARP tunnel
+  executionContext: string!
+  # Autonomous system number for the device's ISP IP address
+  ispAsn: uint32!
+  # Autonomous system organization for the device's ISP IP address
+  ispAso: string!
+  # Public ISP IP address
+  ispIpAddress: string!
+  # Maximum round-trip time to the final hop in milliseconds
+  maxRttMs: float64!
+  # Minimum round-trip time to the final hop in milliseconds
+  minRttMs: float64!
+  # Number of traceroute hops
+  numberOfHops: uint8!
+  # Fraction of packets lost on the final hop
+  packetLossFraction: float64!
+  # Traceroute protocol
+  protocol: string!
+  # Whether the traceroute reached its destination
+  reachedDestination: uint8!
+  # Traceroute test status
+  status: string!
+  # DEX test configuration ID
+  testId: string!
+  # Unique test result ID
+  testResultId: string!
+  # WARP tunnel protocol
+  tunnelType: string!
+}
+
+input AccountDexTracerouteTestResultsStagingAdaptiveGroupsFilter_InputObject {
+  AND: [AccountDexTracerouteTestResultsStagingAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountDexTracerouteTestResultsStagingAdaptiveGroupsFilter_InputObject!]
+  avgRttMs: float64
+  avgRttMs_geq: float64
+  avgRttMs_gt: float64
+  avgRttMs_in: [float64!]
+  avgRttMs_leq: float64
+  avgRttMs_lt: float64
+  avgRttMs_neq: float64
+  avgRttMs_notin: [float64!]
+  clientPlatform: string
+  clientPlatform_geq: string
+  clientPlatform_gt: string
+  clientPlatform_ilike: string
+  clientPlatform_in: [string!]
+  clientPlatform_leq: string
+  clientPlatform_like: string
+  clientPlatform_lt: string
+  clientPlatform_neq: string
+  clientPlatform_notin: [string!]
+  clientPlatform_notlike: string
+  clientVersion: string
+  clientVersion_geq: string
+  clientVersion_gt: string
+  clientVersion_ilike: string
+  clientVersion_in: [string!]
+  clientVersion_leq: string
+  clientVersion_like: string
+  clientVersion_lt: string
+  clientVersion_neq: string
+  clientVersion_notin: [string!]
+  clientVersion_notlike: string
+  colo: string
+  colo_geq: string
+  colo_gt: string
+  colo_ilike: string
+  colo_in: [string!]
+  colo_leq: string
+  colo_like: string
+  colo_lt: string
+  colo_neq: string
+  colo_notin: [string!]
+  colo_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetimeThirtyMinutes: Time
+  datetimeThirtyMinutes_geq: Time
+  datetimeThirtyMinutes_gt: Time
+  datetimeThirtyMinutes_in: [Time!]
+  datetimeThirtyMinutes_leq: Time
+  datetimeThirtyMinutes_lt: Time
+  datetimeThirtyMinutes_neq: Time
+  datetimeThirtyMinutes_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_ilike: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  deviceRegistration: string
+  deviceRegistration_geq: string
+  deviceRegistration_gt: string
+  deviceRegistration_ilike: string
+  deviceRegistration_in: [string!]
+  deviceRegistration_leq: string
+  deviceRegistration_like: string
+  deviceRegistration_lt: string
+  deviceRegistration_neq: string
+  deviceRegistration_notin: [string!]
+  deviceRegistration_notlike: string
+  dstName: string
+  dstName_geq: string
+  dstName_gt: string
+  dstName_ilike: string
+  dstName_in: [string!]
+  dstName_leq: string
+  dstName_like: string
+  dstName_lt: string
+  dstName_neq: string
+  dstName_notin: [string!]
+  dstName_notlike: string
+  executionContext: string
+  executionContext_geq: string
+  executionContext_gt: string
+  executionContext_ilike: string
+  executionContext_in: [string!]
+  executionContext_leq: string
+  executionContext_like: string
+  executionContext_lt: string
+  executionContext_neq: string
+  executionContext_notin: [string!]
+  executionContext_notlike: string
+  ispAsn: uint32
+  ispAsn_geq: uint32
+  ispAsn_gt: uint32
+  ispAsn_in: [uint32!]
+  ispAsn_leq: uint32
+  ispAsn_lt: uint32
+  ispAsn_neq: uint32
+  ispAsn_notin: [uint32!]
+  ispAso: string
+  ispAso_geq: string
+  ispAso_gt: string
+  ispAso_ilike: string
+  ispAso_in: [string!]
+  ispAso_leq: string
+  ispAso_like: string
+  ispAso_lt: string
+  ispAso_neq: string
+  ispAso_notin: [string!]
+  ispAso_notlike: string
+  ispIpAddress: string
+  ispIpAddress_geq: string
+  ispIpAddress_gt: string
+  ispIpAddress_ilike: string
+  ispIpAddress_in: [string!]
+  ispIpAddress_leq: string
+  ispIpAddress_like: string
+  ispIpAddress_lt: string
+  ispIpAddress_neq: string
+  ispIpAddress_notin: [string!]
+  ispIpAddress_notlike: string
+  maxRttMs: float64
+  maxRttMs_geq: float64
+  maxRttMs_gt: float64
+  maxRttMs_in: [float64!]
+  maxRttMs_leq: float64
+  maxRttMs_lt: float64
+  maxRttMs_neq: float64
+  maxRttMs_notin: [float64!]
+  minRttMs: float64
+  minRttMs_geq: float64
+  minRttMs_gt: float64
+  minRttMs_in: [float64!]
+  minRttMs_leq: float64
+  minRttMs_lt: float64
+  minRttMs_neq: float64
+  minRttMs_notin: [float64!]
+  numberOfHops: uint8
+  numberOfHops_geq: uint8
+  numberOfHops_gt: uint8
+  numberOfHops_in: bytes
+  numberOfHops_leq: uint8
+  numberOfHops_lt: uint8
+  numberOfHops_neq: uint8
+  numberOfHops_notin: bytes
+  packetLossFraction: float64
+  packetLossFraction_geq: float64
+  packetLossFraction_gt: float64
+  packetLossFraction_in: [float64!]
+  packetLossFraction_leq: float64
+  packetLossFraction_lt: float64
+  packetLossFraction_neq: float64
+  packetLossFraction_notin: [float64!]
+  protocol: string
+  protocol_geq: string
+  protocol_gt: string
+  protocol_ilike: string
+  protocol_in: [string!]
+  protocol_leq: string
+  protocol_like: string
+  protocol_lt: string
+  protocol_neq: string
+  protocol_notin: [string!]
+  protocol_notlike: string
+  reachedDestination: uint8
+  reachedDestination_geq: uint8
+  reachedDestination_gt: uint8
+  reachedDestination_in: bytes
+  reachedDestination_leq: uint8
+  reachedDestination_lt: uint8
+  reachedDestination_neq: uint8
+  reachedDestination_notin: bytes
+  status: string
+  status_geq: string
+  status_gt: string
+  status_ilike: string
+  status_in: [string!]
+  status_leq: string
+  status_like: string
+  status_lt: string
+  status_neq: string
+  status_notin: [string!]
+  status_notlike: string
+  testId: string
+  testId_geq: string
+  testId_gt: string
+  testId_ilike: string
+  testId_in: [string!]
+  testId_leq: string
+  testId_like: string
+  testId_lt: string
+  testId_neq: string
+  testId_notin: [string!]
+  testId_notlike: string
+  testResultId: string
+  testResultId_geq: string
+  testResultId_gt: string
+  testResultId_ilike: string
+  testResultId_in: [string!]
+  testResultId_leq: string
+  testResultId_like: string
+  testResultId_lt: string
+  testResultId_neq: string
+  testResultId_notin: [string!]
+  testResultId_notlike: string
+  tunnelType: string
+  tunnelType_geq: string
+  tunnelType_gt: string
+  tunnelType_ilike: string
+  tunnelType_in: [string!]
+  tunnelType_leq: string
+  tunnelType_like: string
+  tunnelType_lt: string
+  tunnelType_neq: string
+  tunnelType_notin: [string!]
+  tunnelType_notlike: string
+}
+
+type AccountDexTracerouteTestResultsStagingAdaptiveGroupsMax {
+  # Maximum number of hops for traceroute tests that reached the destination
+  numberOfHops: uint8!
+  # Maximum packet loss percentage for traceroute tests that reached the destination
+  packetLossPct: float64!
+  # Maximum round-trip time in milliseconds for traceroute tests that reached the destination
+  roundTripTimeMs: float64!
+  # Latest test result timestamp
+  timestamp: Time!
+}
+
+type AccountDexTracerouteTestResultsStagingAdaptiveGroupsMin {
+  # Minimum number of hops for traceroute tests that reached the destination
+  numberOfHops: uint8!
+  # Minimum packet loss percentage for traceroute tests that reached the destination
+  packetLossPct: float64!
+  # Minimum round-trip time in milliseconds for traceroute tests that reached the destination
+  roundTripTimeMs: float64!
+}
+
+enum AccountDexTracerouteTestResultsStagingAdaptiveGroupsOrderBy {
+  # avgRttMs ascending
+  avgRttMs_ASC
+  # avgRttMs descending
+  avgRttMs_DESC
+  # avg(numberOfHops) ascending
+  avg_numberOfHops_ASC
+  # avg(numberOfHops) descending
+  avg_numberOfHops_DESC
+  # avg(packetLossPct) ascending
+  avg_packetLossPct_ASC
+  # avg(packetLossPct) descending
+  avg_packetLossPct_DESC
+  # avg(roundTripTimeMs) ascending
+  avg_roundTripTimeMs_ASC
+  # avg(roundTripTimeMs) descending
+  avg_roundTripTimeMs_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # clientPlatform ascending
+  clientPlatform_ASC
+  # clientPlatform descending
+  clientPlatform_DESC
+  # clientVersion ascending
+  clientVersion_ASC
+  # clientVersion descending
+  clientVersion_DESC
+  # colo ascending
+  colo_ASC
+  # colo descending
+  colo_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetimeThirtyMinutes ascending
+  datetimeThirtyMinutes_ASC
+  # datetimeThirtyMinutes descending
+  datetimeThirtyMinutes_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # deviceRegistration ascending
+  deviceRegistration_ASC
+  # deviceRegistration descending
+  deviceRegistration_DESC
+  # dstName ascending
+  dstName_ASC
+  # dstName descending
+  dstName_DESC
+  # executionContext ascending
+  executionContext_ASC
+  # executionContext descending
+  executionContext_DESC
+  # ispAsn ascending
+  ispAsn_ASC
+  # ispAsn descending
+  ispAsn_DESC
+  # ispAso ascending
+  ispAso_ASC
+  # ispAso descending
+  ispAso_DESC
+  # ispIpAddress ascending
+  ispIpAddress_ASC
+  # ispIpAddress descending
+  ispIpAddress_DESC
+  # maxRttMs ascending
+  maxRttMs_ASC
+  # maxRttMs descending
+  maxRttMs_DESC
+  # max(numberOfHops) ascending
+  max_numberOfHops_ASC
+  # max(numberOfHops) descending
+  max_numberOfHops_DESC
+  # max(packetLossPct) ascending
+  max_packetLossPct_ASC
+  # max(packetLossPct) descending
+  max_packetLossPct_DESC
+  # max(roundTripTimeMs) ascending
+  max_roundTripTimeMs_ASC
+  # max(roundTripTimeMs) descending
+  max_roundTripTimeMs_DESC
+  # max(timestamp) ascending
+  max_timestamp_ASC
+  # max(timestamp) descending
+  max_timestamp_DESC
+  # minRttMs ascending
+  minRttMs_ASC
+  # minRttMs descending
+  minRttMs_DESC
+  # min(numberOfHops) ascending
+  min_numberOfHops_ASC
+  # min(numberOfHops) descending
+  min_numberOfHops_DESC
+  # min(packetLossPct) ascending
+  min_packetLossPct_ASC
+  # min(packetLossPct) descending
+  min_packetLossPct_DESC
+  # min(roundTripTimeMs) ascending
+  min_roundTripTimeMs_ASC
+  # min(roundTripTimeMs) descending
+  min_roundTripTimeMs_DESC
+  # numberOfHops ascending
+  numberOfHops_ASC
+  # numberOfHops descending
+  numberOfHops_DESC
+  # packetLossFraction ascending
+  packetLossFraction_ASC
+  # packetLossFraction descending
+  packetLossFraction_DESC
+  # protocol ascending
+  protocol_ASC
+  # protocol descending
+  protocol_DESC
+  # quantiles(numberOfHopsP25) ascending
+  quantiles_numberOfHopsP25_ASC
+  # quantiles(numberOfHopsP25) descending
+  quantiles_numberOfHopsP25_DESC
+  # quantiles(numberOfHopsP50) ascending
+  quantiles_numberOfHopsP50_ASC
+  # quantiles(numberOfHopsP50) descending
+  quantiles_numberOfHopsP50_DESC
+  # quantiles(numberOfHopsP75) ascending
+  quantiles_numberOfHopsP75_ASC
+  # quantiles(numberOfHopsP75) descending
+  quantiles_numberOfHopsP75_DESC
+  # quantiles(numberOfHopsP90) ascending
+  quantiles_numberOfHopsP90_ASC
+  # quantiles(numberOfHopsP90) descending
+  quantiles_numberOfHopsP90_DESC
+  # quantiles(numberOfHopsP95) ascending
+  quantiles_numberOfHopsP95_ASC
+  # quantiles(numberOfHopsP95) descending
+  quantiles_numberOfHopsP95_DESC
+  # quantiles(numberOfHopsP999) ascending
+  quantiles_numberOfHopsP999_ASC
+  # quantiles(numberOfHopsP999) descending
+  quantiles_numberOfHopsP999_DESC
+  # quantiles(numberOfHopsP99) ascending
+  quantiles_numberOfHopsP99_ASC
+  # quantiles(numberOfHopsP99) descending
+  quantiles_numberOfHopsP99_DESC
+  # quantiles(packetLossPctP25) ascending
+  quantiles_packetLossPctP25_ASC
+  # quantiles(packetLossPctP25) descending
+  quantiles_packetLossPctP25_DESC
+  # quantiles(packetLossPctP50) ascending
+  quantiles_packetLossPctP50_ASC
+  # quantiles(packetLossPctP50) descending
+  quantiles_packetLossPctP50_DESC
+  # quantiles(packetLossPctP75) ascending
+  quantiles_packetLossPctP75_ASC
+  # quantiles(packetLossPctP75) descending
+  quantiles_packetLossPctP75_DESC
+  # quantiles(packetLossPctP90) ascending
+  quantiles_packetLossPctP90_ASC
+  # quantiles(packetLossPctP90) descending
+  quantiles_packetLossPctP90_DESC
+  # quantiles(packetLossPctP95) ascending
+  quantiles_packetLossPctP95_ASC
+  # quantiles(packetLossPctP95) descending
+  quantiles_packetLossPctP95_DESC
+  # quantiles(packetLossPctP999) ascending
+  quantiles_packetLossPctP999_ASC
+  # quantiles(packetLossPctP999) descending
+  quantiles_packetLossPctP999_DESC
+  # quantiles(packetLossPctP99) ascending
+  quantiles_packetLossPctP99_ASC
+  # quantiles(packetLossPctP99) descending
+  quantiles_packetLossPctP99_DESC
+  # quantiles(roundTripTimeMsP25) ascending
+  quantiles_roundTripTimeMsP25_ASC
+  # quantiles(roundTripTimeMsP25) descending
+  quantiles_roundTripTimeMsP25_DESC
+  # quantiles(roundTripTimeMsP50) ascending
+  quantiles_roundTripTimeMsP50_ASC
+  # quantiles(roundTripTimeMsP50) descending
+  quantiles_roundTripTimeMsP50_DESC
+  # quantiles(roundTripTimeMsP75) ascending
+  quantiles_roundTripTimeMsP75_ASC
+  # quantiles(roundTripTimeMsP75) descending
+  quantiles_roundTripTimeMsP75_DESC
+  # quantiles(roundTripTimeMsP90) ascending
+  quantiles_roundTripTimeMsP90_ASC
+  # quantiles(roundTripTimeMsP90) descending
+  quantiles_roundTripTimeMsP90_DESC
+  # quantiles(roundTripTimeMsP95) ascending
+  quantiles_roundTripTimeMsP95_ASC
+  # quantiles(roundTripTimeMsP95) descending
+  quantiles_roundTripTimeMsP95_DESC
+  # quantiles(roundTripTimeMsP999) ascending
+  quantiles_roundTripTimeMsP999_ASC
+  # quantiles(roundTripTimeMsP999) descending
+  quantiles_roundTripTimeMsP999_DESC
+  # quantiles(roundTripTimeMsP99) ascending
+  quantiles_roundTripTimeMsP99_ASC
+  # quantiles(roundTripTimeMsP99) descending
+  quantiles_roundTripTimeMsP99_DESC
+  # ratio(availabilityPct) ascending
+  ratio_availabilityPct_ASC
+  # ratio(availabilityPct) descending
+  ratio_availabilityPct_DESC
+  # reachedDestination ascending
+  reachedDestination_ASC
+  # reachedDestination descending
+  reachedDestination_DESC
+  # status ascending
+  status_ASC
+  # status descending
+  status_DESC
+  # sum(successfulTestResults) ascending
+  sum_successfulTestResults_ASC
+  # sum(successfulTestResults) descending
+  sum_successfulTestResults_DESC
+  # testId ascending
+  testId_ASC
+  # testId descending
+  testId_DESC
+  # testResultId ascending
+  testResultId_ASC
+  # testResultId descending
+  testResultId_DESC
+  # tunnelType ascending
+  tunnelType_ASC
+  # tunnelType descending
+  tunnelType_DESC
+  # uniq(deviceIds) ascending
+  uniq_deviceIds_ASC
+  # uniq(deviceIds) descending
+  uniq_deviceIds_DESC
+}
+
+type AccountDexTracerouteTestResultsStagingAdaptiveGroupsQuantiles {
+  # Number of hops at the 25th percentile for traceroute tests that reached the destination
+  numberOfHopsP25: uint8!
+  # Number of hops at the 50th percentile for traceroute tests that reached the destination
+  numberOfHopsP50: uint8!
+  # Number of hops at the 75th percentile for traceroute tests that reached the destination
+  numberOfHopsP75: uint8!
+  # Number of hops at the 90th percentile for traceroute tests that reached the destination
+  numberOfHopsP90: uint8!
+  # Number of hops at the 95th percentile for traceroute tests that reached the destination
+  numberOfHopsP95: uint8!
+  # Number of hops at the 99th percentile for traceroute tests that reached the destination
+  numberOfHopsP99: uint8!
+  # Number of hops at the 99.9th percentile for traceroute tests that reached the destination
+  numberOfHopsP999: uint8!
+  # Packet loss percentage at the 25th percentile for traceroute tests that reached the destination
+  packetLossPctP25: float64!
+  # Packet loss percentage at the 50th percentile for traceroute tests that reached the destination
+  packetLossPctP50: float64!
+  # Packet loss percentage at the 75th percentile for traceroute tests that reached the destination
+  packetLossPctP75: float64!
+  # Packet loss percentage at the 90th percentile for traceroute tests that reached the destination
+  packetLossPctP90: float64!
+  # Packet loss percentage at the 95th percentile for traceroute tests that reached the destination
+  packetLossPctP95: float64!
+  # Packet loss percentage at the 99th percentile for traceroute tests that reached the destination
+  packetLossPctP99: float64!
+  # Packet loss percentage at the 99.9th percentile for traceroute tests that reached the destination
+  packetLossPctP999: float64!
+  # Round-trip time in milliseconds at the 25th percentile for traceroute tests that reached the destination
+  roundTripTimeMsP25: float64!
+  # Round-trip time in milliseconds at the 50th percentile for traceroute tests that reached the destination
+  roundTripTimeMsP50: float64!
+  # Round-trip time in milliseconds at the 75th percentile for traceroute tests that reached the destination
+  roundTripTimeMsP75: float64!
+  # Round-trip time in milliseconds at the 90th percentile for traceroute tests that reached the destination
+  roundTripTimeMsP90: float64!
+  # Round-trip time in milliseconds at the 95th percentile for traceroute tests that reached the destination
+  roundTripTimeMsP95: float64!
+  # Round-trip time in milliseconds at the 99th percentile for traceroute tests that reached the destination
+  roundTripTimeMsP99: float64!
+  # Round-trip time in milliseconds at the 99.9th percentile for traceroute tests that reached the destination
+  roundTripTimeMsP999: float64!
+}
+
+type AccountDexTracerouteTestResultsStagingAdaptiveGroupsRatio {
+  # Percentage of traceroute test results that reached the destination
+  availabilityPct: float64!
+}
+
+type AccountDexTracerouteTestResultsStagingAdaptiveGroupsSum {
+  # Number of traceroute test results that reached the destination
+  successfulTestResults: uint64!
+}
+
+type AccountDexTracerouteTestResultsStagingAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  successfulTestResults: Confidence!
+}
+
+type AccountDexTracerouteTestResultsStagingAdaptiveGroupsUniq {
+  # Approximate count of unique device IDs
+  deviceIds: uint64!
+}
+
 # Analytics data for DNS queries
 type AccountDnsAnalyticsAdaptive {
   # IATA airport code of the data center that processed the query
@@ -36105,7 +38928,7 @@ enum AccountFirewallEventsAdaptiveOrderBy {
 type AccountFlagshipFlagEvaluationsAdaptive {
   # The Flagship application identifier the evaluation belongs to
   appId: string!
-  # The Cloudflare colo that served the evaluation
+  # Numeric ID of the Cloudflare data center that served the evaluation
   colo: string!
   # The time the flag evaluation occurred
   datetime: Time!
@@ -36121,7 +38944,7 @@ type AccountFlagshipFlagEvaluationsAdaptive {
   flagKey: string!
   # The value returned by the flag evaluation. Note: high-cardinality - prefer filtering over grouping for large time windows
   flagValue: string!
-  # Priority of the targeting rule that matched (NaN if no rule matched)
+  # Zero-based priority of the targeting rule that matched (-1 if no rule matched)
   matchedRulePriority: float64!
   # ABR sample interval used for this row
   sampleInterval: uint32!
@@ -36291,7 +39114,7 @@ type AccountFlagshipFlagEvaluationsAdaptiveGroupsConfidence {
 type AccountFlagshipFlagEvaluationsAdaptiveGroupsDimensions {
   # The Flagship application identifier the evaluation belongs to
   appId: string!
-  # The Cloudflare colo that served the evaluation
+  # Numeric ID of the Cloudflare data center that served the evaluation
   colo: string!
   # The date the flag evaluation occurred
   date: Date!
@@ -40407,8 +43230,14 @@ type AccountGatewayResolverByCategoryAdaptiveGroupsDimensions {
   internalDnsZoneId: string!
   # The uuid identifying the customer Location used when resolving
   locationId: string!
+  # ID of the matched application when exactly one application matched, otherwise 0
+  @Deprecated
+  matchedApplicationId: uint32!
   # IDs of the applications that matched the DNS query
   matchedApplicationIds: [uint32!]!
+  # JSON-encoded list of the names of the applications that matched the DNS query; empty if none
+  @Deprecated
+  matchedApplicationName: string!
   # Names of the applications that matched the DNS query
   matchedApplicationNames: [string!]!
   # ID of the policy/rule that was applied, if any
@@ -40618,11 +43447,30 @@ input AccountGatewayResolverByCategoryAdaptiveGroupsFilter_InputObject {
   locationId_neq: string
   locationId_notin: [string!]
   locationId_notlike: string
+  matchedApplicationId: uint32
+  matchedApplicationId_geq: uint32
+  matchedApplicationId_gt: uint32
+  matchedApplicationId_in: [uint32!]
+  matchedApplicationId_leq: uint32
+  matchedApplicationId_lt: uint32
+  matchedApplicationId_neq: uint32
+  matchedApplicationId_notin: [uint32!]
   matchedApplicationIds_has: uint32
   matchedApplicationIds_hasall: [uint32!]
   matchedApplicationIds_hasany: [uint32!]
   matchedApplicationIds_isempty: bool
   matchedApplicationIds_nothas: uint32
+  matchedApplicationName: string
+  matchedApplicationName_geq: string
+  matchedApplicationName_gt: string
+  matchedApplicationName_ilike: string
+  matchedApplicationName_in: [string!]
+  matchedApplicationName_leq: string
+  matchedApplicationName_like: string
+  matchedApplicationName_lt: string
+  matchedApplicationName_neq: string
+  matchedApplicationName_notin: [string!]
+  matchedApplicationName_notlike: string
   matchedApplicationNames_has: string
   matchedApplicationNames_hasall: [string!]
   matchedApplicationNames_hasany: [string!]
@@ -40829,10 +43677,18 @@ enum AccountGatewayResolverByCategoryAdaptiveGroupsOrderBy {
   locationId_ASC
   # locationId descending
   locationId_DESC
+  # matchedApplicationId ascending
+  matchedApplicationId_ASC
+  # matchedApplicationId descending
+  matchedApplicationId_DESC
   # matchedApplicationIds ascending
   matchedApplicationIds_ASC
   # matchedApplicationIds descending
   matchedApplicationIds_DESC
+  # matchedApplicationName ascending
+  matchedApplicationName_ASC
+  # matchedApplicationName descending
+  matchedApplicationName_DESC
   # matchedApplicationNames ascending
   matchedApplicationNames_ASC
   # matchedApplicationNames descending
@@ -41417,8 +44273,14 @@ type AccountGatewayResolverQueriesAdaptiveGroupsDimensions {
   locationId: string!
   # The name identifying the customer Location used when resolving
   locationName: string!
+  # ID of the matched application when exactly one application matched, otherwise 0
+  @Deprecated
+  matchedApplicationId: uint32!
   # IDs of the applications that matched the DNS query
   matchedApplicationIds: [uint32!]!
+  # JSON-encoded list of the names of the applications that matched the DNS query; empty if none
+  @Deprecated
+  matchedApplicationName: string!
   # Names of the applications that matched the DNS query
   matchedApplicationNames: [string!]!
   # Json array of indicator feed IDs for this query that matched rule
@@ -41657,11 +44519,30 @@ input AccountGatewayResolverQueriesAdaptiveGroupsFilter_InputObject {
   locationName_neq: string
   locationName_notin: [string!]
   locationName_notlike: string
+  matchedApplicationId: uint32
+  matchedApplicationId_geq: uint32
+  matchedApplicationId_gt: uint32
+  matchedApplicationId_in: [uint32!]
+  matchedApplicationId_leq: uint32
+  matchedApplicationId_lt: uint32
+  matchedApplicationId_neq: uint32
+  matchedApplicationId_notin: [uint32!]
   matchedApplicationIds_has: uint32
   matchedApplicationIds_hasall: [uint32!]
   matchedApplicationIds_hasany: [uint32!]
   matchedApplicationIds_isempty: bool
   matchedApplicationIds_nothas: uint32
+  matchedApplicationName: string
+  matchedApplicationName_geq: string
+  matchedApplicationName_gt: string
+  matchedApplicationName_ilike: string
+  matchedApplicationName_in: [string!]
+  matchedApplicationName_leq: string
+  matchedApplicationName_like: string
+  matchedApplicationName_lt: string
+  matchedApplicationName_neq: string
+  matchedApplicationName_notin: [string!]
+  matchedApplicationName_notlike: string
   matchedApplicationNames_has: string
   matchedApplicationNames_hasall: [string!]
   matchedApplicationNames_hasany: [string!]
@@ -41925,10 +44806,18 @@ enum AccountGatewayResolverQueriesAdaptiveGroupsOrderBy {
   locationName_ASC
   # locationName descending
   locationName_DESC
+  # matchedApplicationId ascending
+  matchedApplicationId_ASC
+  # matchedApplicationId descending
+  matchedApplicationId_DESC
   # matchedApplicationIds ascending
   matchedApplicationIds_ASC
   # matchedApplicationIds descending
   matchedApplicationIds_DESC
+  # matchedApplicationName ascending
+  matchedApplicationName_ASC
+  # matchedApplicationName descending
+  matchedApplicationName_DESC
   # matchedApplicationNames ascending
   matchedApplicationNames_ASC
   # matchedApplicationNames descending
@@ -50990,6 +53879,108 @@ type AccountLogExplorerIngestionAdaptiveGroupsSumConfidence {
   totalBytes: Confidence!
 }
 
+# Account-wide billable usage for successfully delivered customer-owned Logpush jobs with a non-Cloudflare destination (all destinations other than R2 and Pipelines)
+type AccountLogpushExternalUsageAdaptiveGroups {
+  # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
+  confidence(level: float64!): AccountLogpushExternalUsageAdaptiveGroupsConfidence!
+  # List of dimensions to group by
+  dimensions: AccountLogpushExternalUsageAdaptiveGroupsDimensions
+  # The sum of billable Logpush bytes
+  sum: AccountLogpushExternalUsageAdaptiveGroupsSum
+}
+
+type AccountLogpushExternalUsageAdaptiveGroupsConfidence {
+  # Confidence level that was requested
+  level: float64!
+  # The sum of billable Logpush bytes, with confidence intervals
+  sum: AccountLogpushExternalUsageAdaptiveGroupsSumConfidence
+}
+
+type AccountLogpushExternalUsageAdaptiveGroupsDimensions {
+  # Delivery date
+  date: Date!
+  # Delivery time
+  datetime: Time!
+}
+
+input AccountLogpushExternalUsageAdaptiveGroupsFilter_InputObject {
+  AND: [AccountLogpushExternalUsageAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountLogpushExternalUsageAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+}
+
+enum AccountLogpushExternalUsageAdaptiveGroupsOrderBy {
+  # blob12Empty ascending
+  blob12Empty_ASC
+  # blob12Empty descending
+  blob12Empty_DESC
+  # blob9Empty ascending
+  blob9Empty_ASC
+  # blob9Empty descending
+  blob9Empty_DESC
+  # coreJobOffset ascending
+  coreJobOffset_ASC
+  # coreJobOffset descending
+  coreJobOffset_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # edgeJobOffset ascending
+  edgeJobOffset_ASC
+  # edgeJobOffset descending
+  edgeJobOffset_DESC
+  # internalDestination ascending
+  internalDestination_ASC
+  # internalDestination descending
+  internalDestination_DESC
+  # namespace ascending
+  namespace_ASC
+  # namespace descending
+  namespace_DESC
+  # successfulDelivery ascending
+  successfulDelivery_ASC
+  # successfulDelivery descending
+  successfulDelivery_DESC
+  # sum(billableBytes) ascending
+  sum_billableBytes_ASC
+  # sum(billableBytes) descending
+  sum_billableBytes_DESC
+  # unbilledDataset ascending
+  unbilledDataset_ASC
+  # unbilledDataset descending
+  unbilledDataset_DESC
+}
+
+type AccountLogpushExternalUsageAdaptiveGroupsSum {
+  # Uncompressed bytes successfully delivered by customer-owned Logpush jobs
+  billableBytes: uint64!
+}
+
+type AccountLogpushExternalUsageAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  billableBytes: Confidence!
+}
+
 # Beta. Logpush job health metrics
 type AccountLogpushHealthAdaptiveGroups {
   avg: AccountLogpushHealthAdaptiveGroupsAvg
@@ -51275,6 +54266,108 @@ type AccountLogpushHealthAdaptiveGroupsSumConfidence {
   records: Confidence!
   # Confidence interval for the corresponding point estimate
   uploads: Confidence!
+}
+
+# Account-wide billable usage for successfully delivered customer-owned Logpush jobs with a Cloudflare destination (R2 or Pipelines)
+type AccountLogpushInternalUsageAdaptiveGroups {
+  # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
+  confidence(level: float64!): AccountLogpushInternalUsageAdaptiveGroupsConfidence!
+  # List of dimensions to group by
+  dimensions: AccountLogpushInternalUsageAdaptiveGroupsDimensions
+  # The sum of billable Logpush bytes
+  sum: AccountLogpushInternalUsageAdaptiveGroupsSum
+}
+
+type AccountLogpushInternalUsageAdaptiveGroupsConfidence {
+  # Confidence level that was requested
+  level: float64!
+  # The sum of billable Logpush bytes, with confidence intervals
+  sum: AccountLogpushInternalUsageAdaptiveGroupsSumConfidence
+}
+
+type AccountLogpushInternalUsageAdaptiveGroupsDimensions {
+  # Delivery date
+  date: Date!
+  # Delivery time
+  datetime: Time!
+}
+
+input AccountLogpushInternalUsageAdaptiveGroupsFilter_InputObject {
+  AND: [AccountLogpushInternalUsageAdaptiveGroupsFilter_InputObject!]
+  OR: [AccountLogpushInternalUsageAdaptiveGroupsFilter_InputObject!]
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+}
+
+enum AccountLogpushInternalUsageAdaptiveGroupsOrderBy {
+  # blob12Empty ascending
+  blob12Empty_ASC
+  # blob12Empty descending
+  blob12Empty_DESC
+  # blob9Empty ascending
+  blob9Empty_ASC
+  # blob9Empty descending
+  blob9Empty_DESC
+  # coreJobOffset ascending
+  coreJobOffset_ASC
+  # coreJobOffset descending
+  coreJobOffset_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # edgeJobOffset ascending
+  edgeJobOffset_ASC
+  # edgeJobOffset descending
+  edgeJobOffset_DESC
+  # internalDestination ascending
+  internalDestination_ASC
+  # internalDestination descending
+  internalDestination_DESC
+  # namespace ascending
+  namespace_ASC
+  # namespace descending
+  namespace_DESC
+  # successfulDelivery ascending
+  successfulDelivery_ASC
+  # successfulDelivery descending
+  successfulDelivery_DESC
+  # sum(billableBytes) ascending
+  sum_billableBytes_ASC
+  # sum(billableBytes) descending
+  sum_billableBytes_DESC
+  # unbilledDataset ascending
+  unbilledDataset_ASC
+  # unbilledDataset descending
+  unbilledDataset_DESC
+}
+
+type AccountLogpushInternalUsageAdaptiveGroupsSum {
+  # Uncompressed bytes successfully delivered by customer-owned Logpush jobs
+  billableBytes: uint64!
+}
+
+type AccountLogpushInternalUsageAdaptiveGroupsSumConfidence {
+  # Confidence interval for the corresponding point estimate
+  billableBytes: Confidence!
 }
 
 # Beta. Logpush transformer health metrics
@@ -51679,6 +54772,10 @@ enum AccountLogpushUsageAdaptiveGroupsOrderBy {
   edgeJobOffset_ASC
   # edgeJobOffset descending
   edgeJobOffset_DESC
+  # internalDestination ascending
+  internalDestination_ASC
+  # internalDestination descending
+  internalDestination_DESC
   # namespace ascending
   namespace_ASC
   # namespace descending
@@ -66787,6 +69884,372 @@ enum AccountNelReportsAdaptiveGroupsOrderBy {
   type_DESC
 }
 
+# Beta. Network Quality API usage and unique clients from authorized client requests (i.e. requests carrying an authorization token issued on behalf of the account), aggregated per minute without sampling
+type AccountNetworkQualityClients1mGroups {
+  # Number of authorized requests
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountNetworkQualityClients1mGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountNetworkQualityClients1mGroupsSum
+  # The number of unique values for a metric per dimension
+  uniq: AccountNetworkQualityClients1mGroupsUniq
+}
+
+type AccountNetworkQualityClients1mGroupsDimensions {
+  # The airport code of the Cloudflare datacenter that served this request
+  coloCode: string!
+  # The date of the request
+  date: Date!
+  # The date and time of the request, truncated to the minute
+  datetime: Time!
+  # The date and time of the request, truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time of the request, truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time of the request, truncated to the hour
+  datetimeHour: Time!
+  # The date and time of the request, truncated to the minute
+  datetimeMinute: Time!
+  # 1 when the request transfers a payload, 0 otherwise
+  hasPayload: uint8!
+  # The direction of the payload byte transfer from Cloudflare's point of view (e.g. 'ingress', 'egress', or 'unknown')
+  transferDirection: string!
+}
+
+input AccountNetworkQualityClients1mGroupsFilter_InputObject {
+  AND: [AccountNetworkQualityClients1mGroupsFilter_InputObject!]
+  OR: [AccountNetworkQualityClients1mGroupsFilter_InputObject!]
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_ilike: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  hasPayload: uint8
+  hasPayload_geq: uint8
+  hasPayload_gt: uint8
+  hasPayload_in: bytes
+  hasPayload_leq: uint8
+  hasPayload_lt: uint8
+  hasPayload_neq: uint8
+  hasPayload_notin: bytes
+  transferDirection: string
+  transferDirection_geq: string
+  transferDirection_gt: string
+  transferDirection_ilike: string
+  transferDirection_in: [string!]
+  transferDirection_leq: string
+  transferDirection_like: string
+  transferDirection_lt: string
+  transferDirection_neq: string
+  transferDirection_notin: [string!]
+  transferDirection_notlike: string
+}
+
+enum AccountNetworkQualityClients1mGroupsOrderBy {
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # hasPayload ascending
+  hasPayload_ASC
+  # hasPayload descending
+  hasPayload_DESC
+  # sum(requestedBytes) ascending
+  sum_requestedBytes_ASC
+  # sum(requestedBytes) descending
+  sum_requestedBytes_DESC
+  # sum(transferredBytes) ascending
+  sum_transferredBytes_ASC
+  # sum(transferredBytes) descending
+  sum_transferredBytes_DESC
+  # transferDirection ascending
+  transferDirection_ASC
+  # transferDirection descending
+  transferDirection_DESC
+  # uniq(eyeballs) ascending
+  uniq_eyeballs_ASC
+  # uniq(eyeballs) descending
+  uniq_eyeballs_DESC
+}
+
+type AccountNetworkQualityClients1mGroupsSum {
+  # Total number of payload bytes requested using the 'bytes' query parameter (0 when omitted)
+  requestedBytes: uint64!
+  # Total number of payload bytes transferred
+  transferredBytes: uint64!
+}
+
+type AccountNetworkQualityClients1mGroupsUniq {
+  # Approximate number of unique clients (eyeball IDs)
+  eyeballs: uint64!
+}
+
+# Beta. Network Quality API usage and unique tokens from authorized client requests (i.e. requests carrying an authorization token issued on behalf of the account), aggregated per minute without sampling
+type AccountNetworkQualityUsage1mGroups {
+  # Number of authorized requests
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountNetworkQualityUsage1mGroupsDimensions
+  # The sum of values for a metric per dimension
+  sum: AccountNetworkQualityUsage1mGroupsSum
+  # The number of unique values for a metric per dimension
+  uniq: AccountNetworkQualityUsage1mGroupsUniq
+}
+
+type AccountNetworkQualityUsage1mGroupsDimensions {
+  # The airport code of the Cloudflare datacenter that served this request
+  coloCode: string!
+  # The date of the request
+  date: Date!
+  # The date and time of the request, truncated to the minute
+  datetime: Time!
+  # The date and time of the request, truncated to a multiple of 15 minutes
+  datetimeFifteenMinutes: Time!
+  # The date and time of the request, truncated to a multiple of 5 minutes
+  datetimeFiveMinutes: Time!
+  # The date and time of the request, truncated to the hour
+  datetimeHour: Time!
+  # The date and time of the request, truncated to the minute
+  datetimeMinute: Time!
+  # 1 when the request transfers a payload, 0 otherwise
+  hasPayload: uint8!
+  # The direction of the payload byte transfer from Cloudflare's point of view (e.g. 'ingress', 'egress', or 'unknown')
+  transferDirection: string!
+}
+
+input AccountNetworkQualityUsage1mGroupsFilter_InputObject {
+  AND: [AccountNetworkQualityUsage1mGroupsFilter_InputObject!]
+  OR: [AccountNetworkQualityUsage1mGroupsFilter_InputObject!]
+  coloCode: string
+  coloCode_geq: string
+  coloCode_gt: string
+  coloCode_ilike: string
+  coloCode_in: [string!]
+  coloCode_leq: string
+  coloCode_like: string
+  coloCode_lt: string
+  coloCode_neq: string
+  coloCode_notin: [string!]
+  coloCode_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeFifteenMinutes: Time
+  datetimeFifteenMinutes_geq: Time
+  datetimeFifteenMinutes_gt: Time
+  datetimeFifteenMinutes_in: [Time!]
+  datetimeFifteenMinutes_leq: Time
+  datetimeFifteenMinutes_lt: Time
+  datetimeFifteenMinutes_neq: Time
+  datetimeFifteenMinutes_notin: [Time!]
+  datetimeFiveMinutes: Time
+  datetimeFiveMinutes_geq: Time
+  datetimeFiveMinutes_gt: Time
+  datetimeFiveMinutes_in: [Time!]
+  datetimeFiveMinutes_leq: Time
+  datetimeFiveMinutes_lt: Time
+  datetimeFiveMinutes_neq: Time
+  datetimeFiveMinutes_notin: [Time!]
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetimeMinute: Time
+  datetimeMinute_geq: Time
+  datetimeMinute_gt: Time
+  datetimeMinute_in: [Time!]
+  datetimeMinute_leq: Time
+  datetimeMinute_lt: Time
+  datetimeMinute_neq: Time
+  datetimeMinute_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  hasPayload: uint8
+  hasPayload_geq: uint8
+  hasPayload_gt: uint8
+  hasPayload_in: bytes
+  hasPayload_leq: uint8
+  hasPayload_lt: uint8
+  hasPayload_neq: uint8
+  hasPayload_notin: bytes
+  transferDirection: string
+  transferDirection_geq: string
+  transferDirection_gt: string
+  transferDirection_ilike: string
+  transferDirection_in: [string!]
+  transferDirection_leq: string
+  transferDirection_like: string
+  transferDirection_lt: string
+  transferDirection_neq: string
+  transferDirection_notin: [string!]
+  transferDirection_notlike: string
+}
+
+enum AccountNetworkQualityUsage1mGroupsOrderBy {
+  # coloCode ascending
+  coloCode_ASC
+  # coloCode descending
+  coloCode_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeFifteenMinutes ascending
+  datetimeFifteenMinutes_ASC
+  # datetimeFifteenMinutes descending
+  datetimeFifteenMinutes_DESC
+  # datetimeFiveMinutes ascending
+  datetimeFiveMinutes_ASC
+  # datetimeFiveMinutes descending
+  datetimeFiveMinutes_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetimeMinute ascending
+  datetimeMinute_ASC
+  # datetimeMinute descending
+  datetimeMinute_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # hasPayload ascending
+  hasPayload_ASC
+  # hasPayload descending
+  hasPayload_DESC
+  # sum(requestedBytes) ascending
+  sum_requestedBytes_ASC
+  # sum(requestedBytes) descending
+  sum_requestedBytes_DESC
+  # sum(transferredBytes) ascending
+  sum_transferredBytes_ASC
+  # sum(transferredBytes) descending
+  sum_transferredBytes_DESC
+  # transferDirection ascending
+  transferDirection_ASC
+  # transferDirection descending
+  transferDirection_DESC
+  # uniq(tokens) ascending
+  uniq_tokens_ASC
+  # uniq(tokens) descending
+  uniq_tokens_DESC
+}
+
+type AccountNetworkQualityUsage1mGroupsSum {
+  # Total number of payload bytes requested using the 'bytes' query parameter (0 when omitted)
+  requestedBytes: uint64!
+  # Total number of payload bytes transferred
+  transferredBytes: uint64!
+}
+
+type AccountNetworkQualityUsage1mGroupsUniq {
+  # Approximate number of unique authorization tokens (JWT IDs)
+  tokens: uint64!
+}
+
 # Beta. Network Quality API usage from authorized client requests (i.e. requests carrying an authorization token issued on behalf of the account), with adaptive sampling
 type AccountNetworkQualityUsageAdaptiveGroups {
   # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
@@ -74171,6 +77634,8 @@ type AccountR2BandwidthUsageAdaptiveGroups {
   confidence(level: float64!): AccountR2BandwidthUsageAdaptiveGroupsConfidence!
   # List of dimensions to group by
   dimensions: AccountR2BandwidthUsageAdaptiveGroupsDimensions
+  # The max of values for a metric per dimension
+  max: AccountR2BandwidthUsageAdaptiveGroupsMax
   # The sum of values for a metric per dimension
   sum: AccountR2BandwidthUsageAdaptiveGroupsSum
 }
@@ -74315,6 +77780,11 @@ input AccountR2BandwidthUsageAdaptiveGroupsFilter_InputObject {
   datetime_notin: [Time!]
 }
 
+type AccountR2BandwidthUsageAdaptiveGroupsMax {
+  # Account bandwidth limit in bits per second, applied separately to downloads and uploads
+  bandwidthLimitBitsPerSecond: uint64!
+}
+
 enum AccountR2BandwidthUsageAdaptiveGroupsOrderBy {
   # bucketName ascending
   bucketName_ASC
@@ -74360,6 +77830,10 @@ enum AccountR2BandwidthUsageAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # max(bandwidthLimitBitsPerSecond) ascending
+  max_bandwidthLimitBitsPerSecond_ASC
+  # max(bandwidthLimitBitsPerSecond) descending
+  max_bandwidthLimitBitsPerSecond_DESC
   # sum(bytesDownload) ascending
   sum_bytesDownload_ASC
   # sum(bytesDownload) descending
@@ -74990,6 +78464,8 @@ type AccountR2OperationsAdaptiveGroups {
   confidence(level: float64!): AccountR2OperationsAdaptiveGroupsConfidence!
   # List of dimensions to group by
   dimensions: AccountR2OperationsAdaptiveGroupsDimensions
+  # Quantiles of a metric per dimension
+  quantiles: AccountR2OperationsAdaptiveGroupsQuantiles
   # The sum of values for a metric per dimension
   sum: AccountR2OperationsAdaptiveGroupsSum
 }
@@ -75209,6 +78685,34 @@ enum AccountR2OperationsAdaptiveGroupsOrderBy {
   objectName_ASC
   # objectName descending
   objectName_DESC
+  # quantiles(responseTimeMsP25) ascending
+  quantiles_responseTimeMsP25_ASC
+  # quantiles(responseTimeMsP25) descending
+  quantiles_responseTimeMsP25_DESC
+  # quantiles(responseTimeMsP50) ascending
+  quantiles_responseTimeMsP50_ASC
+  # quantiles(responseTimeMsP50) descending
+  quantiles_responseTimeMsP50_DESC
+  # quantiles(responseTimeMsP75) ascending
+  quantiles_responseTimeMsP75_ASC
+  # quantiles(responseTimeMsP75) descending
+  quantiles_responseTimeMsP75_DESC
+  # quantiles(responseTimeMsP90) ascending
+  quantiles_responseTimeMsP90_ASC
+  # quantiles(responseTimeMsP90) descending
+  quantiles_responseTimeMsP90_DESC
+  # quantiles(responseTimeMsP95) ascending
+  quantiles_responseTimeMsP95_ASC
+  # quantiles(responseTimeMsP95) descending
+  quantiles_responseTimeMsP95_DESC
+  # quantiles(responseTimeMsP999) ascending
+  quantiles_responseTimeMsP999_ASC
+  # quantiles(responseTimeMsP999) descending
+  quantiles_responseTimeMsP999_DESC
+  # quantiles(responseTimeMsP99) ascending
+  quantiles_responseTimeMsP99_ASC
+  # quantiles(responseTimeMsP99) descending
+  quantiles_responseTimeMsP99_DESC
   # responseStatusCode ascending
   responseStatusCode_ASC
   # responseStatusCode descending
@@ -75229,6 +78733,23 @@ enum AccountR2OperationsAdaptiveGroupsOrderBy {
   sum_responseObjectSize_ASC
   # sum(responseObjectSize) descending
   sum_responseObjectSize_DESC
+}
+
+type AccountR2OperationsAdaptiveGroupsQuantiles {
+  # Time in milliseconds from when R2 started handling the request until it began sending response headers, weighted by the adaptive sample interval; -1 when no request in the group has a valid measurement (25th percentile)
+  responseTimeMsP25: int64!
+  # Time in milliseconds from when R2 started handling the request until it began sending response headers, weighted by the adaptive sample interval; -1 when no request in the group has a valid measurement (50th percentile)
+  responseTimeMsP50: int64!
+  # Time in milliseconds from when R2 started handling the request until it began sending response headers, weighted by the adaptive sample interval; -1 when no request in the group has a valid measurement (75th percentile)
+  responseTimeMsP75: int64!
+  # Time in milliseconds from when R2 started handling the request until it began sending response headers, weighted by the adaptive sample interval; -1 when no request in the group has a valid measurement (90th percentile)
+  responseTimeMsP90: int64!
+  # Time in milliseconds from when R2 started handling the request until it began sending response headers, weighted by the adaptive sample interval; -1 when no request in the group has a valid measurement (95th percentile)
+  responseTimeMsP95: int64!
+  # Time in milliseconds from when R2 started handling the request until it began sending response headers, weighted by the adaptive sample interval; -1 when no request in the group has a valid measurement (99th percentile)
+  responseTimeMsP99: int64!
+  # Time in milliseconds from when R2 started handling the request until it began sending response headers, weighted by the adaptive sample interval; -1 when no request in the group has a valid measurement (99.9th percentile)
+  responseTimeMsP999: int64!
 }
 
 type AccountR2OperationsAdaptiveGroupsSum {
@@ -79920,6 +83441,10 @@ type AccountSettings {
   d1AnalyticsAdaptiveGroups: Settings!
   d1QueriesAdaptiveGroups: Settings!
   d1StorageAdaptiveGroups: Settings!
+  dexHttpTestResultsAdaptiveGroups: Settings!
+  dexHttpTestResultsStagingAdaptiveGroups: Settings!
+  dexTracerouteTestResultsAdaptiveGroups: Settings!
+  dexTracerouteTestResultsStagingAdaptiveGroups: Settings!
   dnsAnalyticsAdaptive: Settings!
   dnsAnalyticsAdaptiveGroups: Settings!
   dnsFirewallAnalyticsAdaptive: Settings!
@@ -79978,7 +83503,9 @@ type AccountSettings {
   liveInputEventsAdaptive: Settings!
   liveInputEventsAdaptiveGroups: Settings!
   logExplorerIngestionAdaptiveGroups: Settings!
+  logpushExternalUsageAdaptiveGroups: Settings!
   logpushHealthAdaptiveGroups: Settings!
+  logpushInternalUsageAdaptiveGroups: Settings!
   logpushTransformersAdaptiveGroups: Settings!
   logpushTransformersSuccessfulUsageAdaptiveGroups: Settings!
   logpushUsageAdaptiveGroups: Settings!
@@ -80019,6 +83546,8 @@ type AccountSettings {
   mnmFlowDataAdaptiveGroups: Settings!
   monetizationGatewayAdaptiveGroups: Settings!
   nelReportsAdaptiveGroups: Settings!
+  networkQualityClients1mGroups: Settings!
+  networkQualityUsage1mGroups: Settings!
   networkQualityUsageAdaptiveGroups: Settings!
   ohttpMetricsAdaptive: Settings!
   ohttpMetricsAdaptiveGroups: Settings!
@@ -80082,6 +83611,7 @@ type AccountSettings {
   videoBufferEventsAdaptiveGroups: Settings!
   videoPlaybackEventsAdaptiveGroups: Settings!
   videoQualityEventsAdaptiveGroups: Settings!
+  warpClientLogEventsGroups: Settings!
   warpDeviceAdaptiveGroups: Settings!
   webSearchRequestsAdaptiveGroups: Settings!
   workerPlacementAdaptiveGroups: Settings!
@@ -87128,15 +90658,346 @@ enum AccountVideoQualityEventsAdaptiveGroupsOrderBy {
   uid_DESC
 }
 
+# Cloudflare One Client log events.
+type AccountWarpClientLogEventsGroups {
+  # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
+  confidence(level: float64!): AccountWarpClientLogEventsGroupsConfidence!
+  # Number of client log events
+  count: uint64!
+  # List of dimensions to group by
+  dimensions: AccountWarpClientLogEventsGroupsDimensions
+}
+
+type AccountWarpClientLogEventsGroupsConfidence {
+  # Number of client log events, with confidence intervals
+  count: Confidence!
+  # Confidence level that was requested
+  level: float64!
+}
+
+type AccountWarpClientLogEventsGroupsDimensions {
+  # uninstall_authorization event: credential used, account or device. Empty for other event types
+  authorizationType: string!
+  # uninstall_authorization event: 1 if the credential was accepted, 0 if rejected. 0 for other event types
+  authorized: uint8!
+  # Client version
+  clientVersion: string!
+  # The date the event was received
+  date: Date!
+  # The date and time the event was received
+  datetime: Time!
+  # The date and time the event was received truncated to the hour
+  datetimeHour: Time!
+  # Physical Device ID
+  deviceId: string!
+  # Device name. Requires the com.cloudflare.team.device.read permission; otherwise returned as the literal "REDACTED"
+  deviceName: string!
+  # Event type, e.g. uninstall_authorization
+  event: string!
+  # Severity: info or warning
+  level: string!
+  # The date and time the event occurred, as reported by the client
+  occurredAt: Time!
+  # Device operating system
+  os: string!
+  # Device operating system version
+  osVersion: string!
+  # Registration ID
+  registrationId: string!
+  # Device serial number. Requires the com.cloudflare.team.device.read permission; otherwise returned as the literal "REDACTED"
+  serialNumber: string!
+  # Session ID.
+  sessionId: string!
+  # User email address. Requires the com.cloudflare.team.device.read permission; otherwise returned as the literal "REDACTED"
+  userEmail: string!
+  # User ID
+  userId: string!
+}
+
+input AccountWarpClientLogEventsGroupsFilter_InputObject {
+  AND: [AccountWarpClientLogEventsGroupsFilter_InputObject!]
+  OR: [AccountWarpClientLogEventsGroupsFilter_InputObject!]
+  authorizationType: string
+  authorizationType_geq: string
+  authorizationType_gt: string
+  authorizationType_ilike: string
+  authorizationType_in: [string!]
+  authorizationType_leq: string
+  authorizationType_like: string
+  authorizationType_lt: string
+  authorizationType_neq: string
+  authorizationType_notin: [string!]
+  authorizationType_notlike: string
+  authorized: uint8
+  authorized_geq: uint8
+  authorized_gt: uint8
+  authorized_in: bytes
+  authorized_leq: uint8
+  authorized_lt: uint8
+  authorized_neq: uint8
+  authorized_notin: bytes
+  clientVersion: string
+  clientVersion_geq: string
+  clientVersion_gt: string
+  clientVersion_ilike: string
+  clientVersion_in: [string!]
+  clientVersion_leq: string
+  clientVersion_like: string
+  clientVersion_lt: string
+  clientVersion_neq: string
+  clientVersion_notin: [string!]
+  clientVersion_notlike: string
+  date: Date
+  date_geq: Date
+  date_gt: Date
+  date_in: [Date!]
+  date_leq: Date
+  date_lt: Date
+  date_neq: Date
+  date_notin: [Date!]
+  datetime: Time
+  datetimeHour: Time
+  datetimeHour_geq: Time
+  datetimeHour_gt: Time
+  datetimeHour_in: [Time!]
+  datetimeHour_leq: Time
+  datetimeHour_lt: Time
+  datetimeHour_neq: Time
+  datetimeHour_notin: [Time!]
+  datetime_geq: Time
+  datetime_gt: Time
+  datetime_in: [Time!]
+  datetime_leq: Time
+  datetime_lt: Time
+  datetime_neq: Time
+  datetime_notin: [Time!]
+  deviceId: string
+  deviceId_geq: string
+  deviceId_gt: string
+  deviceId_ilike: string
+  deviceId_in: [string!]
+  deviceId_leq: string
+  deviceId_like: string
+  deviceId_lt: string
+  deviceId_neq: string
+  deviceId_notin: [string!]
+  deviceId_notlike: string
+  deviceName: string
+  deviceName_geq: string
+  deviceName_gt: string
+  deviceName_ilike: string
+  deviceName_in: [string!]
+  deviceName_leq: string
+  deviceName_like: string
+  deviceName_lt: string
+  deviceName_neq: string
+  deviceName_notin: [string!]
+  deviceName_notlike: string
+  event: string
+  event_geq: string
+  event_gt: string
+  event_ilike: string
+  event_in: [string!]
+  event_leq: string
+  event_like: string
+  event_lt: string
+  event_neq: string
+  event_notin: [string!]
+  event_notlike: string
+  level: string
+  level_geq: string
+  level_gt: string
+  level_ilike: string
+  level_in: [string!]
+  level_leq: string
+  level_like: string
+  level_lt: string
+  level_neq: string
+  level_notin: [string!]
+  level_notlike: string
+  occurredAt: Time
+  occurredAt_geq: Time
+  occurredAt_gt: Time
+  occurredAt_in: [Time!]
+  occurredAt_leq: Time
+  occurredAt_lt: Time
+  occurredAt_neq: Time
+  occurredAt_notin: [Time!]
+  os: string
+  osVersion: string
+  osVersion_geq: string
+  osVersion_gt: string
+  osVersion_ilike: string
+  osVersion_in: [string!]
+  osVersion_leq: string
+  osVersion_like: string
+  osVersion_lt: string
+  osVersion_neq: string
+  osVersion_notin: [string!]
+  osVersion_notlike: string
+  os_geq: string
+  os_gt: string
+  os_ilike: string
+  os_in: [string!]
+  os_leq: string
+  os_like: string
+  os_lt: string
+  os_neq: string
+  os_notin: [string!]
+  os_notlike: string
+  registrationId: string
+  registrationId_geq: string
+  registrationId_gt: string
+  registrationId_ilike: string
+  registrationId_in: [string!]
+  registrationId_leq: string
+  registrationId_like: string
+  registrationId_lt: string
+  registrationId_neq: string
+  registrationId_notin: [string!]
+  registrationId_notlike: string
+  serialNumber: string
+  serialNumber_geq: string
+  serialNumber_gt: string
+  serialNumber_ilike: string
+  serialNumber_in: [string!]
+  serialNumber_leq: string
+  serialNumber_like: string
+  serialNumber_lt: string
+  serialNumber_neq: string
+  serialNumber_notin: [string!]
+  serialNumber_notlike: string
+  sessionId: string
+  sessionId_geq: string
+  sessionId_gt: string
+  sessionId_ilike: string
+  sessionId_in: [string!]
+  sessionId_leq: string
+  sessionId_like: string
+  sessionId_lt: string
+  sessionId_neq: string
+  sessionId_notin: [string!]
+  sessionId_notlike: string
+  userEmail: string
+  userEmail_geq: string
+  userEmail_gt: string
+  userEmail_ilike: string
+  userEmail_in: [string!]
+  userEmail_leq: string
+  userEmail_like: string
+  userEmail_lt: string
+  userEmail_neq: string
+  userEmail_notin: [string!]
+  userEmail_notlike: string
+  userId: string
+  userId_geq: string
+  userId_gt: string
+  userId_ilike: string
+  userId_in: [string!]
+  userId_leq: string
+  userId_like: string
+  userId_lt: string
+  userId_neq: string
+  userId_notin: [string!]
+  userId_notlike: string
+}
+
+enum AccountWarpClientLogEventsGroupsOrderBy {
+  # authorizationType ascending
+  authorizationType_ASC
+  # authorizationType descending
+  authorizationType_DESC
+  # authorized ascending
+  authorized_ASC
+  # authorized descending
+  authorized_DESC
+  # clientVersion ascending
+  clientVersion_ASC
+  # clientVersion descending
+  clientVersion_DESC
+  # count() ascending
+  count_ASC
+  # count() descending
+  count_DESC
+  # date ascending
+  date_ASC
+  # date descending
+  date_DESC
+  # datetimeHour ascending
+  datetimeHour_ASC
+  # datetimeHour descending
+  datetimeHour_DESC
+  # datetime ascending
+  datetime_ASC
+  # datetime descending
+  datetime_DESC
+  # deviceId ascending
+  deviceId_ASC
+  # deviceId descending
+  deviceId_DESC
+  # deviceName ascending
+  deviceName_ASC
+  # deviceName descending
+  deviceName_DESC
+  # event ascending
+  event_ASC
+  # event descending
+  event_DESC
+  # level ascending
+  level_ASC
+  # level descending
+  level_DESC
+  # occurredAt ascending
+  occurredAt_ASC
+  # occurredAt descending
+  occurredAt_DESC
+  # osVersion ascending
+  osVersion_ASC
+  # osVersion descending
+  osVersion_DESC
+  # os ascending
+  os_ASC
+  # os descending
+  os_DESC
+  # registrationId ascending
+  registrationId_ASC
+  # registrationId descending
+  registrationId_DESC
+  # serialNumber ascending
+  serialNumber_ASC
+  # serialNumber descending
+  serialNumber_DESC
+  # sessionId ascending
+  sessionId_ASC
+  # sessionId descending
+  sessionId_DESC
+  # userEmail ascending
+  userEmail_ASC
+  # userEmail descending
+  userEmail_DESC
+  # userId ascending
+  userId_ASC
+  # userId descending
+  userId_DESC
+}
+
 # Beta. Warp device health events with adaptive sampling
 type AccountWarpDeviceAdaptiveGroups {
+  avg: AccountWarpDeviceAdaptiveGroupsAvg
   # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
   confidence(level: float64!): AccountWarpDeviceAdaptiveGroupsConfidence!
   # Number of device health events, which usually occur at 2m intervals per device
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountWarpDeviceAdaptiveGroupsDimensions
+  # The maximum value for a metric per dimension
+  max: AccountWarpDeviceAdaptiveGroupsMax
   uniq: AccountWarpDeviceAdaptiveGroupsUniq
+}
+
+type AccountWarpDeviceAdaptiveGroupsAvg {
+  # Average sample interval
+  sampleInterval: float64!
 }
 
 type AccountWarpDeviceAdaptiveGroupsConfidence {
@@ -87147,12 +91008,26 @@ type AccountWarpDeviceAdaptiveGroupsConfidence {
 }
 
 type AccountWarpDeviceAdaptiveGroupsDimensions {
+  # Whether the WARP client is configured as always on
+  alwaysOn: string!
+  # Whether the device battery is charging
+  batteryCharging: string!
+  # Device battery charge cycle count
+  batteryCycles: uint64!
+  # Device battery charge percentage
+  batteryPct: float64!
   # Device's OS
   clientPlatform: string!
   # Device's Warp version
   clientVersion: string!
   # Device's connected colo
   colo: string!
+  # Device network connection type
+  connectionType: string!
+  # Device CPU utilization percentage
+  cpuPct: float64!
+  # JSON-encoded list of top applications by CPU utilization
+  cpuPctByAppJson: string!
   # The date of the device log
   date: Date!
   # The date and time of the device log
@@ -87171,15 +91046,159 @@ type AccountWarpDeviceAdaptiveGroupsDimensions {
   datetimeTenMinute: Time!
   # Device ID
   deviceId: string!
+  # Device registration ID
+  deviceRegistration: string!
+  # Device disk read throughput in bytes per second
+  diskReadBps: uint64!
+  # Device disk utilization percentage
+  diskUsagePct: float64!
+  # Device disk write throughput in bytes per second
+  diskWriteBps: uint64!
+  # DNS over HTTPS subdomain configured on the device
+  dohSubdomain: string!
+  # Estimated network packet loss percentage reported by the WARP client
+  estimatedLossPct: float64!
+  # Whether the device firewall is enabled
+  firewallEnabled: string!
+  # WARP tunnel handshake latency in milliseconds
+  handshakeLatencyMs: float64!
+  # Public IPv4 address reported for the device's ISP connection
+  ispIPv4Address: string!
+  # Autonomous system number for the device's IPv4 ISP connection
+  ispIPv4Asn: uint32!
+  # Autonomous system organization for the device's IPv4 ISP connection
+  ispIPv4Aso: string!
+  # Country code for the device's IPv4 ISP connection
+  ispIPv4Country: string!
+  # State or region code for the device's IPv4 ISP connection
+  ispIPv4State: string!
+  # Public IPv6 address reported for the device's ISP connection
+  ispIPv6Address: string!
+  # Autonomous system number for the device's IPv6 ISP connection
+  ispIPv6Asn: uint32!
+  # Autonomous system organization for the device's IPv6 ISP connection
+  ispIPv6Aso: string!
+  # Country code for the device's IPv6 ISP connection
+  ispIPv6Country: string!
+  # State or region code for the device's IPv6 ISP connection
+  ispIPv6State: string!
   # Device's Warp mode
   mode: string!
+  # Device network receive throughput in bytes per second
+  networkRcvdBps: uint64!
+  # Device network transmit throughput in bytes per second
+  networkSentBps: uint64!
+  # Wi-Fi network SSID reported by the device
+  networkSsid: string!
+  # WARP device settings policy ID
+  policyId: string!
+  # Available device memory in kilobytes
+  ramAvailableKb: uint64!
+  # Device memory utilization percentage
+  ramUsedPct: float64!
+  # JSON-encoded list of top applications by memory utilization
+  ramUsedPctByAppJson: string!
   # Device connection status
   status: string!
+  # Whether the WARP client connection switch is locked
+  switchLocked: string!
+  # Bytes lost during the downstream tunnel statistics window
+  tunnelDownstreamBytesLost: uint64!
+  # Bytes received during the downstream tunnel statistics window
+  tunnelDownstreamBytesRecvd: uint64!
+  # Bytes retransmitted during the downstream tunnel statistics window
+  tunnelDownstreamBytesRetrans: uint64!
+  # Bytes sent during the downstream tunnel statistics window
+  tunnelDownstreamBytesSent: uint64!
+  # Minimum downstream tunnel round-trip time in microseconds
+  tunnelDownstreamMinRttUs: int64!
+  # Packets lost during the downstream tunnel statistics window
+  tunnelDownstreamPacketsLost: uint64!
+  # Packets received during the downstream tunnel statistics window
+  tunnelDownstreamPacketsRecvd: uint64!
+  # Packets retransmitted during the downstream tunnel statistics window
+  tunnelDownstreamPacketsRetrans: uint64!
+  # Packets sent during the downstream tunnel statistics window
+  tunnelDownstreamPacketsSent: uint64!
+  # Downstream tunnel round-trip time in microseconds
+  tunnelDownstreamRttUs: int64!
+  # Downstream tunnel round-trip time variance in microseconds
+  tunnelDownstreamRttVarUs: int64!
+  # Downstream tunnel statistics window in milliseconds
+  tunnelDownstreamStatsWindowMs: uint64!
+  # WARP tunnel protocol
+  tunnelType: string!
+  # Bytes lost during the upstream tunnel statistics window
+  tunnelUpstreamBytesLost: uint64!
+  # Bytes received during the upstream tunnel statistics window
+  tunnelUpstreamBytesRecvd: uint64!
+  # Bytes retransmitted during the upstream tunnel statistics window
+  tunnelUpstreamBytesRetrans: uint64!
+  # Bytes sent during the upstream tunnel statistics window
+  tunnelUpstreamBytesSent: uint64!
+  # Minimum upstream tunnel round-trip time in microseconds
+  tunnelUpstreamMinRttUs: int64!
+  # Packets lost during the upstream tunnel statistics window
+  tunnelUpstreamPacketsLost: uint64!
+  # Packets received during the upstream tunnel statistics window
+  tunnelUpstreamPacketsRecvd: uint64!
+  # Packets retransmitted during the upstream tunnel statistics window
+  tunnelUpstreamPacketsRetrans: uint64!
+  # Packets sent during the upstream tunnel statistics window
+  tunnelUpstreamPacketsSent: uint64!
+  # Upstream tunnel round-trip time in microseconds
+  tunnelUpstreamRttUs: int64!
+  # Upstream tunnel round-trip time variance in microseconds
+  tunnelUpstreamRttVarUs: int64!
+  # Upstream tunnel statistics window in milliseconds
+  tunnelUpstreamStatsWindowMs: uint64!
+  # Device state event schema version
+  version: int64!
+  # Wi-Fi signal strength in dBm
+  wifiStrengthDbm: int64!
 }
 
 input AccountWarpDeviceAdaptiveGroupsFilter_InputObject {
   AND: [AccountWarpDeviceAdaptiveGroupsFilter_InputObject!]
   OR: [AccountWarpDeviceAdaptiveGroupsFilter_InputObject!]
+  alwaysOn: string
+  alwaysOn_geq: string
+  alwaysOn_gt: string
+  alwaysOn_ilike: string
+  alwaysOn_in: [string!]
+  alwaysOn_leq: string
+  alwaysOn_like: string
+  alwaysOn_lt: string
+  alwaysOn_neq: string
+  alwaysOn_notin: [string!]
+  alwaysOn_notlike: string
+  batteryCharging: string
+  batteryCharging_geq: string
+  batteryCharging_gt: string
+  batteryCharging_ilike: string
+  batteryCharging_in: [string!]
+  batteryCharging_leq: string
+  batteryCharging_like: string
+  batteryCharging_lt: string
+  batteryCharging_neq: string
+  batteryCharging_notin: [string!]
+  batteryCharging_notlike: string
+  batteryCycles: uint64
+  batteryCycles_geq: uint64
+  batteryCycles_gt: uint64
+  batteryCycles_in: [uint64!]
+  batteryCycles_leq: uint64
+  batteryCycles_lt: uint64
+  batteryCycles_neq: uint64
+  batteryCycles_notin: [uint64!]
+  batteryPct: float64
+  batteryPct_geq: float64
+  batteryPct_gt: float64
+  batteryPct_in: [float64!]
+  batteryPct_leq: float64
+  batteryPct_lt: float64
+  batteryPct_neq: float64
+  batteryPct_notin: [float64!]
   clientPlatform: string
   clientPlatform_geq: string
   clientPlatform_gt: string
@@ -87213,6 +91232,36 @@ input AccountWarpDeviceAdaptiveGroupsFilter_InputObject {
   colo_neq: string
   colo_notin: [string!]
   colo_notlike: string
+  connectionType: string
+  connectionType_geq: string
+  connectionType_gt: string
+  connectionType_ilike: string
+  connectionType_in: [string!]
+  connectionType_leq: string
+  connectionType_like: string
+  connectionType_lt: string
+  connectionType_neq: string
+  connectionType_notin: [string!]
+  connectionType_notlike: string
+  cpuPct: float64
+  cpuPctByAppJson: string
+  cpuPctByAppJson_geq: string
+  cpuPctByAppJson_gt: string
+  cpuPctByAppJson_ilike: string
+  cpuPctByAppJson_in: [string!]
+  cpuPctByAppJson_leq: string
+  cpuPctByAppJson_like: string
+  cpuPctByAppJson_lt: string
+  cpuPctByAppJson_neq: string
+  cpuPctByAppJson_notin: [string!]
+  cpuPctByAppJson_notlike: string
+  cpuPct_geq: float64
+  cpuPct_gt: float64
+  cpuPct_in: [float64!]
+  cpuPct_leq: float64
+  cpuPct_lt: float64
+  cpuPct_neq: float64
+  cpuPct_notin: [float64!]
   date: Date
   date_geq: Date
   date_gt: Date
@@ -87288,6 +91337,183 @@ input AccountWarpDeviceAdaptiveGroupsFilter_InputObject {
   deviceId_neq: string
   deviceId_notin: [string!]
   deviceId_notlike: string
+  deviceRegistration: string
+  deviceRegistration_geq: string
+  deviceRegistration_gt: string
+  deviceRegistration_ilike: string
+  deviceRegistration_in: [string!]
+  deviceRegistration_leq: string
+  deviceRegistration_like: string
+  deviceRegistration_lt: string
+  deviceRegistration_neq: string
+  deviceRegistration_notin: [string!]
+  deviceRegistration_notlike: string
+  diskReadBps: uint64
+  diskReadBps_geq: uint64
+  diskReadBps_gt: uint64
+  diskReadBps_in: [uint64!]
+  diskReadBps_leq: uint64
+  diskReadBps_lt: uint64
+  diskReadBps_neq: uint64
+  diskReadBps_notin: [uint64!]
+  diskUsagePct: float64
+  diskUsagePct_geq: float64
+  diskUsagePct_gt: float64
+  diskUsagePct_in: [float64!]
+  diskUsagePct_leq: float64
+  diskUsagePct_lt: float64
+  diskUsagePct_neq: float64
+  diskUsagePct_notin: [float64!]
+  diskWriteBps: uint64
+  diskWriteBps_geq: uint64
+  diskWriteBps_gt: uint64
+  diskWriteBps_in: [uint64!]
+  diskWriteBps_leq: uint64
+  diskWriteBps_lt: uint64
+  diskWriteBps_neq: uint64
+  diskWriteBps_notin: [uint64!]
+  dohSubdomain: string
+  dohSubdomain_geq: string
+  dohSubdomain_gt: string
+  dohSubdomain_ilike: string
+  dohSubdomain_in: [string!]
+  dohSubdomain_leq: string
+  dohSubdomain_like: string
+  dohSubdomain_lt: string
+  dohSubdomain_neq: string
+  dohSubdomain_notin: [string!]
+  dohSubdomain_notlike: string
+  estimatedLossPct: float64
+  estimatedLossPct_geq: float64
+  estimatedLossPct_gt: float64
+  estimatedLossPct_in: [float64!]
+  estimatedLossPct_leq: float64
+  estimatedLossPct_lt: float64
+  estimatedLossPct_neq: float64
+  estimatedLossPct_notin: [float64!]
+  firewallEnabled: string
+  firewallEnabled_geq: string
+  firewallEnabled_gt: string
+  firewallEnabled_ilike: string
+  firewallEnabled_in: [string!]
+  firewallEnabled_leq: string
+  firewallEnabled_like: string
+  firewallEnabled_lt: string
+  firewallEnabled_neq: string
+  firewallEnabled_notin: [string!]
+  firewallEnabled_notlike: string
+  handshakeLatencyMs: float64
+  handshakeLatencyMs_geq: float64
+  handshakeLatencyMs_gt: float64
+  handshakeLatencyMs_in: [float64!]
+  handshakeLatencyMs_leq: float64
+  handshakeLatencyMs_lt: float64
+  handshakeLatencyMs_neq: float64
+  handshakeLatencyMs_notin: [float64!]
+  ispIPv4Address: string
+  ispIPv4Address_geq: string
+  ispIPv4Address_gt: string
+  ispIPv4Address_ilike: string
+  ispIPv4Address_in: [string!]
+  ispIPv4Address_leq: string
+  ispIPv4Address_like: string
+  ispIPv4Address_lt: string
+  ispIPv4Address_neq: string
+  ispIPv4Address_notin: [string!]
+  ispIPv4Address_notlike: string
+  ispIPv4Asn: uint32
+  ispIPv4Asn_geq: uint32
+  ispIPv4Asn_gt: uint32
+  ispIPv4Asn_in: [uint32!]
+  ispIPv4Asn_leq: uint32
+  ispIPv4Asn_lt: uint32
+  ispIPv4Asn_neq: uint32
+  ispIPv4Asn_notin: [uint32!]
+  ispIPv4Aso: string
+  ispIPv4Aso_geq: string
+  ispIPv4Aso_gt: string
+  ispIPv4Aso_ilike: string
+  ispIPv4Aso_in: [string!]
+  ispIPv4Aso_leq: string
+  ispIPv4Aso_like: string
+  ispIPv4Aso_lt: string
+  ispIPv4Aso_neq: string
+  ispIPv4Aso_notin: [string!]
+  ispIPv4Aso_notlike: string
+  ispIPv4Country: string
+  ispIPv4Country_geq: string
+  ispIPv4Country_gt: string
+  ispIPv4Country_ilike: string
+  ispIPv4Country_in: [string!]
+  ispIPv4Country_leq: string
+  ispIPv4Country_like: string
+  ispIPv4Country_lt: string
+  ispIPv4Country_neq: string
+  ispIPv4Country_notin: [string!]
+  ispIPv4Country_notlike: string
+  ispIPv4State: string
+  ispIPv4State_geq: string
+  ispIPv4State_gt: string
+  ispIPv4State_ilike: string
+  ispIPv4State_in: [string!]
+  ispIPv4State_leq: string
+  ispIPv4State_like: string
+  ispIPv4State_lt: string
+  ispIPv4State_neq: string
+  ispIPv4State_notin: [string!]
+  ispIPv4State_notlike: string
+  ispIPv6Address: string
+  ispIPv6Address_geq: string
+  ispIPv6Address_gt: string
+  ispIPv6Address_ilike: string
+  ispIPv6Address_in: [string!]
+  ispIPv6Address_leq: string
+  ispIPv6Address_like: string
+  ispIPv6Address_lt: string
+  ispIPv6Address_neq: string
+  ispIPv6Address_notin: [string!]
+  ispIPv6Address_notlike: string
+  ispIPv6Asn: uint32
+  ispIPv6Asn_geq: uint32
+  ispIPv6Asn_gt: uint32
+  ispIPv6Asn_in: [uint32!]
+  ispIPv6Asn_leq: uint32
+  ispIPv6Asn_lt: uint32
+  ispIPv6Asn_neq: uint32
+  ispIPv6Asn_notin: [uint32!]
+  ispIPv6Aso: string
+  ispIPv6Aso_geq: string
+  ispIPv6Aso_gt: string
+  ispIPv6Aso_ilike: string
+  ispIPv6Aso_in: [string!]
+  ispIPv6Aso_leq: string
+  ispIPv6Aso_like: string
+  ispIPv6Aso_lt: string
+  ispIPv6Aso_neq: string
+  ispIPv6Aso_notin: [string!]
+  ispIPv6Aso_notlike: string
+  ispIPv6Country: string
+  ispIPv6Country_geq: string
+  ispIPv6Country_gt: string
+  ispIPv6Country_ilike: string
+  ispIPv6Country_in: [string!]
+  ispIPv6Country_leq: string
+  ispIPv6Country_like: string
+  ispIPv6Country_lt: string
+  ispIPv6Country_neq: string
+  ispIPv6Country_notin: [string!]
+  ispIPv6Country_notlike: string
+  ispIPv6State: string
+  ispIPv6State_geq: string
+  ispIPv6State_gt: string
+  ispIPv6State_ilike: string
+  ispIPv6State_in: [string!]
+  ispIPv6State_leq: string
+  ispIPv6State_like: string
+  ispIPv6State_lt: string
+  ispIPv6State_neq: string
+  ispIPv6State_notin: [string!]
+  ispIPv6State_notlike: string
   mode: string
   mode_geq: string
   mode_gt: string
@@ -87299,6 +91525,71 @@ input AccountWarpDeviceAdaptiveGroupsFilter_InputObject {
   mode_neq: string
   mode_notin: [string!]
   mode_notlike: string
+  networkRcvdBps: uint64
+  networkRcvdBps_geq: uint64
+  networkRcvdBps_gt: uint64
+  networkRcvdBps_in: [uint64!]
+  networkRcvdBps_leq: uint64
+  networkRcvdBps_lt: uint64
+  networkRcvdBps_neq: uint64
+  networkRcvdBps_notin: [uint64!]
+  networkSentBps: uint64
+  networkSentBps_geq: uint64
+  networkSentBps_gt: uint64
+  networkSentBps_in: [uint64!]
+  networkSentBps_leq: uint64
+  networkSentBps_lt: uint64
+  networkSentBps_neq: uint64
+  networkSentBps_notin: [uint64!]
+  networkSsid: string
+  networkSsid_geq: string
+  networkSsid_gt: string
+  networkSsid_ilike: string
+  networkSsid_in: [string!]
+  networkSsid_leq: string
+  networkSsid_like: string
+  networkSsid_lt: string
+  networkSsid_neq: string
+  networkSsid_notin: [string!]
+  networkSsid_notlike: string
+  policyId: string
+  policyId_geq: string
+  policyId_gt: string
+  policyId_ilike: string
+  policyId_in: [string!]
+  policyId_leq: string
+  policyId_like: string
+  policyId_lt: string
+  policyId_neq: string
+  policyId_notin: [string!]
+  policyId_notlike: string
+  ramAvailableKb: uint64
+  ramAvailableKb_geq: uint64
+  ramAvailableKb_gt: uint64
+  ramAvailableKb_in: [uint64!]
+  ramAvailableKb_leq: uint64
+  ramAvailableKb_lt: uint64
+  ramAvailableKb_neq: uint64
+  ramAvailableKb_notin: [uint64!]
+  ramUsedPct: float64
+  ramUsedPctByAppJson: string
+  ramUsedPctByAppJson_geq: string
+  ramUsedPctByAppJson_gt: string
+  ramUsedPctByAppJson_ilike: string
+  ramUsedPctByAppJson_in: [string!]
+  ramUsedPctByAppJson_leq: string
+  ramUsedPctByAppJson_like: string
+  ramUsedPctByAppJson_lt: string
+  ramUsedPctByAppJson_neq: string
+  ramUsedPctByAppJson_notin: [string!]
+  ramUsedPctByAppJson_notlike: string
+  ramUsedPct_geq: float64
+  ramUsedPct_gt: float64
+  ramUsedPct_in: [float64!]
+  ramUsedPct_leq: float64
+  ramUsedPct_lt: float64
+  ramUsedPct_neq: float64
+  ramUsedPct_notin: [float64!]
   status: string
   status_geq: string
   status_gt: string
@@ -87310,9 +91601,264 @@ input AccountWarpDeviceAdaptiveGroupsFilter_InputObject {
   status_neq: string
   status_notin: [string!]
   status_notlike: string
+  switchLocked: string
+  switchLocked_geq: string
+  switchLocked_gt: string
+  switchLocked_ilike: string
+  switchLocked_in: [string!]
+  switchLocked_leq: string
+  switchLocked_like: string
+  switchLocked_lt: string
+  switchLocked_neq: string
+  switchLocked_notin: [string!]
+  switchLocked_notlike: string
+  tunnelDownstreamBytesLost: uint64
+  tunnelDownstreamBytesLost_geq: uint64
+  tunnelDownstreamBytesLost_gt: uint64
+  tunnelDownstreamBytesLost_in: [uint64!]
+  tunnelDownstreamBytesLost_leq: uint64
+  tunnelDownstreamBytesLost_lt: uint64
+  tunnelDownstreamBytesLost_neq: uint64
+  tunnelDownstreamBytesLost_notin: [uint64!]
+  tunnelDownstreamBytesRecvd: uint64
+  tunnelDownstreamBytesRecvd_geq: uint64
+  tunnelDownstreamBytesRecvd_gt: uint64
+  tunnelDownstreamBytesRecvd_in: [uint64!]
+  tunnelDownstreamBytesRecvd_leq: uint64
+  tunnelDownstreamBytesRecvd_lt: uint64
+  tunnelDownstreamBytesRecvd_neq: uint64
+  tunnelDownstreamBytesRecvd_notin: [uint64!]
+  tunnelDownstreamBytesRetrans: uint64
+  tunnelDownstreamBytesRetrans_geq: uint64
+  tunnelDownstreamBytesRetrans_gt: uint64
+  tunnelDownstreamBytesRetrans_in: [uint64!]
+  tunnelDownstreamBytesRetrans_leq: uint64
+  tunnelDownstreamBytesRetrans_lt: uint64
+  tunnelDownstreamBytesRetrans_neq: uint64
+  tunnelDownstreamBytesRetrans_notin: [uint64!]
+  tunnelDownstreamBytesSent: uint64
+  tunnelDownstreamBytesSent_geq: uint64
+  tunnelDownstreamBytesSent_gt: uint64
+  tunnelDownstreamBytesSent_in: [uint64!]
+  tunnelDownstreamBytesSent_leq: uint64
+  tunnelDownstreamBytesSent_lt: uint64
+  tunnelDownstreamBytesSent_neq: uint64
+  tunnelDownstreamBytesSent_notin: [uint64!]
+  tunnelDownstreamMinRttUs: int64
+  tunnelDownstreamMinRttUs_geq: int64
+  tunnelDownstreamMinRttUs_gt: int64
+  tunnelDownstreamMinRttUs_in: [int64!]
+  tunnelDownstreamMinRttUs_leq: int64
+  tunnelDownstreamMinRttUs_lt: int64
+  tunnelDownstreamMinRttUs_neq: int64
+  tunnelDownstreamMinRttUs_notin: [int64!]
+  tunnelDownstreamPacketsLost: uint64
+  tunnelDownstreamPacketsLost_geq: uint64
+  tunnelDownstreamPacketsLost_gt: uint64
+  tunnelDownstreamPacketsLost_in: [uint64!]
+  tunnelDownstreamPacketsLost_leq: uint64
+  tunnelDownstreamPacketsLost_lt: uint64
+  tunnelDownstreamPacketsLost_neq: uint64
+  tunnelDownstreamPacketsLost_notin: [uint64!]
+  tunnelDownstreamPacketsRecvd: uint64
+  tunnelDownstreamPacketsRecvd_geq: uint64
+  tunnelDownstreamPacketsRecvd_gt: uint64
+  tunnelDownstreamPacketsRecvd_in: [uint64!]
+  tunnelDownstreamPacketsRecvd_leq: uint64
+  tunnelDownstreamPacketsRecvd_lt: uint64
+  tunnelDownstreamPacketsRecvd_neq: uint64
+  tunnelDownstreamPacketsRecvd_notin: [uint64!]
+  tunnelDownstreamPacketsRetrans: uint64
+  tunnelDownstreamPacketsRetrans_geq: uint64
+  tunnelDownstreamPacketsRetrans_gt: uint64
+  tunnelDownstreamPacketsRetrans_in: [uint64!]
+  tunnelDownstreamPacketsRetrans_leq: uint64
+  tunnelDownstreamPacketsRetrans_lt: uint64
+  tunnelDownstreamPacketsRetrans_neq: uint64
+  tunnelDownstreamPacketsRetrans_notin: [uint64!]
+  tunnelDownstreamPacketsSent: uint64
+  tunnelDownstreamPacketsSent_geq: uint64
+  tunnelDownstreamPacketsSent_gt: uint64
+  tunnelDownstreamPacketsSent_in: [uint64!]
+  tunnelDownstreamPacketsSent_leq: uint64
+  tunnelDownstreamPacketsSent_lt: uint64
+  tunnelDownstreamPacketsSent_neq: uint64
+  tunnelDownstreamPacketsSent_notin: [uint64!]
+  tunnelDownstreamRttUs: int64
+  tunnelDownstreamRttUs_geq: int64
+  tunnelDownstreamRttUs_gt: int64
+  tunnelDownstreamRttUs_in: [int64!]
+  tunnelDownstreamRttUs_leq: int64
+  tunnelDownstreamRttUs_lt: int64
+  tunnelDownstreamRttUs_neq: int64
+  tunnelDownstreamRttUs_notin: [int64!]
+  tunnelDownstreamRttVarUs: int64
+  tunnelDownstreamRttVarUs_geq: int64
+  tunnelDownstreamRttVarUs_gt: int64
+  tunnelDownstreamRttVarUs_in: [int64!]
+  tunnelDownstreamRttVarUs_leq: int64
+  tunnelDownstreamRttVarUs_lt: int64
+  tunnelDownstreamRttVarUs_neq: int64
+  tunnelDownstreamRttVarUs_notin: [int64!]
+  tunnelDownstreamStatsWindowMs: uint64
+  tunnelDownstreamStatsWindowMs_geq: uint64
+  tunnelDownstreamStatsWindowMs_gt: uint64
+  tunnelDownstreamStatsWindowMs_in: [uint64!]
+  tunnelDownstreamStatsWindowMs_leq: uint64
+  tunnelDownstreamStatsWindowMs_lt: uint64
+  tunnelDownstreamStatsWindowMs_neq: uint64
+  tunnelDownstreamStatsWindowMs_notin: [uint64!]
+  tunnelType: string
+  tunnelType_geq: string
+  tunnelType_gt: string
+  tunnelType_ilike: string
+  tunnelType_in: [string!]
+  tunnelType_leq: string
+  tunnelType_like: string
+  tunnelType_lt: string
+  tunnelType_neq: string
+  tunnelType_notin: [string!]
+  tunnelType_notlike: string
+  tunnelUpstreamBytesLost: uint64
+  tunnelUpstreamBytesLost_geq: uint64
+  tunnelUpstreamBytesLost_gt: uint64
+  tunnelUpstreamBytesLost_in: [uint64!]
+  tunnelUpstreamBytesLost_leq: uint64
+  tunnelUpstreamBytesLost_lt: uint64
+  tunnelUpstreamBytesLost_neq: uint64
+  tunnelUpstreamBytesLost_notin: [uint64!]
+  tunnelUpstreamBytesRecvd: uint64
+  tunnelUpstreamBytesRecvd_geq: uint64
+  tunnelUpstreamBytesRecvd_gt: uint64
+  tunnelUpstreamBytesRecvd_in: [uint64!]
+  tunnelUpstreamBytesRecvd_leq: uint64
+  tunnelUpstreamBytesRecvd_lt: uint64
+  tunnelUpstreamBytesRecvd_neq: uint64
+  tunnelUpstreamBytesRecvd_notin: [uint64!]
+  tunnelUpstreamBytesRetrans: uint64
+  tunnelUpstreamBytesRetrans_geq: uint64
+  tunnelUpstreamBytesRetrans_gt: uint64
+  tunnelUpstreamBytesRetrans_in: [uint64!]
+  tunnelUpstreamBytesRetrans_leq: uint64
+  tunnelUpstreamBytesRetrans_lt: uint64
+  tunnelUpstreamBytesRetrans_neq: uint64
+  tunnelUpstreamBytesRetrans_notin: [uint64!]
+  tunnelUpstreamBytesSent: uint64
+  tunnelUpstreamBytesSent_geq: uint64
+  tunnelUpstreamBytesSent_gt: uint64
+  tunnelUpstreamBytesSent_in: [uint64!]
+  tunnelUpstreamBytesSent_leq: uint64
+  tunnelUpstreamBytesSent_lt: uint64
+  tunnelUpstreamBytesSent_neq: uint64
+  tunnelUpstreamBytesSent_notin: [uint64!]
+  tunnelUpstreamMinRttUs: int64
+  tunnelUpstreamMinRttUs_geq: int64
+  tunnelUpstreamMinRttUs_gt: int64
+  tunnelUpstreamMinRttUs_in: [int64!]
+  tunnelUpstreamMinRttUs_leq: int64
+  tunnelUpstreamMinRttUs_lt: int64
+  tunnelUpstreamMinRttUs_neq: int64
+  tunnelUpstreamMinRttUs_notin: [int64!]
+  tunnelUpstreamPacketsLost: uint64
+  tunnelUpstreamPacketsLost_geq: uint64
+  tunnelUpstreamPacketsLost_gt: uint64
+  tunnelUpstreamPacketsLost_in: [uint64!]
+  tunnelUpstreamPacketsLost_leq: uint64
+  tunnelUpstreamPacketsLost_lt: uint64
+  tunnelUpstreamPacketsLost_neq: uint64
+  tunnelUpstreamPacketsLost_notin: [uint64!]
+  tunnelUpstreamPacketsRecvd: uint64
+  tunnelUpstreamPacketsRecvd_geq: uint64
+  tunnelUpstreamPacketsRecvd_gt: uint64
+  tunnelUpstreamPacketsRecvd_in: [uint64!]
+  tunnelUpstreamPacketsRecvd_leq: uint64
+  tunnelUpstreamPacketsRecvd_lt: uint64
+  tunnelUpstreamPacketsRecvd_neq: uint64
+  tunnelUpstreamPacketsRecvd_notin: [uint64!]
+  tunnelUpstreamPacketsRetrans: uint64
+  tunnelUpstreamPacketsRetrans_geq: uint64
+  tunnelUpstreamPacketsRetrans_gt: uint64
+  tunnelUpstreamPacketsRetrans_in: [uint64!]
+  tunnelUpstreamPacketsRetrans_leq: uint64
+  tunnelUpstreamPacketsRetrans_lt: uint64
+  tunnelUpstreamPacketsRetrans_neq: uint64
+  tunnelUpstreamPacketsRetrans_notin: [uint64!]
+  tunnelUpstreamPacketsSent: uint64
+  tunnelUpstreamPacketsSent_geq: uint64
+  tunnelUpstreamPacketsSent_gt: uint64
+  tunnelUpstreamPacketsSent_in: [uint64!]
+  tunnelUpstreamPacketsSent_leq: uint64
+  tunnelUpstreamPacketsSent_lt: uint64
+  tunnelUpstreamPacketsSent_neq: uint64
+  tunnelUpstreamPacketsSent_notin: [uint64!]
+  tunnelUpstreamRttUs: int64
+  tunnelUpstreamRttUs_geq: int64
+  tunnelUpstreamRttUs_gt: int64
+  tunnelUpstreamRttUs_in: [int64!]
+  tunnelUpstreamRttUs_leq: int64
+  tunnelUpstreamRttUs_lt: int64
+  tunnelUpstreamRttUs_neq: int64
+  tunnelUpstreamRttUs_notin: [int64!]
+  tunnelUpstreamRttVarUs: int64
+  tunnelUpstreamRttVarUs_geq: int64
+  tunnelUpstreamRttVarUs_gt: int64
+  tunnelUpstreamRttVarUs_in: [int64!]
+  tunnelUpstreamRttVarUs_leq: int64
+  tunnelUpstreamRttVarUs_lt: int64
+  tunnelUpstreamRttVarUs_neq: int64
+  tunnelUpstreamRttVarUs_notin: [int64!]
+  tunnelUpstreamStatsWindowMs: uint64
+  tunnelUpstreamStatsWindowMs_geq: uint64
+  tunnelUpstreamStatsWindowMs_gt: uint64
+  tunnelUpstreamStatsWindowMs_in: [uint64!]
+  tunnelUpstreamStatsWindowMs_leq: uint64
+  tunnelUpstreamStatsWindowMs_lt: uint64
+  tunnelUpstreamStatsWindowMs_neq: uint64
+  tunnelUpstreamStatsWindowMs_notin: [uint64!]
+  version: int64
+  version_geq: int64
+  version_gt: int64
+  version_in: [int64!]
+  version_leq: int64
+  version_lt: int64
+  version_neq: int64
+  version_notin: [int64!]
+  wifiStrengthDbm: int64
+  wifiStrengthDbm_geq: int64
+  wifiStrengthDbm_gt: int64
+  wifiStrengthDbm_in: [int64!]
+  wifiStrengthDbm_leq: int64
+  wifiStrengthDbm_lt: int64
+  wifiStrengthDbm_neq: int64
+  wifiStrengthDbm_notin: [int64!]
+}
+
+type AccountWarpDeviceAdaptiveGroupsMax {
+  # Latest device health event timestamp
+  timestamp: Time!
 }
 
 enum AccountWarpDeviceAdaptiveGroupsOrderBy {
+  # alwaysOn ascending
+  alwaysOn_ASC
+  # alwaysOn descending
+  alwaysOn_DESC
+  # avg(sampleInterval) ascending
+  avg_sampleInterval_ASC
+  # avg(sampleInterval) descending
+  avg_sampleInterval_DESC
+  # batteryCharging ascending
+  batteryCharging_ASC
+  # batteryCharging descending
+  batteryCharging_DESC
+  # batteryCycles ascending
+  batteryCycles_ASC
+  # batteryCycles descending
+  batteryCycles_DESC
+  # batteryPct ascending
+  batteryPct_ASC
+  # batteryPct descending
+  batteryPct_DESC
   # clientPlatform ascending
   clientPlatform_ASC
   # clientPlatform descending
@@ -87325,10 +91871,22 @@ enum AccountWarpDeviceAdaptiveGroupsOrderBy {
   colo_ASC
   # colo descending
   colo_DESC
+  # connectionType ascending
+  connectionType_ASC
+  # connectionType descending
+  connectionType_DESC
   # count() ascending
   count_ASC
   # count() descending
   count_DESC
+  # cpuPctByAppJson ascending
+  cpuPctByAppJson_ASC
+  # cpuPctByAppJson descending
+  cpuPctByAppJson_DESC
+  # cpuPct ascending
+  cpuPct_ASC
+  # cpuPct descending
+  cpuPct_DESC
   # date ascending
   date_ASC
   # date descending
@@ -87365,23 +91923,245 @@ enum AccountWarpDeviceAdaptiveGroupsOrderBy {
   deviceId_ASC
   # deviceId descending
   deviceId_DESC
+  # deviceRegistration ascending
+  deviceRegistration_ASC
+  # deviceRegistration descending
+  deviceRegistration_DESC
+  # diskReadBps ascending
+  diskReadBps_ASC
+  # diskReadBps descending
+  diskReadBps_DESC
+  # diskUsagePct ascending
+  diskUsagePct_ASC
+  # diskUsagePct descending
+  diskUsagePct_DESC
+  # diskWriteBps ascending
+  diskWriteBps_ASC
+  # diskWriteBps descending
+  diskWriteBps_DESC
+  # dohSubdomain ascending
+  dohSubdomain_ASC
+  # dohSubdomain descending
+  dohSubdomain_DESC
+  # estimatedLossPct ascending
+  estimatedLossPct_ASC
+  # estimatedLossPct descending
+  estimatedLossPct_DESC
+  # firewallEnabled ascending
+  firewallEnabled_ASC
+  # firewallEnabled descending
+  firewallEnabled_DESC
+  # handshakeLatencyMs ascending
+  handshakeLatencyMs_ASC
+  # handshakeLatencyMs descending
+  handshakeLatencyMs_DESC
+  # ispIPv4Address ascending
+  ispIPv4Address_ASC
+  # ispIPv4Address descending
+  ispIPv4Address_DESC
+  # ispIPv4Asn ascending
+  ispIPv4Asn_ASC
+  # ispIPv4Asn descending
+  ispIPv4Asn_DESC
+  # ispIPv4Aso ascending
+  ispIPv4Aso_ASC
+  # ispIPv4Aso descending
+  ispIPv4Aso_DESC
+  # ispIPv4Country ascending
+  ispIPv4Country_ASC
+  # ispIPv4Country descending
+  ispIPv4Country_DESC
+  # ispIPv4State ascending
+  ispIPv4State_ASC
+  # ispIPv4State descending
+  ispIPv4State_DESC
+  # ispIPv6Address ascending
+  ispIPv6Address_ASC
+  # ispIPv6Address descending
+  ispIPv6Address_DESC
+  # ispIPv6Asn ascending
+  ispIPv6Asn_ASC
+  # ispIPv6Asn descending
+  ispIPv6Asn_DESC
+  # ispIPv6Aso ascending
+  ispIPv6Aso_ASC
+  # ispIPv6Aso descending
+  ispIPv6Aso_DESC
+  # ispIPv6Country ascending
+  ispIPv6Country_ASC
+  # ispIPv6Country descending
+  ispIPv6Country_DESC
+  # ispIPv6State ascending
+  ispIPv6State_ASC
+  # ispIPv6State descending
+  ispIPv6State_DESC
+  # max(timestamp) ascending
+  max_timestamp_ASC
+  # max(timestamp) descending
+  max_timestamp_DESC
   # mode ascending
   mode_ASC
   # mode descending
   mode_DESC
+  # networkRcvdBps ascending
+  networkRcvdBps_ASC
+  # networkRcvdBps descending
+  networkRcvdBps_DESC
+  # networkSentBps ascending
+  networkSentBps_ASC
+  # networkSentBps descending
+  networkSentBps_DESC
+  # networkSsid ascending
+  networkSsid_ASC
+  # networkSsid descending
+  networkSsid_DESC
+  # policyId ascending
+  policyId_ASC
+  # policyId descending
+  policyId_DESC
+  # ramAvailableKb ascending
+  ramAvailableKb_ASC
+  # ramAvailableKb descending
+  ramAvailableKb_DESC
+  # ramUsedPctByAppJson ascending
+  ramUsedPctByAppJson_ASC
+  # ramUsedPctByAppJson descending
+  ramUsedPctByAppJson_DESC
+  # ramUsedPct ascending
+  ramUsedPct_ASC
+  # ramUsedPct descending
+  ramUsedPct_DESC
   # status ascending
   status_ASC
   # status descending
   status_DESC
+  # switchLocked ascending
+  switchLocked_ASC
+  # switchLocked descending
+  switchLocked_DESC
+  # tunnelDownstreamBytesLost ascending
+  tunnelDownstreamBytesLost_ASC
+  # tunnelDownstreamBytesLost descending
+  tunnelDownstreamBytesLost_DESC
+  # tunnelDownstreamBytesRecvd ascending
+  tunnelDownstreamBytesRecvd_ASC
+  # tunnelDownstreamBytesRecvd descending
+  tunnelDownstreamBytesRecvd_DESC
+  # tunnelDownstreamBytesRetrans ascending
+  tunnelDownstreamBytesRetrans_ASC
+  # tunnelDownstreamBytesRetrans descending
+  tunnelDownstreamBytesRetrans_DESC
+  # tunnelDownstreamBytesSent ascending
+  tunnelDownstreamBytesSent_ASC
+  # tunnelDownstreamBytesSent descending
+  tunnelDownstreamBytesSent_DESC
+  # tunnelDownstreamMinRttUs ascending
+  tunnelDownstreamMinRttUs_ASC
+  # tunnelDownstreamMinRttUs descending
+  tunnelDownstreamMinRttUs_DESC
+  # tunnelDownstreamPacketsLost ascending
+  tunnelDownstreamPacketsLost_ASC
+  # tunnelDownstreamPacketsLost descending
+  tunnelDownstreamPacketsLost_DESC
+  # tunnelDownstreamPacketsRecvd ascending
+  tunnelDownstreamPacketsRecvd_ASC
+  # tunnelDownstreamPacketsRecvd descending
+  tunnelDownstreamPacketsRecvd_DESC
+  # tunnelDownstreamPacketsRetrans ascending
+  tunnelDownstreamPacketsRetrans_ASC
+  # tunnelDownstreamPacketsRetrans descending
+  tunnelDownstreamPacketsRetrans_DESC
+  # tunnelDownstreamPacketsSent ascending
+  tunnelDownstreamPacketsSent_ASC
+  # tunnelDownstreamPacketsSent descending
+  tunnelDownstreamPacketsSent_DESC
+  # tunnelDownstreamRttUs ascending
+  tunnelDownstreamRttUs_ASC
+  # tunnelDownstreamRttUs descending
+  tunnelDownstreamRttUs_DESC
+  # tunnelDownstreamRttVarUs ascending
+  tunnelDownstreamRttVarUs_ASC
+  # tunnelDownstreamRttVarUs descending
+  tunnelDownstreamRttVarUs_DESC
+  # tunnelDownstreamStatsWindowMs ascending
+  tunnelDownstreamStatsWindowMs_ASC
+  # tunnelDownstreamStatsWindowMs descending
+  tunnelDownstreamStatsWindowMs_DESC
+  # tunnelType ascending
+  tunnelType_ASC
+  # tunnelType descending
+  tunnelType_DESC
+  # tunnelUpstreamBytesLost ascending
+  tunnelUpstreamBytesLost_ASC
+  # tunnelUpstreamBytesLost descending
+  tunnelUpstreamBytesLost_DESC
+  # tunnelUpstreamBytesRecvd ascending
+  tunnelUpstreamBytesRecvd_ASC
+  # tunnelUpstreamBytesRecvd descending
+  tunnelUpstreamBytesRecvd_DESC
+  # tunnelUpstreamBytesRetrans ascending
+  tunnelUpstreamBytesRetrans_ASC
+  # tunnelUpstreamBytesRetrans descending
+  tunnelUpstreamBytesRetrans_DESC
+  # tunnelUpstreamBytesSent ascending
+  tunnelUpstreamBytesSent_ASC
+  # tunnelUpstreamBytesSent descending
+  tunnelUpstreamBytesSent_DESC
+  # tunnelUpstreamMinRttUs ascending
+  tunnelUpstreamMinRttUs_ASC
+  # tunnelUpstreamMinRttUs descending
+  tunnelUpstreamMinRttUs_DESC
+  # tunnelUpstreamPacketsLost ascending
+  tunnelUpstreamPacketsLost_ASC
+  # tunnelUpstreamPacketsLost descending
+  tunnelUpstreamPacketsLost_DESC
+  # tunnelUpstreamPacketsRecvd ascending
+  tunnelUpstreamPacketsRecvd_ASC
+  # tunnelUpstreamPacketsRecvd descending
+  tunnelUpstreamPacketsRecvd_DESC
+  # tunnelUpstreamPacketsRetrans ascending
+  tunnelUpstreamPacketsRetrans_ASC
+  # tunnelUpstreamPacketsRetrans descending
+  tunnelUpstreamPacketsRetrans_DESC
+  # tunnelUpstreamPacketsSent ascending
+  tunnelUpstreamPacketsSent_ASC
+  # tunnelUpstreamPacketsSent descending
+  tunnelUpstreamPacketsSent_DESC
+  # tunnelUpstreamRttUs ascending
+  tunnelUpstreamRttUs_ASC
+  # tunnelUpstreamRttUs descending
+  tunnelUpstreamRttUs_DESC
+  # tunnelUpstreamRttVarUs ascending
+  tunnelUpstreamRttVarUs_ASC
+  # tunnelUpstreamRttVarUs descending
+  tunnelUpstreamRttVarUs_DESC
+  # tunnelUpstreamStatsWindowMs ascending
+  tunnelUpstreamStatsWindowMs_ASC
+  # tunnelUpstreamStatsWindowMs descending
+  tunnelUpstreamStatsWindowMs_DESC
+  # uniq(deviceIdsExact) ascending
+  uniq_deviceIdsExact_ASC
+  # uniq(deviceIdsExact) descending
+  uniq_deviceIdsExact_DESC
   # uniq(deviceIds) ascending
   uniq_deviceIds_ASC
   # uniq(deviceIds) descending
   uniq_deviceIds_DESC
+  # version ascending
+  version_ASC
+  # version descending
+  version_DESC
+  # wifiStrengthDbm ascending
+  wifiStrengthDbm_ASC
+  # wifiStrengthDbm descending
+  wifiStrengthDbm_DESC
 }
 
 type AccountWarpDeviceAdaptiveGroupsUniq {
   # Approximate count of unique deviceIds
   deviceIds: uint64!
+  # Exact count of unique deviceIds
+  deviceIdsExact: uint64!
 }
 
 # Web Search Requests Analytics
@@ -91805,11 +96585,11 @@ enum AccountWorkflowsAdaptiveOrderBy {
   workflowName_DESC
 }
 
-# Workflow gatekeeper block reason metrics with adaptive sampling. Each sample represents instances that were blocked by the gatekeeper, grouped by the reason for blocking.
+# Workflow instances held back by a concurrency limit, with adaptive sampling, by the limit that held them back. Each instance is counted once, when the limit first refuses it a slot.
 type AccountWorkflowsBlockedReasonAdaptiveGroups {
   # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
   confidence(level: float64!): AccountWorkflowsBlockedReasonAdaptiveGroupsConfidence!
-  # Number of blocked reason samples
+  # Number of samples, one per shard and refusal round, not per instance; use sum.blockedCount for instances
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountWorkflowsBlockedReasonAdaptiveGroupsDimensions
@@ -91817,7 +96597,7 @@ type AccountWorkflowsBlockedReasonAdaptiveGroups {
 }
 
 type AccountWorkflowsBlockedReasonAdaptiveGroupsConfidence {
-  # Number of blocked reason samples, with confidence intervals
+  # Number of samples, one per shard and refusal round, not per instance; use sum.blockedCount for instances, with confidence intervals
   count: Confidence!
   # Confidence level that was requested
   level: float64!
@@ -91837,9 +96617,9 @@ type AccountWorkflowsBlockedReasonAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Sample timestamp truncated to the minute
   datetimeMinute: Time!
-  # Gatekeeper block reason: WORKFLOW_LIMIT, GLOBAL_LIMIT, or LIMIT_RESOLUTION_ERROR
+  # The limit that held the instance back: WORKFLOW_LIMIT (the workflow's concurrency limit), GLOBAL_LIMIT (the account's concurrent-instance limit, which raising the workflow limit will not help), or LIMIT_RESOLUTION_ERROR (the workflow's limit could not be read)
   reason: string!
-  # Workflow script name
+  # Workflow ID
   workflowId: string!
 }
 
@@ -91962,7 +96742,7 @@ enum AccountWorkflowsBlockedReasonAdaptiveGroupsOrderBy {
 }
 
 type AccountWorkflowsBlockedReasonAdaptiveGroupsSum {
-  # Total number of instances blocked by the gatekeeper
+  # Number of instances held back by a concurrency limit, each counted once at its first refusal
   blockedCount: uint64!
 }
 
@@ -91971,25 +96751,27 @@ type AccountWorkflowsBlockedReasonAdaptiveGroupsSumConfidence {
   blockedCount: Confidence!
 }
 
-# Workflow queue depth gauge metrics with adaptive sampling. Each sample represents a snapshot of the number of instances waiting in the gatekeeper queue for a workflow.
+# Number of workflow instances held back by a concurrency limit, summed across all of the workflow's shards, with adaptive sampling. Sampled every few seconds while at least one instance is held back, plus a single 0 when none are left; no samples means none were held back.
 type AccountWorkflowsQueueDepthAdaptiveGroups {
   avg: AccountWorkflowsQueueDepthAdaptiveGroupsAvg
   # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
   confidence(level: float64!): AccountWorkflowsQueueDepthAdaptiveGroupsConfidence!
-  # Number of queue depth samples
+  # Number of samples (not instances)
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountWorkflowsQueueDepthAdaptiveGroupsDimensions
+  # The maximum value of a metric per dimension
+  max: AccountWorkflowsQueueDepthAdaptiveGroupsMax
   quantiles: AccountWorkflowsQueueDepthAdaptiveGroupsQuantiles
 }
 
 type AccountWorkflowsQueueDepthAdaptiveGroupsAvg {
-  # Average queue depth (number of queued instances)
+  # Average of the samples, which are only taken while instances are held back, so not a time average; use max for the peak
   queueDepth: float64!
 }
 
 type AccountWorkflowsQueueDepthAdaptiveGroupsConfidence {
-  # Number of queue depth samples, with confidence intervals
+  # Number of samples (not instances), with confidence intervals
   count: Confidence!
   # Confidence level that was requested
   level: float64!
@@ -92008,7 +96790,7 @@ type AccountWorkflowsQueueDepthAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Sample timestamp truncated to the minute
   datetimeMinute: Time!
-  # Workflow script name
+  # Workflow ID
   workflowId: string!
 }
 
@@ -92076,6 +96858,11 @@ input AccountWorkflowsQueueDepthAdaptiveGroupsFilter_InputObject {
   workflowId_notlike: string
 }
 
+type AccountWorkflowsQueueDepthAdaptiveGroupsMax {
+  # Peak number of instances held back by a concurrency limit
+  queueDepth: uint64!
+}
+
 enum AccountWorkflowsQueueDepthAdaptiveGroupsOrderBy {
   # avg(queueDepth) ascending
   avg_queueDepth_ASC
@@ -92109,6 +96896,10 @@ enum AccountWorkflowsQueueDepthAdaptiveGroupsOrderBy {
   datetime_ASC
   # datetime descending
   datetime_DESC
+  # max(queueDepth) ascending
+  max_queueDepth_ASC
+  # max(queueDepth) descending
+  max_queueDepth_DESC
   # quantiles(queueDepthP25) ascending
   quantiles_queueDepthP25_ASC
   # quantiles(queueDepthP25) descending
@@ -92144,28 +96935,28 @@ enum AccountWorkflowsQueueDepthAdaptiveGroupsOrderBy {
 }
 
 type AccountWorkflowsQueueDepthAdaptiveGroupsQuantiles {
-  # Queue depth at the 25th percentile
+  # Held-back instances at the 25th percentile of samples, which are only taken while instances are held back
   queueDepthP25: float64!
-  # Queue depth at the 50th percentile
+  # Held-back instances at the 50th percentile of samples, which are only taken while instances are held back
   queueDepthP50: float64!
-  # Queue depth at the 75th percentile
+  # Held-back instances at the 75th percentile of samples, which are only taken while instances are held back
   queueDepthP75: float64!
-  # Queue depth at the 90th percentile
+  # Held-back instances at the 90th percentile of samples, which are only taken while instances are held back
   queueDepthP90: float64!
-  # Queue depth at the 95th percentile
+  # Held-back instances at the 95th percentile of samples, which are only taken while instances are held back
   queueDepthP95: float64!
-  # Queue depth at the 99th percentile
+  # Held-back instances at the 99th percentile of samples, which are only taken while instances are held back
   queueDepthP99: float64!
-  # Queue depth at the 99.9th percentile
+  # Held-back instances at the 99.9th percentile of samples, which are only taken while instances are held back
   queueDepthP999: float64!
 }
 
-# Workflow queue wait time metrics with adaptive sampling. Each sample represents the time a workflow instance spent waiting in the gatekeeper queue before being admitted.
+# Time workflow instances spent held back by a concurrency limit (the workflow's or the account's), with adaptive sampling. Each sample is one instance that was refused a slot at least once, recorded when it starts and measured from its first refusal; instances that start without being refused are not sampled.
 type AccountWorkflowsQueueWaitAdaptiveGroups {
   avg: AccountWorkflowsQueueWaitAdaptiveGroupsAvg
   # Returns confidence intervals for adaptive sampling estimates. The level argument must be between 0.5 and 0.99.
   confidence(level: float64!): AccountWorkflowsQueueWaitAdaptiveGroupsConfidence!
-  # Number of queue wait samples
+  # Number of held-back instances that started
   count: uint64!
   # List of dimensions to group by
   dimensions: AccountWorkflowsQueueWaitAdaptiveGroupsDimensions
@@ -92174,12 +96965,12 @@ type AccountWorkflowsQueueWaitAdaptiveGroups {
 }
 
 type AccountWorkflowsQueueWaitAdaptiveGroupsAvg {
-  # Average queue wait time (ms)
+  # Average time a held-back instance waited for a slot (ms)
   waitMs: float64!
 }
 
 type AccountWorkflowsQueueWaitAdaptiveGroupsConfidence {
-  # Number of queue wait samples, with confidence intervals
+  # Number of held-back instances that started, with confidence intervals
   count: Confidence!
   # Confidence level that was requested
   level: float64!
@@ -92199,7 +96990,7 @@ type AccountWorkflowsQueueWaitAdaptiveGroupsDimensions {
   datetimeHour: Time!
   # Sample timestamp truncated to the minute
   datetimeMinute: Time!
-  # Workflow script name
+  # Workflow ID
   workflowId: string!
 }
 
@@ -92339,24 +97130,24 @@ enum AccountWorkflowsQueueWaitAdaptiveGroupsOrderBy {
 }
 
 type AccountWorkflowsQueueWaitAdaptiveGroupsQuantiles {
-  # Queue wait time (ms) at the 25th percentile
+  # Time held back by a concurrency limit (ms) at the 25th percentile
   waitMsP25: float64!
-  # Queue wait time (ms) at the 50th percentile
+  # Time held back by a concurrency limit (ms) at the 50th percentile
   waitMsP50: float64!
-  # Queue wait time (ms) at the 75th percentile
+  # Time held back by a concurrency limit (ms) at the 75th percentile
   waitMsP75: float64!
-  # Queue wait time (ms) at the 90th percentile
+  # Time held back by a concurrency limit (ms) at the 90th percentile
   waitMsP90: float64!
-  # Queue wait time (ms) at the 95th percentile
+  # Time held back by a concurrency limit (ms) at the 95th percentile
   waitMsP95: float64!
-  # Queue wait time (ms) at the 99th percentile
+  # Time held back by a concurrency limit (ms) at the 99th percentile
   waitMsP99: float64!
-  # Queue wait time (ms) at the 99.9th percentile
+  # Time held back by a concurrency limit (ms) at the 99.9th percentile
   waitMsP999: float64!
 }
 
 type AccountWorkflowsQueueWaitAdaptiveGroupsSum {
-  # Total queue wait time (ms)
+  # Total time instances spent held back by a concurrency limit (ms), counted when each instance starts
   waitMs: float64!
 }
 
